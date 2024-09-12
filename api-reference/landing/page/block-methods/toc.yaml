@@ -1,0 +1,29 @@
+title: General Methods
+href: index.md
+items:
+  - name: List of Methods for Working with Blocks
+    href: index.md
+  - name: Adding a New Block
+    href: landing-landing-add-block.md
+  - name: Copying a Block
+    href: landing-landing-copy-block.md
+  - name: Deleting a Block from the Page
+    href: landing-landing-delete-block.md
+  - name: Moving a Block Down
+    href: landing-landing-down-block.md
+  - name: Adding a Block to My Blocks
+    href: landing-landing-favorite-block.md
+  - name: Hiding a Block from the Page
+    href: landing-landing-hide-block.md
+  - name: Marking a Block as Deleted
+    href: landing-landing-mark-deleted-block.md
+  - name: Unmarking a Deleted Block
+    href: landing-landing-mark-undeleted-block.md
+  - name: Moving a Block
+    href: landing-landing-move-block.md
+  - name: Displaying a Block on the Page
+    href: landing-landing-show-block.md
+  - name: Removing a Block from My Blocks
+    href: landing-landing-unfavorite-block.md
+  - name: Moving a Block Up
+    href: landing-landing-up-block.md

@@ -1,0 +1,13 @@
+title: Numbering Rules
+href: index.md
+items: 
+  - name: Add Numbering Rule
+    href: index.md
+  - name: Update Numbering Rule
+    href: document-generator-numerator-update.md
+  - name: Get Numbering Rule by ID
+    href: document-generator-numerator-get.md
+  - name: Get List of Numbering Rules
+    href: document-generator-numerator-list.md
+  - name: Delete Numbering Rule
+    href: document-generator-numerator-delete.md

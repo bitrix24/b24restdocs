@@ -1,0 +1,11 @@
+title: Binding Deals to CRM Objects
+href: index.md
+items:
+  - name: Logic of Deal Binding
+    href: index.md
+  - name: Add Deal Binding
+    href: crm-activity-binding-add.md
+  - name: Get List of Deal Bindings
+    href: crm-activity-binding-list.md
+  - name: Delete Deal Binding
+    href: crm-activity-binding-delete.md

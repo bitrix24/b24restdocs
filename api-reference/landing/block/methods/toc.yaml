@@ -1,0 +1,41 @@
+title: Interactive Blocks
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Clone Block Card
+    href: landing-block-clone-card.md
+  - name: Remove Block Card
+    href: landing-block-remove-card.md
+  - name: Update Block Content
+    href: landing-block-update-nodes.md
+  - name: Update Block Node Attributes
+    href: landing-block-update-attrs.md
+  - name: Add Card with Updated Content
+    href: landing-block-add-card.md
+  - name: Change Anchor Symbol Code
+    href: landing-block-change-anchor.md
+  - name: Change Tag Name
+    href: landing-block-change-node-name.md
+  - name: Get Block Content from Repository
+    href: landing-block-get-content-from-repository.md
+  - name: Get Block Content
+    href: landing-block-get-content.md
+  - name: Perform Bulk Update of Block Cards
+    href: landing-block-update-cards.md
+  - name: Update Block Styles
+    href: landing-block-update-styles.md
+  - name: Update Block Content
+    href: landing-block-update-content.md
+  - name: Upload and Attach Image to Block
+    href: landing-block-upload-file.md
+  - name: Get List of Page Blocks
+    href: landing-block-get-list.md
+  - name: Get Block by ID
+    href: landing-block-get-by-id.md
+  - name: Get Block Manifest
+    href: landing-block-get-manifest.md
+  - name: Get Block Manifest from Repository
+    href: landing-block-get-manifest-file.md
+  - name: Get List of Blocks from Repository
+    href: landing-block-get-repository.md

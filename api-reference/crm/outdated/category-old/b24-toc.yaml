@@ -1,0 +1,25 @@
+title: Deal Directions (deprecated)
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create Deal Direction
+    href: crm-deal-category-add.md
+  - name: Delete Deal Direction
+    href: crm-deal-category-delete.md
+  - name: Get Deal Direction 
+    href: crm-deal-category-get.md
+  - name: Get All Fields of Deal Direction
+    href: crm-deal-category-fields.md
+  - name: Get List of Deal Directions by Filter
+    href: crm-deal-category-list.md
+  - name: Update Deal Direction
+    href: crm-deal-category-update.md
+  - name: Get Default Direction Settings
+    href: crm-deal-category-default-get.md
+  - name: Set Default Direction Settings
+    href: crm-deal-category-default-set.md
+  - name: Get Identifier of the Reference with Deal Stages
+    href: crm-deal-category-status.md
+  - name: Get List of Stages
+    href: crm-deal-category-stage-list.md

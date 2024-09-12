@@ -1,0 +1,1 @@
+**Scope**: [`sonet`](../../scopes/permissions.md) **Execution rights**: `administrator`

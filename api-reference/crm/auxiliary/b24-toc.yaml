@@ -1,0 +1,17 @@
+title: Auxiliary Objects
+href: index.md
+items:
+  - name: Auxiliary Objects 
+    href: index.md
+  - name: Multiple Fields
+    include:
+      path: multifield/b24-toc.yaml
+      mode: link
+  - name: Enumerations
+    include:
+      path: enum/b24-toc.yaml
+      mode: link
+  - name: VAT Rates
+    include:
+      path: vat/b24-toc.yaml
+      mode: link

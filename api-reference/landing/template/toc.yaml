@@ -1,0 +1,19 @@
+title: Entity View Template
+href: index.md
+items:
+  - name: Introduction
+    href: index.md
+  - name: Entity Fields
+    href: fields.md
+  - name: Included Areas
+    href: include-section.md
+  - name: Get List of Included Areas for Page
+    href: landing-template-get-landing-ref.md
+  - name: Get List of Included Areas for Site
+    href: landing-template-get-site-ref.md
+  - name: Get List of Templates
+    href: landing-template-get-list.md
+  - name: Set Included Areas for Page
+    href: landing-template-set-landing-ref.md
+  - name: Set Included Areas for Site
+    href: landing-template-set-site-ref.md

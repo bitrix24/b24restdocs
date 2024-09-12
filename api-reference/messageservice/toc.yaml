@@ -1,0 +1,15 @@
+title: Message Providers, SMS Providers
+href: index.md
+items:
+  - name: About Message Providers
+    href: index.md
+  - name: Register Provider
+    href: messageservice-sender-add.md
+  - name: Get List of Providers
+    href: messageservice-sender-list.md
+  - name: Delete Provider
+    href: messageservice-sender-delete.md
+  - name: Update Message Delivery Status
+    href: messageservice-message-status-update.md
+  - name: Example of a Message Provider
+    href: tutorial.md

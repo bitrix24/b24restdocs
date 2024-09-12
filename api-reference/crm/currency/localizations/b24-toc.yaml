@@ -1,0 +1,13 @@
+title: Currency Localizations
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get Currency Localizations
+    href: crm-currency-localizations-get.md
+  - name: Set Localizations for Currency
+    href: crm-currency-localizations-set.md
+  - name: Delete Currency Localizations
+    href: crm-currency-localizations-delete.md
+  - name: Get Currency Localization Fields
+    href: crm-currency-localizations-fields.md

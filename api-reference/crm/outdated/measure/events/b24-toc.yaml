@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items:
+  - name: Overview of Events
+    href: index.md
+  - name: On Adding a New Unit of Measurement
+    href: on-crm-measure-add.md
+  - name: On Updating a Unit of Measurement
+    href: on-crm-measure-update.md
+  - name: On Deleting a Unit of Measurement
+    href: on-crm-measure-delete.md

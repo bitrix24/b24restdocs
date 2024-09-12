@@ -1,0 +1,15 @@
+title: Countries
+href: index.md
+items: 
+  - name: Why Countries are Needed in the Document Generator
+    href: index.md
+  - name: Add a Country
+    href: document-generator-region-add.md
+  - name: Update a Country
+    href: document-generator-region-update.md
+  - name: Get a Country by ID
+    href: document-generator-region-get.md
+  - name: Get a List of Countries
+    href: document-generator-region-list.md
+  - name: Delete a Country
+    href: document-generator-region-delete.md

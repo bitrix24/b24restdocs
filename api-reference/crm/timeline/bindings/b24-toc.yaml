@@ -1,0 +1,13 @@
+title: Managing Timeline Record Relationships
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Timeline Record Relationship with CRM Entity
+    href: crm-timeline-bindings-bind.md
+  - name: Retrieve List of Timeline Record Relationships
+    href: crm-timeline-bindings-list.md
+  - name: Remove Timeline Record Relationship with CRM Entity 
+    href: crm-timeline-bindings-unbind.md
+  - name: Get Fields of Timeline Record Relationships and CRM Entities
+    href: crm-timeline-bindings-fields.md

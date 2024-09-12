@@ -1,0 +1,19 @@
+title: Translations of Price Type Names
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Translation
+    href: catalog-price-type-lang-add.md
+  - name: Delete Translation
+    href: catalog-price-type-lang-delete.md
+  - name: Get Translation Field Values
+    href: catalog-price-type-lang-get.md
+  - name: Get Translation Fields
+    href: catalog-price-type-lang-get-fields.md
+  - name: Get Available Languages for Translation
+    href: catalog-price-type-lang-get-languages.md
+  - name: Get List of Price Type Name Translations
+    href: catalog-price-type-lang-list.md
+  - name: Update Translation
+    href: catalog-price-type-lang-update.md

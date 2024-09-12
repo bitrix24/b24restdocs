@@ -1,0 +1,15 @@
+title: Embedding Locations
+href: index.md
+items:
+  - name: About Embedding Locations
+    href: index.md
+  - name: Settings Menu
+    href: settings.md
+  - name: Block Editing Item
+    href: block.md
+  - name: Remove Embedding Locations
+    href: landing-repo-unbind.md
+  - name: Embedding Knowledge Base
+    include:
+      path: knowledge-base/toc.yaml
+      mode: link

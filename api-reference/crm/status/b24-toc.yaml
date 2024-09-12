@@ -1,0 +1,21 @@
+title: Reference Guides
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create a New Item in the Reference
+    href: crm-status-add.md
+  - name: Delete a Reference Item
+    href: crm-status-delete.md
+  - name: Get a Reference Item by ID
+    href: crm-status-entity-items.md
+  - name: Get Reference Types
+    href: crm-status-entity-types.md
+  - name: Get Reference Fields
+    href: crm-status-fields.md
+  - name: Get a Reference Item by ID
+    href: crm-status-get.md
+  - name: Get a List of Items by Filter
+    href: crm-status-list.md
+  - name: Update a Reference Item
+    href: crm-status-update.md

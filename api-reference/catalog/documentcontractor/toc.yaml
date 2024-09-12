@@ -1,0 +1,13 @@
+title: Working with CRM Vendors
+href: index.md
+items: 
+  - name: Working with CRM Vendors
+    href: index.md
+  - name: Add Vendor Binding to Document
+    href: catalog-documentcontractor-add.md
+  - name: Remove Binding from Document
+    href: catalog-documentcontractor-delete.md
+  - name: Get Binding Fields
+    href: catalog-documentcontractor-get-fields.md
+  - name: Get List of Document Bindings
+    href: catalog-documentcontractor-list.md

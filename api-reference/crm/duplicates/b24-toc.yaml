@@ -1,0 +1,13 @@
+title: Duplicates
+href: index.md
+items:
+  - name: Overview
+    href: index.md
+  - name: Returning entities with matching data
+    href: crm-duplicate-find-by-comm.md
+  - name: Merging duplicates
+    href: crm-entity-merge-batch.md
+  - name: Duplicate search settings for any fields 
+    include:
+      path: volatile-type/b24-toc.yaml
+      mode: link

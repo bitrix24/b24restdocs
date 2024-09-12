@@ -1,0 +1,13 @@
+title: Typical use-cases and scenarios in online sales  
+href: index.md  
+items:  
+  - name: Standard use-cases for REST API in online sales  
+    href: index.md  
+  - name: Implement a simple checkout using REST API  
+    href: cashbox-add-example.md  
+  - name: Create an item with a product from the catalog in a quantity of 4 units with a custom price  
+    href: example-position-with-custom-price.md  
+  - name: Create an item with a product that does not exist on the site  
+    href: example-position-that-is-not-on-the-site.md  
+  - name: Set up delivery for use in CRM  
+    href: delivery-in-crm.md  

@@ -1,0 +1,37 @@
+title: General Methods
+href: index.md
+items:
+  - name: List of Methods
+    href: index.md
+  - name: Adding a Page
+    href: landing-landing-add.md
+  - name: Adding a Page from a Template
+    href: landing-landing-add-by-template.md
+  - name: Copying a Page
+    href: landing-landing-copy.md
+  - name: Deleting a Page
+    href: landing-landing-delete.md
+  - name: Retrieving Additional Fields
+    href: landing-landing-get-additional-fields.md
+  - name: Retrieving a List of Pages
+    href: landing-landing-get-list.md
+  - name: Getting the Path to the Page Preview
+    href: landing-landing-get-preview.md
+  - name: Returning the Web Address of the Page
+    href: landing-landing-get-public-url.md
+  - name: Marking a Page as Deleted
+    href: landing-landing-mark-delete.md
+  - name: Marking a Page as Not Deleted
+    href: landing-landing-mark-undelete.md
+  - name: Moving a Page
+    href: landing-landing-move.md
+  - name: Publishing a Page
+    href: landing-landing-publication.md
+  - name: Deleting Related Entities
+    href: landing-landing-remove-entities.md
+  - name: Retrieving the Page ID by URL
+    href: landing-landing-resolve-id-by-public-url.md
+  - name: Unpublishing a Page
+    href: landing-landing-unpublic.md
+  - name: Modifying a Page
+    href: landing-landing-update.md

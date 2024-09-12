@@ -1,0 +1,13 @@
+title: Connecting CRM with Online Store Orders
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Order Link to CRM Entity
+    href: crm-order-entity-add.md
+  - name: Retrieve List of Order Links to CRM Entities
+    href: crm-order-entity-list.md
+  - name: Remove Order Link from CRM Entity
+    href: crm-order-entity-delete-by-filter.md
+  - name: Get Order Link Fields
+    href: crm-order-entity-get-fields.md

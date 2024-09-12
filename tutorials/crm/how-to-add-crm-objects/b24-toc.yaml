@@ -1,0 +1,31 @@
+title: Add Data
+href: index.md
+items: 
+  - name: How to Add Leads and Other Entities
+    href: index.md
+  - name: Add Lead
+    href: how-to-add-lead.md
+  - name: Add CRM Activity to Lead or Deal Considering CRM Modes
+    href: how-to-add-objects-with-crm-mode.md
+  - name: Add Repeat Lead
+    href: how-to-add-repeat-lead.md
+  - name: Add Contact
+    href: how-to-add-contact.md
+  - name: Add Contact with Requisites
+    href: how-to-add-contact-with-requisite.md
+  - name: Add Company
+    href: how-to-add-company.md
+  - name: Add Company with Requisites
+    href: how-to-add-company-with-requisite.md
+  - name: Add Deal with Requisite Selection
+    href: how-to-add-deal-with-choice-of-requisite.md
+  - name: Add Calendar Event to Client
+    href: how-to-add-activity-to-contact.md
+  - name: Add Deal with Products, Applying Discounts and Taxes
+    href: how-to-product-binding.md
+  - name: Add Product with Custom Field Values
+    href: how-to-add-product-with-custom-props.md
+  - name: Create Your Document Template and Document Based on It
+    href: how-to-generate-documents.md
+  - name: Send E-mail to Client on Behalf of Employee
+    href: how-to-send-email.md

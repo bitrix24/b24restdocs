@@ -1,0 +1,13 @@
+title: Storage Sections
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get List of Storage Sections
+    href: entity-section-get.md
+  - name: Add Storage Section
+    href: entity-section-add.md
+  - name: Update Storage Section
+    href: entity-section-update.md
+  - name: Delete Storage Section
+    href: entity-section-delete.md

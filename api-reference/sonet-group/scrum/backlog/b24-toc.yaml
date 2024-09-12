@@ -1,0 +1,15 @@
+title: Backlog
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Backlog to Scrum
+    href: tasks-api-scrum-backlog-add.md
+  - name: Update Backlog
+    href: tasks-api-scrum-backlog-update.md
+  - name: Get Backlog Fields by Scrum ID
+    href: tasks-api-scrum-backlog-get.md
+  - name: Delete Backlog
+    href: tasks-api-scrum-backlog-delete.md
+  - name: Get List of Available Backlog Fields
+    href: tasks-api-scrum-backlog-get-fields.md

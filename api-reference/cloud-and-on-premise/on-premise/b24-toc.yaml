@@ -1,0 +1,11 @@
+title: Features of the On-Premise Version
+href: index.md
+items: 
+  - name: Overview 
+    href: index.md
+  - name: Versioning of the On-Premise Version 
+    href: versions.md
+  - name: Features of the Isolated Box
+    href: custom-auth-provider.md
+  - name: Adding Your Own Methods
+    href: custom-methods.md

@@ -1,0 +1,11 @@
+title: Section Property Settings
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Get Section Property Settings Values
+    href: catalog-product-property-section-get.md
+  - name: Get List of Section Property Settings
+    href: catalog-product-property-section-list.md
+  - name: Set Section Property Settings
+    href: catalog-product-property-section-set.md

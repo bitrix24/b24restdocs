@@ -1,0 +1,13 @@
+title: Displaying System Dialogs
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Show Single User Selection Dialog
+    href: bx24-select-user.md
+  - name: Show Multiple User Selection Dialog
+    href: bx24-select-users.md
+  - name: Show Access Permission Selection Dialog
+    href: bx24-select-access.md
+  - name: Invoke CRM Entity Selection Dialog
+    href: bx24-select-crm.md

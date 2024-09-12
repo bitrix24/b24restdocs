@@ -1,0 +1,103 @@
+title: Trade Catalog
+href: index.md
+items: 
+  - name: List of Methods
+    href: index.md
+  - name: Data Types and Object Structure in the REST API Catalog
+    href: data-types.md
+  - name: Trade Catalog
+    include:
+      path: catalog/b24-toc.yaml
+      mode: link
+  - name: Enumerations
+    include:
+      path: enum/toc.yaml
+      mode: link
+  - name: Markup
+    include:
+      path: extra/toc.yaml
+      mode: link
+  - name: Unit of Measurement
+    include:
+      path: measure/b24-toc.yaml
+      mode: link
+  - name: Price
+    include:
+      path: price/toc.yaml
+      mode: link
+  - name: Price Type
+    include:
+      path: price-type/toc.yaml
+      mode: link
+  - name: Price Type Binding to Customer Groups
+    include:
+      path: price-type-group/toc.yaml
+      mode: link
+  - name: Translations of Price Type Names
+    include:
+      path: price-type-lang/toc.yaml
+      mode: link
+  - name: Products
+    include:
+      path: product/b24-toc.yaml
+      mode: link
+  - name: Properties of Products and Trade Offers
+    include:
+      path: product-property/toc.yaml
+      mode: link
+  - name: Values of List Properties
+    include:
+      path: product-property-enum/toc.yaml
+      mode: link
+  - name: Parameters of Product and Trade Offer Properties
+    include:
+      path: product-property-feature/toc.yaml
+      mode: link
+  - name: Section Settings for Properties
+    include:
+      path: product-property-section/toc.yaml
+      mode: link
+  - name: Product and Trade Offer Images
+    include:
+      path: product-image/toc.yaml
+      mode: link
+  - name: Unit of Measurement Ratio
+    include:
+      path: ratio/toc.yaml
+      mode: link
+  - name: Price Rounding Rules
+    include:
+      path: rounding-rule/toc.yaml
+      mode: link
+  - name: Catalog Section
+    include:
+      path: section/b24-toc.yaml
+      mode: link
+  - name: Warehouse
+    include:
+      path: store/toc.yaml
+      mode: link
+  - name: Stock by Warehouses
+    include:
+      path: store-product/toc.yaml
+      mode: link
+  - name: Warehouse Accounting
+    include:
+      path: document/toc.yaml
+      mode: link
+  - name: Custom Fields for Warehouse Accounting Documents
+    include:
+      path: userfield-document/toc.yaml
+      mode: link
+  - name: Working with CRM Vendors
+    include:
+      path: documentcontractor/toc.yaml
+      mode: link
+  - name: VAT Rates
+    include:
+      path: vat/toc.yaml
+      mode: link
+  - name: Events
+    include:
+      path: events/toc.yaml
+      mode: link

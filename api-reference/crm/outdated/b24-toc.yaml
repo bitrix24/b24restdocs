@@ -1,0 +1,41 @@
+title: Deprecated REST Methods of CRM
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Catalog
+    include:
+      path: catalog/b24-toc.yaml
+      mode: link
+  - name: Product Items
+    include:
+      path: productrow-old/b24-toc.yaml
+      mode: link
+  - name: Units of Measurement
+    include:
+      path: measure/b24-toc.yaml
+      mode: link
+  - name: Invoice Statuses
+    include:
+      path: invoice-status-old/b24-toc.yaml
+      mode: link
+  - name: Deal Directions
+    include:
+      path: category-old/b24-toc.yaml
+      mode: link
+  - name: Products
+    include:
+      path: products/toc.yaml
+      mode: link
+  - name: Product Sections
+    include:
+      path: product-section/b24-toc.yaml
+      mode: link
+  - name: CRM Feed
+    include:
+      path: stream-old/b24-toc.yaml
+      mode: link
+  - name: Invoices
+    include:
+      path: invoice/b24-toc.yaml
+      mode: link

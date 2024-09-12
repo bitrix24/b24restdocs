@@ -1,0 +1,17 @@
+title: Product and Deal Properties
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Property
+    href: catalog-product-property-add.md
+  - name: Delete Property
+    href: catalog-product-property-delete.md
+  - name: Get Property Field Values
+    href: catalog-product-property-get.md
+  - name: Get Property Fields
+    href: catalog-product-property-get-fields.md
+  - name: Get List of Properties
+    href: catalog-product-property-list.md
+  - name: Update Property
+    href: catalog-product-property-update.md

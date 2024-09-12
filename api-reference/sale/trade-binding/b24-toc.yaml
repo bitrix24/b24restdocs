@@ -1,0 +1,9 @@
+title: Orders from External Sources
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Retrieve a List of Orders from External Sources
+    href: sale-trade-binding-list.md
+  - name: Get Fields for Orders from External Sources
+    href: sale-trade-binding-get-fields.md

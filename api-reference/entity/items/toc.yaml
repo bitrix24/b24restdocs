@@ -1,0 +1,17 @@
+title: Storage Elements
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get List of Storage Elements
+    href: entity-item-get.md
+  - name: Add Storage Element
+    href: entity-item-add.md
+  - name: Update Storage Element
+    href: entity-item-update.md
+  - name: Delete Storage Element
+    href: entity-item-delete.md
+  - name: Properties of Elements
+    include:
+      path: properties/toc.yaml
+      mode: link

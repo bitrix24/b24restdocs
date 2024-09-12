@@ -1,0 +1,15 @@
+title: Addresses of Requisites
+href: index.md
+items:
+  - name: Connections of Requisites with CRM Objects
+    href: index.md
+  - name: Register Connection of Requisite with Object
+    href: crm-requisite-link-register.md
+  - name: Get Connection of Requisite with Object
+    href: crm-requisite-link-get.md
+  - name: Get List of Requisite Connections
+    href: crm-requisite-link-list.md
+  - name: Remove Connection of Requisite with Object
+    href: crm-requisite-link-unregister.md
+  - name: Get Description of Requisite Connection Fields
+    href: crm-requisite-link-fields.md

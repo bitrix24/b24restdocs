@@ -1,0 +1,13 @@
+title: Events
+href: index.md
+items: 
+  - name: On receiving new messages
+    href: index.md
+  - name: On message updates
+    href: on-im-connector-message-update.md
+  - name: On message deletion
+    href: on-im-connector-message-delete.md
+  - name: On open line deletion
+    href: on-im-connector-line-delete.md
+  - name: On open line disconnection
+    href: on-im-connector-status-delete.md

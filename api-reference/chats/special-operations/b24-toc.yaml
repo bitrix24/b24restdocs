@@ -1,0 +1,13 @@
+title: Special Operations
+href: index.md
+items:
+  - name: Disable notifications from chat
+    href: index.md
+  - name: Mark chat as read or unread
+    href: im-recent-unread.md
+  - name: Mark all chats as read
+    href: im-dialog-read-all.md
+  - name: Pin chat to favorites
+    href: im-recent-pin.md
+  - name: Remove chat from recent list
+    href: im-recent-hide.md

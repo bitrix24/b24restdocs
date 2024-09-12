@@ -1,0 +1,15 @@
+title: Localization of Statuses
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Get List of Languages for Localization
+    href: sale-status-lang-get-list-langs.md
+  - name: Add Localization
+    href: sale-status-lang-add.md
+  - name: Get List of Status Localizations
+    href: sale-status-lang-list.md
+  - name: Delete Localization
+    href: sale-status-lang-delete-by-filter.md
+  - name: Get Fields of Status Localizations
+    href: sale-status-lang-get-fields.md

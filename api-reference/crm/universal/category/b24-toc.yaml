@@ -1,0 +1,17 @@
+title: Sales Funnel
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add a New Funnel
+    href: crm-category-add.md
+  - name: Update Funnel
+    href: crm-category-update.md
+  - name: Get Funnel by Id
+    href: crm-category-get.md
+  - name: Get List of Funnels
+    href: crm-category-list.md
+  - name: Delete Funnel
+    href: crm-category-delete.md
+  - name: Get Funnel Fields
+    href: crm-category-fields.md

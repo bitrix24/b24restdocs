@@ -1,0 +1,19 @@
+title: Head Products
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Head Product
+    href: catalog-product-sku-add.md
+  - name: Update Head Product Fields
+    href: catalog-product-sku-update.md
+  - name: Get Head Product Field Values
+    href: catalog-product-sku-get.md
+  - name: Get List of Head Products
+    href: catalog-product-sku-list.md
+  - name: Download Head Product Files
+    href: catalog-product-sku-download.md
+  - name: Delete Head Product
+    href: catalog-product-sku-delete.md
+  - name: Get Head Product Fields by Filter
+    href: catalog-product-sku-get-fields-by-filter.md

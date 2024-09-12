@@ -1,0 +1,23 @@
+# Installation Wizard for Mass-Market Application
+
+When an application is installed for the first time on Bitrix24, Bitrix24 opens the application slider and initially displays the URL specified in the "Installation Application Link" field within a frame.
+
+The user interface implemented at this URL serves as the "installation wizard" for the application, complete with any necessary business logic. This could be a configuration form for the application, an informational interface, etc.
+
+Additionally, this URL can be used to initialize and create the required objects in Bitrix24. For example, you can:
+
+- set up [event handlers](../../events/index.md);
+- register [widgets](../../widgets/index.md) in the necessary embedding locations;
+- add a [payment system provider](../../pay-system/index.md) or [cash register](../../sale/cashbox/index.md);
+- register an [SMS messaging provider](../../messageservice/index.md);
+- and so on.
+
+In other words, the "installation wizard" URL can be used to perform one-time operations related to the installation of the application on the account, as after a successful addition, the URL specified in the "Installation Application Link" field will no longer be called. Instead, the user will see the interface from the "Application Link" URL.
+
+However, your application must explicitly "notify" Bitrix24 that the installation has been successfully completed. To do this, you need to call the JS method [BX24.installFinish()](../../bx24-js-sdk/system-functions/bx24-install-finish.md). Until this method is called, Bitrix24 considers that the application is not installed (not configured by the user), and each time the user navigates to the application, it will display the URL specified in the "Installation Application Link" field in the slider.
+
+## Features of Installing a Static Application
+
+Since when uploading a static application, you are uploading an archive of the entire solution rather than specifying paths to your own server, Bitrix24 uses the install.html file from the solution archive as the URL for the "installation wizard." Otherwise, the logic remains the same—you can use JS functions in this file to perform the necessary requests, and to notify of the successful completion of the "wizard," you need to call the method [BX24.installFinish()](../../bx24-js-sdk/system-functions/bx24-install-finish.md).
+
+If install.html is not present in the root of the archive, Bitrix24 assumes that the "installation wizard" procedure is unnecessary and immediately refers to index.html from the same archive.

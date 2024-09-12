@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items:
+  - name: Events Overview
+    href: index.md
+  - name: On Task Addition
+    href: on-task-add.md
+  - name: On Task Update
+    href: on-task-update.md
+  - name: On Task Deletion
+    href: on-task-delete.md

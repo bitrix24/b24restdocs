@@ -1,0 +1,17 @@
+title: Mail Services
+href: index.md
+items:
+  - name: List of Methods
+    href: index.md
+  - name: Create a New Mail Service
+    href: mailservice-add.md
+  - name: Delete Mail Service
+    href: mailservice-delete.md
+  - name: Get Mail Service Fields
+    href: mailservice-fields.md
+  - name: Get Mail Service Parameters
+    href: mailservice-get.md
+  - name: Get List of Mail Services
+    href: mailservice-list.md
+  - name: Update Mail Service Parameters
+    href: mailservice-update.md

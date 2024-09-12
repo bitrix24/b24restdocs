@@ -1,0 +1,13 @@
+title: General Methods
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get List of Blocks
+    href: landing-repo-get-list.md
+  - name: Add Block to Repository
+    href: landing-repo-register.md
+  - name: Remove Block
+    href: landing-repo-unregister.md
+  - name: Check Content for Dangerous Substrings
+    href: landing-repo-check-content.md

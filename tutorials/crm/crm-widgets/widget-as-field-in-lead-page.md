@@ -1,0 +1,259 @@
+# Embed a Widget in a Lead as a Custom Property
+
+> Scope: [`crm`](../../../api-reference/scopes/permissions.md)
+>
+> Who can execute the method: users with administrative access to the CRM section
+
+Example of adding a custom property to a lead's detail form. The example works as follows: after the first interaction with the property in the lead's edit form, the handler from the application will always be loaded, even in view mode. The handler makes a request to an external API to obtain the region and operator of the given phone number in the US.
+
+Code for setting properties (called once), where the variable `handlerUrl` is the path to the property handler file.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    var handlerUrl = 'https://yourdomain.com/handler.php';
+    var type = 'phone_data';
+    var propCode = 'PHONE_DATA'; // max length with prefix UF_CRM_ 20 char
+
+    BX24.callMethod(
+        'userfieldtype.add',
+        {
+            'USER_TYPE_ID': type,
+            'HANDLER': handlerUrl,
+            'TITLE': 'custom type title',
+            'DESCRIPTION': 'custom description ' + type
+        },
+        function(resultAddPropType) {
+            if (resultAddPropType.error()) {
+                console.error(resultAddPropType.error() + ': ' + resultAddPropType.error_description());
+            } else {
+                console.log('property type ' + type + ' has been added successfully');
+                BX24.callMethod(
+                    'crm.lead.userfield.add',
+                    {
+                        'fields': {
+                            'USER_TYPE_ID': type,
+                            'FIELD_NAME': propCode,
+                            'XML_ID': propCode,
+                            'MANDATORY': 'N',
+                            'SHOW_IN_LIST': 'Y',
+                            'EDIT_IN_LIST': 'Y',
+                            'EDIT_FORM_LABEL': 'My string',
+                            'LIST_COLUMN_LABEL': 'My string description',
+                            'SETTINGS': {}
+                        }
+                    },
+                    function(resultAddProp) {
+                        if (resultAddProp.error()) {
+                            console.error(resultAddProp.error() + ': ' + resultAddProp.error_description());
+                        } else {
+                            console.log('property ' + propCode + ' has been added successfully');
+                        }
+                    }
+                );
+            }
+        }
+    );
+    ```
+
+- PHP
+
+    {% note info %}
+
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+
+    {% endnote %}
+
+    ```php
+    <?
+    $handlerUrl = 'https://yourdomain.com/handler.php';
+    $type = 'phone_data';
+    $propCode = 'PHONE_DATA'; // max length with prefix UF_CRM_ 20 char
+    $resultAddPropType = CRest::call(
+        'userfieldtype.add',
+        [
+            'USER_TYPE_ID' => $type,
+            'HANDLER' => $handlerUrl,
+            'TITLE' => 'custom type title',
+            'DESCRIPTION' => 'custom description ' . $type
+        ]
+    );
+    if ($resultAddPropType['result'] == true)
+    {
+        echo 'property type ' . $type . ' has been added successfully <br>';
+        $resultAddProp = CRest::call(
+            'crm.lead.userfield.add',
+            [
+                'fields' => [
+                    'USER_TYPE_ID' => $type,
+                    'FIELD_NAME' => $propCode,
+                    'XML_ID' => $propCode,
+                    'MANDATORY' => 'N',
+                    'SHOW_IN_LIST' => 'Y',
+                    'EDIT_IN_LIST' => 'Y',
+                    'EDIT_FORM_LABEL' => 'My string',
+                    'LIST_COLUMN_LABEL' => 'My string description',
+                    'SETTINGS' => []
+                ]
+            ]
+        );
+        if ($resultAddProp['error'])
+        {
+            echo $resultAddProp['error'] . ': ' . $resultAddProp['error_description'];
+        }
+        else
+        {
+            echo 'property ' . $propCode . ' has been added successfully <br>';
+        }
+    }
+    elseif ($resultAddPropType['error'])
+    {
+        echo $resultAddPropType['error'] . ': ' . $resultAddPropType['error_description'];
+    }
+    ?>
+    ```
+
+{% endlist %}
+
+The handler file that you specified in the `handlerUrl` variable in the code above:
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    var placementOptions = BX24.getPlacementOptions();
+    if (BX24.getPlacement() === 'USERFIELD_TYPE') {
+        var value = placementOptions.VALUE;
+        if (placementOptions.ENTITY_ID === 'CRM_LEAD' && placementOptions.ENTITY_VALUE_ID > 0) {
+            BX24.callMethod(
+                'crm.lead.list',
+                {
+                    'filter': { 'ID': parseInt(placementOptions.ENTITY_VALUE_ID) },
+                    'select': ['ID', 'PHONE']
+                },
+                function(result) {
+                    if (result.error()) {
+                        console.error(result.error() + ': ' + result.error_description());
+                    } else {
+                        if (result.data()[0] && result.data()[0].PHONE[0] && result.data()[0].PHONE[0].VALUE) {
+                            value = result.data()[0].PHONE[0].VALUE.trim();
+                            fetch('http://api.bitroid.info/phone/?q=' + value)
+                                .then(response => response.json())
+                                .then(valueData => {
+                                    if (!valueData.error) {
+                                        value = [valueData.org, valueData.region].join(', ');
+                                    } else {
+                                        value = 'error: ' + valueData.error;
+                                    }
+                                    updateValue(value);
+                                })
+                                .catch(() => {
+                                    value = 'no data in base' + value;
+                                    updateValue(value);
+                                });
+                        } else {
+                            value = 'no data';
+                            updateValue(value);
+                        }
+                    }
+                }
+            );
+        } else {
+            updateValue(value);
+        }
+    }
+
+    function updateValue(value) {
+        document.body.style.backgroundColor = placementOptions.MODE === 'edit' ? '#fff' : '#f9fafb';
+        if (placementOptions.MODE === 'edit') {
+            document.body.innerHTML = '<input type="text" style="width: 90%;" value="' + value + '" onkeyup="setValue(this.value)">';
+            setValue(value);
+        } else {
+            document.body.innerHTML = value;
+        }
+    }
+
+    function setValue(value) {
+        BX24.placement.call('setValue', value);
+    }
+    ```
+
+- PHP
+
+    {% note info %}
+
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+
+    {% endnote %}
+
+    ```php
+    <?
+    $placementOptions = isset($_REQUEST['PLACEMENT_OPTIONS']) ? json_decode($_REQUEST['PLACEMENT_OPTIONS'], true) : array();
+    if ($_REQUEST['PLACEMENT'] == 'USERFIELD_TYPE'):
+        $value = htmlspecialchars($placementOptions['VALUE']);
+        if ($placementOptions['ENTITY_ID'] == 'CRM_LEAD' && $placementOptions['ENTITY_VALUE_ID'] > 0)
+        {
+            $result = CRest::call(
+                'crm.lead.list',
+                [
+                    'filter' => ['ID' => intval($placementOptions['ENTITY_VALUE_ID'])],
+                    'select' => ['ID', 'PHONE']
+                ]
+            );
+            if (!empty($result['result'][0]['PHONE'][0]['VALUE']))
+            {
+                $value = trim($result['result'][0]['PHONE'][0]['VALUE']);
+                $data = file_get_contents('http://api.bitroid.info/phone/?q=' . $value);
+                if($data)
+                {
+                    $valueData = json_decode($data, true);
+                    if(!$valueData['error'])
+                    {
+                        $value = implode(', ', [$valueData['org'], $valueData['region']]);
+                    }
+                    else
+                    {
+                        $value = 'error: ' . $valueData['error'];
+                    }
+                }
+                else
+                {
+                    $value = 'no data in base' . $value;
+                }
+            }
+            else
+            {
+                $value = 'no data';
+            }
+        }
+        ?>
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <script src="//api.bitrix24.com/api/v1/dev/"></script>
+            </head>
+            <body style="margin: 0; padding: 0; background-color: <?=$placementOptions['MODE'] === 'edit' ? '#fff'
+                : '#f9fafb'?>;">
+                <?
+                if ($placementOptions['MODE'] === 'edit'): ?>
+                    <input type="text" style="width: 90%;" value='<?=$value?>' onkeyup="setValue(this.value)">
+                    <script>
+                        function setValue(value)
+                        {
+                            BX24.placement.call('setValue', value);
+                        }
+                        BX24.placement.call('setValue', '<?=$value?>');
+                    </script>
+                <? else: ?>
+                    <?=$value?>
+                <? endif;
+                ?>
+            </body>
+        </html>
+    <? endif;?>
+    ```
+
+{% endlist %}

@@ -1,0 +1,11 @@
+title: Files
+href: index.md
+items:
+  - name: Get the storage folder of the specified chat
+    href: index.md
+  - name: Add a file to the chat
+    href: im-disk-file-commit.md
+  - name: Remove a file from the chat folder
+    href: im-disk-file-delete.md
+  - name: Save a file to your drive
+    href: im-disk-file-save.md

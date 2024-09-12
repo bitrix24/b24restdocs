@@ -1,0 +1,19 @@
+title: Notifications
+href: index.md
+items:
+  - name: About Notifications
+    href: index.md
+  - name: Send Personal Notification
+    href: im-notify-personal-add.md
+  - name: Send System Notification
+    href: im-notify-system-add.md
+  - name: Delete Notification
+    href: im-notify-delete.md
+  - name: Set Read Notification Cancellation
+    href: im-notify-read.md
+  - name: Read Notification List (excluding CONFIRM)
+    href: im-notify-read-list.md
+  - name: Reply to Notification Supporting Quick Reply
+    href: im-notify-answer.md
+  - name: How to Interact with Notification Buttons
+    href: im-notify-confirm.md

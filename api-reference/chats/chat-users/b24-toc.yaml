@@ -1,0 +1,13 @@
+title: Chat Participants
+href: index.md
+items:
+  - name: Invite Participants to Chat
+    href: index.md
+  - name: Get Chat Participant Identifiers
+    href: im-chat-user-list.md
+  - name: Get List of Participants
+    href: im-dialog-users-list.md
+  - name: Exclude Participants from Chat
+    href: im-chat-user-delete.md
+  - name: Leave Chat
+    href: im-chat-leave.md

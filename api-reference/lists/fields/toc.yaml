@@ -1,0 +1,15 @@
+title: General Methods
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create Field
+    href: lists-field-add.md
+  - name: Delete Field
+    href: lists-field-delete.md
+  - name: Get Field Data
+    href: lists-field-get.md
+  - name: Get Available Field Types
+    href: lists-field-type-get.md
+  - name: Update List Field
+    href: lists-field-update.md

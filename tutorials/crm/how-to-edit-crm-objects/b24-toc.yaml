@@ -1,0 +1,21 @@
+title: Edit Data
+href: index.md
+items: 
+  - name: Edit Data
+    href: index.md
+  - name: Add Images to Lead Fields
+    href: how-to-upload-images-to-lead.md
+  - name: How to Create Your Lead Edit Form
+    href: how-to-generate-edit-form-for-lead.md
+  - name: How to Create Your Contact Edit Card
+    href: how-to-make-contact-edit-card.md
+  - name: How to Create Your Company Edit Form
+    href: how-to-generate-edit-form-for-company.md
+  - name: How to Create Your Deal Edit Form
+    href: how-to-generate-edit-form-for-deal.md
+  - name: How to Change Phone Numbers and E-mail Using a Contact Example
+    href: how-to-change-email-or-phone.md
+  - name: How to Change Dates in a CRM Activity
+    href: how-to-change-date-in-activity.md
+  - name: How to Change Values of Custom Product Fields
+    href: how-to-change-product-custom-field-values.md

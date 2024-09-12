@@ -1,0 +1,37 @@
+title: Leads
+href: index.md
+items: 
+  - name: Leads
+    href: index.md
+  - name: Get Lead Fields
+    href: crm-lead-fields.md
+  - name: Create New Lead
+    href: crm-lead-add.md
+  - name: Update Lead
+    href: crm-lead-update.md
+  - name: Get Lead by Id
+    href: crm-lead-get.md
+  - name: Get List of Leads
+    href: crm-lead-list.md
+  - name: Delete Lead
+    href: crm-lead-delete.md
+  - name: Add Products to Lead
+    href: crm-lead-productrows-set.md
+  - name: Get Lead Products
+    href: crm-lead-productrows-get.md
+  - name: Relationship Between Leads and Contacts
+    include:
+      path: management-communication/b24-toc.yaml
+      mode: link
+  - name: Custom Fields
+    include:
+      path: userfield/b24-toc.yaml
+      mode: link
+  - name: Events
+    include:
+      path: events/toc.yaml
+      mode: link
+  - name: Manage Lead Cards
+    include:
+      path: custom-form/b24-toc.yaml
+      mode: link

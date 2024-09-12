@@ -1,0 +1,29 @@
+title: Currencies
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Currency
+    href: crm-currency-add.md
+  - name: Update Currency
+    href: crm-currency-update.md
+  - name: Get Currency by ID
+    href: crm-currency-get.md
+  - name: Get List of Currencies
+    href: crm-currency-list.md
+  - name: Delete Currency
+    href: crm-currency-delete.md
+  - name: Get Currency Fields 
+    href: crm-currency-fields.md
+  - name: Get Symbolic Identifier of Base Currency
+    href: crm-currency-base-get.md
+  - name: Set Currency as Base
+    href: crm-currency-base-set.md
+  - name: Currency Localizations 
+    include:
+      path: localizations/b24-toc.yaml
+      mode: link
+  - name: Events 
+    include:
+      path: events/b24-toc.yaml
+      mode: link

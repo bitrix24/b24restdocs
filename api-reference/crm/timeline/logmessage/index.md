@@ -1,0 +1,18 @@
+# Log Message Journal
+
+The log message journal is a special type of timeline record created in the context of a specific Rest application. It contains less important data than other records and is distinguished by a muted gray background, drawing less attention.
+
+> Scope: [`crm`](../../../scopes/permissions.md)
+>
+> Who can execute the method: `depends on the method`
+
+List of methods for managing the log message journal.
+
+#|
+|| [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md) | Adds a new log message to the timeline ||
+|| [`crm.timeline.logmessage.get`](./crm-timeline-logmessage-get.md) | Retrieves information about a log message ||
+|| [`crm.timeline.logmessage.list`](./crm-timeline-logmessage-list.md) | Retrieves a list of all log messages for a specific entity ||
+|| [`crm.timeline.logmessage.delete`](./crm-timeline-logmessage-delete.md) | Deletes a log message ||
+|| [`crm.timeline.icon.*`](./icons/index.md) | Methods for working with record icons ||
+|| [`crm.timeline.logo.*`](./logo/index.md) | Methods for working with record logos ||
+|#

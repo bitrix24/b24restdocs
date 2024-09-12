@@ -1,0 +1,21 @@
+title: General Methods and Events
+href: index.md
+items: 
+  - name: General Methods and Events
+    href: index.md
+  - name: System Methods
+    include:
+      path: system/toc.yaml
+      mode: link
+  - name: User Information
+    include:
+      path: users/b24-toc.yaml
+      mode: link
+  - name: Application Settings
+    include:
+      path: settings/toc.yaml
+      mode: link
+  - name: Events
+    include:
+      path: events/toc.yaml
+      mode: link

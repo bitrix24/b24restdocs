@@ -1,0 +1,9 @@
+title: Enumerations
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Get List of Rounding Types
+    href: catalog-enum-get-round-types.md
+  - name: Get Types of Inventory Accounting Documents
+    href: catalog-enum-get-store-document-types.md

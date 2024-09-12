@@ -1,0 +1,17 @@
+title: Invoice Statuses
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create a New Invoice Status
+    href: crm-invoice-status-add.md
+  - name: Delete an Invoice Status
+    href: crm-invoice-status-delete.md
+  - name: Get Invoice Status by ID
+    href: crm-invoice-status-get.md
+  - name: Get All Fields of Invoice Status
+    href: crm-invoice-status-fields.md
+  - name: Get List of Invoice Statuses
+    href: crm-invoice-status-list.md
+  - name: Update Invoice Status
+    href: crm-invoice-status-update.md

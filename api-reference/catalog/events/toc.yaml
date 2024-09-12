@@ -1,0 +1,41 @@
+title: Events
+href: index.md
+items: 
+  - name: Events
+    href: index.md
+  - name: When adding a unit of measurement
+    href: catalog-measure-on-add.md
+  - name: When updating a unit of measurement
+    href: catalog-measure-on-update.md
+  - name: When deleting a unit of measurement
+    href: catalog-measure-on-delete.md
+  - name: When adding a price
+    href: catalog-price-on-add.md
+  - name: When updating a price
+    href: catalog-price-on-update.md
+  - name: When deleting a price
+    href: catalog-price-on-delete.md
+  - name: When adding a price type
+    href: catalog-price-type-on-add.md
+  - name: When updating a price type
+    href: catalog-price-type-on-update.md
+  - name: When deleting a price type
+    href: catalog-price-type-on-delete.md
+  - name: When adding a product
+    href: catalog-product-on-add.md
+  - name: When updating a product
+    href: catalog-product-on-update.md
+  - name: When deleting a product
+    href: catalog-product-on-delete.md
+  - name: When adding a price rounding rule
+    href: catalog-rounding-on-add.md
+  - name: When updating a price rounding rule
+    href: catalog-rounding-on-update.md
+  - name: When deleting a price rounding rule
+    href: catalog-rounding-on-delete.md
+  - name: When adding a warehouse
+    href: catalog-store-on-add.md
+  - name: When updating a warehouse
+    href: catalog-store-on-update.md
+  - name: When deleting a warehouse
+    href: catalog-store-on-delete.md

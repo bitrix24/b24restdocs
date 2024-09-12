@@ -1,0 +1,13 @@
+title: Widgets in Messenger
+href: index.md
+items: 
+  - name: Left Menu Icon  
+    href: index.md
+  - name: Widget Above Message 
+    href: textarea.md
+  - name: Sidebar Widget
+    href: sidebar.md
+  - name: Context Menu Item for Message
+    href: context-menu.md
+  - name: Emoji Collection
+    href: smile-selector.md

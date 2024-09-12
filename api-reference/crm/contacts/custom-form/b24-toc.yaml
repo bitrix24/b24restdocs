@@ -1,0 +1,13 @@
+title: Managing Contact Cards
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get Card Parameters
+    href: crm-contact-details-configuration-get.md
+  - name: Reset Card Parameters
+    href: crm-contact-details-configuration-reset.md
+  - name: Set Individual Card Parameters
+    href: crm-contact-details-configuration-set.md
+  - name: Set Common Card for All Users
+    href: crm-contact-details-configuration-force-common-scope-for-all.md

@@ -1,0 +1,33 @@
+title: Messages
+href: index.md
+items:
+  - name: Formatting
+    href: index.md
+  - name: Attachments
+    include:
+      path: attachments/b24-toc.yaml
+      mode: link
+  - name: Working with Keyboards
+    href: keyboards.md
+  - name: Working with Context Menu
+    href: menu.md
+  - name: Add Message
+    href: im-message-add.md
+  - name: Edit Sent Message
+    href: im-message-update.md
+  - name: Change "Like" Status of a Message
+    href: im-message-like.md
+  - name: Create Object Based on Message
+    href: im-message-share.md
+  - name: Get List of Recent Messages
+    href: im-dialog-messages-get.md
+  - name: Mark Messages as "Read"
+    href: im-dialog-read.md
+  - name: Mark Messages as "Unread"
+    href: im-dialog-unread.md
+  - name: Send "Someone is writing to you..." Status
+    href: im-dialog-writing.md
+  - name: Delete Chatbot Message
+    href: im-message-delete.md
+  - name: Use Bot Command
+    href: im-message-command.md

@@ -1,0 +1,23 @@
+title: News Feed
+href: index.md
+items:
+  - name: About the News Feed
+    href: index.md
+  - name: Add Message
+    href: log-blogpost-add.md
+  - name: Get Message List
+    href: log-blogpost-get.md
+  - name: Update Message
+    href: log-blogpost-update.md 
+  - name: Add Recipients to Message
+    href: log-blogpost-share.md 
+  - name: Delete Message
+    href: log-blogpost-delete.md  
+  - name: View Users Who Read Important Message
+    href: log-blogpost-getusers-important.md
+  - name: Add Comment
+    href: log-blogcomment-add.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

@@ -1,0 +1,19 @@
+title: Events
+href: index.md
+items: 
+  - name: Events
+    href: index.md
+  - name: On Lead Addition
+    href: on-crm-lead-add.md
+  - name: On Lead Update
+    href: on-crm-lead-update.md
+  - name: On Lead Deletion
+    href: on-crm-lead-delete.md
+  - name: On Custom Field Addition
+    href: on-crm-lead-user-field-add.md
+  - name: On Custom Field Update
+    href: on-crm-lead-user-field-update.md
+  - name: On Custom Field Deletion
+    href: on-crm-lead-user-field-delete.md
+  - name: On Update of Value Set for List-Type Custom Field
+    href: on-crm-lead-user-field-set-enum-values.md

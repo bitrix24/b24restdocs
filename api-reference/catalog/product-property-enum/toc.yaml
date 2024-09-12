@@ -1,0 +1,17 @@
+title: List Property Values
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add List Property Values
+    href: catalog-product-property-enum-add.md
+  - name: Remove List Property Values
+    href: catalog-product-property-enum-delete.md
+  - name: Get List Property Value by ID
+    href: catalog-product-property-enum-get.md
+  - name: Get Fields of List Property Values
+    href: catalog-product-property-enum-get-fields.md
+  - name: Get List of List Properties
+    href: catalog-product-property-enum-list.md
+  - name: Update List Property Values
+    href: catalog-product-property-enum-update.md

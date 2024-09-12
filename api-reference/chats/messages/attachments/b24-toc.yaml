@@ -1,0 +1,11 @@
+title: Attachments
+href: index.md
+items:
+  - name: How to Use Attachments
+    href: index.md
+  - name: Block Collections
+    include:
+      path: block-collections/b24-toc.yaml
+      mode: link
+  - name: Constructor, Examples
+    href: constructor.md

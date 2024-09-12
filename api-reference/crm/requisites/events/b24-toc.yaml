@@ -1,0 +1,29 @@
+title: Events
+href: index.md
+items:
+  - name: Overview of Events
+    href: index.md
+  - name: When Registering an Address
+    href: on-crm-address-register.md
+  - name: When Unregistering an Address
+    href: on-crm-address-unregister.md
+  - name: When Adding a Requisite
+    href: on-crm-requisite-add.md
+  - name: When Updating a Requisite
+    href: on-crm-requisite-update.md
+  - name: When Deleting a Requisite
+    href: on-crm-requisite-delete.md
+  - name: When Adding a Custom Field
+    href: on-crm-requisite-user-field-add.md
+  - name: When Changing the Set of Values for a List-Type Custom Field
+    href: on-crm-requisite-user-field-set-enum-values.md
+  - name: When Updating a Custom Field
+    href: on-crm-requisite-user-field-update.md
+  - name: When Deleting a Custom Field
+    href: on-crm-requisite-user-field-delete.md
+  - name: When Adding Bank Details
+    href: on-crm-bank-detail-add.md
+  - name: When Updating Bank Details
+    href: on-crm-bank-detail-update.md
+  - name: When Deleting Bank Details
+    href: on-crm-bank-detail-delete.md

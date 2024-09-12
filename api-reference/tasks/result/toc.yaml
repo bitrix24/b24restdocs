@@ -1,0 +1,11 @@
+title: Task Result
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get Task Result List
+    href: tasks-task-result-list.md
+  - name: Add Comment to Result
+    href: tasks-task-result-add-from-comment.md
+  - name: Delete Comment from Result
+    href: tasks-task-result-delete-from-comment.md

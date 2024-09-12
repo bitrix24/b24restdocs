@@ -1,0 +1,17 @@
+title: Events
+href: index.md
+items:
+  - name: Events
+    href: index.md
+  - name: On Product Addition
+    href: on-crm-product-add.md
+  - name: On Product Update
+    href: on-crm-product-update.md
+  - name: On Product Deletion
+    href: on-crm-product-delete.md
+  - name: On Product Property Addition
+    href: on-crm-product-property-add.md
+  - name: On Product Property Update
+    href: on-crm-product-property-update.md
+  - name: On Product Property Deletion
+    href: on-crm-product-property-delete.md

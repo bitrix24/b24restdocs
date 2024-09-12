@@ -1,0 +1,15 @@
+title: Company Structure
+href: index.md
+items:
+  - name: Company Structure
+    href: index.md
+  - name: Create Department
+    href: department-add.md
+  - name: Update Department
+    href: department-update.md
+  - name: Get List of Departments
+    href: department-get.md
+  - name: Delete Department
+    href: department-delete.md
+  - name: Get Department Fields Reference
+    href: department-fields.md

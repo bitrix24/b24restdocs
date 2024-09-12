@@ -1,0 +1,19 @@
+title: Common Methods
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Introduction
+    href: introduction.md
+  - name: Localization
+    href: localization.md
+  - name: Get a List of Available Partner Templates
+    href: landing-demos-get-list.md
+  - name: Get a List of Page Creation Templates
+    href: landing-demos-get-page-list.md
+  - name: Get a List of Site Creation Templates
+    href: landing-demos-get-site-list.md
+  - name: Register a Template
+    href: landing-demos-register.md
+  - name: Unregister a Template
+    href: landing-demos-unregister.md

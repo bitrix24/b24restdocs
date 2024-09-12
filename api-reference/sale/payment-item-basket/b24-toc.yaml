@@ -1,0 +1,17 @@
+title: Linking Payments to the Basket
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Basket Item Link to Payment
+    href: sale-payment-item-basket-add.md
+  - name: Update Basket Item Link to Payment
+    href: sale-payment-item-basket-update.md
+  - name: Retrieve Values of All Fields for Basket Item Link to Payment
+    href: sale-payment-item-basket-get.md
+  - name: Get List of Basket Item Links to Payments
+    href: sale-payment-item-basket-list.md
+  - name: Remove Basket Item Link to Payment
+    href: sale-payment-item-basket-delete.md
+  - name: Get Available Fields for Basket Item Links to Payments
+    href: sale-payment-item-basket-get-fields.md

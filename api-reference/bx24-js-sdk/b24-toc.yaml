@@ -1,0 +1,25 @@
+title: BX24.JS SDK
+href: index.md
+items: 
+  - name: Connection and Usage
+    href: index.md
+  - name: Calling REST Methods
+    include:
+      path: how-to-call-rest-methods/b24-toc.yaml
+      mode: link
+  - name: System Functions
+    include:
+      path: system-functions/b24-toc.yaml
+      mode: link
+  - name: Application Settings
+    include:
+      path: options/b24-toc.yaml
+      mode: link
+  - name: System Dialogues
+    include:
+      path: system-dialogues/b24-toc.yaml
+      mode: link
+  - name: Additional
+    include:
+      path: additional-functions/toc.yaml
+      mode: link

@@ -1,0 +1,1 @@
+**Scope**: [`log`](../../scopes/permissions.md) **Execution rights**: `administrator`

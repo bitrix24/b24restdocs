@@ -1,0 +1,9 @@
+title: How to Embed Widgets in CRM
+href: index.md
+items: 
+  - name: How to Embed Widgets in CRM
+    href: index.md
+  - name: Embed a Widget in a Lead as a Custom Property
+    href: widget-as-field-in-lead-page.md
+  - name: Embed a Widget in a CRM Detail Form
+    href: widget-as-detail-tab.md

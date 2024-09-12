@@ -1,0 +1,6 @@
+title: Tutorials and Use Cases for REST in the AI Module
+href: index.md
+links:
+  - title: Adding a New Prompt "Joke"
+    description: Adding a New Prompt "Joke"
+    href: add-joke-prompt.md

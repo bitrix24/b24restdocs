@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items:
+  - name: Overview of Events
+    href: index.md
+  - name: On Currency Addition
+    href: on-crm-currency-add.md
+  - name: On Currency Update
+    href: on-crm-currency-update.md
+  - name: On Currency Deletion
+    href: on-crm-currency-delete.md

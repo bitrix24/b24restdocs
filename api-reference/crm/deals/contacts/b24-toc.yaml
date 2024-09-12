@@ -1,0 +1,17 @@
+title: Contacts for a Deal
+href: index.md
+items:
+  - name: About Deal Contacts
+    href: index.md
+  - name: Add a Single Contact
+    href: crm-deal-contact-add.md
+  - name: Add Multiple Contacts
+    href: crm-deal-contact-items-set.md
+  - name: Get Fields for Deal-Contact Connection
+    href: crm-deal-contact-fields.md
+  - name: Get Contacts Associated with the Deal
+    href: crm-deal-contact-items-get.md
+  - name: Remove a Contact from the Specified Deal
+    href: crm-deal-contact-delete.md
+  - name: Remove a Set of Contacts Associated with the Specified Deal
+    href: crm-deal-contact-items-delete.md

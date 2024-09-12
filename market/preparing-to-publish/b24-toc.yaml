@@ -1,0 +1,25 @@
+title: Preparation for Publication
+href: index.md
+items: 
+  - name: How to Develop an Application
+    href: index.md
+  - name: How to Add an Application
+    href: how-to-add-app.md
+  - name: Publication Process for Solutions in the Marketplace
+    href: publication-requirements.md
+  - name: FAQ
+    href: faq.md
+  - name: General Requirements for Solutions
+    href: common-requirements.md
+  - name: Telephony Requirements
+    href: requirements-telephony.md
+  - name: Requirements for Ready-Made Websites
+    href: requirements-sites.md
+  - name: Requirements for Smart Scenarios
+    href: requirements-smart-scripts.md
+  - name: Requirements for BI Constructor Reports
+    href: requirements-superset.md
+  - name: Requirements for Industry-Specific CRMs
+    href: requirements-vertical-crm.md
+  - name: Pre-Moderation Checklist
+    href: checklist.md

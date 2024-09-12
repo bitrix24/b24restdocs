@@ -1,0 +1,11 @@
+title: Office Networks
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Check IP Address
+    href: timeman-networkrange-check.md
+  - name: Get Network Address Range
+    href: timeman-networkrange-get.md
+  - name: Set Network Address Range
+    href: timeman-networkrange-set.md

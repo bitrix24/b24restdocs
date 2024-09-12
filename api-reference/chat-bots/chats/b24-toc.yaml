@@ -1,0 +1,29 @@
+title: Chats
+href: imbot-chat-add.md
+items:
+  - name: Create a chat on behalf of the chatbot
+    href: imbot-chat-add.md
+  - name: Get the chat ID
+    href: imbot-chat-get.md
+  - name: Retrieve chat data
+    href: imbot-dialog-get.md
+  - name: Change the chat owner
+    href: imbot-chat-set-owner.md
+  - name: Update the chat title
+    href: imbot-chat-update-title.md
+  - name: Change the chat avatar
+    href: imbot-chat-update-avatar.md
+  - name: Change the chat color
+    href: imbot-chat-update-color.md
+  - name: Invite chat participants
+    href: imbot-chat-user-add.md
+  - name: Get the list of participants
+    href: imbot-chat-user-list.md
+  - name: Remove participants from the chat
+    href: imbot-chat-user-delete.md
+  - name: Chatbot leaves the specified chat
+    href: imbot-chat-leave.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

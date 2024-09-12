@@ -1,0 +1,21 @@
+title: Entity Page
+href: index.md
+items:
+  - name: Fields
+    href: index.md
+  - name: Additional Fields
+    href: additional-fields.md
+  - name: Color Themes
+    href: color-themes.md
+  - name: Methods
+    include:
+      path: methods/toc.yaml
+      mode: link
+  - name: Blocks
+    include:
+      path: block-methods/toc.yaml
+      mode: link
+  - name: Special Pages
+    include:
+      path: special-pages/toc.yaml
+      mode: link

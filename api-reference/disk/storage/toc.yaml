@@ -1,0 +1,23 @@
+title: Storage
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create a Folder in the Root of the Storage
+    href: disk-storage-add-folder.md
+  - name: List of Files and Folders in the Root of the Storage
+    href: disk-storage-get-children.md
+  - name: Get Storage Fields
+    href: disk-storage-get-fields.md
+  - name: Get Storage Description for the Application
+    href: disk-storage-get-for-app.md
+  - name: Get List of Available Storages
+    href: disk-storage-get-list.md
+  - name: Get Storage Types
+    href: disk-storage-get-types.md
+  - name: Get Storage Description
+    href: disk-storage-get.md
+  - name: Rename Storage
+    href: disk-storage-rename.md
+  - name: Upload File to Storage
+    href: disk-storage-upload-file.md

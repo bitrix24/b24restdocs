@@ -1,0 +1,11 @@
+title: Price Type
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Get Stock Parameters by Warehouse
+    href: catalog-store-product-get.md
+  - name: Get Stock Fields by Warehouse
+    href: catalog-store-product-get-fields.md
+  - name: Get List of Stocks by Warehouse
+    href: catalog-store-product-list.md

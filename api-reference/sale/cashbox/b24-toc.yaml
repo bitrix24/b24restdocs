@@ -1,0 +1,23 @@
+title: Cash Registers
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Cash Register Handler
+    href: sale-cashbox-handler-add.md
+  - name: Update Cash Register Handler Data
+    href: sale-cashbox-handler-update.md
+  - name: Get List of Available Cash Register Handlers
+    href: sale-cashbox-handler-list.md
+  - name: Delete Cash Register Handler
+    href: sale-cashbox-handler-delete.md
+  - name: Add Cash Register
+    href: sale-cashbox-add.md
+  - name: Update Existing Cash Register
+    href: sale-cashbox-update.md
+  - name: Get List of Configured Cash Registers
+    href: sale-cashbox-list.md
+  - name: Delete Cash Register
+    href: sale-cashbox-delete.md
+  - name: Save Receipt Printing Result
+    href: sale-cashbox-check-apply.md

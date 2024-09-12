@@ -1,0 +1,163 @@
+title: REST API Reference
+href: index.md
+items: 
+  - name: Key Provisions
+    href: index.md 
+  - name: Tools and Scenarios
+    href: tools.md 
+  - name: How to Call REST Methods
+    include:
+      path: how-to-call-rest-api/toc.yaml
+      mode: link
+  - name: Data Types and Parameter Formats
+    href: data-types.md 
+  - name: OAuth in Bitrix24
+    include:
+      path: oauth/b24-toc.yaml
+      mode: link
+  - name: Application Installation
+    include:
+      path: app-installation/toc.yaml
+      mode: link
+  - name: Application Uninstallation
+    href: app-uninstallation.md 
+  - name: Method Scopes
+    include:
+      path: scopes/toc.yaml
+      mode: link
+  - name: Widgets
+    include:
+      path: widgets/toc.yaml
+      mode: link
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link
+  - name: Interactivity
+    include:
+      path: interactivity/b24-toc.yaml
+      mode: link
+  - name: Performance
+    include:
+      path: performance/b24-toc.yaml
+      mode: link
+  - name: BX24.JS SDK
+    include:
+      path: bx24-js-sdk/b24-toc.yaml
+      mode: link
+  - name: CRest PHP SDK
+    include:
+      path: crest-php-sdk/b24-toc.yaml
+      mode: link
+  - name: Cloud and On-Premise Bitrix24
+    include:
+      path: cloud-and-on-premise/b24-toc.yaml
+      mode: link
+  - name: Common Methods and Events
+    include:
+      path: common/toc.yaml
+      mode: link
+  - name: CRM
+    include:
+      path: crm/toc.yaml
+      mode: link
+  - name: CoPilot
+    include:
+      path: ai/b24-toc.yaml
+      mode: link 
+  - name: News Feed
+    include:
+      path: log/toc.yaml
+      mode: link
+  - name: Online Store
+    include:
+      path: sale/b24-toc.yaml
+      mode: link
+  - name: Users
+    include:
+      path: user/b24-toc.yaml
+      mode: link
+  - name: Workflows
+    include:
+      path: bizproc/toc.yaml
+      mode: link
+  - name: Document Generator
+    include:
+      path: document-generator/toc.yaml
+      mode: link
+  - name: Calendar
+    include:
+      path: calendar/toc.yaml
+      mode: link
+  - name: Payment Systems
+    include:
+      path: pay-system/b24-toc.yaml
+      mode: link
+  - name: Company Structure
+    include:
+      path: departments/toc.yaml
+      mode: link
+  - name: User Agreements
+    include:
+      path: user-consent/toc.yaml
+      mode: link
+  - name: Working Groups and Projects
+    include:
+      path: sonet-group/toc.yaml
+      mode: link
+  - name: Open Lines
+    include:
+      path: imopenlines/b24-toc.yaml
+      mode: link
+  - name: Chatbots
+    include:
+      path: chat-bots/b24-toc.yaml
+      mode: link
+  - name: Chats
+    include:
+      path: chats/b24-toc.yaml
+      mode: link
+  - name: Sites and Stores
+    include:
+      path: landing/toc.yaml
+      mode: link
+  - name: Message Providers, SMS Providers
+    include:
+      path: messageservice/toc.yaml
+      mode: link
+  - name: Universal Lists
+    include:
+      path: lists/toc.yaml
+      mode: link
+  - name: Time Tracking
+    include:
+      path: timeman/toc.yaml
+      mode: link
+  - name: Data Storage
+    include:
+      path: entity/toc.yaml
+      mode: link
+  - name: Trade Catalog
+    include:
+      path: catalog/toc.yaml
+      mode: link
+  - name: Telephony
+    include:
+      path: telephony/toc.yaml
+      mode: link
+  - name: Disk
+    include:
+      path: disk/toc.yaml
+      mode: link
+  - name: Tasks
+    include:
+      path: tasks/b24-toc.yaml
+      mode: link
+  - name: Mail Services
+    include:
+      path: mailservice/toc.yaml
+      mode: link
+  - name: Deprecated Methods
+    include:
+      path: outdated/b24-toc.yaml
+      mode: link

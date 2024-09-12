@@ -1,0 +1,11 @@
+title: Managing Lines
+href: voximplant-line-get.md
+items: 
+  - name: Get List of Lines
+    href: voximplant-line-get.md
+  - name: Get Current Line for Outgoing Calls
+    href: voximplant-line-outgoing-get.md
+  - name: Set Line for Outgoing Calls
+    href: voximplant-line-outgoing-set.md
+  - name: Set SIP Line for Outgoing Calls
+    href: voximplant-line-outgoing-sip-set.md

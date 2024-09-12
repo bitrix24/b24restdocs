@@ -1,0 +1,17 @@
+title: Payments
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Payment
+    href: sale-payment-add.md
+  - name: Update Payment
+    href: sale-payment-update.md
+  - name: Get Payment by Id
+    href: sale-payment-get.md
+  - name: Get List of Payments
+    href: sale-payment-list.md
+  - name: Delete Payment
+    href: sale-payment-delete.md
+  - name: Get Payment Fields
+    href: sale-payment-get-fields.md

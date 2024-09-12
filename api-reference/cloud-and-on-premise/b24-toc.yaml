@@ -1,0 +1,13 @@
+title: Cloud and On-Premise Bitrix24
+href: index.md
+items: 
+  - name: Overview 
+    href: index.md
+  - name: Network Access
+    href: network-access.md
+  - name: Security Recommendations
+    href: security-recommendations.md
+  - name: Features of On-Premise
+    include:
+      path: on-premise/b24-toc.yaml
+      mode: link

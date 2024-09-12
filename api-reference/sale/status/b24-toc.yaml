@@ -1,0 +1,19 @@
+title: Statuses
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Default Status Table
+    href: default-status-table.md
+  - name: Create Status
+    href: sale-status-add.md
+  - name: Update Status
+    href: sale-status-update.md
+  - name: Get All Status Field Values by ID
+    href: sale-status-get.md
+  - name: Get Status List
+    href: sale-status-list.md
+  - name: Delete Status
+    href: sale-status-delete.md
+  - name: Get Available Status Fields
+    href: sale-status-get-fields.md

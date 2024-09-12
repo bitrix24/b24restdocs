@@ -1,0 +1,35 @@
+title: Workgroups and Projects
+href: index.md
+items:
+  - name: Create Group/Project
+    href: sonet-group-create.md
+  - name: Update Group/Project
+    href: sonet-group-update.md
+  - name: Get Group/Project by Id
+    href: socialnetwork-api-workgroup-get.md
+  - name: Get List of Workgroups
+    href: socialnetwork-api-workgroup-list.md
+  - name: Get List of Groups/Projects
+    href: sonet-group-get.md 
+  - name: Check Current User's Access Permissions
+    href: sonet-group-feature-access.md
+  - name: Get List of Current User's Groups
+    href: sonet-group-user-groups.md
+  - name: Change Owner of Group/Project
+    href: sonet-group-setowner.md
+  - name: Delete Social Network Group
+    href: sonet-group-delete.md
+  - name: Participants of Group/Project
+    include:
+      path: members/b24-toc.yaml
+      mode: link
+  - name: Widgets
+    href: widgets.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link
+  - name: Scrum
+    include:
+      path: scrum/b24-toc.yaml
+      mode: link

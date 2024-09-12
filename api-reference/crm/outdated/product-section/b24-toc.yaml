@@ -1,0 +1,21 @@
+title: Product Sections
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add New Product Section
+    href: crm-product-section-add.md
+  - name: Update Product Section
+    href: crm-product-section-update.md
+  - name: Get Product Section by ID
+    href: crm-product-section-get.md
+  - name: Get List of Product Sections by Filter
+    href: crm-product-section-list.md
+  - name: Delete Product Section
+    href: crm-product-section-delete.md
+  - name: Get Fields of Product Section
+    href: crm-product-section-fields.md
+  - name: Events 
+    include:
+      path: events/b24-toc.yaml
+      mode: link

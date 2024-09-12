@@ -1,0 +1,17 @@
+title: Teams
+href: index.md
+items:
+  - name: About Chatbot Teams
+    href: index.md
+  - name: Add Team
+    href: imbot-command-register.md
+  - name: Modify Team
+    href: imbot-command-update.md
+  - name: Delete Team
+    href: imbot-command-unregister.md
+  - name: Send Response to Team
+    href: imbot-command-answer.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

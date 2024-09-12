@@ -1,0 +1,25 @@
+title: Interaction with UI from Widgets
+href: index.md
+items: 
+  - name: Interaction with UI from Widgets
+    href: index.md
+  - name: Special Features of Some Widgets
+    href: special-js-tools.md
+  - name: Get Execution Context
+    href: bx24-placement-info.md
+  - name: Get List of Methods and Events
+    href: bx24-placement-get-interface.md
+  - name: Call Widget Method
+    href: bx24-placement-call.md
+  - name: Register Event Handler
+    href: bx24-placement-bind-event.md
+  - name: Interaction with CRM Card
+    href: crm-card.md
+  - name: Interaction with Call Card
+    include:
+      path: call-card/toc.yaml
+      mode: link
+  - name: WebRTC - Manage Call Card
+    include:
+      path: page-background-worker/toc.yaml
+      mode: link

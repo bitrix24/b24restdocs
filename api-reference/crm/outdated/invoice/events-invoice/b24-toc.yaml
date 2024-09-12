@@ -1,0 +1,29 @@
+title: Events
+href: index.md
+items:
+  - name: Events
+    href: index.md
+  - name: On Invoice Addition
+    href: on-crm-invoice-add.md
+  - name: On Invoice Deletion
+    href: on-crm-invoice-delete.md
+  - name: On Invoice Status Change
+    href: on-crm-invoice-set-status.md
+  - name: On Invoice Update
+    href: on-crm-invoice-update.md
+  - name: On Custom Field Addition
+    href: on-crm-invoice-user-field-add.md
+  - name: On Custom Field Update
+    href: on-crm-invoice-user-field-update.md
+  - name: On Custom Field Deletion
+    href: on-crm-invoice-user-field-delete.md
+  - name: On Changing Values for List-Type Custom Field
+    href: on-crm-invoice-user-field-set-enum-values.md
+  - name: On New Recurring Invoice Addition
+    href: on-crm-invoice-recurring-add.md
+  - name: On Recurring Invoice Update
+    href: on-crm-invoice-recurring-update.md
+  - name: On Recurring Invoice Deletion
+    href: on-crm-invoice-recurring-delete.md
+  - name: On Issuing New Invoice from Recurring
+    href: on-crm-invoice-recurring-expose.md

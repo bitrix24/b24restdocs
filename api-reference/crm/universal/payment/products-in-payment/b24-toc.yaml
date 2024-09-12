@@ -1,0 +1,13 @@
+title: Product Items in Payment
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Product Item
+    href: crm-item-payment-product-add.md
+  - name: Get List of Product Items
+    href: crm-item-payment-product-list.md
+  - name: Delete Product Item
+    href: crm-item-payment-product-delete.md
+  - name: Change Product Quantity
+    href: crm-item-payment-product-set-quantity.md

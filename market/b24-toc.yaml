@@ -1,0 +1,19 @@
+title: Bitrix24 Market
+href: index.md
+items: 
+  - name: Overview of mass-market applications 
+    href: index.md
+  - name: Technological Partnership
+    href: technology-partnership.md
+  - name: Preparation for Publication
+    include:
+      path: preparing-to-publish/b24-toc.yaml
+      mode: link
+  - name: Sales terms
+    href: sales-terms.md
+  - name: Agreements
+    href: agreements.md
+  - name: Promotion and Analytics
+    include:
+      path: promoting-and-analytics/b24-toc.yaml
+      mode: link

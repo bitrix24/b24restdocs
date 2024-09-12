@@ -1,0 +1,13 @@
+title: Interactivity
+href: index.md
+items: 
+  - name: Interactive Applications
+    href: index.md
+  - name: Push&Pull in the Browser
+    href: push-and-pull-in-browser.md
+  - name: Custom Push&Pull Client
+    href: custom-push-and-pull-client.md
+  - name: Push&Pull
+    include:
+      path: push-and-pull/b24-toc.yaml
+      mode: link

@@ -1,0 +1,11 @@
+title: Change Chat
+href: index.md
+items:
+  - name: Change Chat Owner
+    href: index.md
+  - name: Change Chat Title
+    href: im-chat-update-title.md
+  - name: Change Chat Avatar
+    href: im-chat-update-avatar.md
+  - name: Change Chat Color
+    href: im-chat-update-color.md

@@ -1,0 +1,21 @@
+title: Documents  
+href: index.md  
+items:  
+  - name: Documents  
+    href: index.md  
+  - name: Get Document Fields  
+    href: crm-document-generator-document-get-fields.md  
+  - name: Create New Document  
+    href: crm-document-generator-document-add.md  
+  - name: Update Document  
+    href: crm-document-generator-document-update.md  
+  - name: Get Document Information by Id  
+    href: crm-document-generator-document-get.md  
+  - name: Get List of Documents  
+    href: crm-document-generator-document-list.md  
+  - name: Enable and Disable Public Link for Document  
+    href: crm-document-generator-document-enable-public-url.md  
+  - name: Upload Generated Document and Attach it to Specified Entity  
+    href: crm-document-generator-document-upload.md  
+  - name: Delete Document  
+    href: crm-document-generator-document-delete.md  

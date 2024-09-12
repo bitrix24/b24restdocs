@@ -1,0 +1,13 @@
+title: Settings for CRM Entity Detail Forms
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get CRM Entity Detail Form Parameters
+    href: crm-item-details-configuration-get.md
+  - name: Set CRM Entity Detail Form Parameters
+    href: crm-item-details-configuration-set.md
+  - name: Reset CRM Entity Detail Form Parameters
+    href: crm-item-details-configuration-reset.md
+  - name: Set Common Detail Form for All Users
+    href: crm-item-details-configuration-forceCommonScopeForAll.md

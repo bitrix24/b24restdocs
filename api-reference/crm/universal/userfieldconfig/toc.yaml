@@ -1,0 +1,11 @@
+title: Custom Field Settings
+href: index.md
+items: 
+  - name: Custom Field Settings
+    href: index.md
+  - name: Entity Identifiers (entityId)
+    href: entity-id.md
+  - name: Working with Custom Fields
+    include:
+      path: userfieldconfig/toc.yaml
+      mode: link

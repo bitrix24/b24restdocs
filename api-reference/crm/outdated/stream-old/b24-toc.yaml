@@ -1,0 +1,7 @@
+title: CRM Feed (deprecated)
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Send a Message to the Feed
+    href: crm-live-feed-message-add.md

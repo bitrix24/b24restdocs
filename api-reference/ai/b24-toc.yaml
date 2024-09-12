@@ -1,0 +1,15 @@
+title: CoPilot
+href: index.md
+items:
+  - name: AI in Bitrix24
+    href: index.md
+  - name: Register Service
+    href: ai-engine-register.md
+  - name: Get List of Services
+    href: ai-engine-list.md
+  - name: Unregister Service
+    href: ai-engine-unregister.md
+  - name: Prompts
+    include:
+      path: prompts/b24-toc.yaml
+      mode: link

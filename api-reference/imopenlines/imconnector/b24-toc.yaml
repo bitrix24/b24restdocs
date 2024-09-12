@@ -1,0 +1,31 @@
+title: Open Line Connectors
+href: index.md
+items: 
+  - name: Custom Open Line Connectors
+    href: index.md
+  - name: Register Connector
+    href: imconnector-register.md
+  - name: Activate Connector
+    href: imconnector-activate.md
+  - name: Deactivate Connector
+    href: imconnector-deactivate.md
+  - name: Get Connector Status
+    href: imconnector-status.md
+  - name: Get List of Connectors
+    href: imconnector-list.md
+  - name: Unregister Connector
+    href: imconnector-unregister.md
+  - name: Send Messages to Bitrix24
+    href: imconnector-send-messages.md
+  - name: Modify Sent Messages
+    href: imconnector-update-messages.md
+  - name: Delete Sent Messages
+    href: imconnector-delete-messages.md
+  - name: Update "Delivered" Status
+    href: imconnector-send-status-delivery.md
+  - name: Update "Read" Status
+    href: imconnector-send-status-reading.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

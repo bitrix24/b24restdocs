@@ -1,0 +1,17 @@
+title: Universal Requisites
+href: index.md
+items:
+  - name: About Universal Requisites
+    href: index.md
+  - name: Add Requisite
+    href: crm-requisite-add.md
+  - name: Update Requisite
+    href: crm-requisite-update.md
+  - name: Get Requisite by ID
+    href: crm-requisite-get.md
+  - name: Get List of Requisites by Filter
+    href: crm-requisite-list.md
+  - name: Delete Requisite and Related Objects
+    href: crm-requisite-delete.md
+  - name: Get Requisite Fields
+    href: crm-requisite-fields.md

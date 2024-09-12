@@ -1,0 +1,17 @@
+title: Types of Payers
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add New Type
+    href: sale-person-type-add.md
+  - name: Update Payer Type
+    href: sale-person-type-update.md
+  - name: Get Payer Type by Id
+    href: sale-person-type-get.md
+  - name: Get List of Payer Types
+    href: sale-person-type-list.md
+  - name: Delete Payer Type
+    href: sale-person-type-delete.md
+  - name: Get Fields of Payer Type
+    href: sale-person-type-get-fields.md

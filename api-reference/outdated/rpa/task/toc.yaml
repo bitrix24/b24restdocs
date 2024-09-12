@@ -1,0 +1,11 @@
+title: Tasks
+href: index.md
+items: 
+  - name: Tasks
+    href: index.md
+  - name: Remove Automation Rule from Workflow
+    href: rpa-task-delete.md
+  - name: Add User to Existing Task
+    href: rpa-task-add-user.md
+  - name: Task Execution Method
+    href: rpa-task-do.md

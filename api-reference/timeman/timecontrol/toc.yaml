@@ -1,0 +1,17 @@
+title: Time Control
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Send Report of Detected Absences
+    href: timeman-timecontrol-report-add.md
+  - name: Get Report of Detected Absences
+    href: timeman-timecontrol-reports-get.md
+  - name: Get User Settings
+    href: timeman-timecontrol-reports-settings-get.md
+  - name: Get List of Users
+    href: timeman-timecontrol-reports-users-get.md
+  - name: Get Time Control Tool Settings
+    href: timeman-timecontrol-settings-get.md
+  - name: Set Time Control Tool Settings
+    href: timeman-timecontrol-settings-set.md

@@ -1,0 +1,9 @@
+title: Tutorials and Use-Cases for REST in the AI Module
+href: index.md
+items: 
+  - name: Example of Creating a Chatbot
+    href: index.md
+  - name: Example of Creating an Open Channel Chatbot
+    href: open-lines-bot.md
+  - name: Example of Creating a Support Channel
+    href: support-bot.md

@@ -1,0 +1,6 @@
+title: Universal Widgets
+items: 
+  - name: Link Widget with Slider 
+    href: app-url.md
+  - name: Invisible Widget on Every Page 
+    href: background-worker.md

@@ -1,0 +1,17 @@
+title: Document Generator  
+href: index.md  
+items:  
+  - name: Document Generator  
+    href: index.md  
+  - name: Documents  
+    include:  
+      path: documents/b24-toc.yaml  
+      mode: link  
+  - name: Document Templates  
+    include:  
+      path: templates/b24-toc.yaml  
+      mode: link  
+  - name: Numbering Systems  
+    include:  
+      path: numerator/b24-toc.yaml  
+      mode: link  

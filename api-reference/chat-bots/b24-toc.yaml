@@ -1,0 +1,35 @@
+title: Chatbots
+href: index.md
+items:
+  - name: Chatbots in Bitrix24
+    href: index.md
+  - name: Typical use-cases and scenarios
+    href: tutorials.md
+  - name: How to send commands and extend the authorization_key
+    href: send-command.md
+  - name: Create a chatbot
+    href: imbot-register.md
+  - name: Modify a chatbot
+    href: imbot-update.md
+  - name: Get a list of chatbots
+    href: imbot-bot-list.md
+  - name: Delete a chatbot
+    href: imbot-unregister.md
+  - name: Chats
+    include:
+      path: chats/b24-toc.yaml
+      mode: link
+  - name: Messages
+    include:
+      path: messages/b24-toc.yaml
+      mode: link
+  - name: Commands
+    include:
+      path: commands/b24-toc.yaml
+      mode: link
+  - name: Get information about API revisions
+    href: im-revision-get.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

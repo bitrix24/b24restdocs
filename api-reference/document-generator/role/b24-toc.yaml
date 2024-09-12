@@ -1,0 +1,17 @@
+title: Roles and Permissions
+href: index.md
+items: 
+  - name: How Roles Work in the Document Generator
+    href: index.md
+  - name: Add Role
+    href: document-generator-role-add.md
+  - name: Update Role
+    href: document-generator-role-update.md
+  - name: Get Role by ID
+    href: document-generator-role-get.md
+  - name: Get List of Roles
+    href: document-generator-role-list.md
+  - name: Delete Role
+    href: document-generator-role-delete.md
+  - name: Assign Users to Roles
+    href: document-generator-role-fill-accesses.md

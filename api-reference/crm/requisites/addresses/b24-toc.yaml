@@ -1,0 +1,15 @@
+title: Addresses of Details
+href: index.md
+items:
+  - name: About Addresses
+    href: index.md
+  - name: Add Address 
+    href: crm-address-add.md
+  - name: Update Address Details
+    href: crm-address-update.md
+  - name: Get List of Addresses by Filter
+    href: crm-address-list.md
+  - name: Delete Address
+    href: crm-address-delete.md
+  - name: Get Description of Address Fields
+    href: crm-address-fields.md

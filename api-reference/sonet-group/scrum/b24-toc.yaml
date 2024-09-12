@@ -1,0 +1,25 @@
+title: Scrum
+href: index.md
+items:
+  - name: List of Methods
+    href: index.md
+  - name: Backlog
+    include:
+      path: backlog/b24-toc.yaml
+      mode: link
+  - name: Kanban
+    include:
+      path: kanban/b24-toc.yaml
+      mode: link
+  - name: Epics
+    include:
+      path: epic/b24-toc.yaml
+      mode: link
+  - name: Sprints
+    include:
+      path: sprint/b24-toc.yaml
+      mode: link
+  - name: Scrum Tasks
+    include:
+      path: task/b24-toc.yaml
+      mode: link

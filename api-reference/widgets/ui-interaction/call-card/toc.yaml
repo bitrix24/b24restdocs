@@ -1,0 +1,17 @@
+title: Interaction with the Call Card
+href: index.md
+items: 
+  - name: Interaction with the Call Card
+    href: index.md
+  - name: Get Call Status 
+    href: get-status.md
+  - name: Disable Auto-Close
+    href: disable-auto-close.md
+  - name: Enable Auto-Close
+    href: enable-auto-close.md
+  - name: Client Change Event
+    href: call-card-entity-changed.md
+  - name: Before Closing Card Event
+    href: call-card-before-close.md
+  - name: Call Status Change Event
+    href: call-card-call-state-changed.md

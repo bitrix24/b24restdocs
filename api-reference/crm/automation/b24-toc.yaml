@@ -1,0 +1,11 @@
+title: Automation
+href: index.md
+items:
+  - name: About Automation
+    href: index.md
+  - name: Activate Trigger
+    href: crm-automation-trigger.md
+  - name: Application Triggers
+    include:
+      path: triggers/b24-toc.yaml
+      mode: link

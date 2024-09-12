@@ -1,0 +1,15 @@
+title: Methods for Working with Custom Fields
+href: index.md
+items:
+  - name: Methods
+    href: index.md
+  - name: Add Custom Field
+    href: user-userfield-add.md
+  - name: Delete Custom Field
+    href: user-userfield-delete.md
+  - name: Retrieve File from Custom Field
+    href: user-userfield-file-get.md
+  - name: Get List of Custom Fields
+    href: user-userfield-list.md
+  - name: Update Custom Field
+    href: user-userfield-update.md

@@ -1,0 +1,47 @@
+title: General Methods
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Fields
+    href: base-fields.md
+  - name: Additional Fields
+    href: additional-fields.md
+  - name: Add Site
+    href: landing-site-add.md
+  - name: Add Folder
+    href: landing-site-add-folder.md
+  - name: Delete Site
+    href: landing-site-delete.md
+  - name: Export Site
+    href: landing-site-full-export.md
+  - name: Get Site Folders
+    href: landing-site-get-folders.md
+  - name: Get List of Sites
+    href: landing-site-get-list.md
+  - name: Get Site Preview URL
+    href: landing-site-get-preview.md
+  - name: Get Public Site URL
+    href: landing-site-get-public-url.md
+  - name: Get Additional Fields
+    href: landing-site-get-additional-fields.md
+  - name: Mark Site as Deleted
+    href: landing-site-mark-delete.md
+  - name: Mark Folder as Deleted
+    href: landing-site-mark-folder-delete.md
+  - name: Restore Folder from Trash
+    href: landing-site-mark-folder-undelete.md
+  - name: Restore Site from Trash
+    href: landing-site-mark-undelete.md
+  - name: Publish Site
+    href: landing-site-publication.md
+  - name: Publish Site Folder
+    href: landing-site-publication-folder.md
+  - name: Unpublish Site Folder
+    href: landing-site-unpublic-folder.md
+  - name: Unpublish Site
+    href: landing-site-unpublic.md
+  - name: Update Site
+    href: landing-site-update.md
+  - name: Update Folder in Site
+    href: landing-site-update-folder.md

@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items:
+  - name: List of events
+    href: index.md
+  - name: When creating a CRM activity
+    href: on-crm-activity-add.md
+  - name: When updating a CRM activity
+    href: on-crm-activity-update.md
+  - name: When deleting a CRM activity
+    href: on-crm-activity-delete.md

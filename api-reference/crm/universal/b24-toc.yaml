@@ -1,0 +1,69 @@
+title: Universal Methods for CRM
+href: index.md
+items:
+  - name: Universal Methods for Core Elements
+    href: index.md
+  - name: Universal Methods for Invoices
+    href: invoice.md
+  - name: Create New CRM Entity
+    href: crm-item-add.md
+  - name: Update Entity
+    href: crm-item-update.md
+  - name: Get Entity by Id
+    href: crm-item-get.md
+  - name: Get List of Entities
+    href: crm-item-list.md
+  - name: Delete Entity
+    href: crm-item-delete.md
+  - name: Get Entity Fields
+    href: crm-item-fields.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link
+  - name: Widgets
+    href: widgets.md
+  - name: Product Items
+    include:
+      path: product-rows/b24-toc.yaml
+      mode: link
+  - name: Custom Object Types
+    include:
+      path: user-defined-object-types/b24-toc.yaml
+      mode: link
+  - name: Custom Fields
+    include:
+      path: user-defined-fields/b24-toc.yaml
+      mode: link
+  - name: Custom Field Settings
+    include:
+      path: userfieldconfig/toc.yaml
+      mode: link
+  - name: Custom Field Types
+    include:
+      path: user-defined-field-types/toc.yaml
+      mode: link
+  - name: CRM Sales Funnels
+    include:
+      path: category/b24-toc.yaml
+      mode: link
+  - name: Import
+    include:
+      path: import/b24-toc.yaml
+      mode: link
+  - name: CRM Connection with Online Store Orders
+    include:
+      path: order-entity/b24-toc.yaml
+      mode: link
+  - name: Payments and Deliveries
+    include:
+      path: payment/b24-toc.yaml
+      mode: link
+  - name: Deliveries
+    include:
+      path: delivery/b24-toc.yaml
+      mode: link
+  - name: Managing Entity Detail Forms
+    include:
+      path: item-details-configuration/b24-toc.yaml
+      mode: link

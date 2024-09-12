@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items:
+  - name: Overview of Events
+    href: index.md
+  - name: On Adding a Section
+    href: on-crm-product-section-add.md
+  - name: On Updating a Section
+    href: on-crm-product-section-update.md
+  - name: On Deleting a Section
+    href: on-crm-product-section-delete.md

@@ -1,0 +1,9 @@
+title: Outdated Methods
+href: index.md
+items:
+  - name: Overview 
+    href: index.md
+  - name: RPA - Automation Rules
+    include:
+      path: rpa/b24-toc.yaml
+      mode: link

@@ -1,0 +1,13 @@
+title: Custom Field Types
+href: index.md
+items: 
+  - name: About Custom Field Types
+    href: index.md
+  - name: Adding a Type
+    href: userfieldtype-add.md
+  - name: Retrieving the List of Types
+    href: userfieldtype-list.md
+  - name: Modifying a Type
+    href: userfieldtype-update.md
+  - name: Deleting a Type
+    href: userfieldtype-delete.md

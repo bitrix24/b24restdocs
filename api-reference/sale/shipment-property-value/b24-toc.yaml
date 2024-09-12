@@ -1,0 +1,15 @@
+title: Shipment Property Values
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Update Shipment Property Values
+    href: sale-shipment-property-value-modify.md
+  - name: Get Shipment Property Value by ID
+    href: sale-shipment-property-value-get.md
+  - name: Get List of Shipment Property Values
+    href: sale-shipment-property-value-list.md
+  - name: Delete Shipment Property Values
+    href: sale-shipment-propertyvalue-delete.md
+  - name: Get Available Fields for Shipment Property Values
+    href: sale-shipment-property-value-get-fields.md

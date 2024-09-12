@@ -1,0 +1,13 @@
+title: Application Settings
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Set User Settings
+    href: bx24-user-option-set.md
+  - name: Get User Settings
+    href: bx24-user-option-get.md
+  - name: Set Application Settings
+    href: bx24-app-option-set.md
+  - name: Get Application Settings
+    href: bx24-app-option-get.md

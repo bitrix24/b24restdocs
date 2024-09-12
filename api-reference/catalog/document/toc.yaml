@@ -1,0 +1,37 @@
+title: Warehouse
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Inventory Document
+    href: catalog-document-add.md
+  - name: Cancel Document Processing
+    href: catalog-document-cancel.md
+  - name: Perform Bulk Document Cancellation
+    href: catalog-document-cancel-list.md
+  - name: Process Document
+    href: catalog-document-conduct.md
+  - name: Perform Bulk Document Processing
+    href: catalog-document-conduct-list.md
+  - name: Process Document (Confirm)
+    href: catalog-document-confirm.md    
+  - name: Delete Document
+    href: catalog-document-delete.md
+  - name: Perform Bulk Document Deletion
+    href: catalog-document-delete-list.md
+  - name: Get List of Document Fields (Confirm)
+    href: catalog-document-fields.md
+  - name: Get Inventory Document Fields
+    href: catalog-document-get-fields.md
+  - name: Get List of Documents
+    href: catalog-document-list.md
+  - name: Get Information on Inventory Accounting Mode
+    href: catalog-document-mode-status.md
+  - name: Cancel Document Processing (Confirm)
+    href: catalog-document-unconfirm.md
+  - name: Modify Document
+    href: catalog-document-update.md
+  - name: Items of Inventory Document
+    include:
+      path: document-element/toc.yaml
+      mode: link

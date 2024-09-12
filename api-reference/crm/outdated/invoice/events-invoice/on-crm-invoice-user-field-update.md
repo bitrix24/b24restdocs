@@ -1,0 +1,18 @@
+# Event onCrmInvoiceUserFieldUpdate
+
+The event is triggered when a custom field is updated.
+
+## Parameters
+
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id** 
+[`integer`](../../../../data-types.md)| Identifier of the custom field ||
+|| **entityId** 
+[`string`](../../../../data-types.md)| Symbolic identifier of the entity for which the field was created ||
+|| **fieldName** 
+[`string`](../../../../data-types.md)| Name of the created custom field ||
+|#

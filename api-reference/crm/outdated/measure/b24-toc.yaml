@@ -1,0 +1,21 @@
+title: Units of Measurement
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Unit of Measurement
+    href: crm-measure-add.md
+  - name: Update Unit of Measurement
+    href: crm-measure-update.md
+  - name: Retrieve Unit of Measurement Field Values
+    href: crm-measure-get.md
+  - name: Get List of Units of Measurement
+    href: crm-measure-list.md
+  - name: Delete Unit of Measurement
+    href: crm-measure-delete.md
+  - name: Retrieve Available Unit of Measurement Fields 
+    href: crm-measure-fields.md
+  - name: Events 
+    include:
+      path: events/b24-toc.yaml
+      mode: link

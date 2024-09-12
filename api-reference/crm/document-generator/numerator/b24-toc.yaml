@@ -1,0 +1,15 @@
+title: Numbering Systems  
+href: index.md  
+items:  
+  - name: Numbering Systems  
+    href: index.md  
+  - name: Add New Numbering System  
+    href: crm-document-generator-numerator-add.md  
+  - name: Modify Existing Numbering System  
+    href: crm-document-generator-numerator-update.md  
+  - name: Get Numbering System Information by Id  
+    href: crm-document-generator-numerator-get.md  
+  - name: Get List of Numbering Systems  
+    href: crm-document-generator-numerator-list.md  
+  - name: Delete Numbering System  
+    href: crm-document-generator-numerator-delete.md  

@@ -1,0 +1,17 @@
+title: Unit of Measurement
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Unit of Measurement
+    href: catalog-measure-add.md
+  - name: Update Unit of Measurement
+    href: catalog-measure-update.md
+  - name: Get Unit of Measurement Information by ID
+    href: catalog-measure-get.md
+  - name: Get List of Units of Measurement
+    href: catalog-measure-list.md
+  - name: Delete Unit of Measurement
+    href: catalog-measure-delete.md
+  - name: Get Available Fields of Units of Measurement
+    href: catalog-measure-get-fields.md

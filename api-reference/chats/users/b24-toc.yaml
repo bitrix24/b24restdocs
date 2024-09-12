@@ -1,0 +1,15 @@
+title: Working with Users
+href: im-user-get.md
+items:
+  - name: Get User Data
+    href: im-user-get.md
+  - name: Get Users Data
+    href: im-user-list-get.md
+  - name: Get Information About User's Current Status
+    href: im-user-status-get.md
+  - name: Set User Status
+    href: im-user-status-set.md
+  - name: Set Automatic Status "Away"
+    href: im-user-status-idle-start.md
+  - name: Disable Automatic Status "Away"
+    href: im-user-status-idle-end.md

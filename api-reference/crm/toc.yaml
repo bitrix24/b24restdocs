@@ -1,0 +1,79 @@
+title: CRM Objects and Methods
+href: index.md
+items:
+  - name: CRM Objects and Methods
+    href: index.md
+  - name: Data Types and Structure of Objects in the CRM REST API
+    href: data-types.md 
+  - name: Typical Use-Cases and Scenarios
+    href: tutorials.md
+  - name: CRM Operating Mode
+    href: crm-settings-mode-get.md
+  - name: Universal CRM Methods
+    include:
+      path: universal/b24-toc.yaml
+      mode: link
+  - name: Deals
+    include:
+      path: deals/b24-toc.yaml
+      mode: link
+  - name: Leads
+    include:
+      path: leads/b24-toc.yaml
+      mode: link
+  - name: Contacts
+    include:
+      path: contacts/b24-toc.yaml
+      mode: link
+  - name: Companies
+    include:
+      path: companies/toc.yaml
+      mode: link
+  - name: Estimates
+    include:
+      path: quote/b24-toc.yaml
+      mode: link
+  - name: Requisites
+    include:
+      path: requisites/b24-toc.yaml
+      mode: link
+  - name: Timeline and Deals
+    include:
+      path: timeline/b24-toc.yaml
+      mode: link
+  - name: CRM Search and Duplicates
+    include:
+      path: duplicates/b24-toc.yaml
+      mode: link
+  - name: Directories
+    include:
+      path: status/b24-toc.yaml
+      mode: link
+  - name: Currencies
+    include:
+      path: currency/b24-toc.yaml
+      mode: link
+  - name: Document Generator
+    include:
+      path: document-generator/b24-toc.yaml
+      mode: link
+  - name: Digital Workplaces
+    include:
+      path: automated-solution/b24-toc.yaml
+      mode: link
+  - name: Automation and Triggers
+    include:
+      path: automation/b24-toc.yaml
+      mode: link
+  - name: Auxiliary Objects
+    include:
+      path: auxiliary/b24-toc.yaml
+      mode: link
+  - name: Outdated CRM Methods
+    include:
+      path: outdated/b24-toc.yaml
+      mode: link
+  - name: Get Stage Movement History
+    href: crm-stage-history-list.md
+  - name: Fields of Main CRM Entities
+    href: main-entities-fields.md

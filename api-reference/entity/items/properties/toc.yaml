@@ -1,0 +1,13 @@
+title: Properties of Storage Elements
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get List of Properties
+    href: entity-item-property-get.md
+  - name: Add Additional Property
+    href: entity-item-property-add.md
+  - name: Update Additional Property
+    href: entity-item-property-update.md
+  - name: Delete Additional Property
+    href: entity-item-property-delete.md

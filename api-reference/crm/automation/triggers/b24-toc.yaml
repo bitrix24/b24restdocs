@@ -1,0 +1,13 @@
+title: Application Triggers
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Trigger
+    href: crm-automation-trigger-add.md
+  - name: Execute Trigger
+    href: crm-automation-trigger-execute.md
+  - name: Get List of Triggers
+    href: crm-automation-trigger-list.md
+  - name: Delete Trigger
+    href: crm-automation-trigger-delete.md

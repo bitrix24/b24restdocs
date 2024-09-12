@@ -1,0 +1,61 @@
+title: Chats
+href: index.md
+items:
+  - name: About Chats in Bitrix24
+    href: index.md
+  - name: Create Chat
+    href: im-chat-add.md
+  - name: Get Chat ID
+    href: im-chat-get.md
+  - name: Get Chat Data
+    href: im-dialog-get.md
+  - name: Update Chat
+    include:
+      path: chat-update/b24-toc.yaml
+      mode: link
+  - name: Get Shortened List of Recent Chats
+    href: im-recent-get.md
+  - name: Get List of Chats
+    href: im-recent-list.md
+  - name: Special Operations
+    include:
+      path: special-operations/b24-toc.yaml
+      mode: link
+  - name: Chat Participants
+    include:
+      path: chat-users/b24-toc.yaml
+      mode: link
+  - name: Messages
+    include:
+      path: messages/b24-toc.yaml
+      mode: link
+  - name: Files
+    include:
+      path: files/b24-toc.yaml
+      mode: link
+  - name: Search
+    include:
+      path: search/b24-toc.yaml
+      mode: link
+  - name: Notifications
+    include:
+      path: notifications/b24-toc.yaml
+      mode: link
+  - name: Get Counters
+    href: im-counters-get.md
+  - name: Users
+    include:
+      path: users/b24-toc.yaml
+      mode: link
+  - name: Departments
+    include:
+      path: departments/b24-toc.yaml
+      mode: link
+  - name: Widgets
+    include:
+      path: widgets/b24-toc.yaml
+      mode: link
+  - name: Deprecated
+    include:
+      path: outdated/b24-toc.yaml
+      mode: link

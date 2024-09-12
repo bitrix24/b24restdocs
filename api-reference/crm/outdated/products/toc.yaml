@@ -1,0 +1,39 @@
+title: Products
+href: index.md
+items:
+  - name: List of Methods
+    href: index.md
+  - name: Add Product
+    href: crm-product-add.md
+  - name: Delete Product
+    href: crm-product-delete.md
+  - name: Get Product Fields
+    href: crm-product-fields.md
+  - name: Get Product by ID
+    href: crm-product-get.md
+  - name: Get List of Products by Filter
+    href: crm-product-list.md
+  - name: Update Product
+    href: crm-product-update.md
+  - name: Get List of Product Property Types
+    href: crm-product-property-types.md
+  - name: Get Product Property Fields
+    href: crm-product-property-fields.md
+  - name: Get Fields of Additional Settings for Custom Type Properties
+    href: crm-product-property-settings-fields.md
+  - name: Get Fields of List Type Property Element
+    href: crm-product-property-enumeration-fields.md
+  - name: Add Product Property
+    href: crm-product-property-add.md
+  - name: Get Product Property by ID
+    href: crm-product-property-get.md
+  - name: Get List of Product Properties
+    href: crm-product-property-list.md
+  - name: Update Product Property
+    href: crm-product-property-update.md
+  - name: Delete Product Property
+    href: crm-product-property-delete.md
+  - name: Events 
+    include:
+      path: events-custom/toc.yaml
+      mode: link

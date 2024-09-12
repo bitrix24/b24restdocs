@@ -1,0 +1,29 @@
+title: File
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Copy File to Folder
+    href: disk-file-copy-to.md
+  - name: Delete File
+    href: disk-file-delete.md
+  - name: Get Public Link to File
+    href: disk-file-get-external-link.md
+  - name: Get File Fields
+    href: disk-file-get-fields.md
+  - name: List File Versions
+    href: disk-file-get-versions.md
+  - name: Get File Parameters
+    href: disk-file-get.md
+  - name: Move File to Trash
+    href: disk-file-mark-deleted.md
+  - name: Move File to Folder
+    href: disk-file-move-to.md
+  - name: Rename File
+    href: disk-file-rename.md
+  - name: Restore File from Version
+    href: disk-file-restore-from-version.md
+  - name: Restore File from Trash
+    href: disk-file-restore.md
+  - name: Upload New Version of File
+    href: disk-file-upload-version.md

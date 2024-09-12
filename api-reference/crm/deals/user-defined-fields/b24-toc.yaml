@@ -1,0 +1,17 @@
+title: Custom Fields
+href: index.md
+items:
+  - name: About Custom Fields 
+    href: index.md
+  - name: Add Custom Field
+    href: crm-deal-userfield-add.md
+  - name: Custom Types 
+    href: crm-deal-user-defined-field-types.md
+  - name: Update Existing Deal Custom Field
+    href: crm-deal-userfield-update.md
+  - name: Get Deal Custom Field by Id
+    href: crm-deal-userfield-get.md
+  - name: Get List of Deal Custom Fields
+    href: crm-deal-userfield-list.md
+  - name: Delete Deal Custom Field
+    href: crm-deal-userfield-delete.md

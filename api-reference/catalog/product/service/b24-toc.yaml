@@ -1,0 +1,19 @@
+title: Services
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Service
+    href: catalog-product-service-add.md
+  - name: Update Service Fields
+    href: catalog-product-service-update.md
+  - name: Get Service Field Values 
+    href: catalog-product-service-get.md
+  - name: Get List of Services
+    href: catalog-product-service-list.md
+  - name: Download Service Files
+    href: catalog-product-service-download.md
+  - name: Delete Service
+    href: catalog-product-service-delete.md
+  - name: Get Service Fields by Filter
+    href: catalog-product-service-get-fields-by-filter.md

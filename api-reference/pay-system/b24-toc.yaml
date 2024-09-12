@@ -1,0 +1,33 @@
+title: Payment Systems
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md 
+  - name: Add REST Handler for Payment System
+    href: sale-pay-system-handler-add.md 
+  - name: Update REST Handler for Payment System
+    href: sale-pay-system-handler-update.md 
+  - name: Get List of REST Handlers for Payment System
+    href: sale-pay-system-handler-list.md 
+  - name: Delete REST Handler for Payment System
+    href: sale-pay-system-handler-delete.md 
+  - name: Add Payment System
+    href: sale-pay-system-add.md 
+  - name: Modify Payment System
+    href: sale-pay-system-update.md 
+  - name: Get List of Payment Systems
+    href: sale-pay-system-list.md 
+  - name: Get Settings for Payment System
+    href: sale-pay-system-settings-get.md
+  - name: Update Settings for Payment System
+    href: sale-pay-system-settings-update.md
+  - name: Delete Payment System
+    href: sale-pay-system-delete.md 
+  - name: Pay for Order via Specific Payment System
+    href: sale-pay-system-pay-payment.md 
+  - name: Pay Invoice via Specific Payment System
+    href: sale-pay-system-pay-invoice.md 
+  - name: Get Settings for Payment System for Specific Payment
+    href: sale-pay-system-settings-payment-get.md 
+  - name: Get Settings for Payment System for Specific Invoice
+    href: sale-pay-system-settings-invoice-get.md 

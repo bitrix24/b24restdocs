@@ -1,0 +1,19 @@
+title: Time Spent
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Time Spent Record
+    href: task-elapsed-item-add.md
+  - name: Update Time Spent Record
+    href: task-elapsed-item-update.md
+  - name: Get Time Spent Record by ID
+    href: task-elapsed-item-get.md
+  - name: Get List of Time Spent Records
+    href: task-elapsed-item-get-list.md
+  - name: Delete Time Spent Record
+    href: task-elapsed-item-delete.md
+  - name: Check Action Permission
+    href: task-elapsed-item-is-action-allowed.md
+  - name: Get List of Methods and Their Descriptions
+    href: task-elapsed-item-get-manifest.md

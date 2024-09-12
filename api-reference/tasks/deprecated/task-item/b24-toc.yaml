@@ -1,0 +1,53 @@
+title: Tasks (item)
+href: index.md
+items:
+  - name: List of methods
+    href: index.md
+  - name: View task change history
+    href: task-log-item-list.md
+  - name: Add task
+    href: task-item-add.md
+  - name: Delete task
+    href: task-item-delete.md
+  - name: Get task data by id
+    href: task-item-get-data.md
+  - name: Get the list of task.item.* methods with their descriptions
+    href: task-item-get-manifest.md
+  - name: Get list of tasks
+    href: task-item-list.md
+  - name: Update task
+    href: task-item-update.md
+  - name: Get task description
+    href: task-item-get-description.md
+  - name: Get links to files attached to the task
+    href: task-item-get-files.md
+  - name: Get list of previous tasks
+    href: task-item-get-dependson.md
+  - name: Get list of actions on the task
+    href: task-item-get-allowed-actions.md
+  - name: Get list of action names and their validity
+    href: task-item-get-allowed-task-actions-as-strings.md
+  - name: Check if action is allowed
+    href: task-item-is-action-allowed.md
+  - name: Delegate task
+    href: task-item-delegate.md
+  - name: Change task status to "in progress"
+    href: task-item-start-execution.md
+  - name: Change task status to "deferred"
+    href: task-item-defer.md
+  - name: Change task status to "completed"
+    href: task-item-complete.md
+  - name: Change task status to "not completed"
+    href: task-item-renew.md
+  - name: Change pending review task status to "completed"
+    href: task-item-approve.md
+  - name: Change pending review task status to "not completed"
+    href: task-item-disapprove.md
+  - name: Add task to Favorites
+    href: task-item-add-to-favourite.md
+  - name: Remove task from Favorites
+    href: task-item-delete-from-favorite.md
+  - name: Upload file to task
+    href: task-item-add-file.md
+  - name: Remove file attachment from task
+    href: task-item-delete-file.md

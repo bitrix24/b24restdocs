@@ -1,0 +1,15 @@
+title: Calling REST Methods
+href: index.md
+items: 
+  - name: Calling REST Methods
+    href: index.md
+  - name: Call Method
+    href: bx24-call-method.md
+  - name: Send Batch Requests
+    href: bx24-call-batch.md
+  - name: Call Event Handler Registration Interface
+    href: bx24-call-bind.md
+  - name: Call Event Handler Removal Interface
+    href: bx24-call-unbind.md
+  - name: Process Files
+    href: files.md

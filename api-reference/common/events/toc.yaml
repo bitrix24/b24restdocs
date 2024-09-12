@@ -1,0 +1,15 @@
+title: Events
+href: index.md
+items: 
+  - name: Event List
+    href: index.md
+  - name: After Successful App Installation
+    href: on-app-install.md
+  - name: When the App is Uninstalled
+    href: on-app-uninstall.md
+  - name: Upon App Payment
+    href: on-app-payment.md
+  - name: When Permission to Use Methods is Granted
+    href: on-app-method-confirm.md
+  - name: When a User is Added
+    href: on-user-add.md

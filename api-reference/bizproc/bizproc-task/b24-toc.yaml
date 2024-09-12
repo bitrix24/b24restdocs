@@ -1,0 +1,7 @@
+title: Workflow Tasks
+href: bizproc-task-list.md
+items:
+  - name: Get Task List
+    href: bizproc-task-list.md
+  - name: Complete Workflow Tasks
+    href: bizproc-task-complete.md

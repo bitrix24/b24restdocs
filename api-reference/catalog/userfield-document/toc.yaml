@@ -1,0 +1,9 @@
+title: Custom Fields for Inventory Documents
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Get List of Field Values
+    href: catalog-userfield-document-list.md
+  - name: Update Field Values
+    href: catalog-userfield-document-update.md

@@ -1,0 +1,15 @@
+title: Property Values
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Modify Property Value
+    href: sale-property-value-modify.md
+  - name: Get Property Value by ID
+    href: sale-property-value-get.md
+  - name: Get List of Property Values
+    href: sale-property-value-list.md
+  - name: Delete Property Value
+    href: sale-property-value-delete.md
+  - name: Get Available Fields of Property Value
+    href: sale-property-value-get-fields.md

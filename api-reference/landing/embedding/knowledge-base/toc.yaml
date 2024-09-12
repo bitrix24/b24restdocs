@@ -1,0 +1,17 @@
+title: General Methods
+href: index.md
+items:
+  - name: Knowledge Base Embed Locations
+    href: index.md
+  - name: Embed in Menu
+    href: landing-site-binding-to-menu.md
+  - name: Remove from Menu
+    href: landing-site-unbinding-from-menu.md
+  - name: Get Menu Bindings List
+    href: landing-site-get-menu-bindings.md
+  - name: Bind to Social Network Group
+    href: landing-site-binding-to-group.md
+  - name: Remove Binding from Social Network Group
+    href: landing-site-unbinding-from-group.md
+  - name: Get Group Bindings
+    href: landing-site-get-group-bindings.md

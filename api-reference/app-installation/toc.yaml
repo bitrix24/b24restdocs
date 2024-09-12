@@ -1,0 +1,19 @@
+title: Installing Applications
+href: index.md
+items: 
+  - name: Installation Options 
+    href: index.md
+  - name: Local Applications
+    include:
+      path: local-apps/b24-toc.yaml
+      mode: link
+  - name: Mass-Market Applications
+    include:
+      path: mass-market-apps/b24-toc.yaml
+      mode: link
+  - name: Installing Industry-Specific CRMs
+    href: vertical-crm-installation.md
+  - name: Installing Smart Scripts
+    href: smart-scripts-installation.md
+  - name: Installing Website Templates
+    href: site-templates-installation.md

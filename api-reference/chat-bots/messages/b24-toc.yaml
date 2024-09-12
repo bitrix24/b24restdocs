@@ -1,0 +1,17 @@
+title: Working with Messages
+href: imbot-message-add.md
+items:
+  - name: Send Message
+    href: imbot-message-add.md
+  - name: Edit Sent Message
+    href: imbot-message-update.md
+  - name: Delete Message
+    href: imbot-message-delete.md
+  - name: Send "Chat-bot is typing a message..." Indicator
+    href: imbot-chat-send-typing.md
+  - name: Set "Like" for Message
+    href: imbot-message-like.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

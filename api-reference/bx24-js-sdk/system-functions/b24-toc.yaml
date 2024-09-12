@@ -1,0 +1,15 @@
+title: System Functions
+href: index.md
+items: 
+  - name: Overview of System Functions
+    href: index.md
+  - name: Initialize the Library
+    href: bx24-init.md
+  - name: Handle the First Launch Event of the Application by the User
+    href: bx24-install.md
+  - name: Notify About the Completion of the Installer
+    href: bx24-install-finish.md
+  - name: Retrieve Data for OAuth 2.0
+    href: bx24-get-auth.md
+  - name: Force Update the Authorization Key
+    href: bx24-refresh-auth.md

@@ -1,0 +1,25 @@
+title: Typical use-cases and scenarios for REST API in CRM  
+href: index.md  
+items:  
+  - name: How to do... in CRM?  
+    href: index.md  
+  - name: Add data  
+    include:  
+      path: how-to-add-crm-objects/b24-toc.yaml  
+      mode: link  
+  - name: Edit data  
+    include:  
+      path: how-to-edit-crm-objects/b24-toc.yaml  
+      mode: link  
+  - name: Get lists  
+    include:  
+      path: how-to-get-lists/b24-toc.yaml  
+      mode: link  
+  - name: Sales Intelligence  
+    include:  
+      path: how-to-use-analitycs/b24-toc.yaml  
+      mode: link  
+  - name: How to embed your functionality in CRM  
+    include:  
+      path: crm-widgets/b24-toc.yaml  
+      mode: link  

@@ -1,0 +1,13 @@
+title: Deliveries in Payments
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Delivery Item to Payment
+    href: crm-item-payment-delivery-add.md
+  - name: Get List of Delivery Items for a Specific Payment
+    href: crm-item-payment-delivery-list.md
+  - name: Remove Delivery Item from Payment
+    href: crm-item-payment-delivery-delete.md
+  - name: Reassign Delivery Item to Another Document
+    href: crm-item-payment-delivery-set-delivery.md

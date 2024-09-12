@@ -1,0 +1,13 @@
+title: Duplicate Search Settings for Any Fields  
+href: index.md  
+items:  
+  - name: Duplicate Search Settings for Any Fields  
+    href: index.md  
+  - name: Get a List of Fields Available for Use  
+    href: crm-duplicate-volatile-type-fields.md  
+  - name: Get a List of Custom Fields Involved in Duplicate Search  
+    href: crm-duplicate-volatile-type-list.md  
+  - name: Add a Field to Duplicate Search  
+    href: crm-duplicate-volatile-type-register.md  
+  - name: Remove a Field from Duplicate Search  
+    href: crm-duplicate-volatile-type-unregister.md  

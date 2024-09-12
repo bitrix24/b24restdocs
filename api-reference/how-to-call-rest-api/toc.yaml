@@ -1,0 +1,13 @@
+title: How to Call REST API Methods
+href: authorization.md
+items: 
+  - name: Authorization in REST  
+    href: authorization.md
+  - name: How a Request is Made 
+    href: general-principles.md
+  - name: Features of List Methods 
+    href: list-methods-pecularities.md
+  - name: How to Execute a Batch of Requests
+    href: batch.md
+  - name: How to Work with Files via REST API
+    href: how-to-upload-files.md

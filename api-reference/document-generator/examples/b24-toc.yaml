@@ -1,0 +1,13 @@
+title: Typical use-cases and scenarios
+href: index.md
+items: 
+  - name: Generating a simple document
+    href: index.md
+  - name: Generating a document with images and seals 
+    href: document-images-seals.md
+  - name: Generating a document with date and name modifiers 
+    href: document-date-name.md
+  - name: Generating a document with tabular data 
+    href: document-table-data.md
+  - name: Generating a document with complex tables
+    href: document-table-complex.md

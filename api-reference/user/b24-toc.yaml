@@ -1,0 +1,21 @@
+title: Methods for Working with Bitrix24 Users
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Invite User
+    href: user-add.md
+  - name: Update User Data
+    href: user-update.md
+  - name: Get Information About the Current User
+    href: user-current.md
+  - name: Get List of Users by Filter
+    href: user-get.md
+  - name: Get List of Users with Personal Data Search
+    href: user-search.md
+  - name: Get User Fields
+    href: user-fields.md
+  - name: Custom Fields
+    include:
+      path: userfields/toc.yaml
+      mode: link

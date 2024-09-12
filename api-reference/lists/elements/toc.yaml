@@ -1,0 +1,15 @@
+title: General Methods
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create Entity
+    href: lists-element-add.md
+  - name: Delete Entity
+    href: lists-element-delete.md
+  - name: Get Entity Parameters or List of Entities
+    href: lists-element-get.md
+  - name: Get File URL
+    href: lists-element-get-file-url.md
+  - name: Update Entity
+    href: lists-element-update.md

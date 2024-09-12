@@ -1,0 +1,31 @@
+title: voximplant
+href: index.md
+items: 
+  - name: Using SIP and Built-in Telephony
+    href: index.md
+  - name: Start a Callback
+    href: voximplant-callback-start.md
+  - name: Make an Auto Call with MP3 Playback
+    href: voximplant-infocall-start-with-sound.md
+  - name: Make an Auto Call with a Voice Automation Rule
+    href: voximplant-infocall-start-with-text.md
+  - name: Get a List of Voice Options for the Voice Automation Rule
+    href: voximplant-tts-voices-get.md
+  - name: Events
+    include:
+      path: events/toc.yaml
+      mode: link
+  - name: Manage SIP Connections
+    include:
+      path: sip/toc.yaml
+      mode: link
+  - name: Manage Lines
+    include:
+      path: lines/toc.yaml
+      mode: link
+  - name: Manage Users
+    include:
+      path: sip/toc.yaml
+      mode: link
+  - name: Get Links to Key Telephony Pages
+    href: voximplant-url-get.md

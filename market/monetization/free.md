@@ -1,0 +1,6 @@
+# Which Applications Can Be Free
+Free solutions can be applications that provide users with full functionality all at once, without time limitations. The available functionality of the application should not change during operation, nor should it be turned on or off based on additional conditions or payments. Such solutions may include:
+1. Solutions for migrating user data from third-party products and platforms to Bitrix24 (for this type of application, we offer developers a [special monetization mechanism](https://development.bitrix24.com/migration/));
+2. Integrations with free or paid external systems;
+
+I would like to elaborate on integrations with paid external systems. Such integrations with paid external services and products independent of Bitrix24—such as telephony, SMS providers, mailing services, accounting systems, etc.—can still be considered free. Clients understand this interaction model, where the service owner earns directly from the service itself (collecting payments for their service and product independently on their side), but offers a free integration in the Bitrix24 Marketplace without monetizing the integration functionality directly.

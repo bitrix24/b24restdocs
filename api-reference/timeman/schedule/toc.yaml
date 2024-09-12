@@ -1,0 +1,7 @@
+title: Work Schedule
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get Work Schedule
+    href: timeman-schedule-get.md

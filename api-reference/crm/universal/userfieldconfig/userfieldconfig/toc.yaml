@@ -1,0 +1,17 @@
+title: Custom Fields
+href: index.md
+items: 
+  - name: Working with Custom Fields 
+    href: index.md
+  - name: Add Custom Field
+    href: userfieldconfig-add.md
+  - name: Delete Custom Field Settings
+    href: userfieldconfig-delete.md
+  - name: Retrieve Custom Field Settings Data
+    href: userfieldconfig-get.md
+  - name: Get Available Custom Field Types
+    href: userfieldconfig-get-types.md
+  - name: Get List of Custom Field Settings
+    href: userfieldconfig-list.md
+  - name: Change Custom Field Values
+    href: userfieldconfig-update.md

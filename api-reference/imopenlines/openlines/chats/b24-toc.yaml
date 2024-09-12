@@ -1,0 +1,11 @@
+title: Chats
+href: imopenlines-crm-chat-get.md
+items: 
+  - name: Get chat for CRM entity
+    href: imopenlines-crm-chat-get.md
+  - name: Get Id of the last chat
+    href: imopenlines-crm-chat-get-last-id.md
+  - name: Add user to existing chat
+    href: imopenlines-crm-chat-user-add.md
+  - name: Remove user from chat
+    href: imopenlines-crm-chat-user-delete.md

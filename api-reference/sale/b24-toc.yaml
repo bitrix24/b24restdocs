@@ -1,0 +1,103 @@
+title: Online Store
+href: index.md
+items: 
+  - name: Online Store
+    href: index.md
+  - name: Data Types and Object Structure in the Online Store REST API
+    href: data-types.md 
+  - name: Shopping Cart
+    include:
+      path: basket-item/b24-toc.yaml
+      mode: link
+  - name: Cart Properties
+    include:
+      path: basket-properties/b24-toc.yaml
+      mode: link
+  - name: Order
+    include:
+      path: order/b24-toc.yaml
+      mode: link
+  - name: Orders from External Sources
+    include:
+      path: trade-binding/b24-toc.yaml
+      mode: link
+  - name: Order Properties
+    include:
+      path: property/b24-toc.yaml
+      mode: link
+  - name: Property Groups
+    include:
+      path: property-group/b24-toc.yaml
+      mode: link
+  - name: Property Variants
+    include:
+      path: property-variant/b24-toc.yaml
+      mode: link    
+  - name: Trading Platforms
+    include:
+      path: trade-platform/b24-toc.yaml
+      mode: link
+  - name: Payments
+    include:
+      path: payment/b24-toc.yaml
+      mode: link
+  - name: Payer Types
+    include:
+      path: person-type/b24-toc.yaml
+      mode: link
+  - name: Correspondence of Individuals and Legal Entities
+    include:
+      path: business-value-person-domain/b24-toc.yaml
+      mode: link
+  - name: Shipments
+    include:
+      path: shipment/b24-toc.yaml
+      mode: link
+  - name: Shipment Line Items
+    include:
+      path: shipment-item/b24-toc.yaml
+      mode: link
+  - name: Shipment Properties
+    include:
+      path: shipment-property/b24-toc.yaml
+      mode: link
+  - name: Shipment Property Values
+    include:
+      path: shipment-property-value/b24-toc.yaml
+      mode: link
+  - name: Statuses
+    include:
+      path: status/b24-toc.yaml
+      mode: link
+  - name: Status Localization
+    include:
+      path: status-lang/b24-toc.yaml
+      mode: link
+  - name: Linking Cart Item to Payment
+    include:
+      path: payment-item-basket/b24-toc.yaml
+      mode: link
+  - name: Linking Payments to Shipments
+    include:
+      path: payment-item-shipment/b24-toc.yaml
+      mode: link
+  - name: Property Binding
+    include:
+      path: property-relation/b24-toc.yaml
+      mode: link
+  - name: Property Values
+    include:
+      path: property-value/b24-toc.yaml
+      mode: link
+  - name: Cash Registers
+    include:
+      path: cashbox/b24-toc.yaml
+      mode: link
+  - name: Delivery Services
+    include:
+      path: delivery/b24-toc.yaml
+      mode: link
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

@@ -1,0 +1,17 @@
+title: Basket Properties
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md 
+  - name: Add Basket Property
+    href: sale-basket-properties-add.md
+  - name: Update Basket Property
+    href: sale-basket-properties-update.md
+  - name: Get Basket Property Value
+    href: sale-basket-properties-get.md
+  - name: Get List of Basket Properties
+    href: sale-basket-properties-list.md
+  - name: Delete Basket Property
+    href: sale-basket-properties-delete.md
+  - name: Get Fields of Basket Property Items
+    href: sale-basket-properties-get-fields.md

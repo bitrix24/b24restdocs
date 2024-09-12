@@ -1,0 +1,13 @@
+title: Property Binding
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Property Binding
+    href: sale-property-relation-add.md
+  - name: Get Property Binding List
+    href: sale-property-relation-list.md
+  - name: Delete Property Binding
+    href: sale-property-relation-delete-by-filter.md
+  - name: Get Property Binding Fields
+    href: sale-property-relation-get-fields.md

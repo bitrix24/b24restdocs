@@ -1,0 +1,33 @@
+title: Contacts
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get Contact Fields
+    href: crm-contact-fields.md
+  - name: Create New Contact
+    href: crm-contact-add.md
+  - name: Update Contact
+    href: crm-contact-update.md
+  - name: Get Contact by Id
+    href: crm-contact-get.md
+  - name: Get List of Contacts
+    href: crm-contact-list.md
+  - name: Delete Contact
+    href: crm-contact-delete.md
+  - name: Companies
+    include:
+      path: company/toc.yaml
+      mode: link
+  - name: Custom Fields
+    include:
+      path: userfield/toc.yaml
+      mode: link
+  - name: Events
+    include:
+      path: events/toc.yaml
+      mode: link
+  - name: Manage Contact Forms
+    include:
+      path: custom-form/b24-toc.yaml
+      mode: link

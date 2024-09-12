@@ -1,0 +1,13 @@
+title: General Methods
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create Section
+    href: lists-section-add.md
+  - name: Delete Section
+    href: lists-section-delete.md
+  - name: Get Section Parameters or List of Sections
+    href: lists-section-get.md
+  - name: Update Section of the List
+    href: lists-section-update.md

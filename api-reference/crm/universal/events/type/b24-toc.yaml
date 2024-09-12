@@ -1,0 +1,11 @@
+title: Universal Events of Custom CRM Types
+href: index.md
+items:
+  - name: Overview of Events
+    href: index.md
+  - name: On Creating a Custom CRM Type
+    href: on-crm-type-add.md
+  - name: On Updating a Custom CRM Type
+    href: on-crm-type-update.md
+  - name: On Deleting a Custom CRM Type
+    href: on-crm-type-delete.md

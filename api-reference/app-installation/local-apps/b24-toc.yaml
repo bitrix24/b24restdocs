@@ -1,0 +1,9 @@
+title: Local Applications
+href: index.md
+items: 
+  - name: Overview 
+    href: index.md
+  - name: Installation Wizard 
+    href: installation-master.md
+  - name: Installation Callback
+    href: installation-callback.md

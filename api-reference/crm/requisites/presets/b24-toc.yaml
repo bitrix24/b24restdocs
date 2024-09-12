@@ -1,0 +1,23 @@
+title: Requisite Templates
+href: index.md
+items:
+  - name: About Templates
+    href: index.md
+  - name: Create Template
+    href: crm-requisite-preset-add.md
+  - name: Update Requisite Template
+    href: crm-requisite-preset-update.md
+  - name: Get List of Countries for Template
+    href: crm-requisite-preset-countries.md
+  - name: Get Requisite Template Fields by ID
+    href: crm-requisite-preset-get.md
+  - name: Get List of Requisite Templates by Filter
+    href: crm-requisite-preset-list.md
+  - name: Delete Requisite Template
+    href: crm-requisite-preset-delete.md
+  - name: Get Description of Requisite Template Fields
+    href: crm-requisite-preset-fields.md
+  - name: Requisite Template Fields
+    include:
+      path: fields/b24-toc.yaml
+      mode: link

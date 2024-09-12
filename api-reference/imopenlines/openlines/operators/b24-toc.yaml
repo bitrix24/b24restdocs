@@ -1,0 +1,15 @@
+title: Operators
+href: imopenlines-operator-answer.md
+items: 
+  - name: Take the conversation for yourself
+    href: imopenlines-operator-answer.md
+  - name: Finish your conversation
+    href: imopenlines-operator-finish.md
+  - name: Finish another operator's conversation
+    href: imopenlines-operator-another-finish.md
+  - name: Skip the conversation
+    href: imopenlines-operator-skip.md
+  - name: Mark the conversation as "spam"
+    href: imopenlines-operator-spam.md
+  - name: Transfer the conversation to another operator or line
+    href: imopenlines-operator-transfer.md

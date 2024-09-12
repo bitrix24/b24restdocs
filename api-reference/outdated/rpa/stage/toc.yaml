@@ -1,0 +1,15 @@
+title: Stages
+href: index.md
+items: 
+  - name: Stages
+    href: index.md
+  - name: Get information about a stage
+    href: rpa-stage-get.md
+  - name: Get a list of process stages
+    href: rpa-stage-list-for-type.md
+  - name: Create a new stage
+    href: rpa-stage-add.md
+  - name: Update a stage
+    href: rpa-stage-update.md
+  - name: Delete a stage
+    href: rpa-stage-delete.md

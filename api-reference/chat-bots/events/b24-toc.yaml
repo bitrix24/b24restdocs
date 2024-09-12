@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items:
+  - name: About Events
+    href: index.md
+  - name: On Application Installation
+    href: on-app-install.md
+  - name: On Application Update
+    href: on-app-update.md
+  - name: Example Handler Code for Working with Events
+    href: example-handler-code.md

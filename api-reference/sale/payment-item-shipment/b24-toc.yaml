@@ -1,0 +1,17 @@
+title: Linking Payments to Shipments
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Payment Link to Shipment
+    href: sale-payment-item-shipment-add.md
+  - name: Update Payment Link to Shipment
+    href: sale-payment-item-shipment-update.md
+  - name: Get Link by Id
+    href: sale-payment-item-shipment-get.md
+  - name: Get List of Links
+    href: sale-payment-item-shipment-list.md
+  - name: Delete Link
+    href: sale-payment-item-shipment-delete.md
+  - name: Get Link Fields
+    href: sale-payment-item-shipment-get-fields.md

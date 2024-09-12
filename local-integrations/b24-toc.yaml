@@ -1,0 +1,19 @@
+title: Local Integrations and Customization
+href: index.md
+items: 
+  - name: Overview
+    href: index.md
+  - name: Typical Use-Cases and Scenarios 
+    href: use-cases.md
+  - name: Inbound and Outbound Webhooks
+    href: local-webhooks.md
+  - name: Local Applications
+    href: local-apps.md
+  - name: Static Application
+    href: static-local-app.md
+  - name: Server-Side Application with UI
+    href: serverside-local-app-with-ui.md
+  - name: Server-Side Application without UI
+    href: serverside-local-app-with-no-ui.md
+  - name: Overview of the Developer's Area
+    href: developers-area.md

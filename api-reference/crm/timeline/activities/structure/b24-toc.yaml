@@ -1,0 +1,21 @@
+title: Structure of Configurable Deal
+href: layout.md
+items:
+  - name: General Overview of the Deal
+    href: layout.md
+  - name: Record Title
+    href: header.md
+  - name: Click Reaction
+    href: action.md
+  - name: Main Content Area
+    href: body.md
+  - name: Bottom of the Record
+    href: footer.md
+  - name: Bottom Dropdown Menu
+    href: menu-item.md
+  - name: Field Types
+    href: field-types.md
+  - name: Set of Additional Content Blocks
+    href: rest-app-layout-dto.md
+  - name: Examples of Deal Configurations
+    href: examples.md

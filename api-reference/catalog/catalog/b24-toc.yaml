@@ -1,0 +1,19 @@
+title: Trade Catalog
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Trade Catalog
+    href: catalog-catalog-add.md
+  - name: Update Trade Catalog Fields
+    href: catalog-catalog-update.md
+  - name: Get Values of All Trade Catalog Fields
+    href: catalog-catalog-get.md
+  - name: Get List of Trade Catalogs
+    href: catalog-catalog-list.md
+  - name: Check if Trade Catalog is an Offers Catalog
+    href: catalog-catalog-is-offers.md
+  - name: Delete Trade Catalog
+    href: catalog-catalog-delete.md
+  - name: Get Available Trade Catalog Fields
+    href: catalog-catalog-get-fields.md

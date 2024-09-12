@@ -1,0 +1,15 @@
+title: Application Actions in Workflows
+href: index.md
+items:
+  - name: Application Actions
+    href: index.md
+  - name: Add New Action
+    href: bizproc-activity-add.md
+  - name: Get List of Installed Actions
+    href: bizproc-activity-list.md
+  - name: Update Action Fields
+    href: bizproc-activity-update.md
+  - name: Write Information to Log
+    href: bizproc-activity-log.md
+  - name: Delete Action
+    href: bizproc-activity-delete.md

@@ -1,0 +1,15 @@
+title: Universal Events of CRM Objects
+href: index.md
+items:
+  - name: Overview of Events
+    href: index.md
+  - name: On Creating a Custom CRM Object
+    href: on-crm-dynamic-item-add.md
+  - name: On Updating a Custom CRM Object
+    href: on-crm-dynamic-item-update.md
+  - name: On Deleting a Custom CRM Object
+    href: on-crm-dynamic-item-delete.md
+  - name: Events of Custom CRM Types
+    include:
+      path: type/b24-toc.yaml
+      mode: link

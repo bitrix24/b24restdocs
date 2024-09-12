@@ -1,0 +1,13 @@
+title: Application Settings
+href: index.md
+items: 
+  - name: List of Methods
+    href: index.md
+  - name: Retrieve Application-Bound Data
+    href: app-option-get.md
+  - name: Bind Data to Application
+    href: app-option-set.md
+  - name: Retrieve Data Bound to Application and User
+    href: user-option.md
+  - name: Retrieve Saved User Settings
+    href: user-option-set.md

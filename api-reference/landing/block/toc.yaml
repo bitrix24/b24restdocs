@@ -1,0 +1,27 @@
+title: Block Entity
+href: index.md
+items:
+  - name: About the Block Entity
+    href: index.md
+  - name: Manifest File
+    href: manifest.md
+  - name: Attributes
+    href: attributes.md
+  - name: Node Types
+    href: node-types.md
+  - name: Extended Description of Forms
+    href: extended-description.md
+  - name: Block Localization
+    href: localization.md
+  - name: Special Blocks
+    include:
+      path: special/toc.yaml
+      mode: link
+  - name: Interactive Blocks
+    include:
+      path: interactive/toc.yaml
+      mode: link
+  - name: Methods for Working with Blocks
+    include:
+      path: methods/toc.yaml
+      mode: link

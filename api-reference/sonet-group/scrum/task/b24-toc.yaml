@@ -1,0 +1,11 @@
+title: Scrum Tasks
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create or Update a Scrum Task
+    href: tasks-api-scrum-task-update.md
+  - name: Get Scrum Task Fields by ID
+    href: tasks-api-scrum-task-get.md
+  - name: Get Scrum Task Fields
+    href: tasks-api-scrum-task-get-fields.md

@@ -1,0 +1,19 @@
+title: Sales Estimates
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Sales Estimate
+    href: catalog-product-offer-add.md
+  - name: Update Sales Estimate Fields
+    href: catalog-product-offer-update.md
+  - name: Get Sales Estimate Field Values
+    href: catalog-product-offer-get.md
+  - name: Get List of Sales Estimates
+    href: catalog-product-offer-list.md
+  - name: Download Sales Estimate Files
+    href: catalog-product-offer-download.md
+  - name: Delete Sales Estimate
+    href: catalog-product-offer-delete.md
+  - name: Get Sales Estimate Fields by Filter
+    href: catalog-product-offer-get-fields-by-filter.md

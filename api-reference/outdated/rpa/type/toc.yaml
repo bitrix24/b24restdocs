@@ -1,0 +1,15 @@
+title: Processes
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Get Process Information by ID
+    href: rpa-type-get.md
+  - name: Retrieve Array of Processes with Their Fields
+    href: rpa-type-list.md
+  - name: Create a New Process
+    href: rpa-type-add.md
+  - name: Modify a Process
+    href: rpa-type-update.md
+  - name: Delete a Process
+    href: rpa-type-delete.md

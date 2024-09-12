@@ -1,0 +1,33 @@
+title: Details
+href: index.md
+items:
+  - name: About the Details System
+    href: index.md
+  - name: Detail Templates
+    include:
+      path: presets/b24-toc.yaml
+      mode: link
+  - name: Addresses
+    include:
+      path: addresses/b24-toc.yaml
+      mode: link
+  - name: Universal Details
+    include:
+      path: universal/b24-toc.yaml
+      mode: link
+  - name: Bank Details
+    include:
+      path: bank-detail/b24-toc.yaml
+      mode: link
+  - name: Custom Detail Fields
+    include:
+      path: user-fields/b24-toc.yaml
+      mode: link
+  - name: Detail Connections with CRM Objects
+    include:
+      path: links/b24-toc.yaml
+      mode: link
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

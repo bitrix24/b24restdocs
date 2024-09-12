@@ -1,0 +1,11 @@
+title: Sales Intelligence
+href: index.md
+items: 
+  - name: Sales Intelligence
+    href: index.md
+  - name: How to Use Sales Intelligence When Creating a Lead
+    href: use-analitics-for-add-lead.md
+  - name: How to Use Sales Intelligence When Creating a Deal and Contact
+    href: use-analitics-for-add-contact.md
+  - name: How to Transfer Information to Sales Intelligence
+    href: info-to-analitics.md

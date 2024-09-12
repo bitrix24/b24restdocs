@@ -1,0 +1,9 @@
+title: Trading Platforms
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Get a List of Trading Platforms
+    href: sale-trade-platform-list.md
+  - name: Get Fields of Trading Platforms
+    href: sale-trade-platform-get-fields.md

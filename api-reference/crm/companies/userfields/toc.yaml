@@ -1,0 +1,19 @@
+title: List of Methods for Working with Company Contacts
+href: index.md
+items:
+  - name: List of Methods
+    href: index.md
+  - name: Create a New Field
+    href: crm-company-userfield-add.md
+  - name: Delete a Field
+    href: crm-company-userfield-delete.md
+  - name: Get Field by ID
+    href: crm-company-userfield-get.md
+  - name: Get List of Fields by Filter
+    href: crm-company-userfield-list.md
+  - name: Update Existing Field
+    href: crm-company-userfield-update.md
+  - name: Events
+    include:
+      path: events/toc.yaml
+      mode: link

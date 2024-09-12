@@ -1,0 +1,219 @@
+blocks:
+  - type: 'header-block'
+    width: 's'
+    offset: 'default'
+    title: 'Bitrix24 REST API'
+    resetPaddings: false
+    verticalOffset: 'l'
+    description: 'A tool for creating integrations, automating workflows, and customizing user scenarios in Bitrix24'
+    background:
+      light:
+        image:
+          mobile: '_images/cover.png'
+          desktop: '_images/cover.png'
+          disableCompress: true
+        color: '#E8E4FF'
+        fullWidth: false
+      dark:
+        image:
+          mobile: '_images/img_restapi_main.png'
+          desktop: '_images/img_restapi_main.png'
+          disableCompress: true
+        color: '#E8E4FF'
+        fullWidth: false
+    buttons:
+      - text: 'Get Started'
+        theme: 'outlined'
+        size: 'promo'
+        url: 'about.md'
+      - text: 'GitHub'
+        theme: 'outlined'
+        size: 'promo'
+        url: 'https://github.com/bitrix24/b24restdocs/'
+
+  - type: 'extended-features-block'
+    title:
+      text: 'Quick Start'
+    items:
+      - title: 'How to Begin'
+        icon: './_images/img_restapi_icon_01.svg'
+        text: 'Learn how the documentation is structured and how to use the API'
+        buttons:
+          - text: 'Learn More'
+            theme: 'outlined'
+            size: 'promo'
+            url: 'about.md'
+      - title: 'How to Get Access'
+        icon: './_images/img_restapi_icon_02.svg'
+        text: 'Review the requirements for the Bitrix24 plan and start exploring the Developer resources within the product'
+        buttons:
+          - text: 'Learn More'
+            theme: 'outlined'
+            size: 'promo'
+            url: 'access-to-rest-api.md'
+      - title: 'How to Make a Request'
+        icon: './_images/img_restapi_icon_03.svg'
+        text: 'Get a practical guide for your first Bitrix24 REST API call'
+        buttons:
+          - text: 'Try It'
+            theme: 'outlined'
+            size: 'promo'
+            url: 'first-rest-api-call.md'
+
+  - type: 'card-layout-block'
+    title: 'Typical Use-Cases and Scenarios'
+    description: If you need quick solutions for your practical tasks, start with <a href="/tutorials/index.html">this section</a>. Then you can adapt our examples to your situation, using the full range of REST API methods.
+    colSizes:
+      all: 12
+      md: 4
+      sm: 6
+    children:
+      - type: 'layout-item'
+        content:
+          title: '<a href="/tutorials/crm/index.html">CRM</a>'
+          text: 'How to quickly link a form on your website to CRM? How to automatically create deals with product items? How to pass information for Sales Intelligence to Bitrix when creating a lead from your source?'
+        media:
+          image: './_images/img_restapi_banner_s_01.png'
+          disableCompress: true
+        fullScreen: true
+        border: true
+        disableCompress: true
+      - type: 'layout-item'
+        content:
+          title: '<a href="/tutorials/sale/index.html">Online Sales</a>'
+          text: 'How to quickly generate an order for an online store? How to get a payment link to send to the client? How to connect your online cash register?'
+        media:
+          image: './_images/img_restapi_banner_s_02.png'
+          disableCompress: true
+        fullScreen: true
+        border: true
+        disableCompress: true
+      - type: 'layout-item'
+        content:
+          title: '<a href="/tutorials/index.html">And Much More</a>'
+          text: 'Import data, integrate your telephony, use a product catalog — dozens of ready-made practical examples.'
+        media:
+          image: './_images/img_restapi_banner_s_03.png'
+          disableCompress: true
+        fullScreen: true
+        border: true
+        disableCompress: true
+        links:
+          - text: 'Find an Example'
+            theme: 'normal'
+            url: '/'
+
+  - type: 'filter-block'
+    centered: true
+    title:
+      text: 'Learn More Details'
+    tags:
+      - id: 'one'
+        label: 'Local Integrations'
+      - id: 'two'
+        label: 'Bitrix24 Market'
+      - id: 'three'
+        label: 'API Reference'
+    colSizes:
+      all: 12
+      xl: 12
+      md: 12
+      sm: 12
+    items:
+      - tags:
+          - 'one'
+        card:
+          type: 'layout-item'
+          media:
+            image: './_images/local-integrations.png'
+            disableCompress: true
+          border: true
+          content:
+            links:
+              - text: 'View Documentation'
+                url: './local-integrations/index.md'
+                theme: 'normal'
+                arrow: true
+                color: #54BA7E
+
+      - tags:
+          - 'two'
+        card:
+          type: 'layout-item'
+          media:
+            image: './_images/market.png'
+            disableCompress: true
+          border: true
+          content:
+            links:
+              - text: 'View Documentation'
+                url: 'market'
+                theme: 'normal'
+                arrow: true
+                color: #54BA7E
+      - tags:
+          - 'three'
+        card:
+          type: 'layout-item'
+          media:
+            image: './_images/api-reference.png'
+            disableCompress: true
+          border: true
+          content:
+            links:
+              - text: 'View Documentation'
+                url: './api-reference/index.md'
+                theme: 'normal'
+                arrow: true
+                color: #54BA7E
+
+  - type: 'card-layout-block'
+    title: 'Community and Communication with Bitrix24'
+    children:
+      - type: 'background-card'
+        title: 'Improve Documentation'
+        text: 'We have made the source code of our documentation publicly available. You can help us improve.'
+        background:
+          src: './_images/img_restapi_banner_l_01.png'
+          disableCompress: true
+        paddingBottom: 'm'
+        buttons:
+          - text: 'Details'
+            theme: 'raised'
+            url: 'change-article.md'
+        border: none
+        theme: 'light'
+      - type: 'background-card'
+        title: 'Connect with Colleagues'
+        text: 'If you didn’t find the answer to your question in the official documentation, join the developer community — it’s the best environment for sharing experiences.'
+        background:
+          src: './_images/img_restapi_banner_l_02.png'
+          disableCompress: true
+        paddingBottom: 'm'
+        buttons:
+          - text: 'Details'
+            theme: 'raised'
+            url: 'support.md'
+        border: none
+        theme: 'light'
+      - type: 'background-card'
+        title: 'Contact Support'
+        text: 'Our technical support helps partners and clients resolve issues. We are always open to dialogue!'
+        background:
+          src: './_images/img_restapi_banner_l_03.png'
+          disableCompress: true
+        paddingBottom: 'm'
+        buttons:
+          - text: 'Details'
+            theme: 'raised'
+            url: 'support.md'
+        theme: 'light'
+        border: none
+
+  - type: 'icons-block'
+    size: 'm'
+    title: 'Join Us'
+    items:
+      - src: './_images/telegram.svg'
+        text: 'B24 REST and Apps'
+        url: 'https://t.me/b24_dev'

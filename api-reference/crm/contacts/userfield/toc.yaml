@@ -1,0 +1,15 @@
+title: Custom Fields
+href: index.md
+items: 
+  - name: Custom Fields
+    href: index.md
+  - name: Create a Custom Field for Contacts
+    href: crm-contact-userfield-add.md
+  - name: Modify an Existing Custom Field for Contacts
+    href: crm-contact-userfield-update.md
+  - name: Retrieve a Custom Field for Contacts by Id
+    href: crm-contact-userfield-get.md
+  - name: Get a List of Custom Fields for Contacts
+    href: crm-contact-userfield-list.md
+  - name: Delete a Custom Field for Contacts
+    href: crm-contact-userfield-delete.md

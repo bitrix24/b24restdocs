@@ -1,0 +1,17 @@
+title: Shipment Table Section
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Item to Shipment Table Section
+    href: sale-shipment-item-add.md
+  - name: Update Item in Shipment Table Section
+    href: sale-shipment-item-update.md
+  - name: Access Item Fields
+    href: sale-shipment-item-get.md
+  - name: Retrieve List of Items in Shipment Table Section
+    href: sale-shipment-item-list.md
+  - name: Remove Item from Collection
+    href: sale-shipment-item-delete.md
+  - name: Get Fields of Shipment Table Section
+    href: sale-shipment-item-get-fields.md

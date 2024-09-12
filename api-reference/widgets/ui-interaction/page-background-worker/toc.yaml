@@ -1,0 +1,25 @@
+title: Integration of a Custom WebRTC Client
+href: index.md
+items: 
+  - name: WebRTC Integration Scenario
+    href: index.md
+  - name: Call Card
+    href: card.md
+  - name: Mute the Operator's Microphone from the Application
+    href: call-card-set-mute.md
+  - name: Put the Call on Hold from the Application
+    href: call-card-set-hold.md
+  - name: Change the Call Card Interface State from the Application
+    href: call-card-set-ui-state.md
+  - name: Get a List of Available Call Card Interface States
+    href: call-card-get-list-ui-states.md
+  - name: Change the Call Card Title from the Application
+    href: call-card-set-card-title.md
+  - name: Change the Text in the Center of the Call Card from the Application
+    href: call-card-set-status-text.md
+  - name: Close the Call Card from the Application
+    href: call-card-close.md
+  - name: Events
+    include:
+      path: events/toc.yaml
+      mode: link

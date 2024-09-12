@@ -1,0 +1,29 @@
+title: Disk
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Version
+    include:
+      path: version/toc.yaml
+      mode: link
+  - name: Folder
+    include:
+      path: folder/toc.yaml
+      mode: link
+  - name: Access Permissions
+    include:
+      path: rights/toc.yaml
+      mode: link
+  - name: Attached File
+    include:
+      path: attached-object/toc.yaml
+      mode: link
+  - name: File
+    include:
+      path: file/toc.yaml
+      mode: link
+  - name: Storage
+    include:
+      path: storage/toc.yaml
+      mode: link

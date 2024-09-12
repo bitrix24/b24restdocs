@@ -1,0 +1,21 @@
+title: Log Record Journal
+href: index.md
+items:
+  - name: Log Record Journal
+    href: index.md
+  - name: Add Log Entry
+    href: crm-timeline-logmessage-add.md
+  - name: Get Log Entry Information
+    href: crm-timeline-logmessage-get.md
+  - name: Get List of Timeline Log Entries
+    href: crm-timeline-logmessage-list.md
+  - name: Delete Entry
+    href: crm-timeline-logmessage-delete.md
+  - name: Icons
+    include:
+      path: icons/b24-toc.yaml
+      mode: link
+  - name: Logos
+    include:
+      path: logo/b24-toc.yaml
+      mode: link

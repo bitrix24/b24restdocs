@@ -1,0 +1,7 @@
+title: Scopes
+href: permissions.md
+items: 
+  - name: Access permissions for methods 
+    href: permissions.md
+  - name: Methods with confirmation
+    href: confirmation.md

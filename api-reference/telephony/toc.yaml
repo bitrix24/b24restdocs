@@ -1,0 +1,39 @@
+title: Telephony
+href: index.md
+items: 
+  - name: About Telephony in Bitrix24
+    href: index.md
+  - name: Register a Line/Number
+    href: telephony-external-line-add.md
+  - name: Change a Line/Number
+    href: telephony-external-line-update.md  
+  - name: Get a List of Lines/Numbers
+    href: telephony-external-line-get.md
+  - name: Delete a Line/Number
+    href: telephony-external-line-delete.md
+  - name: Find a Client in CRM by Phone Number
+    href: telephony-external-call-search-crm-entities.md
+  - name: Register Call Start
+    href: telephony-external-call-register.md
+  - name: Open Call Detail Form for User
+    href: telephony-external-call-show.md
+  - name: Hide Call Detail Form for User
+    href: telephony-external-call-hide.md
+  - name: End Call
+    href: telephony-external-call-finish.md
+  - name: Attach Call Recording
+    href: telephony-external-call-attach-record.md
+  - name: Add Transcription of Recording to Call
+    href: telephony-call-attach-transcription.md
+  - name: Events
+    include:
+      path: events/toc.yaml
+      mode: link
+  - name: SIP and Built-in Telephony
+    include:
+      path: voximplant/toc.yaml
+      mode: link
+  - name: Widgets
+    href: widgets.md
+  - name: Get a List of Calls
+    href: voximplant-statistic-get.md

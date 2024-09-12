@@ -1,0 +1,25 @@
+title: Delivery Services
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Delivery Services
+    include:
+      path: delivery/b24-toc.yaml
+      mode: link
+  - name: Delivery Service Handlers
+    include:
+      path: handler/b24-toc.yaml
+      mode: link
+  - name: Additional Services
+    include:
+      path: extra-service/b24-toc.yaml
+      mode: link
+  - name: Transportation Requests
+    include:
+      path: delivery-request/b24-toc.yaml
+      mode: link
+  - name: Webhooks
+    include:
+      path: webhooks/b24-toc.yaml
+      mode: link

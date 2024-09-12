@@ -1,0 +1,17 @@
+title: Widgets
+href: index.md
+items:
+  - name: Widgets for the new chat
+    href: index.md
+  - name: General information on all embedding points
+    href: placement-info.md
+  - name: Widget in the left chat menu
+    href: im-navigation.md
+  - name: Widget panel above the message input field
+    href: im-textarea.md
+  - name: Chat sidebar widget
+    href: im-sidebar.md
+  - name: Widget as a context menu item for messages
+    href: im-context-menu.md
+  - name: Widget in the emoji tool
+    href: im-smiles-selector.md

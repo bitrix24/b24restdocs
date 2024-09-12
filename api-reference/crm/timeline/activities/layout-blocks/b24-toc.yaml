@@ -1,0 +1,11 @@
+title: Additional Content Blocks
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Install Additional Content Blocks Set
+    href: crm-activity-layout-blocks-set.md
+  - name: Retrieve Additional Content Blocks Set
+    href: crm-activity-layout-blocks-get.md
+  - name: Delete Additional Content Blocks Set
+    href: crm-activity-layout-blocks-delete.md

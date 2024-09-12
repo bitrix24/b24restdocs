@@ -1,0 +1,8 @@
+title: Widgets in Workgroups/Projects
+items: 
+  - name: Main Dropdown Menu Item of the Project 
+    href: index.md
+  - name: Dropdown Menu Item Above the Task List 
+    href: toolbar.md
+  - name: Main Dropdown Menu Item Next to Automation Rules Settings 
+    href: robot-designer-toolbar.md

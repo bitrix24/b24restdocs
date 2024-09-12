@@ -1,0 +1,47 @@
+title: Deals
+href: index.md
+items:
+  - name: About Deals in Bitrix24
+    href: index.md
+  - name: Get Deal Fields
+    href: crm-deal-fields.md
+  - name: Create a New Deal
+    href: crm-deal-add.md
+  - name: Update a Deal
+    href: crm-deal-update.md
+  - name: Get Deal by Id
+    href: crm-deal-get.md
+  - name: Get List of Deals
+    href: crm-deal-list.md
+  - name: Delete a Deal
+    href: crm-deal-delete.md
+  - name: Add Products to a Deal
+    href: crm-deal-productrows-set.md
+  - name: Get Deal Products
+    href: crm-deal-productrows-get.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link
+  - name: Recurring Deals
+    include:
+      path: recurring-deals/b24-toc.yaml
+      mode: link
+  - name: Custom Fields
+    include:
+      path: user-defined-fields/b24-toc.yaml
+      mode: link
+  - name: Contacts for a Deal
+    include:
+      path: contacts/b24-toc.yaml
+      mode: link
+  - name: Deal Movement History
+    href: deal-stage-history.md     
+  - name: Widgets
+    href: widgets.md
+  - name: Sales Funnels in Deals
+    href: deal-categories.md
+  - name: Managing Deal Cards
+    include:
+      path: custom-form/b24-toc.yaml
+      mode: link  

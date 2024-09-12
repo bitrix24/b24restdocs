@@ -1,0 +1,29 @@
+title: Payments and Deliveries
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Payment
+    href: crm-item-payment-add.md
+  - name: Update Payment
+    href: crm-item-payment-update.md
+  - name: Get Payment by ID
+    href: crm-item-payment-get.md
+  - name: Get List of Payments
+    href: crm-item-payment-list.md
+  - name: Delete Payment
+    href: crm-item-payment-delete.md
+  - name: Change Status to "Paid"
+    href: crm-item-payment-pay.md
+  - name: Change Status to "Unpaid"
+    href: crm-item-payment-unpay.md
+  - name: Generate Link for Specific Payment
+    href: salescenter-payment-get-public-url.md
+  - name: Product Items in Payment
+    include:
+      path: products-in-payment/b24-toc.yaml
+      mode: link
+  - name: Deliveries in Payments
+    include:
+      path: delivery-in-payment/b24-toc.yaml
+      mode: link

@@ -1,0 +1,21 @@
+title: Price
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Price Resource
+    href: resource.md
+  - name: Add Price
+    href: catalog-price-add.md
+  - name: Delete Price
+    href: catalog-price-delete.md
+  - name: Get Price Field Values
+    href: catalog-price-get.md
+  - name: Get Price Fields
+    href: catalog-price-get-fields.md
+  - name: Get Price List
+    href: catalog-price-list.md
+  - name: Modify Price Collection Items
+    href: catalog-price-modify.md
+  - name: Update Price
+    href: catalog-price-update.md

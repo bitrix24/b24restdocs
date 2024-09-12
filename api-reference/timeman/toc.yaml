@@ -1,0 +1,21 @@
+title: Time Tracking
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Basic Methods
+    include:
+      path: base/toc.yaml
+      mode: link
+  - name: Office Networks
+    include:
+      path: networkrange/toc.yaml
+      mode: link
+  - name: Time Control
+    include:
+      path: timecontrol/toc.yaml
+      mode: link
+  - name: Work Schedule
+    include:
+      path: schedule/toc.yaml
+      mode: link

@@ -1,0 +1,13 @@
+title: Binding Price Types to Customer Groups
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Binding
+    href: catalog-price-type-group-add.md
+  - name: Remove Binding
+    href: catalog-price-type-group-delete.md
+  - name: Get Binding Fields
+    href: catalog-price-type-group-get-fields.md
+  - name: Get List of Bindings
+    href: catalog-price-type-group-list.md

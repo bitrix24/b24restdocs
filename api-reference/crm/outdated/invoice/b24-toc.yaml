@@ -1,0 +1,57 @@
+title: Invoices (old)
+href: index.md
+items:
+  - name: About CRM Invoices
+    href: index.md
+  - name: List of Methods
+    href: methods.md
+  - name: Add Invoice
+    href: crm-invoice-add.md
+  - name: Delete Invoice
+    href: crm-invoice-delete.md
+  - name: Get Invoice Fields and Included Items
+    href: crm-invoice-fields.md
+  - name: Get Invoice by ID
+    href: crm-invoice-get.md
+  - name: Get List of Invoices
+    href: crm-invoice-list.md
+  - name: Add Settings for Recurring Invoice
+    href: crm-invoice-recurring-add.md
+  - name: Delete Settings for Recurring Invoice
+    href: crm-invoice-recurring-delete.md
+  - name: Create New Invoice from Template
+    href: crm-invoice-recurring-expose.md
+  - name: Get Fields for Recurring Invoice Template Settings
+    href: crm-invoice-recurring-fields.md
+  - name: Get Recurring Invoice Settings by ID
+    href: crm-invoice-recurring-get.md
+  - name: Get List of Recurring Invoice Settings by Filter
+    href: crm-invoice-recurring-list.md
+  - name: Update Settings for Recurring Invoice
+    href: crm-invoice-recurring-update.md
+  - name: Update Invoice
+    href: crm-invoice-update.md
+  - name: Create Custom Field for Invoices
+    href: crm-invoice-user-field-add.md
+  - name: Delete Custom Field for Invoices
+    href: crm-invoice-user-field-delete.md
+  - name: Get Custom Field for Invoices by ID
+    href: crm-invoice-user-field-get.md
+  - name: Get List of Custom Fields for Invoices by Filter
+    href: crm-invoice-user-field-list.md
+  - name: Update Custom Field for Invoices
+    href: crm-invoice-user-field-update.md
+  - name: Get Field for Payment Methods
+    href: crm-pay-system-fields.md
+  - name: Get List of Payment Methods
+    href: crm-pay-system-list.md
+  - name: Get Fields for Payer Types
+    href: crm-person-type-fields.md
+  - name: Get List of Payer Types
+    href: crm-person-type-list.md
+  - name: Get Link to Invoice
+    href: crm-invoice-get-external-link.md
+  - name: Events 
+    include:
+      path: events-invoice/b24-toc.yaml
+      mode: link

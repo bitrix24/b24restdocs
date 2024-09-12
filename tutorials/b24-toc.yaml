@@ -1,0 +1,29 @@
+title: Typical Use-cases and Scenarios
+href: index.md
+items:
+  - name: Overview
+    href: index.md
+  - name: CRM
+    include:
+      path: crm/b24-toc.yaml
+      mode: link
+  - name: Online sales
+    include:
+      path: sale/b24-toc.yaml
+      mode: link
+  - name: Workflows
+    include:
+      path: bizproc/b24-toc.yaml
+      mode: link
+  - name: Bitrix24 CoPilot
+    include:
+      path: ai/b24-toc.yaml
+      mode: link
+  - name: Chatbots
+    include:
+      path: chat-bots/b24-toc.yaml
+      mode: link
+  - name: Telephony
+    include:
+      path: telephony/b24-toc.yaml
+      mode: link

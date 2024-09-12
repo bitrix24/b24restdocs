@@ -1,0 +1,15 @@
+title: Get Lists
+href: index.md
+items: 
+  - name: How to Get Lists
+    href: index.md
+  - name: How to Search in CRM by Phone and E-mail
+    href: search-by-phone-and-email.md
+  - name: How to Get a List of CRM Activities by Contact
+    href: get-activity-list-by-contact.md
+  - name: How to Get a List of Lead Statuses with Semantics
+    href: lead-statuses-with-semantics.md
+  - name: How to Get a List of Estimate Statuses
+    href: quote-statuses-with-semantics.md
+  - name: How to Get a Sales Funnel for a Given Direction
+    href: how-to-get-deal-funnels.md

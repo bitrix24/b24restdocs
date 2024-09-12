@@ -1,0 +1,9 @@
+title: Oauth in Bitrix24
+href: index.md
+items: 
+  - name: Full Protocol
+    href: index.md
+  - name: Simplified Version
+    href: simple-way.md
+  - name: Automatic Token Renewal
+    href: auto-renewal.md

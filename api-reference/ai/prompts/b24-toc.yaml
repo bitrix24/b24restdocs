@@ -1,0 +1,13 @@
+title: Prompts
+href: index.md
+items:
+  - name: About Prompts for CoPilot
+    href: index.md 
+  - name: Add Prompt
+    href: ai-prompt-register.md
+  - name: Remove Prompt
+    href: ai-prompt-unregister.md
+  - name: Markers in Prompts
+    href: markers.md
+  - name: Conditions in Prompts
+    href: conditions.md

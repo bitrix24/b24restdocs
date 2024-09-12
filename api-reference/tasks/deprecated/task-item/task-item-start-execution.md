@@ -1,0 +1,78 @@
+# Translate task to "in progress" status task.item.startexecution
+
+> Scope: [`task`](../../../scopes/permissions.md)
+>
+> Who can execute the method: any user
+
+This method changes the status of the task to "in progress".
+
+{% note warning %}
+
+The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+
+{% endnote %}
+
+
+## Method Parameters
+
+#|
+|| **Name** | **Description** ||
+|| **TASKID** | Task identifier ||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"taskId":3}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.item.startexecution
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"taskId":3,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/task.item.startexecution
+    ```
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.item.startexecution',
+        [3],
+        function(result)
+        {
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'task.item.startexecution',
+        ['taskId' => 3]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}

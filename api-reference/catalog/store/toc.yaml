@@ -1,0 +1,19 @@
+title: Warehouse
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Warehouse Resource
+    href: resource.md
+  - name: Add Warehouse
+    href: catalog-store-add.md
+  - name: Delete Warehouse
+    href: catalog-store-delete.md
+  - name: Get Warehouse Field Values
+    href: catalog-store-get.md
+  - name: Get Warehouse Fields
+    href: catalog-store-get-fields.md
+  - name: Get List of Warehouses
+    href: catalog-store-list.md
+  - name: Update Warehouse Fields
+    href: catalog-store-update.md

@@ -1,0 +1,15 @@
+title: Storage
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get Parameters or List All Storage
+    href: entity-get.md
+  - name: Create Data Storage
+    href: entity-add.md
+  - name: Modify Storage Parameters
+    href: entity-update.md
+  - name: Delete Storage
+    href: entity-delete.md
+  - name: Get or Modify Access Permissions
+    href: entity-rights.md

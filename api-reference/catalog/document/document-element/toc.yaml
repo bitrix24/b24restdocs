@@ -1,0 +1,17 @@
+title: Warehouse Accounting Document Items
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Item to Warehouse Accounting Document
+    href: catalog-document-element-add.md
+  - name: Remove Item from Warehouse Accounting Document
+    href: catalog-document-element-delete.md
+  - name: Get List of Fields (Deprecated)
+    href: catalog-document-element-fields.md
+  - name: Get List of Item Fields in Document
+    href: catalog-document-element-get-fields.md
+  - name: Get List of Items
+    href: catalog-document-element-list.md
+  - name: Update Item in Document
+    href: catalog-document-element-update.md

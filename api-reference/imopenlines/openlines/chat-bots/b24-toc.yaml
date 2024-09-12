@@ -1,0 +1,13 @@
+title: Chatbots
+href: index.md
+items: 
+  - name: Chatbots in Open Lines
+    href: index.md
+  - name: Send a Welcome Message
+    href: imopenlines-bot-session-message-send.md
+  - name: Transfer the Dialogue to an Available Operator
+    href: imopenlines-bot-session-operator.md
+  - name: Transfer the Dialogue to an Operator by Id
+    href: imopenlines-bot-session-transfer.md
+  - name: End the Dialogue
+    href: imopenlines-bot-session-finish.md

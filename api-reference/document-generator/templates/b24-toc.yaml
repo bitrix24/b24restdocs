@@ -1,0 +1,15 @@
+title: Document Templates
+href: index.md
+items: 
+  - name: Upload Template
+    href: index.md
+  - name: Edit Template
+    href: document-generator-template-update.md
+  - name: Get Template by ID
+    href: document-generator-template-get.md
+  - name: Get List of Templates
+    href: document-generator-template-list.md
+  - name: Delete Template
+    href: document-generator-template-delete.md
+  - name: Get List of Template Fields
+    href: document-generator-template-get-fields.md

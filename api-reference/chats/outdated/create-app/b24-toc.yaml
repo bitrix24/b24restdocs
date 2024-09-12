@@ -1,0 +1,11 @@
+title: Chat Applications
+href: index.md
+items:
+  - name: About Creating an Application
+    href: index.md
+  - name: Register a Chat Application
+    href: imbot-app-register.md
+  - name: Update Application Information in Chat
+    href: imbot-app-update.md
+  - name: Unregister a Chat Application
+    href: imbot-app-unregister.md

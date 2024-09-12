@@ -1,0 +1,25 @@
+title: Events
+href: index.md
+items: 
+  - name: Overview of Events
+    href: index.md
+  - name: After Saving the Order
+    href: on-sale-order-saved.md
+  - name: Before Deleting the Order
+    href: on-sale-before-order-delete.md
+  - name: After Saving the Order Property
+    href: on-property-value-entity-saved.md
+  - name: After Saving the Payment
+    href: on-payment-entity-saved.md
+  - name: After Saving the Shipment
+    href: on-shipment-entity-saved.md
+  - name: After Saving the Order
+    href: on-order-entity-saved.md
+  - name: When Deleting the Order Property from the Database
+    href: on-property-value-deleted.md
+  - name: When Deleting the Payment from the Database
+    href: on-payment-deleted.md
+  - name: When Deleting the Shipment from the Database
+    href: on-shipment-deleted.md
+  - name: When Deleting the Order from the Database
+    href: on-order-deleted.md

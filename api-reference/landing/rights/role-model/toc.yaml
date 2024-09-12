@@ -1,0 +1,13 @@
+title: Role Model
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get List of Roles
+    href: landing-role-get-list.md
+  - name: Get List of Sites with Access Permissions for Role
+    href: landing-role-get-rights.md
+  - name: Set Access Codes for Role
+    href: landing-role-set-access-codes.md
+  - name: Set Role Permissions for List of Sites
+    href: landing-role-set-rights.md

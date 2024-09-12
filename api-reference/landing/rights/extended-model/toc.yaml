@@ -1,0 +1,9 @@
+title: Extended Model
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Obtain Access Permissions
+    href: landing-site-get-rights.md
+  - name: Set Access Permissions
+    href: landing-site-set-rights.md

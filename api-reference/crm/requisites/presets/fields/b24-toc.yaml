@@ -1,0 +1,19 @@
+title: Template Requisite Fields
+href: index.md
+items:
+  - name: Working with Template Requisite Fields
+    href: index.md
+  - name: Add Custom Field to Requisite Template
+    href: crm-requisite-preset-field-add.md
+  - name: Update Custom Field of a Given Requisite Template
+    href: crm-requisite-preset-field-update.md
+  - name: Get Fields Available for Addition to Requisite Template
+    href: crm-requisite-preset-field-available-to-add.md
+  - name: Get Custom Field of Requisite Template by ID
+    href: crm-requisite-preset-field-get.md
+  - name: Get List of All Custom Fields of a Given Requisite Template
+    href: crm-requisite-preset-field-list.md
+  - name: Remove Custom Field from Requisite Template
+    href: crm-requisite-preset-field-delete.md
+  - name: Get Description of Custom Fields of Requisite Template
+    href: crm-requisite-preset-field-fields.md

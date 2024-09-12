@@ -1,0 +1,17 @@
+title: Data Storage
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Storage
+    include:
+      path: entities/toc.yaml
+      mode: link
+  - name: Sections
+    include:
+      path: sections/toc.yaml
+      mode: link
+  - name: Elements
+    include:
+      path: items/toc.yaml
+      mode: link

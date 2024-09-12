@@ -1,0 +1,19 @@
+title: Kanban
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create a Scrum Kanban Stage
+    href: tasks-api-scrum-kanban-add-stage.md
+  - name: Update a Scrum Kanban Stage
+    href: tasks-api-scrum-kanban-update-stage.md
+  - name: Add a Task to the Scrum Kanban
+    href: tasks-api-scrum-kanban-add-task.md
+  - name: Delete a Stage
+    href: tasks-api-scrum-kanban-delete-stage.md
+  - name: Remove a Task from the Scrum Kanban
+    href: tasks-api-scrum-kanban-delete-task.md
+  - name: Get List of Available Fields for a Kanban Stage
+    href: tasks-api-scrum-kanban-get-fields.md
+  - name: Retrieve a Kanban Stage by Sprint ID
+    href: tasks-api-scrum-kanban-get-stages.md
