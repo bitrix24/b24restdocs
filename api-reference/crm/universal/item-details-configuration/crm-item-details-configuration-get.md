@@ -1,10 +1,8 @@
-# Get Item Detail Parameters
+# Get Parameters of CRM Item Detail Configuration
 
-> Method name: **crm.item.details.configuration.get**
->
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: permission checks during method execution depend on the provided data:
+> Who can execute the method: access rights during method execution depend on the provided data:
 >   - Any user has the right to access their own and shared settings
 >   - A user can access another user's settings only if they are an administrator
 
@@ -33,7 +31,7 @@ Required only when requesting personal settings
 - `'P'` — personal settings
 - `'C'` — shared settings
 
-The default value is `'P'`
+By default, the value is `'P'`
 
 ||
 || **extras**
@@ -46,12 +44,12 @@ The `extras` parameter depends on the CRM entity.
 
 #|
 || **CRM Entity** | **Name** | **Description** ||
-|| **SPA** | `categoryId` | Identifier of the SPA Sales Funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
+|| **SPA** | `categoryId` | Identifier of the SPA funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
-If not specified, the default funnel identifier for this SPA will be used. ||
+If not specified, the default funnel identifier for this SPA will be used ||
 || **Deal** | `dealCategoryId` | Identifier of the deal funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
-If not specified, the default funnel identifier for deals will be used. ||
+If not specified, the default funnel identifier for deals will be used ||
 || **Lead** | `leadCustomerType` | Type of leads. 
 
 Possible values:
@@ -64,7 +62,7 @@ Possible values:
 
 {% include [Examples Note](../../../../_includes/examples.md) %}
 
-1. Retrieve the shared configuration of item details for deals in the funnel with `id = 9`, for the user with `id = 1`
+1. Get the shared configuration of item details for deals in the funnel with `id = 9`, for the user with `id = 1`
 
     {% list tabs %}
 
@@ -138,7 +136,7 @@ Possible values:
 
     {% endlist %}
 
-2. Retrieve the personal configuration of item details for the SPA with `entityTypeId = 1032` in the funnel with `id = 5`
+2. Get the personal configuration of item details for the SPA with `entityTypeId = 1032` in the funnel with `id = 5`
 
     {% list tabs %}
 
@@ -340,7 +338,7 @@ HTTP Status: **200**
 
 #### section
 
-Describes a specific section with fields within the item detail form
+Describes an individual section with fields within the item detail form
 
 #|
 || **Name**
@@ -357,7 +355,7 @@ Describes a specific section with fields within the item detail form
 
 #### section_element
 
-Configuration of a specific field within a section
+Configuration of an individual field within a section
 
 #|
 || **Name**
@@ -389,7 +387,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeID' is not defined | Required parameter `entityTypeId` is missing ||
+|| Empty value | Parameter 'entityTypeID' is not defined | Required parameter `entityTypeId` is not provided ||
 || Empty value | The entity type '`entityTypeName`' is not supported in the current context. | The method does not support this entity type || 
 || Empty value | Access denied. | The user does not have administrative rights ||
 |#

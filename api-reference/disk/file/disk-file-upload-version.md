@@ -6,7 +6,7 @@
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no error response is provided
+- no response in case of an error
 
 {% endnote %}
 
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -31,7 +31,7 @@ The method `disk.file.uploadversion` uploads a new version of a file.
 || **id**
 [`unknown`](../../data-types.md) | File identifier. ||
 || **fileContent**
-[`unknown`](../../data-types.md) | Similar to `DETAIL_PICTURE` in the example [File Processing](../../bx24-js-sdk/how-to-call-rest-methods/files.md). ||
+[`unknown`](../../data-types.md) | Similar to `DETAIL_PICTURE` in the example [File Handling](../../bx24-js-sdk/how-to-call-rest-methods/files.md). ||
 |#
 
 ## Example

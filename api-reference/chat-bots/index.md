@@ -34,12 +34,12 @@ What are chatbots, why are they needed, and why should we engage in their develo
 
 {% endnote %}
 
-This trend is largely being shaped abroad — there are a vast number of bots for Slack or Telegram that solve a wide range of tasks — from searching for airline tickets to managing small teams of developers. To access all these features, users don’t even need to leave their preferred messenger.
+This trend is largely being shaped abroad — there are a vast number of bots for Slack or Telegram that solve a wide range of tasks — from finding airline tickets to managing small teams of developers. To access all this wealth, users don’t even need to leave their preferred messenger.
 
 **What can chatbots do?**
 
 - **Routine replacement** — allows certain functions to be performed without human involvement, and the work will be done instantly and flawlessly;
-- **Searching and aggregating** news, analytics, data (Data-Driven Collaboration), making data available at the decision-making point — in messengers and to all participants who need it;
+- **Searching and aggregating** news, analytics, data (Data-Driven Collaboration), data is available at the decision-making point — in messengers and to all participants who need it;
 - **E-commerce** — for spontaneous purchases without lengthy searches, mobile ecommerce + visual search + chatbots, for communicating with customers;
 - **First line** of customer interaction, assistants, consultants, standard questions, telephony;
 - **Just for Fun** — simply for entertainment.
@@ -48,9 +48,9 @@ This trend is largely being shaped abroad — there are a vast number of bots fo
 
 In _Bitrix24_, chats (both individual and group) are part of a much more complex ecosystem, one of the main communication channels for users, fully integrated with other business tools. In this context, the use of chatbots opens up significantly more interesting prospects for business users, as _Bitrix24_ (in the browser, desktop, and mobile applications) is already the primary workplace for a large number of companies.
 
-It is very easy to write a chatbot that, for example, will notify the necessary users in the chat about urgent information regarding the indicators of an internal accounting system integrated with _Bitrix24_. You can create a chatbot that helps couriers conveniently process orders based on _Bitrix24 CRM_ deals on a mobile device directly in the messenger — and there will be no need to write a separate mobile application for them.
+It is very easy to write a chatbot that, for example, will notify the necessary users in the chat about urgent information regarding the indicators of the internal accounting system integrated with _Bitrix24_. You can create a chatbot that will help couriers conveniently process orders based on _Bitrix24 CRM_ deals on a mobile device directly in the messenger — and there will be no need to write a separate mobile application for them.
 
-Developing a chatbot in _Bitrix24_ is a very promising option for quick and convenient automation of specific workflows. Convenient because, as we have already established, obtaining information and managing through a messenger is what the mass user currently prefers. And quick because developing a chatbot for _Bitrix24_ is quite a straightforward process.
+Developing a chatbot in _Bitrix24_ is a very promising option for quick and convenient automation of specific workflows. Convenient because, as we have already established, obtaining information and managing through a messenger is what the mass user currently prefers. And quick — because developing a chatbot for _Bitrix24_ is quite a straightforward process.
 
 {% note info %}
 
@@ -76,11 +76,11 @@ A chatbot:
 
 Slash commands allow you to quickly create requests to output or obtain information, format messages.
 
-![Command Example](./_images/command1.png)
+![Example command](./_images/command1.png)
 
 {% note info %}
 
-You can read more about working with commands [here](./commands/index.md).
+You can read more about working with commands [here](/learning/course/index.php?COURSE_ID=93&CHAPTER_ID=07877).
 
 {% endnote %}
 
@@ -88,21 +88,43 @@ You can read more about working with commands [here](./commands/index.md).
 
 The capabilities of [keyboards](*keyboard) are quite broad.
 
-**Giphy**
-   
-The **More** button allows you to browse other images on the same topic without re-entering the search term:
+1. **EchoBot**
 
-![More Images](./_images/keyboard2.png)
+    Page navigation, buttons when calling the "Help" command
+
+    @[youtube](2v5MUeVSBX4)
+
+2. **Martha**
+   
+    Just tell Martha "Play with me!". The keyboard is used as a game board:
+
+    @[youtube](qSDKsDwJsBI)
+
+3. **Giphy**
+   
+    The **More** button allows you to view other images on the same topic without re-entering the search term:
+
+    ![More images](./_images/keyboard2.png)
 
 {% note info %}
 
-You can read more about working with keyboards [here](../chats/messages/keyboards.md).
+You can read more about working with keyboards [here](/learning/course/index.php?COURSE_ID=93&LESSON_ID=7683).
 
 {% endnote %}
 
 ### Chats
 
-Chatbots can communicate in chat almost like real people. They can also remind users of various events (current tasks, meetings) or provide reference information. In addition to writing in chats, chatbots can also create such chats and automatically invite people to them, for example, for discussing a particular task.
+Chatbots can communicate in chat almost like live people. They can also remind about various events (current tasks, meetings) or provide reference information. In addition to being able to write in chats, chatbots can also create such chats and automatically invite people to them, for example, to discuss a particular task.
+
+{% if build == 'dev' %}
+
+{% note alert "TO-DO _not deployed to prod_" %}
+
+![Chats](./_images/features_chat1_sm.png)
+
+{% endnote %}
+
+{% endif %}
 
 {% note info %}
 
@@ -112,7 +134,7 @@ You can read more about working with chats [here](../chats/index.md).
 
 ### Notifications
 
-Notifications from chatbots can be useful and informative. They can consist of several blocks of various information from external systems.
+Notifications from the chatbot can be useful and informative. They can consist of several blocks of various information from external systems.
 
 ![Notifications](./_images/attach1.png)
 
@@ -128,38 +150,50 @@ A chatbot publishes its messages in the chat via the Rest API, receives response
 
 The lifecycle of a chatbot looks like this:
 
-![Chatbot Lifecycle Diagram](./_images/bot_life1.png)
+![Chatbot lifecycle](./_images/bot_life1.png)
 
-## Creating Your Own Application
+## Creating Your Application
 
-The main thing we need to understand about chatbots is that their logic is usually built on responding to certain actions from the user and the system.
+The main thing we need to understand about chatbots is that their logic is usually built on responding to certain actions of the user and the system.
 
 We have 6 events that fully cover the necessary spectrum of reactions:
 
-- [ONAPPINSTALL](../common/events/on-app-install.md) — event for installing an application with a chatbot.
-- [ONAPPUPDATE](./events/on-app-update.md) — event for updating an application.
-- [ONIMJOINCHAT](./chats/events/on-imbot-join-chat.md) — event after inviting the chatbot "to the conversation," i.e., either when called by a user in an individual chat or when connected to a group chat.
+- [ONAPPINSTALL](../common/events/on-app-install.md) — event for installing the application with the chatbot.
+- [ONAPPUPDATE](./events/on-app-update.md) — event for updating the application.
+- [ONIMJOINCHAT](./chats/events/on-imbot-join-chat.md) — event after inviting the chatbot "to the conversation", i.e., either when called by a user in an individual chat or when connected to a group chat.
 - [ONIMBOTMESSAGEADD](./messages/events/index.md) — event after a message is sent from a user to the chatbot (in a group chat, with an explicit mention of the bot).
 - [ONIMCOMMANDADD](./commands/events/index.md) — event after a command is sent from a user to the chatbot (in personal correspondence with it, or in a group chat (if the command is global, it may not participate in the chat)).
-- [ONIMBOTDELETE](./chats/events/on-imbot-delete.md) — event after the application is deleted. This event is triggered simultaneously with [OnAppUninstall](../common/events/on-app-uninstall.md).
+- [ONIMBOTDELETE](./chats/events/on-imbot-delete.md) — event after the application is deleted. This event is triggered in parallel with [OnAppUninstall](../common/events/on-app-uninstall.md).
 
 In other words, we need to write handlers for the specified events to implement simple logic:
 
 1. Register the chatbot on the user's account upon installation.
-2. Display a greeting-help message from the chatbot when it is invited to the chat.
-3. Learn to analyze the text of the message from the user and send something in response, where analysis means a simple "command line parsing," not a lexical analysis of natural language.
+2. Display a greeting-help message from the chatbot when invited to the chat.
+3. Learn to analyze the text of the message from the user and send something in response, where analysis implies a simple "command line parsing," not a lexical analysis of natural language.
 
 For this, we have a set of simple methods added to the REST API. We will only need two to get started:
 
 - [imbot.register](./imbot-register.md) – registering the chatbot.
 - [imbot.message.add](./messages/imbot-message-add.md) – sending a message from the chatbot.
 
-It is clear that in the event handler [ONAPPINSTALL](../common/events/on-app-install.md) we will call the method [imbot.register](./imbot-register.md) to add the chatbot to the current account, and then in the event [`ONIMJOINCHAT`](./chats/events/on-imbot-join-chat.md) we will use the method [imbot.message.add](./messages/imbot-message-add.md) to output help about the chatbot's functionality, and in the handler [`ONIMBOTMESSAGEADD`](./messages/events/index.md) we will respond to the user using the same [imbot.message.add](./messages/imbot-message-add.md). Nothing complicated, right?
+It is clear that in the handler for the event [ONAPPINSTALL](../common/events/on-app-install.md), we will call the method [imbot.register](./imbot-register.md) to add the chatbot to the current account, and then in the event [ONIMJOINCHAT](./chats/events/on-imbot-join-chat.md), we will use the method [imbot.message.add](./messages/imbot-message-add.md) to output help about the chatbot's functionality, and in the handler [ONIMBOTMESSAGEADD](./messages/events/index.md), we will respond to the user using the same [imbot.message.add](./messages/imbot-message-add.md). Nothing complicated, right?
 
 You also won’t have to implement a full OAuth 2.0 in the application, as the parameters required for authorization come to the handlers in the **$_REQUEST** array.
 
+## Possible Types of Bitrix24 Chatbots
+
+For a clearer understanding of what chatbots can do on the Bitrix24 platform, here are video examples of the capabilities of already ready chatbots. The types of chatbots are conditional; you can create a chatbot that combines 2 or 3 types:
+
+- Personal Assistant
+- Reference System
+- Searching Assistant
+- Support bot
+- Working with Services
+- Working with Open Lines
+- Entertainment
+
 ## See Also
 
-You can view the complete list of chatbots for the Bitrix24 platform in the [corresponding section](https://www.bitrix24.com/apps/?category=chat_bots) of the Bitrix24 Market.
+You can see the complete list of chatbots for the Bitrix24 platform in the [corresponding section](https://www.bitrix24.com/apps/?category=chat_bots) of the Bitrix24 Market.
 
-[*keyboard]: A [keyboard](../chats/messages/keyboards.md) is a set of buttons, each button can consist of specific keys.
+[*keyboard]: [Keyboard](../chats/messages/keyboards.md) — is a set of buttons, each button can consist of specific keys.

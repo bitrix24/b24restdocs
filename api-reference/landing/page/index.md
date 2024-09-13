@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - links to pages that have not yet been created are not provided (view template)
 
@@ -22,15 +22,15 @@ Some data may be missing here — we will complete it soon.
 
 || **Fields** | **Description** | **Read** | **Write** ||
 || **ID**
-[`unknown`](../../data-types.md) | Page identifier. Created automatically and unique within the database. | Yes | No ||
+[`unknown`](../../data-types.md) | Identifier of the page. Automatically created and unique within the database. | Yes | No ||
 || **CODE^*^**
-[`unknown`](../../data-types.md) | Unique symbolic code for the page. Added to the website address if it is not the main page. | Yes | Yes ||
+[`unknown`](../../data-types.md) | Unique symbolic code of the page. Added to the website address if it is not the main page. | Yes | Yes ||
 || **RULE**
 [`unknown`](../../data-types.md) | Regular expression for displaying the page by mask. For example, the rule `section/([\d]+)` for a page at the root of the site will match all pages of the form `/section/<n>/`, where <n> is any number. | Yes | No ||
 || **ACTIVE**
-[`unknown`](../../data-types.md) | Page activity: Y / N. | Yes | No ||
+[`unknown`](../../data-types.md) | Activity of the page: Y / N. | Yes | No ||
 || **DELETED**
-[`unknown`](../../data-types.md) | Flag for [deleted page](*deleted_page): Y / N.  | Yes | Yes ||
+[`unknown`](../../data-types.md) | Flag [deleted page](*deleted_page): Y / N.  | Yes | Yes ||
 || **TITLE^*^**
 [`unknown`](../../data-types.md) | Title of the page. | Yes | Yes ||
 || **XML_ID**

@@ -5,10 +5,10 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not specified
-- curl examples are missing
-- response in case of error is missing
+- parameter types not specified
+- parameter requirements not specified
+- missing curl examples 
+- missing error response
  
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -26,9 +26,9 @@ Some data may be missing here — we will fill it in shortly
 
 The method `tasks.task.list` returns an array of tasks, each containing an array of fields. Unlike [task.item.list](./deprecated/task-item/task-item-list.md), parameters in the `tasks.task.list` request can be specified in any order, and unnecessary parameters can be omitted.
 
-To retrieve data for all tasks, the user must have admin rights. A department head will only have access to tasks in their branch of the hierarchy.
+To retrieve data for all tasks, the user must have admin rights. A department head will only have access to tasks within their branch of the hierarchy.
 
-Tasks marked as "Favorite" can also be retrieved by setting the filter for the parameter `$filter[::SUBFILTER-PARAMS][FAVORITE]=Y`.
+Tasks marked as "Favorite" can also be retrieved by filtering with the parameter `$filter[::SUBFILTER-PARAMS][FAVORITE]=Y`.
 
 {% note warning %}
 
@@ -79,7 +79,7 @@ In the on-premise version, the list of fields for sorting can be obtained using 
 
 {% endnote %}
 
-The sorting direction can take the following values: 
+Sorting direction can take the following values: 
 
 - **asc** — ascending;
 - **desc** — descending;
@@ -94,7 +94,7 @@ Optional. By default, it is sorted in descending order by task identifier.
 - **CREATED_BY** - creator;
 - **STATUS_CHANGED_BY** - user who last changed the task status;
 - **PRIORITY** - priority;
-- **FORUM_TOPIC_ID** - forum topic identifier;
+- **FORUM_TOPIC_ID** - identifier of the forum topic;
 - **RESPONSIBLE_ID** - performer;
 - **TITLE** - task title (can be searched using the pattern [\%_]);
 - **TAG** - tag;
@@ -132,7 +132,7 @@ Before the name of the filter field, the type of filtering can be specified:
 - ">" - greater than
 - ">=" - greater than or equal to 
 
-*"filter values"* - a single value or an array.
+*"filter values"* - single value or array.
 
 Optional. By default, records are not filtered. ||
 || **select**
@@ -178,20 +178,20 @@ The sorting field can take the following values:
 - **TIME_ESTIMATE** - time spent;
 - **TIME_SPENT_IN_LOGS** - time spent from the change history;
 - **MATCH_WORK_TIME** - skip weekends;
-- **FORUM_TOPIC_ID** - forum topic identifier;
-- **FORUM_ID** - forum identifier;
-- **SITE_ID** - site identifier;
-- **SUBORDINATE** - subordinate's task;
+- **FORUM_TOPIC_ID** - identifier of the forum topic;
+- **FORUM_ID** - identifier of the forum;
+- **SITE_ID** - identifier of the site;
+- **SUBORDINATE** - task of a subordinate;
 - **FAVORITE** - Favorites;
 - **VIEWED_DATE** - date of last view;
 - **SORTING** - sorting index;
-- **DURATION_PLAN** - spent (planned);
-- **DURATION_FACT** - spent (actual);
+- **DURATION_PLAN** - time spent (planned);
+- **DURATION_FACT** - time spent (actual);
 - **DURATION_TYPE** - type of measurement unit in planned duration: days, hours, or minutes.
 
 By default, all **non-computed** fields of the main query table will be returned.
 
-The list of fields can be specified by sending a request to [tasks.task.getFields](tasks-task-get-fields.md). ||
+The list of fields can be refined by sending a request to [tasks.task.getFields](tasks-task-get-fields.md). ||
 || **limit**
 [`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to retrieve more records than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in several requests of 50 records in response. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
 ```js
@@ -224,7 +224,7 @@ BX24.callMethod(
 );
 ```
 
-## Response in case of success
+## Response on success
 
 > 200 OK
 
@@ -263,7 +263,7 @@ BX24.callMethod(
 
 ## Example 2
 
-Output all tasks with the title "task for test", filtering by fields `ID`, `TITLE`, `STATUS`, sorting by the field `ID` (ascending order):
+Output all tasks with the title "task for test", filtering by fields `ID`, `TITLE`, `STATUS`, sorting by the field `ID` (ascending):
 
 ```js
 BX24.callMethod(
@@ -272,6 +272,16 @@ BX24.callMethod(
     function(res){console.log(res.answer.result);}
 );
 ```
+
+{% if build == 'dev' %}
+
+{% note alert "TO-DO _not deployed to prod_" %}
+
+![Result](_images/tasks_task_list-2.png =873x)
+
+{% endnote %}
+
+{% endif %}
 
 ## Example 3
 
@@ -291,7 +301,7 @@ $result = CRest::call(
 
 ## Example 4
 
-### How to get a filtered list of tasks via http request?
+### How to get a filtered list of tasks via an HTTP request?
 
 Task filters by ID, date, status. For the filter `'=ID' => 3`, it is recommended to use [tasks.task.get](.) as it does not have pagination.
 

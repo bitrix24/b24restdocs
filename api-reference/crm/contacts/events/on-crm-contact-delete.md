@@ -2,17 +2,16 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
-> Method name: **onCrmContactDelete**
-> 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can subscribe: any user
 
 The event `onCrmContactDelete` is triggered when a contact is deleted.
+
 
 ## What the handler receives
 
@@ -47,7 +46,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../data-types.md) | Symbolic event code.
 
 In this case — `ONCRMCONTACTDELETE`||
 || **event_handler_id**

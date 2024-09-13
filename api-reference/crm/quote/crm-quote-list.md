@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ Some data may be missing here — we will fill it in shortly.
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of an error is missing
+- response in case of error is missing
 - response in case of success is missing
 
 {% endnote %}
@@ -25,7 +25,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.quote.list` returns a list of estimates based on a filter. It is an implementation of the list method for estimates.
+The method `crm.quote.list` returns a list of estimates based on the filter. It is an implementation of the list method for estimates.
 
 See the description of [list methods](../../how-to-call-rest-api/list-methods-pecularities.md).
 

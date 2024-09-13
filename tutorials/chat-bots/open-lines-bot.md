@@ -1,42 +1,44 @@
-# Example of Creating an Open Channel Chatbot
+# Example of Creating a Chatbot for Open Lines
 
-Design of a chatbot intended for use with *Open Channels* is almost identical to the [standard chatbot](./index.md), but there are two key differences:
+The process of creating a chatbot for *Open Lines* is similar to [creating a regular chatbot](./index.md), but there are two key differences:
 
-1. An *Open Channel* chatbot must have `O` (zero) passed in the `TYPE` parameter when calling [imbot.register](../../api-reference/chat-bots/imbot-register.md) to register a bot.
+1. When creating a chatbot for *Open Lines*, you need to pass `O` in the `TYPE` parameter of [imbot.register](../../api-reference/chat-bots/imbot-register.md).
 
-2. If you want to extend an existing bot to support Open Channels, you have to add a new key `OPENLINE => Y` to enable hybrid mode.
+2. If you need to enhance the capabilities of an existing chatbot, you should pass the new key `OPENLINE => Y`, which will enable the chatbot to operate in hybrid mode.
 
-    In hybrid mode, the chatbot must function correctly in group chats, personal chats, and Open Channels chats. To achieve this, you need to check the `CHAT_ENTITY_TYPE` parameter in all incoming events ([ONIMBOTMESSAGEADD](../../api-reference/chat-bots/messages/events/index.md) and [ONIMBOTJOINCHAT](../../api-reference/chat-bots/chats/events/on-imbot-join-chat.md)) — for *Open Channels*, it should be `CHAT_ENTITY_TYPE => LINES`.
+   In hybrid mode, the chatbot must function correctly in group chats, personal chats, and Open Lines chats. To achieve this, you need to check the `CHAT_ENTITY_TYPE` parameter in all incoming events ([ONIMBOTMESSAGEADD](../../api-reference/chat-bots/messages/events/index.md) and [ONIMBOTJOINCHAT](../../api-reference/chat-bots/chats/events/on-imbot-join-chat.md)) — for *Open Lines*, it should be `CHAT_ENTITY_TYPE => LINES`.
 
-Otherwise, the chatbot application is the same as the standard [chatbot](./index.md).
+In all other respects, it is the familiar and already known [chatbot](./index.md).
 
-For deeper integration with *Open Channels*, an [`imopenlines`](../../api-reference/scopes/permissions.md) scope access permission is required.
+For closer integration with *Open Lines*, you need to have access permissions for the scope [`imopenlines`](../../api-reference/scopes/permissions.md).
 
-This permission enables the use of the commands:
+With such permissions, the following commands will be available:
 
-- [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md) — connects your company's *Open Channel* to the *Bitrix24* account, which enables receiving messages from employees..
-- [imopenlines.bot.session.operator](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-operator.md) — forwards conversation to the first available operator.
-- [imopenlines.bot.session.transfer](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-transfer.md) — forwards conversation to a specified operator.
-- [imopenlines.bot.session.finish](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-finish.md) — finishes current session.
+- [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md) — connecting your company's open line to the *Bitrix24* account, after which employees will be able to message you.
+- [imopenlines.bot.session.operator](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-operator.md) — switching the conversation to an available operator.
+- [imopenlines.bot.session.transfer](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-transfer.md) — transferring the conversation to a specific operator.
+- [imopenlines.bot.session.finish](../../api-reference/imopenlines/openlines/chat-bots/imopenlines-bot-session-finish.md) — ending the current session.
 
 {% note warning %}
 
-The use of HTTPS certificate is not required for chatbots, but is highly recommended due to possible transmission of client's confidential data. The app itself shall have `UTF-8` encoding.
+Using an HTTPS certificate for chatbots is not mandatory, but it is highly recommended to protect client confidential data. The application should be encoded in `UTF-8`.
 
 {% endnote %}
 
-## Download Example Chatbot for Open Channels
+## Download the Example Chatbot for Open Lines
 
-As an example of a chatbot for Open Channels, we have prepared the **ITR Bot**. You can obtain it in the following ways:
+As an example of a chatbot for Open Lines, we have prepared the "ITR Bot." You can obtain it in the following ways:
 
-- [download](https://github.com/bitrix24com/bots) from the GitHub service (file `itr.php`).
-- or found in *Bitrix24 On-premise* here: `\Bitrix\ImBot\Bot\OpenlinesMenuExample`.
+- [download](https://github.com/bitrix24com/bots) from GitHub (file `itr.php`)
+- find and copy it in the *"Bitrix24 on-premise"* product in the folder `\Bitrix\ImBot\Bot\OpenlinesMenuExample`.
 
-This chatbot as the first tier of customer support - initially, all messages will be going to it first, and only then to the employees in the queue after a period of time, that is specified in the *Open Channel* settings. Also, a class will be added to it for constructing a multilevel chat menu.
+This chatbot serves as the first line of support: initially, all messages will go to it, and only then to employees in the queue. The time after which messages will be forwarded from the chatbot to employees is set in the Open Line settings.
+
+Additionally, a class for building a multi-level menu in chats has been added to the chatbot.
 
 ## Running on Your Account
 
-It means that even now you can [use the code from the chatbot example](#download-example-chatbot-for-open-channels) on your server and launch a chatbot as a local application, without publishing it at *Bitrix24.Market*:
+You can [take the example chatbot code](#download-the-example-chatbot-for-open-lines) above, upload it to your server, and run the chatbot on your account as a local application without publishing it through the *Marketplace*:
 
 - In the left menu under **Applications** (1), go to the **Developer resources** (2) subsection and select **Other** (3):
 
@@ -47,37 +49,37 @@ It means that even now you can [use the code from the chatbot example](#download
 ![Local application](./_images/chatbot2_sm.jpg)
 
 - Select the application type **Server** and configure its parameters:
-    - Change the bot's name.
-    - Enable the option `Script only (no user interface)` and grant the application access permissions for:
-        - `Creating and managing Chat bots` — without these permissions, the application will not be able to register the chatbot.
-        - `Open Channels` — without these permissions, the application will not be able to work with Open Channels.
-    - Since the script is written to handle all events, the links in the `Your handler path` and `Initial installation path` fields will point to the same URL.
+  - Change the bot's name.
+  - Enable the `Uses only API` option and grant the application access permissions for:
+     - `Creating and managing Chatbots` — without these permissions, the application will not be able to register the chatbot.
+     - `Open Lines` — without these permissions, the application will not be able to work with Open Lines.
+  - Since the script is written to handle all events, the `Your handler path` and `Initial setup path` fields will point to the same URL.
 
 ![Add ITR Bot application](./_images/chatbot3_sm.png)
 
-- After saving the settings, additional fields will appear: `Application ID (client_id)` and `Application key (client_secret)`.
+- After saving the settings, additional fields will appear: `Application code (client_id)` and `Application key (client_secret)`.
 
 ![Bot settings](./_images/chatbot4_sm.png)
 
 - Copy the data from these fields and paste it into the `itr.php` file:
 
-    ![Open Channels settings](./_images/chatbot5.png)
+![Open Lines settings](./_images/chatbot5.png)
 
-- In the bot settings, click `Reinstall`. Now the bot is ready for operation.
+- In the bot settings, click `Reinstall`. The bot is now ready for operation.
 
-This bot does not publish messages indicating that it has been invited to the account. After installation, it will be available in the Open Channels settings. Select it as responsible and specify the time after which the conversation will be transferred from the chatbot to the queue for employees:
+This bot does not publish messages indicating that it has been invited to the account. After installation, it will be available in the Open Lines settings. Select it as responsible and specify the time after which the conversation will be transferred from the chatbot to the queue for employees:
 
-![Open Channels settings](./_images/ol_options_sm.png)
+![Open Lines settings](./_images/ol_options_sm.png)
 
 {% note info %}
 
 The client can switch to an operator earlier by sending the message `0` or selecting the menu item `0. Wait operator answer`.
 
-With any chatbot, pressing `0` will redirect the user to the operator; no additional processing is required.
+With any chatbot, pressing `0` will redirect the user to an operator, and no additional processing is required.
 
 {% endnote %}
 
-Below is a dialogue: first, **ITR Bot** responds, the client clicks on the menu items, and then the queue transitions to the operator (the client selected the menu item **0. Wait operator answer**):
+Below is a dialogue: first, "ITR Bot" responds, the client clicks on the menu items, and then the queue transitions to the operator (the client selected the menu item **0. Wait operator answer**):
 
 ![Dialogue with ITR Bot](./_images/ol_chat_sm.png)
 

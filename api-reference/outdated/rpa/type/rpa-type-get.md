@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -58,7 +58,7 @@ The method `rpa.type.get` returns information about a process by its ID.
 ```
 
 - `title` - name of the process
-- `image` - this is the icon identifier
+- `image` - this is the icon identifier from the list
 - `createdBy` - ID of the user who created the process
 - `settings` - set of process settings
 - `permissions` - set of access permissions for this process

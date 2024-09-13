@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -58,7 +58,7 @@ $result = restCommand(
 
 {% note warning %}
 
-To handle the command, the application must process the command addition event [ONIMCOMMANDADD](./events/index.md).
+To handle the command, the application must process the event of adding a command [ONIMCOMMANDADD](./events/index.md).
 
 {% endnote %}
 

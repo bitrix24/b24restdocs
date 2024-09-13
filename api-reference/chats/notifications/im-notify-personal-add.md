@@ -2,18 +2,18 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types not specified
 - examples missing
-- links to pages not yet created are absent
+- links to pages not yet created are not provided
 
 {% endnote %}
 
@@ -41,7 +41,7 @@ The method `im.notify.personal.add` sends a personal notification.
 [`unknown`](../../data-types.md) | | Attachment | 18 ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -64,7 +64,7 @@ $result = restCommand(
 );
 ```
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -74,7 +74,7 @@ $result = restCommand(
 }
 ```
 
-**Execution result**: notification identifier `ID` or error.
+**Execution Result**: notification identifier `ID` or error.
 
 ## Response on Error
 

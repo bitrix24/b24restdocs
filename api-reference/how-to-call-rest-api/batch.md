@@ -1,12 +1,6 @@
-# Executing a Batch of Requests
+# How to Execute a Batch of Requests
 
-{% note info "Permissions" %}
-
-**Who can execute the method:** any user
-
-{% endnote %}
-
-## Description
+> Who can execute the method: any user
 
 This method is used to send multiple requests in succession, as well as related requests.
 
@@ -15,7 +9,7 @@ This method is used to send multiple requests in succession, as well as related 
 #|
 || **Parameter** | **Description** ||
 || **halt** | Determines whether to stop the sequence of requests in case of an error. ||
-|| **cmd** | An array of standard requests (keep in mind the data quoting for these requests; this means that the data for sub-requests must undergo double quoting). ||
+|| **cmd** | An array of requests in standard format (keep in mind the data quoting for these requests; this means that the data for sub-requests must undergo double quoting). ||
 |#
 
 {% note info %}
@@ -24,7 +18,7 @@ The number of requests in a batch is limited to 50.
 
 {% endnote %}
 
-The array of requests can have either numeric keys or associative keys. In the parameters of each subsequent request, you can use data from previous requests in the following format:
+The array of requests can have either numeric keys or be associative. In the parameters of each subsequent request, you can use data from previous requests in the following format:
 
 ```php
 
@@ -34,7 +28,7 @@ $result[request_id][response_field]
 
 where the request identifier is its key in the array of requests.
 
-Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` method (you cannot call another `batch` within a `batch` method call).
+Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` method (you cannot call another `batch` inside a `batch` method call).
 
 ## Example
 
@@ -79,7 +73,7 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
 
     {% note info %}
     
-    **Note**, that the parameters are URL-encoded. It is recommended to encode parameters; otherwise, the correctness of the result is not guaranteed.
+    **Note** that the parameters are URL-encoded. It is recommended to encode parameters; otherwise, the correctness of the result is not guaranteed.
     
     {% endnote %}
 
@@ -136,7 +130,7 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
 
 {% list tabs %}
 
-- Successful result
+- Successful Result
     ```js
     {
         "result": {
@@ -203,7 +197,7 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
     }
     ```
 
-- Example of an error (halt = 0)
+- Example of Error (halt = 0)
     ```js
     {
         "result": {
@@ -233,7 +227,7 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
     }
     ```
 
-- Example of an error (halt = 1)
+- Example of Error (halt = 1)
     ```js
     {
         "result": {
@@ -289,12 +283,12 @@ BX24.callMethod(
 
 As a result:
 
-- `user_by_name` - will find a user with the name "Test2"
-- `user_lead` - will create a lead with the responsible user found in user_by_name
+- `user_by_name` will find a user named "Test2"
+- `user_lead` will create a lead with the responsible user found in user_by_name
 
 {% note info %}
 
-**Note**, that in the `user_lead` request we use nesting `[0][ID]`. Since the `user.search` method is list-based, it can return up to 50 results, and in this case, we will take the identifier of the first returned user.
+**Note** that in the `user_lead` request we use nesting `[0][ID]`. Since the `user.search` method is list-based, it can return up to 50 results, and in this case, we will take the identifier of the first returned user.
 
 {% endnote %}
 

@@ -11,12 +11,12 @@ Some data may be missing — we will complete it soon.
 {% note alert "TO-DO _not deployed to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-- links to pages not yet created are not provided
+- parameter types not specified
+- parameter requirements not indicated
+- examples missing
+- success response not provided
+- error response not provided
+- links to yet-to-be-created pages not specified
 
 {% endnote %}
 

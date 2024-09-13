@@ -19,7 +19,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 || **TASKID** | Task identifier ||
 || **FORMAT** | Acceptable values:
 - `1` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_RAW`) — the description will be returned in the format it is stored in the database (HTML or BB-code), no sanitization will be performed
-- `2` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_HTML`) — the description will be returned in HTML format, sanitized beforehand (if enabled in the task module settings)
+- `2` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_HTML`) — the description will be returned in HTML format, sanitized (if enabled in task module settings)
 - `3` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_PLAIN_TEXT`) — the description will be returned as "plain" text (without HTML tags) ||
 |#
 

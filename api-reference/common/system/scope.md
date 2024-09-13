@@ -2,18 +2,18 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will add it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - missing parameters or fields
 - parameter types not specified
-- examples are missing
-- no response in case of an error
+- examples missing
+- no error response provided
 
 {% endnote %}
 
@@ -33,7 +33,7 @@ If the method is called with the parameter `full=true`, it will return the compl
 https://my.bitrix24.com/rest/scope?auth=d161f25928c3184678924ec127edd29a
 ```
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 ## Successful Response
 

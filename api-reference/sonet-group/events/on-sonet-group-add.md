@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can subscribe: any user
 
-The `onSonetGroupAdd` event is triggered after a new working group is added. This is a proxy to the event `OnSocNetGroupAdd`.
+The `onSonetGroupAdd` event is triggered after a new working group is added. It is a proxy to the `OnSocNetGroupAdd` event.
 
 #|
 || **Field** | **Description** ||

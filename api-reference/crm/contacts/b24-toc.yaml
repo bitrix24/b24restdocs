@@ -17,7 +17,7 @@ items:
     href: crm-contact-delete.md
   - name: Companies
     include:
-      path: company/toc.yaml
+      path: company/b24-toc.yaml
       mode: link
   - name: Custom Fields
     include:
@@ -27,7 +27,7 @@ items:
     include:
       path: events/toc.yaml
       mode: link
-  - name: Manage Contact Forms
+  - name: Manage Contact Cards
     include:
       path: custom-form/b24-toc.yaml
       mode: link

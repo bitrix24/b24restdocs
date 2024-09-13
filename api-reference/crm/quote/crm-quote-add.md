@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not deployed to prod_" %}
 
-- revisions needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
+- edits needed for writing standards
+- parameter types not specified
+- parameter requirements not indicated
+- examples missing (should include three examples - curl, js, php)
+- error response missing
+- success response missing
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.quote.add` creates a new estimate. If you need to specify any details about the buyer/seller (as there may be several for a company), use the method [crm.requisite.link.register](../requisites/links/crm-requisite-link-register.md).
+The method `crm.quote.add` creates a new estimate. If you need to specify any details about the buyer/seller (since there may be multiple for a company), use the method [crm.requisite.link.register](../requisites/links/crm-requisite-link-register.md).
 
 The created estimate must include the seller and buyer companies:
 - `COMPANY_ID` if the buyer is a company or `CONTACT_ID` if the buyer is a contact.
@@ -40,7 +40,7 @@ The identifiers specified in **crm.requisite.link.register** and in the created 
 
 {% note info %}
 
-To find out the required format of the fields, execute the method [crm.quote.fields](./crm-quote-fields.md) and check the format of the returned values for these fields. 
+To find out the required format of the fields, execute the method [crm.quote.fields](./crm-quote-fields.md) and check the format of the returned values for those fields. 
 
 {% endnote %}
 
@@ -77,4 +77,4 @@ BX24.callMethod(
 );
 ```
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

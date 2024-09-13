@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not deployed to prod_" %}
 
-- edits needed for writing standards
+- adjustments needed for writing standards
 - parameter types are not specified
 - examples are missing
 - success response is absent
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The `lists.section.update` method updates a list section. On successful update, the response is `true`, otherwise *Exception*.
+The `lists.section.update` method updates a list section. If the item is successfully updated, the response is `true`; otherwise, it returns *Exception*.
 
 #|
 || **Parameter** | **Description** ||
@@ -37,12 +37,12 @@ The `lists.section.update` method updates a list section. On successful update, 
 [`unknown`](../../data-types.md) | Code or identifier of the information block (required). | ||
 || **IBLOCK_SECTION_ID**
 [`unknown`](../../data-types.md) | Identifier of the parent section; if not specified, the section will be root | ||
-|| **FIELDS** | Array of fields and values. Required fields: NAME | ||
+|| **FIELDS** | Array of fields and values. Required field: NAME | ||
 || **SOCNET_GROUP_ID**^*^
 [`unknown`](../../data-types.md) | `id` of the group (required if the list is created for a group); | ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Example
 
@@ -69,4 +69,4 @@ BX24.callMethod(
 );
 ```
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}

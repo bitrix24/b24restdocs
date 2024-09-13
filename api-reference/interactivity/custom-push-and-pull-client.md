@@ -2,7 +2,7 @@
 
 In this article, you will find information on how to write your own client. If you don't need a new client but just want to add interactivity to an existing application, you may find the article [{#T}](./push-and-pull-in-browser.md) useful.
 
-By connecting to RT servers, you can create a truly interactive application: the application's state changes, and the interface updates instantly without the need for AJAX requests. 
+By connecting to RT servers, you can create a truly interactive application: the application's state changes, and the interface updates instantly without the need for AJAX requests.
 
 ## Application Development
 
@@ -10,17 +10,17 @@ There are two ways to connect to the service: Long polling and WebSocket.
 
 {% note tip " " %}
 
-When a user enters the site, their browser, desktop, or mobile application establishes and maintains a constant connection to the Push server. This is usually done using **WebSocket**, which is used by 95% of modern browsers.
+When a user accesses the site, their browser, desktop, or mobile application establishes and maintains a persistent connection with the Push server. This is usually done using **WebSocket**, which is supported by 95% of modern browsers.
 
-If the WebSocket technology is not supported by the browser, **Long Polling** is used — a persistent long polling method.
+If the WebSocket technology is not supported by the browser, **Long Polling** is used instead — a persistent long polling method.
 
 {% endnote %}
 
-It is recommended to use WebSocket as the primary connection method. Long polling is used only for devices that do not support WebSocket or if the client frequently encounters issues when connecting to WebSocket.
+It is recommended to use WebSocket as the primary connection method. Long polling is only used for devices that do not support WebSocket or if the client frequently encounters issues when connecting to WebSocket.
 
 To obtain data about the server and connection addresses, use the REST command [pull.application.config.get](./push-and-pull/pull-application-config-get.md).
 
-To connect to the server, take the connection address of the desired type (for example, `websocket_secure`) from the server settings (field `server`) and append all available channels through `/`. If a cloud push server is used on the account, you need to add the `clientId` parameter to the URL for connecting to the server.
+To connect to the server, take the connection address of the desired type (for example, `websocket_secure`) from the server settings (the `server` field) and append all available channels through `/`. If a cloud push server is used on the account, you need to add the `clientId` parameter to the URL for connecting to the server.
 
 Example connection for WebSocket for a cloud push server:
 
@@ -34,13 +34,13 @@ Example connection for WebSocket for an on-premise push server:
 wss://rt.bitrix24.com/sub/?CHANNEL_ID=46a437d2336d4a88e4e9b3cd956ecf45:6221e0eb48981fce67cf4756e82e8102.7910bb25e660bf211fdec15e33c5e25e4c3b644a/fb9f7e13dc3d595c5aefe1a0216c27a2.2887eebc6ae160713a732893462dce9d8e23a7b0
 ```
 
-The operation time of each channel is limited to 12 hours. It is necessary to monitor the expiration time and make a repeated request to [pull.application.config.get](./push-and-pull/pull-application-config-get.md) when one of the channels has expired.
+The lifetime of each channel is limited to 12 hours. You need to monitor the expiration time and make a repeated request to [pull.application.config.get](./push-and-pull/pull-application-config-get.md) when one of the channels has expired.
 
-To access the history in the channel, add special GET parameters to the above address: `&tag=` and `&time=` (for server version 2 and below) or `&mid=` (for version 3 and above). You will receive all necessary data for the GET parameters when parsing each command from the channel. After connecting with these parameters, you will have one-time access to messages that were not available for the current session.
+To access the history in the channel, append special GET parameters to the above address: `&tag=` and `&time=` (for server version 2 and below) or `&mid=` (for version 3 and above). You will receive all necessary data for the GET parameters when parsing each command from the channel. After connecting with these parameters, you will have one-time access to messages that were not available for the current session.
 
 ## General Format of Commands from the Server
 
-For server version 3 and below, when commands arrive, the text looks like this:
+For server version 3 and below, when commands are received, the text appears as follows:
 
 ```bash
 #!NGINXNMS!#{"id":320146,"mid":"14526134350000000000320146","channel":"6221e0eb48981fce67cf4756e82e8102","tag":"672","time":"Thu, 29 Jun 2017 09:50:16 GMT","text":{...},"extra":{...}}}#!NGINXNME!#
@@ -49,7 +49,7 @@ For server version 3 and below, when commands arrive, the text looks like this:
 
 To work with the command, you need to extract its content and convert it to JSON. The command text is located between the control phrases #!NGINXNMS!# and #!NGINXNME!#.
 
-Starting from server version 4, use the addition of the GET parameter `&format=json` when connecting and when commands arrive; it will be returned to you in JSON format:
+Starting from server version 4, use the addition of the GET parameter `&format=json` when connecting and when commands are received; it will be returned to you in JSON format:
 
 ```json
 [
@@ -92,13 +92,13 @@ Where:
 - `channel` — channel identifier (only for server version 3 and above, for earlier versions use `extra.channel`)
 - `tag` — E-tag (for server version 2 and below, used for restoring history from a specific message)
 - `time` — message time (for server version 2 and below, used for restoring history from a specific message)
-- `text` — structure describing the command action, contains the following keys:
+- `text` — structure describing the command's action, containing the following keys:
     - `module_id` — identifier of the module that sent the command (for marketplace applications — `appId`)
     - `command` — command identifier
     - `params` — additional data for executing the command
 - `extra` — structure describing additional information:
-    - `server_time` — server time at the moment of command formation (ATOM format)
-    - `server_time_unix` — server time at the moment of command formation (in Unix timestamp format with the browser's time zone)
+    - `server_time` — server time at the moment the command was generated (ATOM format)
+    - `server_time_unix` — server time at the moment the command was generated (in Unix timestamp format with the browser's timezone)
     - `server_time_ago` — number of seconds that have passed since the command was sent
     - `server_name` — name of the server that sent the command
     - `revision` — revision of the push & pull module for the browser script
@@ -112,7 +112,7 @@ During operation with the server, various errors may occur. To avoid being block
 If connecting to the server results in errors, you should incrementally increase the connection time:
 
 - When an error occurs for the first time, the connection delay is 100ms.
-- Upon a repeated error - 15 seconds.
+- On a repeated error - 15 seconds.
 - From 3 to 5 errors - 45 seconds.
 - From 5 to 10 errors - 10 minutes.
 - More than 10 consecutive errors - 1 hour.
@@ -123,11 +123,11 @@ A full switch to Long polling makes sense if you have never been able to connect
 
 ## Format of Incoming Commands for Connection Management
 
-For your own implementation of the Push & Pull protocol, ensure to handle control commands.
+For your own implementation of the Push & Pull protocol, ensure you handle control commands.
 
 ### channel_expire
 
-Command about the expiration of the channel's operation time.
+Command about the expiration of the channel's lifetime.
 
 ```json
 {

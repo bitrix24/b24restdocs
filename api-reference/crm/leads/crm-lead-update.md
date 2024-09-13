@@ -14,7 +14,7 @@ The method `crm.lead.update` updates an existing lead.
 
 {% note warning %}
 
-It is highly recommended to pass the complete set of address fields when updating the address in the update method. The specifics of updating address fields are described [here](../data-types.md).
+It is highly recommended to pass the complete set of address fields when updating the address. The specifics of updating address fields are described [here](../data-types.md).
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ It is highly recommended to pass the complete set of address fields when updatin
 || **id**^*^
 [`integer`](../../data-types.md) | Integer identifier of the lead. The method to obtain it is described below. ||
 || **fields**^*^
-[`object`](../../data-types.md) | A set of fields in the form `["updated field" => "value"[, ...]]`. The method to obtain the list of possible fields is described below. ||
+[`object`](../../data-types.md) | A set of fields in the form `["field to update" => "value"[, ...]]`. The method to obtain the list of possible fields is described below. ||
 || **options**
 [`object`](../../data-types.md) | An optional set of options. (`"optionName"=>"value"[, ...]`). The list of possible fields is described below. ||
 |#
@@ -69,7 +69,7 @@ To find the complete list of available identifiers, execute the method [crm.lead
 || **CURRENCY_ID**
 [`crm_currency`](../../data-types.md) | Currency identifier. ||
 || **EMAIL**
-[`crm_multifield`](../../data-types.md) | E-mail address. Multiple. ||
+[`crm_multifield`](../../data-types.md) | Email address. Multiple. ||
 || **HONORIFIC**
 [`crm_status`](../../data-types.md) | Salutation. ||
 || **IM**
@@ -85,7 +85,7 @@ To find the complete list of available identifiers, execute the method [crm.lead
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount. ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicates manual mode for calculating the amount. Acceptable values are Y or N. ||
+[`char`](../../data-types.md) | Indicates manual calculation mode for the amount. Acceptable values are Y or N. ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source. ||
 || **ORIGIN_ID**
@@ -118,7 +118,7 @@ Default values:
 ||OTHER|Other||
 |#
 
-The list of all possible identifiers from the directory can be obtained using the method crm.status.list with the filter `filter[ENTITY_ID]=SOURCE` ||
+The list of all possible identifiers from the directory can be obtained using the method crm.status.list with the filter `filter[ENTITY_ID]=SOURCE`. ||
 || **STATUS_DESCRIPTION**
 [`string`](../../data-types.md) | Additional information about the stage. ||
 || **STATUS_ID**
@@ -126,18 +126,18 @@ The list of all possible identifiers from the directory can be obtained using th
 
 #|
 ||STATUS_ID|Name||
-||NEW | Not processed||
+||NEW | Unprocessed||
 ||IN_PROCESS | In progress||
 ||PROCESSED | Processed||
 ||JUNK | Low-quality lead||
 ||CONVERTED | High-quality lead||
 |#
 
-The list of all possible stages from the directory can be obtained using the method crm.status.list with the filter `filter[ENTITY_ID]=STATUS` ||
+The list of all possible stages from the directory can be obtained using the method crm.status.list with the filter `filter[ENTITY_ID]=STATUS`. ||
 || **TITLE**
-[`string`](../../data-types.md) | Title of the lead. ||
+[`string`](../../data-types.md) | Lead title. ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Designation of the advertising campaign. ||
+[`string`](../../data-types.md) | Identifier of the advertising campaign. ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads. ||
 || **UTM_MEDIUM**
@@ -153,13 +153,13 @@ The list of all possible stages from the directory can be obtained using the met
 
 {% note info %}
 
-Additionally, to find out the required format of the fields, you can execute the method [crm.lead.fields](crm-lead-fields.md) and check the format of the received values for these fields.
+Additionally, to find out the required format of the fields, you can execute the method [crm.lead.fields](crm-lead-fields.md) and check the format of the incoming values of these fields.
 
 {% endnote %}
 
 {% note info %}
 
-When adding a lead, you cannot explicitly set the indicator for a repeat lead (the `IS_RETURN_CUSTOMER` field); however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when adding the lead.
+When adding a lead, you cannot explicitly set the repeat lead indicator (the `IS_RETURN_CUSTOMER` field); however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when adding the lead.
 
 {% endnote %}
 
@@ -171,7 +171,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 [`char`](../../data-types.md) | Register the event of adding a lead in the activity stream. A notification will also be sent to the person responsible for the lead. Acceptable values are Y or N. ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -183,7 +183,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1608,"fields":{"TITLE":"IP Titov","PHONE":{0:{"VALUE":"555888","VALUE_TYPE":"WORK"}}} ,"auth":"**put_access_token_here**"}' \
+    -d '{"id":1608,"fields":{"TITLE":"LLC Titov","PHONE":{0:{"VALUE":"555888","VALUE_TYPE":"WORK"}}} ,"auth":"**put_access_token_here**"}' \
     https://xxx.bitrix24.com/rest/crm.lead.update
     ```
 
@@ -196,7 +196,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
             id: 1608,
             fields:
             {
-                TITLE: "IP Titov",
+                TITLE: "LLC Titov",
                 NAME: "Gleb",
                 SECOND_NAME: "Yegorovich",
                 LAST_NAME: "Titov",
@@ -267,7 +267,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../_includes/examples.md) %}
 
 ## See also
 
@@ -298,23 +298,23 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 #|
 || **Value** / **Type** | **Description** ||
 || **result**
-`boolean`| Result of the request ||
+`boolean`| Result of the request. ||
 || **time**
-[`array`](../../data-types.md) | Information about the execution time of the request ||
+[`array`](../../data-types.md) | Information about the execution time of the request. ||
 || **start**
-[`double`](../../data-types.md) | Timestamp of the moment the request was initialized ||
+[`double`](../../data-types.md) | Timestamp of the moment the request was initialized. ||
 || **finish**
-[`double`](../../data-types.md) | Timestamp of the moment the request execution was completed ||
+[`double`](../../data-types.md) | Timestamp of the moment the request execution was completed. ||
 || **duration**
-[`double`](../../data-types.md) | How long in milliseconds the request took (finish - start) ||
+[`double`](../../data-types.md) | How long in milliseconds the request took (finish - start). ||
 || **date_start**
-[`string`](../../data-types.md) | String representation of the date and time of the moment the request was initialized ||
+[`string`](../../data-types.md) | String representation of the date and time of the moment the request was initialized. ||
 || **date_finish**
-[`double`](../../data-types.md) | String representation of the date and time of the moment the request execution was completed ||
+[`double`](../../data-types.md) | String representation of the date and time of the moment the request execution was completed. ||
 || **operating_reset_at**
-[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limits](../../../limits.md) ||
+[`timestamp`](../../data-types.md) | Timestamp of the moment when the REST API resource limit will be reset. Read more in the article [operation limits](../../../limits.md). ||
 || **operating**
-[`double`](../../data-types.md) | In how many milliseconds will the limit on REST API resources be reset? Read more in the article [operation limits](../../../limits.md) ||
+[`double`](../../data-types.md) | In how many milliseconds will the REST API resource limit be reset? Read more in the article [operation limits](../../../limits.md). ||
 |#
 
 ## Error response

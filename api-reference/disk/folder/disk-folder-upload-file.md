@@ -5,7 +5,7 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - no response in case of error
 
 {% endnote %}
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -29,11 +29,11 @@ The method `disk.folder.uploadfile` uploads a new file to the specified folder.
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Folder identifier. In the current API, it is not possible to upload a file by the folder path. You must calculate the `ID` of the folder. ||
+[`unknown`](../../data-types.md) | Folder identifier. In the current API, it is not possible to upload a file by the folder path. It is necessary to compute the `ID` of the folder. ||
 || **fileContent**
-[`unknown`](../../data-types.md) | Similar to `DETAIL_PICTURE` in the File [Processing](../../bx24-js-sdk/how-to-call-rest-methods/files.md) example. ||
+[`unknown`](../../data-types.md) | Similar to `DETAIL_PICTURE` in the example [File Handling](../../bx24-js-sdk/how-to-call-rest-methods/files.md). ||
 || **data**
-[`unknown`](../../data-types.md) | An array describing the file. The required field `NAME` — the name of the new file. It is possible to send the file as a string encoded in base64. ||
+[`unknown`](../../data-types.md) | An array describing the file. The required field `NAME` — the name of the new file. It is possible to send the file as a base64 encoded string. ||
 || **generateUniqueName**
 [`unknown`](../../data-types.md) | Optional, defaults to `false`. If set to `true`, the uploaded file will have a unique name by adding a suffix (1), (2), etc. Example: avatar (1).jpg, avatar (2).jpg. ||
 || **rights**
@@ -79,7 +79,7 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 ### Example of Directly Uploading a File to Disk
 
@@ -94,7 +94,7 @@ BX24.callMethod(
     "uploadUrl": "http://b24.sigurd.bx/rest/upload.json?auth=n2423m863oil59f99c9g0bm4918l5erz&token=disk%7CaWQ9Mjg5Jl89QkYzazEzaXNnUjNHcVZQcDJZaGxGRmI4TGhXOG5EZXQ%3D%7CInVwbG9hZHxkaXNrfGFXUTlNamc1Smw4OVFrWXphekV6YVhOblVqTkhjVlpRY0RKWmFHeEdSbUk0VEdoWE9HNUVaWFE9fG4yNDIzbTg2M29pbDU5Zjk5YzlnMGJtNDkxOGw1ZXJ6Ig%3D%3D.Aga709nyY0%2BrFiv3laHjfg6XuOO5JT6ttjU%2F53ifphM%3D"
     }
     ```
-3. Send a POST request to the received `UploadUrl` in `multipart/form-data`, passing the file in the field with the name received in the `field` parameter.
+3. Send a POST request to the received `UploadUrl` in `multipart/form-data`, passing the file in the field with the name obtained from the `field` parameter.
     ```
     http --form POST "http://b24.sigurd.bx/rest/upload.json?auth=n2423m863oil59f99c9g0bm4918l5erz&token=disk%7CaWQ9Mjg5Jl89QkYzazEzaXNnUjNHcVZQcDJZaGxGRmI4TGhXOG5EZXQ%3D%7CInVwbG9hZHxkaXNrfGFXUTlNamc1Smw4OVFrWXphekV6YVhOblVqTkhjVlpRY0RKWmFHeEdSbUk0VEdoWE9HNUVaWFE9fG4yNDIzbTg2M29pbDU5Zjk5YzlnMGJtNDkxOGw1ZXJ6Ig%3D%3D.Aga709nyY0%2BrFiv3laHjfg6XuOO5JT6ttjU%2F53ifphM%3D" file@~/somelongfile.log
     ```

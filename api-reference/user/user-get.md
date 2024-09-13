@@ -1,10 +1,10 @@
-# Get a List of Users by Filter user.get
+# Get User List by Filter user.get
 
 > Scope: [`user`](../scopes/permissions.md), [`user_brief`](../scopes/permissions.md), [`user_basic`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except for: bots, email users, users for Open Lines, and Replica users.
+The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except: bots, email users, users for Open Lines, and Replica users.
 
 {% note info "" %}
 
@@ -41,7 +41,7 @@ Filtering parameters can accept array values ||
 || **ADMIN_MODE**
 [`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to obtain data about any users ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used to control pagination.
+[`integer`](../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 

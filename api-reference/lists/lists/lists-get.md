@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-- success response is missing
-- error response is missing
+- parameter types not specified
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The `lists.get` method returns infoblock data. On success, the infoblock data will be returned; otherwise, an empty array will be returned. This method allows you to retrieve a list of data from all infoblocks of the specified type at once. When working with social network groups, it is essential to specify the group's `ID`, or an access error will occur.
+The `lists.get` method returns infoblock data. On success, infoblock data will be returned; otherwise, an empty array will be returned. This method can be used to retrieve a list of data from all infoblocks of the specified type. When working with social network groups, it is essential to specify the group's `ID`, or an access error will occur.
 
 ## Parameters
 #|
@@ -37,9 +37,9 @@ The `lists.get` method returns infoblock data. On success, the infoblock data wi
 || **IBLOCK_CODE/IBLOCK_ID**
 [`unknown`](../../data-types.md) | code or `id` of the infoblock (if not specified, data for all lists of the specified infoblock type will be returned) ||
 || **SOCNET_GROUP_ID**
-[`unknown`](../../data-types.md) | `id` of the group, required if the list is in groups. ||
+[`unknown`](../../data-types.md) | `id` of the group, required if the list is within groups. ||
 || **IBLOCK_ORDER**
-[`unknown`](../../data-types.md) | Sorting. An array of infoblock section fields. Sorting direction: **asc** (ascending) or **desc** (descending). Example: 
+[`unknown`](../../data-types.md) | Sorting. An array of fields for sorting the infoblock sections. Sorting direction: **asc** (ascending) or **desc** (descending). Example: 
 `'IBLOCK_ORDER': { "ID": "DESC" }` ||
 |#
 

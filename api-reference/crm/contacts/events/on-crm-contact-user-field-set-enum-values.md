@@ -2,12 +2,10 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
-> Event Name: **onCrmContactUserFieldSetEnumValues**
-> 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can subscribe: any user
@@ -65,12 +63,12 @@ The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### Parameter FIELDS {#fields}
+### FIELDS Parameter {#fields}
 
 #|
 || **Parameter**
@@ -83,7 +81,7 @@ The structure is described [below](#auth) ||
 [`string`](../../../data-types.md) | Code of the custom field whose list of possible values has changed ||
 |#
 
-### Parameter auth {#auth}
+### auth Parameter {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 

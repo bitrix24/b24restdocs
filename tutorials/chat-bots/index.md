@@ -1,8 +1,8 @@
 # Example of Creating a Chatbot
 
-As an example, let's create a chatbot that will inform the user about their overdue tasks.
+As an example, let's create a chatbot that will notify the user about their overdue tasks.
 
-Our chatbot will know and process only one command — "What's burning?", returning a list of overdue tasks. Similarly, its functionality can always be expanded to receive necessary reports directly in the chat based on any data in *Bitrix24*.
+Our chatbot will know and process only one command — "What's burning?", returning a list of overdue tasks. Similarly, its functionality can always be expanded to receive the necessary reports directly in the chat based on any data in _Bitrix24_.
 
 ## Chatbot Code
 
@@ -43,10 +43,10 @@ else {
         if (!isset($appsConfig[$_REQUEST['auth']['application_token']])) {
             return false;
         }
-        // send help message how to use chatbot. For private chat and for group chat need send different instructions.
+        // send help message on how to use the chatbot. For private chat and for group chat, different instructions need to be sent.
         $result = restCommand('imbot.message.add', array(
             'DIALOG_ID' => $_REQUEST['data']['PARAMS']['DIALOG_ID'],
-            'MESSAGE'   => 'Hello! I am Reportoo, reporting everything as it is.',
+            'MESSAGE'   => 'Hello! I am ReportBot, reporting everything as it is.',
             "ATTACH"    => array(
                 array('MESSAGE' => '[send=what\'s burning]What\'s burning?[/send]'),
             ),
@@ -77,16 +77,16 @@ else {
                 'TYPE'                  => 'B',
                 // Type of bot, B - bot, responses come immediately, H - human, responses come with a delay of 2 to 10 seconds
                 'EVENT_MESSAGE_ADD'     => $handlerBackUrl,
-                // Link to the event handler for sending messages to the bot (required)
+                // Link to the message sending event handler for the bot (required)
                 'EVENT_WELCOME_MESSAGE' => $handlerBackUrl,
-                // Link to the event handler for opening a dialog with the bot or inviting it to a group chat (required)
+                // Link to the handler for the event of opening a dialog with the bot or inviting it to a group chat (required)
                 'EVENT_BOT_DELETE'      => $handlerBackUrl,
-                // Link to the event handler for deleting the bot from the client side (required)
+                // Link to the handler for the event of deleting the bot from the client side (required)
                 'PROPERTIES'            => array( // Personal data of the chatbot (required)
-                    'NAME'              => 'Reportoo',
-                    // Name of the bot (required one of the fields NAME or LAST_NAME)
+                    'NAME'              => 'ReportBot',
+                    // Name of the bot (required, one of the fields NAME or LAST_NAME)
                     'LAST_NAME'         => '',
-                    // Last name of the bot (required one of the fields NAME or LAST_NAME)
+                    // Last name of the bot (required, one of the fields NAME or LAST_NAME)
                     'COLOR'             => 'AQUA',
                     // Color of the bot for the mobile application RED, GREEN, MINT, LIGHT_BLUE, DARK_BLUE, PURPLE, AQUA, PINK, LIME, BROWN, AZURE, KHAKI, SAND, MARENGO, GRAY, GRAPHITE
                     'EMAIL'             => 'no@mail.com',
@@ -189,7 +189,7 @@ function getAnswer($command = '', $user) {
         default:
             $arResult = array(
                 'title' => 'I\'m confused',
-                'report'  => 'I don\'t understand what you want to know. Or maybe I just can\'t...',
+                'report'  => 'I can\'t figure out what you want to know. Or maybe I just don\'t know how...',
             );
     }
     return $arResult;
@@ -237,7 +237,7 @@ function b24BadTasks ($user) {
 
 ```
 
-Users can create a chatbot for personal use, or publish it on *Bitrix24.Market*.
+You can create a new chatbot application either for "personal use" or in the account for publication to all users of _Bitrix24_ through the _Market_.
 
 {% note warning %}
 
@@ -247,37 +247,37 @@ Using an HTTPS certificate for chatbots is not mandatory, but it is highly recom
 
 ## Launching the Chatbot on Your Account
 
-To get a feel of what a chatbot application is, without publishing it on *Bitrix24.Market*, take the example code, save it to your server and run the bot on your account. *Bitrix2*4 has a local application option and here's how to use it:
+You can take the example chatbot code, upload it to your server, and launch the chatbot on your account. Publication through the *Market* is not required. In _Bitrix24_, you can install local applications:
 
-- Select **Applications** > **Developer resources** (1):
+- In the left menu under **Applications** (1), click the **Add Application** button (2):
 
-![Adding Application](./_images/app1_sm.jpg)
+![Adding an application](./_images/app1_sm.jpg)
 
-- Proceed to **Other** (2):
+- Next, select **Other** (3):
 
 ![Other](./_images/app2_sm.jpg)
 
-- And then, select **Local application** (3):
+- Then select the scenario **Local Application** (4):
 
 ![Local Application](./_images/app3_sm.jpg)
 
 - Choose the application type **Server** and configure its parameters:
 
-    - Specify the bot's name (in our example, the bot is named "Reportoo")
-    - Enable the option `Script only (no user interface)` and grant the application access permissions for:
-        - `Chat and Notifications (im)` — without this permission, it is impossible to send messages to the user
-        - `Creating and managing Chat bots (imbot)` — without these permissions, the application will not be able to register the chatbot
-        - `Tasks (task)` and `Tasks (extended permissions) (task_extended)` — without these permissions, the application will not be able to generate a report on tasks to inform the user through the chatbot
-    - Since the script is written in such a way that it acts as a handler for all events, the URLs in the `Your handler path` and `Initial installation path` fields will lead to the same URL
+  - Specify the bot's name (in our example, the bot is called "ReportBot")
+  - Enable the option `Uses only API` and grant the application access permissions for:
+      - `Web Messenger (im)` — without this permission, it is impossible to send messages to the user
+      - `Create and manage Chatbots (imbot)` — without these permissions, the application will not be able to register the chatbot
+      - `Tasks (task)` and `Tasks (extended rights) (task_extended)` — without these permissions, the application will not be able to generate a report on tasks to inform the user through the chatbot
+  - Since the script is written in such a way that it acts as a handler for all events, the links in the fields `Path to your handler` and `Path for initial installation` will lead to the same URL
 
-![Adding Application](./_images/app4_sm.jpg)
+![Adding an application](./_images/app4_sm.jpg)
 
-After these actions, a message will appear in the general chat indicating that a new user — the chatbot named "Reportoo" has joined the account. You can open a chat with it, click on the "What's burning?" link, and receive your list of overdue tasks.
+After these actions, a message will appear in the general chat stating that a new user — the chatbot named "ReportBot" has joined the account. You can open a chat with it, click on the link "What's burning?" and receive your list of overdue tasks.
 
-In case you create a bot for Bitrix24 On-premise, without the option `Script only (no user interface)`, you need to use the **Static** application type and the mandatory field `Archive containing your application (ZIP)` to indicate the path to installation file.
+If the bot is created for the on-premise version of _Bitrix24_ (the option `Uses only API` is not checked), then use the application type **Static**, specifying in the required field `Archive with your application (zip)` the path to the installer file.
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [Download](https://github.com/bitrix24com/bots) the example "EchoBot" from GitHub
+- [Download](https://github.com/bitrix24com/bots) from GitHub the example "EchoBot"
 
 {% endnote %}

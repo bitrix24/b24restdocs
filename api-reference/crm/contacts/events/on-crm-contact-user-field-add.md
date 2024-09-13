@@ -6,8 +6,6 @@ Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
-> Event name: **onCrmContactUserFieldAdd**
-> 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can subscribe: any user

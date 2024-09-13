@@ -2,7 +2,7 @@
 
 > Who can execute the method: any user
 
-The `event.bind` method registers a new event handler.
+The method `event.bind` registers a new event handler.
 
 It can work both when logged in as a user with portal administration rights and as a regular user. The method for a user without administrator rights is available with limitations:
 
@@ -19,7 +19,7 @@ The interface for this method is [BX24.callBind](../bx24-js-sdk/how-to-call-rest
 
 {% note info %}
 
-When an application is deleted or updated, its actions will be removed. Therefore, in the installer of each version, they need to be set from scratch.
+When deleting and updating the application, its actions will be removed. Therefore, in the installer of each version, they need to be set from scratch.
 
 {% endnote %}
 
@@ -37,9 +37,9 @@ When an application is deleted or updated, its actions will be removed. Therefor
 || **auth_type**
 [`integer`](../data-types.md) | Identifier of the user under whom the event handler is authorized. By default, the authorization of the user whose actions triggered the event will be used ||
 || **event_type**
-[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior does not change. If `event_type=offline` is called, the method works with [offline events](https://training.bitrix24.com/support/training/course/index.php?COURSE_ID=169&LESSON_ID=20066&LESSON_PATH=13643.20052.20056.20066) ||
+[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior does not change. If `event_type=offline` is called, the method works with [offline events](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=99&CHAPTER_ID=04462&LESSON_PATH=8771.5380.2461.4462) ||
 || **auth_connector**
-[`string`](../data-types.md) | Source key. This parameter is intended for [offline events](https://training.bitrix24.com/support/training/course/index.php?COURSE_ID=169&LESSON_ID=20066&LESSON_PATH=13643.20052.20056.20066). It allows excluding false event triggers ||
+[`string`](../data-types.md) | Source key. This parameter is intended for [offline events](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=99&CHAPTER_ID=04462&LESSON_PATH=8771.5380.2461.4462). It allows excluding false event triggers ||
 || **options**
 [`string`](../data-types.md) | Additional settings for the registered event, if any ||
 |#

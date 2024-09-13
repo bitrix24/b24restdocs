@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can subscribe: any user
 
-The `onSonetGroupDelete` event is triggered when a workgroup is deleted. This is a proxy to the event `OnSocNetGroupDelete`.
+The `onSonetGroupDelete` event is triggered at the moment a workgroup is deleted. It is a proxy to the `OnSocNetGroupDelete` event.
 
 #|
 || **Field** | **Description** ||

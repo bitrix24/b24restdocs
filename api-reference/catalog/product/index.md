@@ -2,7 +2,7 @@
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can perform the method: administrator
+> Who can execute the method: administrator
 
 Methods for working with products in the trade catalog:
 

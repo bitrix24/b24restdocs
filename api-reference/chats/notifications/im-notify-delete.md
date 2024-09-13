@@ -11,9 +11,9 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - adjustments needed for writing standards
-- parameter types are not specified
-- examples are missing
-- links to pages that have not yet been created are not provided
+- parameter types not specified
+- examples missing
+- links to pages not yet created are not provided
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ The method `im.notify.delete` removes a notification.
 [`unknown`](../../data-types.md) | `SUB`\|`TEST` | Additional tag, without uniqueness check | 18 ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 {% note warning %}
 
@@ -45,7 +45,7 @@ You must specify **one of the three** required parameters: `ID` (notification id
 
 ## Examples
 
-{% include [Explanation about restCommand](../_includes/rest-command.md) %}
+{% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
 ```php
 $result = restCommand(
@@ -61,9 +61,9 @@ $result = restCommand(
 );
 ```
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
-## Response on Success
+## Successful Response
 
 ```json
 {
@@ -71,9 +71,9 @@ $result = restCommand(
 }
 ```
 
-**Execution result**: `true` or an error.
+**Execution Result**: `true` or an error.
 
-## Response on Error
+## Error Response
 
 ```json
 {
@@ -82,7 +82,7 @@ $result = restCommand(
 }
 ```
 
-### Description of Keys:
+### Key Descriptions:
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error

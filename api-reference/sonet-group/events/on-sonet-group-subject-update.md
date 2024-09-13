@@ -1,8 +1,8 @@
-# Triggered after changing the group topic onSonetGroupSubjectUpdate
+# Triggered after changing the group subject onSonetGroupSubjectUpdate
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can subscribe: any user
 
-The event `onSonetGroupSubjectUpdate` is triggered after the group topic is changed. Proxy to the event `OnSocNetGroupSubjectUpdate`.
+The event `onSonetGroupSubjectUpdate` is triggered after the group subject is changed. Proxy to the event `OnSocNetGroupSubjectUpdate`.
 
 #|
 || **Field** | **Description** ||

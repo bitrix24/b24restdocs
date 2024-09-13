@@ -22,7 +22,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can subscribe: any user
 
-The event `onSonetGroupUpdate` is triggered after a working group is modified. The proxy to the event `OnSocNetGroupUpdate`.
+The event `onSonetGroupUpdate` is triggered after a working group is modified. It is a proxy for the event `OnSocNetGroupUpdate`.
 
 #|
 || **Field** | **Description** ||

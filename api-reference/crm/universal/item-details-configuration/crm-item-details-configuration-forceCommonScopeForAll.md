@@ -1,12 +1,10 @@
-# Set a Common Detail Form for All Users
+# Set Common Detail for All Users crm.item.details.configuration.forceCommonScopeForAll
 
-> Method name: **crm.item.details.configuration.forceCommonScopeForAll**
->
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: Administrator
 
-This method forcibly sets a common detail form for all users, removing their personal detail form settings.
+This method forcibly sets a common detail for all users, removing their personal detail settings.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}
 
@@ -18,18 +16,18 @@ This method forcibly sets a common detail form for all users, removing their per
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of CRM entities ||
+[`integer`][1] | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of CRM objects ||
 || **extras**
 [`object`][1] | Additional parameters. Possible values and their structure are described [below](#extras) ||
 |#
 
 ### extras
 
-The `extras` parameter depends on the CRM entity.
+The `extras` parameter depends on the CRM object.
 
 #|
-|| **CRM Entity** | **Name** | **Description** ||
-|| **SPA** | `categoryId` | Identifier of the SPA Sales Funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
+|| **CRM Object** | **Name** | **Description** ||
+|| **SPA** | `categoryId` | Identifier of the SPA funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
 If not specified, the default funnel identifier for this SPA is used. ||
 || **Deal** | `dealCategoryId` | Identifier of the deal funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
@@ -47,7 +45,7 @@ Possible values:
 
 {% include [Examples Note](../../../../_includes/examples.md) %}
 
-Set a common detail form for deals in the funnel with `id = 9`
+Set a common detail for deals in the funnel with `id = 9`
 
 {% list tabs %}
 
@@ -164,8 +162,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeID' is not defined | Required parameter `entityTypeId` not provided ||
-|| Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type ||
+|| Empty value | Parameter 'entityTypeID' is not defined | Required parameter `entityTypeId` is not provided ||
+|| Empty value | The entity type '`entityTypeName`' is not supported in the current context. | The method does not support this entity type ||
 || Empty value | Access denied. | The user does not have administrative rights ||
 |#
 

@@ -18,14 +18,14 @@ Working with the PHP class `CTaskItem`. Instead of `item`, you can also use its 
 || PRIORITY | Priority | + | + | + | + ||
 || ACCOMPLICES | Participants (user IDs) | + | + | | ||
 || ACCOMPLICE | Participants (field used for filtering) | | | | + ||
-|| AUDITORS | Auditors (user IDs) | + | + | | ||
-|| AUDITOR | Auditors (field used for filtering) | | | | + ||
+|| AUDITORS | Observers (user IDs) | + | + | | ||
+|| AUDITOR | Observers (field used for filtering) | | | | + ||
 || TAGS | Tags (when added — just an array of tags in text form). `CTasks::GetList()` does not return tag fields. `CTaskItem::getInstance()->getTags()` returns an array of tag names | + | + | | ||
 || TAG | Tags (field used for filtering) | | | | + ||
 || ALLOW_CHANGE_DEADLINE | Flag "Allow the performer (responsible) to change the deadline" | + | + | + | ||
 || TASK_CONTROL | Flag "Accept work after task completion" | + | + | | ||
 || PARENT_ID | Parent task ID | + | + | | + ||
-|| DEPENDS_ON | Previous task ID | + | + | | + ||
+|| DEPENDS_ON | ID of the previous task | + | + | | + ||
 || GROUP_ID | Working group ID | + | + | + | + ||
 || RESPONSIBLE_ID | Performer ID | + | + | + | + ||
 || TIME_ESTIMATE | Planned labor costs | + | + | + | + ||
@@ -40,7 +40,7 @@ Working with the PHP class `CTaskItem`. Instead of `item`, you can also use its 
 || DATE_START | Task start date | + | | + | + ||
 || DURATION_FACT | Time spent on the task in minutes | + | | | ||
 || DURATION_PLAN | Planned duration in hours or days | + | + | | ||
-|| DURATION_TYPE | Unit type for planned duration: days, hours, or minutes | + | + | | ||
+|| DURATION_TYPE | Type of measurement unit in planned duration: days, hours, or minutes | + | + | | ||
 || CREATED_BY_NAME | Creator's first name | + | | | ||
 || CREATED_BY_LAST_NAME | Creator's last name | + | | | ||
 || CREATED_BY_SECOND_NAME | Creator's middle name | + | | | ||
@@ -58,12 +58,12 @@ Working with the PHP class `CTaskItem`. Instead of `item`, you can also use its 
 || FAVORITE | Presence in Favorites for the current user | + | | + | + ||
 || ALLOW_TIME_TRACKING | Is time tracking enabled for the task | + | + | + | + ||
 || ADD_IN_REPORT | Is the task included in the performance report | + | + | | + ||
-|| FORUM_ID | Forum ID where comments on the task are stored | + | | | ||
-|| FORUM_TOPIC_ID | Forum topic ID where comments on the task are stored | + | | | + ||
+|| FORUM_ID | ID of the forum where comments on the task are stored | + | | | ||
+|| FORUM_TOPIC_ID | ID of the forum topic where comments on the task are stored | + | | | + ||
 || COMMENTS_COUNT | Number of comments on the task | + | | | ||
 || SITE_ID | Site ID. By default, this field records the ID of the site where the task is created | + | + | | + ||
 || SUBORDINATE | Is any participant of the task a subordinate of the current user | + | | | ||
-|| FORKED_BY_TEMPLATE_ID | Template ID based on which the task was automatically created. For some older tasks, it may not be set | + | | | ||
+|| FORKED_BY_TEMPLATE_ID | ID of the template based on which the task was automatically created. For some old tasks, it may not be set | + | | | ||
 || MULTITASK | Was the task created for multiple performers | + | | | ||
 || ONLY_ROOT_TASKS | Field that allows selecting only those tasks that either have no parent task or have one, but we do not have access to that parent task | | | | + ||
 || MATCH_WORK_TIME | Should the execution dates and deadline always be set during working hours | + | + | + | + ||
@@ -76,7 +76,7 @@ Working with the PHP class `CTaskItem`. Instead of `item`, you can also use its 
 || [task.item.add](./task-item-add.md) | Creates a new task ||
 || [task.item.delete](./task-item-delete.md) | Deletes a task ||
 || [task.item.getdata](./task-item-get-data.md) | Returns an array of task data ||
-|| [task.item.getmanifest](./task-item-get-manifest.md) | Returns a list of `task.item.*` methods with their descriptions ||
+|| [task.item.getmanifest](./task-item-get-manifest.md) | Returns a list of methods `task.item.*` with their descriptions ||
 || [task.item.list](./task-item-list.md) | Returns a list of tasks ||
 || [task.item.update](./task-item-update.md) | Updates task data ||
 || [task.item.getdescription](./task-item-get-description.md) | Returns the task description ||

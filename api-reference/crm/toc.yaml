@@ -7,7 +7,7 @@ items:
     href: data-types.md 
   - name: Typical Use-Cases and Scenarios
     href: tutorials.md
-  - name: CRM Operating Mode
+  - name: Determine the Current Operating Mode of the CRM
     href: crm-settings-mode-get.md
   - name: Universal CRM Methods
     include:
@@ -37,7 +37,7 @@ items:
     include:
       path: requisites/b24-toc.yaml
       mode: link
-  - name: Timeline and Deals
+  - name: Timeline and CRM Activities
     include:
       path: timeline/b24-toc.yaml
       mode: link

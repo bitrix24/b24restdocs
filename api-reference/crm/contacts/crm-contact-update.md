@@ -20,11 +20,11 @@ It is highly recommended to pass the complete set of address fields when updatin
 || **Name**
 `type` | **Description** ||
 || **id^*^**
-[`integer`][1] | The identifier of the contact we want to change.
+[`integer`][1] | Identifier of the contact we want to change.
 
 Can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
 || **fields^*^**
-[`object`][1] | An object in the format
+[`object`][1] | Object in the format
 ```
 {
     field_1: value_1,
@@ -47,9 +47,9 @@ Only the fields that need to be changed should be passed in `fields`.
 
 {% endnote %} ||
 || **params**
-[`object`][1] | An object containing a set of additional parameters.
+[`object`][1] | Object containing a set of additional parameters.
 
-The structure and possible values are [below](#parametr-params)
+Structure and possible values [below](#parametr-params)
 |#
 
 ### Parameter fields
@@ -69,7 +69,7 @@ The list of available salutation types can be obtained using [`crm.status.list`]
 || **PHOTO**
 [`file`][1] | Photo ||
 || **BIRTHDATE**
-[`date`][1] | Birthdate ||
+[`date`][1] | Date of birth ||
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | Contact type
 The list of available contact types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "CONTACT_TYPE" }` ||
@@ -90,24 +90,24 @@ Possible values:
 - `Y` — yes
 - `N` — no ||
 || **EXPORT**
-[`boolean`][1] | Is the contact involved in export
+[`boolean`][1] | Is the contact included in the export
 
 Possible values:
 
 - `Y` — yes
 - `N` — no ||
 || **ASSIGNED_BY_ID**
-[`user`][1] | Identifier of the user responsible for the entity ||
+[`user`][1] | Identifier of the user responsible for the item ||
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the main company for the contact
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4`. ||
 || **COMPANY_IDS**
-[`crm_company[]`](../data-types.md) | Array of identifiers of companies associated with the contact
+[`crm_company[]`](../data-types.md) | Array of company identifiers to which the contact is linked
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4`. ||
 || **UTM_SOURCE**
 [`string`][1] | Advertising system. Yandex-Direct, Google-Adwords, and others ||
 || **UTM_MEDIUM**
-[`string`][1] | Traffic type. Possible values:
+[`string`][1] | Type of traffic. Possible values:
 
 - CPC — ads
 - CPM — banners ||
@@ -116,7 +116,7 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 || **UTM_CONTENT**
 [`string`][1] | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`][1] | Campaign search condition. For example, keywords for contextual advertising ||
+[`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **PHONE**
 [`crm_multifield[]`](../data-types.md) | Phone ||
 || **EMAIL**
@@ -128,7 +128,7 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 || **LINK**
 [`crm_multifield[]`](../data-types.md) | Links. Service field. ||
 ||**UF_...**  | User-defined fields. For example, `UF_CRM_25534736`. Depending on the account settings, contacts may have a set of user-defined fields of specific types. A user-defined field can be added to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md).  ||
-||**PARENT_ID_...** | Relationship fields. If there are SPAs associated with contacts in the account, for each such SPA there is a field that stores the relationship between this SPA and the contact. The field itself stores the identifier of the element of that SPA. For example, the field `PARENT_ID_153` - relationship with the SPA `entityTypeId=153`, stores the identifier of the element of that SPA associated with the current contact. ||
+||**PARENT_ID_...** | Relationship fields. If there are SPAs related to contacts in the account, for each such SPA there is a field that stores the relationship between this SPA and the contact. The field itself stores the identifier of the element of that SPA. For example, the field `PARENT_ID_153` - relationship with the SPA `entityTypeId=153`, stores the identifier of the element of this SPA related to the current contact. ||
 || {% note tip "Fields for relationships with external data sources" %}
 
 If the contact was created by an external system, then:
@@ -140,7 +140,7 @@ If the contact was created by an external system, then:
 || **ORIGINATOR_ID**
 [`string`][1] | Identifier of the external system that is the source of data about this contact. ||
 || **ORIGIN_ID**
-[`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting. ||
+[`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system. If the data was imported and not changed in the external system, such data can be edited in the CRM without fear that the next export will lead to data overwriting. ||
 || **ORIGIN_VERSION**
 [`string`][1] | Version of the original data ||
 || {% note tip "Deprecated fields" %}
@@ -174,7 +174,7 @@ Address fields in the contact are deprecated and are only used for compatibility
 || **Parameter**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`][1] | Whether to register the contact update event in the activity stream
+[`boolean`][1] | Whether to register the contact update event in the live feed
 
 Possible values:
 - `Y` - yes
@@ -261,7 +261,7 @@ Example of updating a contact with `id = 43`
 #### Updating a Multiple Field
 To overwrite an existing value of a multiple field, you need to pass the `ID` of the field you want to change and its new value/type.
 
-Suppose we have the following values for the `PHONE` field:
+Let’s say we have the following values for the `PHONE` field:
 ```json
 [
     {
@@ -304,7 +304,7 @@ Then, to change the value of the phone with `ID = 223`, the `fields` parameter w
 #### Deleting a Single Value from a Multiple Field
 To delete one of the values from a multiple field, you need to pass their identifiers and either the parameter `DELETE = 'Y'` or an empty `VALUE`.
 
-Suppose we have the following values for the `PHONE` field:
+Let’s say we have the following values for the `PHONE` field:
 ```json
 [
     {
@@ -334,7 +334,7 @@ Suppose we have the following values for the `PHONE` field:
 ]
 ```
 
-Let's consider deleting all values except for the phone with `ID = 225`, in all possible ways:
+Let’s consider deleting all values except for the phone with `ID = 225`, in all possible ways:
 
 ```json
 {
@@ -388,7 +388,7 @@ Example of adding a new value `55555`:
 
 ### Handling the Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -415,7 +415,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -16,7 +16,7 @@ Some data may be missing — we will fill it in shortly.
 
 {% endif %}
 
-The manifest file accompanies each [block](./index.md) and describes the editable parts of the block, as well as containing its name, description, and JS/CSS files.
+The manifest file accompanies each [block](./index.md) and describes the editable parts of the block, as well as its name, description, and JS/CSS files.
 
 ## Examples
 
@@ -66,6 +66,7 @@ risus purus.</p>
     </div>
 </section>
 ```
+
 {% note info %}
 
 Maintaining unique markup in the manifest is important only within a single block. Between blocks, identical selectors can have completely different meanings.
@@ -156,11 +157,11 @@ return array(
 );
 ```
 
-## Manifest Fields of the Block
+## Manifest Fields for the Block
 
 ### Key block
 
-The **block** key contains the name and category of the block (or an array of categories). There are a number of categories in the system, here they are:
+The **block** key contains the name and category of the block (or an array of categories). The system has a certain number of categories, here they are:
 
 ```js
 array(
@@ -198,24 +199,24 @@ array(
 );
 ```
 
-If the desired category is not in the list, simply write its text in the manifest, and the category will be added.
+If the required category is not in the list, simply write its text in the manifest, and the category will be added.
 
 In addition, this key can contain the following settings:
 
-- **dynamic** => false tells the block that it CANNOT be used as dynamic content. (A very rare situation.)
+- **dynamic** => false tells the block that it CANNOT be used as dynamic. (A very rare situation.)
 - **subtype** – type of special block, allows a single value or multiple values in the form of an array. (For on-premise.)
 - **subtype_params** – parameters of the special block. (For on-premise.)
-- **type** - can contain the type of site on which the block can operate (by default, the block is shown everywhere). Currently supported:
+- **type** - can contain the type of site on which the block can work (by default, the block is shown everywhere). Currently supported:
   - page: regular websites
   - store: stores
   - knowledge: knowledge bases
-  - group: knowledge bases of social network groups
+  - group: social network group knowledge bases
 
 ### Key menu
 
-The menu on the site can very well be a regular HTML block, and a whole section in the block catalog is allocated for such blocks. The links of the menu items are simply edited like regular cards. But how to build a multi-level menu? 
+The menu on the site can very well be a regular HTML block, and a whole section in the block catalog is allocated for such blocks. The links of the menu items are simply edited like regular cards. But how to build a multi-level menu? You might have seen it in the [Knowledge Base](*knowleadge).
 
-For this, a separate entry in the manifest with the key menu is intended. Here’s how such an entry looks:
+For this, a separate entry in the manifest with the key menu is intended. Here is how such an entry looks:
 
 ```php
 'menu' => [
@@ -242,7 +243,7 @@ For this, a separate entry in the manifest with the key menu is intended. Here�
 ]
 ```
 
-This entry describes the following HTML:
+The entry describes the following HTML:
 
 ```html
 <ul class="landing-block-node-menu navbar-nav">
@@ -253,28 +254,28 @@ This entry describes the following HTML:
         <a href="#" target="_self" class="landing-block-node-link nav-link">Tasks and Projects</a>
         <ul class="landing-block-node-menu">
             <li class="landing-block-node-menu-item nav-item">
-            <a href="#" target="_self" class="landing-block-node-link nav-link">Article example</a>
+            <a href="#" target="_self" class="landing-block-node-menu-link nav-link">Article example</a>
             </li>
         </ul>
     </li>
 </ul>
 ```
 
-Let’s consider the keys of the menu block:
+Let's consider the keys of the menu block:
 
 - **Root of the array** (.landing-block-node-menu in this case) indicates the selector of the `<ul>` tag that should be defined as a menu. As you have already understood, there can be several multi-level menus within a single manifest.
-- **item** describes each `<li>` inside the `<ul>` list. That is, those `<li>` tags that will be defined as menu items.
+- **item** describes each `<li>` inside the `<ul>` list. That is, the `<li>` tags that will be defined as menu items.
 - **name** describes the name of the menu.
 - **root** describes the root `<ul>`. And **children** all root `<ul>`. `ulClassName` describes the classes of the `<ul>` tag, `liClassName` describes the classes of the `<li>` tag, and `aClassName` describes the classes of the `<a>` tag. In this case, the parent and child elements have the same structure. No additional tags are currently anticipated in the menu structure.
 - **nodes** describes the structure inside the `<li>`. Currently, this is just a link. A careful reader may guess that this item can describe any complex structure of each item. Correct, but this is not fully supported yet.
 
 ### Key assets
 
-The **assets** key contains the JS and CSS that need to be included when adding the block to the page. If several blocks use the same JS/CSS file, it’s not a problem; each file will only be included once.
+The **assets** key contains the JS and CSS that need to be included when adding the block to the page. If multiple blocks use the same JS/CSS file, it’s not a problem; each file will only be included once.
 
-The **ext** key refers to JS libraries of the Bitrix core. Currently, only libraries mentioned in special blocks and in interactive blocks are allowed to be included.
+The **ext** key refers to the JS libraries of the Bitrix core. Currently, only libraries mentioned in special blocks and interactive blocks are allowed to be included.
 
-If you are using any third-party libraries in your code that are already included in the main core (for example, jQuery), it is recommended to wrap the output commands in your script in a system method. This way, your code will successfully initialize after all system inclusions:
+If you are using any third-party libraries in your code that are already connected to the main core (for example, jQuery), it is recommended to wrap the output commands in your script in a system method. This way, your code will successfully initialize after all system connections:
 
 ```js
 BX.ready(function()
@@ -287,23 +288,23 @@ BX.ready(function()
 
 The **nodes** key contains blocks whose content is allowed to be edited. Here and further, the ideology of **CSS selectors** is applied to indicate the final nodes. You should understand this to get a good grasp of the further API of blocks.
 
-It is recommended to choose a descriptive class name as a selector. To distinguish regular classes from structural class selectors, it is advisable to give the name a descriptive prefix, for example, `"landing-block-node-"`. The same selector can be used in different blocks. The node selector **does not match** the [card selectors](#cards) of this block.
+It is recommended to choose a meaningful class name as a selector. To distinguish regular classes from structural class selectors, it is advisable to give the name a meaningful prefix, for example, `"landing-block-node-"`. The same selector can be used in different blocks. The node selector **does not match** the [card selectors](#cards) of this block.
 
 In the nodes key, selectors whose content can be edited are listed as keys, along with the name of the node and its type. You can read more about [node types](#).
 
-Depending on the type of node and its indication in this block, it will become available for editing and will appear in the block content editing form.
+Depending on the type of node and its specification in this block, it will become available for editing and will appear in the block content editing form.
 
 In addition to the type, names, and specific keys of a particular type, there are also common parameters for nodes of any type:
 
-- **allowInlineEdit** – if the value of the key is set to `false`, then the data of the nodes will be prohibited from inline editing, but will still be available for editing through the block editing form.
-- **useInDesigner** - if set to `false`, the element will be ignored in the block designer.
-- **group** – grouping of nodes; if the same value of this key is specified for several nodes (within one block), then clicking on any of the nodes will open the editing interface for the entire group of nodes.
+- **allowInlineEdit** – if you pass a value of the key equal to `false`, then the data of the nodes will be prohibited from inline editing, but will still be available for editing through the block editing form.
+- **useInDesigner** - if you pass `false`, the element will be ignored in the block designer.
+- **group** – grouping of nodes; if you specify the same value for this key for several nodes (within one block), then clicking on any of the nodes will open the editing interface for the entire group of nodes.
 
 ### Key style
 
-The **style** key is very similar to the nodes key, except that this key specifies the allowed design: which nodes are allowed to change their appearance, and what type they are.
+The **style** key is very similar to the nodes key, except that in this key, the permissible design is marked: which nodes are allowed to change their appearance, and what type they are.
 
-Style types can be the following (including their combination in the form of an array):
+Style types can be as follows (including their combination in the form of an array):
 
 - **box** – block elements
 - **button** – links in the form of buttons
@@ -317,7 +318,7 @@ Style types can be the following (including their combination in the form of an 
 
 These types determine what stylistic changes are available for editing in the user interface.
 
-{% cut "Full list of allowed types and what CSS styles it combines" %}
+{% cut "Full list of permissible types and what CSS styles it combines" %}
 
 ```js
 array (
@@ -472,25 +473,25 @@ array (
 
 ### Key cards
 
-Contains the so-called cards of the block. This is repeatable content. For example, a list of services, photos of employees, and so on. By marking the block this way, the interface will have functionality for cloning, deleting, and modifying cards.
+Contains the so-called cards of the block. This is repeatable content. For example, a list of services, employee photos, and so on. By marking the block this way, the interface will have functionality for cloning, deleting, and modifying cards.
 
 In its simplest form, it looks as indicated in the manifest. If you want, you can also explore advanced card management.
 
-It is recommended to choose a descriptive class name as a selector. To distinguish regular classes from structural class selectors, it is advisable to give the name a descriptive prefix. For example, `landing-block-card-`. The same selector can be used in different blocks. The card selector **does not match** the [node selectors](#nodes) of this block.
+It is recommended to choose a meaningful class name as a selector. To distinguish regular classes from structural class selectors, it is advisable to give the name a meaningful prefix. For example, `landing-block-card-`. The same selector can be used in different blocks. The card selector **does not match** the [node selectors](#key-nodes) of this block.
 
 {% note info %}
 
-Cards of one selector should not be with cards of another selector in one common parent. For cases with a common parent, use advanced cards.
+Cards of one selector should not be with cards of another selector under one common parent. For cases with a common parent, use advanced cards.
 
 {% endnote %}
 
 ### Key attrs
 
-See the description of attributes on the [separate page](./attributes.md).
+For attribute descriptions, see the [separate page](./attributes.md).
 
 ## Ideology of Changing Block Styles
 
-When changing the appearance of blocks, the **style** attribute of nodes is not changed. Only classes are changed. For example, if you want to change the font-size from 12 to 16, the system will change not 'font-size', but the conditional class g-fontsize12 to g-fontsize16.
+When changing the appearance of blocks, the **style** attribute of nodes is not modified. Only classes are changed. For example, if you want to change the font-size from 12 to 16, the system will change not 'font-size', but the conditional class g-fontsize12 to g-fontsize16.
 
 ## For Animation to Work
 
@@ -500,3 +501,12 @@ In the standard mechanism for animation to work, it is necessary:
 - for the manifest of this node to have a setting in the style section - 'type' => 'animation';
 - for the animation to work immediately by default, it is also necessary to add one of the animation classes (in our block example - fadeIn), but this is not mandatory; the setting will work as is.
 
+{% if build == 'dev' %}
+
+{% note alert "TO-DO _not deployed to prod_" %}
+
+[*knowleadge]: ![Knowledge_Base](./_images/menu_landing.png)
+
+{% endnote %}
+
+{% endif %}

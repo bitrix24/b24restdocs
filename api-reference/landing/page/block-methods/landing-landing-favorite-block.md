@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - edits needed for writing standards
 - parameter types not specified
@@ -32,7 +32,7 @@ The method `landing.landing.favoriteBlock` saves the existing block on the page 
 
 {% note info %}
 
-This method can be useful when deleting a block from saved items.
+This method may be useful when removing a block from saved items.
 
 {% endnote %}
 

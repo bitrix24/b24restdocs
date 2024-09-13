@@ -11,9 +11,9 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing (should include three examples - curl, js, php)
+- parameter types are not specified
+- parameter requirements are not specified
+- examples are missing (there should be three examples - curl, js, php)
 - response in case of error is missing
 - response in case of success is missing
 
@@ -27,7 +27,7 @@ Some data may be missing here — we will complete it soon.
 
 The method `crm.quote.userfield.add` creates a new custom field for estimates.
 
-The system limitation on the field name is 20 characters. The custom field name is always prefixed with `UF_CRM_`, meaning the actual length of the name is 13 characters.
+The system limitation for the field name is 20 characters. The prefix `UF_CRM_` is always added to the custom field name, meaning the actual length of the name is 13 characters.
 
 #|
 ||  **Parameter** / **Type**| **Description** ||
@@ -62,4 +62,4 @@ BX24.callMethod(
 );
 ```
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}

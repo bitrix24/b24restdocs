@@ -1,4 +1,4 @@
-# List of Versions for disk.file.getVersions
+# List of File Versions disk.file.getVersions
 
 {% if build == 'dev' %}
 
@@ -7,7 +7,7 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of an error is absent
+- no response in case of an error
 
 {% endnote %}
 

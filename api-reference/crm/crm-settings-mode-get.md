@@ -1,14 +1,14 @@
-# Getting the Current CRM Operating Mode
+# Determine the Current CRM Operating Mode crm.settings.mode.get
 
-> Method name: **crm.settings.mode.get**
+> Method Name: **crm.settings.mode.get**
 >
 > Scope: [`crm`](../scopes/permissions.md)
 >
 > Who can execute the method: `any user`
 
-The method returns the current settings for the CRM operating mode: **classic CRM mode** (with leads) or **simple CRM mode** (without leads).
+This method returns the current settings for the CRM operating mode: **classic CRM mode** (with leads) or **simple CRM mode** (without leads).
 
-This mode affects a number of CRM operation scenarios, and for better understanding, we recommend reading the [related article](https://helpdesk.bitrix24.com/open/17627868/) in the user documentation.
+This mode affects a variety of CRM operation scenarios, and for better understanding, we recommend reading the [related article](https://helpdesk.bitrix24.com/open/17611420/) in the user documentation.
 
 ## Method Parameters
 
@@ -69,7 +69,7 @@ The method is called without parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -91,7 +91,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../data-types.md) | Returns a value defined in [crm.enum.settings.mode](auxiliary/enum/crm-enum-settings-mode.md) ||
+[`integer`](../data-types.md) | Returns the value defined in [crm.enum.settings.mode](./auxiliary/enum/crm-enum-settings-mode.md) ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#

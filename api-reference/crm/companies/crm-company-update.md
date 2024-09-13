@@ -11,11 +11,11 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - adjustments needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing
-- success response missing
-- error response missing
+- parameter types are not specified
+- parameter requirements are not specified
+- examples are missing
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -29,7 +29,7 @@ The method `crm.company.update` updates an existing company.
 
 {% note warning %}
 
-It is highly recommended to pass the complete set of address fields when updating the address. The specifics of updating address fields are described [here](../data-types.md).
+It is strongly recommended to pass the complete set of address fields when updating the address. The specifics of updating address fields are described [here](../data-types.md).
 
 {% endnote %}
 
@@ -38,7 +38,7 @@ It is highly recommended to pass the complete set of address fields when updatin
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Identifier of the company. ||
+[`unknown`](../../data-types.md) | Company identifier. ||
 || **fields**
 [`unknown`](../../data-types.md) | [Set of fields](./crm-company-add.md) - an array in the form array("field to update"=>"value"[, ...]), where "field to update" can take values returned by the method [crm.company.fields](./crm-company-fields.md). 
 
@@ -50,7 +50,7 @@ To find out the required format of the fields, execute the method [crm.company.f
 
  ||
 || **params**
-[`unknown`](../../data-types.md) | Set of parameters. `REGISTER_SONET_EVENT` - register the event of the company's change in the activity stream. A notification will also be sent to the person responsible for the company. ||
+[`unknown`](../../data-types.md) | Set of parameters. `REGISTER_SONET_EVENT` - register a change event for the company in the live feed. A notification will also be sent to the person responsible for the company. ||
 |#
 
 ## Examples

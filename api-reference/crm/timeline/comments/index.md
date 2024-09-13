@@ -15,7 +15,7 @@
 >
 > Who can execute the method: `any user`
 
-Methods for working with a deal of type "Comment" in the [timeline](https://helpdesk.bitrix24.com/open/16767378/)
+Methods for working with a "Comment" type CRM activity in the [timeline](https://helpdesk.bitrix24.com/open/16749348/)
 
 #|
 || [`crm.timeline.comment.add`](./crm-timeline-comment-add.md)   | Adds a new comment to the timeline ||
@@ -28,5 +28,5 @@ Methods for working with a deal of type "Comment" in the [timeline](https://help
 
 ## Additional Information
 
-- [Timeline in the CRM entity](https://helpdesk.bitrix24.com/open/16767378/)
-- [CRM Entity Type](../../data-types.md#object_type)
+- [Timeline in CRM entity](https://helpdesk.bitrix24.com/open/16749348/)
+- [CRM entity type](../../data-types.md#object_type) 

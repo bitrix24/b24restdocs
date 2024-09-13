@@ -22,10 +22,10 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can subscribe: any user
 
-The event `onSonetGroupSubjectDelete` is triggered before a workgroup topic is deleted. It is a proxy to the event `OnSocNetGroupSubjectDelete`.
+The `onSonetGroupSubjectDelete` event is triggered before a workgroup topic is deleted. It is a proxy to the `OnSocNetGroupSubjectDelete` event.
 
 #|
 || **Field** | **Description** ||
 || **ID** | Identifier of the entity that triggered the event. ||
 |#
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Parameters Note](../../_includes/required.md) %}

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not deployed to prod_" %}
 
-- edits needed to meet writing standards
+- edits needed for writing standards
 - parameter types not specified
-- parameter requirements not indicated
+- parameter mandatory status not indicated
 - examples are missing
 
 {% endnote %}
@@ -23,7 +23,7 @@ Some data may be missing — we will complete it soon.
 >
 > Who can subscribe: any user
 
-The `onAppMethodConfirm` event is triggered when the [administrator's decision](../../scopes/confirmation.md) of the account is received regarding the request to use methods that require confirmation.
+The `onAppMethodConfirm` event is triggered upon receiving the [administrator's decision](../../scopes/confirmation.md) from the account regarding the request to use methods that require confirmation.
 
 ## Event Parameters
 

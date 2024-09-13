@@ -3,9 +3,9 @@ href: index.md
 items:
   - name: Overview
     href: index.md
-  - name: Returning entities with matching data
+  - name: Retrieve objects with matching data
     href: crm-duplicate-find-by-comm.md
-  - name: Merging duplicates
+  - name: Merge duplicates
     href: crm-entity-merge-batch.md
   - name: Duplicate search settings for any fields 
     include:

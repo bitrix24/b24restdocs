@@ -4,11 +4,11 @@
 >
 > Who can execute the method: any user
 
-The `user.search` method allows you to retrieve a list of users with accelerated search capabilities based on personal data (first name, last name, middle name, department name, job title). It operates in two modes: quickly using **Fulltext Index** and a slower option through [right LIKE](*key_right LIKE) (support is determined automatically).
+The `user.search` method allows you to retrieve a list of users with accelerated search based on personal data (first name, last name, middle name, department name, job title). It operates in two modes: quickly using **Fulltext Index** and a slower option through [right LIKE](*key_right LIKE) (support is determined automatically).
 
 {% note info "" %}
 
-The list of fields for Bitrix24 users that will be returned as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
+The list of fields for Bitrix24 users that will be returned as a result of executing the method depends on the application's/webhook's scope. Details about user data access can be found in the [article](index.md).
 
 {% endnote %}
 
@@ -50,7 +50,7 @@ The method can work either with filtering using the FIND key or with all other f
 || **start**
 [`integer`](../data-types.md) | This parameter is used for managing pagination.
 
-The page size for results is always static: 50 records.
+The page size of results is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
@@ -176,7 +176,7 @@ HTTP Status: **200**
             {
                 "ID": "3",
                 "ACTIVE": true,
-                "NAME": "John",
+                "NAME": "Ivan",
                 "LAST_NAME": "Ivanov",
                 "EMAIL": "test@gmail.com",
                 "LAST_LOGIN": "2024-07-24T09:01:55+00:00",
@@ -218,7 +218,7 @@ HTTP Status: **200**
 || **total**
 [`integer`](../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -233,4 +233,4 @@ HTTP Status: **200**
 - [{#T}](./user-current.md)
 - [{#T}](./user-fields.md)
 
-[*key_right LIKE]: USER_NAME LIKE "Text%" - this is called a right like, where the search is performed only on text that starts with the specified phrase but can have different endings - this search is significantly faster than two-way like "%text%" or left-side "%text" due to the architecture of indexed fields storage in the database.
+[*key_right LIKE]: USER_NAME LIKE "Text%" - this is called right like, where the search is performed only on text that starts with the specified phrase but can have different endings - such a search is significantly faster than two-way like "%text%" or left-side "%text" - due to the architecture of indexed field storage in the database.

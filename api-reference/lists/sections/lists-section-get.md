@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types are not specified
-- examples are missing
-- success response is absent
-- error response is absent
+- edits needed to meet writing standards
+- parameter types not specified
+- examples missing
+- success response not provided
+- error response not provided
 
 {% endnote %}
 
@@ -36,14 +36,14 @@ The method `lists.section.get` returns a list of sections or a section. On succe
 || **IBLOCK_CODE/IBLOCK_ID**^*^
 [`unknown`](../../data-types.md) | Code or identifier of the information block (required). | ||
 || **FILTER**
-[`unknown`](../../data-types.md) | Array of fields and values for filtering. Fields available for filtering are from the filter `CIBlockSection::GetList` | ||
+[`unknown`](../../data-types.md) | Array of fields and values for filtering. Fields from the filter `CIBlockSection::GetList` are available for filtering. | ||
 || **SELECT**
-[`unknown`](../../data-types.md) | Array with fields for selection. Available fields are described in the documentation `CIBlockSection::GetList` | ||
+[`unknown`](../../data-types.md) | Array of fields to select. Available fields are described in the documentation `CIBlockSection::GetList` | ||
 || **SOCNET_GROUP_ID**^*^
-[`unknown`](../../data-types.md) | Group identifier (required if the list is created for a group); | ||
+[`unknown`](../../data-types.md) | Group identifier (required if the list is created for a group) | ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 (**) - except for user-defined (UF_) fields.
 
@@ -72,4 +72,4 @@ BX24.callMethod(
 );
 ```
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}

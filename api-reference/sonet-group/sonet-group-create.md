@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -44,8 +44,8 @@ https://mydomain.bitrix24.com/rest/sonet_group.create.json?auth=803f65e30340ff39
 #|
 || **Parameter** | **Description** ||
 || **arFields** | Array of parameters for the new group. Allowed keys in the array:
-**NAME** - name of the group (required field),
-**DESCRIPTION** - description of the group,
+**NAME** - group name (required field),
+**DESCRIPTION** - group description,
 **VISIBLE** - flag Y/N - whether the group is visible in the group list,
 **OPENED** - flag Y/N - whether the group is open for free membership,
 **KEYWORDS** - keywords,
@@ -55,8 +55,8 @@ https://mydomain.bitrix24.com/rest/sonet_group.create.json?auth=803f65e30340ff39
 - **K** - all group members.
 **CLOSED** - flag Y/N - whether the group is archived,
 **SPAM_PERMS** - who has the right to send messages to the group (required field). Values are similar to the INITIATE_PERMS parameter.
-**PROJECT** - flag Y/N - whether the group is a project or not. By default - it is not. (Since version 18.0.0)<br>**PROJECT_DATE_FINISH** - sets the project end date. (Since version 18.0.0)
-**PROJECT_DATE_START** - sets the project start date. (Since version 18.0.0)
+**PROJECT** - flag Y/N - whether the group is a project or not. By default - it is not. (Since version 18.0.0)<br>**PROJECT_DATE_FINISH** - specifies the project end date. (Since version 18.0.0)
+**PROJECT_DATE_START** - specifies the project start date. (Since version 18.0.0)
 **SCRUM_MASTER_ID** - if filled with a user ID, this project will become a scrum. (Since version 22.300) ||
 || **bAutoSubscribe** | Auto-subscription to the created topic. Optional parameter. Defaults to True. (Since version 10.0.0) ||
 |#
@@ -67,14 +67,14 @@ In case of successful group creation, it returns its ID; otherwise, it returns a
 
 {% note info "" %}
 
-**Note**: It is currently not possible to create extranet groups using the REST API.
+**Note**: Creating extranet groups via REST API is not possible yet.
 
 {% endnote %}
 
 ## Example
 
 ```js
-// Let's create a visible and open social network group named 'Test sonet group' with the right to invite new members for all current group members
+// Let's create a visible and open social network group named 'Test sonet group' with the right to invite new group members for all current group members
 
 BX24.callMethod('sonet_group.create', {
     'NAME': 'Test sonet group',

@@ -24,6 +24,6 @@ When generating an event (adding a new message, opening a dialog with the chat b
 - ONIMBOTMESSAGEADD - event that occurs when a message is sent.
 - ONIMBOTMESSAGEUPDATE - event that occurs when a message is edited.
 - ONIMBOTMESSAGEDELETE - event that occurs when a message is deleted.
-- ONIMCOMMANDADD - event for receiving a command by the chat bot.
+- ONIMCOMMANDADD - event for the chat bot receiving a command.
 - ONIMBOTJOINCHAT - event for the chat bot receiving information about being added to a chat (or personal conversation).
 - ONIMBOTDELETE - event for the deletion of the chat bot.

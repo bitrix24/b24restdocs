@@ -2,10 +2,10 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not uploaded to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - no response in case of error
 
 {% endnote %}
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -29,13 +29,13 @@ The method `disk.storage.uploadfile` uploads a new file to the root of the stora
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Storage identifier. ||
+[`unknown`](../../data-types.md) | Identifier of the storage. ||
 || **fileContent**
-[`unknown`](../../data-types.md) | Similar to `DETAIL_PICTURE` in the example [File Processing](../../bx24-js-sdk/how-to-call-rest-methods/files.md). ||
+[`unknown`](../../data-types.md) | Similar to `DETAIL_PICTURE` in the example [File Handling](../../bx24-js-sdk/how-to-call-rest-methods/files.md). ||
 || **data**
 [`unknown`](../../data-types.md) | An array describing the file. The required field `NAME` - the name of the new file. ||
 || **generateUniqueName**
-[`unknown`](../../data-types.md) | Optional, defaults to `false`. If set to `true`, a unique name will be generated for the uploaded file by adding a suffix (1), (2), etc. Example: avatar (1).jpg, avatar (2).jpg.||
+[`unknown`](../../data-types.md) | Optional, defaults to `false`. If set to `true`, a unique name will be generated for the uploaded file by adding a suffix (1), (2), etc. Example: avatar (1).jpg, avatar (2).jpg. ||
 || **rights**
 [`unknown`](../../data-types.md) | Optional, defaults to an empty array. An array of access permissions for the uploaded file. ||
 |#
@@ -61,11 +61,11 @@ BX24.callMethod(
         rights: [
             {
                 TASK_ID: 42,
-                ACCESS_CODE: 'U35' //access for user with ID=35
+                ACCESS_CODE: 'U35' // access for user with ID=35
             },
             {
                 TASK_ID: 38,
-                ACCESS_CODE: 'U2' //access for user with ID=2
+                ACCESS_CODE: 'U2' // access for user with ID=2
             }
         ]
     },
@@ -78,7 +78,7 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote on Examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 

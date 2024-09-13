@@ -23,7 +23,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-Checks if the current user has the right to perform an operation in the social network group by calling the function `CSocNetFeaturesPerms::CurrentUserCanPerformOperation()`.
+Checks whether the current user has the right to perform an operation in a social network group by calling the function `CSocNetFeaturesPerms::CurrentUserCanPerformOperation()`.
 
 ## Request:
 
@@ -48,13 +48,13 @@ https://mydomain.bitrix24.com/rest/sonet_group.feature.access.json?auth=52423d4a
 || **OPERATION** | Symbolic code of the operation. ||
 |#
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 Returns **true** if the user has the right to perform the operation, **false** if not, and an error in case of incorrect parameters.
 
 {% note info "Note" %}
 
-Operation and functionality codes can be found in the description of the method `CanPerformOperation`.
+See the operation and functionality codes in the description of the method `CanPerformOperation`.
 
 {% endnote %}
 
@@ -69,4 +69,4 @@ BX24.callMethod('sonet_group.feature.access', {
     'OPERATION': 'write_post'
 });
 ```
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}

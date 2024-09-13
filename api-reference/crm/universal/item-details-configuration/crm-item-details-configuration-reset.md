@@ -1,14 +1,14 @@
-# Reset Item Detail Configuration
+# Reset Item Card Parameters crm.item.details.configuration.reset
 
 > Method name: **crm.item.details.configuration.reset**
 >
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: permission checks during method execution depend on the provided data:
+> Who can execute the method: access permission checks depend on the provided data:
 >   - Any user has the right to reset their personal settings
 >   - A user can reset shared and others' settings only if they are an administrator
 
-This method resets the item detail configuration to default values. It removes the personal settings of the specified user or the shared settings defined for all users.
+This method resets the item card settings to their default values. It removes the personal settings of the specified user or the shared settings defined for all users.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}
 
@@ -44,10 +44,10 @@ The `extras` parameter depends on the CRM object.
 
 #|
 || **CRM Object** | **Name** | **Description** ||
-|| **SPA** | `categoryId` | Identifier of the sales funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
+|| **SPA** | `categoryId` | Identifier of the sales funnel for SPAs. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
 If not specified, the default funnel identifier for this SPA will be used ||
-|| **Deal** | `dealCategoryId` | Identifier of the deal funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
+|| **Deal** | `dealCategoryId` | Identifier of the sales funnel for deals. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
 If not specified, the default funnel identifier for deals will be used ||
 || **Lead** | `leadCustomerType` | Type of leads. 
@@ -182,8 +182,8 @@ HTTP status: **400**
 ### Possible Error Codes
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeID' is not defined | Required parameter `entityTypeId` is missing ||
-|| Empty value | The entity type '`entityTypeName`' is not supported in the current context. | The method does not support this entity type ||
+|| Empty value | Parameter 'entityTypeID' is not defined | Required parameter `entityTypeId` not provided ||
+|| Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type ||
 || Empty value | Access denied. | The user does not have administrative rights ||
 |#
 

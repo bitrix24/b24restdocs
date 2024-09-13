@@ -10,4 +10,4 @@ If you are building your own client, check out the [Working with Push & Pull ser
 
 Interactivity in applications is available out of the box starting from the [version](../cloud-and-on-premise/on-premise/versions.md) Push & Pull 18.5.500.
 
-Learn more about interactivity in the training course [REST API Bitrix24](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&LESSON_ID=26036&LESSON_PATH=25400.25996.26000.26036).
+Learn more about interactivity in applications in the training course [REST API Bitrix24](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=266&LESSON_ID=25560).

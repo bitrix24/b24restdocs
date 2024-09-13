@@ -2,20 +2,20 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - adjustments needed for writing standards
 - parameter types are not specified
 - examples are missing for some parameters in the table
 - examples are absent
-- success response is missing
-- error response is missing
+- response on success is missing
+- response on error is missing
 - links to pages that have not yet been created are not specified
 
 {% endnote %}
@@ -70,7 +70,7 @@ or
 {% include [Footnote on parameters](../../_includes/required.md) %}
 
 
-**Please note**, if it is not required by your application's logic, it is recommended to respond to the bot's messages only when this chat-bot is mentioned. This can be checked by the `TO_USER_ID` field, which will be passed in the event.
+**Please note**, if it is not required by your application's logic, it is recommended to respond to the bot only when the user mentions this chat-bot. This can be checked by the `TO_USER_ID` field, which will be passed in the event.
 
 {% note info %}
 
@@ -113,11 +113,11 @@ $result = restCommand(
 
 {% include [Footnote on examples](../../_includes/examples.md) %}
 
-## Success Response
+## Response on Success
 
 Numeric identifier of the created bot `BOT_ID`.
 
-## Error Response
+## Response on Error
 
 error
 
@@ -131,7 +131,7 @@ error
 || **CODE_ERROR** | String identifier is not specified. ||
 || **NAME_ERROR** | One of the required fields **NAME** or **LAST_NAME** is not specified. ||
 || **WRONG_REQUEST** | Something went wrong. ||
-|| **MAX_COUNT_ERROR** | Maximum number of registered bots for one application has been reached. ||
+|| **MAX_COUNT_ERROR** | Maximum number of registered bots for one application reached. ||
 |#
 
 ## Event Handlers
@@ -148,7 +148,7 @@ If you need to handle events with different handlers, you can specify each handl
 
 {% note warning %}
 
-If you plan to install more than one chat-bot within one application: *Bitrix24 Rest* imposes a restriction on working with event handlers – there can only be one handler per application. Therefore, when registering a second chat-bot, the links to the handlers **EVENT_MESSAGE_ADD**, **EVENT_WELCOME_MESSAGE**, and **EVENT_BOT_DELETE** must be the same as those of the first.
+If you plan to install more than one chat-bot within a single application: *Bitrix24 Rest* imposes a restriction on working with event handlers – there can only be one handler per application. Therefore, when registering a second chat-bot, the links to the handlers **EVENT_MESSAGE_ADD**, **EVENT_WELCOME_MESSAGE**, and **EVENT_BOT_DELETE** must be the same as those of the first.
 
 If it is necessary to handle multiple bots within one application, this must be accounted for within the event handler. For this, when an event occurs, an array of bots is passed to allow for correct processing.
 

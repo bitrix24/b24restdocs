@@ -1,4 +1,4 @@
-# Add the imbot.command.register Team
+# Add the command imbot.command.register
 
 {% note warning "We are still updating this page" %}
 
@@ -32,15 +32,15 @@ The method `imbot.command.register` registers a command for processing by the ch
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **BOT_ID**
-[`unknown`](../../data-types.md) | `62` | Identifier of the chat bot that owns the team | ||
+[`unknown`](../../data-types.md) | `62` | Identifier of the chat bot owned by the team | ||
 || **COMMAND**
 [`unknown`](../../data-types.md) | `'echo'` | The text of the command that the user will enter in chats | ||
 || **COMMON**
 [`unknown`](../../data-types.md) | `'Y'` | If specified as Y, the command is available in all chats; if N, it is only available in those where the chat bot is present | ||
 || **HIDDEN**
-[`unknown`](../../data-types.md) | `'N'` | Whether the command is hidden or not - default is N | ||
+[`unknown`](../../data-types.md) | `'N'` | Whether the command is hidden or not - defaults to N | ||
 || **EXTRANET_SUPPORT**
-[`unknown`](../../data-types.md) | `'N'` | Whether the command is available to Extranet users, default is N | ||
+[`unknown`](../../data-types.md) | `'N'` | Whether the command is available to Extranet users, defaults to N | ||
 || **CLIENT_ID**
 [`unknown`](../../data-types.md) | `''` | String identifier of the chat bot, used only in Webhook mode | ||
 || **LANG^*^**
@@ -59,11 +59,11 @@ Array(
 [`unknown`](../../data-types.md) | `'http://www.hazz/chatApi/bot.php'` | Link to the handler for commands | ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 {% note warning %}
 
-To process the command, the application must handle the command addition event [ONIMCOMMANDADD](./events/index.md).
+To process the command, the application must handle the event of adding a command [ONIMCOMMANDADD](./events/index.md).
 
 {% endnote %}
 
@@ -71,13 +71,13 @@ To process the command, the application must handle the command addition event [
 
 Attention! If you plan to install more than one command for the chat bot: Bitrix24 Rest imposes a restriction on working with event handlers - there can only be one handler per application. Therefore, when registering a second command, the links to the handlers `EVENT_COMMAND_ADD` must be the same as for the first command.
 
-If it is necessary to handle multiple commands within one application, this must be accounted for within the event handler. For this, an array of commands is passed when the event occurs, so they can be processed correctly.
+If it is necessary to handle multiple commands within one application, this must be accounted for within the event handler. For this, when the event occurs, an array of commands is passed to allow for proper processing.
 
 {% endnote %}
 
 {% note warning %}
 
-It is mandatory to specify the array of translations `LANG` for at least RU and EN. If there is no phrase for BY, UA, KZ, the RU phrases will be shown by default; if there is no phrase in RU, the command will be hidden. The same applies to other languages - if there are no phrases, the EN phrases will be shown by default; if there is no phrase in EN, the command will be hidden in the public part.
+It is mandatory to specify the array of translations `LANG` for at least RU and EN. If there is no phrase for BY, UA, KZ, the default RU phrases will be shown; if there is no phrase in RU, the command will be hidden. The same applies to other languages - if there are no phrases, the default EN phrases will be shown; if there is no phrase in EN, the command will be hidden in the public part.
 
 {% endnote %}
 
@@ -110,24 +110,24 @@ $result = restCommand(
 );
 ```
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Response in case of success
 
-The command identifier `COMMAND_ID`.
+Identifier of the command `COMMAND_ID`.
 
-## Error Response
+## Response in case of error
 
 error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
 || **EVENT_COMMAND_ADD** | The event handler link is invalid or not specified. ||
-|| **COMMAND_ERROR** | The command text that the chat bot should respond to is not specified. ||
+|| **COMMAND_ERROR** | The text of the command that the chat bot should respond to is not specified. ||
 || **BOT_ID_ERROR** | The chat bot was not found. ||
-|| **APP_ID_ERROR** | The chat bot does not belong to this application. It can only work with chat bots installed within the application. ||
+|| **APP_ID_ERROR** | The chat bot does not belong to this application. Only chat bots installed within the application can be used. ||
 || **LANG_ERROR** | Language phrases for the visible command were not provided. ||
 || **WRONG_REQUEST** | Something went wrong. ||
 |#

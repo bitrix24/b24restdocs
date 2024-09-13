@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - edits needed for writing standards
 - parameter types are not specified

@@ -97,7 +97,7 @@ $result = restCommand(
 || **USER_ID_EMPTY** | Recipient identifier is not specified ||
 || **MESSAGE_EMPTY** | Message text is not provided ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | The maximum allowable attachment size (30 KB) has been exceeded ||
+|| **ATTACH_OVERSIZE** | The maximum allowable size of the attachment (30 KB) has been exceeded ||
 |#
 
 ## Related Links

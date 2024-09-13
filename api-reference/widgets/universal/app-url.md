@@ -2,7 +2,7 @@
 
 > Scope: [`placement`](../../scopes/permissions.md)
 
-This integration does not have a separate, predefined button in the interface that allows the user to open it independently. The application can simply send a specially formatted link to any Bitrix24 tool that supports adding content with links:
+This integration does not have a separate, pre-defined button in the interface that allows the user to open it independently. The application can simply send a specially formatted link to any Bitrix24 tool that supports adding content with links:
 
 - Messages and comments in the news feed;
 - Messages in internal group and individual chats (will not work in open line dialogs);
@@ -59,11 +59,11 @@ Array
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys that were specified in the `params` parameter of the specific link, as described above.
 
-This means that by setting your links and processing the received GET parameter `params` in the widget handler, you can implement any necessary business logic.
+This means that by setting in your links and processing the received GET parameter `params` in the widget handler, you can implement any necessary business logic.
 
 {% note tip "Typical Use-Cases and Scenarios" %}
 
-- [Viewing External Documents via Link](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&LESSON_ID=26030&LESSON_PATH=25400.25996.26000.26030)
+- [Viewing External Documents via Link](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=266&LESSON_ID=25550&LESSON_PATH=25398.25506.25530.25550)
 
 {% endnote %}
 

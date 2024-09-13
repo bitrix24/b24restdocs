@@ -38,7 +38,7 @@ The user must have at least read access (**R**) to the storage.
 || **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -93,7 +93,7 @@ BX24.callMethod(
 );
 ```
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 ## Successful Response
 

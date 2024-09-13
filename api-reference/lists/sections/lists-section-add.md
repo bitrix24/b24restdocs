@@ -11,10 +11,10 @@ Some data may be missing here — we will fill it in shortly.
 {% note alert "TO-DO _not deployed to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- examples missing
-- success response missing
-- error response missing
+- parameter types are not specified
+- examples are missing
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `lists.section.add` creates a list section. If the section is created successfully, the response is `true`, otherwise *Exception*.
+The method `lists.section.add` creates a list section. If the section is created successfully, the response is `true`; otherwise, it returns *Exception*.
 
 ## Parameters
 
@@ -42,12 +42,12 @@ The method `lists.section.add` creates a list section. If the section is created
 || **IBLOCK_SECTION_ID**
 [`unknown`](../../data-types.md) | Identifier of the parent section; if not specified, the section will be root | ||
 || **FIELDS**
-[`unknown`](../../data-types.md) | Array of fields and values. Required fields: NAME. | ||
+[`unknown`](../../data-types.md) | Array of fields and values. Required field: NAME. | ||
 || **SECTION_CODE**^*^
 [`unknown`](../../data-types.md) | Symbolic code of the section (required). | ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 ## Example
 
@@ -74,4 +74,4 @@ BX24.callMethod(
 );
 ```
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}

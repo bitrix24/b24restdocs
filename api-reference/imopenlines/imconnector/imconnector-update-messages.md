@@ -1,4 +1,4 @@
-# Update Sent Messages imconnector.update.messages
+# Change Sent Messages imconnector.update.messages
 
 {% note warning "We are still updating this page" %}
 
@@ -11,9 +11,9 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter type is not specified
-- parameter mandatory status is not specified
+- parameter requirement is not specified
 - examples are missing
-- responses for success and error cases are not specified
+- responses in case of success and error are not specified
 
 {% endnote %}
 
@@ -57,9 +57,9 @@ array(
             'date', //Message time in timestamp format *
             'text', //Message text. Either the text or files element must be specified. 
                     //Allowed formatting (BB codes) is described 
-                    //here: /api-reference/chats/messages/index.html
+                    //here: https://apidocs.bitrix24.com/api-reference/chats/messages/index.html
             'files' => array(//Array of file descriptions, where each file is described 
-                            //by an array with a link available for the account
+                            //by an array with a link that is available for the account
                 array('url'),
                 array('url'),
                 ...

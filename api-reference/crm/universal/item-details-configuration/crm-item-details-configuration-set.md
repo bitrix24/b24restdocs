@@ -1,4 +1,4 @@
-# Set Item Card Parameters
+# Set Parameters for CRM Item Detail Card Configuration
 
 > Method name: **crm.item.details.configuration.set**
 >
@@ -6,9 +6,9 @@
 >
 > Who can execute the method: permission checks during method execution depend on the provided data:
 >   - Any user has the right to set their personal settings
->   - A user can set shared and others' settings only if they are an administrator
+>   - A user can set common and others' settings only if they are an administrator
 
-This method sets the settings for the card of a specific CRM object. It records personal settings for the specified user or shared settings for all users.
+The method sets the settings for the detail card of a specific CRM object. It records personal settings for the specified user or common settings for all users.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}
 
@@ -22,7 +22,7 @@ This method sets the settings for the card of a specific CRM object. It records 
 || **entityTypeId***
 [`integer`][1] | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of CRM objects ||
 || **data***
-[`section[]`](#section)| A list of `section` describing the configuration of field sections in the item card. The structure of `section` is described below ||
+[`section[]`](#section)| List of `section` describing the configuration of field sections in the item card. The structure of `section` is described below ||
 || **userId**
 [`user`][1] | Identifier of the user for whom you want to set the configuration.
 
@@ -33,7 +33,7 @@ Required only when requesting personal settings
 || **scope**
 [`string`][1] | Scope of the settings. Allowed values:
 - `'P'` — personal settings
-- `'C'` — shared settings
+- `'C'` — common settings
 
 By default, the value is `'P'`
 
@@ -60,7 +60,7 @@ Describes a specific section with fields within the item card.
 
 Currently, only the value `'section'` is available ||
 || **elements**
-[`section_element[]`](#section_element) | An array of `section_element` describing the configuration of fields in the section ||
+[`section_element[]`](#section_element) | Array of `section_element`, describing the configuration of fields in the section ||
 |#
 
 #### section_element
@@ -73,7 +73,7 @@ Configuration of a specific field within the section.
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`][1] | Field identifier. A list of available fields can be found using [`crm.item.fields`](../crm-item-fields.md) ||
+[`string`][1] | Field identifier. The list of available fields can be found using [`crm.item.fields`](../crm-item-fields.md) ||
 || **optionFlags**
 [`integer`][1] | Should the field always be displayed:
 - `1` — yes
@@ -96,7 +96,7 @@ By default, the value is `0` ||
 `CLIENT`
 `COMPANY`
 `CONTACT`
-`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters. For example, `"GB"`              | `Computed` ||
+`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters. For example `"US"`              | `Computed` ||
 || **isPayButtonVisible**
 [`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Is the payment acceptance button visible.
 
@@ -119,12 +119,12 @@ The `extras` parameter depends on the CRM object.
 
 #|
 || **CRM Object** | **Name** | **Description** ||
-|| **SPA** | `categoryId` | Identifier of the sales funnel for SPAs. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
+|| **SPA** | `categoryId` | Identifier of the SPA Sales Funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
-If not specified, the default funnel identifier for this SPA is used ||
-|| **Deal** | `dealCategoryId` | Identifier of the sales funnel for deals. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
+If not specified, the default funnel identifier for this SPA will be used ||
+|| **Deal** | `dealCategoryId` | Identifier of the deal funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
-If not specified, the default funnel identifier for deals is used ||
+If not specified, the default funnel identifier for deals will be used ||
 || **Lead** | `leadCustomerType` | Type of leads. 
 
 Possible values:
@@ -137,7 +137,7 @@ Possible values:
 
 {% include [Examples Notice](../../../../_includes/examples.md) %}
 
-For the user with `id = 1`, set the following configuration for the item card in contacts:
+For a user with `id = 1` in contacts, set the following configuration for the item card:
 
 - Section 1 - **Personal Data**
     - **First Name**
@@ -148,7 +148,7 @@ For the user with `id = 1`, set the following configuration for the item card in
     - **Date of Birth**
     - **Phone**
         - Always show
-        - Default country: **United Kingdom(+44)**
+        - Default country: **United Kingdom(+1)**
     - **Address**
         - Always show
         - Default address type: **Registration Address** (see [`crm.enum.addresstype`][2])
@@ -339,9 +339,21 @@ For the user with `id = 1`, set the following configuration for the item card in
 
 {% endlist %}
 
+{% if build == 'dev' %}
+
+{% note alert "TO-DO _not deployed to prod_" %}
+
+### Result
+
+![Example of the resulting configuration](./_images/result-item-details-configuration-example.png)
+
+{% endnote %}
+
+{% endif %}
+
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -371,7 +383,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -392,7 +404,7 @@ HTTP status: **400**
 || Empty value | Parameter 'data' must be an array. | `data` is not an array ||
 || Empty value | The data must be an indexed array. | `data` is not an indexed array ||
 || Empty value | There are no data to write. | An empty array is provided in `data` ||
-|| Empty value | Section at index `i` has type `data[i].type`. The expected type is 'section'. | `data[i].type` contains a value other than `'section'` || 
+|| Empty value | Section at index `i` has type `data[i].type`. The expected type is 'section'. | The value in `data[i].type` is different from `'section'` || 
 || Empty value | Section at index `i` does not have a name. | An empty value is provided in `data[i].name` ||
 || Empty value | Section at index `i` does not have a title. | An empty value is provided in `data[i].title` ||
 || Empty value | Element at index `j` in section at index `i` does not have a name. | An empty value is provided in `data[i].elements[j].name` ||

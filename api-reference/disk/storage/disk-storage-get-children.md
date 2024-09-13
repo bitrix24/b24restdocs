@@ -7,7 +7,7 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of an error is absent
+- no error response is provided
 
 {% endnote %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -30,7 +30,7 @@ The method `disk.storage.getchildren` returns a list of files and folders that a
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Storage identifier. ||
+[`unknown`](../../data-types.md) | Identifier of the storage. ||
 || **filter**
 [`unknown`](../../data-types.md) |  Optional parameter. Supports filtering by fields specified in [disk.folder.getfields](../folder/disk-folder-get-fields.md) as `USE_IN_FILTER: true`. ||
 |#
@@ -61,9 +61,9 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Response in Case of Success
+## Response on Success
 
 > 200 OK
 

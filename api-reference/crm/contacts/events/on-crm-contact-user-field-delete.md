@@ -1,4 +1,4 @@
-# onCrmContactUserFieldDelete Event
+# On Deleting a Custom Field onCrmContactUserFieldDelete
 
 {% note warning "We are still updating this page" %}
 
@@ -6,17 +6,15 @@ Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
-> Event Name: **onCrmContactUserFieldDelete**
-> 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can subscribe: any user
 
-The `onCrmContactUserFieldDelete` event is triggered when a custom field is deleted from a contact.
+The event `onCrmContactUserFieldDelete` is triggered when a custom field is deleted from a contact.
 
-## What the handler receives
+## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -70,7 +68,7 @@ The structure is described [below](#fields) ||
 The structure is described [below](#auth) ||
 |#
 
-### FIELDS Parameter {#fields}
+### Parameter FIELDS {#fields}
 
 #|
 || **Parameter**
@@ -83,11 +81,11 @@ The structure is described [below](#auth) ||
 [`string`](../../../data-types.md) | Code of the deleted custom field ||
 |#
 
-### auth Parameter {#auth}
+### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue Your Exploration
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

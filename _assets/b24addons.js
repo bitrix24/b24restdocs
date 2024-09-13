@@ -128,7 +128,7 @@ function addSearchField() {
         // Search text field
         const searchInput = document.createElement('input');
         searchInput.type = 'text';
-        searchInput.placeholder = 'Поиск...';
+        searchInput.placeholder = 'Search...';
         searchInput.style.padding = '10px 5px';
         searchInput.style.fontSize = '16px';
         searchInput.style.borderRadius = '4px';

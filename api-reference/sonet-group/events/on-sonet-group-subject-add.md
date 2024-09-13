@@ -1,8 +1,8 @@
-# Triggered After Creating a Workgroup Topic onSonetGroupSubjectAdd
+# Triggered after creating a group topic onSonetGroupSubjectAdd
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can subscribe: any user
 
-The event `onSonetGroupSubjectAdd` is triggered after a workgroup topic is created. It is a proxy to the event `OnSocNetGroupSubjectAdd`.
+The event `onSonetGroupSubjectAdd` is triggered after a group topic is created. Proxy to the event `OnSocNetGroupSubjectAdd`.
 
 #|
 || **Field** | **Description** ||

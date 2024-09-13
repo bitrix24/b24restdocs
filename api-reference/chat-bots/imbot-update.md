@@ -1,8 +1,8 @@
-# Update chat-bot imbot.update
+# Update Chat-Bot imbot.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- adjustments needed for writing standards
 - parameter types are not specified
-- parameter mandatory status is not indicated
-- not all parameters have examples in the table
-- examples are missing
+- parameter requirements are not indicated
+- examples are missing for some parameters in the table
+- examples are absent
 - success response is missing
 - error response is missing
 - links to pages that have not yet been created are not specified
@@ -32,7 +32,7 @@ The method `imbot.update` updates the bot's data.
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **BOT_ID^*^**
-[`unknown`](../data-types.md) | `39` | Identifier of the chat-bot to be updated | ||
+[`unknown`](../data-types.md) | `39` | Identifier of the chat-bot to be modified | ||
 || **CLIENT_ID**
 [`unknown`](../data-types.md) | `''` | String identifier of the chat-bot, used only in Webhook mode | ||
 || **FIELDS^*^**
@@ -54,11 +54,11 @@ or
 || **LAST_NAME**
 [`unknown`](../data-types.md) | `''` | Last name of the chat-bot | ||
 || **COLOR**
-[`unknown`](../data-types.md) | `'MINT'` | Color of the chat-bot for the mobile application RED, GREEN, MINT, LIGHT_BLUE, DARK_BLUE, PURPLE, AQUA, PINK, LIME, BROWN, AZURE, KHAKI, SAND, MARENGO, GRAY, GRAPHITE | ||
+[`unknown`](../data-types.md) | `'MINT'` | Color of the chat-bot for the mobile application: RED, GREEN, MINT, LIGHT_BLUE, DARK_BLUE, PURPLE, AQUA, PINK, LIME, BROWN, AZURE, KHAKI, SAND, MARENGO, GRAY, GRAPHITE | ||
 || **EMAIL**
 [`unknown`](../data-types.md) | `'test2@test.com'` | E-mail for contact | ||
 || **PERSONAL_BIRTHDAY**
-[`unknown`](../data-types.md) | `'2016-03-12'` | Birthday in YYYY-mm-dd format | ||
+[`unknown`](../data-types.md) | `'2016-03-12'` | Birthday in the format YYYY-mm-dd | ||
 || **WORK_POSITION**
 [`unknown`](../data-types.md) | `'My second bot'` | Job title, used as a description of the chat-bot | ||
 || **PERSONAL_WWW**
@@ -69,7 +69,7 @@ or
 [`unknown`](../data-types.md) | `'/* base64 image */'` | Avatar of the chat-bot - base64 | ||
 |#
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Parameter Notes](../../_includes/required.md) %}
 
 {% note warning "" %}
 
@@ -109,22 +109,22 @@ $result = restCommand(
 );
 ```
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Example Notes](../../_includes/examples.md) %}
 
-## Success response
+## Success Response
 
 `true`
 
-## Error response
+## Error Response
 
 error
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || **BOT_ID_ERROR** | Chat-bot not found. ||
-|| **APP_ID_ERROR** | Chat-bot does not belong to this application; only chat-bots installed within the application can be used. ||
+|| **APP_ID_ERROR** | The chat-bot does not belong to this application; only chat-bots installed within the application can be used. ||
 || **EVENT_MESSAGE_ADD_ERROR** | Event handler link is invalid or not specified. ||
 || **EVENT_WELCOME_MESSAGE_ERROR** | Event handler link is invalid or not specified. ||
 || **EVENT_BOT_DELETE_ERROR** | Event handler link is invalid or not specified. ||
@@ -132,9 +132,9 @@ error
 || **WRONG_REQUEST** | Something went wrong. ||
 |#
 
-## Event handlers
+## Event Handlers
 
-If you need to handle events with different handlers, you can specify each handler individually instead of `EVENT_HANDLER`:
+If you need to handle events with different handlers, instead of `EVENT_HANDLER`, you can specify each handler individually:
 
 ```php
 'EVENT_MESSAGE_ADD' => 'http://www.hazz/chatApi/event.php', // Link to the event handler for sending messages to the chat-bot
@@ -144,6 +144,6 @@ If you need to handle events with different handlers, you can specify each handl
 'EVENT_MESSAGE_DELETE' => 'http://www.hazz/chatApi/event.php', // Link to the event handler for subscribing to message deletion events
 ```
 
-## Related links
+## Related Links
 
-[Rest API - Events of installation and update](./events/index.md)
+[Rest API - Events of Installation and Update](./events/index.md)

@@ -1,4 +1,4 @@
-# Get a list of files and folders in the folder disk.folder.getchildren
+# Get a List of Files and Folders in the Folder disk.folder.getchildren
 
 {% if build == 'dev' %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -62,9 +62,9 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Response in case of success
+## Response in Case of Success
 
 > 200 OK
 
