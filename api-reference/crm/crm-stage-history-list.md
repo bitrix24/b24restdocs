@@ -1,16 +1,10 @@
 # Get Stage Movement History crm.stagehistory.list
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
 > Scope: [`crm`](../scopes/permissions.md)
 >
 > Who can execute the method: `any user`
 
-This method supports retrieving records from the stage movement history for leads, deals, and invoices.
+The method supports retrieving records from the stage movement history for leads, deals, and invoices.
 
 ## Method Parameters
 
@@ -35,16 +29,16 @@ This method supports retrieving records from the stage movement history for lead
 - `!=` — not equal
 ||
 || **select**
-[`object`][1]| List of fields to retrieve. ||
+[`object`][1]| List of fields to retrieve ||
 || **start**
-[`integer`][1] | Offset for pagination. The pagination logic is standard for REST list methods ||
+[`integer`][1] | Offset for pagination. The pagination logic is standard for [list methods](../how-to-call-rest-api/list-methods-pecularities.md) REST ||
 |#
 
 ## Code Examples
 
 {% include [Examples Note](../../_includes/examples.md) %}
 
-Retrieving stage movement history for a deal with `ID=1`.
+Get stage movement history for the deal with `ID=1`
 
 {% list tabs %}
 
@@ -117,41 +111,41 @@ Retrieving stage movement history for a deal with `ID=1`.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 The method will return an array of records from the history:
 
 ```json
 {
-  "result": {
-    "items": [
-      {
-        "ID": "35",
-        "TYPE_ID": "1",
-        "OWNER_ID": "21",
-        "CREATED_TIME": "2024-04-25T14:59:11+00:00",
-        "CATEGORY_ID": "0",
-        "STAGE_SEMANTIC_ID": "P",
-        "STAGE_ID": "NEW"
-      }
-    ]
-  },
-  "total": 1,
-  "time": {
-    "start": 1724106224.858572,
-    "finish": 1724106225.344968,
-    "duration": 0.48639607429504395,
-    "processing": 0.11864185333251953,
-    "date_start": "2024-08-15T22:15:44+00:00",
-    "date_finish": "2024-08-15T22:15:45+00:00",
-    "operating": 0.11855506896972656
-  }
+    "result": {
+        "items": [
+        {
+            "ID": "35",
+            "TYPE_ID": "1",
+            "OWNER_ID": "21",
+            "CREATED_TIME": "2024-04-25T14:59:11+00:00",
+            "CATEGORY_ID": "0",
+            "STAGE_SEMANTIC_ID": "P",
+            "STAGE_ID": "NEW"
+        }
+        ]
+    },
+    "total": 1,
+    "time": {
+        "start": 1724106224.858572,
+        "finish": 1724106225.344968,
+        "duration": 0.48639607429504395,
+        "processing": 0.11864185333251953,
+        "date_start": "2024-08-15T22:15:44+00:00",
+        "date_finish": "2024-08-15T22:15:45+00:00",
+        "operating": 0.11855506896972656
+    }
 }
 ```
 
 ### Returned Data
 
-Each element of the array is an array with keys:
+Each element of the array is an array with keys.
 
 #|
 || **Name**
@@ -171,7 +165,7 @@ Each element of the array is an array with keys:
 
 In addition, there are specific fields for different object types:
 
-- for leads and invoices, these are:
+- for leads and invoices
 
 #|
 || **Name**
@@ -185,7 +179,7 @@ In addition, there are specific fields for different object types:
 [`int`][1] | Status identifier (stage) ||
 |#
 
-- for deals, these are:
+- for deals
 
 #|
 || **Name**
@@ -194,16 +188,16 @@ In addition, there are specific fields for different object types:
 [`int`][1] | Identifier of the direction (funnel) ||
 || **STAGE_SEMANTIC_ID**
 [`int`][1] | Status semantics (stage):
-  - `P` — intermediate stage
-  - `S` — successful stage
-  - `F` — failed stage ||
+- `P` — intermediate stage
+- `S` — successful stage
+- `F` — failed stage ||
 || **STAGE_ID**
- [`int`][1] | Stage identifier ||
+[`int`][1] | Stage identifier ||
 |#
 
 ## Error Handling
 
-HTTP status: **401**, **400**
+HTTP Status: **401**, **400**
 
 ```json
 {
@@ -218,13 +212,16 @@ HTTP status: **401**, **400**
 
 #|
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
-|| `400`      | `0`                               | "`entity_name`" Entity is not supported                             | Occurs when an invalid `entityTypeId` is passed                                              ||
-|| `400`      | `ACCESS_DENIED`                   | Access denied                                                        | The user does not have permission to add elements of type `entityTypeId`                     ||
-|| `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request                          | Incorrect user ID and/or code in the request path                                          ||
+|| `400`      | `0`                               | "`entity_name`" Object is not supported                         | Occurs when an invalid `entityTypeId` is passed                                              ||
+|| `400`      | `ACCESS_DENIED`                   | Access denied                                                    | The user does not have permission to add elements of type `entityTypeId`                             ||
+|| `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request                            | Incorrect user ID and/or code in the request path                                       ||
 |#
 
 {% include [system errors](./../../_includes/system-errors.md) %}
 
+## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./main-entities-fields.md)
 
-[1]: data-types.md
+[1]: ../data-types.md

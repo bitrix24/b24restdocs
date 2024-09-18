@@ -3,11 +3,11 @@ href: index.md
 items:
   - name: CRM Objects and Methods
     href: index.md
-  - name: Data Types and Structure of Objects in the CRM REST API
+  - name: Data Types and Structure of Objects in CRM REST API
     href: data-types.md 
   - name: Typical Use-Cases and Scenarios
     href: tutorials.md
-  - name: Determine the Current Operating Mode of the CRM
+  - name: Determine the Current CRM Operating Mode
     href: crm-settings-mode-get.md
   - name: Universal CRM Methods
     include:

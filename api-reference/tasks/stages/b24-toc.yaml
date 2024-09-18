@@ -5,13 +5,13 @@ items:
     href: index.md
   - name: Add Kanban Stage / My Plan
     href: task-stages-add.md
-  - name: Check Task Movement Capability
-    href: task-stages-can-move-task.md
-  - name: Delete Kanban Stage / My Plan
-    href: task-stages-delete.md
-  - name: List of Kanban Stages / My Plan
-    href: task-stages-get.md
-  - name: Move Task from One Stage to Another
-    href: task-stages-move-task.md
   - name: Change Kanban Stage / My Plan
     href: task-stages-update.md
+  - name: List of Kanban Stages / My Plan
+    href: task-stages-get.md
+  - name: Check Task Movement Capability
+    href: task-stages-can-move-task.md
+  - name: Move Task from One Stage to Another
+    href: task-stages-move-task.md
+  - name: Delete Kanban Stage / My Plan
+    href: task-stages-delete.md

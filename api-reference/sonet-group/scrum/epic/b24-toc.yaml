@@ -1,17 +1,17 @@
 title: Epics
 href: index.md
 items:
-  - name: Methods for working with epics
+  - name: Overview of Methods
     href: index.md
-  - name: Add epic to Scrum
+  - name: Add Epic to Scrum
     href: tasks-api-scrum-epic-add.md
-  - name: Delete epic
-    href: tasks-api-scrum-epic-delete.md
-  - name: Get epic fields by its identifier
-    href: tasks-api-scrum-epic-get.md
-  - name: Get list of available epic fields
-    href: tasks-api-scrum-epic-get-fields.md
-  - name: Get list of epics
-    href: tasks-api-scrum-epic-list.md
-  - name: Update epic in Scrum
+  - name: Update Epic in Scrum
     href: tasks-api-scrum-epic-update.md
+  - name: Get Epic Fields by ID
+    href: tasks-api-scrum-epic-get.md
+  - name: Get List of Epics
+    href: tasks-api-scrum-epic-list.md
+  - name: Delete Epic
+    href: tasks-api-scrum-epic-delete.md
+  - name: Get List of Epic Fields
+    href: tasks-api-scrum-epic-get-fields.md

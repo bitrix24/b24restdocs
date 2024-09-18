@@ -3,11 +3,11 @@ href: index.md
 items:
   - name: Overview
     href: index.md
-  - name: Retrieve objects with matching data
+  - name: Retrieve Objects with Matching Data
     href: crm-duplicate-find-by-comm.md
-  - name: Merge duplicates
+  - name: Merge Duplicates
     href: crm-entity-merge-batch.md
-  - name: Duplicate search settings for any fields 
+  - name: Duplicate Search Settings for Any Fields 
     include:
       path: volatile-type/b24-toc.yaml
       mode: link

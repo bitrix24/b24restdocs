@@ -1,21 +1,21 @@
 title: Sprints
 href: index.md
 items:
-  - name: Methods for Working with Sprints
+  - name: Overview of Methods
     href: index.md
   - name: Add Sprint to Scrum
     href: tasks-api-scrum-sprint-add.md
-  - name: Complete Active Sprint of Selected Scrum
-    href: tasks-api-scrum-sprint-complete.md
-  - name: Delete Sprint
-    href: tasks-api-scrum-sprint-delete.md
-  - name: Get Sprint Fields by Its Identifier
-    href: tasks-api-scrum-sprint-get.md
-  - name: Get List of Available Sprint Fields
-    href: tasks-api-scrum-sprint-get-fields.md
-  - name: Get List of Sprints
-    href: tasks-api-scrum-sprint-list.md
-  - name: Start Sprint
-    href: tasks-api-scrum-sprint-start.md
   - name: Update Sprint
     href: tasks-api-scrum-sprint-update.md
+  - name: Start Sprint
+    href: tasks-api-scrum-sprint-start.md
+  - name: Complete Active Sprint of Selected Scrum
+    href: tasks-api-scrum-sprint-complete.md
+  - name: Get Sprint Fields by Its Identifier
+    href: tasks-api-scrum-sprint-get.md
+  - name: Get List of Sprints
+    href: tasks-api-scrum-sprint-list.md
+  - name: Delete Sprint
+    href: tasks-api-scrum-sprint-delete.md
+  - name: Get List of Available Sprint Fields
+    href: tasks-api-scrum-sprint-get-fields.md

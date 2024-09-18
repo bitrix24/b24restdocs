@@ -1,46 +1,105 @@
 # Add Epic in Scrum tasks.api.scrum.epic.add
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user with access to Scrum
 
-The method `tasks.api.scrum.epic.add` adds an epic to Scrum.
+This method adds an epic to Scrum.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **fields^*^**
-[`array`](../../../data-types.md) | Fields corresponding to the available list of fields [tasks.api.scrum.epic.getFields](./tasks-api-scrum-epic-get-fields.md).
+|| **Name**
+`type` | **Description** ||
+|| **fields***
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new epic in the form of a structure:
 
-The fields `name` and `groupId` are required.
+```js
+fields: {
+    name: 'value',
+    groupId: 'value',
+    description: 'value',
+    color: 'value',
+    files: [
+        'file1',
+        'file2',
+        ...
+    ]
 
-In the `files` field, you can pass an array of values with file identifiers, specifying the prefix `n` for each identifier. ||
+}
+```
+
+||
 |#
 
-## Examples
+### Parameter fields
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name***
+[`string`](../../../data-types.md) | Epic name ||
+|| **description**
+[`string`](../../../data-types.md) | Epic description ||
+|| **groupId***
+[`integer`](../../../data-types.md) | Identifier of the group (scrum) to which the epic belongs ||
+|| **color**
+[`string`](../../../data-types.md) | Epic color ||
+|| **files**
+[`array`](../../../data-types.md) | Array of files associated with the epic.
+
+In `files`, you can pass an array of values with file identifiers, specifying the prefix `n` for each identifier ||
+|| **createdBy**
+[`integer`](../../../data-types.md) | Created by ||
+|| **modifiedBy**
+[`integer`](../../../data-types.md) | Modified by ||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "fields": {
+        "name": "Epic 1",
+        "groupId": 1,
+        "description": "Description text",
+        "color": "#69dafc",
+        "files": ["n428", "n345"]
+    }
+    }' \
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.epic.add
+    ```
+
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -d '{
+    "fields": {
+        "name": "Epic 1",
+        "groupId": 1,
+        "description": "Description text",
+        "color": "#69dafc",
+        "files": ["n428", "n345"]
+    }
+    }' \
+    https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.add
+    ```
 
 - JS
 
@@ -69,45 +128,10 @@ In the `files` field, you can pass an array of values with file identifiers, spe
     );
     ```
 
-- cURL (oAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
-    -d '{
-    "fields": {
-        "name": "Epic 1",
-        "groupId": 1,
-        "description": "Description text",
-        "color": "#69dafc",
-        "files": ["n428", "n345"]
-    }
-    }' \
-    https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.add
-    ```
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    "fields": {
-        "name": "Epic 1",
-        "groupId": 1,
-        "description": "Description text",
-        "color": "#69dafc",
-        "files": ["n428", "n345"]
-    }
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.epic.add
-    ```
-
 - PHP
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // include CRest PHP SDK
 
     $groupId = 1;
     $name = 'Epic 1';
@@ -115,7 +139,7 @@ In the `files` field, you can pass an array of values with file identifiers, spe
     $color = '#69dafc';
     $files = ['n428', 'n345'];
 
-    // executing the request to the REST API
+    // execute request to REST API
     $result = CRest::call(
         'tasks.api.scrum.epic.add',
         [
@@ -129,10 +153,11 @@ In the `files` field, you can pass an array of values with file identifiers, spe
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Handle response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
-    } else {
+    }
+    else {
         print_r($result['result']);
     }
     ```
@@ -155,39 +180,39 @@ HTTP Status: **200**
 }
 ```
 
-### Returned Data
+### Returned Data {#fields}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../../data-types.md) | Identifier of the epic ||
+[`integer`](../../../data-types.md) | Epic identifier ||
 || **groupId**
-[`integer`](../../../data-types.md) | Identifier of the group (scrum) to which the epic is attached ||
+[`integer`](../../../data-types.md) | Identifier of the group (scrum) to which the epic is linked ||
 || **name**
-[`string`](../../../data-types.md) | Name of the epic ||
+[`string`](../../../data-types.md) | Epic name ||
 || **description**
-[`string`](../../../data-types.md) | Description of the epic ||
+[`string`](../../../data-types.md) | Epic description ||
 || **createdBy**
 [`integer`](../../../data-types.md) | Identifier of the user who created the epic ||
 || **modifiedBy**
 [`integer`](../../../data-types.md) | Identifier of the user who last modified the epic ||
 || **color**
-[`string`](../../../data-types.md) | Color of the epic in HEX format ||
-
+[`string`](../../../data-types.md) | Epic color in HEX format ||
 |#
-{% include [Example Notes](../../../../_includes/examples.md) %}
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP Status: **400**
 
 ```json
 {
-  "error": 0,
-  "error_description": "Epic not found"
+    "error": 0,
+    "error_description": "Group is not found"
 }
 ```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -196,9 +221,18 @@ HTTP Status: **200**
 || `0` | Access denied | No access to scrum ||
 || `0` | Epic not created | Failed to create epic ||
 || `0` | createdBy user not found | User in the "creator" field not found ||
-|| `0` | modifiedBy user not found | User in the "last modified by" field not found ||
-|| `0` | Group is not found | GROUP_ID parameter is not specified or a group with such ID does not exist ||
-|| `0` | Name is not found | NAME parameter is not specified ||
+|| `0` | modifiedBy user not found | User in the "last modified" field not found ||
+|| `0` | Group is not found | Parameter `GROUP_ID` not specified or group with such `ID` does not exist ||
+|| `0` | Name is not found | Parameter `NAME` not specified ||
 |#
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./tasks-api-scrum-epic-update.md)
+- [{#T}](./tasks-api-scrum-epic-get.md)
+- [{#T}](./tasks-api-scrum-epic-list.md)
+- [{#T}](./tasks-api-scrum-epic-delete.md)
+- [{#T}](./tasks-api-scrum-epic-get-fields.md)

@@ -1,50 +1,118 @@
 # Update Epic in Scrum tasks.api.scrum.epic.update
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user with access to Scrum
 
-The method `tasks.api.scrum.epic.update` updates an epic in Scrum.
+This method updates an epic in Scrum.
 
-All fields of the epic are available for updating. Non-updatable fields do not need to be passed.
+## Method Parameters
 
-## Parameters
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **id^*^**
-[`integer`](../../../data-types.md) | Epic identifier. ||
-|| **fields^*^**
-[`array`](../../../data-types.md) | Fields corresponding to the available list of fields [tasks.api.scrum.epic.getFields](./tasks-api-scrum-epic-get-fields.md), except for createdBy and modifiedBy.
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../../data-types.md) | Epic identifier.
 
-In the `files` field, you can pass an array of values with file identifiers, specifying the prefix `n` for each identifier.
+You can obtain epic identifiers using the [`tasks.api.scrum.epic.list`](./tasks-api-scrum-epic-list.md) method. ||
+|| **fields***
+[`array`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new epic in the form of a structure:
 
-If an empty array is passed in `files`, the files will be deleted. ||
+```js
+fields: {
+    name: 'value',
+    groupId: 'value',
+    description: 'value',
+    color: 'value',
+    files: [
+        'file1',
+        'file2',
+        ...
+    ]
+
+}
+```
+||
 |#
 
-## Example
+### Parameter fields
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name***
+[`string`](../../../data-types.md) | Epic name ||
+|| **description**
+[`string`](../../../data-types.md) | Epic description ||
+|| **groupId***
+[`integer`](../../../data-types.md) | Identifier of the group (scrum) to which the epic belongs ||
+|| **color**
+[`string`](../../../data-types.md) | Epic color ||
+|| **files**
+[`array`](../../../data-types.md) | Array of files associated with the epic.
+
+In `files`, you can pass an array of values with file identifiers, specifying the prefix `n` for each identifier.
+
+{% note warning "Attention" %}
+
+If an empty array is passed, the files will be deleted.
+
+{% endnote %}
+
+||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "fields": {
+        "id": 1,
+        "fields": {
+            "name": "Updated epic name",
+            "description": "Updated description text",
+            "color": "#bbecf1",
+            "files": ["n429", "n243"]
+        }
+    },
+    }' \
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.epic.update
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "fields": {
+        "id": 1,
+        "fields": {
+            "name": "Updated epic name",
+            "description": "Updated description text",
+            "color": "#bbecf1",
+            "files": ["n429", "n243"]
+        }
+    },
+    auth=YOUR_ACCESS_TOKEN
+    }' \
+    https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.update
+    ```
 
 - JS
+
     ```js
     const epicId = 1;
     const name = 'Updated epic name';
@@ -69,53 +137,17 @@ If an empty array is passed in `files`, the files will be deleted. ||
     );
     ```
 
-- cUrl (oAuth)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    "fields": {
-        "id": 1,
-        "fields": {
-            "name": "Updated epic name",
-            "description": "Updated description text",
-            "color": "#bbecf1",
-            "files": ["n429", "n243"]
-        }
-    },
-    auth=YOUR_ACCESS_TOKEN
-    }' \
-    https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.update
-    ```
-
-- cUrl (Webhook)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    "fields": {
-        "id": 1,
-        "fields": {
-            "name": "Updated epic name",
-            "description": "Updated description text",
-            "color": "#bbecf1",
-            "files": ["n429", "n243"]
-        }
-    },
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.epic.update
-    ```
-
 - PHP
+
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // include CRest PHP SDK
     $epicId = 1;
     $name = 'Updated epic name';
     $description = 'Updated description text';
     $color = '#bbecf1';
     $files = ['n429', 'n243'];
 
-    // executing the request to the REST API
+    // execute request to REST API
     $result = CRest::call(
     'tasks.api.scrum.epic.update',
     [
@@ -129,15 +161,17 @@ If an empty array is passed in `files`, the files will be deleted. ||
     ]
     );
 
-    // Handling the response from Bitrix24
+    // Handle response from Bitrix24
     if ($result['error']) {
-    echo 'Error: '.$result['error_description'];
-    } else {
-    print_r($result['result']);
+        echo 'Error: '.$result['error_description'];
+    }
+    else {
+        print_r($result['result']);
     }
     ```
 
 {% endlist %}
+
 ## Response Handling
 
 HTTP Status: **200**
@@ -162,7 +196,7 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../../data-types.md) | Epic identifier ||
 || **groupId**
-[`integer`](../../../data-types.md) | Group identifier (scrum) to which the epic is linked ||
+[`integer`](../../../data-types.md) | Identifier of the group (scrum) to which the epic is linked ||
 || **name**
 [`string`](../../../data-types.md) | Epic name ||
 || **description**
@@ -173,20 +207,20 @@ HTTP Status: **200**
 [`integer`](../../../data-types.md) | Identifier of the user who last modified the epic ||
 || **color**
 [`string`](../../../data-types.md) | Epic color ||
-
 |#
-{% include [Example Notes](../../../../_includes/examples.md) %}
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP Status: **400**
 
 ```json
 {
-  "error": 0,
-  "error_description": "Epic not found"
+    "error": 0,
+    "error_description": "Epic not updated"
 }
 ```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -201,4 +235,13 @@ HTTP Status: **200**
 || `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
 |#
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./tasks-api-scrum-epic-add.md)
+- [{#T}](./tasks-api-scrum-epic-get.md)
+- [{#T}](./tasks-api-scrum-epic-list.md)
+- [{#T}](./tasks-api-scrum-epic-delete.md)
+- [{#T}](./tasks-api-scrum-epic-get-fields.md)

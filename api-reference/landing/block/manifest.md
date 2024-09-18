@@ -214,7 +214,7 @@ In addition, this key can contain the following settings:
 
 ### Key menu
 
-The menu on the site can very well be a regular HTML block, and a whole section in the block catalog is allocated for such blocks. The links of the menu items are simply edited like regular cards. But how to build a multi-level menu? You might have seen it in the [Knowledge Base](*knowleadge).
+The menu on the site can very well be a regular HTML block, and a whole section in the block catalog is allocated for such blocks. The links of the menu items are simply edited like regular cards. But how to build a multi-level menu? You might have seen it in the Knowledge Base.
 
 For this, a separate entry in the manifest with the key menu is intended. Here is how such an entry looks:
 

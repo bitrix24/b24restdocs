@@ -1,50 +1,58 @@
-# Delete Kanban Stage / My Plan task.stages.delete
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing (should include three examples - curl, js, php)
-- no error response is provided
-- no success response is provided
- 
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly
-
-{% endnote %}
+# Delete Kanban / My Plan Stage task.stages.delete
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method:
+> - any user for My Plan stages
+> - any user with access to the group for Kanban stages
 
-The method `task.stages.delete` removes a Kanban stage / My Plan. It takes the `id` of the stage as input.
+This method deletes a Kanban / My Plan stage.
 
-The stage is checked for sufficient access permission, as well as for the absence of tasks within it.
+It takes the `id` of the stage as input. The stage is checked for sufficient access permissions and whether it has any tasks.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **id^*^**
-[`integer`](../../data-types.md) | Identifier of the stage to be deleted. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../data-types.md) | Identifier of the stage to be deleted ||
 || **isAdmin**
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided that the requester is an administrator of the account. ||
+[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided that the requester is an account administrator ||
 |#
 
-Returns `true` if the stage is successfully deleted.
+## Code Examples
 
-## Examples
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "id": 5
+    }' \
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.delete
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -d '{
+    "id": 5
+    }' \
+    https://your-domain.bitrix24.com/rest/task.stages.delete
+    ```
 - JS
+
     ```js
     const stageId = 5;
     BX24.callMethod(
@@ -59,28 +67,8 @@ Returns `true` if the stage is successfully deleted.
     );
     ```
 
-- cURL (oAuth)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
-    -d '{
-    "id": 5
-    }' \
-    https://your-domain.bitrix24.com/rest/task.stages.delete
-    ```
-
-- cURL (Webhook)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    "id": 5
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.delete
-    ```
-
 - PHP
+
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
@@ -110,25 +98,50 @@ HTTP Status: **200**
 
 ```json
 {
-"result": true
+    "result": true
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result** 
+[`boolean`](../../data-types.md) | Returns `true` if the stage was successfully deleted
+||
+|#
 
 ## Error Handling
 
+HTTP Status: **400**
+
 ```json
 {
-"error": "CANT_DELETE_FIRST",
-"error_description": "Cannot delete the first stage. Move the stage to delete it."
+    "error": "CANT_DELETE_FIRST",
+    "error_description": "Cannot delete the first stage. Move the stage to delete it"
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | You cannot manage stages ||
-|| `CANT_DELETE_FIRST` | Cannot delete the first stage. Move the stage to delete it. ||
+|| `CANT_DELETE_FIRST` | Cannot delete the first stage. Move the stage to delete it ||
 || `IS_SYSTEM` | The default stage cannot be deleted ||
 || `NOT_FOUND` | Stage not found ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./task-stages-add.md)
+- [{#T}](./task-stages-update.md)
+- [{#T}](./task-stages-get.md)
+- [{#T}](./task-stages-can-move-task.md)
+- [{#T}](./task-stages-move-task.md)
