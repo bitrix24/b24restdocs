@@ -36,7 +36,7 @@ What can you write in the `@if ()` condition? Let's take a look below. Case sens
 
 ## System Fields
 
-- `engine.code` — provider code (ChatGPT, GigaChat, YandexGPT, [ThirdParty](*ThirdParty))
+- `engine.code` — provider code (ChatGPT, [ThirdParty](*ThirdParty))
 - `engine.category` — can take values text or image. However, currently, CoPilot pre-prompts only work for text.
 - `context.module` — the module that calls CoPilot. For example, you can modify the pre-prompt differently if the request is for the CRM module.
 
@@ -58,7 +58,7 @@ An example of a condition based on a system field was at the beginning of the pa
 ## Negation
 
 ```js
-@if (engine.code != YandexGPT)
+@if (engine.code != ChatGPT)
 	{context_messages}
 @endif
 ```
@@ -145,8 +145,8 @@ This is the well-known `switch` in programming. It comes in handy when you have 
 @switch (engine.code)
 @case(ChatGPT)
 	**instructions for GPT**
-@case(YandexGPT)
-	**instructions for YandexGPT**
+@case(anotherGPT)
+	**instructions for anotherGPT**
 @default
 	**instructions for other providers**
 @endswitch
@@ -162,7 +162,7 @@ Example of combined use of switch and if:
 @case(ChatGPT)
 	you are a pig 
 	@if(author.personalgender = m) pink @else blue @endif
-@case(YandexGPT)
+@case(anotherGPT)
 	you are a bear
 @default
 	you are a wolf
@@ -170,7 +170,7 @@ Example of combined use of switch and if:
 @switch (engine.code)
 @case(ChatGPT)
 	from Pluto
-@case(YandexGPT)
+@case(anotherGPT)
 	from Jupiter
 @default
 	@if(author.personalgender = m) from Mars @else from Venus @endif
