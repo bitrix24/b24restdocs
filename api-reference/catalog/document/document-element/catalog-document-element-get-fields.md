@@ -1,8 +1,8 @@
-# Get a List of Product Fields for the Warehouse Document catalog.document.element.getFields
+# Get the list of fields for inventory document items catalog.document.element.getFields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will add it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- no response in case of an error
+- no response in case of error
 - no response in case of success
 - no examples in other languages
   
@@ -28,7 +28,7 @@ Some data may be missing here — we will add it soon.
 catalog.document.element.getFields()
 ```
 
-This method returns a list of product fields for the warehouse document.
+The method returns a list of fields for inventory document items.
 
 ## Parameters
 
@@ -50,7 +50,7 @@ BX24.callMethod(
 );
 ```
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -63,13 +63,13 @@ BX24.callMethod(
 || **elementId** 
 [`integer`](../../../data-types.md) | Product identifier [catalog.product.list](../../../catalog/product/catalog-product-list.md). | Immutable field. ||
 || **id** 
-[`integer`](../../../data-types.md) | Document product identifier. | Read-only. ||
+[`integer`](../../../data-types.md) | Document item identifier. | Read-only. ||
 || **purchasingPrice** 
 [`double`](../../../data-types.md) | Purchase price. | ||
 || **storeFrom** 
-[`integer`](../../../data-types.md) | Sender warehouse. | ||
+[`integer`](../../../data-types.md) | Sender inventory. | ||
 || **storeTo** 
-[`integer`](../../../data-types.md) | Recipient warehouse. | ||
+[`integer`](../../../data-types.md) | Recipient inventory. | ||
 |#
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}

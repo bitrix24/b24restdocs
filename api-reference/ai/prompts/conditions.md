@@ -30,13 +30,13 @@ Let's start with an example:
 @endif
 ```
 
-As a result, depending on the selected provider in the account, the final pre-prompt will differ.
+As a result, depending on the selected provider on the account, the final pre-prompt will differ.
 
 What can you write in the `@if ()` condition? Let's take a look below. Case sensitivity and extra spaces do not matter.
 
 ## System Fields
 
-- `engine.code` — provider code (ChatGPT, GigaChat, YandexGPT, [ThirdParty](*ThirdParty))
+- `engine.code` — provider code (ChatGPT, [ThirdParty](*ThirdParty))
 - `engine.category` — can take values text or image. However, currently, CoPilot pre-prompts only work for text.
 - `context.module` — the module that calls CoPilot. For example, you can modify the pre-prompt differently if the request is for the CRM module.
 
@@ -101,11 +101,11 @@ An important clarification — you should only check the availability of the mar
 @endif
 ```
 
-is meaningless, as if the marker is absent, it will be automatically removed from the text.
+is meaningless, as if the marker is absent, it will automatically be removed from the text.
 
-## Functions Inside If Conditions
+## Functions Inside If-Conditions
 
-You can use functions within the if-expression condition. Currently, only the length determination function `length()` is supported. You can pass any marker into this function, including user-defined ones.
+You can use functions inside the if-expression condition. Currently, only the length definition `length()` is supported. You can pass any marker into this function, including user-defined ones.
 
 ```js
 @if (length(marker.user_message) < 10)
@@ -118,12 +118,12 @@ You can use functions within the if-expression condition. Currently, only the le
 
 ## Setter Functions
 
-Within prompts, you can set temperature and tokens. Moreover, they can be different depending on [conditions](*conditions).
+Inside prompts, you can set temperature and tokens. Moreover, they can be different depending on [conditions](*conditions).
 
 - `@setTemperature()`
 - `@setTokens()`
 
-Let's enhance the example from the previous section about functions, using setters:
+Let's enhance the example from the previous section about functions using setters:
 
 ```js
 @if (length(marker.user_message) < 10)
@@ -139,7 +139,7 @@ Let's enhance the example from the previous section about functions, using sette
 
 ## Branching
 
-This is the well-known `switch` in programming. It comes in handy when you have different prompt blocks, but each of them executes strictly in a certain order. A good example is when you have different prompt texts for different providers. Let's consider this example.
+This is the well-known `switch` in programming. It comes in handy when you have different prompt blocks, but each of them is executed strictly in a certain order. A good example is when you have different prompt texts for different providers. Let's consider this example.
 
 ```js
 @switch (engine.code)
@@ -151,9 +151,9 @@ This is the well-known `switch` in programming. It comes in handy when you have 
 	**instructions for other providers**
 @endswitch
 ```
-What can you insert into `switch`? Everything that you can use in `if`.
+What can you insert into `switch`? Everything that you can in `if`.
 
-The branching condition has the highest priority, which means that if-expressions can be included within case blocks. There can be multiple branching blocks, although this may reduce readability.
+The branching condition has the highest priority, meaning that if-expressions can be included within case blocks. There can be multiple branching blocks, although this may reduce readability.
 
 Example of combined use of switch and if:
 
@@ -179,4 +179,4 @@ Example of combined use of switch and if:
 
 [*ThirdParty]: ThirdParty — "third party". That is, this can be the code of a third-party provider developed by a partner.
 
-[*conditions]: These can be either if-conditions or switch branching.
+[*conditions]: These can be both if-conditions and switch branching.

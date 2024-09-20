@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -10,15 +10,15 @@ Some data may be missing — we will complete it soon.
 >
 > Who can subscribe: any user
 
-Methods for working with warehouses:
+Methods for working with inventories:
 
 #|
 || **Method** | **Description** | **Note** ||
 || [catalog.document.element.add](./catalog-document-element-add.md) | This method adds an item to the inventory document. |  ||
-|| [catalog.document.element.delete](./catalog-document-element-delete.md) | This method removes an item from the inventory document. |  ||
-|| [catalog.document.element.fields](./catalog-document-element-fields.md) | This method retrieves the field values of the warehouse by ID. | This method is deprecated since version **22.400.0**. It is recommended to use the method [catalog.document.element.getFields](./catalog-document-element-get-fields.md). ||
+|| [catalog.document.element.delete](./catalog-document-element-delete.md) | This method deletes an item from the inventory document. |  ||
+|| [catalog.document.element.fields](./catalog-document-element-fields.md) | This method retrieves the field values of the inventory by ID. | This method is deprecated since version **22.400.0**. It is recommended to use the method [catalog.document.element.getFields](./catalog-document-element-get-fields.md). ||
 || [catalog.document.element.getFields](./catalog-document-element-get-fields.md) | This method returns a list of fields for items in the inventory document.  | ||
-|| [catalog.document.element.list](./catalog-document-element-list.md) | This method retrieves a list of items in inventory documents.  | ||
+|| [catalog.document.element.list](./catalog-document-element-list.md) | This method retrieves a list of items in the inventory documents.  | ||
 || [catalog.document.element.update](./catalog-document-element-update.md) | This method updates an item in the inventory document. |  ||
 |#
 

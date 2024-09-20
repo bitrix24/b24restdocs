@@ -25,11 +25,11 @@ The method `sale.order.add` is designed for adding an order.
 || **Name**
 `type` | **Description** ||
 || **lid***
-[`string`](../../data-types.md) | Identifier of the site where this payer type will be used. Has a constant value of 's1' ||
+[`string`](../../data-types.md) | Identifier of the site where this payer type will be used. It has a constant value of 's1' ||
 || **personTypeId***
 [`sale_person_type.id`](../data-types.md) | Identifier of the payer type ||
 || **currency***
-[`string`](../../data-types.md) | Currency. The list of currencies can be obtained via the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
+[`string`](../../data-types.md) | Currency. The list of currencies can be obtained through the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
 || **price**
 [`double`](../../data-types.md) | Price ||
 || **discountValue**
@@ -62,7 +62,7 @@ Additional information ||
 || **responsibleId**
 [`user.id`](../../data-types.md) | Identifier of the user responsible for the order ||
 || **recurringId**
-[`integer`](../../data-types.md) | Identifier of the subscription renewal ||
+[`integer`](../../data-types.md) | Identifier for subscription renewal ||
 || **lockedBy**
 [`user.id`](../../data-types.md) | Relevant only for on-premise.
 
@@ -75,13 +75,13 @@ Recount flag.
 - `Y` — yes
 - `N` — no
 
-Defaults to Y ||
+Defaults to `Y` ||
 || **affiliateId**
 [`integer`](../../data-types.md) | Relevant only for on-premise.
 
 Identifier of the affiliate ||
 || **updated1c**
-[`string`](../../data-types.md) | Updated via 1C.
+[`string`](../../data-types.md) | Updated via QuickBooks and other similar platforms.
 
 - `Y` — yes
 - `N` — no
@@ -94,9 +94,9 @@ Order topic ||
 || **xmlId**
 [`string`](../../data-types.md) | External identifier ||
 || **id1c**
-[`string`](../../data-types.md) | Identifier in 1C ||
+[`string`](../../data-types.md) | Identifier in QuickBooks and other similar platforms ||
 || **version1c**
-[`string`](../../data-types.md) | Version in 1C ||
+[`string`](../../data-types.md) | Version in QuickBooks and other similar platforms ||
 || **externalOrder**
 [`string`](../../data-types.md) | Whether the order is from an external system.
 
@@ -245,7 +245,7 @@ Defaults to `N` ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -259,11 +259,11 @@ HTTP status: **200**
             "comments": "",
             "companyId": 1,
             "currency": "USD",
-            "dateCanceled": "2024-04-12T13:50:21+03:00",
-            "dateInsert": "2024-03-01T13:00:00+03:00",
-            "dateMarked": "2024-04-12T13:50:21+03:00",
-            "dateStatus": "2024-04-12T13:50:21+03:00",
-            "dateUpdate": "2024-04-12T13:50:21+03:00",
+            "dateCanceled": "2024-04-12T13:50:21+02:00",
+            "dateInsert": "2024-03-01T13:00:00+02:00",
+            "dateMarked": "2024-04-12T13:50:21+02:00",
+            "dateStatus": "2024-04-12T13:50:21+02:00",
+            "dateUpdate": "2024-04-12T13:50:21+02:00",
             "deducted": "N",
             "discountValue": 10,
             "empCanceledId": 1,
@@ -300,8 +300,8 @@ HTTP status: **200**
         "finish": 1712922623.393783,
         "duration": 2.6689260005950928,
         "processing": 2.210068941116333,
-        "date_start": "2024-04-12T14:50:20+03:00",
-        "date_finish": "2024-04-12T14:50:23+03:00"
+        "date_start": "2024-04-12T14:50:20+02:00",
+        "date_finish": "2024-04-12T14:50:23+02:00"
     }
 }
 ```
@@ -321,7 +321,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -337,7 +337,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `200040300020` | Insufficient permissions to add an order ||
-|| `100` | The `fields` parameter is not specified or is empty ||
+|| `100` | Parameter `fields` is not specified or is empty ||
 || `0` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

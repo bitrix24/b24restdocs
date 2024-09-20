@@ -1,4 +1,4 @@
-# Get the list of stock balances by warehouses catalog.storeproduct.list
+# Get Inventory Balances by Warehouse catalog.storeproduct.list
 
 {% note warning "We are still updating this page" %}
 
@@ -10,8 +10,8 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the mandatory parameters are not specified
-- there is no response in case of an error
+- required parameters are not specified
+- no response in case of an error
 - no examples in other languages
   
 {% endnote %}
@@ -26,9 +26,9 @@ Some data may be missing here — we will fill it in shortly.
 catalog.storeproduct.list(select, filter, order, start)
 ```
 
-The method retrieves stock balances by warehouses filtered according to the specified criteria.
+This method retrieves inventory balances filtered by the specified criteria.
 
-If the operation is successful, a list of stock balances by warehouses is returned in the response body.
+If the operation is successful, a list of inventory balances will be returned in the response body.
 
 ## Parameters
 
@@ -44,7 +44,7 @@ If the operation is successful, a list of stock balances by warehouses is return
 [`string`](../../data-types.md)| Page number for output. Works for HTTPS requests. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -77,4 +77,4 @@ Example HTTPS request
 https://your_account/rest/catalog.storeproduct.list?auth=_authorization_key_&start=50
 ```
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}

@@ -1,37 +1,37 @@
-title: Warehouse
+title: Inventory
 href: index.md
 items: 
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Add Inventory Document
+  - name: Add inventory document
     href: catalog-document-add.md
-  - name: Cancel Document Processing
+  - name: Cancel document processing
     href: catalog-document-cancel.md
-  - name: Perform Bulk Document Cancellation
+  - name: Perform bulk cancellation of document processing
     href: catalog-document-cancel-list.md
-  - name: Process Document
+  - name: Process document
     href: catalog-document-conduct.md
-  - name: Perform Bulk Document Processing
+  - name: Perform bulk processing of documents
     href: catalog-document-conduct-list.md
-  - name: Process Document (Confirm)
+  - name: Process document (confirm)
     href: catalog-document-confirm.md    
-  - name: Delete Document
+  - name: Delete document
     href: catalog-document-delete.md
-  - name: Perform Bulk Document Deletion
+  - name: Perform bulk deletion of documents
     href: catalog-document-delete-list.md
-  - name: Get List of Document Fields (Confirm)
+  - name: Get list of document fields (confirm)
     href: catalog-document-fields.md
-  - name: Get Inventory Document Fields
+  - name: Get fields of inventory document
     href: catalog-document-get-fields.md
-  - name: Get List of Documents
+  - name: Get list of documents
     href: catalog-document-list.md
-  - name: Get Information on Inventory Accounting Mode
+  - name: Get information about inventory accounting mode
     href: catalog-document-mode-status.md
-  - name: Cancel Document Processing (Confirm)
+  - name: Cancel document processing (confirm)
     href: catalog-document-unconfirm.md
-  - name: Modify Document
+  - name: Modify document
     href: catalog-document-update.md
-  - name: Items of Inventory Document
+  - name: Products of inventory document
     include:
       path: document-element/toc.yaml
       mode: link

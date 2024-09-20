@@ -1,24 +1,24 @@
-# Warehouse Resource
+# Inventory Resource
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- some description of what this is
+- some description of what this is about
   
 {% endnote %}
 
 {% endif %}
 
-## Warehouse:
+## Inventory:
 
 ```json
 {
     "active": "Y",
     "address": "Moscow Ave. 51",
     "code": null,
-    "dateCreate": "2018-10-22T11:30:56+03:00",
-    "dateModify": "2018-10-22T11:30:56+03:00",
+    "dateCreate": "2018-10-22T11:30:56+02:00",
+    "dateModify": "2018-10-22T11:30:56+02:00",
     "description": "Here you will find products from leading manufacturers around the world",
     "email": null,
     "gpsN": 54.71411,
@@ -33,7 +33,7 @@
     "shippingCenter": "Y",
     "siteId": null,
     "sort": 100,
-    "title": "Warehouse",
+    "title": "Inventory",
     "userId": null,
     "xmlId": null
 }

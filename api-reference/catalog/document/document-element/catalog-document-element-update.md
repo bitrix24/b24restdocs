@@ -13,8 +13,8 @@ Some data may be missing here — we will complete it soon.
 - the mandatory parameters are not specified
 - there is no response in case of an error
 - no examples in other languages
-- clarify the type of the id parameter
-  
+- clarify the parameter type id
+
 {% endnote %}
 
 {% endif %}
@@ -39,7 +39,7 @@ Method for updating an inventory document item. If the operation is successful, 
 [`array`](../../../data-types.md)|  Parameters of the item being updated. ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
@@ -88,4 +88,4 @@ Method for updating an inventory document item. If the operation is successful, 
 
 {% endlist %}
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../../_includes/examples.md) %}

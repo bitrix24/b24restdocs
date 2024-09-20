@@ -1,8 +1,8 @@
-# Get Warehouse Accounting Document Fields catalog.document.getFields
+# Get Inventory Management Document Fields catalog.document.getFields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -10,10 +10,10 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Required parameters are not specified
-- No response in case of error
-- No response in case of success
-- No examples in other languages
+- required parameters are not specified
+- no response in case of error
+- no response in case of success
+- no examples in other languages
   
 {% endnote %}
 
@@ -29,7 +29,7 @@ Some data may be missing here — we will complete it shortly.
 catalog.document.getFields()
 ```
 
-This method returns a list of fields for warehouse accounting documents.
+This method returns a list of fields for inventory management documents.
 
 ## Parameters
 
@@ -51,7 +51,7 @@ BX24.callMethod(
 );
 ```
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -77,11 +77,11 @@ BX24.callMethod(
 [`string`](../../data-types.md) | Document number. |  ||
 || **docType^*^**
 [`char`](../../data-types.md) | Document type:
-- `A` – Goods receipt; 
-- `S` – Goods inventory; 
-- `M` – Transfer of goods between warehouses; 
-- `R` – Goods return; 
-- `D` – Goods write-off. |  Read-only field. ||
+- `A` – Inventory receipt; 
+- `S` – Stock adjustment; 
+- `M` – Transfers between inventories; 
+- `R` – Product return; 
+- `D` – Write-offs. |  Read-only field. ||
 || **id** 
 [`integer`](../../data-types.md) | Document identifier. | Read-only. ||
 || **modifiedBy** 
@@ -98,4 +98,4 @@ BX24.callMethod(
 [`double`](../../data-types.md) | Total amount of goods. |  ||
 |#
 
-{% include [Parameters Note](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}

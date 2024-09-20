@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of error
+- no response in case of error 
 - no examples in other languages
 - add a link to [`userfieldconfig.list`](.)
   
@@ -39,7 +39,7 @@ This method updates the values of custom fields for inventory documents.
 [`object`](../../data-types.md)| Fields to be updated and their new values. `documentType` must be specified – [type of inventory documents](../enum/catalog-enum-get-store-document-types.md). | ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 ### Example
 
@@ -65,4 +65,4 @@ BX24.callMethod(
 );
 ```
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../_includes/examples.md) %}

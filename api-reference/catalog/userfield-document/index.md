@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -22,10 +22,10 @@ Some data may be missing — we will complete it soon.
 
 To create custom fields for inventory documents, standard methods from the class [`userfieldconfig.*`](.) are used.
 
-You can retrieve a list of values for custom fields of inventory documents and update the information in them using the following methods:
+You can retrieve the list of values for custom fields of inventory documents and update the information in them using the following methods:
 
 #|
 || **Method** | **Description** ||
 || [catalog.userfield.document.list](./catalog-userfield-document-list.md) | Returns a list of values for custom fields of inventory documents. ||
-|| [catalog.userfield.document.update](./catalog-userfield-document-update.md) | Updates the values of custom fields for inventory documents. ||
+|| [catalog.userfield.document.update](./catalog-userfield-document-update.md) | Updates the values for custom fields of inventory documents. ||
 |#

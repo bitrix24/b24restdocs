@@ -50,7 +50,7 @@ BX24.callMethod(
 );
 ```
 
-{% include [Examples note](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -102,4 +102,4 @@ BX24.callMethod(
 [`string`](../../data-types.md) | External code. |  ||
 |#
 
-{% include [Parameters note](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}

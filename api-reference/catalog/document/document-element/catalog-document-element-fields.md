@@ -1,8 +1,8 @@
-# Get the list of product fields for the warehouse accounting document catalog.document.element.fields
+# Get the list of fields for inventory document items catalog.document.element.fields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the mandatory parameters are not specified
-- no response in case of an error
+- required parameters are not specified
+- no response in case of error
 - no response in case of success
 - no examples in other languages
   
@@ -35,7 +35,7 @@ This method has been deprecated since version **22.400.0**. It is recommended to
 catalog.document.element.fields()
 ```
 
-This method returns a list of product fields for the warehouse accounting document.
+This method returns a list of fields for inventory document items.
 
 ## Parameters
 
@@ -74,7 +74,7 @@ No parameters.
     ```
 {% endlist %}
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -85,9 +85,9 @@ No parameters.
 || **docId^*^** 
 [`integer`](../../../data-types.md) | Document identifier. |  ||
 || **storeFrom** 
-[`integer`](../../../data-types.md) | Source warehouse. | ||
+[`integer`](../../../data-types.md) | Sender's inventory. | ||
 || **storeTo^*^** 
-[`integer`](../../../data-types.md) | Destination warehouse. | ||
+[`integer`](../../../data-types.md) | Recipient's inventory. | ||
 || **elementId^*^** 
 [`integer`](../../../data-types.md) | Product identifier [catalog.product.list](../../../catalog/product/catalog-product-list.md). | ||
 || **amount^*^** 

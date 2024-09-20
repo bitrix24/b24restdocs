@@ -3,9 +3,9 @@ href: index.md
 items: 
   - name: Overview of Methods
     href: index.md
-  - name: Get Stock Parameters by Warehouse
+  - name: Get Inventory Balances Parameters
     href: catalog-store-product-get.md
-  - name: Get Stock Fields by Warehouse
+  - name: Get Inventory Balances Fields
     href: catalog-store-product-get-fields.md
-  - name: Get List of Stocks by Warehouse
+  - name: Get List of Inventory Balances
     href: catalog-store-product-list.md

@@ -10,10 +10,10 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Required parameters are not specified
-- No response in case of error
-- No response in case of success
-- No examples in other languages
+- required parameters are not specified
+- no response in case of an error
+- no response in case of success
+- no examples in other languages
   
 {% endnote %}
 
@@ -29,7 +29,7 @@ Some data may be missing here — we will fill it in shortly.
 catalog.store.get(id)
 ```
 
-Method to access the warehouse field values by ID. If the operation is successful, a [warehouse resource](resource.md) is returned in the response body.
+Method to access the values of warehouse fields by ID. If the operation is successful, a [warehouse resource](resource.md) is returned in the response body.
 
 ## Parameters
 
@@ -39,7 +39,7 @@ Method to access the warehouse field values by ID. If the operation is successfu
 [`integer`](../../data-types.md)| Warehouse identifier. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -58,4 +58,4 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}

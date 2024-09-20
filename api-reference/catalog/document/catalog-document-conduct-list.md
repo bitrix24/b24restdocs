@@ -1,8 +1,8 @@
-# Execute bulk processing of warehouse accounting documents catalog.document.conductList
+# Execute bulk processing of inventory management documents catalog.document.conductList
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ Some data may be missing here — we will complete it soon.
 catalog.document.conductList(documentIds)
 ```
 
-Method for bulk processing of warehouse accounting documents.
+Method for bulk processing of inventory management documents.
 
 ## Parameters
 

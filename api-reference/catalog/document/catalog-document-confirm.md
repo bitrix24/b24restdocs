@@ -1,4 +1,4 @@
-# Conduct Warehouse Accounting Document (confirm) catalog.document.confirm
+# Conduct Inventory Document (deprecated) catalog.document.confirm
 
 {% note warning "We are still updating this page" %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of an error
+- no response in case of error
 - no examples in other languages
   
 {% endnote %}
@@ -20,7 +20,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note info "Attention!" %}
 
-The method has been deprecated since version **22.400.0**. It is recommended to use the method [catalog.document.conduct](./catalog-document-conduct.md).
+This method has been deprecated since version **22.400.0**. It is recommended to use the method [catalog.document.conduct](./catalog-document-conduct.md).
 
 {% endnote %}
 
@@ -34,7 +34,7 @@ The method has been deprecated since version **22.400.0**. It is recommended to 
 catalog.document.confirm(id)
 ```
 
-Method for conducting a warehouse accounting document. If the operation is successful, `true` is returned in the response body.
+Method for conducting an inventory document. If the operation is successful, it returns `true` in the response body.
 
 
 ## Parameters

@@ -1,8 +1,8 @@
-# Get a list of products in inventory documents catalog.document.element.list
+# Get a List of Products in Inventory Management Documents catalog.document.element.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of error
+- no response in case of an error
 - no examples in other languages
   
 {% endnote %}
@@ -26,7 +26,7 @@ Some data may be missing — we will fill it in shortly.
 catalog.document.element.list(order, filter, select, offset, limit, start)
 ```
 
-This method retrieves a list of products in inventory documents.
+This method retrieves a list of products in inventory management documents.
 
 If the operation is successful, a list of documents is returned in the response body.
 
@@ -48,7 +48,7 @@ If the operation is successful, a list of documents is returned in the response 
 [`integer`](../../../data-types.md)| Page size from 1 to 500 (if 0 or a number greater than the maximum is specified, the default value of 50 is used). ||
 |#
 
-{% include [Notes on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../../_includes/required.md) %}
 
 ## Examples
 
@@ -109,4 +109,4 @@ https://your_account/rest/catalog.document.element.list?auth=_authorization_key_
 
 {% endlist %}
 
-{% include [Notes on examples](../../../../_includes/examples.md) %}
+{% include [Example Notes](../../../../_includes/examples.md) %}

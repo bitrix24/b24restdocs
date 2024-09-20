@@ -1,17 +1,17 @@
-title: Warehouse Accounting Document Items
+title: Inventory Document Items
 href: index.md
 items: 
   - name: Overview of Methods
     href: index.md
-  - name: Add Item to Warehouse Accounting Document
+  - name: Add Inventory Document Item
     href: catalog-document-element-add.md
-  - name: Remove Item from Warehouse Accounting Document
+  - name: Delete Inventory Document Item
     href: catalog-document-element-delete.md
   - name: Get List of Fields (Deprecated)
     href: catalog-document-element-fields.md
-  - name: Get List of Item Fields in Document
+  - name: Get List of Inventory Document Item Fields
     href: catalog-document-element-get-fields.md
   - name: Get List of Items
     href: catalog-document-element-list.md
-  - name: Update Item in Document
+  - name: Update Inventory Document Item
     href: catalog-document-element-update.md

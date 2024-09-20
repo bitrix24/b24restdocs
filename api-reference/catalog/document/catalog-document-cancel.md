@@ -1,4 +1,4 @@
-# Cancel Document of Inventory Accounting catalog.document.cancel
+# Cancel the Inventory Document catalog.document.cancel
 
 {% note warning "We are still updating this page" %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the mandatory parameters are not specified
-- there is no response in case of an error
-- no examples in other languages
+- Required parameters are not specified
+- No response in case of an error
+- No examples in other languages
   
 {% endnote %}
 
@@ -28,17 +28,17 @@ Some data may be missing here — we will complete it shortly.
 catalog.document.cancel(id)
 ```
 
-This method cancels the processing of a document by ID.
+This method cancels the processing of the document by ID.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`integer`](../../data-types.md)| Identifier of the inventory accounting document. ||
+[`integer`](../../data-types.md)| Identifier of the inventory document. ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -58,4 +58,4 @@ BX24.callMethod(
 );
 ```
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}

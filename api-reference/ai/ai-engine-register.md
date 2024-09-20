@@ -8,11 +8,11 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- parameter mandatory status not indicated
+- parameter types are not specified
+- parameter requirements are not indicated
 - examples are missing
 - success response is absent
 - error response is absent
@@ -26,7 +26,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: administrator
 
-REST method for adding a custom service. The method registers an **engine** and updates it upon subsequent calls. This is not quite an embedding location, as the **endpoint** of the partner must follow strict formats.
+REST method for adding a custom service. This method registers an **engine** and updates it upon subsequent calls. This is not quite an embedding location, as the **endpoint** of the partner must adhere to strict formats.
 
 #|
 || **Parameter** | **Description** | **Version** ||
@@ -51,7 +51,7 @@ Array of parameters:
 #|
 || **Parameter** | **Description** | **Version** ||
 || **code_alias**
-[`unknown`](../data-types.md) | Type of AI. Available values: ChatGPT (Open AI), GigaChat (Sber), YandexGPT (Yandex) (default is ChatGPT). | | ||
+[`unknown`](../data-types.md) | Type of AI. Available values: ChatGPT (Open AI), QuickBooks and other similar platforms (default is ChatGPT). | | ||
 || **model_context_type**
 [`unknown`](../data-types.md) | Type of context counting. Available values: token - tokens, symbol - symbols. Default is token. | | ||
 || **model_context_limit**
@@ -92,26 +92,27 @@ BX24.callMethod(
 
 {% note info "Attention!" %}
 
-In the script, everything is in a single code flow, this is for example purposes. In **production** mode, it is necessary to separate the lines of code into a different section.
+In the script, everything is in a single code flow; this is for example purposes. In **production** mode, it is necessary to separate the lines of code into a distinct section.
 
 {% endnote %}
+
+[Template](https://dev.bitrix.com/docs/chm_files/endpoint.rar) for creating a custom endpoint can be used to customize your own service.
 
 ## Important points:
 
 1. The script must accept the request, process it quickly, and add it to its internal queue.
 2. It should be able to return various response statuses (as shown in the example):
-  - 200 — normal link transition;
+  - 200 — standard link transition;
   - 202 — if you accepted the request and added it to the queue;
   - 503 — if the service is unavailable.
 
-A response is expected within a certain time, after which the callback becomes invalid.
+A response is expected within a certain timeframe; after that, the callback becomes invalid.
 
 {% note info "Attention!" %}
 
 In addition to the response code, in case of successful generation, the handler must return `json_encode(['result' => 'OK'])`.
 
 {% endnote %}
-
 
 When working with the provider category **audio**, in the `prompt` key, you receive an array that includes the following elements:
 
@@ -125,17 +126,17 @@ The provider also receives additional fields in the response:
 #|
 || **Fields** | **Description** | **Version** ||
 || **auth** | Authorization data, | 23.600.0 ||
-|| **payload_raw** | Raw prompt value (when using Copilot, there will be a character code of the used prompt) | 23.600.0 ||
-|| **payload_provider** | Character code of the provider's pre-prompt (when using Copilot, there will be a prompt). | 23.600.0 ||
+|| **payload_raw** | Raw value of the prompt (when using Copilot, there will be a character code of the used prompt) | 23.600.0 ||
+|| **payload_provider** | Character code of the provider pre-prompt (when using Copilot, there will be prompt). | 23.600.0 ||
 || **payload_prompt_text** | If `payload_provider = prompt`, it will contain the raw instruction of the pre-prompt. This is the unprocessed pre-prompt for independent analysis. More details in the documentation on [prompts](.). | 23.800.0 ||
-|| **payload_markers** | Array of additional markers from the user (`original_message`, `user_message`, `language`), used when forming the prompt. More details in the documentation on [prompts](.). | 23.800.0 ||
-|| **payload_role** | Role (instruction) used when forming the prompt. In GPT-like systems, you should send this role as a system message in the message array. | 23.800.0 ||
-|| **context** | Array of previous messages in chronological order. For example, a list of comments on a post. The first in such a context list is the author's message (the post itself). Important: The volume of context sent to your provider depends on the volume specified by you and the counting type (more details in the provider documentation). By default, the counting method is "tokens", volume 16K. You should send context to the neural network only if the parameter collect_context is set to true (1). In other cases, it is sent as additional information at your discretion. | 23.800.0 ||
+|| **payload_markers** | Array of additional markers from the user (`original_message`, `user_message`, `language`), used in forming the prompt. More details in the documentation on [prompts](.). | 23.800.0 ||
+|| **payload_role** | Role (instruction) used in forming the prompt. In GPT-like systems, you should send this role as a system role in the message array. | 23.800.0 ||
+|| **context** | Array of preceding messages in chronological order. For example, a list of comments on a post. The first in such a context list is the author's message (the post itself). Important: The volume of context sent to your provider depends on the volume specified by you and the counting type (more details in the provider documentation). By default, the counting method is "tokens," with a volume of 16K. You should send context to the neural network only if the parameter collect_context is set to true (1). In other cases, it is sent as additional information at your discretion. | 23.800.0 ||
 || **max_tokens** | Maximum number of tokens. This parameter controls the length of the output. Optional. | | ||
-|| **temperature**^*^ | Temperature. This parameter controls the randomness of the output (low values make the output more focused and deterministic). Mandatory. | | ||
+|| **temperature**^*^ | Temperature. This parameter controls the randomness of the output (lower values make the output more focused and deterministic). Required. | | ||
 |#
 
-\* - Mandatory parameters 
+\* - Required parameters 
 
 **Example**
 
@@ -145,7 +146,7 @@ Suppose you receive (in addition to other information) three arrays of data.
 - payload_role - some text containing instructions;
 - context - an array (let's say, also not empty).
 
-In this case, the resulting array we get is:
+In this case, the resulting array we obtain is:
 
 ```json
 [

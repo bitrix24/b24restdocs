@@ -1,8 +1,8 @@
-# Unconfirm Document (deprecated) catalog.document.unconfirm
+# Cancel Document Processing (unconfirm) catalog.document.unconfirm
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of error
+- no response in case of an error
 - no examples in other languages
   
 {% endnote %}
@@ -34,7 +34,7 @@ This method has been deprecated since version **22.400.0**. It is recommended to
 catalog.document.unconfirm(id)
 ```
 
-This method is used to unconfirm a document. If the operation is successful, it returns `true` for the added warehouse.
+Method to cancel the processing of a document. If the operation is successful, it returns `true` for the added inventory.
 
 ## Parameters
 

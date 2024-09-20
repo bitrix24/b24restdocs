@@ -1,8 +1,8 @@
-# Methods for Working with Warehouse Stock
+# Methods for Working with Inventory Balances
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can perform the method: any user
 
-Methods for working with warehouse stock:
+Methods for working with inventory balances:
 
 #|
 || **Method** | **Description** ||
-|| [catalog.storeproduct.get](./catalog-store-product-get.md) | Method for accessing the values of stock fields in warehouses. ||
-|| [catalog.storeproduct.getFields](./catalog-store-product-get-fields.md) | Method returns the fields of stock in warehouses. ||
-|| [catalog.storeproduct.list](./catalog-store-product-list.md) | Method retrieves stock from warehouses filtered by criteria. ||
+|| [catalog.storeproduct.get](./catalog-store-product-get.md) | Method for accessing the values of inventory balance fields. ||
+|| [catalog.storeproduct.getFields](./catalog-store-product-get-fields.md) | Method returns the fields of inventory balances. ||
+|| [catalog.storeproduct.list](./catalog-store-product-list.md) | Method retrieves inventory balances filtered by criteria. ||
 |#

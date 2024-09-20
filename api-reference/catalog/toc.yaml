@@ -3,7 +3,7 @@ href: index.md
 items: 
   - name: List of Methods
     href: index.md
-  - name: Data Types and Object Structure in the REST API Catalog
+  - name: Data Types and Object Structure in the Catalog REST API
     href: data-types.md
   - name: Trade Catalog
     include:
@@ -29,7 +29,7 @@ items:
     include:
       path: price-type/toc.yaml
       mode: link
-  - name: Price Type Binding to Customer Groups
+  - name: Price Type Binding to Buyer Groups
     include:
       path: price-type-group/toc.yaml
       mode: link
@@ -41,15 +41,15 @@ items:
     include:
       path: product/b24-toc.yaml
       mode: link
-  - name: Properties of Products and Trade Offers
+  - name: Product and Trade Offer Properties
     include:
       path: product-property/toc.yaml
       mode: link
-  - name: Values of List Properties
+  - name: List Property Values
     include:
       path: product-property-enum/toc.yaml
       mode: link
-  - name: Parameters of Product and Trade Offer Properties
+  - name: Product and Trade Offer Property Parameters
     include:
       path: product-property-feature/toc.yaml
       mode: link
@@ -73,19 +73,19 @@ items:
     include:
       path: section/b24-toc.yaml
       mode: link
-  - name: Warehouse
+  - name: Inventory
     include:
       path: store/toc.yaml
       mode: link
-  - name: Stock by Warehouses
+  - name: Inventory Balances
     include:
       path: store-product/toc.yaml
       mode: link
-  - name: Warehouse Accounting
+  - name: Inventory Management
     include:
       path: document/toc.yaml
       mode: link
-  - name: Custom Fields for Warehouse Accounting Documents
+  - name: Custom Fields for Inventory Management Documents
     include:
       path: userfield-document/toc.yaml
       mode: link
