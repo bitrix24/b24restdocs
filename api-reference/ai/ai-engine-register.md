@@ -51,7 +51,7 @@ Array of parameters:
 #|
 || **Parameter** | **Description** | **Version** ||
 || **code_alias**
-[`unknown`](../data-types.md) | Type of AI. Available values: ChatGPT (Open AI), QuickBooks and other similar platforms (default is ChatGPT). | | ||
+[`unknown`](../data-types.md) | Type of AI. Available value: ChatGPT (Open AI). | | ||
 || **model_context_type**
 [`unknown`](../data-types.md) | Type of context counting. Available values: token - tokens, symbol - symbols. Default is token. | | ||
 || **model_context_limit**

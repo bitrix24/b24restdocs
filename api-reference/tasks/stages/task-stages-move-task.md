@@ -1,58 +1,77 @@
 # Move Task from One Stage to Another task.stages.movetask
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing (there should be three examples - curl, js, php)
-- no error response is provided
-- no success response is provided
- 
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon
-
-{% endnote %}
-
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method:
+> - any user for stages of My Plan
+> - any user with access to the group for Kanban stages
 
-The method `task.stages.movetask` moves a task from one stage to another and allows changing the position of the task within the group's Kanban or My Plan.
+This method moves a task from one stage to another and allows changing the position of the task within the group's Kanban or My Plan.
 
-## Parameters
+The method works as follows:
+- If a group stage is provided, the move occurs within the group's Kanban.
+- If a My Plan stage is provided, the move occurs within it.
+
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **id^*^**
-[`integer`](../../data-types.md) | Task identifier. ||
-|| **stageId^*^**
-[`integer`](../../data-types.md) | ID of the stage to which the task should be moved. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../data-types.md) | Task identifier ||
+|| **stageId***
+[`integer`](../../data-types.md) | ID of the stage to which the task should be moved ||
 || **before**
-[`integer`](../../data-types.md) | ID of the task before which the task should be placed in the stage. ||
+[`integer`](../../data-types.md) | ID of the task before which the task should be placed in the stage ||
 || **after**
-[`integer`](../../data-types.md) | ID of the task after which the task should be placed in the stage. ||
+[`integer`](../../data-types.md) | ID of the task after which the task should be placed in the stage ||
 |#
 
 {% note info %}
 
-If the `before` and `after` parameters are not provided simultaneously, the task is added to the column according to the project/My Plan settings. Otherwise, `before` and `after` are mutually exclusive. You specify either one or the other parameter as needed.
+The `before` and `after` parameters are mutually exclusive. You must specify either one or the other.
+
+If both parameters are not filled, the task is added to the column of the stage according to the project/My Plan settings.
 
 {% endnote %}
 
-The method works as follows. If a group stage is provided, the movement occurs within the group's Kanban. If a My Plan stage is provided, the movement occurs within it. Before moving, permission checks are performed.
-
-## Examples
+## Code Examples
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "id": 1,
+    "stageId": 2,
+    "before": 3,
+    "after": 4
+    }' \
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.movetask
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -d '{
+    "id": 1,
+    "stageId": 2,
+    "before": 3,
+    "after": 4
+    }' \
+    https://your-domain.bitrix24.com/rest/task.stages.movetask
+    ```
+
 - JS
+
     ```js
     const taskId = 1;
     const stageId = 2;
@@ -71,41 +90,15 @@ The method works as follows. If a group stage is provided, the movement occurs w
     );
     ```
 
-- cURL (oAuth)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
-    -d '{
-    "id": 1,
-    "stageId": 2,
-    "before": 3,
-    "after": 4
-    }' \
-    https://your-domain.bitrix24.com/rest/task.stages.movetask
-    ```
-
-- cURL (Webhook)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    "id": 1,
-    "stageId": 2,
-    "before": 3,
-    "after": 4
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.movetask
-    ```
-
 - PHP
+
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
     $taskId = 1;
     $stageId = 2;
 
-    // executing the request to the REST API
+    // executing request to REST API
     $result = CRest::call(
         'task.stages.movetask',
         [
@@ -116,7 +109,7 @@ The method works as follows. If a group stage is provided, the movement occurs w
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Handling response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -132,20 +125,32 @@ HTTP Status: **200**
 
 ```json
 {
-"result": true
+    "result": true
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result** 
+[`boolean`](../../data-types.md) | Returns `true` if the stage move was successful
+||
+|#
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP Status: **400**
 
 ```json
 {
-"error": "ACCESS_DENIED_MOVE",
-"error_description": "You cannot move this task"
+    "error": "ACCESS_DENIED_MOVE",
+    "error_description": "You cannot move this task"
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -155,3 +160,14 @@ HTTP Status: **200**
 || `TASK_NOT_FOUND` | Task not found or access to it is denied ||
 || `NOT_FOUND` | Stage not found ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./task-stages-add.md)
+- [{#T}](./task-stages-update.md)
+- [{#T}](./task-stages-get.md)
+- [{#T}](./task-stages-can-move-task.md)
+- [{#T}](./task-stages-delete.md)

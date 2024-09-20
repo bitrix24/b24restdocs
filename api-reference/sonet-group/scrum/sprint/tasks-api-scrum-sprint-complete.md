@@ -1,23 +1,4 @@
-# Complete Active Sprint of Selected Scrum tasks.api.scrum.sprint.complete
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
- 
-{% endnote %}
-
-{% endif %}
+# Complete the active sprint of the selected Scrum tasks.api.scrum.sprint.complete
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -25,21 +6,47 @@ Some data may be missing here — we will fill it in shortly.
 
 The method `tasks.api.scrum.sprint.complete` completes the active sprint of the selected Scrum.
 
-When the sprint is completed, unfinished tasks are moved to the backlog.
+When the sprint is completed, any unfinished tasks are moved to the backlog.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **id^*^**
-[`integer`](../../../data-types.md) | Identifier of the group with the active sprint. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../../data-types.md) | Identifier of the group with the active sprint ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "id": 1
+    }' \
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.complete
+    ```
+
+- cURL (oAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -d '{
+    "id": 1
+    }' \
+    https://your-domain.bitrix24.com/rest/tasks.api.scrum.sprint.complete
+    ```
 
 - JS
 
@@ -57,35 +64,12 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
     );
     ```
 
-- cURL (oAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
-    -d '{
-    "id": 1
-    }' \
-    https://your-domain.bitrix24.com/rest/tasks.api.scrum.sprint.complete
-    ```
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    "id": 1
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.complete
-    ```
-
 - PHP
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
-    // executing request to REST API
+    // executing the request to the REST API
     $result = CRest::call(
         'tasks.api.scrum.sprint.complete',
         [
@@ -93,7 +77,7 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
         ]
     );
 
-    // Handling response from Bitrix24
+    // Processing the response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -105,63 +89,89 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-  "result":
-  {
-    "id": 1,
-    "groupId": 143,
-    "entityType": "sprint",
-    "name": "Sprint 1",
-    "goal": "Goal",
-    "sort": 1,
-    "createdBy": 1,
-    "modifiedBy": 1,
-    "dateStart": "2024-07-19T15:03:01+00:00",
-    "dateEnd": "2024-08-02T15:03:01+00:00",
-    "status": "completed"
-  }
+    "result":
+    {
+        "id": 1,
+        "groupId": 143,
+        "entityType": "sprint",
+        "name": "Sprint 1",
+        "goal": "Goal",
+        "sort": 1,
+        "createdBy": 1,
+        "modifiedBy": 1,
+        "dateStart": "2024-07-19T15:03:01+00:00",
+        "dateEnd": "2024-08-02T15:03:01+00:00",
+        "status": "completed"
+    }
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
-|| **Field** `type` | **Description** ||
-|| **result** `object` | Object containing data about the sprint ||
-|| **id** `integer` | Identifier of the sprint ||
-|| **groupId** `integer` | Identifier of the group (scrum) to which the sprint belongs ||
-|| **entityType** `string` | Type of entity (in this case, "sprint") ||
-|| **name** `string` | Name of the sprint ||
-|| **goal** `string` | Goal of the sprint (set only in the interface when starting the sprint) ||
-|| **sort** `integer` | Sorting ||
-|| **createdBy** `integer` | Identifier of the user who created the sprint ||
-|| **modifiedBy** `integer` | Identifier of the user who modified the sprint ||
-|| **dateStart** `string` | Start date of the sprint in ISO 8601 format ||
-|| **dateEnd** `string` | End date of the sprint in ISO 8601 format ||
-|| **status** `string` | Status of the sprint ||
+|| **Name**
+`type` | **Description** ||
+|| **result** 
+[`object`](../../../data-types.md) | Object containing data about the sprint ||
+|| **id** 
+[`integer`](../../../data-types.md) | Identifier of the sprint ||
+|| **groupId** 
+[`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
+|| **entityType** 
+[`string`](../../../data-types.md) | Type of entity (in this case `sprint`) ||
+|| **name** 
+[`string`](../../../data-types.md) | Name of the sprint ||
+|| **goal** 
+[`string`](../../../data-types.md) | Goal of the sprint. Set only in the interface when starting the sprint ||
+|| **sort** 
+[`integer`](../../../data-types.md) | Sorting ||
+|| **createdBy** 
+[`integer`](../../../data-types.md) | Identifier of the user who created the sprint ||
+|| **modifiedBy** 
+[`integer`](../../../data-types.md) | Identifier of the user who modified the sprint ||
+|| **dateStart** 
+[`string`](../../../data-types.md) | Start date of the sprint in `ISO 8601` format ||
+|| **dateEnd** 
+[`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
+|| **status** 
+[`string`](../../../data-types.md) | Status of the sprint ||
 |#
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **400**
 
 ```json
 {
-"error": 0,
-"error_description": "Sprint not found"
+    "error": 0,
+    "error_description": "Sprint not found"
 }
 ```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access denied | No access to the scrum ||
-|| `0` | Sprint not found | Active sprint not found in the group ||
-|| `100` | Could not find value for parameter {id} | Incorrect parameter name or parameter not set ||
-|| `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
+|| **Code** | **Error Message** | **Description** ||
+|| `0` | `Access denied` | No access to Scrum ||
+|| `0` | `Sprint not found` | Active sprint not found in the group ||
+|| `100` | `Could not find value for parameter {id}` | Incorrect parameter name or parameter not set ||
+|| `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int` | Invalid parameter type ||
 |#
-{% include [Example Note](../../../../_includes/examples.md) %}
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./tasks-api-scrum-sprint-add.md)
+- [{#T}](./tasks-api-scrum-sprint-update.md)
+- [{#T}](./tasks-api-scrum-sprint-start.md)
+- [{#T}](./tasks-api-scrum-sprint-get.md)
+- [{#T}](./tasks-api-scrum-sprint-list.md)
+- [{#T}](./tasks-api-scrum-sprint-delete.md)
+- [{#T}](./tasks-api-scrum-sprint-get-fields.md)

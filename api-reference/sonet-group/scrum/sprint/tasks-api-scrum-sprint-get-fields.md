@@ -1,37 +1,42 @@
 # Get a List of Available Sprint Fields tasks.api.scrum.sprint.getFields
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will add it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
- 
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.api.scrum.sprint.getFields` returns the available fields of the sprint.
-
-## Parameters
+The method `tasks.api.scrum.sprint.getFields` returns the available fields of a sprint.
 
 No parameters.
 
-## Examples
+## Code Examples
+
+{% include [Examples Note](../../../../_includes/examples.md) %}
+
 {% list tabs %}
 
+- cUrl (Webhook)
+  
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    }' \
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.getFields
+    ```
+
+- cURL (oAuth)
+  
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    auth=YOUR_ACCESS_TOKEN
+    }' \
+    https://your-domain.bitrix24.com/rest/tasks.api.scrum.sprint.getFields
+    ```
+
 - JS
+  
     ```js
     BX24.callMethod(
         'tasks.api.scrum.sprint.getFields',
@@ -43,30 +48,12 @@ No parameters.
     );
     ```
 
-- cURL (oAuth)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    auth=YOUR_ACCESS_TOKEN
-    }' \
-    https://your-domain.bitrix24.com/rest/tasks.api.scrum.sprint.getFields
-    ```
-
-- cURL (Webhook)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.getFields
-    ```
-
 - PHP
+  
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
-    // executing the request to the REST API
+    // executing a request to the REST API
     $result = CRest::call(
     'tasks.api.scrum.sprint.getFields',
     []
@@ -79,71 +66,91 @@ No parameters.
     print_r($result['result']);
     }
     ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
-"result":
-{
-    "fields":
+    "result":
     {
-     "groupId":
-     {
-        "type": "integer"
-     },
-     "name":
-     {
-        "type": "string"
-     },
-     "sort":
-     {
-        "type": "integer"
-     },
-     "createdBy":
-     {
-        "type": "integer"
-     },
-     "modifiedBy":
-     {
-        "type": "integer"
-     },
-     "dateStart":
-     {
-        "type": "string"
-     },
-     "dateEnd":
-     {
-        "type": "string"
-     },
-     "status":
-     {
-        "type": "string"
-     }
+        "fields":
+        {
+            "groupId":
+            {
+                "type": "integer"
+            },
+            "name":
+            {
+                "type": "string"
+            },
+            "sort":
+            {
+                "type": "integer"
+            },
+            "createdBy":
+            {
+                "type": "integer"
+            },
+            "modifiedBy":
+            {
+                "type": "integer"
+            },
+            "dateStart":
+            {
+                "type": "string"
+            },
+            "dateEnd":
+            {
+                "type": "string"
+            },
+            "status":
+            {
+                "type": "string"
+            }
+        }
     }
-}
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
-|| **Field** `type` | **Description** ||
-|| **groupId** `integer` | Identifier of the group (scrum) to which the sprint belongs ||
-|| **name** `string` | Name of the sprint ||
-|| **sort** `integer` | Sorting ||
-|| **createdBy** `integer` | Created by whom ||
-|| **modifiedBy** `integer` | Modified by whom ||
-|| **dateStart** `string` | Start date of the sprint ||
-|| **dateEnd** `string` | End date of the sprint ||
-|| **status** `string` | Status of the sprint ||
+|| **Name**
+`type` | **Description** ||
+|| **groupId** 
+[`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
+|| **name** 
+[`string`](../../../data-types.md) | Name of the sprint ||
+|| **sort** 
+[`integer`](../../../data-types.md) | Sorting ||
+|| **createdBy** 
+[`integer`](../../../data-types.md) | Identifier of the user who created the sprint ||
+|| **modifiedBy** 
+[`integer`](../../../data-types.md) | Identifier of the user who modified the sprint ||
+|| **dateStart** 
+[`string`](../../../data-types.md) | Start date of the sprint in `ISO 8601` format ||
+|| **dateEnd** 
+[`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
+|| **status** 
+[`string`](../../../data-types.md) | Status of the sprint ||
 |#
 
 ## Error Handling
 
 The method does not return errors.
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./tasks-api-scrum-sprint-add.md)
+- [{#T}](./tasks-api-scrum-sprint-update.md)
+- [{#T}](./tasks-api-scrum-sprint-start.md)
+- [{#T}](./tasks-api-scrum-sprint-complete.md)
+- [{#T}](./tasks-api-scrum-sprint-get.md)
+- [{#T}](./tasks-api-scrum-sprint-list.md)
+- [{#T}](./tasks-api-scrum-sprint-delete.md)

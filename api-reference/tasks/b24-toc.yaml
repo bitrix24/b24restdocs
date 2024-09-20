@@ -19,11 +19,11 @@ items:
     href: tasks-task-files-attach.md
   - name: Accept Task
     href: tasks-task-approve.md
-  - name: Mark Task as "Completed"
+  - name: Change Task Status to "Completed"
     href: tasks-task-complete.md
   - name: Get User Counters
     href: tasks-task-counters-get.md
-  - name: Mark Task as "Deferred"
+  - name: Change Task Status to "Deferred"
     href: tasks-task-defer.md
   - name: Delegate Task
     href: tasks-task-delegate.md
@@ -41,11 +41,11 @@ items:
     href: tasks-task-get-access.md
   - name: Task History
     href: tasks-task-history-list.md
-  - name: Mark Task as "Waiting for Execution"
+  - name: Change Task Status to "Waiting for Execution"
     href: tasks-task-pause.md
-  - name: Renew Task After Completion
+  - name: Resume Task After Completion
     href: tasks-task-renew.md
-  - name: Mark Task as "In Progress"
+  - name: Change Task Status to "In Progress"
     href: tasks-task-start.md
   - name: Enable Task Watching
     href: tasks-task-start-watch.md
@@ -83,13 +83,17 @@ items:
     include:
       path: user-field/toc.yaml
       mode: link
-  - name: My Plan
+  - name: My Plan and Kanban Stages
     include:
-      path: stages/toc.yaml
+      path: stages/b24-toc.yaml
       mode: link
   - name: Workday Plan
     include:
       path: planner/toc.yaml
+      mode: link
+  - name: Flows
+    include:
+      path: flow/b24-toc.yaml
       mode: link
   - name: Deprecated
     include:

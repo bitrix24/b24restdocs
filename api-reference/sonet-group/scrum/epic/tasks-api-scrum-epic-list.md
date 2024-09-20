@@ -1,84 +1,132 @@
-# Get a list of epics tasks.api.scrum.epic.list
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
-
-{% endnote %}
-
-{% endif %}
+# Get a List of Epics tasks.api.scrum.epic.list
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.api.scrum.epic.list` returns a list of epics.
+The method returns a list of epics.
 
-This method is similar to other methods with filtering by list.
-
-## Parameters
+## Method Parameters
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **order**
-[`array`](../../../data-types.md) | An array for sorting the result. The array format is `{'sort_field': 'sort_direction' [, ...]}`. Available fields are described in the method.
-Sort direction can take the following values:
-- `asc` - ascending;
-- `desc` - descending. ||
+[`array`](../../../data-types.md) | An array for sorting the result in the format `{'sorting_field': 'sorting_direction' [, ...]}`. 
+
+Sorting direction can take the following values:
+- `asc` — ascending
+- `desc` — descending
+
+Possible values for the array elements correspond to the fields in the response of [tasks.api.scrum.epic.add](./tasks-api-scrum-epic-add.md#fields)
+||
 || **filter**
-[`array`](../../../data-types.md) | An array in the format `{'filter_field': 'filter_value' [, ...]}`. Available fields are described in the table below.
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+[`array`](../../../data-types.md) | An array in the format `{'filter_field': 'filter_value' [, ...]}`.
+
+An additional prefix can be specified for the key to clarify the filter behavior.
+
+Possible prefix values:
 - `=` — equals (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
+- `%` — LIKE, substring search. The % symbol does not need to be included in the filter value. The search looks for the substring in any position of the string.
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The % symbol does not need to be included in the filter value. The search goes from both sides.
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples:
+- `=%` — LIKE, substring search. The % symbol needs to be included in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
   - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol needs to be passed in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The % symbol needs to be included in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
   - `"%mol%"` — searching for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (see description above)
-||
 
+Possible values for the array elements correspond to the fields in the response of [tasks.api.scrum.epic.add](./tasks-api-scrum-epic-add.md#fields)
+
+||
 || **select**
-[`array`](../../../data-types.md) | An array of record fields that will be returned by the method. You can specify only the fields that are necessary. If the array contains the value `"*"`, all available fields will be returned.
-The default value - an empty array `array()` - means that all fields of the main query table will be returned. ||
+[`array`](../../../data-types.md) | An array of record fields that will be returned by the method.
+
+Possible values for the array elements correspond to the fields in the response of [tasks.api.scrum.epic.add](./tasks-api-scrum-epic-add.md#fields). You can specify only the fields that are necessary.
+
+If the array contains the value `"*"`, all available fields will be returned.
+
+The default value is an empty array `array()`. This means that all fields from the main query table will be returned.
+||
 || **start**
-[`integer`](../../../data-types.md) | The page number of the output. Works for https requests.
+[`integer`](../../../data-types.md) | The page number of the output. Works for HTTPS requests.
+
 The page size of results is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
 
 The formula for calculating the `start` parameter value:
-`start = (N-1) * 50`, where `N` — the number of the desired page
+`start = (N-1) * 50`, where `N` is the desired page number
 ||
 |#
 
-## Examples
+## Code Examples
+
+{% include [Footnote on Examples](../../../../_includes/examples.md) %}
+
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+        "filter": {
+            "GROUP_ID": 143,
+            ">=ID": 1,
+            "<=ID": 50,
+            "NAME": "%epic%",
+            "!=DESCRIPTION": "old epic"
+        },
+        "order": {
+            "ID": "asc",
+            "NAME": "desc"
+        },
+        "select": ["ID", "NAME", "DESCRIPTION", "CREATED_BY", "MODIFIED_BY", "COLOR"],
+        "start": 0
+    }' \
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.epic.list
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+        "filter": {
+            "GROUP_ID": 143,
+            ">=ID": 1,
+            "<=ID": 50,
+            "NAME": "%epic%",
+            "!=DESCRIPTION": "old epic",
+            "CREATED_BY": 1,
+            "MODIFIED_BY": 3,
+            "COLOR": "#69dafc"
+        },
+        "order": {
+            "ID": "asc",
+            "NAME": "desc"
+        },
+        "select": ["ID", "NAME", "DESCRIPTION", "CREATED_BY", "MODIFIED_BY", "COLOR"],
+        "start": 0,
+        "auth": "YOUR_ACCESS_TOKEN"
+    }' \
+    https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.list
+    ```
+
 - JS
+
     ```js
     const groupId = 143;
     BX24.callMethod(
@@ -108,55 +156,8 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- cURL (oAuth)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-        "filter": {
-            "GROUP_ID": 143,
-            ">=ID": 1,
-            "<=ID": 50,
-            "NAME": "%epic%",
-            "!=DESCRIPTION": "old epic",
-            "CREATED_BY": 1,
-            "MODIFIED_BY": 3,
-            "COLOR": "#69dafc"
-        },
-        "order": {
-            "ID": "asc",
-            "NAME": "desc"
-        },
-        "select": ["ID", "NAME", "DESCRIPTION", "CREATED_BY", "MODIFIED_BY", "COLOR"],
-        "start": 0,
-        "auth": "YOUR_ACCESS_TOKEN"
-    }' \
-    https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.list
-    ```
-
-- cURL (Webhook)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-        "filter": {
-            "GROUP_ID": 143,
-            ">=ID": 1,
-            "<=ID": 50,
-            "NAME": "%epic%",
-            "!=DESCRIPTION": "old epic",
-        },
-        "order": {
-            "ID": "asc",
-            "NAME": "desc"
-        },
-        "select": ["ID", "NAME", "DESCRIPTION", "CREATED_BY", "MODIFIED_BY", "COLOR"],
-        "start": 0
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.epic.list
-    ```
-
 - PHP
+
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
@@ -183,34 +184,20 @@ The formula for calculating the `start` parameter value:
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
-    } else {
+    }
+    else {
         print_r($result['result']);
     }
     ```
 
 {% endlist %}
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+## Response Handling
 
-## Available fields
-
-#|
-|| **Field** | **Type** | **Description** ||
-|| **ID** | Epic identifier ||
-|| **GROUP_ID** | Scrum identifier ||
-|| **NAME** | Name ||
-|| **DESCRIPTION** | Description ||
-|| **CREATED_BY** | Created by ||
-|| **MODIFIED_BY** | Modified by ||
-|| **COLOR** | Color ||
-|#
-
-## Response handling
-
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 [
@@ -235,7 +222,7 @@ HTTP status: **200**
 ]
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
@@ -243,7 +230,7 @@ HTTP status: **200**
 || **id**
 [`integer`](../../../data-types.md) | Epic identifier ||
 || **groupId**
-[`integer`](../../../data-types.md) | Group identifier (scrum) to which the epic is linked ||
+[`integer`](../../../data-types.md) | Group identifier (scrum) to which the epic is attached ||
 || **name**
 [`string`](../../../data-types.md) | Epic name ||
 || **description**
@@ -256,22 +243,34 @@ HTTP status: **200**
 [`string`](../../../data-types.md) | Epic color in HEX format ||
 
 |#
-{% include [Examples note](../../../../_includes/examples.md) %}
 
-## Error handling
+## Error Handling
 
-HTTP status: **200**
+HTTP Status: **400**
 
 ```json
 {
-  "error": 0,
-  "error_description": "Could not load list"
+    "error": 0,
+    "error_description": "Could not load list"
 }
 ```
 
-### Possible error codes
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
 
 #|
 || **Code** | **Description**  | **Value** ||
 || `0` | Could not load list| No epics found with the specified filters ||
 |#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./tasks-api-scrum-epic-add.md)
+- [{#T}](./tasks-api-scrum-epic-update.md)
+- [{#T}](./tasks-api-scrum-epic-get.md)
+- [{#T}](./tasks-api-scrum-epic-delete.md)
+- [{#T}](./tasks-api-scrum-epic-get-fields.md)

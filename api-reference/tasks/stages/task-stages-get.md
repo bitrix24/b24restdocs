@@ -1,48 +1,59 @@
-# List of Kanban Stages / My Plan task.stages.get
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
- 
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will add it soon
-
-{% endnote %}
+# Get the List of Kanban / My Plan Stages task.stages.get
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: 
+> - any user for My Plan stages
+> - any user with access to the group for Kanban stages
 
-The method `task.stages.get` retrieves the stages of the Kanban / My Plan.
+This method retrieves the stages of Kanban / My Plan.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **entityId^*^**
-[`integer`](../../data-types.md) | Entity identifier. If it equals the `ID` of a group, the stages of the group's Kanban are returned. If the access level is insufficient, an access error is displayed. If the parameter equals `0`, the stages of the current user's My Plan are returned. ||
-|| **isAdmin**
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided that the requester is an administrator of the account. ||
+|| **Name**
+`type` | **Description** ||
+|| **entityId*** 
+[`integer`](../../data-types.md) | Entity identifier. Possible values:
+- `ID` of the group — the method will retrieve the Kanban stages of the group. An access error will be returned if the permission level is insufficient.
+- `0` — the method will retrieve the stages of My Plan for the current user ||
+|| **isAdmin** 
+[`boolean`](../../data-types.md) | If set to `true`, permission checks will not be performed, provided that the requester is an account administrator ||
 |#
 
-Returns an array of stages, fields are described in the [stages table](./index.md).
+## Code Examples
 
-## Examples
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "entityId": 0
+    }' \
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -d '{
+    "entityId": 0
+    }' \
+    https://your-domain.bitrix24.com/rest/task.stages.get
+    ```
+
 - JS
+
     ```js
     const entityId = 0;
     BX24.callMethod(
@@ -57,34 +68,14 @@ Returns an array of stages, fields are described in the [stages table](./index.m
     );
     ```
 
-- cURL (oAuth)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
-    -d '{
-    "entityId": 0
-    }' \
-    https://your-domain.bitrix24.com/rest/task.stages.get
-    ```
-
-- cURL (Webhook)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    "entityId": 0
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.get
-    ```
-
 - PHP
+
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // include CRest PHP SDK
 
     $entityId = 0;
 
-    // executing the request to the REST API
+    // execute request to REST API
     $result = CRest::call(
         'task.stages.get',
         [
@@ -92,7 +83,7 @@ Returns an array of stages, fields are described in the [stages table](./index.m
         ]
     );
 
-    // Processing the response from Bitrix24
+    // Process the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -123,7 +114,7 @@ HTTP Status: **200**
         },
         "6": {
          "ID": "6",
-         "TITLE": "I will do it this week",
+         "TITLE": "Will Do This Week",
          "SORT": "200",
          "COLOR": "47D1E2",
          "SYSTEM_TYPE": null,
@@ -140,30 +131,50 @@ HTTP Status: **200**
 ## Returned Data
 
 #|
-|| **Field** `type` | **Description** ||
-|| **result** `object` | An object containing data about the Kanban / My Plan stages, with stage identifiers as keys ||
-|| **ID** `integer` | Stage identifier ||
-|| **TITLE** `string` | Title ||
-|| **SORT** `integer` | Sorting ||
-|| **COLOR** `string` | Color ||
-|| **SYSTEM_TYPE** `string` | System type (e.g., "NEW", "PROGRESS", "WORK", "REVIEW", "FINISH") ||
-|| **ENTITY_ID** `integer` | Entity identifier (group or user) ||
-|| **ENTITY_TYPE** `string` | Entity type (e.g., "U" for user, "G" for group) ||
-|| **ADDITIONAL_FILTER** `array` | Additional filters (system parameter, always has an empty array value) ||
-|| **TO_UPDATE** `array` | Array of elements to update (system parameter, always has an empty array value) ||
-|| **TO_UPDATE_ACCESS** `null` | Functions applied to the task when moving to this stage (system parameter, always has a null value) ||
+|| **Field**
+`type` | **Description** ||
+|| **result** 
+`object` | An object containing data about the Kanban / My Plan stages, with stage identifiers as keys ||
+|| **ID** 
+`integer` | Stage identifier ||
+|| **TITLE** 
+`string` | Name ||
+|| **SORT** 
+`integer` | Sorting ||
+|| **COLOR** 
+`string` | Color in RGB format ||
+|| **SYSTEM_TYPE** 
+`string` | System type (e.g., `NEW`, `PROGRESS`, `WORK`, `REVIEW`, `FINISH`) ||
+|| **ENTITY_ID** 
+`integer` | Entity identifier (group or user) ||
+|| **ENTITY_TYPE** 
+`string` | Entity type (e.g., `U` for user, `G` for group) ||
+|| **ADDITIONAL_FILTER** 
+`array` | Additional filters. 
+
+System parameter. Always has the value of an empty array ||
+|| **TO_UPDATE** 
+`array` | Array of items to update.
+
+System parameter. Always has the value of an empty array ||
+|| **TO_UPDATE_ACCESS** 
+`null` | Functions applied to the task when moving to this stage.
+
+System parameter. Always has the value `null` ||
 |#
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP Status: **400**
 
 ```json
 {
-"error": "ACCESS_DENIED",
-"error_description": "You cannot view stages in this group"
+    "error": "ACCESS_DENIED",
+    "error_description": "You cannot view stages in this group"
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -171,3 +182,14 @@ HTTP Status: **200**
 || **Code** | **Value** ||
 || `ACCESS_DENIED` | You cannot view stages in this group ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./task-stages-add.md)
+- [{#T}](./task-stages-update.md)
+- [{#T}](./task-stages-can-move-task.md)
+- [{#T}](./task-stages-move-task.md)
+- [{#T}](./task-stages-delete.md)

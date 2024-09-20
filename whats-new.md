@@ -2,6 +2,10 @@
 
 ## 2024
 
+### 18 September 2024
+
+- New documentation has been added for the [Flows](./api-reference/tasks/flow/index.md)
+
 ### September 2024
 
 We have completely revamped the documentation for the REST API and changed the internal principles of its updates.

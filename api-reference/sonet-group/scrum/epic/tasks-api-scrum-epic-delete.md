@@ -1,43 +1,52 @@
 # Delete Epic tasks.api.scrum.epic.delete
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user with access to Scrum
 
-The method `tasks.api.scrum.epic.delete` deletes an epic.
+This method deletes an epic.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **id^*^**
-[`integer`](../../../data-types.md) | Identifier of the epic. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../../data-types.md) | Identifier of the epic.
+
+You can obtain epic identifiers using the [`tasks.api.scrum.epic.list`](./tasks-api-scrum-epic-list.md) method ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "id": 1
+    }' \
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.epic.delete
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -d '{
+    "id": 1
+    }' \
+    https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.delete
+    ```
 
 - JS
 
@@ -55,35 +64,12 @@ The method `tasks.api.scrum.epic.delete` deletes an epic.
     );
     ```
 
-- cURL (oAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
-    -d '{
-    "id": 1
-    }' \
-    https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.delete
-    ```
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    "id": 1
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.epic.delete
-    ```
-
 - PHP
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
-    // executing request to REST API
+    // executing a request to the REST API
     $result = CRest::call(
         'tasks.api.scrum.epic.delete',
         [
@@ -91,10 +77,11 @@ The method `tasks.api.scrum.epic.delete` deletes an epic.
         ]
     );
 
-    // Handling response from Bitrix24
+    // Handling the response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
-    } else {
+    }
+    else {
         print_r($result['result']);
     }
     ```
@@ -107,23 +94,34 @@ Upon successful deletion, the method returns an empty array.
 
 ## Error Handling
 
-HTTP status: **200**
+HTTP status: **400**
 
 ```json
 {
-  "error": 0,
-  "error_description": "Epic not found"
+    "error": 0,
+    "error_description": "Epic not found"
 }
 ```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description**  | **Value** ||
 || `0` | Access denied | No access to Scrum ||
-|| `0` | Epic not found | The epic does not exist ||
+|| `0` | Epic not found | This epic does not exist ||
 || `100` | Could not find value for parameter {id} | Incorrect parameter name or parameter not set ||
 || `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
 |#
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./tasks-api-scrum-epic-add.md)
+- [{#T}](./tasks-api-scrum-epic-update.md)
+- [{#T}](./tasks-api-scrum-epic-get.md)
+- [{#T}](./tasks-api-scrum-epic-list.md)
+- [{#T}](./tasks-api-scrum-epic-get-fields.md)

@@ -1,52 +1,85 @@
-# Change the Stage of Kanban / My Plan task.stages.update
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing (there should be three examples - curl, js, php)
-- no response in case of error
-- no response in case of success
- 
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly
-
-{% endnote %}
+# Update Kanban Stage / My Plan task.stages.update
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method:
+> - any user for My Plan stages
+> - any user with group access for Kanban stages
 
-The method `task.stages.update` updates the stages of Kanban / My Plan. It takes the `id` of the stage and an array of `fields` as input.
+This method updates the stages of the Kanban / My Plan.
 
-## Parameters
+The method can also be used to move a stage from one position to another — simply provide the desired `AFTER_ID`.
+
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **id^*^**
-[`integer`](../../data-types.md) | Identifier of the stage. ||
-|| **fields^*^**
-[`array`](../../data-types.md) | Array for updating, similar to the array used in [task.stages.add](./task-stages-add.md), except for the `ENTITY_ID` field — it cannot be changed. Access permission checks are performed similarly to `task.stages.add`. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../data-types.md) | Identifier of the stage ||
+|| **fields***
+[`array`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the Kanban / My Plan stage ||
 || **isAdmin**
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not be performed, provided that the requester is an administrator of the account. ||
+[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an account administrator ||
 |#
 
-The method can also be used to move a stage from one position to another — simply pass the desired `AFTER_ID`.
+### Parameter fields
 
-Returns `true` in case of success.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **TITLE** [`string`](../../data-types.md) | Title of the stage ||
+|| **COLOR** [`string`](../../data-types.md) | Color of the stage in RGB format ||
+|| **AFTER_ID** [`integer`](../../data-types.md) | Identifier of the stage after which the new stage should be added.
 
-## Examples
+If not specified or equal to `0`, it will be added at the beginning ||
+|#
+
+When updating a group stage with insufficient permission level, an access error will be displayed.
+
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "id": 5,
+    "fields": {
+        "TITLE": "New Stage",
+        "SORT": 200,
+        "COLOR": "FF5733"
+    }
+    }' \
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.update
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -d '{
+    "id": 5,
+    "fields": {
+        "TITLE": "New Stage",
+        "SORT": 200,
+        "COLOR": "FF5733"
+    }
+    }' \
+    https://your-domain.bitrix24.com/rest/task.stages.update
+    ```
+
 - JS
+
     ```js
     const stageId = 5;
     const fields = {
@@ -67,38 +100,8 @@ Returns `true` in case of success.
     );
     ```
 
-- cURL (oAuth)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
-    -d '{
-    "id": 5,
-    "fields": {
-        "TITLE": "New Stage",
-        "SORT": 200,
-        "COLOR": "FF5733"
-    }
-    }' \
-    https://your-domain.bitrix24.com/rest/task.stages.update
-    ```
-
-- cURL (Webhook)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    "id": 5,
-    "fields": {
-        "TITLE": "New Stage",
-        "SORT": 200,
-        "COLOR": "FF5733"
-    }
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.update
-    ```
-
 - PHP
+
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
@@ -109,7 +112,7 @@ Returns `true` in case of success.
         "COLOR" => "FF5733"
     ];
 
-    // executing the request to the REST API
+    // executing request to REST API
     $result = CRest::call(
         'task.stages.update',
         [
@@ -118,7 +121,7 @@ Returns `true` in case of success.
         ]
     );
 
-    // Processing the response from Bitrix24
+    // Handling response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -134,20 +137,32 @@ HTTP Status: 200
 
 ```json
 {
-"result": true
+    "result": true
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result** 
+[`boolean`](../../data-types.md) | Returns `true` if the stage was successfully updated
+||
+|#
 
 ## Error Handling
 
-HTTP status: **200**
+HTTP status: **400**
 
 ```json
 {
-"error": "ACCESS_DENIED",
-"error_description": "You cannot modify stages in this group"
+    "error": "ACCESS_DENIED",
+    "error_description": "You cannot modify stages in this group"
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -156,3 +171,14 @@ HTTP status: **200**
 || `ACCESS_DENIED` | You cannot modify stages in this group ||
 || `NOT_FOUND` | Stage not found ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./task-stages-add.md)
+- [{#T}](./task-stages-get.md)
+- [{#T}](./task-stages-can-move-task.md)
+- [{#T}](./task-stages-move-task.md)
+- [{#T}](./task-stages-delete.md)

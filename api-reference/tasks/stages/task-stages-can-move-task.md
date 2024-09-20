@@ -1,46 +1,63 @@
 # Check the ability to move a task task.stages.canmovetask
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing (there should be three examples - curl, js, php)
-- no error response
-- no success response
- 
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly
-
-{% endnote %}
-
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method:
+> - any user for stages of My Plan
+> - any user with access to the group for Kanban stages
 
-The method `task.stages.canmovetask` determines whether the current user can move tasks in the specified entity.
+The method checks if the current user can move tasks in the specified entity.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **entityId^*^**
-[`integer`](../../data-types.md) | Entity ID. ||
-|| **entityType^*^**
-[`string`](../../data-types.md) | Entity type (`U` — user or `G` — group). In the case of `U` (My plan), `true` will only be returned if the current user's ID is passed in `entityId`. ||
+|| **Name**
+`type` | **Description** ||
+|| **entityId***
+[`integer`](../../data-types.md) | `ID` of the entity ||
+|| **entityType***
+[`string`](../../data-types.md) | Type of entity: 
+- `U` — user
+- `G` — group
+
+In the case of `U` (My Plan) — the value `true` will only be returned if the `entityId` contains the identifier of the current user ||
 |#
 
-## Examples
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "entityId": 1,
+    "entityType": "U"
+    }' \
+    https://your-domain.com/rest/_USER_ID_/_CODE_/task.stages.canmovetask
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -d '{
+    "entityId": 1,
+    "entityType": "U"
+    }' \
+    https://your-domain.com/rest/task.stages.canmovetask
+    ```
+
 - JS
+
     ```js
     const entityId = 1;
     const entityType = 'U';
@@ -57,30 +74,8 @@ The method `task.stages.canmovetask` determines whether the current user can mov
     );
     ```
 
-- cURL (oAuth)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
-    -d '{
-    "entityId": 1,
-    "entityType": "U"
-    }' \
-    https://your-domain.bitrix24.com/rest/task.stages.canmovetask
-    ```
-
-- cURL (Webhook)
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{
-    "entityId": 1,
-    "entityType": "U"
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.canmovetask
-    ```
-
 - PHP
+
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
@@ -96,7 +91,7 @@ The method `task.stages.canmovetask` determines whether the current user can mov
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -112,10 +107,31 @@ HTTP Status: **200**
 
 ```json
 {
-"result": true
+    "result": true
 }
 ```
 
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result** 
+[`boolean`](../../data-types.md) | Returns `true` if the current user can move the task.
+
+Otherwise — `false`
+||
+|#
+
 ## Error Handling
 
-The method does not return errors.
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./task-stages-add.md)
+- [{#T}](./task-stages-update.md)
+- [{#T}](./task-stages-get.md)
+- [{#T}](./task-stages-move-task.md)
+- [{#T}](./task-stages-delete.md)
