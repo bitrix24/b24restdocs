@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - the required parameters are not specified
 - there is no response in case of an error
@@ -37,7 +37,7 @@ Method for deleting an inventory document. If the operation is successful, `true
 [`integer`](../../data-types.md)| Document identifier. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -77,4 +77,4 @@ Method for deleting an inventory document. If the operation is successful, `true
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../_includes/examples.md) %}

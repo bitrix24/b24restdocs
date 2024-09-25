@@ -82,6 +82,7 @@ Defaults to `N` ||
 [`user.id`](../../data-types.md) | Identifier of the user who made the payment ||
 || **psStatus**
 [`string`](../../data-types.md) | Payment system status flag — whether the payment was successful. Options:
+[`string`](../../data-types.md) | Payment system status flag — whether the payment was successful. Options:
 
 - `Y` — yes
 - `N` — no
@@ -142,19 +143,19 @@ Defaults to N ||
 || **comments**
 [`string`](../../data-types.md) | Payment comments ||
 || **updated1c**
-[`string`](../../data-types.md) | Payment updated via 1C:
+[`string`](../../data-types.md) | Payment updated via QuickBooks and other similar platforms:
 
 - `Y` — yes
 - `N` — no
 
 Defaults to N ||
 || **id1c**
-[`string`](../../data-types.md) | Identifier in 1C ||
+[`string`](../../data-types.md) | Identifier in QuickBooks and other similar platforms ||
 || **version1c**
-[`string`](../../data-types.md) | Payment document version from 1C ||
+[`string`](../../data-types.md) | Payment document version from QuickBooks and other similar platforms ||
 || **externalPayment**
 [`string`](../../data-types.md) | Relevant only for on-premise version
-External payment or not. Used for import from 1C via XML
+Is it an external payment or not. Used for import from QuickBooks and other similar platforms via XML
 
 - `Y` — yes
 - `F` — yes, loaded with the order
@@ -330,6 +331,11 @@ HTTP Status: **200**
             "datePaid": "2024-04-10T09:00:00+02:00",
             "datePayBefore": "2024-04-10T09:00:00+02:00",
             "dateResponsibleId": "2024-04-16T16:32:49+02:00",
+            "dateBill": "2024-04-10T09:00:00+02:00",
+            "dateMarked": "2024-04-16T16:32:49+02:00",
+            "datePaid": "2024-04-10T09:00:00+02:00",
+            "datePayBefore": "2024-04-10T09:00:00+02:00",
+            "dateResponsibleId": "2024-04-16T16:32:49+02:00",
             "empMarkedId": 1,
             "empPaidId": 1,
             "empResponsibleId": 1,
@@ -343,16 +349,20 @@ HTTP Status: **200**
             "paid": "Y",
             "payReturnComment": "",
             "payReturnDate": "2024-04-10T09:00:00+02:00",
+            "payReturnDate": "2024-04-10T09:00:00+02:00",
             "payReturnNum": "",
             "paySystemId": 1,
             "paySystemIsCash": "N",
             "paySystemName": "Bank Transfer (Company)",
+            "paySystemName": "Bank Transfer (Company)",
             "paySystemXmlId": "",
+            "payVoucherDate": "2024-04-10T09:00:00+02:00",
             "payVoucherDate": "2024-04-10T09:00:00+02:00",
             "payVoucherNum": "",
             "priceCod": "100",
             "psCurrency": "USD",
             "psInvoiceId": 1,
+            "psResponseDate": "2024-04-10T09:00:00+02:00",
             "psResponseDate": "2024-04-10T09:00:00+02:00",
             "psStatus": "Y",
             "psStatusCode": "",
@@ -374,6 +384,8 @@ HTTP Status: **200**
         "processing": 4.142766952514648,
         "date_start": "2024-04-18T18:39:34+02:00",
         "date_finish": "2024-04-18T18:39:38+02:00"
+        "date_start": "2024-04-18T18:39:34+02:00",
+        "date_finish": "2024-04-18T18:39:38+02:00"
     }
 }
 ```
@@ -388,6 +400,7 @@ HTTP Status: **200**
 || **payment**
 [`sale_order_payment`](../data-types.md) | Object containing information about the updated payment ||
 || **time**
+[`time`](../../data-types.md) | Information about the request execution time ||
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 

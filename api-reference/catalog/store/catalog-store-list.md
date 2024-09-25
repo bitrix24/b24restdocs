@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the requiredness of parameters is not specified
+- required parameters are not specified
 - no response in case of error
 - no examples in other languages
   
@@ -26,7 +26,7 @@ Some data may be missing here — we will complete it shortly.
 catalog.store.list(select, filter, order, start)
 ```
 
-This method retrieves a list of warehouses based on the filter.
+The method retrieves a list of warehouses based on the filter.
 
 If the operation is successful, a list of warehouses is returned in the response body.
 
@@ -80,7 +80,7 @@ BX24.callMethod(
 );
 ```
 
-Example of HTTPS request
+Example HTTPS request
 
 ```
 https://your_account/rest/catalog.store.list?auth=_authorization_key_&start=50

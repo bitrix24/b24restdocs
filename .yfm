@@ -7,3 +7,8 @@ resources:
   script:
     - _assets/b24loc.js?20240913-01
     - _assets/b24addons.js?20240913-01
+
+docs-viewer:
+  project-name: b24restdocs
+  gtm:
+    id: GTM-KHZ9R39Z

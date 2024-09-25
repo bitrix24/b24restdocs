@@ -1,4 +1,4 @@
-# Add Inventory Document catalog.document.add
+# Add Inventory Management Document catalog.document.add
 
 {% note warning "We are still updating this page" %}
 
@@ -10,8 +10,8 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the mandatory parameters are not specified
-- there is no response in case of an error
+- required parameters are not specified
+- no response in case of error
 - no examples in other languages
   
 {% endnote %}
@@ -28,7 +28,7 @@ Some data may be missing here — we will complete it soon.
 catalog.document.add(fields)
 ```
 
-This method adds an [`inventory document`](../enum/catalog-enum-get-store-document-types.md).
+This method adds an [`inventory management document`](../enum/catalog-enum-get-store-document-types.md).
 If the operation is successful, it returns the `id` of the added document.
 
 ## Parameters
@@ -39,7 +39,7 @@ If the operation is successful, it returns the `id` of the added document.
 [`array`](../../data-types.md)| Parameters of the document being added. The fields correspond to the available list of fields [`fields`](catalog-document-get-fields.md). ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -88,4 +88,4 @@ If the operation is successful, it returns the `id` of the added document.
 
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}

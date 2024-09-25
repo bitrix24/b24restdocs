@@ -1,8 +1,8 @@
-# Execute bulk deletion of inventory documents catalog.document.deleteList
+# Perform Bulk Deletion of Inventory Documents catalog.document.deleteList
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing — we will complete it shortly
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the required parameter specifications are missing
-- there is no response in case of an error
+- required parameters are not specified
+- no response in case of an error
   
 {% endnote %}
 
@@ -34,7 +34,7 @@ Method for bulk deletion of inventory documents.
 #|
 || **Parameter** | **Description** ||
 || **documentIds** 
-[`array`](../../data-types.md)| An array of document identifiers that need to be deleted. ||
+[`array`](../../data-types.md)| An array of document IDs that need to be deleted. ||
 |#
 
 {% include [Note on parameters](../../../_includes/required.md) %}

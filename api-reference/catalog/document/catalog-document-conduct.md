@@ -1,8 +1,8 @@
-# Conduct Warehouse Accounting Document catalog.document.conduct
+# Conduct Inventory Document catalog.document.conduct
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameter specifications are missing
+- required parameters are not specified
 - no response in case of an error
 - no examples in other languages
   
@@ -28,7 +28,8 @@ Some data may be missing — we will complete it soon.
 catalog.document.conduct(id)
 ```
 
-Method for conducting a warehouse accounting document. If the operation is successful, `true` is returned in the response body.
+Method for conducting an inventory document.
+If the operation is successful, `true` is returned in the response body.
 
 
 ## Parameters
@@ -36,10 +37,10 @@ Method for conducting a warehouse accounting document. If the operation is succe
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`integer`](../../data-types.md)| Identifier of the warehouse accounting document. ||
+[`integer`](../../data-types.md)| Identifier of the inventory document. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -59,4 +60,4 @@ BX24.callMethod(
 );
 ```
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Examples notes](../../../_includes/examples.md) %}

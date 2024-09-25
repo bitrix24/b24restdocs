@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will add it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - add a link to `userfieldconfig.list`(.)
-- mandatory parameters are not specified
+- required parameters are not specified
 - no response in case of an error
 - no examples in other languages
   
@@ -36,7 +36,7 @@ The method returns a list of values for custom fields of inventory documents.
 || **select**
 [`array`](../../data-types.md)| An array of fields to display. `documentType` must be specified – [type of inventory documents](../enum/catalog-enum-get-store-document-types.md). | ||
 || **order** 
-[`object`](../../data-types.md)| A list to determine the display order, where the key is the field name and the value is `ASC` or `DESC`. | ||
+[`object`](../../data-types.md)| A list to define the display order, where the key is the field name and the value is `ASC` or `DESC`. | ||
 || **filter** 
 [`object`](../../data-types.md)| A list for filtering. `documentType` must be specified – [type of inventory documents](../enum/catalog-enum-get-store-document-types.md). | ||
 || **start** 

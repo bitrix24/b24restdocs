@@ -1,4 +1,4 @@
-# Update Warehouse Accounting Document catalog.document.update
+# Update Inventory Document catalog.document.update
 
 {% note warning "We are still updating this page" %}
 
@@ -8,12 +8,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- the requiredness of parameters is not specified
-- no response in case of error
+- the mandatory parameters are not specified
+- there is no response in case of an error
 - no examples in other languages
-- clarify the type of the parameter id
+- clarify the parameter type id
 
 {% endnote %}
 
@@ -27,19 +27,19 @@ Some data may be missing here — we will complete it shortly.
 catalog.document.update(id, fields)
 ```
 
-Method for updating a warehouse accounting document. If the operation is successful, it returns `true` for the added warehouse.
+Method for updating an inventory document. If the operation is successful, it returns `true` for the added inventory.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Identifier of the document. ||
+[`string`](../../data-types.md) | Document identifier. ||
 || **fields** 
 [`array`](../../data-types.md)|  Document parameters. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -89,4 +89,4 @@ Method for updating a warehouse accounting document. If the operation is success
 
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}

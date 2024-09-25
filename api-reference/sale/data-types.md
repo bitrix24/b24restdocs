@@ -1,4 +1,4 @@
-# Data Types and Object Structure in the REST API of the Online Store
+# Data Types and Object Structure in the Online Store REST API
 
 {% if build == 'dev' %}
 
@@ -98,9 +98,9 @@ Can be used to synchronize the current product position of the delivery with a s
 || **id**
 [`integer`](../data-types.md) | Identifier of the basket item payment binding ||
 || **paymentId**
-[`sale_order_payment.id`](#sale_order_payment) | Identifier of the payment ||
+[`sale_order_payment.id`](#sale_order_payment) | Payment identifier ||
 || **basketId**
-[`sale_basket_item.id`](#sale_basket_item) | Identifier of the basket item ||
+[`sale_basket_item.id`](#sale_basket_item) | Basket item identifier ||
 || **quantity**
 [`double`](../data-types.md) | Quantity of the product ||
 || **xmlId**
@@ -115,11 +115,11 @@ Can be used to synchronize the current product position of the delivery with a s
 || **Value**
 `type` | **Description** ||
 || **id**
-[`string`](../data-types.md) | Identifier of the shipment ||
+[`string`](../data-types.md) | Shipment identifier ||
 || **dateInsert**
 [`datetime`](../data-types.md) | Date of creating the shipment ||
 || **orderId**
-[`sale_order.id`](#sale_order) | Identifier of the order ||
+[`sale_order.id`](#sale_order) | Order identifier ||
 || **accountNumber**
 [`string`](../data-types.md) | System number of the shipment ||
 || **allowDelivery**
@@ -129,7 +129,7 @@ Possible values:
 - `Y` — yes (delivery allowed)
 - `N` — no (delivery not allowed) ||
 || **dateAllowDelivery**
-[`datetime`](../data-types.md) | Date of changing the delivery permission flag ||
+[`datetime`](../data-types.md) | Date the delivery permission flag was changed ||
 || **empAllowDeliveryId**
 [`user.id`](../data-types.md) | User who changed the delivery permission flag ||
 || **deducted**
@@ -139,7 +139,7 @@ Possible values:
 - `Y` — yes (shipped)
 - `N` — no (not shipped) ||
 || **dateDeducted**
-[`datetime`](../data-types.md) | Date of changing the shipment shipped flag ||
+[`datetime`](../data-types.md) | Date the shipped flag of the shipment was changed ||
 || **empDeductedId**
 [`user.id`](../data-types.md) | User who changed the shipped flag value ||
 || **reasonUndoDeducted** 
@@ -147,19 +147,19 @@ Possible values:
 || **system**
 [`string`](../data-types.md) | Indicator of whether the shipment is system-generated.
 
-The value is always `N`. System shipments are not visible through REST and are not intended for direct interaction.
+Value is always `N`. System shipments are not visible via REST and are not intended for direct interaction.
 
 Possible values:
 - `Y` — yes
 - `N` — no ||
 || **deliveryId**
-[`sale_delivery_service.id`](#sale_delivery_service) | Identifier of the delivery service ||
+[`sale_delivery_service.id`](#sale_delivery_service) | Delivery service identifier ||
 || **deliveryName**
 [`string`](../data-types.md) | Name of the delivery service ||
 || **deliveryXmlId**
 [`string`](../data-types.md) | External identifier of the delivery service ||
 || **statusId** 
-[`sale_status.id`](#sale_status) | Identifier of the delivery status ||
+[`sale_status.id`](#sale_status) | Delivery status identifier ||
 || **statusXmlId** 
 [`string`](../data-types.md) | External identifier of the delivery status ||
 || **canceled** 
@@ -174,18 +174,19 @@ Possible values:
 [`datetime`](../data-types.md) | Deprecated.
 
 Date and time of shipment cancellation ||
+Date and time of shipment cancellation ||
 || **empCanceledId** 
 [`user.id`](../data-types.md) | Deprecated.
 
 User who changed the canceled shipment flag (`canceled`) ||
 || **marked** 
-[`string`](../data-types.md) | Flag marking. Indicator of whether the shipment is marked as problematic.
+[`string`](../data-types.md) | Flag for marking. Indicator of whether the shipment is marked as problematic.
 
 Possible values:
 - `Y` — yes
 - `N` — no ||
 || **dateMarked**
-[`datetime`](../data-types.md) | Date of changing the marking flag ||
+[`datetime`](../data-types.md) | Date the marking flag was changed ||
 || **reasonMarked** 
 [`string`](../data-types.md) | Reason for marking the shipment ||
 || **empMarkedId** 
@@ -213,14 +214,15 @@ Possible values:
 - `Y` — yes
 - `N` — no ||
 || **basePriceDelivery** 
-[`double`](../data-types.md) | Base delivery cost (without discounts/markups). ||
+[`double`](../data-types.md) | Base delivery cost (without discounts/surcharges). ||
 || **priceDelivery** 
 [`double`](../data-types.md) | Delivery cost ||
 || **discountPrice** 
-[`double`](../data-types.md) | Discount on delivery ||
+[`double`](../data-types.md) | Delivery discount ||
 || **comments** 
 [`string`](../data-types.md) | Manager's comment ||
 || **companyId** 
+[`integer`](../data-types.md) | Identifier of the company from the "Online Store" module. Not used in the cloud version ||
 [`integer`](../data-types.md) | Identifier of the company from the "Online Store" module. Not used in the cloud version ||
 || **responsibleId** 
 [`user.id`](../data-types.md) | Identifier of the user responsible for the shipment ||
@@ -228,22 +230,23 @@ Possible values:
 [`datetime`](../data-types.md) | Date of changing the responsible person for the shipment ||
 || **empResponsibleId** 
 [`user.id`](../data-types.md) | User who assigned the responsible person ||
+[`user.id`](../data-types.md) | User who assigned the responsible person ||
 || **xmlId** 
 [`string`](../data-types.md) | External identifier of the shipment.
 
-Can be used to synchronize the shipment with an external system ||
+Can be used for synchronizing the shipment with an external system ||
 || **externalDelivery** 
-[`string`](../data-types.md) | Indicator of whether the shipment was uploaded from an external system (for example, 1C)
+[`string`](../data-types.md) | Indicator of whether the shipment was uploaded from an external system (for example, QuickBooks and other similar platforms)
 
 Possible values:
 - `Y` — yes
 - `N` — no ||
 || **id1c** 
-[`string`](../data-types.md) | Identifier of the shipment in 1C ||
+[`string`](../data-types.md) | Identifier of the shipment in QuickBooks and other similar platforms ||
 || **updated1c** 
-[`string`](../data-types.md) | Indicator of whether this shipment has been synchronized (updated) with 1C ||
+[`string`](../data-types.md) | Indicator of whether this shipment has been synchronized (updated) with QuickBooks and other similar platforms ||
 || **version1c** 
-[`string`](../data-types.md) | Version of 1C (if the shipment was updated from 1C) ||
+[`string`](../data-types.md) | Version of QuickBooks and other similar platforms (if the shipment was updated from QuickBooks and other similar platforms) ||
 || **shipmentItems** 
 [`sale_order_shipment_item[]`](#sale_order_shipment_item) | Array containing the shipment items ||
 |#
@@ -254,7 +257,7 @@ Possible values:
 || **Value**
 `type` | **Description** ||
 || **id**
-[`string`](../data-types.md) | Character identifier of the status ||
+[`string`](../data-types.md) | Symbolic identifier of the status ||
 || **type**
 [`string`](../data-types.md) | Type of status:
 - `O` — order status
@@ -266,7 +269,7 @@ Possible values:
 - `N` — do not notify
 ||
 || **color**
-[`string`](../data-types.md) | HEX color code of the status (for example, `#FF0000`) ||
+[`string`](../data-types.md) | HEX code of the status color (for example, `#FF0000`) ||
 || **sort**
 [`integer`](../data-types.md) | Sorting ||
 || **xmlId**
@@ -279,9 +282,9 @@ Possible values:
 || **Value**
 `type` | **Description** ||
 || **statusId**
-[`sale_status.id`](#sale_status) | Character identifier of the status ||
+[`sale_status.id`](#sale_status) | Symbolic identifier of the status ||
 || **lid**
-[`sale_lang.lid`](#sale_lang) | Identifier of the language ||
+[`sale_lang.lid`](#sale_lang) | Language identifier ||
 || **name**
 [`string`](../data-types.md) | Name of the status ||
 || **description**
@@ -298,7 +301,7 @@ Possible values:
 - `Y` — active
 - `N` — inactive ||
 || **lid**
-[`string`](../data-types.md) | Character identifier of the language ||
+[`string`](../data-types.md) | Symbolic identifier of the language ||
 || **name**
 [`string`](../data-types.md) | Name of the language ||
 |#
@@ -329,9 +332,9 @@ Possible values:
 - `LOCATION` 
 - `ADDRESS` ||
 || **code**
-[`string`](../data-types.md) | Character code of the order property ||
+[`string`](../data-types.md) | Symbolic code of the order property ||
 || **active**
-[`string`](../data-types.md) | Indicator of the order property's activity.
+[`string`](../data-types.md) | Indicator of the order property’s activity.
 
 Possible values:
 - `Y` — yes
@@ -343,6 +346,7 @@ Possible values:
 - `Y` — yes
 - `N` — no ||
 || **userProps**
+[`string`](../data-types.md) | Indicator of whether the order property is included in the customer profile.
 [`string`](../data-types.md) | Indicator of whether the order property is included in the customer profile.
 
 Possible values:
@@ -366,7 +370,7 @@ Possible values:
 - `N` — no  ||
 
 || **multiple**
-[`string`](../data-types.md) | Indicator of whether the order property is multiple. For multiple properties, it is possible to specify multiple values.
+[`string`](../data-types.md) | Indicator of whether the order property is multiple. For multiple properties, it is possible to specify several values.
 
 Possible values:
 - `Y` — yes
@@ -378,6 +382,7 @@ Possible values:
 
 For multiple order properties (`multiple`), it supports passing an array of values ||
 || **settings**
+[`object`](../data-types.md) | See the description of the `settings` parameter in the method [sale.property.add](./property/sale-property-add.md) ||
 [`object`](../data-types.md) | See the description of the `settings` parameter in the method [sale.property.add](./property/sale-property-add.md) ||
 || **isProfileName**
 [`string`](../data-types.md) | Indicator of whether to use the value of this order property as the name of the user profile.
@@ -428,7 +433,7 @@ Possible values:
 
 Relevant only for order properties of type `STRING` ||
 || **isLocation**
-[`string`](../data-types.md) | Indicator of whether to use the value of this order property as the buyer's location for calculating delivery costs.
+[`string`](../data-types.md) | Indicator of whether to use the value of this order property as the customer's location for calculating delivery costs.
 
 Possible values:
 - `Y` — yes
@@ -436,7 +441,7 @@ Possible values:
 
 Relevant only for order properties of type `LOCATION` ||
 || **isLocation4tax**
-[`string`](../data-types.md) | Indicator of whether to use the value of this order property as the buyer's location for determining tax rates.
+[`string`](../data-types.md) | Indicator of whether to use the value of this order property as the customer's location for determining tax rates.
 
 Possible values:
 - `Y` — yes
@@ -448,7 +453,7 @@ Relevant only for order properties of type `LOCATION` ||
 
 Relevant only for order properties of type `LOCATION` ||
 || **isAddressFrom**
-[`string`](../data-types.md) | Indicator of whether to use the value of this order property as the buyer's address from where the order needs to be picked up for calculating delivery costs.
+[`string`](../data-types.md) | Indicator of whether to use the value of this order property as the customer's address from where the order needs to be picked up for calculating delivery costs.
 
 Possible values:
 - `Y` — yes
@@ -456,7 +461,7 @@ Possible values:
 
 Relevant only for order properties of type `ADDRESS` ||
 || **isAddressTo**
-[`string`](../data-types.md) | Indicator of whether to use the value of this order property as the buyer's address where the order needs to be delivered for calculating delivery costs.
+[`string`](../data-types.md) | Indicator of whether to use the value of this order property as the customer's address to which the order needs to be delivered for calculating delivery costs.
 
 Possible values:
 - `Y` — yes
@@ -481,7 +486,7 @@ See the description of [sale_order_property](#sale_order_property).
 || **shipmentId**
 [`sale_order_shipment.id`](#sale_order_shipment) | Identifier of the shipment ||
 || **code**
-[`string`](../data-types.md) | Character code of the property ||
+[`string`](../data-types.md) | Symbolic code of the property ||
 || **value**
 [`string`](../data-types.md)
 [`sale_order_property_value_file_value`](#sale_order_property_value_file_value) | Value of the property ||
@@ -503,7 +508,7 @@ See the description of [sale_order_property](#sale_order_property).
 || **orderId**
 [`sale_order.id`](#sale_order) | Identifier of the order ||
 || **code**
-[`string`](../data-types.md) | Character code of the property ||
+[`string`](../data-types.md) | Symbolic code of the property ||
 || **value**
 [`string`](../data-types.md)
 [`sale_order_property_value_file_value`](#sale_order_property_value_file_value) | Value of the property ||
@@ -537,7 +542,7 @@ See the description of [sale_order_property](#sale_order_property).
 || **src**
 [`string`](../data-types.md) | Full path to the file on the server ||
 || **subdir**
-[`string`](../data-types.md) | Subdirectory where the file is located on disk ||
+[`string`](../data-types.md) | Subdirectory where the file is located on the disk ||
 || **timestampX**
 [`string`](../data-types.md) | Date of the file record change ||
 || **versionOriginalId**
@@ -614,7 +619,7 @@ See the description of [sale_order_property](#sale_order_property).
 || **sort**
 [`string`](../data-types.md) | Sorting ||
 || **active**
-[`string`](../data-types.md) | Indicator of the activity of the payer type: 
+[`string`](../data-types.md) | Indicator of the payer type's activity: 
 - `Y` — active
 - `N` — inactive
 ||
@@ -637,7 +642,7 @@ Can be used to synchronize the current payer type with a similar position in an 
 - `I` — individual
 - `E` — legal entity 
 
-This option is needed for the operation of the business meanings mechanism ||
+This option is needed for the business meanings mechanism ||
 |#
 
 ### sale_order
@@ -664,13 +669,14 @@ This option is needed for the operation of the business meanings mechanism ||
 || **dateStatus**
 [`datetime`](../data-types.md) | Date of status change ||
 || **marked**
-[`string`](../data-types.md) | Flag marking. Indicator of whether the shipment is marked as problematic. The value `Y` is automatically set if an error occurred during saving.
+[`string`](../data-types.md) | Marking flag. Indicates whether the shipment is marked as problematic. The value `Y` is set automatically if an error occurred during saving.
 - `Y` — yes
 - `N` — no
 ||
 || **dateMarked**
-[`datetime`](../data-types.md) | Date of marking the order ||
+[`datetime`](../data-types.md) | Date of order marking ||
 || **empMarkedId**
+[`user.id`](../data-types.md) | Identifier of the user who marked the order ||
 [`user.id`](../data-types.md) | Identifier of the user who marked the order ||
 || **reasonMarked**
 [`string`](../data-types.md) | Reason for marking the order ||
@@ -705,7 +711,7 @@ Identifier of the user who locked the order. The order is locked in the admin pa
 || **affiliateId**
 [`integer`](../data-types.md) | Relevant only for the on-premise version. Identifier of the affiliate ||
 || **updated1c**
-[`string`](../data-types.md) | Whether the order was updated through 1C:
+[`string`](../data-types.md) | Whether the order was updated through QuickBooks and other similar platforms:
 - `Y` — yes
 - `N` — no 
 ||
@@ -716,13 +722,13 @@ Identifier of the user who locked the order. The order is locked in the admin pa
 || **statusXmlId**
 [`string`](../data-types.md) | External identifier of the status ||
 || **id1c**
-[`string`](../data-types.md) | Identifier in 1C ||
+[`string`](../data-types.md) | Identifier in QuickBooks and other similar platforms ||
 || **version**
 [`integer`](../data-types.md) | Version of the document ||
 || **version1c**
-[`string`](../data-types.md) | Version in 1C ||
+[`string`](../data-types.md) | Version in QuickBooks and other similar platforms ||
 || **externalOrder**
-[`string`](../data-types.md) | Whether the order is from an external system or not
+[`string`](../data-types.md) | Whether the order is from an external system
 - `Y` — yes
 - `N` — no 
 ||
@@ -749,7 +755,7 @@ Identifier of the user who locked the order. The order is locked in the admin pa
 - `N` — no 
 ||
 || **deducted**
-[`string`](../data-types.md) | Deprecated. Whether the order has been shipped:
+[`string`](../data-types.md) | Deprecated. Whether the order is shipped:
 - `Y` — yes
 - `N` — no 
 ||
@@ -765,7 +771,7 @@ Array of contacts and companies of the order from the CRM module | Array of obje
 || **propertyValues**
 [`sale_order_property[]`](#sale_order_property) | Properties of the order ||
 || **requisiteLink**
-Array of links to requisites from the CRM module | Links of requisites to the order. The list of links to requisites with CRM entities can be obtained through the method [crm.requisite.link.list](../crm/requisites/links/crm-requisite-link-list.md), where for the order [entity_type_id = 14](../crm/data-types.md) ||
+Array of links to requisites in the CRM module | Links of requisites to the order. The list of links to requisites with CRM entities can be obtained through the method [crm.requisite.link.list](../crm/requisites/links/crm-requisite-link-list.md), where for the order [entity_type_id = 14](../crm/data-types.md) ||
 || **tradeBindings**
 [`sale_order_trade_binding[]`](#sale_order_trade_binding) | Trading platforms of the order ||
 |#
@@ -801,36 +807,36 @@ Possible values:
 || **Value**
 `type` | **Description** ||
 || **id**
-[`integer`](../data-types.md) | Identifier of the payment ||
+[`integer`](../data-types.md) | Payment identifier ||
 || **orderId**
-[`sale_order.id`](#sale_order) | Identifier of the order ||
+[`sale_order.id`](#sale_order) | Order identifier ||
 || **paySystemXmlId**
 [`string`](../data-types.md) | External identifier of the payment system ||
 || **paySystemIsCash**
-[`string`](../data-types.md) | Whether the payment system is cash:
+[`string`](../data-types.md) | Is the payment system cash-based:
 - `Y` — yes
 - `N` — no 
 ||
 || **accountNumber**
-[`string`](../data-types.md) | System number of the payment ||
+[`string`](../data-types.md) | System payment number ||
 || **paid**
-[`string`](../data-types.md) | Whether the payment has been made:
+[`string`](../data-types.md) | Has the payment been made:
 - `Y` — yes
 - `N` — no 
 ||
 || **datePaid**
-[`datetime`](../data-types.md) | Date of payment ||
+[`datetime`](../data-types.md) | Payment date ||
 || **empPaidId**
 [`user.id`](../data-types.md) | User who made the payment ||
 || **paySystemId**
-[`sale_paysystem.id`](#sale_paysystem) | Identifier of the payment system ||
+[`sale_paysystem.id`](#sale_paysystem) | Payment system identifier ||
 || **psStatus**
-[`string`](../data-types.md) | Status of the payment system transaction — whether the order has been successfully paid (for payment systems that allow automatic retrieval of data on transactions processed through them):
+[`string`](../data-types.md) | Status of the payment system transaction — whether the order has been successfully paid (for payment systems that allow automatic retrieval of data for orders processed through them):
 - `Y` — yes
 - `N` — no 
 ||
 || **psStatusCode**
-[`string`](../data-types.md) | Code of the payment system transaction status ||
+[`string`](../data-types.md) | Payment system transaction status code ||
 || **psStatusDescription**
 [`string`](../data-types.md) | Description of the payment system transaction status ||
 || **psStatusMessage**
@@ -840,40 +846,43 @@ Possible values:
 || **psCurrency**
 [`string`](../data-types.md) | Currency of the payment system ||
 || **psResponseDate**
-[`datetime`](../data-types.md) | Date of the payment system response ||
+[`datetime`](../data-types.md) | Payment system response date ||
 || **payVoucherNum**
-[`string`](../data-types.md) | Number of the payment document ||
+[`string`](../data-types.md) | Payment document number ||
 || **payVoucherDate**
-[`date`](../data-types.md) | Date of the payment document ||
+[`date`](../data-types.md) | Payment document date ||
 || **datePayBefore**
 [`datetime`](../data-types.md) | Date by which the invoice must be paid (not used in the store) ||
 || **dateBill**
-[`datetime`](../data-types.md) | Date of invoice issuance ||
+[`datetime`](../data-types.md) | Invoice date ||
 || **xmlId**
 [`string`](../data-types.md) | External identifier ||
 || **sum**
-[`double`](../data-types.md) | Amount of the payment ||
+[`double`](../data-types.md) | Payment amount ||
 || **currency**
-[`string`](../data-types.md) | Currency of the payment ||
+[`string`](../data-types.md) | Payment currency ||
 || **paySystemName**
 [`string`](../data-types.md) | Name of the payment system ||
 || **companyId**
 [`integer`](../data-types.md) | Identifier of the company that will receive the payment ||
 || **payReturnNum**
-[`string`](../data-types.md) | Number of the return document ||
+[`string`](../data-types.md) | Return document number ||
 || **priceCod**
 [`string`](../data-types.md) | Cost of payment upon delivery (used, for example, for cash on delivery) ||
+[`string`](../data-types.md) | Cost of payment upon delivery (used, for example, for cash on delivery) ||
 || **payReturnDate**
-[`date`](../data-types.md) | Date of the return document ||
+[`date`](../data-types.md) | Return document date ||
 || **empReturnId**
-[`user.id`](../data-types.md) | Identifier of the user who performed the return ||
+[`user.id`](../data-types.md) | Identifier of the user who processed the return ||
 || **payReturnComment**
 [`string`](../data-types.md) | Comment on the return ||
 || **responsibleId**
 [`user.id`](../data-types.md) | Identifier of the user responsible for the payment ||
 || **empResponsibleId**
 [`user.id`](../data-types.md) | Identifier of the user who assigned the responsible person ||
+[`user.id`](../data-types.md) | Identifier of the user who assigned the responsible person ||
 || **dateResponsibleId**
+[`datetime`](../data-types.md) | Date of assigning the responsible person ||
 [`datetime`](../data-types.md) | Date of assigning the responsible person ||
 || **isReturn**
 [`string`](../data-types.md) | Whether the return was made:
@@ -883,23 +892,23 @@ Possible values:
 || **comments**
 [`string`](../data-types.md) | Comments on the payment ||
 || **updated1c**
-[`string`](../data-types.md) | Whether the payment was updated through 1C:
+[`string`](../data-types.md) | Whether the payment was updated through QuickBooks and other similar platforms:
 - `Y` — yes
 - `N` — no 
 ||
 || **id1c**
-[`string`](../data-types.md) | Identifier in 1C ||
+[`string`](../data-types.md) | Identifier in QuickBooks and other similar platforms ||
 || **version1c**
-[`string`](../data-types.md) | Version of the payment document from 1C ||
+[`string`](../data-types.md) | Payment document version from QuickBooks and other similar platforms ||
 || **externalPayment**
-[`string`](../data-types.md) | Whether the payment is external:
+[`string`](../data-types.md) | Is the payment external:
 - `Y` — yes
 - `N` — no 
 ||
 || **psInvoiceId**
-[`integer`](../data-types.md) | Identifier of the payment in the payment system ||
+[`integer`](../data-types.md) | Payment identifier in the payment system ||
 || **marked**
-[`string`](../data-types.md) | Flag marking. Indicator of whether the payment is marked as problematic:
+[`string`](../data-types.md) | Marking flag. Indicates whether the payment is marked as problematic:
 - `Y` — yes
 - `N` — no 
 ||
@@ -919,42 +928,43 @@ Possible values:
 || **id**
 [`integer`](../data-types.md) | Identifier of the basket item ||
 || **orderId**
-[`sale_order.id`](#sale_order) | Identifier of the order ||
+[`sale_order.id`](#sale_order) | Order identifier ||
 || **sort**
+[`integer`](../data-types.md) | Position in the list of order items ||
 [`integer`](../data-types.md) | Position in the list of order items ||
 || **productId**
 [`integer`](../data-types.md) | Identifier of the product. For products not available on the site, it is zero ||
 || **price**
 [`double`](../data-types.md) | Price of the product considering discounts and markups ||
 || **customPrice**
-[`string`](../data-types.md) | Whether the price is specified manually:
+[`string`](../data-types.md) | Is the price set manually:
 - `Y` — yes
 - `N` — no 
 ||
 || **currency**
-[`string`](../data-types.md) | Currency of the price. Must match the currency of the order. The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md), detailed information about the currency can be obtained using the method [crm.currency.get](../crm/currency/crm-currency-get.md) ||
+[`string`](../data-types.md) | Currency of the price. Must match the currency of the order. The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md), detailed information about the currency — using the method [crm.currency.get](../crm/currency/crm-currency-get.md) ||
 || **quantity**
 [`double`](../data-types.md) | Quantity ||
 || **xmlId**
 [`string`](../data-types.md) | External code of the basket item.
 If not specified, it will be generated automatically.
-Used for synchronization with external systems (for example, 1C)
+Used for synchronization with external systems (for example, QuickBooks and other similar platforms)
  ||
 || **dateInsert**
-[`datetime`](../data-types.md) | Date of adding the basket item ||
+[`datetime`](../data-types.md) | Date the basket item was added ||
 || **dateUpdate**
-[`datetime`](../data-types.md) | Date of updating the basket item ||
+[`datetime`](../data-types.md) | Date the basket item was updated ||
 || **properties**
 [`sale_basket_item_property[]`](#sale_basket_item_property) | Properties of the basket item ||
 || **name**
 [`string`](../data-types.md) | Name of the product ||
 || **basePrice**
-[`double`](../data-types.md) | Price of the product without discounts and markups
+[`double`](../data-types.md) | Price of the product excluding discounts and surcharges
 
 The rule must always be followed: `basePrice = price + discountPrice`
  ||
 || **discountPrice**
-[`double`](../data-types.md) | Amount of the final discount/markup. For markup, the value is negative
+[`double`](../data-types.md) | Amount of the final discount/surcharge. For surcharges, the value is negative
  ||
 || **weight**
 [`double`](../data-types.md) | Weight in grams. 
@@ -970,7 +980,9 @@ The field is either empty or contains a serialized array with keys:
  ||
 || **measureCode**
 [`string`](../data-types.md) | Unit of measure code ||
+[`string`](../data-types.md) | Unit of measure code ||
 || **measureName**
+[`string`](../data-types.md) | Name of the unit of measure ||
 [`string`](../data-types.md) | Name of the unit of measure ||
 || **canBuy**
 [`string`](../data-types.md) | Is the product available for purchase:
@@ -993,21 +1005,22 @@ Makes sense only for enabled inventory accounting. It is strongly not recommende
 ||
 || **type**
 [`integer`](../data-types.md) | Type of the item. Does not correspond to the type of product in the catalog. Possible values:
+[`integer`](../data-types.md) | Type of the item. Does not correspond to the type of product in the catalog. Possible values:
 - `1` — set
 - `2` — service
 - `null` — any other
 
-It is strongly not recommended to set this manually
+It is strongly discouraged to set this manually
  ||
 || **catalogXmlId**
 [`string`](../data-types.md) | External identifier of the catalog.
 
-Used for synchronization with external systems (for example, 1C)
+Used for synchronization with external systems (for example, QuickBooks and other similar platforms)
  ||
 || **productXmlId**
 [`string`](../data-types.md) | External identifier of the product.
 
-Used for synchronization with external systems (for example, 1C) ||
+Used for synchronization with external systems (for example, QuickBooks and other similar platforms) ||
 || **reservations**
 [`sale_basket_item_reservation[]`](#sale_basket_item_reservation) | Reservations of the basket item ||
 |#
@@ -1027,7 +1040,7 @@ Used for synchronization with external systems (for example, 1C) ||
 || **code**
 [`string`](../data-types.md) | Code of the property ||
 || **sort**
-[`integer`](../data-types.md) | Sorting order ||
+[`integer`](../data-types.md) | Sort order ||
 || **xmlId**
 [`string`](../data-types.md) | External identifier ||
 |#
@@ -1070,7 +1083,7 @@ Used for synchronization with external systems (for example, 1C) ||
 || **externalOrderId**
 [`string`](../data-types.md) | Order number in the external system ||
 || **orderId**
-[`sale_order.id`](#sale_order) | Identifier of the order ||
+[`sale_order.id`](#sale_order) | Order identifier ||
 || **tradingPlatformId**
 [`sale_order_trade_platform.id`](#sale_order_trade_platform) | Identifier of the trading platform ||
 || **tradingPlatformXmlId**
@@ -1089,11 +1102,11 @@ Used for synchronization with external systems (for example, 1C) ||
 || **basketId**
 [`sale_basket_item.id`](#sale_basket_item) | Identifier of the basket item reservation ||
 || **storeId**
-[`integer`](../data-types.md) | Identifier of the warehouse ||
+[`integer`](../data-types.md) | Identifier of the inventory ||
 || **quantity**
 [`double`](../data-types.md) | Quantity ||
 || **dateReserve**
-[`datetime`](../data-types.md) | Date of reservation ||
+[`datetime`](../data-types.md) | Reservation date ||
 || **dateReserveEnd**
 [`datetime`](../data-types.md) | Date of reservation end ||
 || **reservedBy**
@@ -1112,7 +1125,7 @@ Delivery service handler identifiers can be obtained using the method [sale.deli
 || **NAME**
 [`string`](../data-types.md) | Name of the delivery service handler ||
 || **CODE**
-[`string`](../data-types.md) | Character code of the delivery service handler ||
+[`string`](../data-types.md) | Symbolic code of the delivery service handler ||
 || **SORT**
 [`integer`](../data-types.md) | Sorting ||
 || **DESCRIPTION**
@@ -1129,6 +1142,7 @@ Delivery service handler identifiers can be obtained using the method [sale.deli
 || **Value**
 `type` | **Description** ||
 || **CALCULATE_URL**
+[`string`](../data-types.md) | URL for calculating delivery costs.
 [`string`](../data-types.md) | URL for calculating delivery costs.
 
 Data about the parcel (what to deliver, where, and how) is sent to this URL, for which the delivery cost needs to be calculated in response.
@@ -1178,7 +1192,7 @@ Possible values:
 `DATE` — date
 `LOCATION` — location ||
 || **CODE**
-[`string`](../data-types.md) | Character code of the setting ||
+[`string`](../data-types.md) | Symbolic code of the setting ||
 || **NAME**
 [`string`](../data-types.md) | Name of the setting ||
 || **OPTIONS**
@@ -1194,7 +1208,7 @@ Example:
 }
 ```
 
-The parameter is relevant only for settings of type `ENUM` ||
+This parameter is relevant only for settings of type `ENUM` ||
 |#
 
 ### sale_delivery_handler_profile
@@ -1205,7 +1219,7 @@ The parameter is relevant only for settings of type `ENUM` ||
 || **NAME**
 [`string`](../data-types.md) | Name of the delivery service handler profile ||
 || **CODE**
-[`string`](../data-types.md) | Character code of the delivery service handler profile ||
+[`string`](../data-types.md) | Symbolic code of the delivery service handler profile ||
 || **DESCRIPTION**
 [`string`](../data-types.md) | Description of the delivery service handler profile ||
 |#
@@ -1226,13 +1240,13 @@ Delivery service identifiers can be obtained using the method [sale.delivery.get
 || **NAME**
 [`string`](../data-types.md) | Name of the delivery service ||
 || **CURRENCY**
-[`string`](../data-types.md) | Character code of the currency of the delivery service ||
+[`string`](../data-types.md) | Symbolic code of the delivery service currency ||
 || **DESCRIPTION**
 [`string`](../data-types.md) | Description of the delivery service ||
 || **SORT**
 [`integer`](../data-types.md) | Sorting ||
 || **ACTIVE**
-[`string`](../data-types.md) | Indicator of the activity of the delivery service.
+[`string`](../data-types.md) | Indicator of the delivery service's activity.
 
 Possible values:
 
@@ -1246,7 +1260,7 @@ Possible values:
 || **Value**
 `type` | **Description** ||
 || **CODE**
-[`string`](../data-types.md) | Character code of the setting ||
+[`string`](../data-types.md) | Symbolic code of the setting ||
 || **VALUE**
 [`any`](../data-types.md) | Value of the setting ||
 |#
@@ -1257,7 +1271,7 @@ Possible values:
 || **Value**
 `type` | **Description** ||
 || **ID**
-[`integer`](../data-types.md) | Identifier of the additional delivery service.
+[`integer`](../data-types.md) | Identifier of the additional service of the delivery service.
 
 Delivery service identifiers can be obtained using the method [sale.delivery.extra.service.get](./delivery/extra-service/sale-delivery-extra-service-get.md)  ||
 || **TYPE**
@@ -1266,18 +1280,18 @@ Delivery service identifiers can be obtained using the method [sale.delivery.ext
 Possible values:
 
 `enum` — list (selecting an option from a pre-formed list)
-`checkbox` — single service (for example, delivery to the door)
-`quantity` — quantitative service (for example, required number of loaders) ||
+`checkbox` — single service (e.g., delivery to the door)
+`quantity` — quantitative service (e.g., required number of movers) ||
 || **NAME**
 [`string`](../data-types.md) | Name of the service ||
 || **ACTIVE**
-[`string`](../data-types.md) | Indicator of the activity of the service.
+[`string`](../data-types.md) | Indicator of the service's activity.
 
 Possible values:
 `Y` — active
 `N` — inactive ||
 || **CODE**
-[`string`](../data-types.md) | Character code of the service ||
+[`string`](../data-types.md) | Symbolic code of the service ||
 || **SORT**
 [`integer`](../data-types.md) | Sorting ||
 || **DESCRIPTION**
@@ -1292,6 +1306,7 @@ Possible values:
 || **Value**
 `type` | **Description** ||
 || **TITLE**
+[`string`](../data-types.md) | Name of the list option ||
 [`string`](../data-types.md) | Name of the list option ||
 || **CODE**
 [`string`](../data-types.md) | Character code of the list option ||
@@ -1313,7 +1328,7 @@ Possible values:
 || **SORT**
 [`string`](../data-types.md) | Sorting ||
 || **SETTINGS**
-[`object`](../data-types.md) | Settings of the handler. The structure corresponds to that specified when adding the handler through [sale.paysystem.handler.add](../pay-system/sale-pay-system-handler-add.md) in the `SETTINGS` parameter ||
+[`object`](../data-types.md) | Settings of the handler. The structure corresponds to that specified when adding the handler via [sale.paysystem.handler.add](../pay-system/sale-pay-system-handler-add.md) in the `SETTINGS` parameter ||
 |#
 
 ### sale_paysystem
@@ -1328,7 +1343,7 @@ Possible values:
 || **DESCRIPTION**
 [`string`](../data-types.md) | Description of the payment system ||
 || **XML_ID**
-[`string`](../data-types.md) | Character code ||
+[`string`](../data-types.md) | Symbolic code ||
 || **PERSON_TYPE_ID**
 [`sale_person_type.id`](#sale_person_type) | Identifier of the payer type ||
 || **ACTION_FILE**
@@ -1337,13 +1352,13 @@ Possible values:
 For system payment systems, this is the code of the system payment system handler
 ||
 || **ACTIVE**
-[`string`](../data-types.md) | Is the payment system active. Available values: 
+[`string`](../data-types.md) | Is the payment system active? Available values: 
 - `Y` — yes
 - `N` — no 
 ||
 || **ENTITY_REGISTRY_TYPE**
 [`string`](../data-types.md) | Binding of the payment system:
-- `ORDER` — value for store orders, deals, SPAs
+- `ORDER` — value for store orders, deals, smart processes
 - `CRM_INVOICE` — value for CRM invoices
 - `CRM_QUOTE` — value for CRM estimates
 ||
@@ -1354,11 +1369,12 @@ For system payment systems, this is the code of the system payment system handle
 ||
 || **ALLOW_EDIT_PAYMENT**
 [`string`](../data-types.md) | Flag for the setting "Allow automatic payment recalculation". Available values: 
+[`string`](../data-types.md) | Flag for the setting "Allow automatic payment recalculation". Available values: 
 - `Y` — yes
 - `N` — no
 ||
 || **AUTO_CHANGE_1C**
-[`string`](../data-types.md) | Flag for the setting "Allow automatic payment change when importing from 1C". Available values: 
+[`string`](../data-types.md) | Flag for the setting "Allow automatic payment change when importing from QuickBooks and other similar platforms". Available values: 
 - `Y` — yes
 - `N` — no
 ||
@@ -1382,7 +1398,7 @@ Not used for REST handlers ||
 [`string`](../data-types.md) | Operating mode of the payment system for handlers that support multiple operating modes ||
 || **SORT**
 [`string`](../data-types.md) | Sorting ||
-|| **TARIFF**
+|| **PLAN**
 [`string`](../data-types.md) | Not used ||
 |#
 
@@ -1400,7 +1416,7 @@ Not used for REST handlers ||
 || **SORT**
 [`string`](../data-types.md) | Sorting ||
 || **SETTINGS**
-[`object`](../data-types.md) | Settings of the handler. The structure corresponds to that specified when adding the handler through [sale.cashbox.handler.add](./cashbox/sale-cashbox-handler-add.md) in the `SETTINGS` parameter ||
+[`object`](../data-types.md) | Settings of the handler. The structure corresponds to that specified when adding the handler via [sale.cashbox.handler.add](./cashbox/sale-cashbox-handler-add.md) in the `SETTINGS` parameter ||
 |#
 
 ### sale_cashbox
@@ -1433,10 +1449,11 @@ Not used for REST handlers ||
 [`string`](../data-types.md) | Email address to which notifications will be sent in case of errors when printing checks ||
 || **KKM_ID**
 [`string`](../data-types.md) | Brand of the KKM ||
+[`string`](../data-types.md) | Brand of the KKM ||
 || **SORT**
 [`string`](../data-types.md) | Sorting ||
 || **USE_OFFLINE**
-[`string`](../data-types.md) | Is the cash register used offline. Possible values:
+[`string`](../data-types.md) | Is the cash register used offline? Possible values:
 - `Y` — yes
 - `N` — no ||
 |#
@@ -1451,13 +1468,13 @@ Not used for REST handlers ||
 || **isImmutable**
 [`boolean`](../data-types.md) | Indicator of the possibility of changing the field value after creation. 
 
-If this indicator is set for the field, then when creating the entity, a value for the field can be specified, but it cannot be changed during updates ||
+If this indicator is set for a field, the value can be specified when creating the entity, but cannot be changed during updates ||
 || **isReadOnly**
 [`boolean`](../data-types.md) | Read-only indicator. 
 
 If this indicator is set for the field, then in the operations of adding and updating the entity, the value of the field does not need to be passed. The value is generated automatically and is intended for read-only access ||
 || **isRequired**
-[`boolean`](../data-types.md) | Indicator of whether the field is mandatory for add or update operations ||
+[`boolean`](../data-types.md) | Indicator of whether the field is required for add or update operations ||
 || **type**
 [`string`](../data-types.md) | Data type of the field values. Possible values: 
 - `integer`

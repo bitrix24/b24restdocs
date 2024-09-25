@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the requiredness of parameters is not specified
+- required parameters are not specified
 - no response in case of an error
 - no examples in other languages
   

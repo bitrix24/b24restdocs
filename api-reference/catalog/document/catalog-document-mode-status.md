@@ -1,4 +1,4 @@
-# Get Information on Whether Inventory Accounting is Enabled catalog.document.mode.status
+# Get Information on Whether Inventory Management is Enabled catalog.document.mode.status
 
 {% note warning "We are still updating this page" %}
 
@@ -8,11 +8,11 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- Required parameters are not specified
-- No response in case of an error
-- No examples in other languages
+- required parameters are not specified
+- no response in case of an error
+- no examples in other languages
   
 {% endnote %}
 
@@ -28,11 +28,11 @@ Some data may be missing here — we will complete it shortly.
 catalog.document.mode.status()
 ```
 
-Method to retrieve information on whether inventory accounting is enabled.
-Returns the inventory accounting status:
+Method to retrieve information on whether inventory management is enabled.
+The status of inventory management is returned:
 
-- `Y` - inventory accounting is enabled;
-- `N` - inventory accounting is disabled.
+- `Y` - inventory management is enabled;
+- `N` - inventory management is disabled.
   
 ## Parameters
 
@@ -71,4 +71,4 @@ No parameters
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}

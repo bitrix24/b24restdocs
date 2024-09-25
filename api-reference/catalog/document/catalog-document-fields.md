@@ -1,4 +1,4 @@
-# Get a List of Document Fields (deprecated) catalog.document.fields
+# Get Document Fields List (deprecated) catalog.document.fields
 
 {% note warning "We are still updating this page" %}
 
@@ -74,7 +74,7 @@ No parameters.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -89,7 +89,7 @@ No parameters.
 || **contractorId** 
 [`integer`](../../data-types.md) | Vendor. |  ||
 || **responsibleId^*^** 
-[`integer`](../../data-types.md) | Responsible person. |  ||
+[`integer`](../../data-types.md) | Assignee. |  ||
 || **dateModify** 
 [`datetime`](../../data-types.md) | Modification date. |  ||
 || **dateCreate** 
@@ -114,4 +114,4 @@ No parameters.
 [`char`](../../data-types.md) | Commentary. |  ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Parameters Note](../../../_includes/required.md) %}

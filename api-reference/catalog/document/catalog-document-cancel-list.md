@@ -1,8 +1,8 @@
-# Execute a Group Cancellation of Warehouse Accounting Documents catalog.document.cancelList
+# Perform a bulk cancellation of inventory accounting documents catalog.document.cancelList
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the requiredness of parameters is not specified
-- there is no response in case of an error
+- required parameters are not specified
+- no response in case of an error
 - no examples in other languages
   
 {% endnote %}
@@ -28,17 +28,17 @@ Some data may be missing here — we will complete it shortly.
 catalog.document.cancelList(documentIds)
 ```
 
-Method for group cancellation of warehouse accounting documents.
+Method for bulk cancellation of inventory accounting documents.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **documentIds**
-[`array`](../../data-types.md)| An array of document identifiers for which the cancellation is required. ||
+[`array`](../../data-types.md)| An array of document identifiers for which the processing needs to be canceled. ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -61,4 +61,4 @@ BX24.callMethod(
 );
 ```
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}

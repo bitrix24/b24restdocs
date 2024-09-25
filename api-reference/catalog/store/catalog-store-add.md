@@ -1,8 +1,8 @@
-# Add Warehouse catalog.store.add
+# Add Inventory catalog.store.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -28,17 +28,18 @@ Some data may be missing here — we will complete it shortly.
 catalog.store.add(fields)
 ```
 
-This method adds a warehouse. If the operation is successful, it returns the `id` of the added warehouse.
+This method adds an inventory.
+If the operation is successful, it returns the `id` of the added inventory.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **fields**
-[`array`](../../data-types.md)| Parameters of the warehouse being added. ||
+[`array`](../../data-types.md)| Parameters of the inventory being added. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -51,15 +52,15 @@ This method adds a warehouse. If the operation is successful, it returns the `id
         'catalog.store.add',
         {
             fields: {
-                'title': 'Warehouse 1',
+                'title': 'Inventory 1',
                 'sort': '100',
                 'active': 'Y',
                 'issuingCenter': 'Y',
                 'shippingCenter': 'Y',
                 'code': 'store_1',
-                'address': 'Moscow Ave. 52',
+                'address': 'Main St. 52',
                 'phone': '+1 123 456 789',
-                'schedule': 'Mon.-Fri. from 9:00 AM to 8:00 PM, Sat.-Sun. from 11:00 AM to 6:00 PM',
+                'schedule': 'Mon.-Fri. from 9:00 to 20:00, Sat.-Sun. from 11:00 to 18:00',
                 'xmlId': 'store_1',
             }
         },
@@ -80,15 +81,15 @@ This method adds a warehouse. If the operation is successful, it returns the `id
         'catalog.store.add',
         [
             'fields' => [
-                'title' => 'Warehouse 1',
+                'title' => 'Inventory 1',
                 'sort' => '100',
                 'active' => 'Y',
                 'issuingCenter' => 'Y',
                 'shippingCenter' => 'Y',
                 'code' => 'store_1',
-                'address' => 'Moscow Ave. 52',
+                'address' => 'Main St. 52',
                 'phone' => '+1 123 456 789',
-                'schedule' => 'Mon.-Fri. from 9:00 AM to 8:00 PM, Sat.-Sun. from 11:00 AM to 6:00 PM',
+                'schedule' => 'Mon.-Fri. from 9:00 to 20:00, Sat.-Sun. from 11:00 to 18:00',
                 'xmlId' => 'store_1',
             ],
         ]
@@ -101,4 +102,4 @@ This method adds a warehouse. If the operation is successful, it returns the `id
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../_includes/examples.md) %}

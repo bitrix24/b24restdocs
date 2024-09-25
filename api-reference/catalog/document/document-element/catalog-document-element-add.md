@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of an error
+- no response in case of error
 - no examples in other languages
   
 {% endnote %}
@@ -28,7 +28,7 @@ Some data may be missing here — we will complete it shortly.
 catalog.document.element.add(fields)
 ```
 
-This method adds an inventory document item. If the operation is successful, it returns the `id` of the added item.
+This method adds an item to the inventory document. If the operation is successful, the `id` of the added item is returned.
 
 ## Parameters
 
@@ -38,7 +38,7 @@ This method adds an inventory document item. If the operation is successful, it 
 [`array`](../../../data-types.md)| Parameters of the item being added. The fields correspond to the available list of fields [`fields`](catalog-document-element-get-fields.md) ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
@@ -93,4 +93,4 @@ This method adds an inventory document item. If the operation is successful, it 
 
 {% endlist %}
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../../_includes/examples.md) %}

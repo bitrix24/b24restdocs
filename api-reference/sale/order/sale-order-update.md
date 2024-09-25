@@ -8,7 +8,7 @@ The method `sale.order.update` updates the fields of an order.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -69,13 +69,13 @@ Recount flag.
 - `Y` — yes
 - `N` — no
 
-Defaults to `Y` ||
+Defaults to Y ||
 || **affiliateId**
 [`integer`](../../data-types.md) | Relevant only for on-premise.
 
 Affiliate identifier ||
 || **updated1c**
-[`string`](../../data-types.md) | Updated via 1C.
+[`string`](../../data-types.md) | Updated via QuickBooks and other similar platforms.
 
 - `Y` — yes
 - `N` — no
@@ -88,9 +88,9 @@ Order topic ||
 || **xmlId**
 [`string`](../../data-types.md) | External identifier ||
 || **id1c**
-[`string`](../../data-types.md) | Identifier in 1C ||
+[`string`](../../data-types.md) | Identifier in QuickBooks and other similar platforms ||
 || **version1c**
-[`string`](../../data-types.md) | Version in 1C ||
+[`string`](../../data-types.md) | Version in QuickBooks and other similar platforms ||
 || **externalOrder**
 [`string`](../../data-types.md) | Whether the order is from an external system.
 
@@ -113,7 +113,7 @@ Defaults to `N` ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -247,12 +247,12 @@ HTTP Status: **200**
             "comments": "",
             "companyId": 1,
             "currency": "USD",
-            "dateCanceled": "2024-04-12T14:06:05+03:00",
-            "dateInsert": "2024-03-01T13:00:00+03:00",
+            "dateCanceled": "2024-04-12T14:06:05+02:00",
+            "dateInsert": "2024-03-01T13:00:00+02:00",
             "dateLock": null,
-            "dateMarked": "2024-04-15T10:21:14+03:00",
-            "dateStatus": "2024-04-12T14:06:04+03:00",
-            "dateUpdate": "2024-04-15T10:21:15+03:00",
+            "dateMarked": "2024-04-15T10:21:14+02:00",
+            "dateStatus": "2024-04-12T14:06:04+02:00",
+            "dateUpdate": "2024-04-15T10:21:15+02:00",
             "deducted": "N",
             "discountValue": 10,
             "empCanceledId": 1,
@@ -291,8 +291,8 @@ HTTP Status: **200**
         "finish": 1713169275.698528,
         "duration": 1.4028480052947998,
         "processing": 0.9852678775787354,
-        "date_start": "2024-04-15T11:21:14+03:00",
-        "date_finish": "2024-04-15T11:21:15+03:00"
+        "date_start": "2024-04-15T11:21:14+02:00",
+        "date_finish": "2024-04-15T11:21:15+02:00"
     }
 }
 ```
@@ -307,7 +307,7 @@ HTTP Status: **200**
 || **order**
 [`sale_order`](../data-types.md) | Object containing information about the updated order ||
 || **time**
-[`time`](../../data-types.md) | Information about the request processing time ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

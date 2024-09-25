@@ -1,14 +1,14 @@
-# Delete Warehouse catalog.store.delete
+# Delete Inventory catalog.store.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
 - no response in case of error
@@ -19,7 +19,7 @@ Some data may be missing — we will complete it shortly.
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can perform the method: any user
 
 ## Description
 
@@ -27,17 +27,18 @@ Some data may be missing — we will complete it shortly.
 catalog.store.delete(id)
 ```
 
-Method for deleting a warehouse. If the operation is successful, `Y` is returned in the response body.
+Method for deleting an inventory.
+If the operation is successful, `Y` is returned in the response body.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **id** 
-[`integer`](../../data-types.md)| Identifier of the warehouse. ||
+[`integer`](../../data-types.md)| Identifier of the inventory. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -78,4 +79,4 @@ Method for deleting a warehouse. If the operation is successful, `Y` is returned
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

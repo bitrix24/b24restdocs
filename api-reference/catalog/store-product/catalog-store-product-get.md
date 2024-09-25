@@ -1,8 +1,8 @@
-# Get Inventory Field Values by Warehouse catalog.storeproduct.get
+# Get Inventory Balances Field Values catalog.storeproduct.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the requiredness of parameters is not specified
-- no response in case of an error
+- required parameters are not specified
+- no response in case of error
 - no response in case of success
 - no examples in other languages
   
@@ -29,7 +29,7 @@ Some data may be missing — we will complete it soon.
 catalog.storeproduct.get(id)
 ```
 
-Method to access the value of inventory fields by warehouse.
+Method to access the value of inventory balances fields.
 
 ## Parameters
 
@@ -39,7 +39,7 @@ Method to access the value of inventory fields by warehouse.
 [`integer`](../../data-types.md)| Primary key of the record. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -57,4 +57,4 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}

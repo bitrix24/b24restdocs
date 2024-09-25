@@ -1,8 +1,8 @@
-# Get Inventory Fields by Warehouse catalog.storeproduct.getFields
+# Get Inventory Balances Fields catalog.storeproduct.getFields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -29,7 +29,7 @@ Some data may be missing here — we will complete it shortly.
 catalog.storeproduct.getFields()
 ```
 
-This method returns the inventory fields by warehouse.
+This method returns the fields for inventory balances.
 
 ## Parameters
 
@@ -64,7 +64,7 @@ BX24.callMethod(
 || **quantityReserved** 
 [`double`](../../data-types.md) | Reserved quantity. | Read-only. ||
 || **storeId** 
-[`integer`](../../data-types.md) | Identifier of the warehouse. | Read-only. ||
+[`integer`](../../data-types.md) | Identifier of the inventory. | Read-only. ||
 |#
 
 {% include [Footnote about parameters](../../../_includes/required.md) %}

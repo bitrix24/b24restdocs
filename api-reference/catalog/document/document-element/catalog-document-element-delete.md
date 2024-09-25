@@ -1,14 +1,14 @@
-# Delete Inventory Document Item catalog.document.element.delete
+# Delete item of inventory document catalog.document.element.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
 - no response in case of error
@@ -27,7 +27,8 @@ Some data may be missing here — we will complete it shortly.
 catalog.document.element.delete(id)
 ```
 
-Method for deleting an inventory document item. If the operation is successful, `true` is returned in the response body.
+Method for deleting an item from the inventory document.
+If the operation is successful, `true` is returned in the response body.
 
 ## Parameters
 
@@ -37,7 +38,7 @@ Method for deleting an inventory document item. If the operation is successful, 
 [`integer`](../../../data-types.md)| Identifier of the document item. ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
@@ -78,4 +79,4 @@ Method for deleting an inventory document item. If the operation is successful, 
 
 {% endlist %}
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
