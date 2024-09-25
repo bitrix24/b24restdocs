@@ -339,18 +339,6 @@ For a user with `id = 1` in contacts, set the following configuration for the it
 
 {% endlist %}
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-### Result
-
-![Example of the resulting configuration](./_images/result-item-details-configuration-example.png)
-
-{% endnote %}
-
-{% endif %}
-
 ## Response Handling
 
 HTTP Status: **200**

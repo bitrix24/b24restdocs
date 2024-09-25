@@ -1,12 +1,12 @@
-# Reset Contact Card Settings crm.contact.details.configuration.reset
+# Reset Contact Card Parameters crm.contact.details.configuration.reset
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
->  - Any user has the right to access their own and shared settings
->  - Only an administrator has the right to access others' settings
+>  - Any user has the right to retrieve their own and common settings
+>  - Only an administrator has the right to retrieve others' settings
 
-This method resets the contact card settings: it removes the personal settings of the specified user or the shared settings defined for all users.
+This method resets the contact card settings: it removes the personal settings of the specified user or the common settings defined for all users.
 
 ## Method Parameters
 
@@ -20,14 +20,14 @@ This method resets the contact card settings: it removes the personal settings o
 
 Possible values:
 - **P** — personal settings
-- **C** — shared settings
+- **C** — common settings
 
 Default — `P`
 ||
 || **userId**
 [`user`](../../../data-types.md) | User identifier. Required only when resetting personal settings.
 
-If not specified, the `id` of the current user is used.
+If not specified, the `id` of the current user is used
 ||
 |#
 
@@ -35,7 +35,7 @@ If not specified, the `id` of the current user is used.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-1. Reset Shared Configuration
+1. Reset Common Configuration
 
     {% list tabs %}
 

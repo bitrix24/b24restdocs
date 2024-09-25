@@ -3,17 +3,15 @@ href: index.md
 items: 
   - name: Overview of Methods
     href: index.md
-  - name: VAT Rate Resource
-    href: resource.md
   - name: Add VAT Rate
     href: catalog-vat-add.md
-  - name: Delete VAT Rate
-    href: catalog-vat-delete.md
-  - name: Get VAT Rate Parameters
-    href: catalog-vat-get.md
-  - name: Get VAT Rate Fields
-    href: catalog-vat-get-fields.md
-  - name: Get List of VAT Rates
-    href: catalog-vat-list.md
   - name: Update VAT Rate
     href: catalog-vat-update.md
+  - name: Get VAT Rate Parameters
+    href: catalog-vat-get.md
+  - name: Get List of VAT Rates
+    href: catalog-vat-list.md
+  - name: Delete VAT Rate
+    href: catalog-vat-delete.md
+  - name: Get VAT Rate Fields
+    href: catalog-vat-get-fields.md

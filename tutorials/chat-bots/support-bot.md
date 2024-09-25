@@ -1,6 +1,6 @@
 # Example of Creating a Support Channel
 
-With the **Open Lines** module, you can set up technical support for any *Bitrix24* application, including chatbots.
+With the **Open Lines** module, you can organize technical support for any *Bitrix24* application, including chatbots.
 
 To do this, follow these steps:
 
@@ -12,17 +12,13 @@ To do this, follow these steps:
 
 ![Bitrix24.Network Settings](./_images/add_network02.png)
 
-  - Be sure to fill in the `Name` and `Short Description` fields, and also set an `Avatar` — this will help clients find you more easily.
+  - Be sure to fill in the `Name` and `Short Description` fields, and set an `Avatar` — this will help clients find you more easily.
 
-  - Once a user enters your Open Line *Bitrix24.Network*, they will automatically receive a welcome message:
+  - As soon as a user enters your Open Line *Bitrix24.Network*, they will automatically receive a welcome message:
          
   ![Welcome Message](./_images/openlines4.png)
 
-  - Note the checkbox `Available in search`: 
-      - if this option is enabled, your open line can be found by name in the **Business Chat** search of the account just like a *Bitrix24.Network* user.
-      - if you want to set up a *closed support line*, this option must be disabled. After that, your line will disappear from the **Business Chat** search — it can only be found by its unique code, which must be entered in the search.
-
-- Create a new open technical support line for your product or select an existing one:
+- Create a new open line for technical support for your product or select an existing one:
 
 ![Creating or Selecting an Open Line](./_images/add_network000.png)
 
@@ -43,7 +39,7 @@ $result = restCommand(
 After setting up the Open Line, you can send a welcome message to the client using the Rest command [imopenlines.network.message.add](../../api-reference/imopenlines/openlines/imopenlines-network-message-add.md):
 
 ```php
-Thank you for setting up, we will be happy to help if you have any questions — just write in this chat. Have a great day! :)
+Thank you for setting up, we will be happy to help if you have any questions — feel free to write in this chat. Have a great day! :)
 ```
 
 {% note info %}

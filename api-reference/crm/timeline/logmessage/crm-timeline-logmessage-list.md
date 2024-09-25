@@ -1,4 +1,4 @@
-# Get a List of Timeline Log Entries crm.timeline.logmessage.list
+# Get a list of log entries from crm.timeline.logmessage.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -6,25 +6,31 @@
 
 This method retrieves a list of timeline log entries.
 
+{% note info "" %}
+
+It's important to note that the method can only retrieve data for entries that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System entries cannot be retrieved using `crm.timeline.logmessage.list`.
+
+{% endnote %}
+
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md#object_type) for which to retrieve the list of log entries (e.g., `1` — lead) ||
+[`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md#object_type) for which to retrieve the list of log entries (for example, `1` — lead) ||
 || **entityId***
-[`integer`](../../../data-types.md) | Identifier of the entity item for which to retrieve the list of log entries (e.g., `1`) ||
+[`integer`](../../../data-types.md) | Identifier of the entity item for which to retrieve the list of log entries (for example, `1`) ||
 || **order**
-[`object`](../../../data-types.md) | Sorting list, where the key is the field and the value is `asc` or `desc`.
+[`object`](../../../data-types.md) | List for sorting, where the key is the field and the value is `asc` or `desc`.
 
 By default, `desc` is used.
 
-Sorting is supported only by the **id** and **created** fields ||
+Sorting is only supported by the fields **id** and **created** ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../../../data-types.md) | This parameter is used for pagination control.
 
 The page size of results is always static: 10 entries.
 
@@ -37,7 +43,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -105,7 +111,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -149,7 +155,7 @@ HTTP Status: **200**
 || **result**
 [`array`](../../../data-types.md) | The root element of the response.
 
-The `result` field contains an array, each entry of which contains an associative array of log entry fields [logMessage](./crm-timeline-logmessage-add.md#logMessage) ||
+The `result` field contains an array, each entry of which contains an associative array of fields for the log entry [logMessage](./crm-timeline-logmessage-add.md#logMessage) ||
 || **total**
 [`integer`](../../../data-types.md) | The total number of found entries ||
 || **time**
@@ -158,7 +164,7 @@ The `result` field contains an array, each entry of which contains an associativ
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

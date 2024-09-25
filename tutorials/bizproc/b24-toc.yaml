@@ -1,11 +1,9 @@
 title: Typical use-cases and scenarios in workflows and Automation rules
 href: index.md
 items: 
-  - name: Standard use cases of REST API in workflows and Automation rules
+  - name: Standard use cases for REST API in workflows and Automation rules
     href: index.md
-  - name: How to create an activity
+  - name: How to add a workflow action or Automation rule to create an invoice
     href: activity.md
-  - name: How to create a CRM Automation rule
-    href: automation-rule.md
-  - name: How to embed your UI in Automation rule parameters
-    href: setting-automation-rule.md
+  - name: How to embed your UI in the Automation rule parameters 
+    href: setting-robot.md

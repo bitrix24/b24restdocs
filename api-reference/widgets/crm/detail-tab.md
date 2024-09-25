@@ -1,4 +1,4 @@
-# Tab in the detail form of the CRM entity CRM_XXX_DETAIL_TAB, CRM_DYNAMIC_XXX_TAB
+# Tab in the detail form of the CRM entity CRM_XXX_DETAIL_TAB, CRM_DYNAMIC_XXX_DETAIL_TAB
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
@@ -15,12 +15,12 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 || `CRM_CONTACT_DETAIL_TAB` | Tab in the [contact](../../crm/contacts/) detail form ||
 || `CRM_COMPANY_DETAIL_TAB` | Tab in the [company](../../crm/companies/) detail form ||
 || `CRM_QUOTE_DETAIL_TAB` | Tab in the [estimate](../../crm/quote/) detail form ||
-|| `CRM_DYNAMIC_XXX_TAB` | Tab in the detail form of a custom type CRM entity. Instead of XXX, you need to specify the numeric identifier of the specific [custom type](../../crm/universal/). For example, `CRM_DYNAMIC_183_TAB` ||
+|| `CRM_DYNAMIC_XXX_DETAIL_TAB` | Tab in the detail form of a custom type CRM entity. Instead of XXX, specify the numeric identifier of the specific [custom type](../../crm/universal/). For example, `CRM_DYNAMIC_183_DETAIL_TAB` ||
 |#
 
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 {% list tabs %}
 
@@ -164,7 +164,7 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 #|
 || **Parameter** | **Description** ||
-|| **ID***
+|| **ID*** 
 [`string`](../../data-types.md) | Identifier of the CRM entity for which the widget was opened.
 
 It can be used to retrieve additional information using the corresponding methods:
@@ -175,7 +175,7 @@ It can be used to retrieve additional information using the corresponding method
 - contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
 - company [crm.company.get](../../crm/companies/crm-company-get.md)
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
- 
+
 In the case of embedding the widget in a custom type entity, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above, it is `183`.
 
 ||
@@ -187,7 +187,7 @@ In the case of embedding the widget in a custom type entity, the type identifier
 
 {% endnote %}
 
-## Continue Learning
+## Continue your exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

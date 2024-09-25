@@ -1,20 +1,20 @@
 title: Deals
 href: index.md
 items:
-  - name: About Deals in Bitrix24
+  - name: Overview of Methods
     href: index.md
-  - name: Get Deal Fields
-    href: crm-deal-fields.md
   - name: Create a New Deal
     href: crm-deal-add.md
   - name: Update a Deal
     href: crm-deal-update.md
-  - name: Get Deal by Id
+  - name: Get a Deal by Id
     href: crm-deal-get.md
-  - name: Get List of Deals
+  - name: Get a List of Deals
     href: crm-deal-list.md
   - name: Delete a Deal
     href: crm-deal-delete.md
+  - name: Get Deal Fields
+    href: crm-deal-fields.md
   - name: Add Products to a Deal
     href: crm-deal-productrows-set.md
   - name: Get Deal Products
@@ -31,7 +31,7 @@ items:
     include:
       path: user-defined-fields/b24-toc.yaml
       mode: link
-  - name: Contacts for a Deal
+  - name: Contacts in a Deal
     include:
       path: contacts/b24-toc.yaml
       mode: link

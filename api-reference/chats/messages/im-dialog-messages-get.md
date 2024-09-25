@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -40,7 +40,7 @@ or
 [`unknown`](../../data-types.md) | `20` | Limit on the number of messages retrieved in the dialog | 19 ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 - If the keys `LAST_ID` and `FIRST_ID` are not provided, the last 20 messages of the chat will be loaded.
 - To load the previous 20 messages, you need to pass `LAST_ID` with the identifier of the minimum message ID obtained from the last selection.
@@ -84,7 +84,7 @@ Due to the potentially large volume of data, this method does not support standa
 
 - PHP
 
-    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
+    {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
     ```php
     $result = restCommand(
@@ -100,9 +100,9 @@ Due to the potentially large volume of data, this method does not support standa
 
 {% endlist %}
 
-{% include [Examples notes](../../../_includes/examples.md) %}
+{% include [Examples Notes](../../../_includes/examples.md) %}
 
-## Successful response
+## Successful Response
 
 ```json
 {
@@ -112,8 +112,8 @@ Due to the potentially large volume of data, this method does not support standa
             "id": 28561624,
             "chat_id": 29,
             "author_id": 1,
-            "date": "2018-01-29T16:58:47+03:00",
-            "text": "http://yandex.com",
+            "date": "2018-01-29T16:58:47+02:00",
+            "text": "https://my-domain.com",
             "params": {
              "URL_ID": [
                 5
@@ -126,10 +126,10 @@ Due to the potentially large volume of data, this method does not support standa
                     {
                      "RICH_LINK": [
                         {
-                         "NAME": "yandex",
-                         "LINK": "http://yandex.com/",
-                         "DESC": "Everything can be found",
-                         "PREVIEW": "https://yastatic.net/morda-logo/i/share-logo-ru.png"
+                         "NAME": "My website",
+                         "LINK": "https://my-domain.com",
+                         "DESC": "My personal website",
+                         "PREVIEW": "https://my-domain.com/logo/i/share-logo.png"
                         }
                      ]
                     }
@@ -143,7 +143,7 @@ Due to the potentially large volume of data, this method does not support standa
             "id": 28561623,
             "chat_id": 29,
             "author_id": 28,
-            "date": "2018-01-29T16:43:38+03:00",
+            "date": "2018-01-29T16:43:38+02:00",
             "text": "",
             "params": {
              "FILE_ID": [
@@ -155,8 +155,8 @@ Due to the potentially large volume of data, this method does not support standa
             "id": 28561622,
             "chat_id": 29,
             "author_id": 1,
-            "date": "2018-01-29T16:43:12+03:00",
-            "text": "It works yes :) :)",
+            "date": "2018-01-29T16:43:12+02:00",
+            "text": "It's working yes :) :)",
             "params": {
              "IS_EDITED": "Y"
             }
@@ -165,7 +165,7 @@ Due to the potentially large volume of data, this method does not support standa
             "id": 28561618,
             "chat_id": 29,
             "author_id": 0,
-            "date": "2018-01-25T15:15:22+03:00",
+            "date": "2018-01-25T15:15:22+02:00",
             "text": "John Smith changed the chat topic to \"Big Chat\"",
             "params": null
          }
@@ -188,7 +188,7 @@ Due to the potentially large volume of data, this method does not support standa
             "external_auth_id": "default",
             "status": "online",
             "idle": false,
-            "last_activity_date": "2018-01-29T17:35:31+03:00",
+            "last_activity_date": "2018-01-29T17:35:31+02:00",
             "mobile_last_date": false,
             "departments": [
              50
@@ -234,7 +234,7 @@ Due to the potentially large volume of data, this method does not support standa
             {
                 "id": 540,
                 "chatId": 29,
-                "date": "2018-01-29T16:43:39+03:00",
+                "date": "2018-01-29T16:43:39+02:00",
                 "type": "image",
                 "preview": "",
                 "name": "1176297_698081120237288_696773366_n.jpeg",
@@ -257,16 +257,16 @@ Due to the potentially large volume of data, this method does not support standa
 }
 ```
 
-### Key descriptions
+### Description of Keys
 
 - `messages` – array of messages:
 
     - `id` – message identifier
     - `chat_id` – chat identifier
-    - `author_id` – author of the message (0 - if the message is system)
+    - `author_id` – message author (0 - if the message is system)
     - `date` – message date in ATOM format
     - `text` – message text
-    - `params` – message parameters, an object of parameters, if parameters are not provided `null` (the main types will be described below)
+    - `params` – message parameters, an object of parameters, if parameters are not provided `null` (main types will be described below)
 
 - `users` – objects describing user data:
 
@@ -276,7 +276,7 @@ Due to the potentially large volume of data, this method does not support standa
     - `last_name` – user's last name
     - `work_position` – position
     - `color` – user color in hex format
-    - `avatar` – link to avatar (if empty, it means no avatar is set)
+    - `avatar` – link to avatar (if empty, avatar is not set)
     - `gender` – user's gender
     - `birthday` – user's birthday in DD-MM format, if empty – not set
     - `extranet` – indicator of external extranet user (`true/false`)
@@ -290,7 +290,7 @@ Due to the potentially large volume of data, this method does not support standa
     - `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
     - `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
 
-- `files` – object describing files in the selected messages:
+- `files` – object describing files in selected messages:
 
     - `id` – file identifier
     - `chatId` – chat identifier
@@ -311,16 +311,16 @@ Due to the potentially large volume of data, this method does not support standa
 
 - `chat_id` – chat identifier
 
-### Description of additional parameters
+### Description of Additional Parameters
 
 - `ATTACH` – object containing rich formatting
 - `KEYBOARD` – object containing keyboard description
 - `IS_DELETED` – flag indicating that the message is deleted
-- `IS_EDITED` – flag indicating that the message has been edited
+- `IS_EDITED` – flag indicating that the message is edited
 - `FILE_ID` – array of file identifiers
 - `LIKE` – array of user identifiers who voted for the message
 
-## Error response
+## Error Response
 
 ```json
 {
@@ -329,12 +329,12 @@ Due to the potentially large volume of data, this method does not support standa
 }
 ```
 
-### Key descriptions
+### Description of Keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** ||

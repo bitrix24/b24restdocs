@@ -116,16 +116,6 @@ You can read more about working with keyboards [here](/learning/course/index.php
 
 Chatbots can communicate in chat almost like live people. They can also remind about various events (current tasks, meetings) or provide reference information. In addition to being able to write in chats, chatbots can also create such chats and automatically invite people to them, for example, to discuss a particular task.
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-![Chats](./_images/features_chat1_sm.png)
-
-{% endnote %}
-
-{% endif %}
-
 {% note info %}
 
 You can read more about working with chats [here](../chats/index.md).

@@ -91,12 +91,11 @@ HTTP Status: **200**
             "iblockTypeId": 0,
             "id": 23,
             "lid": "s1",
-            "name": "Products bitrix24.com",
+            "name": "Products QuickBooks and other similar platforms",
             "productIblockId": null,
             "skuPropertyId": null,
             "subscription": "N",
-            "vatId": null,
-            "yandexExport": "N"
+            "vatId": null
         }
     },
     "time": {
@@ -104,8 +103,8 @@ HTTP Status: **200**
         "finish": 1716390151.902625,
         "duration": 0.4563431739807129,
         "processing": 0.016014814376831055,
-        "date_start": "2024-05-22T18:02:31+03:00",
-        "date_finish": "2024-05-22T18:02:31+03:00"
+        "date_start": "2024-05-22T18:02:31+02:00",
+        "date_finish": "2024-05-22T18:02:31+02:00"
     }
 }
 ```
@@ -120,7 +119,7 @@ HTTP Status: **200**
 || **catalog**
 [`catalog_catalog`](../data-types.md#catalog_catalog) | Object containing information about the trade catalog ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -134,7 +133,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -144,7 +143,7 @@ HTTP Status: **400**
 || 
 || `200040300030` | Insufficient permissions to read the trade catalog
 || 
-|| `100` | Parameter `id` is not specified
+|| `100` | Parameter `id` is missing
 || 
 || `0` | Trade catalog with the specified identifier does not exist
 || 
@@ -152,7 +151,7 @@ HTTP Status: **400**
 || 
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

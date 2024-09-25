@@ -1,32 +1,14 @@
-# Custom Fields
+# Overview of Methods
 
-{% note warning "We are still updating this page" %}
+> Scope: [`crm`](../../../scopes/permissions.md)
+>
+> Who can execute the method: administrator
 
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- An introduction corresponding to the title is needed.
-
-{% endnote %}
-
-{% endif %}
-
-{% note info "Permissions" %}
-
-**Scope**: [`crm`](../../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
-
-
-## REST Methods
-
-- [{#T}](crm-contact-userfield-add.md)
-- [{#T}](crm-contact-userfield-update.md)
-- [{#T}](crm-contact-userfield-get.md)
-- [{#T}](crm-contact-userfield-list.md)
-- [{#T}](crm-contact-userfield-delete.md)
+#|
+|| **Method** | **Description** ||
+|| [crm.contact.userfield.add](./crm-contact-userfield-add.md) | Creates a new custom field for contacts ||
+|| [crm.contact.userfield.update](./crm-contact-userfield-update.md) | Updates an existing custom field for contacts ||
+|| [crm.contact.userfield.get](./crm-contact-userfield-get.md) | Returns a custom field for contacts by ID ||
+|| [crm.contact.userfield.list](./crm-contact-userfield-list.md) | Returns a list of custom fields for contacts based on a filter ||
+|| [crm.contact.userfield.delete](./crm-contact-userfield-delete.md) | Deletes a custom field for contacts ||
+|#

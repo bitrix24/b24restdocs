@@ -14,9 +14,9 @@ This method returns bank details by identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the bank detail. 
+[`integer`](../../../data-types.md) | Identifier of the bank details.
 
-Bank detail identifiers can be obtained using the method [`crm.requisite.bankdetail.list`](./crm-requisite-bank-detail-list.md) ||
+Identifiers for bank details can be obtained using the method [`crm.requisite.bankdetail.list`](./crm-requisite-bank-detail-list.md) ||
 |#
 
 ## Code Examples
@@ -92,15 +92,15 @@ HTTP Status: **200**
         "DATE_MODIFY": "",
         "CREATED_BY_ID": "1",
         "MODIFY_BY_ID": null,
-        "NAME": "PAO Sberbank",
+        "NAME": "Public Joint Stock Company Superbank",
         "CODE": null,
         "XML_ID": "1e4641fd-2dd9-31e6-b2f2-105056c00008",
         "ORIGINATOR_ID": null,
         "ACTIVE": "Y",
         "SORT": "600",
-        "RQ_BANK_NAME": "PAO Sberbank",
+        "RQ_BANK_NAME": "Public Joint Stock Company Superbank",
         "RQ_BANK_CODE": null,
-        "RQ_BANK_ADDR": "117312, Moscow, Vavilova Street, House 19",
+        "RQ_BANK_ADDR": "117312, City of New York, Vavilova Street, House 19",
         "RQ_BANK_ROUTE_NUM": null,
         "RQ_BIK": "044525225",
         "RQ_MFO": null,
@@ -108,7 +108,7 @@ HTTP Status: **200**
         "RQ_ACC_NUM": "40702810938000060473",
         "RQ_ACC_TYPE": null,
         "RQ_IIK": null,
-        "RQ_ACC_CURRENCY": "RUR",
+        "RQ_ACC_CURRENCY": "USD",
         "RQ_COR_ACC_NUM": "30101810400000000225",
         "RQ_IBAN": null,
         "RQ_SWIFT": null,
@@ -137,18 +137,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Object containing the values of the bank detail fields ||
+[`object`](../../../data-types.md) | Object containing the values of the bank details fields ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Description of Bank Detail Fields
+### Description of Bank Details Fields
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the bank detail. Automatically created and unique within the account ||
+[`integer`](../../../data-types.md) | Identifier of the bank details. Automatically created and unique within the account ||
 || **ENTITY_TYPE_ID**
 [`integer`](../../../data-types.md) | Identifier of the parent object's type. Can only be `Requisite` (value `8`).
 
@@ -157,11 +157,11 @@ Object type identifiers are returned by the method [crm.enum.ownertype](../../au
 || **ENTITY_ID**
 [`integer`](../../../data-types.md) | Identifier of the parent object. Currently can only be the identifier of the requisite. 
 
-Requisite identifiers can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) ||
+Identifiers for requisites can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) ||
 || **COUNTRY_ID**
-[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank detail fields (see method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
+[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank details fields (see method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
 
-The country code of the bank detail matches the country code in the linked requisite template, the identifier of which is specified in the `ENTITY_ID` field 
+The country code of the bank details matches the country code in the linked requisite template, the identifier of which is specified in the `ENTITY_ID` field 
 ||
 || **DATE_CREATE**
 [`datetime`](../../../data-types.md) | Creation date ||
@@ -172,11 +172,11 @@ The country code of the bank detail matches the country code in the linked requi
 || **MODIFY_BY_ID**
 [`user`](../../../data-types.md) | Identifier of the user who modified the requisite ||
 || **NAME^*^**
-[`string`](../../../data-types.md) | Name of the bank detail ||
+[`string`](../../../data-types.md) | Name of the bank details ||
 || **CODE**
 [`string`](../../../data-types.md) | Symbolic code of the requisite ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
 
 The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field. 
 
@@ -217,7 +217,7 @@ Currently, the field does not actually affect anything ||
 || **RQ_IIK**
 [`string`](../../../data-types.md) | IIK ||
 || **RQ_ACC_CURRENCY**
-[`string`](../../../data-types.md) | Currency of the account ||
+[`string`](../../../data-types.md) | Account currency ||
 || **RQ_COR_ACC_NUM**
 [`string`](../../../data-types.md) | Correspondent account ||
 || **RQ_IBAN**
@@ -227,7 +227,7 @@ Currently, the field does not actually affect anything ||
 || **RQ_BIC**
 [`string`](../../../data-types.md) | BIC ||
 || **COMMENTS**
-[`string`](../../../data-types.md) | Comments ||
+[`string`](../../../data-types.md) | Comment ||
 || **ORIGINATOR_ID**
 [`string`](../../../data-types.md) | Identifier of the external information base. The purpose of the field may change by the final developer ||
 |#
@@ -249,9 +249,9 @@ HTTP Status: **40x**, **50x**
 
 #|  
 || **Error Text** | **Description** ||
-|| `ID is not defined or invalid` | The identifier of the bank detail is not defined or has an invalid value ||
-|| `The RequisiteBankDetail with ID '357' is not found` | The bank detail with the specified identifier was not found ||
-|| `Access denied` | Insufficient access permissions to retrieve the bank detail ||
+|| `ID is not defined or invalid` | The identifier of the bank details is not defined or has an invalid value ||
+|| `The RequisiteBankDetail with ID '357' is not found` | The bank details with the specified identifier were not found ||
+|| `Access denied` | Insufficient access permissions to retrieve the bank details ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

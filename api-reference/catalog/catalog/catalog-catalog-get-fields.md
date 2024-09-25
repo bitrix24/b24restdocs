@@ -127,12 +127,6 @@ HTTP Status: **200**
                 "isReadOnly": false,
                 "isRequired": false,
                 "type": "integer"
-            },
-            "yandexExport": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "type": "char"
             }
         }
     },
@@ -141,8 +135,8 @@ HTTP Status: **200**
         "finish": 1716391172.856295,
         "duration": 0.471297025680542,
         "processing": 0.014213085174560547,
-        "date_start": "2024-05-22T18:19:32+03:00",
-        "date_finish": "2024-05-22T18:19:32+03:00"
+        "date_start": "2024-05-22T18:19:32+02:00",
+        "date_finish": "2024-05-22T18:19:32+02:00"
     }
 }
 ```

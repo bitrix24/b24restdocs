@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will add it soon.
 >
 > Who can execute the method: any user
 
-The method `crm.activity.fields` returns the description of activity fields.
+The method `crm.activity.fields` returns a description of the activity fields.
 
 ## Parameters
 
@@ -48,7 +48,7 @@ BX24.callMethod(
 
 ## Returned Fields
 
-#|
+#| 
 || **Field** | **Description** | **Note** ||
 || **ASSOCIATED_ENTITY_ID**
 [`integer`](../../../data-types.md) | Identifier of the entity associated with the deal | Read-only ||
@@ -64,7 +64,7 @@ BX24.callMethod(
 || **COMPLETED**
 [`char`](../../../data-types.md) | Completed | ||
 || **CREATED**
-[`datetime`](../../../data-types.md) | Created | ||
+[`datetime`](../../../data-types.md) | Created | Read-only ||
 || **DEADLINE**
 [`datetime`](../../../data-types.md) | Due date | The field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks. ||
 || **DESCRIPTION**
@@ -78,7 +78,7 @@ BX24.callMethod(
 || **END_TIME**
 [`datetime`](../../../data-types.md) | End time | ||
 || **FILES**
-[`diskfile`](../../../data-types.md) | Attached files | Multiple ||
+[`diskfile`](../../../data-types.md) | Added files | Multiple ||
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the deal | Read-only ||
 || **LAST_UPDATED**
@@ -98,7 +98,7 @@ BX24.callMethod(
 || **OWNER_ID**
 [`integer`](../../../data-types.md) | Owner | Immutable. ||
 || **OWNER_TYPE_ID**
-[`crm.enum.ownertype`](../../../data-types.md) | Owner type | Immutable. ||
+[`crm.enum.ownertype`](../../../data-types.md) | Type of owner | Immutable. ||
 || **PRIORITY**
 [`crm.enum.activitypriority`](../../../data-types.md) | Priority | ||
 || **PROVIDER_DATA**
@@ -138,5 +138,5 @@ BX24.callMethod(
 || **TYPE_ID**
 [`crm_enum_activitytype`](../../../data-types.md) | Type | Required, immutable ||
 || **WEBDAV_ELEMENTS**
-[`diskfile`](../../../data-types.md) | Attached files | Multiple. Deprecated, kept for compatibility. ||
+[`diskfile`](../../../data-types.md) | Added files | Multiple. Deprecated, kept for compatibility. ||
 |#

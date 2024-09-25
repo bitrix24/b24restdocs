@@ -1,69 +1,126 @@
-# Get a list of registered custom field types userfieldtype.list
+# Get a List of Registered Custom Field Types userfieldtype.list
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
-
-> Scope: [`depending on the embedding location`](../../scopes/permissions.md)
+> Scope: [`depending on the integration point`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-Retrieving a list of custom field types registered by the application. This is a list method. It returns a paginated list of field types.
+This method retrieves a list of custom field types registered by the application. It returns a paginated list of field types.
 
-## Parameters
+No parameters.
 
-There are no input parameters.
+## Code Examples
 
-## Examples
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-Example call:
+{% list tabs %}
 
-```js
-BX24.callMethod(
-    'userfieldtype.list',
-    {},
-    function(result)
-    {
-        console.log(result.data());
-    }
-);
-```
+- cURL (Webhook)
 
-Example request:
+    ```curl
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/userfieldtype.list
+    ```
 
-```http
-POST https://sometestaccount.com/rest/userfieldtype.list HTTP/1.1
+- cURL (OAuth)
 
-auth=63t6r4z9cugaciaxocrh2r47zlodp12y
+    ```curl
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/userfieldtype.list
+    ```
 
-HTTP/1.1 200 OK
+- JS
 
+    ```js
+    BX24.callMethod(
+        'userfieldtype.list',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'userfieldtype.list',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP status: **200**
+
+```json
 {
     "result": [
         {
-            "DESCRIPTION": "Test userfield type for documentation",
-            "HANDLER": "https://www.myapplication.com/handler/",
-            "TITLE": "Test type",
-            "USER_TYPE_ID": "test"
+            "USER_TYPE_ID": "my_custom_type_2",
+            "HANDLER": "http:\/\/test.com\/test2.php",
+            "TITLE": "test title 2",
+            "DESCRIPTION":"test desc 2"
+        },
+        {
+            "USER_TYPE_ID": "my_custom_type_1",
+            "HANDLER": "http:\/\/test.com\/test1.php",
+            "TITLE": "test title 1",
+            "DESCRIPTION": "test desc 1"
+        },
+        {
+            "USER_TYPE_ID": "test_user_type",
+            "HANDLER": "http:\/\/test.com\/test.php",
+            "TITLE": "test title",
+            "DESCRIPTION": "test desc"
         }
     ],
-    "total": 1
+    "total": 3,
+    "time": {
+        "start": 1724423274.842117,
+        "finish": 1724423275.558021,
+        "duration": 0.7159039974212646,
+        "processing": 0.0018908977508544922,
+        "date_start": "2024-08-23T16:27:54+02:00",
+        "date_finish": "2024-08-23T16:27:55+02:00",
+        "operating": 0
+    }
 }
 ```
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response ||
+|| **total**
+[`integer`](../../data-types.md) | Number of processed records ||
+|| **time**
+[`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
+## Continue Learning
+
+- [{#T}](./userfieldtype-add.md)
+- [{#T}](./userfieldtype-update.md)
+- [{#T}](./userfieldtype-delete.md)

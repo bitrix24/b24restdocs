@@ -1,0 +1,13 @@
+title: Embedding Applications
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Register a New Custom Field Type
+    href: userfieldtype-add.md
+  - name: Modify Custom Field Type Settings
+    href: userfieldtype-update.md
+  - name: Retrieve a List of Registered Custom Field Types
+    href: userfieldtype-list.md
+  - name: Delete a Registered Custom Field Type
+    href: userfieldtype-delete.md

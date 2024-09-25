@@ -43,13 +43,13 @@ items:
       mode: link
   - name: Embedding in the Bitrix24 Mobile App
     href: mobile-app.md
-  - name: Widget Registration 
+  - name: Register Widget
     href: placement-bind.md
-  - name: Retrieve Widget Information by Id 
+  - name: Get Widget Information by Id
     href: placement-get.md
-  - name: Retrieve List of Widgets 
+  - name: Get List of Widgets
     href: placement-list.md
-  - name: Cancel Widget Registration 
+  - name: Unregister Widget
     href: placement-unbind.md
   - name: Call Standard Sliders
     href: open-path.md
@@ -63,5 +63,5 @@ items:
       mode: link
   - name: Embedding as Custom Field Types
     include:
-      path: user-field/toc.yaml
+      path: user-field/b24-toc.yaml
       mode: link

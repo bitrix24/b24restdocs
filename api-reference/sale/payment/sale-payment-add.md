@@ -14,7 +14,7 @@ This method adds a new payment.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md)| Field values (detailed description is provided [below](#parametr-fields)) for creating a payment in the following structure:
+[`object`](../../data-types.md)| Field values (detailed description provided [below](#parametr-fields)) for creating a payment in the form of a structure:
 
 ```js
 fields: {
@@ -82,7 +82,7 @@ Defaults to `N` ||
 || **empPaidId**
 [`user.id`](../../data-types.md) | Identifier of the user who made the payment ||
 || **psStatus**
-[`string`](../../data-types.md) | Payment system status flag — whether the payment was successful. Options:
+[`string`](../../data-types.md) | Payment system status flag — whether the payment was successfully made. Options:
 
 - `Y` — yes
 - `N` — no
@@ -105,7 +105,7 @@ Defaults to `null` ||
 || **payVoucherDate**
 [`datetime`](../../data-types.md) | Payment document date ||
 || **datePayBefore**
-[`datetime`](../../data-types.md) | Deprecated.
+[`datetime`](../../data-types.md) | Outdated.
 Date by which the invoice must be paid ||
 || **dateBill**
 [`datetime`](../../data-types.md) | Invoice date ||
@@ -115,7 +115,8 @@ Date by which the invoice must be paid ||
 [`double`](../../data-types.md) | Payment amount ||
 || **companyId**
 [`integer`](../../data-types.md) | Identifier of the company that will receive the payment
-Relevant only for Bitrix Site Management. Not related to CRM companies ||
+
+Currently not used ||
 || **payReturnNum**
 [`string`](../../data-types.md) | Return document number ||
 || **priceCod**
@@ -126,7 +127,7 @@ Cost of payment upon delivery. Used for cash on delivery ||
 || **empReturnId**
 [`user.id`](../../data-types.md) | Identifier of the user who processed the return ||
 || **payReturnComment**
-[`string`](../../data-types.md) | Comment on the return ||
+[`string`](../../data-types.md) | Return comment ||
 || **responsibleId**
 [`user.id`](../../data-types.md) | Identifier of the user responsible for the payment ||
 || **empResponsibleId**
@@ -139,7 +140,7 @@ Cost of payment upon delivery. Used for cash on delivery ||
 
 Defaults to N ||
 || **comments**
-[`string`](../../data-types.md) | Comments on the payment ||
+[`string`](../../data-types.md) | Payment comments ||
 || **updated1c**
 [`string`](../../data-types.md) | Payment updated via 1C:
 
@@ -150,7 +151,7 @@ Defaults to `N` ||
 || **id1c**
 [`string`](../../data-types.md) | Identifier in 1C ||
 || **version1c**
-[`string`](../../data-types.md) | Version of the payment document from 1C ||
+[`string`](../../data-types.md) | Payment document version from 1C ||
 || **externalPayment**
 [`string`](../../data-types.md) | Relevant only for on-premise version
 External payment or not. Used for import from 1C via XML
@@ -161,7 +162,7 @@ External payment or not. Used for import from 1C via XML
 
 Defaults to `N` ||
 || **psInvoiceId**
-[`integer`](../../data-types.md) | Identifier of the payment in the payment system ||
+[`integer`](../../data-types.md) | Payment identifier in the payment system ||
 || **marked**
 [`string`](../../data-types.md) | Marking flag. Indicates whether the payment is marked as problematic:
 
@@ -325,11 +326,11 @@ HTTP Status: **200**
             "comments": "",
             "companyId": 1,
             "currency": "USD",
-            "dateBill": "2024-04-10T09:00:00+03:00",
-            "dateMarked": "2024-04-16T16:32:49+03:00",
-            "datePaid": "2024-04-10T09:00:00+03:00",
-            "datePayBefore": "2024-04-10T09:00:00+03:00",
-            "dateResponsibleId": "2024-04-16T16:32:49+03:00",
+            "dateBill": "2024-04-10T09:00:00+02:00",
+            "dateMarked": "2024-04-16T16:32:49+02:00",
+            "datePaid": "2024-04-10T09:00:00+02:00",
+            "datePayBefore": "2024-04-10T09:00:00+02:00",
+            "dateResponsibleId": "2024-04-16T16:32:49+02:00",
             "empMarkedId": 1,
             "empPaidId": 1,
             "empResponsibleId": 1,
@@ -342,18 +343,18 @@ HTTP Status: **200**
             "orderId": 200,
             "paid": "Y",
             "payReturnComment": "",
-            "payReturnDate": "2024-04-10T09:00:00+03:00",
+            "payReturnDate": "2024-04-10T09:00:00+02:00",
             "payReturnNum": "",
             "paySystemId": 1,
             "paySystemIsCash": "N",
-            "paySystemName": "Bank Transfer (Companies)",
+            "paySystemName": "Bank Transfer (Company)",
             "paySystemXmlId": "",
-            "payVoucherDate": "2024-04-10T09:00:00+03:00",
+            "payVoucherDate": "2024-04-10T09:00:00+02:00",
             "payVoucherNum": "",
             "priceCod": "100",
             "psCurrency": "USD",
             "psInvoiceId": 1,
-            "psResponseDate": "2024-04-10T09:00:00+03:00",
+            "psResponseDate": "2024-04-10T09:00:00+02:00",
             "psStatus": "Y",
             "psStatusCode": "",
             "psStatusDescription": "",
@@ -372,8 +373,8 @@ HTTP Status: **200**
         "finish": 1713277972.577136,
         "duration": 3.7549850940704346,
         "processing": 3.3574018478393555,
-        "date_start": "2024-04-16T17:32:48+03:00",
-        "date_finish": "2024-04-16T17:32:52+03:00"
+        "date_start": "2024-04-16T17:32:48+02:00",
+        "date_finish": "2024-04-16T17:32:52+02:00"
     }
 }
 ```
@@ -386,7 +387,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **payment**
-[`sale_order_payment`](../data-types.md) | Object containing information about the added payment ||
+[`sale_order_payment`](../data-types.md) | Object with information about the added payment ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#

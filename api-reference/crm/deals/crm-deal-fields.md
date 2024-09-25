@@ -1,165 +1,546 @@
-# Get Deal Fields crm.deal.fields
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing (in other languages)
-- success response is missing
-- error response is missing
-- links to pages that have not yet been created are not specified
-
-{% endnote %}
-
-{% endif %}
+# Get CRM Deal Fields crm.deal.fields
 
 > Scope: [`crm`](../../scopes/permissions.md)
->
+> 
 > Who can execute the method: any user
 
-The method `crm.deal.fields` returns the description of [deal fields](./crm-deal-add.md), including [custom fields](./user-defined-fields/crm-deal-userfield-add.md).
+The method `crm.deal.fields` returns the description of deal fields, including custom fields.
+
+## Method Parameters
 
 No parameters.
 
-## Example
+## Code Examples
 
-```js
-BX24.callMethod(
-    "crm.deal.fields",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
+{% include [Examples Note](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.fields
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.deal.fields
+    ```
+
+- JS
+
+    ```js
+        BX24.callMethod(
+            'crm.deal.fields',
+            {},
+            (result) => {
+                result.error()
+                    ? console.error(result.error())
+                    : console.info(result.data())
+                ;
+            },
+        );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.deal.fields',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "ID": {
+            "type": "integer",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "ID"
+        },
+        "TITLE": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Title"
+        },
+        "TYPE_ID": {
+            "type": "crm_status",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "statusType": "DEAL_TYPE",
+            "title": "Type"
+        },
+        "CATEGORY_ID": {
+            "type": "crm_category",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": true,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Sales Funnel"
+        },
+        "STAGE_ID": {
+            "type": "crm_status",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "statusType": "DEAL_STAGE",
+            "title": "Deal Stage"
+        },
+        "STAGE_SEMANTIC_ID": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Stage Group"
+        },
+        "IS_NEW": {
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "New Deal"
+        },
+        "IS_RECURRING": {
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Recurring Deal"
+        },
+        "IS_RETURN_CUSTOMER": {
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Repeat Deal"
+        },
+        "IS_REPEATED_APPROACH": {
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Repeated Approach"
+        },
+        "PROBABILITY": {
+            "type": "integer",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Probability"
+        },
+        "CURRENCY_ID": {
+            "type": "crm_currency",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Currency"
+        },
+        "OPPORTUNITY": {
+            "type": "double",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Amount"
+        },
+        "IS_MANUAL_OPPORTUNITY": {
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "IS_MANUAL_OPPORTUNITY"
+        },
+        "TAX_VALUE": {
+            "type": "double",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Tax Rate"
+        },
+        "COMPANY_ID": {
+            "type": "crm_company",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Company",
+            "settings": {
+                "parentEntityTypeId": 4
+            }
+        },
+        "CONTACT_ID": {
+            "type": "crm_contact",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "isDeprecated": true,
+            "title": "Contact"
+        },
+        "CONTACT_IDS": {
+            "type": "crm_contact",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": true,
+            "isDynamic": false,
+            "title": "Contacts"
+        },
+        "QUOTE_ID": {
+            "type": "crm_quote",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Estimate",
+            "settings": {
+                "parentEntityTypeId": 7
+            }
+        },
+        "BEGINDATE": {
+            "type": "date",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Start Date"
+        },
+        "CLOSEDATE": {
+            "type": "date",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Close Date"
+        },
+        "OPENED": {
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Available to Everyone"
+        },
+        "CLOSED": {
+            "type": "char",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Closed"
+        },
+        "COMMENTS": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Comment"
+        },
+        "ASSIGNED_BY_ID": {
+            "type": "user",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Responsible"
+        },
+        "CREATED_BY_ID": {
+            "type": "user",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Created By"
+        },
+        "MODIFY_BY_ID": {
+            "type": "user",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Modified By"
+        },
+        "MOVED_BY_ID": {
+            "type": "user",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "MOVED_BY_ID"
+        },
+        "DATE_CREATE": {
+            "type": "datetime",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Creation Date"
+        },
+        "DATE_MODIFY": {
+            "type": "datetime",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Modification Date"
+        },
+        "MOVED_TIME": {
+            "type": "datetime",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "MOVED_TIME"
+        },
+        "SOURCE_ID": {
+            "type": "crm_status",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "statusType": "SOURCE",
+            "title": "Source"
+        },
+        "SOURCE_DESCRIPTION": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Additional Source Information"
+        },
+        "LEAD_ID": {
+            "type": "crm_lead",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Lead",
+            "settings": {
+                "parentEntityTypeId": 1
+            }
+        },
+        "ADDITIONAL_INFO": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Additional Information"
+        },
+        "LOCATION_ID": {
+            "type": "location",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Location"
+        },
+        "ORIGINATOR_ID": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "External Source"
+        },
+        "ORIGIN_ID": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Identifier in External Source"
+        },
+        "UTM_SOURCE": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Advertising System"
+        },
+        "UTM_MEDIUM": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Traffic Type"
+        },
+        "UTM_CAMPAIGN": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Campaign Designation"
+        },
+        "UTM_CONTENT": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Campaign Content"
+        },
+        "UTM_TERM": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Campaign Search Condition"
+        },
+        "LAST_ACTIVITY_TIME": {
+            "type": "datetime",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "LAST_ACTIVITY_TIME"
+        },
+        "LAST_ACTIVITY_BY": {
+            "type": "user",
+            "isRequired": false,
+            "isReadOnly": true,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "LAST_ACTIVITY_BY"
+        }
+    },
+    "time": {
+        "start": 1724857659.824873,
+        "finish": 1724857660.790877,
+        "duration": 0.9660041332244873,
+        "processing": 0.3691408634185791,
+        "date_start": "2024-08-28T17:07:39+02:00",
+        "date_finish": "2024-08-28T17:07:40+02:00",
+        "operating": 0
     }
-);
+}
 ```
 
-{% include [Example notes](../../../_includes/examples.md) %}
-
-## Returned Data
+### Returned Data
 
 #|
-|| **Field** / **Type** | **Description** ||
-|| **ADDITIONAL_INFO**
-[`string`](../../data-types.md) | Additional information. ||
-|| **ASSIGNED_BY_ID**
-[`user`](../../data-types.md) | Linked to user by ID. ||
-|| **BANK_DETAIL_ID**
-[`integer`](../../data-types.md) | Bank detail ID. Accepted but not returned. This parameter is passed to the function [crm.requisite.link.register](.) automatically upon successful addition/update of a deal with this deal's identifier. ||
-|| **BEGINDATE**
-[`date`](../../data-types.md) | Start date. ||
-|| **CATEGORY_ID**
-[`crm_category`](../../data-types.md) | Identifier of the direction. Immutable. If this field is not passed when creating a deal, the deal will be created in the general direction. ||
-|| **CLOSED**
-[`char`](../../data-types.md) | Closed. ||
-|| **CLOSEDATE**
-[`date`](../../data-types.md) | Close date. ||
-|| **COMMENTS**
-[`string`](../../data-types.md) | Comments. ||
-|| **COMPANY_ID**
-[`crm_company`](../../data-types.md) | Identifier of the linked company. ||
-|| **CONTACT_ID**
-[`crm_contact`](../../data-types.md) | Identifier of the linked contact. Deprecated. Kept for compatibility. ||
-|| **CONTACT_IDS**
-[`crm_contact`](../../data-types.md) | Identifier of the linked contact |  | Multiple. When using [crm.deal.update](./crm-deal-update.md) and [crm.deal.add](./crm-deal-add.md), an array of contacts can be submitted. This field is not present in [crm.deal.list](./crm-deal-list.md) and [crm.deal.get](./crm-deal-get.md) methods, and [crm.deal.contact.items.get](./contacts/crm-deal-contact-items-get.md) should be used to get the list of contacts. To clear the field, use [crm.deal.contact.items.delete](./contacts/crm-deal-contact-items-delete.md), to replace the value use [crm.deal.contact.items.set](./contacts/crm-deal-contact-items-set.md). ||
-|| **CREATED_BY_ID**
-[`user`](../../data-types.md) | Created by user. Read-only. ||
-|| **CURRENCY_ID**
-[`crm_currency`](../../data-types.md) | Currency identifier of the deal. ||
-|| **DATE_CREATE**
-[`datetime`](../../data-types.md) | Creation date. Read-only. ||
-|| **DATE_MODIFY**
-[`datetime`](../../data-types.md) | Modification date. Read-only. ||
-|| **ID**
-[`integer`](../../data-types.md) | Deal identifier. Read-only. ||
-|| **IS_NEW**
-[`char`](../../data-types.md) | Flag for a new deal (i.e., the deal is in the first stage). ||
-|| **IS_RECURRING**
-[`char`](../../data-types.md) | Flag for a recurring deal template (if set to Y, then this is not a deal, but a template). ||
-|| **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Indicator of a returning lead. ||
-|| **LEAD_ID**
-[`crm_lead`](../../data-types.md) | Identifier of the linked lead. Read-only. ||
-|| **LOCATION_ID**
-[`location`](../../data-types.md) | Client's location. Service field, not recommended for use. ||
-|| **MODIFY_BY_ID**
-[`user`](../../data-types.md) | Identifier of the author of the last modification. Read-only. ||
-|| **MOVED_BY_ID**
-[`user`](../../data-types.md) | Identifier of the author who moved the item to the current stage. Read-only. ||
-|| **MOVED_TIME**
-[`datetime`](../../data-types.md) | Date of moving the item to the current stage. Read-only. ||
-|| **OPENED**
-[`char`](../../data-types.md) | Available to everyone. ||
-|| **OPPORTUNITY**
-[`double`](../../data-types.md) | Amount. ||
-|| **ORIGINATOR_ID**
-[`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source. ||
-|| **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source. ||
-|| **PROBABILITY**
-[`integer`](../../data-types.md) | Probability. ||
-|| **QUOTE_ID**
-[`crm_quote`](../../data-types.md) | Identifier of the quote. Read-only. Deprecated, use the method [crm.quote.list](.) with a filter by deal. ||
-|| **REQUISITE_ID** | Identifier of the requisite. Accepted but not returned. This parameter is passed to the function [crm.requisite.link.register](.) automatically upon successful addition/update of a deal with this deal's identifier. ||
-|| **STAGE_ID**
-[`crm_status`](../../data-types.md) | Identifier of the stage.
+|| **Title**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | An object in the format:
 
 ```
- NEW // new deal 
- PREPARATION // preparing documents 
- PREPAYMENT_INVOICE // sending invoice 
- EXECUTING // in the process of execution 
- FINAL_INVOICE // final invoice 
+{
+    field_1: value_1,
+    field_2: value_2,
+    ...
+    field_n: value_n,
+}
 ```
 
-  (P - value in STAGE_SEMANTIC_ID) 
+where:
+- `field_n` — deal field
+- `value_n` — information about the field in the format [crm_rest_field_description](../data-types.md#crm_rest_field_description) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 
-
-```
-  WON // won 
-```
-
-  (S - value in STAGE_SEMANTIC_ID) 
-
-
-```
-  LOST // lost, analysis of reasons not required 
-  APOLOGY // lost, analysis of reasons required 
-```
-
-
-  (F - value in STAGE_SEMANTIC_ID) ||
-|| **STAGE_SEMANTIC_ID**
-[`string`](../../data-types.md) | Name. Read-only, which somewhat generalizes the values of the deal identifier STAGE_ID. (See values above.) ||
-|| **SOURCE_ID**
-[`string`](../../data-types.md) | Identifier of the source. Defines the source of the deal (callback, advertisement, e-mail, etc.). The list of possible identifiers can be retrieved using the REST method [crm.status.list](.) with the filter `filter[ENTITY_ID]=SOURCE` ||
-|| **SOURCE_DESCRIPTION**
-[`string`](../../data-types.md) | Additional information about the source. Text field. ||
-|| **TAX_VALUE**
-[`double`](../../data-types.md) | Tax rate. ||
-|| **TITLE**^*^
-[`string`](../../data-types.md) | Title. ||
-|| **TYPE_ID**
-[`crm_status`](../../data-types.md) | Type of deal. Used only for linking to an external source. ||
-|| **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Identifier of the advertising campaign. ||
-|| **UTM_CONTENT**
-[`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads. ||
-|| **UTM_MEDIUM**
-[`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners) ||
-|| **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Yandex-Direct, Google-Adwords, and others. ||
-|| **UTM_TERM**
-[`string`](../../data-types.md) | Search term of the campaign. For example, keywords for contextual advertising. ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+## Error Handling
+
+The method does not return errors.
+
+{% include [system errors](./../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./crm-deal-add.md)
+- [{#T}](./crm-deal-update.md)
+- [{#T}](./crm-deal-get.md)
+- [{#T}](./crm-deal-list.md)
+- [{#T}](./crm-deal-delete.md)

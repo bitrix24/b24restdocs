@@ -6,7 +6,7 @@
 >  - Any user has the right to access their own and shared settings
 >  - Only an administrator has the right to access others' settings
 
-This method retrieves the settings for contact cards: it reads the personal settings of the specified user or the shared settings defined for all users.
+The method retrieves the settings for contact cards: it reads the personal settings of the specified user or the shared settings defined for all users.
 
 ## Method Parameters
 
@@ -27,7 +27,7 @@ Default — `P`
 || **userId**
 [`user`](../../../data-types.md) | User identifier. Required only when requesting someone else's personal settings.
 
-If not specified, the current user is used
+If not specified, the current user is taken
 ||
 |#
 
@@ -304,7 +304,7 @@ The structure is described [below](#options) ||
 || **Name**
 `type` | **Fields where the option is available** | **Description** ||
 || **defaultAddressType**
-[`integer`](../../../data-types.md) | `ADDRESS` | Identifier of the default address type ||
+[`integer`](../../../data-types.md) | `ADDRESS` | Identifier for the default address type ||
 || **defaultCountry**
 [`string`](../../../data-types.md) | 
 `PHONE`

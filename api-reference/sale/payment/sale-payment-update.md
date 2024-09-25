@@ -1,4 +1,4 @@
-# Change Payment sale.payment.update
+# Update Payment sale.payment.update
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -81,7 +81,7 @@ Defaults to `N` ||
 || **empPaidId**
 [`user.id`](../../data-types.md) | Identifier of the user who made the payment ||
 || **psStatus**
-[`string`](../../data-types.md) | Payment system status flag — whether the payment was successfully processed. Options:
+[`string`](../../data-types.md) | Payment system status flag — whether the payment was successful. Options:
 
 - `Y` — yes
 - `N` — no
@@ -115,7 +115,8 @@ Date by which the invoice must be paid ||
 [`double`](../../data-types.md) | Payment amount ||
 || **companyId**
 [`integer`](../../data-types.md) | Identifier of the company that will receive the payment
-Relevant only for Bitrix Site Management. Not related to CRM companies ||
+
+Currently not used ||
 || **payReturnNum**
 [`string`](../../data-types.md) | Return document number ||
 || **priceCod**
@@ -324,11 +325,11 @@ HTTP Status: **200**
             "comments": "",
             "companyId": 1,
             "currency": "USD",
-            "dateBill": "2024-04-10T09:00:00+03:00",
-            "dateMarked": "2024-04-16T16:32:49+03:00",
-            "datePaid": "2024-04-10T09:00:00+03:00",
-            "datePayBefore": "2024-04-10T09:00:00+03:00",
-            "dateResponsibleId": "2024-04-16T16:32:49+03:00",
+            "dateBill": "2024-04-10T09:00:00+02:00",
+            "dateMarked": "2024-04-16T16:32:49+02:00",
+            "datePaid": "2024-04-10T09:00:00+02:00",
+            "datePayBefore": "2024-04-10T09:00:00+02:00",
+            "dateResponsibleId": "2024-04-16T16:32:49+02:00",
             "empMarkedId": 1,
             "empPaidId": 1,
             "empResponsibleId": 1,
@@ -341,18 +342,18 @@ HTTP Status: **200**
             "orderId": 200,
             "paid": "Y",
             "payReturnComment": "",
-            "payReturnDate": "2024-04-10T09:00:00+03:00",
+            "payReturnDate": "2024-04-10T09:00:00+02:00",
             "payReturnNum": "",
             "paySystemId": 1,
             "paySystemIsCash": "N",
-            "paySystemName": "Bank Transfer (Companies)",
+            "paySystemName": "Bank Transfer (Company)",
             "paySystemXmlId": "",
-            "payVoucherDate": "2024-04-10T09:00:00+03:00",
+            "payVoucherDate": "2024-04-10T09:00:00+02:00",
             "payVoucherNum": "",
             "priceCod": "100",
             "psCurrency": "USD",
             "psInvoiceId": 1,
-            "psResponseDate": "2024-04-10T09:00:00+03:00",
+            "psResponseDate": "2024-04-10T09:00:00+02:00",
             "psStatus": "Y",
             "psStatusCode": "",
             "psStatusDescription": "",
@@ -371,8 +372,8 @@ HTTP Status: **200**
         "finish": 1713454778.895877,
         "duration": 4.602184772491455,
         "processing": 4.142766952514648,
-        "date_start": "2024-04-18T18:39:34+03:00",
-        "date_finish": "2024-04-18T18:39:38+03:00"
+        "date_start": "2024-04-18T18:39:34+02:00",
+        "date_finish": "2024-04-18T18:39:38+02:00"
     }
 }
 ```
@@ -387,7 +388,7 @@ HTTP Status: **200**
 || **payment**
 [`sale_order_payment`](../data-types.md) | Object containing information about the updated payment ||
 || **time**
-[`time`](../../data-types.md) | Information about the request processing time ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -409,8 +410,8 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200640400001` | The payment being updated was not found ||
 || `200040300020` | Insufficient permissions to update the payment ||
-|| `100` | Parameter `id` is not specified ||
-|| `100` | Parameter `fields` is not specified or is empty ||
+|| `100` | Parameter `id` not specified ||
+|| `100` | Parameter `fields` not specified or empty ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

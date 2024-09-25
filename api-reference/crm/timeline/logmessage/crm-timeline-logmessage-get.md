@@ -6,6 +6,12 @@
 
 This method retrieves information about a timeline log entry.
 
+{% note info "" %}
+
+It is important to note that the method can only retrieve data for entries that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System entries cannot be retrieved using `crm.timeline.logmessage.get`.
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on Required Parameters](../../../../_includes/required.md) %}
@@ -16,7 +22,7 @@ This method retrieves information about a timeline log entry.
 || **id***
 [`integer`](../../../data-types.md) | Integer identifier of the timeline entry (for example, `1`).
 
-You can obtain identifiers using the [`crm.timeline.logmessage.list`](./crm-timeline-logmessage-list.md) method ||
+Identifiers can be obtained using the method [`crm.timeline.logmessage.list`](./crm-timeline-logmessage-list.md) ||
 |#
 
 ## Code Examples
@@ -134,7 +140,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -145,7 +151,7 @@ HTTP Status: **400**
 || `0` | Other errors (e.g., fatal) ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

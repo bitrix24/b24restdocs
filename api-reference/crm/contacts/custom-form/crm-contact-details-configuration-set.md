@@ -1,12 +1,12 @@
-# Set Parameters for Individual CRM Contact Detail Card Configuration
+# Set Parameters for the Individual Card crm.contact.details.configuration.set
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can execute the method:
->  - Any user has the right to retrieve their own and common settings
->  - Only an administrator has the right to retrieve others' settings
+>  - Any user has the right to access their own and shared settings
+>  - Only an administrator has the right to access others' settings
 
-This method sets the settings for contact cards: it records the personal settings of the specified user or the common settings for all users.
+This method sets the contact card settings: it writes personal settings for the specified user or shared settings for all users.
 
 ## Method Parameters
 
@@ -20,24 +20,24 @@ This method sets the settings for contact cards: it records the personal setting
 
 Possible values:
 - **P** — personal settings
-- **C** — common settings
+- **C** — shared settings
 
 Default — `P`
 ||
 || **userId**
 [`user`](../../../data-types.md) | User identifier. Required only when setting personal settings.
 
-If not specified — takes the `id` of the current user
+If not specified, the `id` of the current user is used
 ||
 || **data***
-[`section[]`](#section) | The list of `section` describes the configuration of the field sections in the entity card.
+[`section[]`](#section) | The list `section` describes the configuration of the field sections in the entity card.
 
 The structure is described [below](#section) ||
 |#
 
 ### section
 
-Describes a specific section with fields within the contact card.
+Describes an individual section with fields within the contact card.
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -55,14 +55,14 @@ Displayed in the entity card ||
 
 Currently, only the value `'section'` is available ||
 || **elements**
-[`section_element[]`](#section_element) | The array `section_element` describes the configuration of fields in the section.
+[`section_element[]`](#section_element) | The array `section_element` describes the configuration of the fields in the section.
 
 The structure is described [below](#section_element) ||
 |#
 
 #### section_element
 
-Configuration of a specific field within the section.
+Configuration of an individual field within the section.
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -262,30 +262,30 @@ For the user with `id = 1`, set the following configuration for the contact card
                         [
                             'name' => 'NAME',
                             'optionFlags' => 1,
-                        },
+                        ],
                         [
                             'name' => 'LAST_NAME',
                             'optionFlags' => 1,
-                        },
+                        ],
                         [
                             'name' => 'SECOND_NAME',
-                        },
+                        ],
                         [
                             'name' => 'BIRTHDATE',
-                        },
+                        ],
                         [
                             'name' => 'PHONE',
                             'optionFlags' => 1,
                             'options' => [
                                 'defaultCountry' => 'GB',
-                            },
-                        },
+                            ],
+                        ],
                         [
                             'name' => 'ADDRESS',
                             'optionFlags' => 1,
                             'options' => [
                                 'defaultAddressType' => 4,
-                            },
+                            ],
                         ],
                     ],
                 ],
@@ -372,7 +372,7 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || Empty value | Access denied. | The user does not have administrative rights ||
 || Empty value | Parameter 'data' must be array. | An array was not passed in `data` ||
-|| Empty value | The data must be indexed array. | A non-indexed array was passed in `data` ||
+|| Empty value | The data must be indexed array. | An unindexed array was passed in `data` ||
 || Empty value | There are no data to write. | An empty array was passed in `data` ||
 || Empty value | Section at index `i` has type `data[i].type`. The expected type is 'section'. | The value in `data[i].type` is different from `'section'` ||
 || Empty value | Section at index `i` does not have name. | An empty value was passed in `data[i].name` ||

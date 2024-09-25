@@ -15,7 +15,7 @@ This method returns a list of trade catalogs.
 [`array`](../../data-types.md) | 
 An array of fields to select (see fields of the object [catalog_catalog](../data-types.md#catalog_catalog)).
 
-If the array is not provided or an empty array is passed, all available fields of trade catalogs will be selected.
+If the array is not provided or an empty array is passed, all available fields of the trade catalogs will be selected.
 ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
@@ -29,19 +29,19 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search is performed from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol must be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal ||
 || **order**
@@ -63,13 +63,13 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number
+`start = (N-1) * 50`, where `N` — the desired page number
 ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -79,7 +79,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["iblockId","iblockTypeId","id","lid","name","productIblockId","skuPropertyId","subscription","vatId","yandexExport"],"filter":{">id":10,"@vatId":[1,2],"skuPropertyId":121},"order":{"id":"desc"}}' \
+    -d '{"select":["iblockId","iblockTypeId","id","lid","name","productIblockId","skuPropertyId","subscription","vatId"],"filter":{">id":10,"@vatId":[1,2],"skuPropertyId":121},"order":{"id":"desc"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.catalog.list
     ```
 
@@ -89,7 +89,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["iblockId","iblockTypeId","id","lid","name","productIblockId","skuPropertyId","subscription","vatId","yandexExport"],"filter":{">id":10,"@vatId":[1,2],"skuPropertyId":121},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["iblockId","iblockTypeId","id","lid","name","productIblockId","skuPropertyId","subscription","vatId"],"filter":{">id":10,"@vatId":[1,2],"skuPropertyId":121},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.catalog.list
     ```
 
@@ -107,8 +107,7 @@ The formula for calculating the `start` parameter value:
                 "productIblockId",
                 "skuPropertyId",
                 "subscription",
-                "vatId",
-                "yandexExport",
+                "vatId"
             ],
             "filter": {
                 ">id": 10,
@@ -146,8 +145,7 @@ The formula for calculating the `start` parameter value:
                 'productIblockId',
                 'skuPropertyId',
                 'subscription',
-                'vatId',
-                'yandexExport',
+                'vatId'
             ],
             'filter' => [
                 '>id' => 10,
@@ -169,7 +167,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -184,8 +182,7 @@ HTTP Status: **200**
                 "productIblockId": 23,
                 "skuPropertyId": 97,
                 "subscription": "N",
-                "vatId": 1,
-                "yandexExport": "N"
+                "vatId": 1
             }
         ]
     },
@@ -195,8 +192,8 @@ HTTP Status: **200**
         "finish": 1716796277.31202,
         "duration": 0.4099850654602051,
         "processing": 0.01759815216064453,
-        "date_start": "2024-05-27T10:51:16+03:00",
-        "date_finish": "2024-05-27T10:51:17+03:00"
+        "date_start": "2024-05-27T10:51:16+02:00",
+        "date_finish": "2024-05-27T10:51:17+02:00"
     }
 }
 ```
@@ -209,16 +206,16 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **catalogs**
-[`catalog_catalog[]`](../data-types.md#catalog_catalog) | An array of objects containing information about the selected trade catalogs ||
+[`catalog_catalog[]`](../data-types.md#catalog_catalog) | An array of objects with information about the selected trade catalogs ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

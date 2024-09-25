@@ -2,7 +2,7 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - missing parameter type descriptions
 - no response examples
@@ -26,8 +26,8 @@ The method `mailservice.add` adds a new mail service.
 
 ## Parameters
 
-#|
-||  **Parameter** / **Type**| **Description** | **From version** ||
+#| 
+||  **Parameter** / **Type**| **Description** | **Available from** ||
 || **ACTIVE**
 [`unknown`](../data-types.md) | Service activity (Y / N) | ||
 || **NAME**
@@ -51,11 +51,11 @@ BX24.callMethod(
     "mailservice.add",
     {
         'ACTIVE': 'Y',
-        'NAME': 'Mail service Yandex',
-        'SERVER': 'imap.yandex.com',
+        'NAME': 'My Mail Service',
+        'SERVER': 'imap.my-mail.com',
         'PORT': '993',
         'ENCRYPTION': 'Y',
-        'LINK': 'https://mail.yandex.com/',
+        'LINK': 'https://mail.my-mail.com/',
         'SORT': '500'
     },
     function(result)
@@ -71,4 +71,4 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}

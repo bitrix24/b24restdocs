@@ -1,16 +1,10 @@
-# On Contact Update onCrmContactUpdate
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
+# Event for Contact Update onCrmContactUpdate
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can subscribe: any user
 
-The `onCrmContactUpdate` event is triggered when a contact is updated.
+The event will trigger upon updating a contact.
 
 ## What the handler receives
 
@@ -45,7 +39,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic event code.
+[`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONCRMCONTACTUPDATE`||
 || **event_handler_id**
@@ -66,7 +60,7 @@ The structure is described [below](#fields) ||
 The structure is described [below](#auth) ||
 |#
 
-### FIELDS Parameter {#fields}
+### Parameter FIELDS {#fields}
 
 #|
 || **Parameter**
@@ -75,12 +69,12 @@ The structure is described [below](#auth) ||
 [`integer`](../../../data-types.md) | Identifier of the updated contact ||
 |#
 
-### auth Parameter {#auth}
+### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
 ## Continue exploring
 
-- [{#T}](../../../events/index.md)
-- [{#T}](../../../events/event-bind.md)
 - [{#T}](./index.md)
+- [{#T}](./on-crm-contact-add.md)
+- [{#T}](./on-crm-contact-delete.md)

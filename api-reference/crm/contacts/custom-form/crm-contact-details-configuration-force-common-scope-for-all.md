@@ -1,10 +1,10 @@
-# Set Common Contact Card for All Users crm.contact.details.configuration.forceCommonScopeForAll
+# Set a Common Detail Form for All Users crm.contact.details.configuration.forceCommonScopeForAll
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can execute the method: Administrator
 
-This method allows you to forcibly set a common contact card for all users.
+This method allows you to enforce a common contact detail form for all users.
 
 No parameters.
 
@@ -69,7 +69,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -96,13 +96,13 @@ HTTP status: **200**
 
 Returns `true` on success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

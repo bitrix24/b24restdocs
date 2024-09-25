@@ -6,7 +6,7 @@ Several general methods available to the application regardless of the permissio
 || **Method** | **Description** ||
 || [scope](./system/scope.md) | Displays permissions. ||
 || [app.info](./system/app-info.md) | Displays application information. ||
-|| [access.name](./system/access-name.md) | Retrieves the names of access permissions. ||
+|| [access.name](./system/access-name.md) | Retrieves access permission names. ||
 || [server.time](./system/server-time.md) | Returns the current server time in ATOM format. ||
 || [feature.get](./system/feature-get.md) | Checks the availability of features on the account. ||
 || [method.get](./system/method-get.md) | Checks the availability of a specific method. ||
@@ -26,8 +26,8 @@ Several general methods available to the application regardless of the permissio
 || **Method** | **Description** ||
 || [app.option.set](./settings/app-option-set.md) | Set your application settings to be stored in Bitrix24. ||
 || [app.option.get](./settings/app-option-get.md) | Retrieve saved application settings from Bitrix24. ||
-|| [user.option](./settings/user-option.md) | Set your current user settings to be stored in Bitrix24. ||
-|| [user.option-set](./settings/user-option-set.md) | Retrieve saved settings of the current user from Bitrix24. ||
+|| [user.option.set](./settings/user-option-set.md) | Set your current user settings to be stored in Bitrix24. ||
+|| [user.option.get](./settings/user-option-get.md) | Retrieve saved settings of the current user from Bitrix24. ||
 |#
 
 ## System Events

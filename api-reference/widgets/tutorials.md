@@ -10,4 +10,4 @@
 
 ## Widgets in Automation Rules
 
-- [{#T}](../../tutorials/bizproc/setting-automation-rule.md)
+- [{#T}](../../tutorials/bizproc/setting-robot.md)

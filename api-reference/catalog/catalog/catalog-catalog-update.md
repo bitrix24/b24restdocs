@@ -138,12 +138,11 @@ HTTP Status: **200**
             "iblockTypeId": 0,
             "id": 24, 
             "lid": "s1",
-            "name": "CRM Product Catalog (offers)",
+            "name": "Trade Catalog CRM (offers)",
             "productIblockId": 23,
             "skuPropertyId": 97,
             "subscription": "N",
-            "vatId": 2,
-            "yandexExport": "N"
+            "vatId": 2
         }
     },
     "time": {
@@ -151,8 +150,8 @@ HTTP Status: **200**
         "finish": 1716806984.92558,
         "duration": 0.46498894691467285,
         "processing": 0.03661203384399414,
-        "date_start": "2024-05-27T13:49:44+03:00",
-        "date_finish": "2024-05-27T13:49:44+03:00"
+        "date_start": "2024-05-27T13:49:44+02:00",
+        "date_finish": "2024-05-27T13:49:44+02:00"
     }
 }
 ```
@@ -165,7 +164,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **catalog**
-[`catalog_catalog`](../data-types.md#catalog_catalog) | Object with information about the updated trade catalog ||
+[`catalog_catalog`](../data-types.md#catalog_catalog) | Object containing information about the updated trade catalog ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#

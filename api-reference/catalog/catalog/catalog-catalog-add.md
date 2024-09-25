@@ -6,7 +6,7 @@
 
 This method adds a trade catalog.
 
-This method is only used in the on-premise version.
+The method is used only in the on-premise version.
 
 ## Method Parameters
 
@@ -29,38 +29,31 @@ This method is only used in the on-premise version.
 || **iblockId***
 [`integer`](../../data-types.md) | Identifier of the information block.
 
-Existing identifiers of information blocks cannot be retrieved via REST
-||
-|| **yandexExport**
-[`string`](../../data-types.md) | Deprecated parameter. Whether to export to *Yandex.Market*. Possible values:
-- `Y` — yes
-- `N` — no
-
-Defaults to `N`
+Existing identifiers of information blocks cannot be retrieved using REST.
 ||
 || **subscription**
-[`string`](../../data-types.md) | Whether content is being sold. Possible values:
+[`string`](../../data-types.md) | Is content being sold? Possible values:
 - `Y` — yes
 - `N` — no
 
 Defaults to `N`.
 
-This parameter is only used in the on-premise version
+This parameter is used only in the on-premise version.
 ||
 || **vatId**
 [`catalog_vat.id`](../data-types.md#catalog_vat) | VAT identifier.
 
-To retrieve existing VAT identifiers, use [catalog.vat.list](../vat/catalog-vat-list.md)
+To retrieve existing VAT identifiers, use [catalog.vat.list](../vat/catalog-vat-list.md).
 ||
 || **productIblockId**
 [`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the parent information block of the trade catalog. Filled only for the trade catalog of trade offers.
 
-To retrieve existing identifiers of information blocks, use [catalog.catalog.list](./catalog-catalog-list.md)
+To retrieve existing identifiers of information blocks, use [catalog.catalog.list](./catalog-catalog-list.md).
 ||
 || **skuPropertyId**
 [`catalog_product_property.id`](../data-types.md#catalog_product_property) | Identifier of the property that stores the identifier of the parent product. Filled only for the trade catalog of trade offers.
 
-To retrieve existing property identifiers, use [catalog.productProperty.list](../product-property/catalog-product-property-list.md)
+To retrieve existing property identifiers, use [catalog.productProperty.list](../product-property/catalog-product-property-list.md).
 ||
 |#
 
@@ -153,8 +146,7 @@ HTTP Status: **200**
             "productIblockId": 23,
             "skuPropertyId": 97,
             "subscription": "N",
-            "vatId": null,
-            "yandexExport": "N"
+            "vatId": null
         }
     },
     "time": {
@@ -162,8 +154,8 @@ HTTP Status: **200**
         "finish": 1716363143.374618,
         "duration": 185.5283019542694,
         "processing": 185.12314414978027,
-        "date_start": "2024-05-22T10:29:17+03:00",
-        "date_finish": "2024-05-22T10:32:23+03:00"
+        "date_start": "2024-05-22T10:29:17+02:00",
+        "date_finish": "2024-05-22T10:32:23+02:00"
     }
 }
 ```
@@ -176,9 +168,9 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **catalog**
-[`catalog_catalog`](../data-types.md#catalog_catalog) | Object containing information about the added trade catalog ||
+[`catalog_catalog`](../data-types.md#catalog_catalog) | Object with information about the added trade catalog ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -202,19 +194,19 @@ HTTP Status: **400**
 || 
 || `ERROR_CORE` | Invalid information block identifier
 || 
-|| `ERROR_CORE` | Specified information block does not exist
+|| `ERROR_CORE` | The specified information block does not exist
 || 
 || `ERROR_CORE` | Invalid product information block identifier
 || 
-|| `ERROR_CORE` | Specified product information block does not exist
+|| `ERROR_CORE` | The specified product information block does not exist
 || 
 || `ERROR_CORE` | Cannot make the trade catalog an information block of trade offers for itself
-||
-|| `ERROR_CORE` | Invalid property identifier for binding to the product information block
 || 
-|| `ERROR_CORE` | Product information block identifier specified, but property identifier for binding to the product information block not specified
+|| `ERROR_CORE` | Invalid binding property identifier for the product information block
 || 
-|| `ERROR_CORE` | Property identifier for binding to the product information block specified, but product information block identifier not specified
+|| `ERROR_CORE` | Product information block identifier specified, but binding property identifier for the product information block not specified
+|| 
+|| `ERROR_CORE` | Binding property identifier for the product information block specified, but product information block identifier not specified
 || 
 || `200040300010` | Insufficient permissions to add the trade catalog
 || 

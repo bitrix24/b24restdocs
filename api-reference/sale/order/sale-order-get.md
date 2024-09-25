@@ -8,7 +8,7 @@ The method `sale.order.get` is designed to retrieve the values of all fields of 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ The method `sale.order.get` is designed to retrieve the values of all fields of 
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -96,11 +96,11 @@ HTTP Status: **200**
                     "basePrice": 980,
                     "canBuy": "Y",
                     "catalogXmlId": "cbc2957f-09fc-4b2a-b9de-6f925c4c9047",
-                    "currency": "RUB",
+                    "currency": "USD",
                     "customPrice": "N",
-                    "dateInsert": "2024-02-28T17:35:06+03:00",
+                    "dateInsert": "2024-02-28T17:35:06+02:00",
                     "dateRefresh": null,
-                    "dateUpdate": "2024-02-28T17:37:08+03:00",
+                    "dateUpdate": "2024-02-28T17:37:08+02:00",
                     "detailPageUrl": "",
                     "dimensions": "a:3:{s:5:\u0022WIDTH\u0022;N;s:6:\u0022HEIGHT\u0022;N;s:6:\u0022LENGTH\u0022;N;}",
                     "discountCoupon": "",
@@ -147,8 +147,8 @@ HTTP Status: **200**
                     "reservations": [
                         {
                             "basketId": 255,
-                            "dateReserve": "2024-02-28T17:36:51+03:00",
-                            "dateReserveEnd": "2024-03-01T23:00:00+03:00",
+                            "dateReserve": "2024-02-28T17:36:51+02:00",
+                            "dateReserveEnd": "2024-03-01T23:00:00+02:00",
                             "id": 39,
                             "quantity": 1,
                             "reservedBy": null,
@@ -179,13 +179,13 @@ HTTP Status: **200**
             ],
             "comments": "",
             "companyId": 0,
-            "currency": "RUB",
+            "currency": "USD",
             "dateCanceled": null,
-            "dateInsert": "2024-02-28T17:36:55+03:00",
+            "dateInsert": "2024-02-28T17:36:55+02:00",
             "dateLock": null,
             "dateMarked": null,
-            "dateStatus": "2024-02-28T17:36:38+03:00",
-            "dateUpdate": "2024-02-28T17:37:11+03:00",
+            "dateStatus": "2024-02-28T17:36:38+02:00",
+            "dateUpdate": "2024-02-28T17:37:11+02:00",
             "deducted": "N",
             "discountValue": 0,
             "empCanceledId": null,
@@ -204,8 +204,8 @@ HTTP Status: **200**
                     "accountNumber": "392\/1",
                     "comments": "",
                     "companyId": 0,
-                    "currency": "RUB",
-                    "dateBill": "2024-02-28T17:36:44+03:00",
+                    "currency": "USD",
+                    "dateBill": "2024-02-28T17:36:44+02:00",
                     "dateMarked": null,
                     "datePaid": null,
                     "datePayBefore": null,
@@ -254,7 +254,7 @@ HTTP Status: **200**
                 {
                     "code": "FIO",
                     "id": 1514,
-                    "name": "Full Name",
+                    "name": "First Last Name",
                     "orderPropsId": 20,
                     "orderPropsXmlId": null,
                     "value": "Artem Gavrilenko"
@@ -265,7 +265,7 @@ HTTP Status: **200**
                     "name": "E-Mail1",
                     "orderPropsId": 21,
                     "orderPropsXmlId": "bx_63a082af0d250",
-                    "value": "Artemlxvl@gmail.com"
+                    "value": "Artemlxvl@my-mail.com"
                 },
                 {
                     "code": "PHONE",
@@ -273,7 +273,7 @@ HTTP Status: **200**
                     "name": "Phone1",
                     "orderPropsId": 22,
                     "orderPropsXmlId": "bx_63a082a06864d",
-                    "value": "14151234567"
+                    "value": "191814561312"
                 },
                 {
                     "code": "CONTACT_ADDRESS",
@@ -311,12 +311,12 @@ HTTP Status: **200**
                     "canceled": "N",
                     "comments": "",
                     "companyId": 0,
-                    "currency": "RUB",
+                    "currency": "USD",
                     "customPriceDelivery": "N",
                     "dateAllowDelivery": null,
                     "dateCanceled": null,
                     "dateDeducted": null,
-                    "dateInsert": "2024-02-28T17:36:41+03:00",
+                    "dateInsert": "2024-02-28T17:36:41+02:00",
                     "dateMarked": null,
                     "dateResponsibleId": null,
                     "deducted": "N",
@@ -343,7 +343,7 @@ HTTP Status: **200**
                     "shipmentItems": [
                         {
                             "basketId": 255,
-                            "dateInsert": "2024-02-28T17:36:53+03:00",
+                            "dateInsert": "2024-02-28T17:36:53+02:00",
                             "id": 320,
                             "orderDeliveryId": 338,
                             "quantity": 1,
@@ -390,8 +390,8 @@ HTTP Status: **200**
         "finish": 1712938175.432068,
         "duration": 0.9956400394439697,
         "processing": 0.5710320472717285,
-        "date_start": "2024-04-12T19:09:34+03:00",
-        "date_finish": "2024-04-12T19:09:35+03:00"
+        "date_start": "2024-04-12T19:09:34+02:00",
+        "date_finish": "2024-04-12T19:09:35+02:00"
     }
 }
 ```

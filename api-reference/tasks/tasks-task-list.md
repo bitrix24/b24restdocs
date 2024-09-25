@@ -273,16 +273,6 @@ BX24.callMethod(
 );
 ```
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-![Result](_images/tasks_task_list-2.png =873x)
-
-{% endnote %}
-
-{% endif %}
-
 ## Example 3
 
 Example of disabling pagination:

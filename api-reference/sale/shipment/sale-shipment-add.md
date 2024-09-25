@@ -59,7 +59,7 @@ If not provided, both the base delivery cost and the delivery cost will be calcu
 || **companyId**
 [`integer`](../../data-types.md) | Company identifier from the "Online Store" module.
 
-Relevant only for Bitrix Site Management. Not related to CRM companies ||
+Currently not used ||
 || **responsibleId**
 [`user`](../../data-types.md) | Identifier of the user responsible for the shipment ||
 || **xmlId**
@@ -162,50 +162,50 @@ HTTP status: **200**
 
 ```json
 {
-   "result":{
-      "shipment":{
-         "accountNumber":"2068\/19",
-         "allowDelivery":"Y",
-         "basePriceDelivery":999.99,
-         "canceled":"N",
-         "comments":"My comment for manager",
-         "currency":"USD",
-         "customPriceDelivery":"N",
-         "dateAllowDelivery":"2024-04-11T14:17:52+03:00",
-         "dateDeducted":"2024-04-11T14:17:52+03:00",
-         "dateInsert":"2024-04-11T14:17:52+03:00",
-         "dateResponsibleId":"2024-04-11T14:17:52+03:00",
-         "deducted":"Y",
-         "deliveryDocDate":"2024-02-13T13:05:48+03:00",
-         "deliveryDocNum":"DocumentNumber123456",
-         "deliveryId":2,
-         "deliveryName":"Courier Delivery",
-         "deliveryXmlId":"",
-         "empAllowDeliveryId":1,
-         "empDeductedId":1,
-         "empResponsibleId":1,
-         "id":2452,
-         "marked":"N",
-         "orderId":2068,
-         "priceDelivery":999.99,
-         "responsibleId":25,
-         "shipmentItems":[
+   "result": {
+      "shipment": {
+         "accountNumber": "2068/19",
+         "allowDelivery": "Y",
+         "basePriceDelivery": 999.99,
+         "canceled": "N",
+         "comments": "My comment for manager",
+         "currency": "USD",
+         "customPriceDelivery": "N",
+         "dateAllowDelivery": "2024-04-11T14:17:52+02:00",
+         "dateDeducted": "2024-04-11T14:17:52+02:00",
+         "dateInsert": "2024-04-11T14:17:52+02:00",
+         "dateResponsibleId": "2024-04-11T14:17:52+02:00",
+         "deducted": "Y",
+         "deliveryDocDate": "2024-02-13T13:05:48+02:00",
+         "deliveryDocNum": "DocumentNumber123456",
+         "deliveryId": 2,
+         "deliveryName": "Courier Delivery",
+         "deliveryXmlId": "",
+         "empAllowDeliveryId": 1,
+         "empDeductedId": 1,
+         "empResponsibleId": 1,
+         "id": 2452,
+         "marked": "N",
+         "orderId": 2068,
+         "priceDelivery": 999.99,
+         "responsibleId": 25,
+         "shipmentItems": [
             
          ],
-         "statusId":"DN",
-         "statusXmlId":"FFdddd",
-         "system":"N",
-         "trackingNumber":"trackingNumber",
-         "xmlId":"myXmlId"
+         "statusId": "DN",
+         "statusXmlId": "FFdddd",
+         "system": "N",
+         "trackingNumber": "trackingNumber",
+         "xmlId": "myXmlId"
       }
    },
-   "time":{
-      "start":1712837872.459187,
-      "finish":1712837873.462857,
-      "duration":1.0036699771881104,
-      "processing":0.8182649612426758,
-      "date_start":"2024-04-11T15:17:52+03:00",
-      "date_finish":"2024-04-11T15:17:53+03:00"
+   "time": {
+      "start": 1712837872.459187,
+      "finish": 1712837873.462857,
+      "duration": 1.0036699771881104,
+      "processing": 0.8182649612426758,
+      "date_start": "2024-04-11T15:17:52+02:00",
+      "date_finish": "2024-04-11T15:17:53+02:00"
    }
 }
 ```
@@ -218,7 +218,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **shipment**
-[`sale_order_shipment`](../data-types.md) | Object with information about the added shipment ||
+[`sale_order_shipment`](../data-types.md) | Object containing information about the added shipment ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -229,8 +229,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Unable to load the order"
+   "error": 0,
+   "error_description": "Unable to load order"
 }
 ```
 
@@ -241,7 +241,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `200040300020` | Insufficient permissions to add shipment ||
-|| `100` | Parameter `fields` is missing or empty ||
+|| `100` | Parameter `fields` is not specified or is empty ||
 || `0` | Order not found ||
 || `SALE_SHIPMENT_WRONG_DELIVERY_SERVICE` | Delivery service not found ||
 || `BX_INVALID_VALUE` | Value of one of the fields failed validation before saving ||

@@ -8,18 +8,18 @@ This method creates a new bank detail.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` for adding a bank detail ||
+[`object`](../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` for adding the bank detail ||
 |#
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,20 +29,19 @@ This method creates a new bank detail.
 || **COUNTRY_ID**
 [`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank detail fields (see the method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
 
-The country code of the bank detail matches the country code in the linked detail template, the identifier of which is specified in the `ENTITY_ID` field 
-||
+The country code of the bank detail matches the country code in the linked detail template, the identifier of which is specified in the `ENTITY_ID` field ||
 || **NAME***
 [`string`](../../../data-types.md) | Name of the bank detail ||
 || **CODE**
 [`string`](../../../data-types.md) | Symbolic code of the detail ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
 
 The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field. 
 
 It is recommended to use a unique prefix to avoid collisions with other applications ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. 
+[`char`](../../../data-types.md) | Activity indicator. Values `Y` or `N` are used. 
 
 Currently, the field does not actually affect anything ||
 || **SORT**
@@ -93,7 +92,7 @@ Currently, the field does not actually affect anything ||
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -103,7 +102,7 @@ Currently, the field does not actually affect anything ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Sberbank","RQ_BANK_NAME":"PAO Sberbank","RQ_BANK_ADDR":"117312, Moscow, Vavilova Street, House 19","RQ_BIK":"044525225","RQ_ACC_NUM":"40702810938000060473","RQ_ACC_CURRENCY":"RUR","RQ_COR_ACC_NUM":"30101810400000000225","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600}}' \
+    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Superbank","RQ_BANK_NAME":"PAO Superbank","RQ_BANK_ADDR":"117312, City of New York, Vavilova Street, House 19","RQ_BIK":"044525225","RQ_ACC_NUM":"40702810938000060473","RQ_ACC_CURRENCY":"USD","RQ_COR_ACC_NUM":"30101810400000000225","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.bankdetail.add
     ```
 
@@ -113,7 +112,7 @@ Currently, the field does not actually affect anything ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Sberbank","RQ_BANK_NAME":"PAO Sberbank","RQ_BANK_ADDR":"117312, Moscow, Vavilova Street, House 19","RQ_BIK":"044525225","RQ_ACC_NUM":"40702810938000060473","RQ_ACC_CURRENCY":"RUR","RQ_COR_ACC_NUM":"30101810400000000225","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Superbank","RQ_BANK_NAME":"PAO Superbank","RQ_BANK_ADDR":"117312, City of New York, Vavilova Street, House 19","RQ_BIK":"044525225","RQ_ACC_NUM":"40702810938000060473","RQ_ACC_CURRENCY":"USD","RQ_COR_ACC_NUM":"30101810400000000225","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.bankdetail.add
     ```
 
@@ -126,13 +125,13 @@ Currently, the field does not actually affect anything ||
             fields:
             {
                 "ENTITY_ID": 27,                 // Identifier of the detail
-                "COUNTRY_ID": 1,                 // Country code (Russia)
-                "NAME": "Sberbank",              // Name of the bank detail
-                "RQ_BANK_NAME": "PAO Sberbank",  // Name of the bank
-                "RQ_BANK_ADDR": "117312, Moscow, Vavilova Street, House 19",
+                "COUNTRY_ID": 1,                 // Country code (USA)
+                "NAME": "Superbank",              // Name of the bank detail
+                "RQ_BANK_NAME": "PAO Superbank",  // Name of the bank
+                "RQ_BANK_ADDR": "117312, City of New York, Vavilova Street, House 19",
                 "RQ_BIK": "044525225",
                 "RQ_ACC_NUM": "40702810938000060473",
-                "RQ_ACC_CURRENCY": "RUR",
+                "RQ_ACC_CURRENCY": "USD",
                 "RQ_COR_ACC_NUM": "30101810400000000225",
                 "XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008",
                 "ACTIVE":"Y",
@@ -144,7 +143,7 @@ Currently, the field does not actually affect anything ||
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Bank detail created with ID " + result.data());
+                console.info("Created bank detail with ID " + result.data());
         }
     );
     ```
@@ -160,12 +159,12 @@ Currently, the field does not actually affect anything ||
             'fields' => [
                 'ENTITY_ID' => 27,
                 'COUNTRY_ID' => 1,
-                'NAME' => 'Sberbank',
-                'RQ_BANK_NAME' => 'PAO Sberbank',
-                'RQ_BANK_ADDR' => '117312, Moscow, Vavilova Street, House 19',
+                'NAME' => 'Superbank',
+                'RQ_BANK_NAME' => 'PAO Superbank',
+                'RQ_BANK_ADDR' => '117312, City of New York, Vavilova Street, House 19',
                 'RQ_BIK' => '044525225',
                 'RQ_ACC_NUM' => '40702810938000060473',
-                'RQ_ACC_CURRENCY' => 'RUR',
+                'RQ_ACC_CURRENCY' => 'USD',
                 'RQ_COR_ACC_NUM' => '30101810400000000225',
                 'XML_ID' => '1e4641fd-2dd9-31e6-b2f2-105056c00008',
                 'ACTIVE' => 'Y',
@@ -183,7 +182,7 @@ Currently, the field does not actually affect anything ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -208,12 +207,12 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the created bank detail ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -229,7 +228,7 @@ HTTP Status: **40x**, **50x**
 #|  
 || **Error Text** | **Description** ||
 || `ENTITY_ID is not defined or invalid` | The identifier of the detail is not defined or has an invalid value ||
-|| `Access denied` | Insufficient access permissions to add a bank detail ||
+|| `Access denied` | Insufficient access permissions to add the bank detail ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

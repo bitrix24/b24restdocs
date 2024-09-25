@@ -13,14 +13,14 @@ This method updates an existing bank detail.
 #|
 || **Parameter** | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the bank detail. 
+[`integer`](../../../data-types.md) | Identifier of the bank detail.
 
 Identifiers for bank details can be obtained using the [`crm.requisite.bankdetail.list`](./crm-requisite-bank-detail-list.md) method. ||
 || **fields***
-[`object`](../../../data-types.md) | Set of fields for the bank detail — an object of the form `{"field": "value"[, ...]}`, whose values need to be updated. ||
+[`object`](../../../data-types.md) | Set of fields for the bank detail — an object of the form `{"field": "value"[, ...]}`, where the values need to be updated. ||
 |#
 
-### Parameter fields
+### fields Parameter
 
 #|
 || **Name**
@@ -30,13 +30,13 @@ Identifiers for bank details can be obtained using the [`crm.requisite.bankdetai
 || **CODE**
 [`string`](../../../data-types.md) | Symbolic code of the detail. ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base.
 
-The purpose of this field may change by the final developer. Each application ensures the uniqueness of values in this field. 
+The purpose of this field may change by the final developer. Each application ensures the uniqueness of values in this field.
 
 It is recommended to use a unique prefix to avoid collisions with other applications. ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. 
+[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used.
 
 Currently, this field does not affect anything. ||
 || **SORT**
@@ -97,7 +97,7 @@ Currently, this field does not affect anything. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":357,"fields":{"NAME":"Sberbank PJSC (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"}}' \
+    -d '{"id":357,"fields":{"NAME":"Superbank PJSC (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.bankdetail.update
     ```
 
@@ -107,7 +107,7 @@ Currently, this field does not affect anything. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":357,"fields":{"NAME":"Sberbank PJSC (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":357,"fields":{"NAME":"Superbank PJSC (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.bankdetail.update
     ```
 
@@ -120,7 +120,7 @@ Currently, this field does not affect anything. ||
             id: 357,
             fields:
             {
-                "NAME": "Sberbank PJSC (do not use)",
+                "NAME": "Superbank PJSC (do not use)",
                 "COMMENTS": "Outdated",
                 "SORT" : 10000,
                 "ACTIVE": "N"
@@ -148,7 +148,7 @@ Currently, this field does not affect anything. ||
         [
             'id' => 357,
             'fields' => [
-                'NAME' => 'Sberbank PJSC (do not use)',
+                'NAME' => 'Superbank PJSC (do not use)',
                 'COMMENTS' => 'Outdated',
                 'SORT' => 10000,
                 'ACTIVE' => 'N'
@@ -212,7 +212,7 @@ HTTP status: **40x**, **50x**
 ### Possible Errors
 
 #|  
-|| **Error Text** | **Description** ||
+|| **Error Message** | **Description** ||
 || `ID is not defined or invalid` | The identifier of the bank detail is not specified or has an invalid value. ||
 || `The Requisite with ID '357' is not found` | The bank detail with the specified identifier was not found. ||
 || `Access denied` | Insufficient access permissions to update the bank detail. ||

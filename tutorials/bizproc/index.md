@@ -3,5 +3,4 @@
 In this section, you will find examples for solving typical tasks related to workflows and Automation rules in CRM:
 
 - [{#T}](./activity.md)
-- [{#T}](./automation-rule.md)
-- [{#T}](./setting-automation-rule.md)
+- [{#T}](./setting-robot.md)

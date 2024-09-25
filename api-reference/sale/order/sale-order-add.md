@@ -25,11 +25,11 @@ The method `sale.order.add` is designed for adding an order.
 || **Name**
 `type` | **Description** ||
 || **lid***
-[`string`](../../data-types.md) | Identifier of the site where this payer type will be used. Has a constant value of 's1' ||
+[`string`](../../data-types.md) | Identifier of the site where this payer type will be used. Has a constant value 's1' ||
 || **personTypeId***
 [`sale_person_type.id`](../data-types.md) | Identifier of the payer type ||
 || **currency***
-[`string`](../../data-types.md) | Currency. The list of currencies can be obtained via the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
+[`string`](../../data-types.md) | Currency. The list of currencies can be obtained through the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
 || **price**
 [`double`](../../data-types.md) | Price ||
 || **discountValue**
@@ -50,7 +50,7 @@ Defaults to `N` ||
 || **empMarkedId**
 [`user.id`](../../data-types.md) | Identifier of the user who set the marking ||
 || **reasonMarked**
-[`string`](../../data-types.md) | Reason for marking the order ||
+[`string`](../../data-types.md) | Reason why the order was marked ||
 || **userDescription**
 [`string`](../../data-types.md) | Customer's comment on the order ||
 || **additionalInfo**
@@ -133,6 +133,7 @@ Defaults to `N` ||
     -H "Accept: application/json" \
     -d '{"fields":{"lid":"s1","personTypeId":1,"currency":"USD","price":100,"discountValue":10,"statusId":"N","empStatusId":1,"dateInsert":"2024-03-01T14:00:00","marked":"Y","empMarkedId":1,"reasonMarked":"","userDescription":"","additionalInfo":"","comments":"","companyId":1,"responsibleId":1,"recurringId":1,"lockedBy":1,"recountFlag":"N","affiliateId":1,"updated1c":"N","orderTopic":"","xmlId":"","id1c":"","version1c":"","externalOrder":"N","canceled":"Y","empCanceledId":1,"reasonCanceled":"","userId":1}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.order.add
+    ```
 
 - cURL (OAuth)
 
@@ -245,7 +246,7 @@ Defaults to `N` ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -259,11 +260,11 @@ HTTP status: **200**
             "comments": "",
             "companyId": 1,
             "currency": "USD",
-            "dateCanceled": "2024-04-12T13:50:21+03:00",
-            "dateInsert": "2024-03-01T13:00:00+03:00",
-            "dateMarked": "2024-04-12T13:50:21+03:00",
-            "dateStatus": "2024-04-12T13:50:21+03:00",
-            "dateUpdate": "2024-04-12T13:50:21+03:00",
+            "dateCanceled": "2024-04-12T13:50:21+02:00",
+            "dateInsert": "2024-03-01T13:00:00+02:00",
+            "dateMarked": "2024-04-12T13:50:21+02:00",
+            "dateStatus": "2024-04-12T13:50:21+02:00",
+            "dateUpdate": "2024-04-12T13:50:21+02:00",
             "deducted": "N",
             "discountValue": 10,
             "empCanceledId": 1,
@@ -300,8 +301,8 @@ HTTP status: **200**
         "finish": 1712922623.393783,
         "duration": 2.6689260005950928,
         "processing": 2.210068941116333,
-        "date_start": "2024-04-12T14:50:20+03:00",
-        "date_finish": "2024-04-12T14:50:23+03:00"
+        "date_start": "2024-04-12T14:50:20+02:00",
+        "date_finish": "2024-04-12T14:50:23+02:00"
     }
 }
 ```
@@ -314,14 +315,14 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **order**
-[`sale_order`](../data-types.md) | Object containing information about the added order ||
+[`sale_order`](../data-types.md) | Object with information about the added order ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -337,7 +338,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `200040300020` | Insufficient permissions to add an order ||
-|| `100` | The `fields` parameter is not specified or is empty ||
+|| `100` | Parameter `fields` is not specified or is empty ||
 || `0` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

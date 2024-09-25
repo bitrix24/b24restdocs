@@ -38,18 +38,4 @@ When initializing *BX.PullClient*, you need to specify the following parameters:
 - `restApplication` — specify a custom string identifier for the application. (It must be unique for each account where your application is installed)
 - `userId` — specify the identifier of the currently authorized user
 
-If the web page is created by "1C-Bitrix: Site Management" and your edition includes the Push & Pull module, it is recommended to connect the built-in library instead of:
-
-```js
-<script src="//api.bitrix24.com/api/v1/pull/"></script> 
-```
-
-by using:
-
-```js
-\Bitrix\Main\UI\Extension::load("pull.client");
-```
-
-The minimum version of the Push & Pull module included is 18.5.500.
-
 Connecting the PullClient will allow the front-end of your application to receive events from the channel that will be sent there by the back-end of your application using the method [pull.application.event.add](./push-and-pull/pull-application-event-add.md).

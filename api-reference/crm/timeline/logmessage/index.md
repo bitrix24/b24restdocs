@@ -1,12 +1,18 @@
 # Log Message Journal
 
-The log message journal is a special type of timeline record created in the context of a specific Rest application. It contains less important data than other records and is distinguished by a muted gray background, drawing less attention.
+The log message journal is a special type of timeline record created in the context of a specific [Rest application](https://dev.1c-bitrix.com/docs/chm_files/app.zip). It contains less important data than other records and is distinguished by a muted gray background, drawing less attention.
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: `depends on the method`
 
-List of methods for managing the log message journal.
+A list of methods for managing the log message journal.
+
+{% note info "" %}
+
+Important: The methods [`crm.timeline.logmessage.get`](./crm-timeline-logmessage-get.md) and [`crm.timeline.logmessage.list`](./crm-timeline-logmessage-list.md) only return records that were previously created using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System records cannot be retrieved using these methods.
+
+{% endnote %}
 
 #|
 || [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md) | Adds a new log message to the timeline ||

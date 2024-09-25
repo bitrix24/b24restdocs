@@ -2,6 +2,16 @@
 
 ## 2024
 
+### 25 September 2024
+
+- Updated documentation for [contact events](./api-reference/crm/contacts/events/index.md) and [contact custom fields events](./api-reference/crm/contacts/userfield/events/index.md)
+- Updated documentation on working with VAT rates [catalog.vat.*](./api-reference/catalog/vat/index.md)
+- Updated documentation for the main methods of working with deals [crm.deal.*](./api-reference/crm/deals/index.md)
+- Updated documentation on general methods related to storing and retrieving [application settings](./api-reference/common/settings/index.md)
+- Updated documentation on embedding as custom field types [userfieldtype.*](./api-reference/widgets/user-field/index.md)
+- Updated documentation on working with contacts [crm.contact.*](./api-reference/crm/contacts/index.md)
+- Updated documentation on working with contact custom fields [crm.contact.userfield.*](./api-reference/crm/contacts/userfield/index.md)
+
 ### 18 September 2024
 
 - New documentation has been added for the [Flows](./api-reference/tasks/flow/index.md)

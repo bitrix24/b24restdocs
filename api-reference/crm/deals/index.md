@@ -1,42 +1,22 @@
-# About Deals in Bitrix24
+# Overview of Methods
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- An introduction corresponding to the title is needed.
-
-{% endnote %}
-
-{% endif %}
-
-{% note info "Permissions" %}
-
-**Scope**: [`crm`](../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
-
-The following methods are available for deals in Bitrix24:
+> Scope: [`crm`](../../scopes/permissions.md)
+> 
+> Who can perform the method: depending on the method
 
 #|
 || **Method** | **Description** ||
-|| [crm.deal.fields](./crm-deal-fields.md) | Deal fields. ||
-|| [crm.deal.add](./crm-deal-add.md) | Create a new deal. ||
-|| [crm.deal.update](./crm-deal-update.md) | Update a deal. ||
-|| [crm.deal.get](./crm-deal-get.md) | Retrieve a deal by Id. ||
-|| [crm.deal.list](./crm-deal-list.md) | Get a list of deals. ||
-|| [crm.deal.delete](./crm-deal-delete.md) | Delete a deal. ||
-|| [crm.deal.productrows.set](./crm-deal-productrows-set.md) | Add products to a deal. ||
-|| [crm.deal.productrows.get](./crm-deal-get.md) | Retrieve products of a deal. ||
+|| [crm.deal.add](./crm-deal-add.md) | Creates a new deal ||
+|| [crm.deal.update](./crm-deal-update.md) | Modifies a deal ||
+|| [crm.deal.get](./crm-deal-get.md) | Returns a deal by its ID ||
+|| [crm.deal.list](./crm-deal-list.md) | Returns a list of deals based on a filter ||
+|| [crm.deal.delete](./crm-deal-delete.md) | Deletes a deal and all associated objects ||
+|| [crm.deal.fields](./crm-deal-fields.md) | Returns the description of deal fields ||
+|| [crm.deal.productrows.set](./crm-deal-productrows-set.md) | Adds products to a deal ||
+|| [crm.deal.productrows.get](./crm-deal-get.md) | Returns the products of a deal ||
 |#
 
-## See also
+## See Also
 
 - [Events](./events/index.md)
 - [Recurring Deals](./recurring-deals/index.md)

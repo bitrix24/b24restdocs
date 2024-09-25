@@ -1,7 +1,7 @@
 title: Custom Fields
 href: index.md
 items: 
-  - name: Custom Fields
+  - name: Overview of Methods
     href: index.md
   - name: Create a Custom Field for Contacts
     href: crm-contact-userfield-add.md
@@ -13,3 +13,7 @@ items:
     href: crm-contact-userfield-list.md
   - name: Delete a Custom Field for Contacts
     href: crm-contact-userfield-delete.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

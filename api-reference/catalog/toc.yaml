@@ -3,7 +3,7 @@ href: index.md
 items: 
   - name: List of Methods
     href: index.md
-  - name: Data Types and Object Structure in the REST API Catalog
+  - name: Data Types and Object Structure in the Catalog REST API
     href: data-types.md
   - name: Trade Catalog
     include:
@@ -95,7 +95,7 @@ items:
       mode: link
   - name: VAT Rates
     include:
-      path: vat/toc.yaml
+      path: vat/b24-toc.yaml
       mode: link
   - name: Events
     include:

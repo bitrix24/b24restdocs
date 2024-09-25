@@ -6,26 +6,22 @@
 
 The method `crm.contact.get` returns a contact by its identifier.
 
-{% note info "Getting a List of Companies" %}
-
-To retrieve a list of companies associated with the contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md)
-
-{% endnote %}
+To retrieve a list of companies associated with the contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md).
 
 ## Method Parameters
 
-{% include [Footnote on Parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter**
+|| **Name**
 `type` | **Description** ||
-|| **id^*^**
+|| **id***
 [`integer`][1] | Identifier of the contact. Can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Get contact with `id = 23`
 
@@ -34,36 +30,55 @@ Get contact with `id = 23`
 - cURL (Webhook)
 
     ```bash
-    todo
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ID":23}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.get
     ```
 
 - cURL (OAuth)
 
     ```bash
-    todo
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ID":23,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.contact.get
     ```
 
 - JS
 
     ```js
-        BX24.callMethod(
-            'crm.contact.get',
-            {
-                id: 23,
-            },
-            (result) => {
-                result.error()
-                    ? console.error(result.error())
-                    : console.info(result.data())
-                ;
-            },
-        );
+    BX24.callMethod(
+        'crm.contact.get',
+        {
+            id: 23,
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
+    );
     ```
 
 - PHP
 
     ```php
-    todo
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.contact.get',
+        [
+            'ID' => 23
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
@@ -74,93 +89,93 @@ HTTP Status: **200**
 
 ```json
 {
-  "result": {
-    "ID": "43",
-    "POST": "Administrator",
-    "COMMENTS": "\nExample comment within the contact\n\n[B]Bold text[\/B]\n[I]Italic[\/I]\n[U]Underlined[\/U]\n[S]Strikethrough[\/S]\n[B][I][U][S]Mix[\/S][\/U][\/I][\/B]\n\n[LIST]\n[*]List item #1\n[*]List item #2\n[*]List item #3\n[\/LIST]\n\n[LIST=1]\n[*]Numbered list item #1\n[*]Numbered list item #2\n[*]Numbered list item #3\n[\/LIST]\n",
-    "HONORIFIC": "HNR_RU_1",
-    "NAME": "John",
-    "SECOND_NAME": "Doe",
-    "LAST_NAME": "Smith",
-    "PHOTO": null,
-    "LEAD_ID": null,
-    "TYPE_ID": "PARTNER",
-    "SOURCE_ID": "WEB",
-    "SOURCE_DESCRIPTION": "*Additional information about the source*",
-    "COMPANY_ID": "12",
-    "BIRTHDATE": "2001-11-11T02:00:00+02:00",
-    "EXPORT": "N",
-    "HAS_PHONE": "Y",
-    "HAS_EMAIL": "Y",
-    "HAS_IMOL": "N",
-    "DATE_CREATE": "2024-08-15T10:38:21+02:00",
-    "DATE_MODIFY": "2024-08-15T10:38:21+02:00",
-    "ASSIGNED_BY_ID": "6",
-    "CREATED_BY_ID": "1",
-    "MODIFY_BY_ID": "1",
-    "OPENED": "Y",
-    "ORIGINATOR_ID": null,
-    "ORIGIN_ID": null,
-    "ORIGIN_VERSION": null,
-    "FACE_ID": null,
-    "LAST_ACTIVITY_TIME": "2024-08-15T10:38:21+02:00",
-    "ADDRESS": null,
-    "ADDRESS_2": null,
-    "ADDRESS_CITY": null,
-    "ADDRESS_POSTAL_CODE": null,
-    "ADDRESS_REGION": null,
-    "ADDRESS_PROVINCE": null,
-    "ADDRESS_COUNTRY": null,
-    "ADDRESS_LOC_ADDR_ID": null,
-    "UTM_SOURCE": "yandex",
-    "UTM_MEDIUM": "CPC",
-    "UTM_CAMPAIGN": "summer_sale",
-    "UTM_CONTENT": "header_banner",
-    "UTM_TERM": "discount",
-    "PARENT_ID_1224": "12",
-    "LAST_ACTIVITY_BY": "1",
-    "UF_CRM_1720697698689": "Example value of a custom field with type \u0022String\u0022",
-    "PHONE": [
-      {
-        "ID": "156",
-        "VALUE_TYPE": "WORK",
-        "VALUE": "+13333333555",
-        "TYPE_ID": "PHONE"
-      },
-      {
-        "ID": "157",
-        "VALUE_TYPE": "HOME",
-        "VALUE": "+15599888666",
-        "TYPE_ID": "PHONE"
-      }
-    ],
-    "EMAIL": [
-      {
-        "ID": "158",
-        "VALUE_TYPE": "MAILING",
-        "VALUE": "john.smith@example.mailing",
-        "TYPE_ID": "EMAIL"
-      },
-      {
-        "ID": "159",
-        "VALUE_TYPE": "WORK",
-        "VALUE": "john.smith@example.work",
-        "TYPE_ID": "EMAIL"
-      }
-    ]
-  },
-  "time": {
-    "start": 1723736139.883652,
-    "finish": 1723736140.299369,
-    "duration": 0.41571712493896484,
-    "processing": 0.14158892631530762,
-    "date_start": "2024-08-15T17:35:39+02:00",
-    "date_finish": "2024-08-15T17:35:40+02:00"
-  }
+    "result": {
+        "ID": "43",
+        "POST": "Administrator",
+        "COMMENTS": "\nExample comment within the contact\n\n[B]Bold text[\/B]\n[I]Italic[\/I]\n[U]Underlined[\/U]\n[S]Strikethrough[\/S]\n[B][I][U][S]Mix[\/S][\/U][\/I][\/B]\n\n[LIST]\n[*]List item #1\n[*]List item #2\n[*]List item #3\n[\/LIST]\n\n[LIST=1]\n[*]Numbered list item #1\n[*]Numbered list item #2\n[*]Numbered list item #3\n[\/LIST]\n",
+        "HONORIFIC": "HNR_EN_1",
+        "NAME": "John",
+        "SECOND_NAME": "Doe",
+        "LAST_NAME": "Smith",
+        "PHOTO": null,
+        "LEAD_ID": null,
+        "TYPE_ID": "PARTNER",
+        "SOURCE_ID": "WEB",
+        "SOURCE_DESCRIPTION": "*Additional information about the source*",
+        "COMPANY_ID": "12",
+        "BIRTHDATE": "2001-11-11T02:00:00+02:00",
+        "EXPORT": "N",
+        "HAS_PHONE": "Y",
+        "HAS_EMAIL": "Y",
+        "HAS_IMOL": "N",
+        "DATE_CREATE": "2024-08-15T10:38:21+02:00",
+        "DATE_MODIFY": "2024-08-15T10:38:21+02:00",
+        "ASSIGNED_BY_ID": "6",
+        "CREATED_BY_ID": "1",
+        "MODIFY_BY_ID": "1",
+        "OPENED": "Y",
+        "ORIGINATOR_ID": null,
+        "ORIGIN_ID": null,
+        "ORIGIN_VERSION": null,
+        "FACE_ID": null,
+        "LAST_ACTIVITY_TIME": "2024-08-15T10:38:21+02:00",
+        "ADDRESS": null,
+        "ADDRESS_2": null,
+        "ADDRESS_CITY": null,
+        "ADDRESS_POSTAL_CODE": null,
+        "ADDRESS_REGION": null,
+        "ADDRESS_PROVINCE": null,
+        "ADDRESS_COUNTRY": null,
+        "ADDRESS_LOC_ADDR_ID": null,
+        "UTM_SOURCE": "google",
+        "UTM_MEDIUM": "CPC",
+        "UTM_CAMPAIGN": "summer_sale",
+        "UTM_CONTENT": "header_banner",
+        "UTM_TERM": "discount",
+        "PARENT_ID_1224": "12",
+        "LAST_ACTIVITY_BY": "1",
+        "UF_CRM_1720697698689": "Example value of a custom field with type \u0022String\u0022",
+        "PHONE": [
+        {
+            "ID": "156",
+            "VALUE_TYPE": "WORK",
+            "VALUE": "+13333333555",
+            "TYPE_ID": "PHONE"
+        },
+        {
+            "ID": "157",
+            "VALUE_TYPE": "HOME",
+            "VALUE": "+15599888666",
+            "TYPE_ID": "PHONE"
+        }
+        ],
+        "EMAIL": [
+        {
+            "ID": "158",
+            "VALUE_TYPE": "MAILING",
+            "VALUE": "john.smith@example.mailing",
+            "TYPE_ID": "EMAIL"
+        },
+        {
+            "ID": "159",
+            "VALUE_TYPE": "WORK",
+            "VALUE": "john.smith@example.work",
+            "TYPE_ID": "EMAIL"
+        }
+        ]
+    },
+    "time": {
+        "start": 1723736139.883652,
+        "finish": 1723736140.299369,
+        "duration": 0.41571712493896484,
+        "processing": 0.14158892631530762,
+        "date_start": "2024-08-15T17:35:39+02:00",
+        "date_finish": "2024-08-15T17:35:40+02:00"
+    }
 }
 ```
 
-### Returned Values
+### Returned Data
 
 #|
 || **Name**
@@ -171,10 +186,10 @@ HTTP Status: **200**
 [`time`][1] | Object containing information about the request execution time ||
 |#
 
-#### contact
+### contact
 
 #|
-|| **Parameter**
+|| **Name**
 `type` | **Description** ||
 || **ID**
 [`integer`][1] | Identifier of the contact ||
@@ -203,28 +218,23 @@ HTTP Status: **200**
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the main company ||
 || **BIRTHDATE**
-[`date`][1] | Birthdate ||
+[`date`][1] | Date of birth ||
 || **EXPORT**
-[`boolean`][1] | Participates in contact export
-
-`Y` - Yes
-`N` - No ||
+[`boolean`][1] | Whether the contact is included in the export. Possible values:
+- `Y` — yes
+- `N` — no ||
 || **HAS_PHONE**
-[`boolean`][1] | Phone is set
-
-`Y` - Yes
-`N` - No
-||
+[`boolean`][1] | Is a phone number provided. Possible values:
+- `Y` — yes
+- `N` — no ||
 || **HAS_EMAIL**
-[`boolean`][1] | E-mail is set
-
-`Y` - Yes
-`N` - No ||
+[`boolean`][1] | Is an e-mail provided. Possible values:
+- `Y` — yes
+- `N` — no ||
 || **HAS_IMOL**
-[`boolean`][1] | Open line is set
-
-`Y` - Yes
-`N` - No ||
+[`boolean`][1] | Is an open line provided. Possible values:
+- `Y` — yes
+- `N` — no ||
 || **DATE_CREATE**
 [`datetime`][1] | Creation date ||
 || **DATE_MODIFY**
@@ -236,29 +246,27 @@ HTTP Status: **200**
 || **MODIFY_BY_ID**
 [`user`][1] | Modified by ||
 || **OPENED**
-[`boolean`][1] | Available to everyone
-
-`Y` - Yes
-`N` - No
-||
+[`boolean`][1] | Available to everyone. Possible values:
+- `Y` — yes
+- `N` — no ||
 || **FACE_ID**
-[`integer`][1] | Link to faces from the `faceid` module. ||
+[`integer`][1] | Link to faces from the `faceid` module ||
 || **LAST_ACTIVITY_TIME**
 [`datetime`][1] | Last activity ||
 || **LAST_ACTIVITY_BY**
 [`user`][1] | Who performed the last activity in the timeline ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system. Yandex-Direct, Google-Adwords, and others ||
+[`string`][1] | Advertising system (Google Ads, etc.) ||
 || **UTM_MEDIUM**
 [`string`][1] | Type of traffic. Possible values:
-- CPC — ads
-- CPM — banners ||
+- `CPC` — ads
+- `CPM` — banners ||
 || **UTM_CAMPAIGN**
-[`string`][1] | Designation of the advertising campaign ||
+[`string`][1] | Advertising campaign designation ||
 || **UTM_CONTENT**
 [`string`][1] | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`][1] | Search condition of the campaign. For example, keywords of contextual advertising ||
+[`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **PHONE**
 [`crm_multifield[]`](../data-types.md) | Phone ||
 || **EMAIL**
@@ -268,47 +276,55 @@ HTTP Status: **200**
 || **IM**
 [`crm_multifield[]`](../data-types.md) | Messenger ||
 || **LINK**
-[`crm_multifield[]`](../data-types.md) | Links. Service. ||
-|| {% note tip "Fields for External Data Sources" %}
+[`crm_multifield[]`](../data-types.md) | Links. Service field ||
+|#
+
+**Fields for connections with external data sources**
 
 If the contact was created by an external system, then:
 - the field `ORIGINATOR_ID` stores the string identifier of that system
 - the field `ORIGIN_ID` stores the string identifier of the contact in that external system
 - the field `ORIGIN_VERSION` stores the version of the contact data in that external system
 
-{% endnote %} |> ||
+#|
+|| **Name**
+`type` | **Description** ||
 || **ORIGINATOR_ID**
 [`string`][1] | External source ||
 || **ORIGIN_ID**
-[`string`][1] | Identifier of the item in the external source ||
+[`string`][1] | Identifier of the element in the external source ||
 || **ORIGIN_VERSION**
 [`string`][1] | Version of the original ||
-|| {% note tip "Deprecated Fields" %}
+|#
 
-Address fields in the contact are deprecated and are only used in compatibility mode. To work with the address, use [requisites](../requisites/index.md).
+**Deprecated Fields**
 
-{% endnote %} |> ||
+Address fields in the contact are deprecated and are only used in compatibility mode. To work with the address, use [attributes](../requisites/index.md).
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **ADDRESS**
-[`string`][1] | Address (deprecated) ||
+[`string`][1] | Address ||
 || **ADDRESS_2**
-[`string`][1] | Second line of the address (deprecated) ||
+[`string`][1] | Second line of the address ||
 || **ADDRESS_CITY**
-[`string`][1] | City (deprecated) ||
+[`string`][1] | City ||
 || **ADDRESS_POSTAL_CODE**
-[`string`][1] | Postal code (deprecated) ||
+[`string`][1] | Postal code ||
 || **ADDRESS_REGION**
-[`string`][1] | Region (deprecated) ||
+[`string`][1] | Region ||
 || **ADDRESS_PROVINCE**
-[`string`][1] | Province (deprecated) ||
+[`string`][1] | Province ||
 || **ADDRESS_COUNTRY**
-[`string`][1] | Country (deprecated) ||
+[`string`][1] | Country ||
 || **ADDRESS_LOC_ADDR_ID**
-[`integer`][1] | Location address identifier (deprecated) ||
+[`integer`][1] | Identifier of the location address ||
 |#
 
 {% note tip "Fields of type `crm_multifield`" %}
 
-Fields of type `crm_multifield` (`PHONE`, `EMAIL`, `WEB`, `IM`, `LINK`) are explicitly returned by this method only if the value of this field is not equal to `null`
+Fields of type `crm_multifield` (`PHONE`, `EMAIL`, `WEB`, `IM`, `LINK`) are explicitly returned by this method only if the values of this field are not equal to `null`.
 
 {% endnote %}
 
@@ -318,8 +334,8 @@ HTTP Status: **400**
 
 ```json
 {
-  "error": "",
-  "error_description": "ID is not defined or invalid."
+    "error": "",
+    "error_description": "ID is not defined or invalid."
 }
 ```
 
@@ -329,19 +345,19 @@ HTTP Status: **400**
 
 #|
 || **Description** | **Value** ||
-|| ID is not defined or invalid. | The parameter `id` is not provided, or the provided value is not an integer greater than 0 ||
-|| Access denied. | The user does not have permission for "Read" contact ||
-|| Not found | Contact with the provided `id` was not found ||
+|| `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not a positive integer ||
+|| `Access denied` | The user does not have permission to "Read" the contact ||
+|| `Not found` | Contact with the provided `id` was not found ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](crm-contact-fields.md)
-- [{#T}](crm-contact-add.md)
-- [{#T}](crm-contact-update.md)
-- [{#T}](crm-contact-list.md)
-- [{#T}](crm-contact-delete.md)
+- [{#T}](./crm-contact-add.md)
+- [{#T}](./crm-contact-update.md)
+- [{#T}](./crm-contact-list.md)
+- [{#T}](./crm-contact-delete.md)
+- [{#T}](./crm-contact-fields.md)
 
 [1]: ../../data-types.md

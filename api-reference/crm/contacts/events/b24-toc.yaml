@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items: 
+  - name: Overview of Events
+    href: index.md
+  - name: On Contact Creation
+    href: on-crm-contact-add.md
+  - name: On Contact Update
+    href: on-crm-contact-update.md
+  - name: On Contact Deletion
+    href: on-crm-contact-delete.md

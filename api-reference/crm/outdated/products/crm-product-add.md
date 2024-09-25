@@ -14,12 +14,14 @@ This method creates a new product.
 || **Name**
 `type` | **Description** ||
 || **fields**
-[`array`](../../../data-types.md) | Field values for creating a product.
+[`array`](../../../data-types.md) | Field values for creating the product.
 
 To find out the required format of the fields, execute the method [crm.product.fields](./crm-product-fields.md) and check the format of the incoming values for these fields ||
 |#
 
 {% note info %}
+
+Starting from version **CRM 21.700.0**, support for auto-generating the product's symbolic code has been included, provided that the generation is enabled in the infoblock settings and no external service is used. The method [generateMnemonicCode](https://dev.1c-bitrix.com/api_help/iblock/classes/ciblockelement/generatemnemoniccode.php) is utilized.
 
 If the generated symbolic code exceeds 100 characters, it is automatically truncated to 100 characters. This should be taken into account when creating requests by passing a unique value at the beginning/middle of the product name to avoid duplicate symbolic codes.
 
@@ -37,7 +39,7 @@ If the generated symbolic code exceeds 100 characters, it is automatically trunc
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"NAME":"1C-Bitrix: Site Management - Start","CURRENCY_ID":"USD","PRICE":4900,"SORT":500}}' \
+    -d '{"fields":{"NAME":"Plastic Chair","CURRENCY_ID":"USD","PRICE":4900,"SORT":500}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.product.add
     ```
 
@@ -47,7 +49,7 @@ If the generated symbolic code exceeds 100 characters, it is automatically trunc
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"NAME":"1C-Bitrix: Site Management - Start","CURRENCY_ID":"USD","PRICE":4900,"SORT":500},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"NAME":"Plastic Chair","CURRENCY_ID":"USD","PRICE":4900,"SORT":500},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.product.add
     ```
 
@@ -59,7 +61,7 @@ If the generated symbolic code exceeds 100 characters, it is automatically trunc
         {
             fields:
             {
-                "NAME": "1C-Bitrix: Site Management - Start",
+                "NAME": "Plastic Chair",
                 "CURRENCY_ID": "USD",
                 "PRICE": 4900,
                 "SORT": 500
@@ -70,7 +72,7 @@ If the generated symbolic code exceeds 100 characters, it is automatically trunc
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Created a new product with ID " + result.data());
+                console.info("Created new product with ID " + result.data());
         }
     );
     ```
@@ -84,7 +86,7 @@ If the generated symbolic code exceeds 100 characters, it is automatically trunc
         'crm.product.add',
         [
             'fields' => [
-                'NAME' => '1C-Bitrix: Site Management - Start',
+                'NAME' => 'Plastic Chair',
                 'CURRENCY_ID' => 'USD',
                 'PRICE' => 4900,
                 'SORT' => 500

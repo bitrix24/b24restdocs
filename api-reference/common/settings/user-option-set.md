@@ -1,26 +1,129 @@
-# User.option.set
+# Bind Data to User and Application user.option.set
 
-{% note warning "We are still updating this page" %}
+> Scope: [`basic`](../../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
-Some data may be missing here — we will fill it in shortly.
+The method `user.option.set` binds data to the application and user.
 
-{% endnote %}
+Depending on the type of application, it can be bound to the user who installed it or to the user with whom it interacts (applications of [the second type](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=88&LESSON_ID=7381)).
 
-{% if build == 'dev' %}
+## Method Parameters
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-See [user.option.*](./user-option.md). It briefly describes both get and set.
-It seems we need to split and provide separate descriptions.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **options***
+[`array`](../../data-types.md) | An array where the key is the name of the property to be saved, and the value is the property value. If a value with a new key is passed, the method will write it; if an existing one, it will update it ||
+|#
 
-- parameters or fields are missing
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-- links to pages that have not yet been created are not provided
+## Code Examples
 
-{% endnote %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-{% endif %}
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```curl
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{
+        "options": {
+            "data": "value",
+            "data2": "value2"
+        }
+    }' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/user.option.set
+    ```
+
+- cURL (OAuth)
+
+    ```curl
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{
+        "options": {
+            "data": "value",
+            "data2": "value2"
+        },
+        "auth": "**put_access_token_here**"
+    }' \
+    https://**put_your_bitrix24_address**/rest/user.option.set
+    ```
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'user.option.set',
+        {
+            "options": {
+                "data": "value",
+                "data2": "value2",
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'user.option.set',
+        [
+            'options' => [
+                'data' => 'value',
+                'data2' => 'value2'
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error":"ArgumentNullException",
+    "error_description":"options is empty"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Error Message** | **Description** ||
+|| `ArgumentNullException` | options is empty | Empty array `options`  ||
+|| `AccessException` | Application context required / Administrator authorization required | Access denied ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./app-option-set.md)
+- [{#T}](./app-option-get.md)
+- [{#T}](./user-option-get.md)
