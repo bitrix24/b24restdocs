@@ -1,4 +1,4 @@
-# Add Block to Repository landing.repo.register
+# Add a Custom Block to the Repository landing.repo.register
 
 {% note warning "We are still updating this page" %}
 
@@ -8,14 +8,14 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
+- edits needed for writing standards
 - parameter types not specified
 - parameter requirements not indicated
-- examples are missing
-- success response is absent
-- error response is absent
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -29,11 +29,11 @@ The method `landing.repo.register` adds a block to the repository. It returns an
 
 When adding, a check is performed. If a block with the given code already exists in the system, it will be removed.
 
-The method may return an error about dangerous content in the block. In this case, you need to first check the content being registered using the method [landing.repo.checkContent](./landing-repo-check-content.md).
+The method may return an error about dangerous content in the block. In this case, it is necessary to first check the content being registered using the method [landing.repo.checkContent](./landing-repo-check-content.md).
 
-When developing a new block or modifying an existing one, you may need to see changes faster than re-adding the block or using the RESET flag allows. It is recommended to use the method [landing.block.updatecontent](../block/methods/landing-block-update-content.md) for these purposes. This method sends arbitrary content to the block and displays changes almost "on the fly." Once development is complete, the developer can finalize the registration.
+When developing a new block or modifying an existing one, it may be necessary to see changes faster than re-adding the block or using the RESET flag allows. It is recommended to use the method [landing.block.updatecontent](../block/methods/landing-block-update-content.md) for these purposes. This method sends arbitrary content to the block and displays changes almost "on the fly." Once development is complete, the developer can finalize the registration.
 
-This method is suitable only for changing content. When changing the manifest, the block needs to be re-registered (without re-adding it to the page).
+The method is suitable only for changing content. When modifying the manifest, the block needs to be re-registered (without re-adding it to the page).
 
 ## Parameters
 
@@ -42,7 +42,7 @@ This method is suitable only for changing content. When changing the manifest, t
 || **code**
 [`unknown`](../../data-types.md) | Unique code for your block, which will be used for block removal if necessary. ||
 || **fields**
-[`unknown`](../../data-types.md) | Array of fields describing your block, consisting of keys:
+[`unknown`](../../data-types.md) | An array of fields describing your block, consisting of keys:
 - NAME - block name
 - DESCRIPTION - block description
 - SECTIONS - categories where the block should appear, separated by commas.
@@ -61,7 +61,7 @@ This method is suitable only for changing content. When changing the manifest, t
 Additional parameters:
 - RESET - if passed with the value Y, the system will automatically update all blocks added to the pages to the new layout. [Learn more...](https://dev.bitrix24.com/company/personal/user/3/blog/2091/) ||
 || **manifest**
-[`unknown`](../../data-types.md) | Array of the manifest describing the block. ||
+[`unknown`](../../data-types.md) | An array of the manifest that describes the block. ||
 |#
 
 {% note info %}
@@ -75,7 +75,7 @@ The **style** attribute may be stripped by the built-in sanitizer. To bypass thi
 
 ```php
 <?
-//for clarity, we will pass a PHP array for execution in JS
+// For clarity, we will pass a PHP array for execution in JS
 $data = array(
     'code' => 'myblockx',
     'fields' => array(
@@ -146,10 +146,10 @@ $data = array(
     ),
 );
 ?>
-// note! the following is JS code.
+// Note! The following is JS code.
 BX24.callMethod(
     'landing.repo.register',
-    //abstract method that converts PHP array to JS object
+    // Abstract method that converts PHP array to JS object
     <?= \CUtil::PhpToJSObject($data)?>,
     function(result)
     {
@@ -161,4 +161,4 @@ BX24.callMethod(
 );
 ```
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}

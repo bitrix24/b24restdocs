@@ -2,21 +2,21 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter mandatory status is not indicated
 - not all parameters have examples in the table
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 - links to pages that have not yet been created are not specified
 
 {% endnote %}
@@ -32,11 +32,13 @@ The method `imbot.command.register` registers a command for processing by the ch
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **BOT_ID**
-[`unknown`](../../data-types.md) | `62` | Identifier of the chat bot owned by the team | ||
+[`unknown`](../../data-types.md) | `62` | Identifier of the chat bot that owns the command | ||
 || **COMMAND**
-[`unknown`](../../data-types.md) | `'echo'` | The text of the command that the user will enter in chats | ||
+[`unknown`](../../data-types.md) | `'echo'` | The text of the command that the user will enter in chats.
+
+Only Latin letters and numbers can be used. Spaces and special characters are not accepted | ||
 || **COMMON**
-[`unknown`](../../data-types.md) | `'Y'` | If specified as Y, the command is available in all chats; if N, it is only available in those where the chat bot is present | ||
+[`unknown`](../../data-types.md) | `'Y'` | If Y is specified, the command is available in all chats; if N, it is only available in those where the chat bot is present | ||
 || **HIDDEN**
 [`unknown`](../../data-types.md) | `'N'` | Whether the command is hidden or not - defaults to N | ||
 || **EXTRANET_SUPPORT**
@@ -54,12 +56,12 @@ Array(
     )
 )
 ```
- | Array of translations, at least for RU and EN must be specified | ||
+ | Array of translations, at least for DE and EN must be specified | ||
 || **EVENT_COMMAND_ADD**
 [`unknown`](../../data-types.md) | `'http://www.hazz/chatApi/bot.php'` | Link to the handler for commands | ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 {% note warning %}
 
@@ -69,15 +71,15 @@ To process the command, the application must handle the event of adding a comman
 
 {% note warning %}
 
-Attention! If you plan to install more than one command for the chat bot: Bitrix24 Rest imposes a restriction on working with event handlers - there can only be one handler per application. Therefore, when registering a second command, the links to the handlers `EVENT_COMMAND_ADD` must be the same as for the first command.
+Attention! If you plan to install more than one command for the chat bot: Bitrix24 Rest imposes a limitation on working with event handlers - there can only be one handler per application. Therefore, when registering a second command, the links to the handlers `EVENT_COMMAND_ADD` must be the same as those of the first command.
 
-If it is necessary to handle multiple commands within one application, this must be accounted for within the event handler. For this, when the event occurs, an array of commands is passed to allow for proper processing.
+If it is necessary to handle multiple commands within one application, this must be accounted for within the event handler. For this, when the event occurs, an array of commands is passed to allow for correct processing.
 
 {% endnote %}
 
 {% note warning %}
 
-It is mandatory to specify the array of translations `LANG` for at least RU and EN. If there is no phrase for BY, UA, KZ, the default RU phrases will be shown; if there is no phrase in RU, the command will be hidden. The same applies to other languages - if there are no phrases, the default EN phrases will be shown; if there is no phrase in EN, the command will be hidden in the public part.
+It is mandatory to specify the array of translations `LANG` for at least DE and EN. If there is no phrase for BY, UA, KZ, the phrases from DE will be shown by default; if there is no phrase in DE, the command will be hidden. The same applies to other languages - if there are no phrases, the phrases from EN will be shown by default; if there is no phrase in EN, the command will be hidden in the public part.
 
 {% endnote %}
 
@@ -110,13 +112,13 @@ $result = restCommand(
 );
 ```
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../_includes/examples.md) %}
 
-## Response in case of success
+## Success response
 
-Identifier of the command `COMMAND_ID`.
+The command identifier `COMMAND_ID`.
 
-## Response in case of error
+## Error response
 
 error
 
@@ -132,6 +134,6 @@ error
 || **WRONG_REQUEST** | Something went wrong. ||
 |#
 
-## Related Links
+## Related links
 
-- [Event for the chat bot to receive the command ONIMCOMMANDADD](./events/index.md)
+- [Event for receiving a command by the chat bot ONIMCOMMANDADD](./events/index.md)

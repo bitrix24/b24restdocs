@@ -1,8 +1,8 @@
-# Register the imconnector.register Connector
+# Register the connector imconnector.register
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing — we will complete it soon.
 
 - parameter types are not specified
 - examples are missing
-- - these files were not in the structure, but there are links to them in the Note: imconnector.connector.data.set and cases/example_connector_chat
+- - these files were not in the structure, but there are links to them in the Notes: imconnector.connector.data.set and cases/example_connector_chat
 
 {% endnote %}
 
@@ -22,38 +22,38 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-This method registers a new type of connector.
+Method for registering a new type of connector.
 
 {% note info "Note" %}
 
-If you want the connector to appear in the general list of connectors in the widget on the website, you need to use the method [imconnector.connector.data.set](.). [Example of usage](.).
+If you want the connector to appear in the general list of connectors in the widget on the website, you need to use the method [imconnector.connector.data.set](.). [Example of use](.).
 
 {% endnote %}
 
 ## Parameters
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Parameter** | **Description** | **Available since** ||
 || **ID^*^**
-[`unknown`](../../data-types.md) | A unique identifier for the connector. It is highly recommended to add your unique prefix at the beginning of the identifier to avoid conflicts with existing and potential future identifiers of other connectors. You can use: digits, **lowercase letters**, and underscores to form the identifier. | ||
+[`unknown`](../../data-types.md) | Unique identifier for the connector. It is strongly recommended to add your unique prefix at the beginning of the identifier to avoid conflicts with existing and potential future identifiers of other connectors. You can use: digits, **lowercase letters**, and underscores to form the identifier. | ||
 || **NAME^*^**
-[`unknown`](../../data-types.md) | The display name of the connector. | ||
+[`unknown`](../../data-types.md) | Display name of the connector. | ||
 || **ICON^*^**
-[`unknown`](../../data-types.md) | An array describing the connector's icon, where:
+[`unknown`](../../data-types.md) | Array describing the connector's icon, where:
 - **DATA_IMAGE^*^**
 [`unknown`](../../data-types.md) - DATA representation of the SVG icon. [Example](*key_example)
 - **COLOR** - color. Example: `#1900ff`
 - **SIZE** - size. Example: `90%`
-- **POSITION** - SVG position. Example: `center`
+- **POSITION** - position of the SVG. Example: `center`
  | ||
 || **PLACEMENT_HANDLER^*^**
-[`unknown`](../../data-types.md) | A link to the URL of the widget handler that will be called to show users the connector's settings interface in the slider. [More details](../../../api-reference/widgets/index.md) | ||
+[`unknown`](../../data-types.md) | Link to the URL of the embedding handler that will be called to show users the connector's settings interface in the slider. [More details](../../widgets/index.md) | ||
 || **ICON_DISABLED**
-[`unknown`](../../data-types.md) | An array describing the connector's icon for the **inactive** variant, where:
+[`unknown`](../../data-types.md) | Array describing the connector's icon for the **inactive** variant, where:
 - **DATA_IMAGE^*^** - DATA representation of the SVG icon. [Example](*key_example)
 - **COLOR** - color. Example: `#1900ff`
 - **SIZE** - size. Example: `90%`
-- **POSITION** - SVG position. Example: `center`
+- **POSITION** - position of the SVG. Example: `center`
   | ||
 || **DEL_EXTERNAL_MESSAGES**
 [`unknown`](../../data-types.md) | Is it possible to delete incoming messages? Default: yes. | ||
@@ -68,12 +68,12 @@ If you want the connector to appear in the general list of connectors in the wid
 || **NEED_SIGNATURE**
 [`unknown`](../../data-types.md) | Is it possible to send a signature in the message itself? Example: a line with the operator's name is added before the message text. Default: yes. | ||
 || **CHAT_GROUP**
-[`unknown`](../../data-types.md) | Y/N. Is the chat of this channel considered a group from the outside? Default: Y. By default, users cannot write. Leads and other CRM entities are also not created. | ||
+[`unknown`](../../data-types.md) | Y/N. Is the chat of this channel group from the external side? Default: Y. By default, they cannot write. Leads and other CRM entities are also not created.| ||
 || **COMMENT**
-[`unknown`](../../data-types.md) | Description for the widget handler (see the PLACEMENT_HANDLER parameter). | ||
+[`unknown`](../../data-types.md) | Description for the embedding handler (see parameter PLACEMENT_HANDLER). | ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 [*key_example]: 
 ```

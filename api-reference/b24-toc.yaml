@@ -45,6 +45,10 @@ items:
     include:
       path: bx24-js-sdk/b24-toc.yaml
       mode: link
+  - name: B24PhpSDK
+    include:
+      path: b24phpsdk/b24-toc.yaml
+      mode: link
   - name: CRest PHP SDK
     include:
       path: crest-php-sdk/b24-toc.yaml
@@ -57,73 +61,89 @@ items:
     include:
       path: common/toc.yaml
       mode: link
-  - name: CRM
-    include:
-      path: crm/toc.yaml
-      mode: link
   - name: CoPilot
     include:
       path: ai/b24-toc.yaml
       mode: link 
-  - name: News Feed
+  - name: CRM
     include:
-      path: log/toc.yaml
+      path: crm/toc.yaml
       mode: link
-  - name: Online Store
+  - name: Workflows and Automation Rules
     include:
-      path: sale/b24-toc.yaml
+      path: bizproc/b24-toc.yaml
       mode: link
-  - name: Users
+  - name: Vibe
     include:
-      path: user/b24-toc.yaml
-      mode: link
-  - name: Workflows
-    include:
-      path: bizproc/toc.yaml
+      path: vibe/b24-toc.yaml
       mode: link
   - name: Document Generator
     include:
       path: document-generator/toc.yaml
       mode: link
+  - name: Disk
+    include:
+      path: disk/toc.yaml
+      mode: link
+  - name: Tasks
+    include:
+      path: tasks/b24-toc.yaml
+      mode: link
+  - name: Online Store
+    include:
+      path: sale/b24-toc.yaml
+      mode: link
   - name: Calendar
     include:
       path: calendar/toc.yaml
       mode: link
-  - name: Payment Systems
+  - name: News Feed
     include:
-      path: pay-system/b24-toc.yaml
-      mode: link
-  - name: Company Structure
-    include:
-      path: departments/toc.yaml
-      mode: link
-  - name: User Agreements
-    include:
-      path: user-consent/toc.yaml
-      mode: link
-  - name: Working Groups and Projects
-    include:
-      path: sonet-group/toc.yaml
+      path: log/toc.yaml
       mode: link
   - name: Open Lines
     include:
       path: imopenlines/b24-toc.yaml
       mode: link
-  - name: Chatbots
+  - name: Payment Systems
     include:
-      path: chat-bots/b24-toc.yaml
+      path: pay-system/b24-toc.yaml
       mode: link
-  - name: Chats
+  - name: Users
     include:
-      path: chats/b24-toc.yaml
+      path: user/b24-toc.yaml
+      mode: link
+  - name: User Agreements
+    include:
+      path: user-consent/toc.yaml
+      mode: link
+  - name: Mail Services
+    include:
+      path: mailservice/toc.yaml
+      mode: link
+  - name: Message Providers, SMS Providers
+    include:
+      path: messageservice/toc.yaml
+      mode: link
+  - name: Workgroups and Projects
+    include:
+      path: sonet-group/toc.yaml
       mode: link
   - name: Sites and Stores
     include:
       path: landing/toc.yaml
       mode: link
-  - name: Message Providers, SMS Providers
+  - name: Company Structure
     include:
-      path: messageservice/toc.yaml
+      path: departments/toc.yaml
+      mode: link
+  - name: Telephony
+    include:
+      path: telephony/toc.yaml
+      mode: link
+  - name: Trade Catalog
+    include:
+      path: catalog/toc.yaml
       mode: link
   - name: Universal Lists
     include:
@@ -137,25 +157,13 @@ items:
     include:
       path: entity/toc.yaml
       mode: link
-  - name: Trade Catalog
+  - name: Chats
     include:
-      path: catalog/toc.yaml
+      path: chats/b24-toc.yaml
       mode: link
-  - name: Telephony
+  - name: Chatbots
     include:
-      path: telephony/toc.yaml
-      mode: link
-  - name: Disk
-    include:
-      path: disk/toc.yaml
-      mode: link
-  - name: Tasks
-    include:
-      path: tasks/b24-toc.yaml
-      mode: link
-  - name: Mail Services
-    include:
-      path: mailservice/toc.yaml
+      path: chat-bots/b24-toc.yaml
       mode: link
   - name: Deprecated Methods
     include:

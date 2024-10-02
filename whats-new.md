@@ -2,6 +2,13 @@
 
 ## 2024
 
+### 2 October 2024
+
+- New documentation has been added for the [Vibe](./api-reference/vibe/index.md)
+- Added [OAuth server error codes](./api-reference/oauth/error-codes.md)
+- Updated documentation for core methods related to workflows [bizproc.workflow.*](./api-reference/bizproc/bizproc-workflow-start.md)
+- Updated documentation for [system methods](./api-reference/common/system/index.md)
+
 ### 25 September 2024
 
 - Updated documentation for [contact events](./api-reference/crm/contacts/events/index.md) and [contact custom fields events](./api-reference/crm/contacts/userfield/events/index.md)

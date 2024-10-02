@@ -1,43 +1,140 @@
 # Get Access Permission Names access.name
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- parameter types are not specified
-- no response in case of success
-- no response in case of error
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`basic`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The `access.name` method retrieves the names of access permissions.
+The method `access.name` retrieves the names of access permissions.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **ACCESS^*^**
-[`unknown`](../../data-types.md) | Required. A list of permission identifiers for which names need to be retrieved. ||
+|| **Name**
+`type` | **Description** ||
+|| **ACCESS***
+[`array`](../../data-types.md) | A list of permission identifiers for which names need to be retrieved ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
-
-## Examples
-
-```http
-https://my.bitrix24.com/rest/access.name.xml?ACCESS[]=AU&auth=d161f25928c3184678924ec127edd29a
-```
+## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```curl
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{
+        "ACCESS": ["G2", "AU"]
+    }' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/access.name
+    ```
+
+- cURL (OAuth)
+
+    ```curl
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{
+        "ACCESS": ["G2", "AU"],
+        "auth": "**put_access_token_here**"
+    }' \
+    https://**put_your_bitrix24_address**/rest/access.name
+    ```
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "access.name",
+        {
+            "ACCESS": ["G2", "AU"]
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'access.name',
+        [
+            'ACCESS' => ['G2','AU']
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "G2": {
+            "provider": "",
+            "name": "All visitors",
+            "provider_id": "other"
+        },
+        "AU": {
+            "provider": "",
+            "name": "All authorized users",
+            "provider_id": "other"
+        }
+    },
+    "time": {
+        "start": 1722002504.2838,
+        "finish": 1722002504.32483,
+        "duration": 0.0410301685333252,
+        "processing": 0.00145506858825684,
+        "date_start": "2024-07-26T14:01:44+00:00",
+        "date_finish": "2024-07-26T14:01:44+00:00",
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Objects describing the permissions ||
+|| **time**
+[`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./method-get.md)
+- [{#T}](./scope.md)
+- [{#T}](./app-info.md)
+- [{#T}](./feature-get.md)
+- [{#T}](./server-time.md)
+- [{#T}](./methods.md)

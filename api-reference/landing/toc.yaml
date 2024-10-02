@@ -1,23 +1,23 @@
 title: General Methods
 href: index.md
 items:
-  - name: List of Methods 
+  - name: Overview of Methods
     href: index.md
-  - name: Working with Site Types and Scopes 
+  - name: Working with Site Types and Scopes
     href: types.md
-  - name: Entity Site
+  - name: Site Entity
     include:
       path: site/toc.yaml
       mode: link
-  - name: Entity Page
+  - name: Page Entity
     include:
       path: page/b24-toc.yaml
       mode: link
-  - name: Entity Blocks
+  - name: Block Entity
     include:
       path: block/toc.yaml
       mode: link
-  - name: Entity View Template
+  - name: View Template Entity
     include:
       path: template/toc.yaml
       mode: link
@@ -25,15 +25,15 @@ items:
     include:
       path: embedding/toc.yaml
       mode: link
-  - name: Partner Blocks
+  - name: Custom Blocks
     include:
-      path: partners-blocks/toc.yaml
+      path: user-blocks/toc.yaml
       mode: link
-  - name: Partner Templates
+  - name: Custom Templates
     include:
       path: demos/toc.yaml
       mode: link
-  - name: Rights
+  - name: Permissions
     include:
       path: rights/toc.yaml
       mode: link

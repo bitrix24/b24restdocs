@@ -1,22 +1,22 @@
-# Get Task List tasks.task.list
+# Get the list of tasks tasks.task.list
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- parameter requirements not specified
-- missing curl examples 
-- missing error response
- 
+- parameter types are not specified
+- parameter requirements are not indicated
+- curl examples are missing
+- response in case of error is absent
+
 {% endnote %}
 
 {% endif %}
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ The method `tasks.task.list` returns an array of tasks, each containing an array
 
 To retrieve data for all tasks, the user must have admin rights. A department head will only have access to tasks within their branch of the hierarchy.
 
-Tasks marked as "Favorite" can also be retrieved by filtering with the parameter `$filter[::SUBFILTER-PARAMS][FAVORITE]=Y`.
+Tasks marked as "Favorite" can also be retrieved by setting the filter parameter `$filter[::SUBFILTER-PARAMS][FAVORITE]=Y`.
 
 {% note warning %}
 
@@ -63,10 +63,10 @@ The sorting field can take the following values:
 - **PRIORITY** — Task priority.
 - **MARK** — Rating for task completion.
 - **CREATED_BY_LAST_NAME** — Last name of the task creator.
-- **RESPONSIBLE_LAST_NAME** — Last name of the task performer.
+- **RESPONSIBLE_LAST_NAME** — Last name of the task assignee.
 - **GROUP_ID** — Identifier of the working group.
 - **TIME_ESTIMATE** — Time spent on task execution.
-- **ALLOW_CHANGE_DEADLINE** — Flag allowing the performer to change the deadline.
+- **ALLOW_CHANGE_DEADLINE** — Flag allowing the assignee to change the deadline.
 - **ALLOW_TIME_TRACKING** — Flag enabling time tracking for the task.
 - **MATCH_WORK_TIME** — Flag indicating the need to skip weekends.
 - **FAVORITE** — Flag indicating that the task has been added to favorites.
@@ -79,12 +79,12 @@ In the on-premise version, the list of fields for sorting can be obtained using 
 
 {% endnote %}
 
-Sorting direction can take the following values: 
+The sorting direction can take the following values: 
 
 - **asc** — ascending;
 - **desc** — descending;
 
-Optional. By default, it is sorted in descending order by task identifier. 
+Optional. By default, it is filtered in descending order by task identifier. 
  ||
 || **filter**
 [`unknown`](../data-types.md) | An array in the format `{"filter_field": "filter_value" [, ...]}`. The filter field can take the following values:
@@ -95,8 +95,8 @@ Optional. By default, it is sorted in descending order by task identifier.
 - **STATUS_CHANGED_BY** - user who last changed the task status;
 - **PRIORITY** - priority;
 - **FORUM_TOPIC_ID** - identifier of the forum topic;
-- **RESPONSIBLE_ID** - performer;
-- **TITLE** - task title (can be searched using the pattern [\%_]);
+- **RESPONSIBLE_ID** - assignee;
+- **TITLE** - task title (can search by pattern [\%_]);
 - **TAG** - tag;
 - **REAL_STATUS** - task status. Constants reflecting task statuses:
     - STATE_NEW = 1;
@@ -117,7 +117,7 @@ Optional. By default, it is sorted in descending order by task identifier.
 - **DEADLINE** - deadline;
 - **CREATED_DATE** - creation date;
 - **CLOSED_DATE** - completion date;
-- **CHANGED_DATE** - date of the last modification;
+- **CHANGED_DATE** - last modification date;
 - **ACCOMPLICE** - identifier of the participant;
 - **AUDITOR** - identifier of the auditor;
 - **DEPENDS_ON** - identifier of the previous task;
@@ -125,20 +125,20 @@ Optional. By default, it is sorted in descending order by task identifier.
 - **STAGE_ID** - stage;
 - **UF_CRM_TASK** - CRM entities;
 
-Before the name of the filter field, the type of filtering can be specified:
+Before the filter field name, the type of filtering can be specified:
 - "!" - not equal
 - "<" - less than
 - "<=" - less than or equal to
 - ">" - greater than
 - ">=" - greater than or equal to 
 
-*"filter values"* - single value or array.
+*"filter values"* - a single value or an array.
 
 Optional. By default, records are not filtered. ||
 || **select**
 [`unknown`](../data-types.md) | An array of record fields that will be returned by the method. Only the necessary fields can be specified.
 
-The sorting field can take the following values: 
+Available fields: 
 - **ID** - task identifier;
 - **PARENT_ID** - identifier of the parent task;
 - **TITLE** - task title;
@@ -156,14 +156,14 @@ The sorting field can take the following values:
 - **STAGE_ID** - stage;
 - **CREATED_BY** - creator;
 - **CREATED_DATE** - creation date;
-- **RESPONSIBLE_ID** - performer;
+- **RESPONSIBLE_ID** - assignee;
 - **ACCOMPLICES** - identifier of the participant;
 - **AUDITORS** - identifier of the auditor;
 - **CHANGED_BY** - who modified the task;
-- **CHANGED_DATE** - date of modification;
-- **STATUS_CHANGED_DATE** - date of status change;
+- **CHANGED_DATE** - modification date;
+- **STATUS_CHANGED_DATE** - status change date;
 - **CLOSED_BY** - who closed the task;
-- **CLOSED_DATE** - date of task closure;
+- **CLOSED_DATE** - task closure date;
 - **DATE_START** - start date;
 - **DEADLINE** - deadline;
 - **START_DATE_PLAN** - planned start;
@@ -172,7 +172,7 @@ The sorting field can take the following values:
 - **XML_ID** - external code;
 - **COMMENTS_COUNT** - number of comments;
 - **NEW_COMMENTS_COUNT** - number of new comments;
-- **TASK_CONTROL** - take into work;
+- **TASK_CONTROL** - accept for work;
 - **ADD_IN_REPORT** - add to report;
 - **FORKED_BY_TEMPLATE_ID** - created from a template;
 - **TIME_ESTIMATE** - time spent;
@@ -181,19 +181,19 @@ The sorting field can take the following values:
 - **FORUM_TOPIC_ID** - identifier of the forum topic;
 - **FORUM_ID** - identifier of the forum;
 - **SITE_ID** - identifier of the site;
-- **SUBORDINATE** - task of a subordinate;
+- **SUBORDINATE** - subordinate's task;
 - **FAVORITE** - Favorites;
 - **VIEWED_DATE** - date of last view;
 - **SORTING** - sorting index;
 - **DURATION_PLAN** - time spent (planned);
 - **DURATION_FACT** - time spent (actual);
-- **DURATION_TYPE** - type of measurement unit in planned duration: days, hours, or minutes.
+- **DURATION_TYPE** - unit type in planned duration: days, hours, or minutes.
 
 By default, all **non-computed** fields of the main query table will be returned.
 
-The list of fields can be refined by sending a request to [tasks.task.getFields](tasks-task-get-fields.md). ||
+The list of fields can be specified by sending a request to [tasks.task.getFields](tasks-task-get-fields.md). ||
 || **limit**
-[`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to retrieve more records than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in several requests of 50 records in response. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
+[`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to retrieve a number of records greater than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in several requests of 50 records each. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
 ```js
 start=0
 start=50
@@ -201,7 +201,7 @@ start=100
 ```
 ||
 || **start**
-[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, the value of this parameter must always be a multiple of 50. For example, with a value of 50, the 51st record and subsequent ones will be displayed in the result, while the first 50 records will be skipped.
+[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, the value of this parameter must always be a multiple of 50. For example, with a value of 50, the 51st record and subsequent ones will be displayed, while the first 50 records will be skipped.
 
 With a value of `-1`, the count will be disabled. 
 
@@ -224,7 +224,7 @@ BX24.callMethod(
 );
 ```
 
-## Response on success
+## Response in case of success
 
 > 200 OK
 
@@ -234,7 +234,7 @@ BX24.callMethod(
         "list": [
             {
                 "id": "1230",
-                "createdDate": "01.03.2019 15:29:28",
+                "createdDate": "03.01.2019 15:29:28",
                 "field": "NEW",
                 "value": {
                     "from": null,
@@ -243,7 +243,7 @@ BX24.callMethod(
                 "user": {
                     "id": "1",
                     "name": "Max",
-                    "lastName": "Grechushnikov",
+                    "lastName": "Greechushnikov",
                     "secondName": "",
                     "login": "admin"
                 }

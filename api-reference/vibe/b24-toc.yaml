@@ -1,0 +1,9 @@
+title: Vibe  
+href: index.md  
+items:  
+  - name: Vibe and Widgets  
+    href: index.md  
+  - name: Add Widget  
+    href: landing-repowidget-register.md  
+  - name: Remove Widget  
+    href: landing-repowidget-unregister.md  

@@ -1,68 +1,150 @@
 # Get a List of Available Methods
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- missing parameters or fields
-- parameter types not specified
-- parameter requirements not specified
-- examples missing
-- error response missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`basic`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
+The `methods` method retrieves a list of available methods.
+
 {% note alert %}
 
-The `methods` method is deprecated and will be removed by September 1, 2022. It is strongly recommended to use the [method.get](./method-get.md) method instead.
+This method is deprecated; it is strongly recommended to use [method.get](./method-get.md) instead.
 
 {% endnote %}
 
-## Parameters
+## Method Parameters
 
-No parameters - displays a list of methods available to the current application.
-
-### Additional Parameters
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
-|| **Field** | **Description** ||
-|| `full=true` | displays all methods. ||
-|| `scope=permission_name` | displays methods included in this permission. If the parameter is specified without a value (`methods?scope=&auth=xxxxx`), all common methods will be displayed. ||
+|| **Name**
+`type` | **Description** ||
+|| **full**
+[`boolean`](../../data-types.md) | If the parameter is set to `true`, the method will return a list of all methods ||
+|| **scope**
+[`string`](../../data-types.md) | Displays methods included in the specified permission. If the parameter is provided without a value (`methods?scope=&auth=xxxxx`), all common methods will be displayed. ||
 |#
 
-## Examples
+> If the method is called without parameters, it will return a list of all methods available to the current application.
 
-```http
-https://my.bitrix24.com/rest/methods?scope=&auth=d161f25928c3184678924ec127edd29a - show all public methods.
-```
+## Code Examples
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
-## Successful Response
+{% list tabs %}
 
-> 200 OK
+- cURL (Webhook)
+
+    ```curl
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{
+        "scope": "user"
+    }' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/methods
+    ```
+
+- cURL (OAuth)
+
+    ```curl
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{
+        "scope": "user",
+        "auth": "**put_access_token_here**"
+    }' \
+    https://**put_your_bitrix24_address**/rest/methods
+    ```
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "methods",
+        {
+            "scope": "user"
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'methods',
+        [
+            'scope' => 'user'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP Status: **200**
+
 ```json
 {
-    "result":[
-        "scope",
-        "methods",
-        "batch",
-        "user.admin",
-        "user.access",
-        "access.name"
-    ]
+    "result": [
+        "user.fields",
+        "user.current",
+        "user.get",
+        "user.search",
+        "user.add",
+        "user.update",
+        "user.online",
+        "user.counters",
+        "user.history.list",
+        "user.history.fields.list"
+    ],
+    "time": {
+        "start": 1721986432.32646,
+        "finish": 1721986432.3598,
+        "duration": 0.0333478450775147,
+        "processing": 0.000032901763916015,
+        "date_start": "2024-07-26T09:33:52+00:00",
+        "date_finish": "2024-07-26T09:33:52+00:00",
+        "operating": 0
+    }
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../data-types.md) | An array containing the list of permissions ||
+|| **time**
+[`time`](../../data-types.md) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./method-get.md)
+- [{#T}](./scope.md)
+- [{#T}](./app-info.md)
+- [{#T}](./access-name.md)
+- [{#T}](./feature-get.md)
+- [{#T}](./server-time.md)

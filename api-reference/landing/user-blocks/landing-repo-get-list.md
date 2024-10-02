@@ -1,4 +1,4 @@
-# Get the list of blocks landing.repo.getList
+# Get the list of custom blocks landing.repo.getList
 
 {% note warning "We are still updating this page" %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.repo.getList` retrieves a list of blocks for the current application.
+The method `landing.repo.getList` retrieves the list of blocks for the current application.
 
 ## Parameters
 
@@ -47,13 +47,13 @@ which contain values from the main fields table of the entity. The table is prov
 || **ID**
 [`unknown`](../../data-types.md) | Record identifier ||
 || **XML_ID**
-[`unknown`](../../data-types.md) | Unique code of the record. ||
+[`unknown`](../../data-types.md) | Unique record code. ||
 || **APP_CODE**
 [`unknown`](../../data-types.md) | Code of the current application. ||
 || **ACTIVE**
 [`unknown`](../../data-types.md) | Activity status (Y / N). ||
 || **NAME**
-[`unknown`](../../data-types.md) | Title. ||
+[`unknown`](../../data-types.md) | Name. ||
 || **DESCRIPTION**
 [`unknown`](../../data-types.md) | Description. ||
 || **SECTIONS**

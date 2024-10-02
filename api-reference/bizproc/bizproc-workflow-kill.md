@@ -1,58 +1,144 @@
-# Deleting a Running Process
+# Delete Running Process bizproc.workflow.kill
 
-{% note warning "We are still updating this page" %}
+> Scope: [`bizproc`](../scopes/permissions.md)
+>
+> Who can execute the method: administrator
 
-Some data may be missing here — we will complete it soon.
+This method deletes a running workflow along with all process data.
 
-{% endnote %}
+## Method Parameters
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types not specified
-- examples are missing
-- success response is absent
-- error response is absent
-- what is the difference from the terminate method?
-  
-{% endnote %}
-
-{% endif %}
-
-{% note info "bizproc.workflow.kill!" %}
-
-{% include notitle [Scope of bizproc all](./_includes/scope-bizproc-all.md) %}
-
-{% endnote %}
-
-This method deletes a running workflow.
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **ID**^*^ | Identifier of the workflow. ||
+|| **Name**
+`type` | **Description** ||
+|| **ID***
+[`integer`](../data-types.md) | Identifier of the workflow ||
 |#
 
-\* - Required parameters
+## Code Examples
 
-## Example
- ```javascript
-function killWf(id, cb)
+{% include [Note on examples](../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ID":"65e5a449e8f135.21284909"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/bizproc.workflow.kill
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ID":"65e5a449e8f135.21284909","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/bizproc.workflow.kill
+    ```
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'bizproc.workflow.kill',
+        {
+            ID: '65e5a449e8f135.21284909',
+        },
+        function(result) {
+            console.log('response', result.answer);
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'bizproc.workflow.kill',
+        [
+            'ID' => '65e5a449e8f135.21284909'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP status: **200**
+
+```json
 {
-	var params = {ID: id};
-	BX24.callMethod(
-		'bizproc.workflow.kill',
-		params,
-		function(result)
-		{
-			if(result.error())
-				alert("Error: " + result.error());
-			else if (cb)
-				cb();
-		}
-	);
+    "result": true,
+    "time": {
+        "start": 1726476060.581428,
+        "finish": 1726476060.813776,
+        "duration": 0.23234796524047852,
+        "processing": 0.002630949020385742,
+        "date_start": "2024-09-16T08:41:00+00:00",
+        "date_finish": "2024-09-16T08:41:00+00:00",
+        "operating_reset_at": 1726476660,
+        "operating": 0
+    }
 }
 ```
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../data-types.md) | Root element of the response.
+
+Contains `true` in case of success ||
+|| **time**
+[`time`](../data-types.md) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**, **403**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied!"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** |**Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
+|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Empty workflow instance ID | An empty value was passed to the `ID` parameter ||
+|#
+
+{% include [system errors](../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./bizproc-workflow-start.md)
+- [{#T}](./bizproc-workflow-instances.md)
+- [{#T}](./bizproc-workflow-terminate.md)

@@ -1,59 +1,251 @@
-# List of Active Workflows
+# Get a List of Running Workflows bizproc.workflow.instances
 
-{% note warning "We are still updating this page" %}
+> Scope: [`bizproc`](../scopes/permissions.md)
+>
+> Who can execute the method: administrator
 
-Some data may be missing here — we will fill it in shortly.
+This method retrieves a list of running workflows.
 
-{% endnote %}
+{% note info "bizproc.workflow.instance.list" %}
 
-{% if build == 'dev' %}
+There is an older method `bizproc.workflow.instance.list` — an alias for the method `bizproc.workflow.instances`. It accepts the same parameters and returns the same results.
 
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- missing parameters or fields
-- parameter types not specified
-- required parameters not indicated
-- examples missing
-- success response missing
-- error response missing
+Support for `bizproc.workflow.instance.list` is not guaranteed in the future, so we recommend using `bizproc.workflow.instances`.
 
 {% endnote %}
 
-{% endif %}
+## Method Parameters
 
-{% note info "bizproc.workflow.instances" %}
+#|
+|| **Name**
+`type` | **Description** ||
+|| **SELECT**
+[`array`](../data-types.md) | An array containing the list of fields to select.
 
-{% include notitle [Scope bizproc admin](./_includes/scope-bizproc-admin.md) %}
+You can specify only the fields that are necessary.
 
-{% endnote %}
+Available fields:
+- `ID` — identifier of the workflow
+- `MODIFIED` — date of the last modification
+- `OWNED_UNTIL` — time the workflow is locked. The process is considered stuck if the difference between the lock time and the current time is more than 5 minutes
+- `MODULE_ID` — module identifier by document
+- `ENTITY` — entity identifier by document
+- `DOCUMENT_ID` — document identifier
+- `STARTED` — date the workflow was started
+- `STARTED_BY` — who started the workflow
+- `TEMPLATE_ID` — identifier of the workflow template
 
-{% note warning "bizproc.workflow.instance.list" %}
+Default value: `['ID', 'MODIFIED', 'OWNED_UNTIL']` ||
+|| **FILTER**
+[`object`](../data-types.md) | An object for filtering the list of running workflows in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-There is an old method `bizproc.workflow.instance.list`, which is an alias for the current method `bizproc.workflow.instances`. The method `bizproc.workflow.instance.list` accepts the same parameters and returns the same results. Support for `bizproc.workflow.instance.list` is not guaranteed in the future, so it is recommended to use `bizproc.workflow.instances`.
+The list of filterable fields is the same as for the `SELECT` parameter.
 
-{% endnote %}
+You can specify the type of filtering before the name of the filtered field:
+- `!` — not equal
+- `<` — less than
+- `<=` — less than or equal to
+- `>` — greater than
+- `>=` — greater than or equal to | ||
+|| **ORDER**
+[`object`](../data-types.md) | An object for sorting the list of running workflows in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-The method returns a list of active workflows.
+The list of fields for sorting is the same as for the `SELECT` parameter.
 
-## Examples
+The sorting direction can take the following values:
+- `asc` — ascending
+- `desc` — descending
+  
+Default value: `{'MODIFIED': 'desc'}` ||
+|| **start**
+[`integer`](../data-types.md) | This parameter is used for managing pagination.
 
-```javascript
-BX24.callMethod(
-	'bizproc.workflow.instances',
-	{
-		select: ['ID', 'MODIFIED', 'OWNED_UNTIL', 'MODULE_ID', 'ENTITY', 'DOCUMENT_ID', 'STARTED', 'STARTED_BY', 'TEMPLATE_ID'],
-		order: {STARTED: 'DESC'},
-		filter: {'>STARTED_BY': 0}
-	},
-	function(result)
-	{
-		if(result.error())
-			alert("Error: " + result.error());
-		else
-			console.log(result.data());
-	}
-);
+The page size of results is always static — 50 records.
+
+To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
+
+The formula for calculating the `start` parameter value:
+
+`start = (N - 1) * 50`, where `N` — the number of the desired page ||
+|#
+
+## Code Examples
+
+{% include [Examples Note](../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"select":["ID","MODIFIED","OWNED_UNTIL","MODULE_ID","ENTITY","DOCUMENT_ID","STARTED","STARTED_BY","TEMPLATE_ID"],"order":{"STARTED":"DESC"},"filter":{">STARTED_BY":0}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/bizproc.workflow.instances
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"select":["ID","MODIFIED","OWNED_UNTIL","MODULE_ID","ENTITY","DOCUMENT_ID","STARTED","STARTED_BY","TEMPLATE_ID"],"order":{"STARTED":"DESC"},"filter":{">STARTED_BY":0},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/bizproc.workflow.instances
+    ```
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'bizproc.workflow.instances',
+        {
+            select: [
+                'ID',
+                'MODIFIED',
+                'OWNED_UNTIL',
+                'MODULE_ID',
+                'ENTITY',
+                'DOCUMENT_ID',
+                'STARTED',
+                'STARTED_BY',
+                'TEMPLATE_ID'
+            ],
+            order: {
+                STARTED: 'DESC'
+            },
+            filter: {
+                '>STARTED_BY': 0
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'bizproc.workflow.instances',
+        [
+            'select' => [
+                'ID',
+                'MODIFIED',
+                'OWNED_UNTIL',
+                'MODULE_ID',
+                'ENTITY',
+                'DOCUMENT_ID',
+                'STARTED',
+                'STARTED_BY',
+                'TEMPLATE_ID'
+            ],
+            'order' => [
+                'STARTED' => 'DESC'
+            ],
+            'filter' => [
+                '>STARTED_BY' => 0
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result":[
+        {
+            "DOCUMENT_ID": "LEAD_1",
+            "ENTITY": "CCrmDocumentLead",
+            "ID": "66e412fdc9bd44.36306599",
+            "STARTED": "2024-09-13T10:25:01+00:00",
+            "MODULE_ID": "crm",
+            "OWNED_UNTIL": null,
+            "TEMPLATE_ID": "1",
+            "STARTED_BY": "0"
+        },
+        {
+            "DOCUMENT_ID":"DEAL_1633",
+            "ENTITY":"CCrmDocumentDeal",
+            "ID":"658c4d3d6a2906.51542462",
+            "STARTED":"2023-12-27T19:13:49+02:00",
+            "MODULE_ID":"crm",
+            "OWNED_UNTIL":null,
+            "TEMPLATE_ID":"212",
+            "STARTED_BY":"57"
+        }
+    ],
+    "total": 2,
+    "time": {
+        "start": 1726476060.581428,
+        "finish": 1726476060.813776,
+        "duration": 0.23234796524047852,
+        "processing": 0.002630949020385742,
+        "date_start": "2024-09-16T08:41:00+00:00",
+        "date_finish": "2024-09-16T08:41:00+00:00",
+        "operating_reset_at": 1726476660,
+        "operating": 0
+    }
+}
 ```
- 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../data-types.md) | The root element of the response. 
+
+Contains an array of objects with information about the running workflows ||
+|| **total**
+[`integer`](../data-types.md) | The total number of records found ||
+|| **time**
+[`time`](../data-types.md) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **403**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied!"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** |**Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was executed by a non-administrator ||
+|#
+
+{% include [system errors](../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./bizproc-workflow-start.md)
+- [{#T}](./bizproc-workflow-terminate.md)
+- [{#T}](./bizproc-workflow-kill.md)

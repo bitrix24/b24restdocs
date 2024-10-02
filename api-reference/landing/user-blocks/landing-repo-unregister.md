@@ -1,8 +1,8 @@
-# Remove Block landing.repo.unregister
+# Delete User Block landing.repo.unregister
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.repo.unregister` removes a block. It returns *true* upon successful deletion or *false* if the block has already been deleted or did not exist.
+The method `landing.repo.unregister` deletes a block. It returns *true* upon deletion or *false* if the block was already deleted or did not exist.
 
 ## Parameters
 

@@ -1,8 +1,8 @@
-# Editing Point of LANDING_BLOCK
+# Editing Section of LANDING_BLOCK
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,19 +11,19 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter mandatory status is not specified
+- parameter requirements are not indicated
 
 {% endnote %}
 
 {% endif %}
 
-Currently, developers have the ability to integrate into the editing points of any block. In the case of such registration, a button to call your application will appear next to the "Edit" and "Design" buttons of the block.
+Currently, developers have the ability to integrate into the editing sections of any block. In the case of such registration, a button to call your application will appear next to the "Edit" and "Design" buttons of the block.
 
-The code for embedding the application depends on the block code and generally looks like this: `LANDING_BLOCK_<CODE>`. If it's a system block, it's clear that you need to insert the block code instead of `<CODE>` (examples below). However, when embedding into a block registered by you, you need to substitute its identifier.
+The code for embedding the application depends on the block code and generally looks like this: `LANDING_BLOCK_<CODE>`. If it is clear for a system block, where you need to insert the block code instead of `<CODE>` (examples below), then for embedding into a block registered by you, you need to substitute its identifier.
 
 For example:
 
-1. Register a [block](../partners-blocks/landing-repo-register.md). The method will return the `ID` of the block. Let's say it equals 1132 for this example.
+1. Register a [block](../user-blocks/landing-repo-register.md). The method will return the `ID` of the block. Let's say it equals 1132 for this example.
 2. When registering the embedding location, specify the code: `LANDING_BLOCK_repo_1132` (or `LANDING_BLOCK_REPO_1132`, case does not matter).
 
 ## Parameters
@@ -31,7 +31,7 @@ For example:
 The following parameters are available for this embedding location:
 
 #|
-|| **Parameter** | **Description** | **From version** ||
+|| **Parameter** | **Description** | **Available since** ||
 || **ID**
 [`unknown`](../../data-types.md) | – identifier of the block. | ||
 || **CODE**
@@ -40,7 +40,7 @@ The following parameters are available for this embedding location:
 [`unknown`](../../data-types.md) | – identifier of the page. | ||
 |#
 
-You can obtain parameters from PLACEMENT_OPTIONS:
+You can obtain the parameters from PLACEMENT_OPTIONS:
 
 ```php
 $placement = isset($_REQUEST['PLACEMENT_OPTIONS'])
@@ -92,7 +92,7 @@ BX24.callMethod(
 )
 ```
 
-## Updating the Block from the Application
+## Updating a Block from the Application
 
 In the opened application, there is a command to update a specific block. It is assumed that after working with the block from which the application was called, you may need to refresh it. This is done through the refreshBlock command.
 
@@ -112,4 +112,4 @@ BX24.placement.call(
 );
 ```
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}

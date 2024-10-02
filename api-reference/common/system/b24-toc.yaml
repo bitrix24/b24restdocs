@@ -1,0 +1,19 @@
+title: System Methods
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Get a List of Available Methods
+    href: method-get.md
+  - name: Get a List of Available Permissions
+    href: scope.md
+  - name: Show Application Information
+    href: app-info.md
+  - name: Get Access Permission Names
+    href: access-name.md
+  - name: Get Information on Feature Availability on Account
+    href: feature-get.md
+  - name: Get Current Server Time
+    href: server-time.md
+  - name: Get a List of Available Methods (Deprecated)
+    href: methods.md

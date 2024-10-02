@@ -2,18 +2,18 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing
-- no error response is provided
+- no response in case of error
 
 {% endnote %}
 
@@ -56,7 +56,7 @@ BX24.callMethod(
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-# Response on Success
+# Response in case of success
 
 > 200 OK
 ```json

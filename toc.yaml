@@ -1,7 +1,7 @@
 title: Bitrix24 REST API and Marketing Applications
 href: index.yaml
 items: 
-  - name: How REST API can be used
+  - name: What the Bitrix24 REST API Allows
     href: developing-with-rest-api.md
   - name: Getting Started
     href: about.md
@@ -19,7 +19,7 @@ items:
     href: limits.md
   - name: Error Codes
     href: error-codes.md       
-  - name: Changelog
+  - name: What's New
     href: whats-new.md
   - name: Developer Meetups
     href: meetups.md
@@ -54,7 +54,7 @@ navigation:
       - text: 'Getting Started'
         type: 'link'
         url: '/about.html'
-      - text: 'Changelog'
+      - text: 'Whats New'
         type: 'link'
         url: '/whats-new.html'     
       - text: 'Typical Use-Cases'

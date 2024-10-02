@@ -9,18 +9,18 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 ## Where the widget is embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Widget code** | **Location** ||
 || `CRM_LEAD_DETAIL_TAB` | Tab in the [lead](../../crm/leads/) detail form ||
 || `CRM_DEAL_DETAIL_TAB` | Tab in the [deal](../../crm/deals/) detail form ||
 || `CRM_CONTACT_DETAIL_TAB` | Tab in the [contact](../../crm/contacts/) detail form ||
 || `CRM_COMPANY_DETAIL_TAB` | Tab in the [company](../../crm/companies/) detail form ||
 || `CRM_QUOTE_DETAIL_TAB` | Tab in the [estimate](../../crm/quote/) detail form ||
-|| `CRM_DYNAMIC_XXX_DETAIL_TAB` | Tab in the detail form of a custom type CRM entity. Instead of XXX, specify the numeric identifier of the specific [custom type](../../crm/universal/). For example, `CRM_DYNAMIC_183_DETAIL_TAB` ||
+|| `CRM_DYNAMIC_XXX_DETAIL_TAB` | Tab in the detail form of a custom type entity. Replace XXX with the numeric identifier of the specific [custom type entity](../../crm/universal/). For example, `CRM_DYNAMIC_183_DETAIL_TAB` ||
 |#
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 {% list tabs %}
 
@@ -165,7 +165,7 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 #|
 || **Parameter** | **Description** ||
 || **ID*** 
-[`string`](../../data-types.md) | Identifier of the CRM entity for which the widget was opened.
+[`string`](../../data-types.md) | The identifier of the CRM entity for which the widget was opened.
 
 It can be used to retrieve additional information using the corresponding methods:
 

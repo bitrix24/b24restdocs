@@ -5,7 +5,7 @@ items:
     href: index.md
   - name: System Methods
     include:
-      path: system/toc.yaml
+      path: system/b24-toc.yaml
       mode: link
   - name: User Information
     include:
