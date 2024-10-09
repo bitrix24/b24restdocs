@@ -1,15 +1,15 @@
 # Overview of Methods
 
-Each **SPA** is a new entity within the CRM, for which a new section is created with its own interface, set of functionalities, fields, elements, etc. More details can be found in the [documentation](https://dev.1c-bitrix.com/api_d7/bitrix/crm/dynamic/index.php).
+Each **SPA** is a new entity within the CRM, for which a new section is created with its own interface, set of functionalities, fields, elements, etc. More details can be found in the [documentation](https://helpdesk.bitrix24.com/open/19141012/).
 
 The workflow for working with an SPA is as follows:
 
 1. A new SPA is created using [crm.type.add](./crm-type-add.md).
 2. When creating an SPA, a default direction will be created regardless of the settings. If desired, it can be [modified/added](#sales-funnels).
 3. When creating a direction, a default set of stages will be created regardless of the settings. If desired, they can be [modified/removed](#stages-of-spas).
-4. Custom fields for this SPA are created. [More details](../user-defined-fields/index.md)
+4. Custom fields are created for this SPA. [More details](../user-defined-fields/index.md)
 5. You can work with its [elements](#elements-of-spas).
-6. The SPA can be integrated into the Digital Workplace. [More details](../../automated-solution/index.md)
+6. The SPA can be brought into the Digital Workplace. [More details](../../automated-solution/index.md)
 7. You can configure both personal and shared detail forms for SPA elements. [More details](#managing-detail-form-settings-for-spa-elements)
 8. There is an option to enhance functionality through events.
 
@@ -40,16 +40,16 @@ Methods for working with SPA elements are described in a separate [section](../i
 
 ## Sales Funnels of SPAs
 
-To work with sales funnels of SPAs, a required parameter `entityTypeId` is necessary, which can be obtained through the methods [`crm.type.add`](crm-type-add.md) or [`crm.type.list`](crm-type-list.md)
+To work with sales funnels of SPAs, the required parameter `entityTypeId` is necessary, which can be obtained through the methods [`crm.type.add`](crm-type-add.md) or [`crm.type.list`](crm-type-list.md)
 
 ### Default Directions
 
-Each entity type can have only one default direction at a time. As a result, there are several restrictions:
+Each entity type can only have one default direction at a time. As a result, there are several restrictions:
 
 - The default direction cannot be deleted;
-- When creating a new direction and passing the flag `"isDefault": "Y"`, the old default direction will cease to be the default direction;
+- When creating a new direction and assigning it the flag `"isDefault": "Y"`, the old default direction will cease to be the default direction;
 - When changing the default direction, it cannot be made a non-default direction;
-- When changing a non-default direction and passing the flag `"isDefault": "Y"`, the old default direction will cease to be the default direction.
+- When changing a non-default direction and assigning it the flag `"isDefault": "Y"`, the old default direction will cease to be the default direction.
 
 If the display of directions in the interface is disabled for an existing SPA, working with directions through REST is still possible.
 
@@ -67,7 +67,7 @@ If the display of directions in the interface is disabled for an existing SPA, w
 
 ### ENTITY_ID
 
-The `ENTITY_ID` field for stages of SPAs has the following format: `DYNAMIC_{entityTypeId}_STAGE_{categoryId}`,
+The `ENTITY_ID` field for SPA stages has the following format: `DYNAMIC_{entityTypeId}_STAGE_{categoryId}`,
 
 where:
 - `{entityTypeId}` - the identifier of the CRM SPA type;
@@ -75,7 +75,7 @@ where:
 
 ### STATUS_ID
 
-The `STATUS_ID` field for stages of SPAs must have the prefix `DT{entityTypeId}_{categoryId}`,
+The `STATUS_ID` field for SPA stages must have the prefix `DT{entityTypeId}_{categoryId}`,
 
 where
 - `{entityTypeId}` - the identifier of the CRM SPA type;
@@ -85,7 +85,7 @@ where
 
 `crm.status.add(fields)`
 
-To create a new stage of an SPA with `entityTypeId = 135` and `categoryId = 20`, the `fields` parameter should look like this:
+To create a new stage of an SPA with `entityTypeId = 135` and `categoryId = 20`, the `fields` parameter should have the following format:
 
 ```json
 {
@@ -110,7 +110,7 @@ To create a new stage of an SPA with `entityTypeId = 135` and `categoryId = 20`,
 
 ## Managing Detail Form Settings for SPA Elements
 
-Methods for managing the detail form settings for SPA elements provide the ability to configure the display and behavior of detail forms in the CRM. These methods work similarly to existing methods for managing the settings of detail forms for deals, contacts, and other CRM entities, such as [`crm.deal.details.configuration.*`](../../deals/custom-form/index.md), [`crm.contact.details.configuration.*`](../../contacts/custom-form/index.md), and so on.
+Methods for managing the detail form settings of SPA elements provide the ability to configure the display and behavior of detail forms in the CRM. These methods work similarly to existing methods for managing the settings of detail forms for deals, contacts, and other CRM entities, such as [`crm.deal.details.configuration.*`](../../deals/custom-form/index.md), [`crm.contact.details.configuration.*`](../../contacts/custom-form/index.md), and so on.
 
 - [{#T}](../item-details-configuration/crm-item-details-configuration-get.md)
 - [{#T}](../item-details-configuration/crm-item-details-configuration-set.md)

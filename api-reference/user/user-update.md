@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-The method `user.update` updates user data. It can only be executed on behalf of a user with user invitation rights.
+The method `user.update` updates user data. It can only be executed on behalf of a user with the permission to invite users.
 
 ## Method Parameters
 
@@ -26,7 +26,7 @@ The method `user.update` updates user data. It can only be executed on behalf of
 `type` | **Description** ||
 || **ID***
 [`integer`](../data-types.md) | User identifier ||
-|| **EMAIL***
+|| **EMAIL**
 [`string`](../data-types.md) | User e-mail ||
 || **NAME**
 [`string`](../data-types.md) | First name ||
@@ -61,7 +61,7 @@ The method `user.update` updates user data. It can only be executed on behalf of
 || **PERSONAL_STATE**
 [`string`](../data-types.md) | State/Region ||
 || **PERSONAL_ZIP**
-[`string`](../data-types.md) | Zip code ||
+[`string`](../data-types.md) | Postal code ||
 || **PERSONAL_COUNTRY**
 [`string`](../data-types.md) | Country ||
 || **PERSONAL_MAILBOX**
@@ -237,7 +237,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../data-types.md) | Success of execution ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

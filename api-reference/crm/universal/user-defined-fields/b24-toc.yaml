@@ -11,5 +11,5 @@ items:
     href: crm-userfield-enumeration-fields.md
   - name: Get Description of Settings Fields
     href: crm-userfield-settings-fields.md
-  - name: Create New Field
+  - name: Create a New Field
     href: userfieldconfig-add.md

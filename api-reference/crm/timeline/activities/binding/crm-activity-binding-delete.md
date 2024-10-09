@@ -1,8 +1,8 @@
-# Get the list of bindings for the CRM activity
+# Delete the binding of the CRM activity
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- revisions needed for writing standards
+- edits needed for writing standards
 - required parameters are not specified
 - examples are missing
-- response in case of error is absent
-- links to pages that have not yet been created (directory of available types) are not provided
+- no response in case of an error
+- links to pages that have not yet been created (reference of available types) are not provided
 
 {% endnote %}
 
@@ -24,9 +24,9 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `crm.activity.binding.delete` removes a binding. On success, the method will return `true`.
+The method `crm.activity.binding.delete` removes the binding. On success, the method will return `true`.
 
-The deletion of a binding is only possible for entities that the current user has edit access to.
+The deletion of the binding is only possible for entities that the current user has edit access to.
 
 If the activity is bound to only one entity, this binding cannot be removed.
 
@@ -37,7 +37,7 @@ If the activity is bound to only one entity, this binding cannot be removed.
 || **activityId**
 [`number`](../../../../data-types.md) | identifier of the activity ||
 || **entityTypeId**
-[`number`](../../../../data-types.md) | identifier of the entity type ([Directory of available types](.)) ||
+[`number`](../../../../data-types.md) | identifier of the entity type ([Reference of available types](.)) ||
 || **entityId**
 [`number`](../../../../data-types.md) | identifier of the entity ||
 |#
@@ -48,7 +48,7 @@ If the activity is bound to only one entity, this binding cannot be removed.
 crm.activity.binding.delete?activityId=1&entityTypeId=4&entityId=1000
 ```
 
-{% include [Example notes](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 ## Response on success
 

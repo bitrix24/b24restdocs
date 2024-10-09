@@ -3,11 +3,11 @@ href: authorization.md
 items: 
   - name: Authorization in REST  
     href: authorization.md
-  - name: How a Request is Made 
+  - name: How to Make a Request 
     href: general-principles.md
   - name: Features of List Methods 
     href: list-methods-pecularities.md
-  - name: How to Execute a Batch of Requests
+  - name: How to Execute Batch Requests
     href: batch.md
   - name: How to Work with Files via REST API
     href: how-to-upload-files.md

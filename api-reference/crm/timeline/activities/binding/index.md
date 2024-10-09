@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-From Sergey’s file:
+From Sergei's file:
 we need to consider the difference between binding through ownerId and bindings.
 
 {% endnote %}
@@ -23,7 +23,7 @@ we need to consider the difference between binding through ownerId and bindings.
 
 #|
 || **Method** | **Description** ||
-|| [crm.activity.binding.add](./crm-activity-binding-list.md) | Add binding ||
+|| [crm.activity.binding.add](./crm-activity-binding-add.md) | Add binding ||
 || [crm.activity.binding.list](./crm-activity-binding-list.md) | Get list of bindings ||
 || [crm.activity.binding.delete](./crm-activity-binding-delete.md) | Delete binding ||
 |#

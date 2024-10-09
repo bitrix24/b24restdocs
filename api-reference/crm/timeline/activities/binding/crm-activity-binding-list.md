@@ -1,8 +1,8 @@
-# Remove Binding of CRM Activity
+# Get the list of CRM activity bindings
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - required parameters not specified
 - examples missing
 - response in case of error not provided
-- links to pages not yet created (directory of available types) not included
+- links to pages not yet created (reference of available types) not included
 
 {% endnote %}
 
@@ -27,16 +27,16 @@ Some data may be missing here — we will complete it soon.
 The method `crm.activity.binding.list` retrieves a list of bindings.
 
 The method will return an array, where each element will be an array containing:
-- `entityTypeId` - identifier of the entity type ([Directory of available types](.));
-- `entityId` - identifier of the entity.
+- `entityTypeId` - the identifier of the entity type ([Reference of available types](.));
+- `entityId` - the identifier of the entity.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **activityId**
-[`number`](../../../../data-types.md) | identifier of the activity ||
-|| **START** | The ordinal number of the list element from which to return the next elements when calling the current method. Details in the article [{#T}](../../../../how-to-call-rest-api/list-methods-pecularities.md) ||
+[`number`](../../../../data-types.md) | identifier of the deal ||
+|| **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../../../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Examples
@@ -45,9 +45,9 @@ The method will return an array, where each element will be an array containing:
 crm.activity.binding.list?activityId=1
 ```
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Example notes](../../../../../_includes/examples.md) %}
 
-## Response on Success
+## Response on success
 
 > 200 OK
 ```json

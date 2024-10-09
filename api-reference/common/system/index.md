@@ -6,11 +6,11 @@
 
 #|
 || **Method** | **Description** ||
-|| [method-get.md](./method-get.md) | Check for method existence ||
-|| [scope.md](./scope.md) | Retrieve a list of available scopes ||
-|| [app-info.md](./app-info.md) | Get information about the account ||
-|| [access-name.md](./access-name.md) | Retrieve names of access permissions ||
-|| [feature-get.md](./feature-get.md) | Check feature availability ||
-|| [server-time.md](./server-time.md) | Get server time ||
-|| [methods.md](./methods.md) | Retrieve a list of available methods (deprecated) ||
+|| [method.get](./method-get.md) | Check the existence of the method ||
+|| [scope](./scope.md) | Retrieve a list of available scopes ||
+|| [app.info](./app-info.md) | Get information about the account ||
+|| [access.name](./access-name.md) | Retrieve names of access permissions ||
+|| [feature.get](./feature-get.md) | Check the availability of features ||
+|| [server.time](./server-time.md) | Get the server time ||
+|| [methods](./methods.md) | Retrieve a list of available methods (deprecated) ||
 |#

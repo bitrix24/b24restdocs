@@ -1,15 +1,20 @@
-# How to Execute a Batch of Requests
+# How to Execute Batch Requests
 
 > Who can execute the method: any user
 
 This method is used to send multiple requests in succession, as well as related requests.
 
-## Parameters
+## Method Parameters
 
-#|
-|| **Parameter** | **Description** ||
-|| **halt** | Determines whether to stop the sequence of requests in case of an error. ||
-|| **cmd** | An array of requests in standard format (keep in mind the data quoting for these requests; this means that the data for sub-requests must undergo double quoting). ||
+{% include [Note on Required Parameters](../../_includes/required.md) %}
+
+#| 
+|| **Name**
+`type` | **Description** ||
+|| **halt**
+[`boolean`](../data-types.md) | Determines whether to stop the sequence of requests in case of an error. Defaults to `false` ||
+|| **cmd**
+[`array`](../data-types.md) | An array of requests in standard format (keep in mind the need for double encoding of request data) ||
 |#
 
 {% note info %}
@@ -28,9 +33,9 @@ $result[request_id][response_field]
 
 where the request identifier is its key in the array of requests.
 
-Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` method (you cannot call another `batch` inside a `batch` method call).
+Since version **rest 24.0.0**, nesting is prohibited for the `batch` method (you cannot call another `batch` within a `batch` method).
 
-## Example
+## Code Examples
 
 {% list tabs %}
 
@@ -73,10 +78,9 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
 
     {% note info %}
     
-    **Note** that the parameters are URL-encoded. It is recommended to encode parameters; otherwise, the correctness of the result is not guaranteed.
+    **Note** that the parameters are URL-encoded. It is mandatory to encode parameters; otherwise, the correctness of the result is not guaranteed.
     
     {% endnote %}
-
 
 - JS
 
@@ -127,6 +131,7 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
 
 {% endlist %}
 
+## Response Handling
 
 {% list tabs %}
 
@@ -141,8 +146,8 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
                     "NAME": "John",
                     "LAST_NAME": "Doe",
                     "EMAIL": "my@example.com",
-                    "LAST_LOGIN": "2024-08-29T10:29:54+03:00",
-                    "DATE_REGISTER": "2023-08-24T03:00:00+03:00",
+                    "LAST_LOGIN": "2024-08-29T10:29:54+02:00",
+                    "DATE_REGISTER": "2023-08-24T03:00:00+02:00",
                     "IS_ONLINE": "Y",
                     "TIME_ZONE_OFFSET": "0",
                     "TIMESTAMP_X": "24.08.2023 13:19:39",
@@ -173,16 +178,16 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
                     "finish": 1724916859.464775,
                     "duration": 0.0032150745391845703,
                     "processing": 0.003075838088989258,
-                    "date_start": "2024-08-29T10:34:19+03:00",
-                    "date_finish": "2024-08-29T10:34:19+03:00"
+                    "date_start": "2024-08-29T10:34:19+02:00",
+                    "date_finish": "2024-08-29T10:34:19+02:00"
                 },
                 "get_department": {
                     "start": 1724916859.464944,
                     "finish": 1724916859.471518,
                     "duration": 0.006574153900146484,
                     "processing": 0.005941152572631836,
-                    "date_start": "2024-08-29T10:34:19+03:00",
-                    "date_finish": "2024-08-29T10:34:19+03:00"
+                    "date_start": "2024-08-29T10:34:19+02:00",
+                    "date_finish": "2024-08-29T10:34:19+02:00"
                 }
             }
         },
@@ -191,13 +196,13 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
             "finish": 1724916859.471588,
             "duration": 0.05011296272277832,
             "processing": 0.010200977325439453,
-            "date_start": "2024-08-29T10:34:19+03:00",
-            "date_finish": "2024-08-29T10:34:19+03:00"
+            "date_start": "2024-08-29T10:34:19+02:00",
+            "date_finish": "2024-08-29T10:34:19+02:00"
         }
     }
     ```
 
-- Example of Error (halt = 0)
+- Error Example (halt = 0)
     ```js
     {
         "result": {
@@ -221,13 +226,13 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
             "finish": 1724916638.132399,
             "duration": 0.05483508110046387,
             "processing": 0.0017969608306884766,
-            "date_start": "2024-08-29T10:30:38+03:00",
-            "date_finish": "2024-08-29T10:30:38+03:00"
+            "date_start": "2024-08-29T10:30:38+02:00",
+            "date_finish": "2024-08-29T10:30:38+02:00"
         }
     }
     ```
 
-- Example of Error (halt = 1)
+- Error Example (halt = 1)
     ```js
     {
         "result": {
@@ -247,14 +252,24 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
             "finish": 1724916725.851307,
             "duration": 0.39041590690612793,
             "processing": 0.0005991458892822266,
-            "date_start": "2024-08-29T10:32:05+03:00",
-            "date_finish": "2024-08-29T10:32:05+03:00"
+            "date_start": "2024-08-29T10:32:05+02:00",
+            "date_finish": "2024-08-29T10:32:05+02:00"
         }
     }
     ```
 
 {% endlist %}
 
+### Returned Data
+
+#| 
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../data-types.md) | An object is returned with fields as objects containing the results of the called methods ||
+|| **time**
+[`time`](../data-types.md) | Information about the execution time of the request ||
+|#
 
 ## Using Results
 
@@ -283,8 +298,8 @@ BX24.callMethod(
 
 As a result:
 
-- `user_by_name` will find a user named "Test2"
-- `user_lead` will create a lead with the responsible user found in user_by_name
+- `user_by_name` — will find a user named `Test2`
+- `user_lead` — will create a lead with the responsible user found in `user_by_name`
 
 {% note info %}
 
@@ -292,9 +307,8 @@ As a result:
 
 {% endnote %}
 
-
 {% note warning %}
 
-When designing a chain of commands, do not neglect the `halt` key - when enabled, it will stop the execution of the chain if one request in the chain returns an error.
+When designing a chain of commands, do not neglect the `halt` key — when enabled, it will stop the execution of the chain if one request in the chain returns an error.
 
 {% endnote %}

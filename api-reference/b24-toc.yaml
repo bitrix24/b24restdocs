@@ -7,7 +7,7 @@ items:
     href: tools.md 
   - name: How to Call REST Methods
     include:
-      path: how-to-call-rest-api/toc.yaml
+      path: how-to-call-rest-api/b24-toc.yaml
       mode: link
   - name: Data Types and Parameter Formats
     href: data-types.md 
