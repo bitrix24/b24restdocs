@@ -24,9 +24,9 @@ Some data may be missing here — we will complete it soon.
 
 #|
 || **Method** | **Description** ||
-|| [crm.lead.userfield.add](./crm-lead-userfield-add.md) | Adding a field. ||
-|| [crm.lead.userfield.update](./crm-lead-userfield-update.md) | Modifying a field. ||
-|| [crm.lead.userfield.get](./crm-lead-userfield-get.md) | Retrieving a field by code. ||
-|| [crm.lead.userfield.list](./crm-lead-userfield-list.md) | Getting a list of fields. ||
-|| [crm.lead.userfield.delete](./crm-lead-userfield-delete.md) | Deleting a field. ||
+|| [crm.lead.userfield.add](./crm-lead-userfield-add.md) | Creates a new field ||
+|| [crm.lead.userfield.update](./crm-lead-userfield-update.md) | Modifies a field ||
+|| [crm.lead.userfield.get](./crm-lead-userfield-get.md) | Returns a field by code ||
+|| [crm.lead.userfield.list](./crm-lead-userfield-list.md) | Returns a list of fields ||
+|| [crm.lead.userfield.delete](./crm-lead-userfield-delete.md) | Deletes a field ||
 |#

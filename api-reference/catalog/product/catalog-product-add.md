@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method adds a product to the trade catalog.
+This method adds a product to the trading catalog.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method adds a product to the trade catalog.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md)| Field values (detailed description provided [below](#parameter-fields)) for adding a new product in the form of a structure:
+[`object`](../../data-types.md)| Field values (detailed description provided [below](#parametr-fields)) for adding a new product in the form of a structure:
 
 ```js
 'fields': {
@@ -35,6 +35,7 @@ This method adds a product to the trade catalog.
     detailTextType: 'value',
     height: 'value',
     iblockSectionId: 'value',
+    IblockSection: ['value_1', ... , 'value_N'],
     length: 'value',
     measure: 'value',
     modifiedBy: 'value',
@@ -76,9 +77,9 @@ This method adds a product to the trade catalog.
 || **Name**
 `type` | **Description** ||
 || **iblockId***
-[`catalog_catalog.id`](../data-types.md)| Identifier of the information block of the trade catalog.
+[`catalog_catalog.id`](../data-types.md)| Identifier of the trading catalog information block.
 
-To get existing identifiers of information blocks of trade catalogs, use the method [catalog.catalog.list](../catalog/catalog-catalog-list.md)
+To get existing identifiers of trading catalog information blocks, use the method [catalog.catalog.list](../catalog/catalog-catalog-list.md)
  ||
 || **name***
 [`string`](../../data-types.md)| Product name ||
@@ -108,9 +109,9 @@ Default is set to `N`
 Default is set to `N`
  ||
 || **createdBy**
-[`user.id`](../../data-types.md)| Created by ||
+[`user.id`](../../data-types.md)| Created by whom ||
 || **modifiedBy**
-[`user.id`](../../data-types.md)| Modified by ||
+[`user.id`](../../data-types.md)| Modified by whom ||
 || **dateActiveFrom**
 [`datetime`](../../data-types.md)| Start date of activity ||
 || **dateActiveTo**
@@ -118,7 +119,9 @@ Default is set to `N`
 || **dateCreate**
 [`datetime`](../../data-types.md)| Creation date ||
 || **iblockSectionId**
-[`catalog_section.id`](../data-types.md#catalog_section)| Identifier of the section of the information block ||
+[`catalog_section.id`](../data-types.md#catalog_section)| Identifier of the main section of the information block ||
+|| **IblockSection**
+[`array`](../../data-types.md)| Array of all sections to which the product is linked ||
 || **measure**
 [`catalog_measure.id`](../data-types.md#catalog_measure)| Unit of measurement ||
 || **previewText**
@@ -128,13 +131,13 @@ Default is set to `N`
 || **previewPicture**
 [`object`](../../data-types.md)| Picture for the announcement.
 
-Object in the format `{fileData: [value1, value2]}`, where `value1` — file name of the image with extension, `value2` — image in base64 format.
+Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format.
 
 To delete the image, use the object in the format `{remove: 'Y'}` ||
 || **detailPicture**
 [`object`](../../data-types.md)| Detailed picture.
 
-Object in the format `{fileData: [value1, value2]}`, where `value1` — file name of the image with extension, `value2` — image in base64 format.
+Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format.
 
 To delete the image, use the object in the format `{remove: 'Y'}` ||
 || **previewTextType**
@@ -212,10 +215,10 @@ Not editable when inventory accounting is enabled
 
 Default is set to `0`.
 
-Used only in [on-premise](../../cloud-and-on-premise/index.md) for selling content
+Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
  ||
 || **recurSchemeType**
-[`string`](../../data-types.md)| Unit of time for the payment period:
+[`string`](../../data-types.md)| Time unit of the payment period:
 - `H` — hour
 - `D` — day
 - `W` — week
@@ -226,12 +229,12 @@ Used only in [on-premise](../../cloud-and-on-premise/index.md) for selling conte
 
 Default is set to `D`.
 
-Used only in [on-premise](../../cloud-and-on-premise/index.md) for selling content
+Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
  ||
 || **trialPriceId**
 [`integer`](../../data-types.md)| Product for trial payment.
 
-Used only in [on-premise](../../cloud-and-on-premise/index.md) for selling content
+Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
  ||
 || **withoutOrder**
 [`string`](../../data-types.md)| Renewal without placing an order. Values:
@@ -240,12 +243,12 @@ Used only in [on-premise](../../cloud-and-on-premise/index.md) for selling conte
 
 Default is set to `N`.
 
-Used only in [on-premise](../../cloud-and-on-premise/index.md) for selling content
+Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
  ||
 || **propertyN**
 [`any`](../../data-types.md)| Value of the product property, where `N` — property identifier. There can be multiple properties.
 
-When adding a product, the property value can be specified as a string, number, or as an object `{value: value}`. If the property is multiple, an array of values or objects of the form `{value: value}` should be specified.
+When adding a product, the property value can be specified as a string, number, or as an object `{value: value}`. If the property is multiple, an array of values or objects of the form `{value: value}` is specified
  ||
 |#
 
@@ -308,7 +311,33 @@ When adding a product, the property value can be specified as a string, number, 
                 previewPicture: {
                     'fileData': [
                         'previewPicture.png',
-                        'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC"]},"previewText":"","previewTextType":"text","purchasingCurrency": "USD","purchasingPrice": 1000,"quantity": 10,"quantityReserved": 1,"quantityTrace": "Y","recurSchemeLength": 1,"recurSchemeType": "D","sort": 100,"subscribe": "Y","trialPriceId": 175,"vatId": 1,"vatIncluded": "Y","weight": 100,"width": 100,"withoutOrder": "Y","xmlId": "","property258": "test","property259": ["test1","test2"]},
+                        'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'
+                    ]
+                },
+                previewText: '',
+                previewTextType: 'text',
+                purchasingCurrency: 'USD',
+                purchasingPrice: 1000,
+                quantity: 10,
+                quantityReserved: 1,
+                quantityTrace: 'Y',
+                recurSchemeLength: 1,
+                recurSchemeType: 'D',
+                sort: 100,
+                subscribe: 'Y',
+                trialPriceId: 175,
+                vatId: 1,
+                vatIncluded: 'Y',
+                weight: 100,
+                width: 100,
+                withoutOrder: 'Y',
+                xmlId: '',
+                property258: 'test',
+                property259: [
+                    'test1',
+                    'test2'
+                ],
+            },
         },
         function(result)
         {
@@ -344,7 +373,7 @@ When adding a product, the property value can be specified as a string, number, 
                         'detailPicture.png',
                         'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'
                     ]
-                ],
+                },
                 'detailText' => '',
                 'detailTextType' => 'text',
                 'height' => 100,
@@ -357,7 +386,7 @@ When adding a product, the property value can be specified as a string, number, 
                         'previewPicture.png',
                         'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC'
                     ]
-                ],
+                },
                 'previewText' => '',
                 'previewTextType' => 'text',
                 'purchasingCurrency' => 'USD',
@@ -406,9 +435,9 @@ HTTP status: **200**
             "canBuyZero": "Y",
             "code": "Product",
             "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-            "dateActiveTo": "2024-05-29T10:00:00+03:00",
-            "dateCreate": "2024-05-27T10:00:00+03:00",
+            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
+            "dateActiveTo": "2024-05-29T10:00:00+02:00",
+            "dateCreate": "2024-05-27T10:00:00+02:00",
             "detailPicture": {
                 "id": "6505",
                 "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6505\u0026fields%5BproductId%5D=1267",
@@ -452,7 +481,7 @@ HTTP status: **200**
             "quantityTrace": "Y",
             "sort": 100,
             "subscribe": "Y",
-            "timestampX": "2024-06-14T14:18:56+03:00",
+            "timestampX": "2024-06-14T14:18:56+02:00",
             "type": 1,
             "vatId": 1,
             "vatIncluded": "Y",
@@ -466,8 +495,8 @@ HTTP status: **200**
         "finish": 1718371136.659369,
         "duration": 1.0991239547729492,
         "processing": 0.6940958499908447,
-        "date_start": "2024-06-14T16:18:55+03:00",
-        "date_finish": "2024-06-14T16:18:56+03:00"
+        "date_start": "2024-06-14T16:18:55+02:00",
+        "date_finish": "2024-06-14T16:18:56+02:00"
     }
 }
 ```
@@ -506,7 +535,7 @@ HTTP status: **400**
 || `200040300040` | Insufficient rights to create a product ||
 || `200040300000` | Information block with the specified identifier does not exist ||
 || `200040300043` | Insufficient rights to edit the information block element ||
-|| `200040300010` | Insufficient rights to read the trade catalog ||
+|| `200040300010` | Insufficient rights to read the trading catalog ||
 || `100` | Parameter `fields` is not specified or is empty ||
 || `0` | Section with the specified identifier does not exist ||
 || `0` | VAT rate with the specified identifier does not exist ||

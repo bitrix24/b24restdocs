@@ -2,11 +2,17 @@
 
 ## 2024
 
+### October 16, 2024
+
+- Updated documentation on price rounding rules [catalog.roundingrule.*](./api-reference/catalog/rounding-rule/index.md)
+- Updated documentation on price types [catalog.priceType.*](./api-reference/catalog/price-type/index.md)
+- Updated the main pages of the [Leads](./api-reference/crm/leads/index.md), [Deals](./api-reference/crm/deals/index.md), [Companies](./api-reference/crm/companies/index.md), [Contacts](./api-reference/crm/contacts/index.md) sections. Added introductory information, an overview of methods and relationships, and described additional capabilities for implementation via REST API with the entities cards.
+- Updated the main page of the [Time Tracking in Tasks section](./api-reference/tasks/elapsed-item/index.md). Added introductory information, an overview of methods and relationships.
+
 ### October 9, 2024
 
-Updated general methods with [user information](./api-reference/common/users/index.md)
-
-Added information on [performance](./api-reference/performance/index.md) 
+- Updated general methods with [user information](./api-reference/common/users/index.md)
+- Added information on [performance](./api-reference/performance/index.md) 
 
 ### October 1, 2024
 

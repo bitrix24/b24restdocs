@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method updates the fields of the offer.
+This method updates the fields of an offer.
 
 ## Method Parameters
 
@@ -19,10 +19,10 @@ This method updates the fields of the offer.
 To obtain the identifiers of offers, use [catalog.product.offer.list](./catalog-product-offer-list.md)
  ||
 || **fields***
-[`object`](../../../data-types.md) | Field values to update the offer ||
+[`object`](../../../data-types.md) | Values of the fields to update the offer ||
 |#
 
-### Parameter fields
+### fields Parameter
 
 #|
 || **Name**
@@ -59,7 +59,9 @@ To obtain the identifiers of offers, use [catalog.product.offer.list](./catalog-
 || **dateCreate**
 [`datetime`](../../../data-types.md) | Creation date ||
 || **iblockSectionId**
-[`catalog_section.id`](../../data-types.md#catalog_section) | Identifier of the information block section ||
+[`catalog_section.id`](../../data-types.md#catalog_section) | Identifier of the main section of the information block ||
+|| **IblockSection**
+[`array`](../../../data-types.md)| Array of all sections to which the offer is linked ||
 || **measure**
 [`catalog_measure.id`](../../data-types.md#catalog_measure) | Unit of measurement ||
 || **previewText**
@@ -69,11 +71,11 @@ To obtain the identifiers of offers, use [catalog.product.offer.list](./catalog-
 || **previewPicture**
 [`object`](../../../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
 
-To delete the picture, use the object in the format `{remove: 'Y'}` ||
+To remove the picture, use the object in the format `{remove: 'Y'}` ||
 || **detailPicture**
 [`object`](../../../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
 
-To delete the picture, use the object in the format `{remove: 'Y'}` ||
+To remove the picture, use the object in the format `{remove: 'Y'}` ||
 || **previewTextType**
 [`string`](../../../data-types.md) | Type of description for the announcement. Possible values:
 - `text` — text
@@ -140,7 +142,7 @@ Not editable when inventory accounting is enabled
 
 Used only in the on-premise version for content sales ||
 || **recurSchemeType**
-[`string`](../../../data-types.md) | Time unit of the payment period. Possible values:
+[`string`](../../../data-types.md) | Unit of time for the payment period. Possible values:
 - `H` — hour
 - `D` — day
 - `W` — week
@@ -156,7 +158,7 @@ Used only in the on-premise version for content sales
 
 Used only in the on-premise version for content sales ||
 || **withoutOrder**
-[`string`](../../../data-types.md) | Renewal without placing an order. Possible values:
+[`string`](../../../data-types.md) | Extension without placing an order. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -168,13 +170,13 @@ Used only in the on-premise version for content sales
 To obtain the identifiers of parent products, use [catalog.product.sku.list](../sku/catalog-product-sku-list.md) 
 ||
 || **propertyN**
-[`object`\|`array`](../../../data-types.md) | Value of the offer property, where `N` — property identifier. There can be multiple properties. 
+[`object`\|`array`](../../../data-types.md) | Value of the property of the offer, where `N` — property identifier. There can be multiple properties. 
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — property value. 
 
 If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
 
-`valueId` of all offer properties can be obtained using the methods [catalog.product.offer.get ](./catalog-product-offer-get.md) and [catalog.product.offer.list](./catalog-product-offer-list.md)
+`valueId` of all properties of the offer can be obtained using the methods [catalog.product.offer.get ](./catalog-product-offer-get.md) and [catalog.product.offer.list](./catalog-product-offer-list.md)
 ||
 |#
 
@@ -232,7 +234,7 @@ If `valueId` is not specified, the existing value will be removed from the datab
                 measure: 5,
                 modifiedBy: 1,
                 previewPicture: {
-                    'fileData':['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCC']},
+                    'fileData':['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC']},
                 previewText: '',
                 previewTextType: 'text',
                 purchasingCurrency: 'USD',
@@ -296,7 +298,7 @@ If `valueId` is not specified, the existing value will be removed from the datab
                 'measure' => 5,
                 'modifiedBy' => 1,
                 'previewPicture' => [
-                    'fileData' => ['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC']
+                    'fileData' => ['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC']
                 ],
                 'previewText' => '',
                 'previewTextType' => 'text',
@@ -334,7 +336,7 @@ If `valueId` is not specified, the existing value will be removed from the datab
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -346,9 +348,9 @@ HTTP Status: **200**
             "canBuyZero": "Y",
             "code": "Product",
             "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-            "dateActiveTo": "2024-05-29T10:00:00+03:00",
-            "dateCreate": "2024-05-27T10:00:00+03:00",
+            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
+            "dateActiveTo": "2024-05-29T10:00:00+02:00",
+            "dateCreate": "2024-05-27T10:00:00+02:00",
             "detailPicture": {
                 "id": "6540",
                 "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6540\u0026fields%5BproductId%5D=1286",
@@ -396,7 +398,7 @@ HTTP Status: **200**
             "quantityTrace": "Y",
             "sort": 100,
             "subscribe": "Y",
-            "timestampX": "2024-06-17T13:12:43+03:00",
+            "timestampX": "2024-06-17T13:12:43+02:00",
             "type": 4,
             "vatId": 1,
             "vatIncluded": "Y",
@@ -410,8 +412,8 @@ HTTP Status: **200**
         "finish": 1718626363.968511,
         "duration": 1.0376231670379639,
         "processing": 0.6055271625518799,
-        "date_start": "2024-06-17T15:12:42+03:00",
-        "date_finish": "2024-06-17T15:12:43+03:00"
+        "date_start": "2024-06-17T15:12:42+02:00",
+        "date_finish": "2024-06-17T15:12:43+02:00"
     }
 }
 ```
@@ -431,7 +433,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -448,7 +450,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200040300043` | Insufficient rights to update the information block
 || 
-|| `200040300050` | Insufficient rights to bind the information block element to the section
+|| `200040300050` | Insufficient rights to link the information block element to the section
 || 
 || `200040300040` | Insufficient rights to update the offer
 || 
@@ -457,9 +459,9 @@ HTTP Status: **400**
 || `200040300010` | Insufficient rights to read the product catalog
 || 
 || `100` | Parameter `id` not specified
-||
+|| 
 || `100` | Parameter `fields` not specified or empty
-||
+|| 
 || `0` | Section with the specified identifier does not exist
 || 
 || `0` | VAT rate with the specified identifier does not exist
@@ -471,7 +473,7 @@ HTTP Status: **400**
 || `0` | User with the specified identifier who modified the offer does not exist
 || 
 || `0` | Offer with the specified identifier does not exist in the information block with the specified identifier
-||
+|| 
 || `0` | Offer with the specified identifier does not exist
 || 
 || `0` | Other errors (e.g., fatal errors)

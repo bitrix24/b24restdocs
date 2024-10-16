@@ -27,7 +27,7 @@ items:
       mode: link
   - name: Companies
     include:
-      path: companies/toc.yaml
+      path: companies/b24-toc.yaml
       mode: link
   - name: Estimates
     include:

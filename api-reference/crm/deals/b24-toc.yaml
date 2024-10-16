@@ -31,7 +31,7 @@ items:
     include:
       path: user-defined-fields/b24-toc.yaml
       mode: link
-  - name: Contacts in a Deal
+  - name: Contacts for a Deal
     include:
       path: contacts/b24-toc.yaml
       mode: link

@@ -12,7 +12,7 @@ The method returns a list of VAT rates based on the filter.
 || **Name**
 `type` | **Description** ||
 || **select** 
-[`array`](../../data-types.md)| An array of fields to be selected (see fields of the [catalog_vat](../data-types.md#catalog_vat) object).
+[`array`](../../data-types.md)| An array of fields to select (see fields of the [catalog_vat](../data-types.md#catalog_vat) object).
 
 If the array is not provided or an empty array is passed, all available fields of the VAT rate will be selected.
 ||
@@ -21,7 +21,7 @@ If the array is not provided or an empty array is passed, all available fields o
 
 Possible values for `field` correspond to the fields of the [catalog_vat](../data-types.md#catalog_vat) object.
 
-An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -29,13 +29,13 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `@` — IN (an array is passed as the value)
 - `!@` — NOT IN (an array is passed as the value)
 - `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
   - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
 - `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
   - `"%mol%"` — searching for values where the substring "mol" is not present in any position
@@ -49,21 +49,21 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 
 Possible values for `field` correspond to the fields of the [catalog_vat](../data-types.md#catalog_vat) object.
 
-Possible values for order:
+Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
 ||
 || **start** 
-[`integer`](../../data-types.md)| This parameter is used for pagination control.
+[`integer`](../../data-types.md)| This parameter is used to manage pagination.
 
 The page size of results is always static — 50 records.
 
-To select the second page of results, the value `50` must be passed. To select the third page of results, the value `100`, and so on.
+To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
 
-The formula for calculating the `start` parameter value:
+The formula for calculating the value of the `start` parameter:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` is the desired page number
 ||
 |#
 
@@ -190,7 +190,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **vat**
-[`catalog_vat[]`](../data-types.md#catalog_vat) | An array of objects with information about the selected VAT rates
+[`catalog_vat[]`](../data-types.md#catalog_vat) | Array of objects with information about the selected VAT rates
 ||
 || **total**
 [`integer`](../../data-types.md#time) | Total number of records found ||

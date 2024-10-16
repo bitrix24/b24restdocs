@@ -1,4 +1,4 @@
-# Send System Notification im.notify.personal.add
+# Send System Notification im.notify.system.add
 
 {% note warning "We are still updating this page" %}
 
@@ -23,16 +23,16 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.notify.personal.add` sends a system notification.
+The method `im.notify.system.add` sends a system notification.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **USER_ID^*^**
 [`unknown`](../../data-types.md) | `1` | Identifier of the user to whom the notification will be addressed | 18 ||
 || **MESSAGE^*^**
-[`unknown`](../../data-types.md) | Personal notification | Text of the notification | 18 ||
+[`unknown`](../../data-types.md) | System notification | Text of the notification | 18 ||
 || **MESSAGE_OUT**
-[`unknown`](../../data-types.md) | Text of the personal notification for email | Text of the notification for email. If not specified, the MESSAGE field is used | 18 ||
+[`unknown`](../../data-types.md) | Text of the system notification for email | Text of the notification for email. If not specified, the MESSAGE field is used | 18 ||
 || **TAG**
 [`unknown`](../../data-types.md) | `TEST` | Notification tag, unique within the system. When adding a notification with an existing tag, other notifications will be deleted | 18 ||
 || **SUB_TAG**
@@ -74,7 +74,7 @@ $result = restCommand(
 }
 ```
 
-**Execution Result**: notification identifier `ID` or error.
+**Execution result**: notification identifier `ID` or error.
 
 ## Response on Error
 
@@ -97,7 +97,7 @@ $result = restCommand(
 || **USER_ID_EMPTY** | Recipient identifier is not specified ||
 || **MESSAGE_EMPTY** | Message text is not provided ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | The maximum allowable size of the attachment (30 KB) has been exceeded ||
+|| **ATTACH_OVERSIZE** | The maximum allowable attachment size has been exceeded (30 KB) ||
 |#
 
 ## Related Links

@@ -14,7 +14,7 @@ The administrator configures the page in the builder using ready-made blocks and
 
 **Widget** - a dynamic element of Vibe that displays data obtained through the corresponding server handler. This allows widgets to be interactive by displaying changing data in response to user actions.
 
-For example, you can sort data in a table, load new data, open a slider with additional interfaces for your solution, etc.
+For example, you can sort data in a table, load new data, open a slider with additional interface for your solution, etc.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Additionally, the Vibe created in your Bitrix24 can be exported as a ready-made 
 
 The front-end of the widget is implemented based on the [Vue templating engine](https://vuejs.org). The widget retrieves data for display by making a request to an external handler.
 
-In fact, when adding your widget to Bitrix24, you need to provide the layout of the template based on Vue, the necessary CSS classes for it, and the address of the handler that will be responsible for passing data to the Vue template.
+In fact, when adding your widget to Bitrix24, you need to provide the Vue-based template markup, the necessary CSS classes, and the address of the handler that will be responsible for passing data to the Vue template.
 
 ### Vue Directives
 
@@ -39,7 +39,7 @@ In the widgets for Vibe, we support the following Vue directives and constructs:
 
 ### Interactive Actions
 
-Custom JS code cannot be added to the widgets, so only the following predefined functions can be used as event handlers for `@click` and `v-on:click`:
+You cannot add your own JS code in the widgets, so only the following predefined functions can be used as event handler functions for `@click` and `v-on:click`:
 
 - `fetch(?params)` - calls the widget handler to obtain new data, passing the specified parameters `params` to the handler;
 - `openApplication(?params)` — opens the slider of your application with the ability to pass arbitrary parameters `params`. In fact, this is a way to call [openApplication](../widgets/open-application.md) from the Vibe widget interface;
@@ -47,16 +47,79 @@ Custom JS code cannot be added to the widgets, so only the following predefined 
 
 ## How the Widget Works {#anchor-handler}
 
-The most important part of the functionality lies in using `fetch(?params)` and your widget handler.
+The most important part of the functionality lies in the use of `fetch(?params)` and your widget handler.
 
-1. When the widget is placed on the Vibe page, Bitrix24 makes a request to the URL of the widget handler that you specified during widget registration.
-2. Your handler returns a certain structure of data defined by you in the form of a JSON string.
+1. If you did not specify initial data in the parameter \[`WIDGET_PARAMS`\]\[`data`\] when registering the widget, then when the Bitrix24 administrator adds your widget to the Vibe page or when a regular user opens an already published Vibe page on their account, Bitrix24 makes a request to the widget handler URL that you specified during widget registration.
+2. Your handler returns a certain data structure defined by you in the form of a JSON string.
 3. Vue executes the template code of your widget, substituting the data obtained from the handler in step 2. This forms the initial complete appearance of the widget.
 4. If you used the `fetch` function (for example, with parameters `{'action': 'getItems'}`) in your template when clicking on a certain link, Bitrix24 will again call your widget handler, passing the same parameters `{'action': 'getItems'}` in a POST request.
-5. Your handler, upon receiving the request and analyzing the input parameters, must respond with a new **complete** set of data and return it again as a JSON string.
+5. Your handler, upon receiving the request and analyzing the input parameters, should generate a new set of data in response and return it again as a JSON string. This set can be either complete or partial to save traffic and improve the widget's performance.
 6. The newly obtained data will be substituted back into your template.
 
 In this simple way, your widget can change its appearance and displayed data in response to user actions.
+
+## Examples of Vue Syntax for Vibe Widgets
+
+### Localization
+
+Use the standard syntax for accessing Vue variables to call `$Bitrix.Loc.getMessage` to display the value of a constant in the visible part of the markup:
+
+```php
+<h3 class="w-title">{{ $Bitrix.Loc.getMessage('W_TITLE') }}</h3>
+```
+
+Use the Vue "conditional" attribute syntax to assign the value of `$Bitrix.Loc.getMessage` to the desired attribute of the node:
+
+```php
+<input
+    type="text"
+    class="task-widget__filter"
+    :placeholder="$Bitrix.Loc.getMessage('W_FILTER')"
+    v-model="taskFilter"
+/>
+```
+
+### Variables
+
+Use the standard syntax for accessing Vue variables to display values in the visible part of the markup:
+
+```php
+<td class="task-widget__cell">not_var{{ task.id }}</td>
+```
+
+Use the Vue "conditional" attribute syntax to assign the value of a variable to the desired attribute of the node:
+
+```php
+<img :src="user.avatar" class="task-widget__avatar" />
+```
+
+Use logical expressions to apply optional classes:
+
+```php
+<a href="#" :class="{ 'task-widget__link--disabled': currentPage === 1 }">
+```
+
+### Using Variables in openPath
+
+Use backticks to access Vue variables when forming the desired path:
+
+```php
+<tr
+    v-for="(task, index) in taskItems"
+    :key="task.id"
+    @click="openPath(`/company/personal/user/${task.responsibleId}/tasks/task/view/${task.id}/`)"
+>
+```
+
+Use string concatenation to form the path:
+
+```php
+<tr
+    v-for="(task, index) in taskItems"
+    :key="task.id"
+    @click="openPath('/company/personal/user/' + task.responsibleId + '/tasks/task/view/' + task.id)"
+>
+```
 
 ## Methods for Working with Widgets
 

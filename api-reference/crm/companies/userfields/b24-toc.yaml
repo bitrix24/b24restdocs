@@ -3,11 +3,11 @@ href: index.md
 items:
   - name: List of Methods
     href: index.md
-  - name: Create a New Field
+  - name: Create New Field
     href: crm-company-userfield-add.md
-  - name: Delete a Field
+  - name: Delete Field
     href: crm-company-userfield-delete.md
-  - name: Get Field by ID
+  - name: Get Field by Identifier
     href: crm-company-userfield-get.md
   - name: Get List of Fields by Filter
     href: crm-company-userfield-list.md
@@ -15,5 +15,5 @@ items:
     href: crm-company-userfield-update.md
   - name: Events
     include:
-      path: events/toc.yaml
+      path: events/b24-toc.yaml
       mode: link

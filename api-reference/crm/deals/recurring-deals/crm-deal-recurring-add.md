@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -31,7 +31,7 @@ The method `crm.deal.recurring.add` adds a new setting for a recurring deal.
 
 {% note info %}
 
-To find out the required format of the fields, execute the method [crm.deal.recurring.fields](./crm-deal-recurring-fields.md) and check the format of the received values for these fields.
+To find out the required format of the fields, execute the method [crm.deal.recurring.fields](./crm-deal-recurring-fields.md) and check the format of the incoming values for these fields.
 
 {% endnote %}
 ||
@@ -44,10 +44,10 @@ var current = new Date();
 var nextMonth = new Date();
 var nextYear = new Date();
 nextMonth.setMonth(current.getMonth() + 1);
-nextYear.setYear(current.getFullYear() + 1);
+nextYear.setFullYear(current.getFullYear() + 1);
 var date2str = function(d)
 {
-    return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+03:00';
+    return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+02:00';
 };
 var paddatepart = function(part)
 {

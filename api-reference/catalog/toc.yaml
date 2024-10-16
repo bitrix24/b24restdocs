@@ -27,7 +27,7 @@ items:
       mode: link
   - name: Price Type
     include:
-      path: price-type/toc.yaml
+      path: price-type/b24-toc.yaml
       mode: link
   - name: Price Type Binding to Buyer Groups
     include:
@@ -67,7 +67,7 @@ items:
       mode: link
   - name: Price Rounding Rules
     include:
-      path: rounding-rule/toc.yaml
+      path: rounding-rule/b24-toc.yaml
       mode: link
   - name: Catalog Section
     include:
