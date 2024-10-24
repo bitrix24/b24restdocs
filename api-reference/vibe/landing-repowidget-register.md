@@ -1,4 +1,4 @@
-# Add Widget for Vibe - Main Page landing.repowidget.register
+# Add Widget to the Homepage: our vibe landing.repowidget.register
 
 {% note warning "We are still working on the tool" %}
 
@@ -10,9 +10,9 @@ The functionality will be released soon.
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.register` adds a widget for Vibe - Main Page. It returns an error or the `ID` of the added widget.
+The method `landing.repowidget.register` adds a widget for the Homepage: our vibe. It returns an error or the `ID` of the added widget.
 
-When adding, a check is performed. If a widget with the code `code` has already been registered, its content will be updated. Widgets that are already placed on Vibes will be automatically updated in case of content updates.
+When adding, a check is performed. If a widget with the code `code` has already been registered, its content will be updated. Widgets that are already placed on the vibes will be automatically updated in case of content updates.
 
 ## Method Parameters
 
@@ -22,14 +22,12 @@ When adding, a check is performed. If a widget with the code `code` has already 
 || **Name**
 `type` | **Description** ||
 || **code***
-[`string`](../data-types.md) | Unique code for the widget. It is highly recommended to use a unique prefix for your widgets to avoid the risk of code conflicts with widgets from other developers ||
+[`string`](../data-types.md) | Unique widget code. It is highly recommended to use a unique prefix for your widgets to avoid the risk of code collisions with widgets from other developers. ||
 || **fields***
 [`object`](../data-types.md) | Field values for creating the widget ||
-|| **manifest**
-[`array`](../data-types.md) | Array of the widget's [manifest](../landing/block/manifest.md). It uses the editable content mechanism in blocks for websites and landing pages with certain restrictions: only style settings and editable nodes are allowed ||
 |#
 
-### Parameter fields
+### Parameter fields {#anchor-fields}
 
 {% include [Note on required parameters](../../_includes/required.md) %}
 
@@ -37,11 +35,11 @@ When adding, a check is performed. If a widget with the code `code` has already 
 || **Name**
 `type` | **Description** ||
 || **NAME**
-[`string`](../data-types.md) | Name of the widget ||
+[`string`](../data-types.md) | Widget name ||
 || **PREVIEW**
-[`string`](../data-types.md) | URL of the widget's cover image for the widget selection slider ||
+[`string`](../data-types.md) | URL of the widget cover image for the widget selection slider ||
 || **DESCRIPTION**
-[`string`](../data-types.md) | Description of the widget ||
+[`string`](../data-types.md) | Widget description ||
 || **CONTENT**
 [`string`](../data-types.md) | Widget markup using Vue constructs ||
 || **SECTIONS**
@@ -64,15 +62,15 @@ When adding, a check is performed. If a widget with the code `code` has already 
 || **WIDGET_PARAMS**
 [`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue template engine. If they are absent, the block will remain as regular HTML code with `{{}}` ||
 || **ACTIVE**
-[`char`](../data-types.md) | Activity status of the widget. Accepts values: 
+[`char`](../data-types.md) | Widget activity. Accepts values: 
 
-- `Y` - widget is active and available;
+- `Y` - widget is active and available
 - `N` - widget is inactive and unavailable ||
 || **SITE_TEMPLATE_ID**
-[`string`](../data-types.md) | Binding of the widget to a specific site template. **Only for on-premise Bitrix24!** ||
+[`string`](../data-types.md) | Binding the widget to a specific site template. **Only for on-premise Bitrix24!** ||
 |#
 
-#### Parameter WIDGET_PARAMS  {#anchor-widget-params}
+#### Parameter WIDGET_PARAMS {#anchor-widget-params}
 
 {% include [Note on required parameters](../../_includes/required.md) %}
 
@@ -80,23 +78,23 @@ When adding, a check is performed. If a widget with the code `code` has already 
 || **Name**
 `type` | **Description** ||
 || **rootNode***
-[`string`](../data-types.md) | Selector for the root element in the markup that will be turned into a Vue component. The root element must be the only element in the passed template; all other markup will be cleared ||
+[`string`](../data-types.md) | Selector for the root element in the markup that will be turned into a Vue component. The root element must be the only element in the passed template; all other markup will be cleared. ||
 || **lang**
 [`string`](../data-types.md) | Array of language phrases used in constructs `{{$Bitrix.Loc.getMessage('W_EMPTY')}}` ||
 || **handler***
 [`string`](../data-types.md) | Address of the [external handler](./index.md#anchor-handler) to which requests will be sent.
 
-**Important**: The handler must be accessible from the external network! Check the handler's availability using special services.
+**Important**: The handler must be accessible from the external network! Check the handler's availability with special services.
 
  ||
 || **style**
 [`string`](../data-types.md) | Address of styles for the widget. Styles can also be set inline in the markup via binding `:style="{borderBottom: '1px solid red'}"` ||
-|| **data**
-[`array`](../data-types.md) | Data for the initial display of the widget. 
+|| **demoData***
+[`array`](../data-types.md) | In preview mode, the widget will not make requests to `handler`; it will be filled with data from this array. 
 
 The array must contain all reactive variables used in the template. If this condition is not met, Vue constructs such as `v-if="persons == null"` may lead to errors if the `persons` parameter is absent.
 
-If this parameter is not used when registering the widget, a request will be made to the `handler` before rendering the widget ||
+If this parameter is not used when registering the widget, a request to `handler` will be made before rendering the widget. ||
 |#
 
 ## Code Examples
@@ -160,7 +158,7 @@ If this parameter is not used when registering the widget, a request will be mad
                 },
                 handler: 'https://my-app.com/vibe.php',
                 style: 'https://my-app.com/vibe.css',
-                data: {
+                demoData: {
                     desc: 'Just a test widget',
                     count: 420,
                     persons: [
@@ -247,7 +245,7 @@ If this parameter is not used when registering the widget, a request will be mad
                 ],
                 'handler' => 'https://my-app.com/vibe.php',
                 'style' => 'https://my-app.com/vibe.css',
-                'data' => [
+                'demoData' => [
                     'desc' => 'Just a test widget',
                     'count' => 420,
                     'persons' => [
@@ -318,3 +316,5 @@ HTTP status: **200**
 ## Continue Learning
 
 - [{#T}](./landing-repowidget-unregister.md)
+- [{#T}](./landing-repowidget-get-list.md)
+- [{#T}](./landing-repowidget-debug.md)

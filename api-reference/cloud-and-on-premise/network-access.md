@@ -14,14 +14,14 @@ If the application is being developed on its own server, the following must be o
 - Outgoing HTTPS requests to the specific server of the on-premise Bitrix24
 - Incoming HTTP/S requests from the server group **mp_actions-\***, if the application uses event mechanisms, automation rules, or custom workflow actions
 
-Incoming HTTP/S requests may come from a dynamic (scale-based) group of servers with different IP addresses. A list of such IP addresses can be obtained in advance by querying [https://dl.bitrix24.com/webhook/app.json](https://dl.bitrix24.com/webhook/app.json).
+Incoming HTTP/S requests may come from a dynamic (scale-based) group of servers with different IP addresses. A list of such IP addresses can be obtained in advance by querying [https://dl.bitrix24.com/webhook/app-world.json](https://dl.bitrix24.com/webhook/app-world.json).
 
 Example request using **curl**:
 
 ```bash
-$ curl https://dl.bitrix24.com/webhook/app.json
+$ curl https://dl.bitrix24.com/webhook/app-world.json
 {
-    "nodes": ["195.208.184.200", "89.208.230.2"]
+    "nodes": ["3.217.33.54", "52.29.163.104"]
 }
 ```
 

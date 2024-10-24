@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.department.employees.get` retrieves a list of employees in the department.
+The method `im.department.employees.get` retrieves the list of employees in the department.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -119,7 +119,7 @@ With the option `USER_DATA = Y`:
             "external_auth_id": "default",
             "status": "online",
             "idle": false,
-            "last_activity_date": "2018-01-29T17:35:31+03:00",
+            "last_activity_date": "2018-01-29T17:35:31+01:00",
             "desktop_last_date": false,
             "mobile_last_date": false,
             "departments": [
@@ -142,7 +142,7 @@ With the option `USER_DATA = Y`:
 - `name` – user's full name
 - `first_name` – user's first name
 - `last_name` – user's last name
-- `work_position` – job title
+- `work_position` – position
 - `color` – user's color in hex format
 - `avatar` – link to avatar (if empty, avatar is not set)
 - `gender` – user's gender
@@ -152,7 +152,7 @@ With the option `USER_DATA = Y`:
 - `bot` – indicator of bot (`true/false`)
 - `connector` – indicator of open lines user (`true/false`)
 - `external_auth_id` – external authorization code
-- `status` – selected user status
+- `status` – user's status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users.
 - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
 - `last_activity_date` – date of the user's last action in ATOM format
 - `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
@@ -178,5 +178,5 @@ With the option `USER_DATA = Y`:
 
 #|
 || **Code** | **Description** ||
-|| **ID_EMPTY** | List of identifiers not provided ||
+|| **ID_EMPTY** | No list of identifiers provided ||
 |#

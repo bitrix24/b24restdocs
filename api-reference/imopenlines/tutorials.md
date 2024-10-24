@@ -1,4 +1,4 @@
-# Scenarios Using Open Lines
+# Scenarios Using Open Channels
 
 {% if build == 'dev' %}
 

@@ -1,8 +1,8 @@
-# Connect an external open line to the account imopenlines.network.join
+# Connect an external open channel to the account imopenlines.network.join
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -21,16 +21,16 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method connects an external open line to the account.
+This method connects an external open channel to the account.
 
 ## Method Parameters
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Example** | **Description** | **Revision** ||
-|| **CODE***
+|| **CODE*** 
 [`unknown`](../../data-types.md) | `ab515f5d85a8b844d484f6ea75a2e494` | Yes | Code for searching from the connectors page | 1 ||
 |#
 
@@ -82,20 +82,20 @@ This method connects an external open line to the account.
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Open line is not found"
+    "error_description": "Open channel is not found"
 }
 ```
 
-### Description of Keys
+### Key Descriptions
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
 ### Possible Error Codes
 
-#|
+#| 
 || Code | Description ||
 || **IMBOT_ERROR**| Bot management module is not installed ||
-|| **NOT_FOUND** | Open line not found ||
-|| **INACTIVE** | Open line is currently unavailable ||
+|| **NOT_FOUND** | Open channel not found ||
+|| **INACTIVE** | Open channel is currently unavailable ||
 |#

@@ -7,7 +7,7 @@ items:
     href: on-im-connector-message-update.md
   - name: On message deletion
     href: on-im-connector-message-delete.md
-  - name: On open line deletion
+  - name: On open channel deletion
     href: on-im-connector-line-delete.md
-  - name: On open line disconnection
+  - name: On open channel disconnection
     href: on-im-connector-status-delete.md

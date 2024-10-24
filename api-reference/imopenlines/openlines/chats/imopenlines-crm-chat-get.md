@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -31,14 +31,14 @@ This method retrieves the chat for a CRM object.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CRM_ENTITY_TYPE***
+|| **CRM_ENTITY_TYPE*** 
 [`unknown`](../../../data-types.md) | Type of CRM entity 
 - lead
 - deal
 - company
 - contact
  ||
-|| **CRM_ENTITY***
+|| **CRM_ENTITY*** 
 [`unknown`](../../../data-types.md) | Identifier of the CRM entity ||
 |#
 
@@ -83,9 +83,9 @@ This method retrieves the chat for a CRM object.
 
 {% endlist %}
 
-## Response on Success
+## Successful Response
 
-An array of objects containing the chat ID, connector ID, and connector title.
+An array of objects with the chat identifier, connector identifier, and connector title.
 
 ```json
 {
@@ -98,7 +98,8 @@ An array of objects containing the chat ID, connector ID, and connector title.
     ]
 }
 ```
-## Response on Error
+
+## Error Response
 
 ### Possible Error Codes
 

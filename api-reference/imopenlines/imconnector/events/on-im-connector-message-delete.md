@@ -1,16 +1,16 @@
-# On Message Deletion OnImConnectorMessageDelete
+# OnImConnectorMessageDelete Event
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- types and requiredness of parameters are not specified.
+- Types and required parameters are not specified.
 
 {% endnote %}
 
@@ -20,12 +20,12 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can subscribe: any user
 
-Event for message deletion from OL.
+Event for message deletion from Open Channels.
 
-#|
-|| **Parameter** | **Description** | **From version** ||
-|| **CONNECTOR**| Connector ID (used to check if this event belongs to the verifier). | ||
-|| **LINE** | ID of the open line. | ||
+#| 
+|| **Parameter** | **Description** | **Available since** ||
+|| **CONNECTOR** | Connector ID (used to check if this event belongs to the verifier). | ||
+|| **LINE** | Open Channel ID. | ||
 || **DATA** | Array of messages, where each message is described by an array of the following format:
 
 
@@ -39,7 +39,7 @@ Event for message deletion from OL.
     "id": [
      "99"
     ],
-    "text": "Sergey \"Pokoev\":\n Test message 55"
+    "text": "Sergey \"Pokoiev\":\n Test message 55"
 },
 "chat": {
     "id": "2"

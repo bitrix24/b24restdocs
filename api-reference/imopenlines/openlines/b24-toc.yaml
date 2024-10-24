@@ -1,23 +1,23 @@
-title: Open Lines
+title: Open Channels
 href: index.md
 items: 
-  - name: Open Lines in Bitrix24
+  - name: Open Channels in Bitrix24
     href: index.md
-  - name: Add a New Open Line
+  - name: Add a New Open Channel
     href: imopenlines-config-add.md
-  - name: Edit Open Line
+  - name: Modify Open Channel
     href: imopenlines-config-update.md
-  - name: Get Open Line by Id
+  - name: Get Open Channel by Id
     href: imopenlines-config-get.md
-  - name: Get List of Open Lines
+  - name: Get List of Open Channels
     href: imopenlines-config-list-get.md
-  - name: Get Link to Public Page of Open Lines Account
+  - name: Get Link to Public Page of Open Channels Account
     href: imopenlines-config-path-get.md
-  - name: Connect External Open Line to Account
+  - name: Connect External Open Channel to Account
     href: imopenlines-network-join.md
-  - name: Send Message to User on Behalf of Open Line
+  - name: Send Message to User on Behalf of Open Channel
     href: imopenlines-network-message-add.md
-  - name: Delete Open Line
+  - name: Delete Open Channel
     href: imopenlines-config-delete.md
   - name: Chats
     include:

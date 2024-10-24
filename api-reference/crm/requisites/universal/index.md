@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- from Sergei's file: what fields consist of, what they are needed for
+- from Sergey's file: what fields they consist of, what they are needed for
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ We explain more in the article [What are your company's requisites](https://help
 || **Name**
 `type` | **Description** | **Read** | **Write** | **Required** | **Immutable** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the requisite, can be obtained using the method [crm.requisite.list](./crm-requisite-list.md). Created automatically and unique within the account. | Yes | No | No | No ||
+[`integer`](../../../data-types.md) | Identifier of the requisite, can be obtained using the method [crm.requisite.list](./crm-requisite-list.md). Created automatically and is unique within the account. | Yes | No | No | No ||
 || **ENTITY_TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the parent entity type.
 
@@ -31,7 +31,7 @@ Currently, this can only be:
 - `3` — contact
 - `4` — company
 
-Identifiers for all CRM entity types can be obtained from the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md)
+Identifiers of all CRM entity types can be obtained from the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md)
 
  | Yes | Yes | Yes | Yes ||
 || **ENTITY_ID***
@@ -73,9 +73,9 @@ Currently, the field does not actually affect anything | Yes | Yes | No | No ||
 || **ADDRESS_ONLY**
 [`char`](../../../data-types.md) | Status indicator when the requisite is used only for storing the address.
 
-Values `Y` or `N` are used. When `Y`, the requisites are not displayed in the entity card, but the address is shown | Yes | Yes | No | No ||
+Values `Y` or `N` are used. When `Y`, the requisites are not displayed in the entity detail form, but the address is shown | Yes | Yes | No | No ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting. Order in the list of requisites of the entity when there are multiple | Yes | Yes | No | No ||
+[`integer`](../../../data-types.md) | Sorting. Order in the list of entity requisites when there are multiple | Yes | Yes | No | No ||
 || **RQ_NAME**
 [`string`](../../../data-types.md) | Full name | Yes | Yes | No | No ||
 || **RQ_FIRST_NAME**
@@ -109,7 +109,7 @@ Values `Y` or `N` are used. When `Y`, the requisites are not displayed in the en
 || **RQ_FAX**
 [`string`](../../../data-types.md) | Fax | Yes | Yes | No | No ||
 || **RQ_IDENT_TYPE**
-[`crm_status`](../../../data-types.md) | Method of identification | Yes | Yes | No | No ||
+[`crm_status`](../../../data-types.md) | Identification method | Yes | Yes | No | No ||
 || **RQ_IDENT_DOC**
 [`string`](../../../data-types.md) | Type of document | Yes | Yes | No | No ||
 || **RQ_IDENT_DOC_SER**
@@ -163,7 +163,7 @@ Values `Y` or `N` are used. When `Y`, the requisites are not displayed in the en
 
 Values `Y` or `N` are used | Yes | Yes | No | No ||
 || **RQ_VAT_ID**
-[`string`](../../../data-types.md) | VAT ID (identification number of VAT payer) | Yes | Yes | No | No ||
+[`string`](../../../data-types.md) | VAT ID (identification number of the VAT payer) | Yes | Yes | No | No ||
 || **RQ_VAT_CERT_SER**
 [`string`](../../../data-types.md) | Series of the VAT certificate | Yes | Yes | No | No ||
 || **RQ_VAT_CERT_NUM**
@@ -173,7 +173,7 @@ Values `Y` or `N` are used | Yes | Yes | No | No ||
 || **RQ_RESIDENCE_COUNTRY**
 [`string`](../../../data-types.md) | Country of residence | Yes | Yes | No | No ||
 || **RQ_BASE_DOC**
-[`string`](../../../data-types.md) | Basis for the action | Yes | Yes | No | No ||
+[`string`](../../../data-types.md) | Basis of the action | Yes | Yes | No | No ||
 || **RQ_REGON**
 [`string`](../../../data-types.md) | REGON (for country PL) | Yes | Yes | No | No ||
 || **RQ_KRS**
@@ -203,4 +203,16 @@ Values `Y` or `N` are used | Yes | Yes | No | No ||
 Requisites can have a set of custom fields with types: `string`, `boolean`, `double`, `datetime`.
 
 You can add a custom field to requisites using the method [crm.requisite.userfield.add](../user-fields/crm-requisite-userfield-add.md) | Yes | Yes | No | No ||
+|#
+
+## Overview of Methods
+
+#|
+|| **Method** | **Description** ||
+|| [crm.requisite.add](./crm-requisite-add.md) | Creates a new requisite ||
+|| [crm.requisite.update](./crm-requisite-update.md) | Updates an existing requisite ||
+|| [crm.requisite.get](./crm-requisite-get.md) | Returns the requisite by identifier ||
+|| [crm.requisite.list](./crm-requisite-list.md) | Returns a list of requisites by filter ||
+|| [crm.requisite.delete](./crm-requisite-delete.md) | Deletes the requisite and all related objects ||
+|| [crm.requisite.fields](./crm-requisite-fields.md) | Returns the description of requisite fields ||
 |#

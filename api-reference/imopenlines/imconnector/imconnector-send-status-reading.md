@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter type is not specified
-- parameter mandatory status is not specified
+- parameter requirement is not specified
 - examples are missing
 - responses in case of success and error are not specified
 
@@ -28,9 +28,9 @@ This method confirms the reading of a message from the open line to an external 
 ## Parameters
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Parameter** | **Description** | **Available since** ||
 || **CONNECTOR**
-[`unknown`](../../data-types.md) | Connector ID (which was specified during the handler registration). | ||
+[`unknown`](../../data-types.md) | Connector ID (as specified during handler registration). | ||
 || **LINE**
 [`unknown`](../../data-types.md) | Open line ID. | ||
 || **MESSAGES**
@@ -54,4 +54,4 @@ This method confirms the reading of a message from the open line to an external 
 | ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}

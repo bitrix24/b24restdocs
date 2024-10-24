@@ -1,4 +1,4 @@
-# Get Fields for Price Type Bindings to Customer Groups catalog.priceTypeGroup.getFields
+# Get Price Type Binding Fields for Customer Groups catalog.priceTypeGroup.getFields
 
 {% note warning "We are still updating this page" %}
 
@@ -18,7 +18,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% endif %}
 
-> Scope: [`catalog`](../../scopes/permissions.md)
+> Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -49,17 +49,17 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 ## Returned Fields
 
-#|
+#| 
 || **Field** | **Description** | **Note** ||
 || **access^*^** 
 [`char`](../../data-types.md) | Type of added binding:
 - `N` – permission to view this price type;
 - `Y` – permission to purchase at this price type.
-To add both permissions, the method must be called twice, sequentially specifying both types of binding (`N` and `Y`). |  ||
+To add both permissions, the method must be called twice, sequentially specifying both binding types (`N` and `Y`). |  ||
 || **catalogGroupId^*^** 
 [`integer`](../../data-types.md) | ID of the price type. |  ||
 || **groupId^*^** 
@@ -68,4 +68,4 @@ To add both permissions, the method must be called twice, sequentially specifyin
 [`integer`](../../data-types.md) | Identifier of the binding. | Immutable field. ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}

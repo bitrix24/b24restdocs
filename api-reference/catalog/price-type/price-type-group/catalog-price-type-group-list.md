@@ -1,8 +1,8 @@
-# Get a list of price type bindings to customer groups catalog.priceTypeGroup.list
+# Get a List of Price Type Bindings to Customer Groups catalog.priceTypeGroup.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameter specification is missing
+- required parameters are not specified
 - no response in case of error
 - no response in case of success
 - no examples in other languages
@@ -19,7 +19,7 @@ Some data may be missing — we will fill it in shortly.
 
 {% endif %}
 
-> Scope: [`catalog`](../../scopes/permissions.md)
+> Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -34,16 +34,16 @@ This method retrieves a list of price type bindings to customer groups.
 #|
 || **Parameter** | **Description** ||
 || **select** 
-[`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-type-group-get-fields.md).||
+[`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](./catalog-price-type-group-get-fields.md).||
 || **filter** 
-[`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-type-group-get-fields.md). ||
+[`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](./catalog-price-type-group-get-fields.md). ||
 || **order**
-[`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-type-group-get-fields.md). ||
+[`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](./catalog-price-type-group-get-fields.md). ||
 || **start** 
 [`string`](../../data-types.md)| Page number for output. Works for HTTPS requests. ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 ## Examples
 
@@ -75,4 +75,4 @@ Example HTTPS request
 https://your_account/rest/catalog.priceTypeGroup.list?auth=_authorization_key_&start=50
 ```
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}

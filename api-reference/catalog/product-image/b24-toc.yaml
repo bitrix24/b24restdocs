@@ -1,0 +1,15 @@
+title: Product Images and Trade Offers  
+href: index.md  
+items:   
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Add Image to Product  
+    href: catalog-product-image-add.md  
+  - name: Get Product Image Information  
+    href: catalog-product-image-get.md  
+  - name: Get List of Product Images  
+    href: catalog-product-image-list.md  
+  - name: Remove Image from Product  
+    href: catalog-product-image-delete.md  
+  - name: Get Product Image Fields  
+    href: catalog-product-image-get-fields.md  

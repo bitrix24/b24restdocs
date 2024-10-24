@@ -1,4 +1,4 @@
-# Switch the dialogue to a free operator imopenlines.bot.session.operator
+# Switch the dialog to a free operator imopenlines.bot.session.operator
 
 {% note warning "We are still updating this page" %}
 
@@ -26,10 +26,10 @@ This method switches the conversation to a free operator.
 
 {% include [Note on parameters](../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Example** | **Description** | **Revision** ||
-|| **CHAT_ID^*^**
+|| **CHAT_ID^*^** 
 [`integer`](../../../data-types.md) | `12` | Identifier of the chat | 1 ||
 |#
 
@@ -49,7 +49,7 @@ $result = restCommand(
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-## Success Response
+## Response on success
 
 ```json
 {
@@ -57,7 +57,7 @@ $result = restCommand(
 }
 ```
 
-## Error Response
+## Response on error
 
 ```json
 {
@@ -66,14 +66,14 @@ $result = restCommand(
 }
 ```
 
-### Description of Keys
+### Description of keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible Error Codes
+### Possible error codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || **CHAT_ID_EMPTY** | Chat identifier not provided ||
 || **WRONG_CHAT** | The specified chat is not managed by the bot ||

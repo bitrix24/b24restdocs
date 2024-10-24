@@ -1,17 +1,17 @@
-title: Open Lines
+title: Open Channels
 href: index.md
 items: 
-  - name: Open Lines in Bitrix24
+  - name: Open Channels in Bitrix24
     href: index.md
-  - name: Data Types and Object Structure in the REST API of Open Lines
+  - name: Data Types and Object Structure in the REST API for Open Channels
     href: data-types.md
-  - name: Scenarios Using Open Lines
+  - name: Scenarios Using Open Channels
     href: tutorials.md
-  - name: Open Lines Connectors
+  - name: Open Channels Connectors
     include:
       path: imconnector/b24-toc.yaml
       mode: link
-  - name: Open Lines
+  - name: Open Channels
     include:
       path: openlines/b24-toc.yaml
       mode: link

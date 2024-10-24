@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing here — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -30,7 +30,7 @@ The method takes the dialog for the current operator.
 
 #|
 || **Name**
-`Type` | **Description** | **Version** ||
+`Type` | **Description** | **Available since** ||
 || **CHAT_ID**
 [`unknown`](../../../data-types.md) | Identifier of the chat that the current operator is responding to | ||
 |#

@@ -11,14 +11,14 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of error
+- no response in case of an error
 - no examples in other languages
   
 {% endnote %}
 
 {% endif %}
 
-> Scope: [`catalog`](../../scopes/permissions.md)
+> Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -47,4 +47,4 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

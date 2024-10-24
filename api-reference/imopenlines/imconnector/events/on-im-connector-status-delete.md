@@ -1,8 +1,8 @@
-# On Disabling Open Line OnImConnectorStatusDelete
+# On disconnecting the open channel OnImConnectorStatusDelete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -20,12 +20,12 @@ Some data may be missing here — we will add it soon.
 >
 > Who can subscribe: any user
 
-Triggers when a client disconnects the connected channel on a specific line. The data has already been removed from the account, and necessary actions must be taken on your end to disable it.
+Triggers when a client disconnects a connected channel on a specific line. The data has already been removed from the account, and necessary actions must be taken on your end to disconnect.
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Parameter** | **Description** | **Available since** ||
 || **CONNECTOR** | ID of the disconnected connector. | ||
-|| **LINE** | ID of the removed open line. | ||
+|| **LINE** | ID of the removed open channel. | ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Parameter notes](../../../../_includes/required.md) %}

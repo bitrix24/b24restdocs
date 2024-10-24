@@ -1,4 +1,4 @@
-# Send a message to a user on behalf of an open line
+# Send a message to a user on behalf of an open channel
 
 {% note warning "We are still updating this page" %}
 

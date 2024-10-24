@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -90,7 +90,7 @@ The method `im.department.colleagues.list` retrieves a list of users in your dep
 
 ## Successful response
 
-When `USER_DATA = N`:
+With the option `USER_DATA = N`:
 
 ```json
 {
@@ -99,7 +99,7 @@ When `USER_DATA = N`:
 }    
 ```
 
-When `USER_DATA = Y`:
+With the option `USER_DATA = Y`:
 
 ```json
 {    
@@ -121,7 +121,7 @@ When `USER_DATA = Y`:
             "external_auth_id": "default",
             "status": "online",
             "idle": false,
-            "last_activity_date": "2018-01-29T17:35:31+03:00",
+            "last_activity_date": "2018-01-29T17:35:31+01:00",
             "desktop_last_date": false,
             "mobile_last_date": false,
             "departments": [
@@ -146,7 +146,7 @@ When `USER_DATA = Y`:
 - `first_name` – user's first name
 - `last_name` – user's last name
 - `work_position` – job title
-- `color` – user's color in hex format
+- `color` – user color in hex format
 - `avatar` – link to avatar (if empty, avatar is not set)
 - `gender` – user's gender
 - `birthday` – user's birthday in DD-MM format, if empty – not set
@@ -155,7 +155,7 @@ When `USER_DATA = Y`:
 - `bot` – indicator of bot (`true/false`)
 - `connector` – indicator of open lines user (`true/false`)
 - `external_auth_id` – external authorization code
-- `status` – selected user status
+- `status` – user status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users
 - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
 - `last_activity_date` – date of the user's last action in ATOM format
 - `desktop_last_date` – date of the last action in the desktop application in ATOM format (if not set, `false`)

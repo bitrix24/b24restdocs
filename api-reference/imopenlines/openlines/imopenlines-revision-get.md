@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-This method retrieves information about the API revisions of Open Lines.
+This method retrieves information about the Open Lines API revisions.
 
 No parameters.
 
@@ -59,7 +59,7 @@ No parameters.
     ```php
     $result = restCommand(
         'imopenlines.revision.get',
-        Array(),
+        array(),
         $_REQUEST["auth"]
     );
     ```
@@ -68,14 +68,14 @@ No parameters.
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Response in Case of Success
+## Response in case of success
 
 ```json
 {    
     "result": {
         "rest": 2,
         "web": 1,
-        "mobile": 1,
+        "mobile": 1
     }
 }
 ```

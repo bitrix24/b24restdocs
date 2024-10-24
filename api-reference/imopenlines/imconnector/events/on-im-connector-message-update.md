@@ -2,15 +2,15 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- types and requiredness of parameters are not specified
+- types and required parameters are not specified
 
 {% endnote %}
 
@@ -20,12 +20,12 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can subscribe: any user
 
-This event indicates a message change from the open line. It is essential to call the method **imconnector.send.status.delivery** in response so that the message is marked as successfully changed in the messenger.
+This event indicates a message change in the Open Channels. It is essential to call the method **imconnector.send.status.delivery** in response, so the message is marked as successfully changed in the messenger.
 
-#|
-|| **Parameter** | **Description** | **Version** ||
-|| **CONNECTOR** | Connector ID (this is used to verify if the event belongs to the verifier). | ||
-|| **LINE** | ID of the open line. | ||
+#| 
+|| **Parameter** | **Description** | **Available since** ||
+|| **CONNECTOR** | Connector ID (used to verify if this event belongs to the verifier). | ||
+|| **LINE** | Open Channel ID. | ||
 || **DATA** | An array of messages, where each message is described by an array of the following format:
 
 
@@ -39,7 +39,7 @@ This event indicates a message change from the open line. It is essential to cal
     "id": [
      "99"
     ],
-    "text": "Sergey \"Pokoev\":\n Test message 55"
+    "text": "Sergey \"Pokoiev\":\n Test message 55"
 },
 "chat": {
     "id": "2"

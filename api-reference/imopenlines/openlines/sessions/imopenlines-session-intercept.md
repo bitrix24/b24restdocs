@@ -1,8 +1,8 @@
-# Take the dialog from the current operator imopenlines.session.intercept
+# Take over the dialog from the current operator imopenlines.session.intercept
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -25,13 +25,13 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-This method allows the current operator to take a dialog that already has another operator.
+This method allows the current operator to take over a dialog that already has another operator.
 
 ## Method Parameters
 
 #|
 || **Name**
-`Type` | **Description** | **Available from** ||
+`Type` | **Description** | **Available since** ||
 || **CHAT_ID**
-[`unknown`](../../../data-types.md) | The identifier of the chat that the current operator is taking | ||
+[`unknown`](../../../data-types.md) | The identifier of the chat that the current operator is taking over | ||
 |#

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -25,24 +25,24 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method sets, activates, or deactivates a channel for a specific OL.
+This method sets, activates, or deactivates a channel for a specific open line.
 
 {% note info "Note" %}
 
-If you want the connector to appear in the general list of connectors in the widget on the website, you need to use the method [imconnector.connector.data.set](.). [Example of usage](.).
+If you want the connector to be displayed in the general list of connectors in the widget on the site, you need to use the method [imconnector.connector.data.set](.). [Example of usage](.).
 
 {% endnote %}
 
 ## Parameters
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Parameter** | **Description** | **Available since** ||
 || **CONNECTOR**
-[`unknown`](../../data-types.md) | ID of the connector (which was specified during the handler registration). | ||
+[`unknown`](../../data-types.md) | Connector ID (as specified during handler registration). | ||
 || **LINE**
-[`unknown`](../../data-types.md) | ID of the open line. | ||
+[`unknown`](../../data-types.md) | Open line ID. | ||
 || **ACTIVE**
 [`unknown`](../../data-types.md) | 1 or 0. Activate or deactivate. | ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}

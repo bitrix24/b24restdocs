@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing here — we will fill it in shortly
 
 - parameter types are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -32,9 +32,9 @@ Method to start a session with message transfer.
 #|
 || **Name**
 `Type` | **Example** | **Description** ||
-|| **CHAT_ID***
+|| **CHAT_ID***  
 [`unknown`](../../../data-types.md) | 494 | Identifier of the chat ||
-|| **MESSAGE_ID***
+|| **MESSAGE_ID***  
 [`unknown`](../../../data-types.md) | 18971 | Identifier of the message ||
 |#
 
@@ -95,5 +95,5 @@ true
 || **Code** | **Description** ||
 || **ACCESS_DENIED** | The current user does not have access to the specified chat ||
 || **CHAT_TYPE** | The specified chat is not an open line ||
-|| **CHAT_ID** | An incorrect chat identifier was provided ||
+|| **CHAT_ID** | An incorrect chat identifier is specified ||
 |#

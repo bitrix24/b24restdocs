@@ -1,17 +1,25 @@
-title: Price Type  
-href: index.md  
-items:  
-  - name: Overview of Methods  
-    href: index.md  
-  - name: Create Price Type  
-    href: catalog-price-type-add.md  
-  - name: Update Price Type  
-    href: catalog-price-type-update.md  
-  - name: Get Price Type Field Values  
-    href: catalog-price-type-get.md  
-  - name: Get List of Price Types  
-    href: catalog-price-type-list.md  
-  - name: Delete Price Type  
-    href: catalog-price-type-delete.md  
-  - name: Get Price Type Fields  
-    href: catalog-price-type-get-fields.md  
+title: Price Types
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Create Price Type
+    href: catalog-price-type-add.md
+  - name: Update Price Type
+    href: catalog-price-type-update.md
+  - name: Get Price Type Field Values
+    href: catalog-price-type-get.md
+  - name: Get List of Price Types
+    href: catalog-price-type-list.md
+  - name: Delete Price Type
+    href: catalog-price-type-delete.md
+  - name: Get Price Type Fields
+    href: catalog-price-type-get-fields.md
+  - name: Translations of Price Type Names
+    include:
+      path: price-type-lang/b24-toc.yaml
+      mode: link
+  - name: Linking Price Types to Customer Groups
+    include:
+      path: price-type-group/b24-toc.yaml
+      mode: link

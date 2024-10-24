@@ -1,8 +1,8 @@
-# Create a lead based on the dialogue imopenlines.crm.lead.create
+# Create a lead based on the dialog imopenlines.crm.lead.create
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -32,7 +32,7 @@ This method creates a lead for the CRM.
 #|
 || **Name**
 `Type` | **Example** | **Description** ||
-|| **CHAT_ID***
+|| **CHAT_ID*** 
 [`unknown`](../../../data-types.md) | `1987` | Identifier of the chat ||
 |#
 

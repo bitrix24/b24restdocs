@@ -26,16 +26,16 @@ Method for registering a new type of connector.
 
 {% note info "Note" %}
 
-If you want the connector to appear in the general list of connectors in the widget on the website, you need to use the method [imconnector.connector.data.set](.). [Example of use](.).
+If you want the connector to appear in the general list of connectors in the widget on the site, you need to use the method [imconnector.connector.data.set](.). [Example of use](.).
 
 {% endnote %}
 
 ## Parameters
 
 #|
-|| **Parameter** | **Description** | **Available since** ||
+|| **Parameter** | **Description** | **Available from** ||
 || **ID^*^**
-[`unknown`](../../data-types.md) | Unique identifier for the connector. It is strongly recommended to add your unique prefix at the beginning of the identifier to avoid conflicts with existing and potential future identifiers of other connectors. You can use: digits, **lowercase letters**, and underscores to form the identifier. | ||
+[`unknown`](../../data-types.md) | Unique identifier for the connector. It is highly recommended to add your unique prefix at the beginning of the identifier to avoid conflicts with existing and potential future identifiers of other connectors. You can use: digits, **lowercase letters**, and underscores to form the identifier. | ||
 || **NAME^*^**
 [`unknown`](../../data-types.md) | Display name of the connector. | ||
 || **ICON^*^**
@@ -68,7 +68,7 @@ If you want the connector to appear in the general list of connectors in the wid
 || **NEED_SIGNATURE**
 [`unknown`](../../data-types.md) | Is it possible to send a signature in the message itself? Example: a line with the operator's name is added before the message text. Default: yes. | ||
 || **CHAT_GROUP**
-[`unknown`](../../data-types.md) | Y/N. Is the chat of this channel group from the external side? Default: Y. By default, they cannot write. Leads and other CRM entities are also not created.| ||
+[`unknown`](../../data-types.md) | Y/N. Is the chat of this channel group from the external side? Default: Y. By default, writing is not allowed. Leads and other CRM entities are also not created. | ||
 || **COMMENT**
 [`unknown`](../../data-types.md) | Description for the embedding handler (see parameter PLACEMENT_HANDLER). | ||
 |#

@@ -1,8 +1,8 @@
-# Update Open Line imopenlines.config.update
+# Update Open Channel imopenlines.config.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - parameter types are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-This method updates the open line.
+This method updates the open channel.
 
 ## Method Parameters
 
@@ -33,10 +33,10 @@ This method updates the open line.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CONFIG_ID***
-[`unknown`](../../data-types.md) | Line ID ||
-|| **PARAMS**
-[`unknown`](../../data-types.md) | Array of parameters to update (optional). A list of possible fields can be found in the description of the method [imopenlines.config.add](./imopenlines-config-add.md) ||
+|| **CONFIG_ID***  
+[`unknown`](../../data-types.md) | ID of the line ||
+|| **PARAMS**  
+[`unknown`](../../data-types.md) | Array of parameters for update (optional). A list of possible fields is available in the method description [imopenlines.config.add](./imopenlines-config-add.md) ||
 |#
 
 ## Examples
@@ -73,7 +73,7 @@ This method updates the open line.
                 if (result.error())
                     alert("Error: " + result.error());
                 else
-                    alert("Success: " + result.data());
+                    alert("Successfully: " + result.data());
             }
         );
     }

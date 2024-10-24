@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -32,7 +32,7 @@ Method to start a session.
 #|
 || **Name**
 `Type` | **Example** | **Description** ||
-|| **CHAT_ID***
+|| **CHAT_ID*** 
 [`unknown`](../../../data-types.md) | 494 | Identifier of the chat ||
 |#
 
@@ -91,5 +91,5 @@ true
 || **Code** | **Description** ||
 || **ACCESS_DENIED** | The current user does not have access to the specified chat ||
 || **CHAT_TYPE** | The specified chat is not an open line ||
-|| **CHAT_ID** | An incorrect chat identifier is provided ||
+|| **CHAT_ID** | An incorrect chat identifier was provided ||
 |#

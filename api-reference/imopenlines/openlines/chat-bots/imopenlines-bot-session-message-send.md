@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for description standards
+- edits needed for description standard
 - parameter types not specified
-- examples missing
+- examples are missing
 - response in case of error is absent
 
 {% endnote %}
@@ -27,7 +27,7 @@ This method sends an automatic message via the chatbot.
 
 ## Method Parameters
 
-{% include [Parameter note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -41,12 +41,12 @@ This method sends an automatic message via the chatbot.
 - `WELCOME` — welcome message
 - `DEFAULT` — regular message
  
-By default, an empty value | 1 ||
+By default, empty value | 1 ||
 |#
 
 ## Examples
 
-{% include [Explanation about restCommand](../../../chat-bots/_includes/rest-command.md) %}
+{% include [Explanation of restCommand](../../../chat-bots/_includes/rest-command.md) %}
 
 ```php
 $result = restCommand(
@@ -60,7 +60,7 @@ $result = restCommand(
 );
 ```
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 ## Response in case of success
 

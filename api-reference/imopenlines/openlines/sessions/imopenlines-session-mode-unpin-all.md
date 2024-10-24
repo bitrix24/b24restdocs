@@ -2,16 +2,16 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
-- no response in case of an error
+- response in case of error is missing
 
 {% endnote %}
 
@@ -21,11 +21,11 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-Unpins all dialogs from the current operator. Returns an array of identifiers for the unpinned sessions.
+Unpinning all dialogs from the current operator. Returns an array of identifiers for the unpinned sessions.
 
 ## Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -61,7 +61,7 @@ Unpins all dialogs from the current operator. Returns an array of identifiers fo
 
 {% endlist %}
 
-## Response on Success
+## Response in case of success
 
 ```json
 {

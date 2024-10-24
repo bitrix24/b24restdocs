@@ -1,73 +1,226 @@
-# Add an image to a product or trade offer catalog.productImage.add
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- missing response on success
-- missing response on error
-- no examples in other languages
-- link to the article File Processing (should be at js_library/rest/files.md)
-  
-{% endnote %}
-
-{% endif %}
+# Add Image to Product catalog.productImage.add
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
-## Description
+This method adds images to a product, parent product, trade offer, or service.
 
-```http
-catalog.productImage.add(fields, fileContent)
-```
+## Method Parameters
 
-This method adds an image to a product or trade offer.
-
-## Parameters
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **fields**
-[`object`](../../data-types.md)| An array containing the following fields:
-- **productId** – the identifier of the product or offer (required field);
-- **type** – the type of image. Three values can be specified:
-  - `DETAIL_PICTURE` – the image will be saved as a detail picture;
-  - `PREVIEW_PICTURE` – the image will be saved as a preview;
-  - `MORE_PHOTO` or left empty – the image will be saved in the `MORE_PHOTO` property of the product. ||
-|| **fileContent^*^** | `product_file`, the structure is similar to that described in the article File Processing. ||
+|| **Name**
+`type` | **Description** ||
+|| **fields***
+[`object`](../../data-types.md)| Field values for adding an image ([detailed description](#fields)) ||
+|| **fileContent***
+[`array`](../../data-types.md)| An array of two elements:
+- the first — file name
+- the second – file in base64 encoding ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+### Parameter fields {#fields}
 
-## Examples
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-```javascript
-BX24.callMethod(
+#|
+|| **Name**
+`type` | **Description** ||
+|| **productId***
+[`catalog_product.id`](../data-types.md#catalog_product)\|
+[`catalog_product_sku.id`](../data-types.md#catalog_product_sku)\|
+[`catalog_product_offer.id`](../data-types.md#catalog_product_offer)\|
+[`catalog_product_service.id`](../data-types.md#catalog_product_service) | Identifier of the product, parent product, trade offer, or service.
+
+To obtain existing identifiers, use the following methods:
+- for products — [catalog.product.list](../product/catalog-product-list.md)
+- for parent products — [catalog.product.sku.list](../product/sku/catalog-product-sku-list.md)
+- for trade offers — [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md)
+- for services — [catalog.product.service.list](../product/service/catalog-product-service-list.md)
+||
+|| **type**
+[`string`](../../data-types.md) | Type of image:
+- `DETAIL_PICTURE` — detailed image
+- `PREVIEW_PICTURE` — preview image
+- `MORE_PHOTO` — product images
+
+If no value is specified, the image will be saved as `MORE_PHOTO`
+||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"productId":1,"type":"MORE_PHOTO"},"fileContent":["test.jpeg","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"]}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.productImage.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"productId":1,"type":"MORE_PHOTO"},"fileContent":["test.jpeg","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.productImage.add
+    ```
+
+- JS
+
+    ```js
+    BX24.callMethod(
     'catalog.productImage.add',
     {
-        'fields': {
-            'productId': 1,
-            'type': 'PREVIEW_PICTURE'
-        },
-        'fileContent': [
-            'test.jpeg',
-            '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'
-        ]
+    'fields': {
+    'productId': 1,
+    'type': 'MORE_PHOTO'
+    },
+    'fileContent': [
+    'test.jpeg',
+    'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'
+    ]
     },
     function(result) {
-        if (result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
+    if (result.error())
+    console.error(result.error());
+    else
+    console.log(result.data());
     }
-);
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.productImage.add',
+        [
+            'fields' => [
+                'productId' => 1,
+                'type' => 'MORE_PHOTO'
+            ],
+            'fileContent' => [
+                'test.jpeg',
+                'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "productImage": {
+            "createTime": "2024-10-17T10:48:05+02:00",
+            "detailUrl": "\/upload\/iblock\/6f1\/bkm7jmwso31wisk423gtp28iagy2e8v0\/test.jpeg",
+            "downloadUrl": "http:\/\/dev.bx\/rest\/download.json?sessid=ae1ada0e5c85babd18ce4af4c702d1d9\u0026token=catalog%7CaWQ9NzY1MSZfPWFOZnFTbFdJTDdyUXZ6NGFGN1I5VFI5VTF4bzI2RGxD%7CImRvd25sb2FkfGNhdGFsb2d8YVdROU56WTFNU1pmUFdGT1puRlRiRmRKVERkeVVYWjZOR0ZHTjFJNVZGSTVWVEY0YnpJMlJHeER8YWUxYWRhMGU1Yzg1YmFiZDE4Y2U0YWY0YzcwMmQxZDki.zYr4q9yeVqZi7Wi1OIUcAxPZJkuGcdKtLBTITbCIWsk%3D",
+            "id": 1,
+            "name": "test.jpeg",
+            "productId": 1,
+            "type": "MORE_PHOTO"
+        }
+    },
+    "time": {
+        "start": 1729162084.178151,
+        "finish": 1729162085.69217,
+        "duration": 1.5140190124511719,
+        "processing": 1.1198821067810059,
+        "date_start": "2024-10-17T13:48:04+02:00",
+        "date_finish": "2024-10-17T13:48:05+02:00"
+    }
+}
 ```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response ||
+|| **productImage**
+[`catalog_product_image`](../data-types.md#catalog_product_image) | Object containing information about the added product image ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error":200040300020,
+    "error_description":"Access Denied"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `200040300020` | Insufficient permissions to modify the trade catalog
+||
+|| `200040300020` | Insufficient permissions to modify the product
+||
+|| `100` | Parameter `fields` is missing or empty
+|| 
+|| `100` | Parameter `fileContent` is missing or empty
+|| 
+|| `0` | File name is not specified
+|| 
+|| `0` | File name contains invalid characters
+|| 
+|| `0` | File name is too long
+|| 
+|| `0` | Invalid file type
+|| 
+|| `0` | Disk space limit exceeded
+|| 
+|| `0` | Maximum upload file size exceeded
+|| 
+|| `0` | Product property for the image does not exist. Create the `MORE_PHOTO` property
+|| 
+|| `0` | Error saving the file
+|| 
+|| `0` | Product not found
+|| 
+|| `0` | Product identifier is not specified
+|| 
+|| `0` | Other errors (e.g., fatal errors)
+|| 
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./catalog-product-image-get.md)
+- [{#T}](./catalog-product-image-list.md)
+- [{#T}](./catalog-product-image-delete.md)
+- [{#T}](./catalog-product-image-get-fields.md)

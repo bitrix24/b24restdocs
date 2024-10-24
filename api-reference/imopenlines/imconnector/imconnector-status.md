@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -42,4 +42,4 @@ The method returns the current state of the connector.
 [`unknown`](../../data-types.md) | Current status of the channel (can it transmit data (configured and does not contain an error)). | ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}

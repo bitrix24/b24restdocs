@@ -25,17 +25,9 @@ items:
     include:
       path: price/toc.yaml
       mode: link
-  - name: Price Type
+  - name: Price Types
     include:
       path: price-type/b24-toc.yaml
-      mode: link
-  - name: Price Type Binding to Buyer Groups
-    include:
-      path: price-type-group/toc.yaml
-      mode: link
-  - name: Translations of Price Type Names
-    include:
-      path: price-type-lang/toc.yaml
       mode: link
   - name: Products
     include:
@@ -59,7 +51,7 @@ items:
       mode: link
   - name: Product and Trade Offer Images
     include:
-      path: product-image/toc.yaml
+      path: product-image/b24-toc.yaml
       mode: link
   - name: Unit of Measurement Ratio
     include:
@@ -73,19 +65,19 @@ items:
     include:
       path: section/b24-toc.yaml
       mode: link
-  - name: Inventory
+  - name: Warehouse
     include:
       path: store/toc.yaml
       mode: link
-  - name: Inventory Balances
+  - name: Warehouse Stock
     include:
       path: store-product/toc.yaml
       mode: link
-  - name: Inventory Management
+  - name: Warehouse Accounting
     include:
       path: document/toc.yaml
       mode: link
-  - name: Custom Fields for Inventory Management Documents
+  - name: Custom Fields for Warehouse Accounting Documents
     include:
       path: userfield-document/toc.yaml
       mode: link

@@ -1,8 +1,8 @@
-# Get Open Line by Id imopenlines.config.get
+# Get open line by Id imopenlines.config.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing here — we will complete it soon.
 
 - parameter types are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-This method retrieves an open line by its ID.
+The method retrieves an open line by its ID.
 
 ## Method Parameters
 
@@ -32,11 +32,11 @@ This method retrieves an open line by its ID.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CONFIG_ID***
+|| **CONFIG_ID***  
 [`unknown`](../../data-types.md) | Line ID ||
-|| **WITH_QUEUE**
+|| **WITH_QUEUE**  
 [`unknown`](../../data-types.md) | Display with the list of line operators (Y/N, default: Y) ||
-|| **SHOW_OFFLINE**
+|| **SHOW_OFFLINE**  
 [`unknown`](../../data-types.md) | Show the list along with operators who are offline (Y/N, default: Y) ||
 |#
 

@@ -1,16 +1,16 @@
-# Do This (Brief Summary of the Method Operation)
+# Do Something (Brief essence of the method operation)
 
-> Method Name: **imopenlines.xxx**
+> Method name: **imopenlines.xxx**
 >
 > Scope: [`imopenlines`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator / any user
 
-This method performs the following actions
+The method does the following
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -20,7 +20,7 @@ This method performs the following actions
 || **NAME***
 [`crm_item`](../data-types.md) | Description of the parameter. The type refers to the page with data types of the current scope ||
 || **SETTINGS***
-[`array`](../../data-types.md) | Example of a parameter with a complex nested structure. At this level, we describe it in general terms, without all the details — just providing an overall view. Because later, individual keys like `CONFIG` or `ITEMS` will be described in subsequent tables with separate subheadings.
+[`array`](../../data-types.md) | Example of a parameter with a complex nested structure. At this level, we describe it in general terms, but without all the details — just giving an overall idea. Because later, individual keys like `CONFIG` or `ITEMS` will be described in subsequent tables with separate headings
 
 ```json
 {
@@ -59,7 +59,7 @@ This method performs the following actions
 
 ### SETTINGS Parameter
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -103,7 +103,7 @@ Default value: `STRING`
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -152,7 +152,7 @@ Default value: `STRING`
                         }
                     },
                     "INTERACTION": {
-                        "LABEL": "Cash Register Interaction Settings",
+                        "LABEL": "Interaction Settings with Cash Register",
                         "ITEMS": {
                             "MODE": {
                                 "TYPE": "ENUM",
@@ -183,15 +183,15 @@ Default value: `STRING`
 
 {% endlist %}
 
-{% note tip "Typical Use-Cases and Scenarios" %}
+{% note tip "Typical use-cases and scenarios" %}
 
-We will fill in the content of this block later. Or we will remove the block if unnecessary.
+We will fill this block later. Or remove the block if unnecessary
 
 {% endnote %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -215,7 +215,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | Description of the returned value. A link either to the root reference of types or to data types within the scope ||
+[`integer`](../../data-types.md) | Description of the returned value. A link either to the root directory of types or to data types within the scope ||
 || **time**
 [`array`](../../data-types.md) | Information about the execution time of the request ||
 || **start**
@@ -225,18 +225,18 @@ HTTP Status: **200**
 || **duration**
 [`double`](../../data-types.md) | How long in milliseconds the request took (finish — start) ||
 || **date_start**
-[`string`](../../data-types.md) | String representation of the date and time when the request was initialized ||
+[`string`](../../data-types.md) | String representation of the date and time of the moment the request was initialized ||
 || **date_finish**
-[`double`](../../data-types.md) | String representation of the date and time when the request execution was completed ||
+[`double`](../../data-types.md) | String representation of the date and time of the moment the request execution was completed ||
 || **operating_reset_at**
-[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limits](../../../limits.md) ||
+[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read details in the article [operation limits](../../../limits.md) ||
 || **operating**
-[`double`](../../data-types.md) | In how many milliseconds the limit on REST API resources will be reset. Read more in the article [operation limits](../../../limits.md) ||
+[`double`](../../data-types.md) | In how many milliseconds the limit on REST API resources will be reset. Read details in the article [operation limits](../../../limits.md) ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -257,6 +257,6 @@ HTTP Status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Exploring
 
-We will fill in this block later, but if you have recommendations on which methods or documentation pages should be mentioned here, we would appreciate it.
+We will fill this block later, but if you have recommendations on which methods or documentation pages should be mentioned here — we would appreciate it.

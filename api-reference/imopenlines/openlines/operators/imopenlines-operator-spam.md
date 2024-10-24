@@ -30,7 +30,7 @@ This method marks the conversation as "spam" by the current operator.
 
 #|
 || **Name**
-`Type` | **Description** | **Version** ||
+`Type` | **Description** | **Available since** ||
 || **CHAT_ID**
 [`unknown`](../../../data-types.md) | The identifier of the chat that the current operator marks as spam | ||
 |#

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method retrieves the `ID` of the last chat associated with a CRM entity.
+The method retrieves the `ID` of the last chat associated with a CRM entity.
 
 ## Method Parameters
 
@@ -31,15 +31,15 @@ This method retrieves the `ID` of the last chat associated with a CRM entity.
 
 #|
 || **Name**
-`Type` | **Description** | **Available since** ||
-|| **CRM_ENTITY_TYPE***
+`Type` | **Description** | **Available from** ||
+|| **CRM_ENTITY_TYPE***  
 [`unknown`](../../../data-types.md) | Type of CRM entity: 
 - LEAD — lead
 - DEAL — deal
 - COMPANY — company
 - CONTACT — contact
  | ||
-|| **CRM_ENTITY***
+|| **CRM_ENTITY***  
 [`unknown`](../../../data-types.md) | Identifier of the CRM entity | ||
 |#
 

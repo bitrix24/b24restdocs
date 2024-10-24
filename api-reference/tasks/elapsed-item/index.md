@@ -5,15 +5,15 @@ With the Time Tracking in Tasks tool, you can:
 - enhance the transparency of task execution
 - analyze employee efficiency
 
-> Quick navigation: [all methods and events](#all-methods) 
+> Quick Navigation: [all methods and events](#all-methods) 
 > 
-> User documentation: [time tracking in tasks](https://helpdesk.bitrix24.com/open/18009084/) 
+> User Documentation: [time tracking in tasks](https://helpdesk.bitrix24.com/open/18009084/) 
 
 ## Linking Time Spent with Other Objects
 
 **Task.** A single task can have multiple entries for time spent. These entries are linked by the task identifier `TASKID`. You can obtain it using the [create new task](../tasks-task-add.md) method or the [get task list](../tasks-task-list.md) method.
 
-**User.** A time spent entry is associated with a user by their identifier `USER_ID`. You can get the user identifier using the [user.get](../../user/user-get.md) method.
+**User.** The time spent entry is associated with a user by their identifier `USER_ID`. You can get the user identifier using the [user.get](../../user/user-get.md) method.
 
 {% note tip "User Documentation" %}
 
@@ -27,7 +27,7 @@ To add, modify, or delete a time spent entry, you need access permissions to the
 
 ## Reference Information on Methods
 
-The current information on methods for working with time spent is provided by the [task.elapseditem.getmanifest](./task-elapsed-item-get-manifest.md) method. We do not recommend using the returned data in development, as the developer may change the response format at any time.
+You can find up-to-date information about methods for working with time spent using the [task.elapseditem.getmanifest](./task-elapsed-item-get-manifest.md) method. It is recommended to use it only as a reference, as the structure of the method's response may change at any time by the developer.
 
 ## Overview of Methods {#all-methods}
 
@@ -35,7 +35,7 @@ The current information on methods for working with time spent is provided by th
 >
 > Who can execute the method: any user
 
-#|
+#| 
 || **Method** | **Description** ||
 || [task.elapseditem.add](./task-elapsed-item-add.md) | Adds time spent to a task ||
 || [task.elapseditem.update](./task-elapsed-item-update.md) | Modifies the parameters of a time spent entry ||

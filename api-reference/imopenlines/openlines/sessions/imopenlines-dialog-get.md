@@ -1,8 +1,8 @@
-# Get Information About the Operator's Open Line Dialogue imopenlines.dialog.get
+# Get Information About the Open Channel Operator's Dialogue imopenlines.dialog.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-This method retrieves information about the operator's open line dialogue.
+This method retrieves information about the operator's dialogue (chat) in the open channel.
 
 ## Method Parameters
 
@@ -36,9 +36,9 @@ or
 - **chatXXX** — chat of the recipient, if the message is for a chat
 - **XXX** — identifier of the recipient, if the message is for a private dialogue | 2 ||
 || **SESSION_ID**
-[`integer`](../../../data-types.md) | `1743` | Identifier of the session within the open line | 2 ||
+[`integer`](../../../data-types.md) | `1743` | Identifier of the session within the open channel | 2 ||
 || **USER_CODE**
-[`string`](../../../data-types.md) | `livechat`\|`1`\|`1373`\|`211` | String identifier of the open line user from CRM, example `livechat`\|`1`\|`1373`\|`211` or `imol`\|`livechat`\|`1`\|`1373`\|`211` | 2 ||
+[`string`](../../../data-types.md) | `livechat`\|`1`\|`1373`\|`211` | String identifier of the open channel user from CRM, example `livechat`\|`1`\|`1373`\|`211` or `imol`\|`livechat`\|`1`\|`1373`\|`211` | 2 ||
 |#
 
 Any of the parameters can be used for the call.
@@ -126,13 +126,13 @@ Any of the parameters can be used for the call.
 - `entity_data_3` – external data for the chat
 - `entity_id` – external code for the chat – identifier
 - `entity_type` – external code for the chat – type
-- `extranet` – indicator of participation in the chat by an external extranet user (`true/false`)
+- `extranet` – indicator of external extranet user participation in the chat (`true/false`)
 - `id` – identifier of the chat
 - `manager_list` – list of operators
 - `message_type` – type of chat messages
-- `name` – name of the open line
+- `name` – name of the open channel
 - `owner` – identifier of the user who owns the chat
-- `type` – type of chat (group chat, call chat, open line chat, etc.)
+- `type` – type of chat (group chat, call chat, open channel chat, etc.)
 
 ## Error Response
 
@@ -153,5 +153,5 @@ Any of the parameters can be used for the call.
 #|
 || **Code** | **Description** ||
 || **DIALOG_ID_EMPTY** | Dialogue identifier not provided ||
-|| **ACCESS_ERROR** | The current user does not have access permission to the dialogue ||
+|| **ACCESS_ERROR** | Current user does not have access permission to the dialogue ||
 |#

@@ -1,8 +1,8 @@
-# Switch the dialogue to an operator by Id imopenlines.bot.session.transfer
+# Switch the dialog to an operator by Id imopenlines.bot.session.transfer
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -25,16 +25,16 @@ This method switches the conversation to a specific operator.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `Type` | **Example** | **Description** | **Revision** ||
-|| **CHAT_ID***
+|| **CHAT_ID*** 
 [`unknown`](../../../data-types.md) | `112` | Identifier of the chat | 1 ||
-|| **USER_ID***
+|| **USER_ID*** 
 [`unknown`](../../../data-types.md) | `12` | Identifier of the user to whom the conversation is being redirected | 1 ||
-|| **LEAVE***
+|| **LEAVE*** 
 [`unknown`](../../../data-types.md) | `N` | Y/N. If N is specified — the chatbot will not leave this chat after redirection and will remain until the user confirms | 1 ||
 |#
 
@@ -60,9 +60,9 @@ $result = restCommand(
 );
 ```
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
-## Response on Success
+## Response on success
 
 ```json
 {
@@ -70,7 +70,7 @@ $result = restCommand(
 }
 ```
 
-## Response on Error
+## Response on error
 
 ```json
 {
@@ -79,17 +79,17 @@ $result = restCommand(
 }
 ```
 
-### Description of Keys
+### Description of keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
 || **CHAT_ID_EMPTY** | Chat identifier not provided ||
 || **USER_ID_EMPTY** | User identifier to whom the conversation needs to be redirected is not provided ||
-|| **WRONG_CHAT** | Incorrect user identifier specified or this user is a chatbot or an extranet user ||
+|| **WRONG_CHAT** | Incorrect user identifier specified or this user is a chatbot or extranet user ||
 || **BOT_ID_ERROR** | Incorrect chatbot identifier ||
 |#

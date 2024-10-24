@@ -1,8 +1,8 @@
-# Get Chat by Symbolic Code imopenlines.session.open
+# Get chat by symbolic code imopenlines.session.open
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing here — we will complete it soon.
 - parameter types are not specified
 - examples are missing
 - response in case of error is absent
-- from Sergey's file: also recommend the method for getting the chat by CRM object ID, as it is more reliable
+- from Sergei's file: also recommend the method for getting the chat by CRM object id, as a more reliable option
 
 {% endnote %}
 
@@ -76,7 +76,7 @@ The method returns the chat identifier by USER_CODE.
 
 {% endlist %}
 
-## Response in Case of Success
+## Response in case of success
 
 ```json
 {
@@ -84,9 +84,9 @@ The method returns the chat identifier by USER_CODE.
 }
 ```
 
-## Response in Case of Error
+## Response in case of error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||

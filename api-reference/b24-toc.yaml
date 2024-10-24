@@ -101,7 +101,7 @@ items:
     include:
       path: log/toc.yaml
       mode: link
-  - name: Open Lines
+  - name: Open Channels
     include:
       path: imopenlines/b24-toc.yaml
       mode: link

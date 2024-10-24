@@ -21,7 +21,7 @@ If the array is not provided or an empty array is passed, all available fields o
 
 Possible values for `field` correspond to the fields of the [catalog_price_type](../data-types.md#catalog_price_type) object.
 
-An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -55,7 +55,7 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start** 
-[`integer`](../../data-types.md)| This parameter is used to manage pagination.
+[`integer`](../../data-types.md)| This parameter is used for pagination control.
 
 The page size of results is always static — 50 records.
 
@@ -69,7 +69,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 

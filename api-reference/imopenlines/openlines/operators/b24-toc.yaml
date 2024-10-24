@@ -3,9 +3,9 @@ href: imopenlines-operator-answer.md
 items: 
   - name: Take the conversation for yourself
     href: imopenlines-operator-answer.md
-  - name: Finish your conversation
+  - name: End your conversation
     href: imopenlines-operator-finish.md
-  - name: Finish another operator's conversation
+  - name: End another operator's conversation
     href: imopenlines-operator-another-finish.md
   - name: Skip the conversation
     href: imopenlines-operator-skip.md

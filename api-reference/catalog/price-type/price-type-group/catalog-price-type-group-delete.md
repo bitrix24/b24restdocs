@@ -2,23 +2,23 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of an error
+- no response in case of error
 - no examples in other languages
   
 {% endnote %}
 
 {% endif %}
 
-> Scope: [`catalog`](../../scopes/permissions.md)
+> Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -32,13 +32,13 @@ This method removes the product price from the collection of product prices. If 
 
 ## Parameters
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **id** 
 [`integer`](../../data-types.md)| Identifier of the price type binding to the customer group. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
@@ -58,4 +58,4 @@ BX24.callMethod(
 );
 ```
 ```
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}

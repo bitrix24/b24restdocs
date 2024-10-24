@@ -1,8 +1,8 @@
-# Add a New Open Line imopenlines.config.add
+# Add a new open channel imopenlines.config.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing — we will complete it shortly.
 
 - edits needed for writing standards
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
 - success response is missing
 - error response is missing
@@ -25,15 +25,15 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method adds a new open line.
+This method adds a new open channel.
 
 ## Method Parameters
 
 #|
 || **Name**
-`Type`  | **Description** | **Version** ||
+`Type`  | **Description** | **Available since** ||
 || **PARAMS**
-[`unknown`](../../data-types.md) | Array of parameters to add (optional). The list of fields is below | ||
+[`unknown`](../../data-types.md) | Array of parameters to add (optional). List of fields — below | ||
 |#
 
 ## List of Fields
@@ -42,21 +42,21 @@ This method adds a new open line.
 || **Name**
 `Type` | **Description** ||
 || **WELCOME_BOT_ENABLE**
-[`unknown`](../../data-types.md) | Assign the chatbot as responsible when a client reaches out. [Y/N (default)] — this option should be Y for the bot to function ||
+[`unknown`](../../data-types.md) | Assign a chatbot as responsible when a client reaches out. [Y/N (default)] — this option should be Y for the bot to work ||
 || **WELCOME_BOT_JOIN**
 [`unknown`](../../data-types.md) | When to connect the chatbot (`first` (default), always) ||
 || **WELCOME_BOT_ID**
 [`unknown`](../../data-types.md) | Bot identifier (int, default 0) ||
 || **WELCOME_BOT_TIME**
-[`unknown`](../../data-types.md) | Time after which to transfer the conversation from the chatbot to the queue (int, 60 by default) ||
+[`unknown`](../../data-types.md) | After how long to transfer the conversation from the chatbot to the queue (int, 60 by default) ||
 || **WELCOME_BOT_LEFT**
 [`unknown`](../../data-types.md) | When to disconnect the chatbot (`queue` (default), close) ||
 || **ACTIVE**
 [`unknown`](../../data-types.md) | Line activity [Y/N (default)] ||
 || **LINE_NAME**
-[`unknown`](../../data-types.md) | Name of the line (optional) ||
+[`unknown`](../../data-types.md) | Line name (optional) ||
 || **CRM**
-[`unknown`](../../data-types.md) | Check user against CRM [Y/N (default)] ||
+[`unknown`](../../data-types.md) | Check user in CRM [Y/N (default)] ||
 || **CRM_CREATE**
 [`unknown`](../../data-types.md) | If the client is not found in CRM (string, default `none`) ||
 || **CRM_FORWARD**
@@ -70,7 +70,7 @@ This method adds a new open line.
 || **NO_ANSWER_TIME**
 [`unknown`](../../data-types.md) | Time before marking the message as unanswered (int, 60 by default) ||
 || **QUEUE_TYPE**
-[`unknown`](../../data-types.md) | Type of queue (`evenly` (default), strictly, all) ||
+[`unknown`](../../data-types.md) | Queue type (`evenly` (default), strictly, all) ||
 || **TIMEMAN**
 [`unknown`](../../data-types.md) | Do not direct the request to the operator if the workday has not started or a break is set [Y/N (default)] ||
 || **CHECK_ONLINE**
@@ -90,13 +90,13 @@ This method adds a new open line.
 || **NO_ANSWER_TEXT**
 [`unknown`](../../data-types.md) | Text of the automatic response (string, default `null`) ||
 || **WORKTIME_ENABLE**
-[`unknown`](../../data-types.md) | Set working hours for the Open Line [Y/N (default)] ||
+[`unknown`](../../data-types.md) | Set working hours for the Open Channel [Y/N (default)] ||
 || **WORKTIME_FROM**
 [`unknown`](../../data-types.md) | Working hours "from" (string format '00:00') ||
 || **WORKTIME_TO**
 [`unknown`](../../data-types.md) | Working hours "to" (string format '00:00') ||
 || **WORKTIME_TIMEZONE**
-[`unknown`](../../data-types.md) | Time zone (format type 'Europe/Kaliningrad') ||
+[`unknown`](../../data-types.md) | Time zone (format like 'Europe/Kaliningrad') ||
 || **WORKTIME_HOLIDAYS**
 [`unknown`](../../data-types.md) | List of holidays (string, Example: 1.01,2.01,7.01,23.02,8.03,1.05,9.05,12.06,4.11,12.12) ||
 || **WORKTIME_DAYOFF**
@@ -106,11 +106,11 @@ This method adds a new open line.
 || **WORKTIME_DAYOFF_TEXT**
 [`unknown`](../../data-types.md) | Text of the automatic response (during non-working hours) (string, default `null`) ||
 || **CLOSE_RULE**
-[`unknown`](../../data-types.md) | Action upon closing the client's request ('none', `text` (default)) ||
+[`unknown`](../../data-types.md) | Action upon client request completion ('none', `text` (default)) ||
 || **CLOSE_TEXT**
 [`unknown`](../../data-types.md) | Text of the automatic response (string, default `null`) ||
 || **FULL_CLOSE_TIME**
-[`unknown`](../../data-types.md) | Time until complete closure of the request (from the moment it is closed by the operator) (int, default 10 minutes) ||
+[`unknown`](../../data-types.md) | Time until the complete closure of the request (from the moment it is closed by the operator) (int, default 10 minutes) ||
 || **AUTO_CLOSE_RULE**
 [`unknown`](../../data-types.md) | Action to be performed upon automatic closure (`none` (default), 'text') ||
 || **AUTO_CLOSE_TEXT**
@@ -120,21 +120,21 @@ This method adds a new open line.
 || **VOTE_MESSAGE**
 [`unknown`](../../data-types.md) | Send a request to the client for service quality assessment, char(1), [Y (default)/N] ||
 || **VOTE_CLOSING_DELAY**
-[`unknown`](../../data-types.md) | Close the session immediately after the client rates it, char(1), [Y/N (default)] ||
+[`unknown`](../../data-types.md) | Close the session immediately after the client assessment, char(1), [Y/N (default)] ||
 || **VOTE_MESSAGE_1_TEXT**
-[`unknown`](../../data-types.md) | Text for the rating request in online chat and Bitrix24 network ||
+[`unknown`](../../data-types.md) | Text for the assessment request in online chat and Bitrix24 Network ||
 || **VOTE_MESSAGE_1_LIKE**
-[`unknown`](../../data-types.md) | Text for positive rating in online chat and Bitrix24 network ||
+[`unknown`](../../data-types.md) | Text for positive assessment in online chat and Bitrix24 Network ||
 || **VOTE_MESSAGE_1_DISLIKE**
-[`unknown`](../../data-types.md) | Text for negative rating in online chat and Bitrix24 network ||
+[`unknown`](../../data-types.md) | Text for negative assessment in online chat and Bitrix24 Network ||
 || **VOTE_MESSAGE_2_TEXT**
-[`unknown`](../../data-types.md) | Text for the rating request in other channels (Viber, Telegram, Facebook*, VKontakte, and others) ||
+[`unknown`](../../data-types.md) | Text for the assessment request in other channels (Viber, Telegram, Facebook*, VKontakte, and others) ||
 || **VOTE_MESSAGE_2_LIKE**
-[`unknown`](../../data-types.md) | Text for positive rating in other channels (Viber, Telegram, Facebook*, VKontakte, and others) ||
+[`unknown`](../../data-types.md) | Text for positive assessment in other channels (Viber, Telegram, Facebook*, VKontakte, and others) ||
 || **VOTE_MESSAGE_2_DISLIKE**
-[`unknown`](../../data-types.md) | Text for negative rating in other channels (Viber, Telegram, Facebook*, VKontakte, and others) ||
+[`unknown`](../../data-types.md) | Text for negative assessment in other channels (Viber, Telegram, Facebook*, VKontakte, and others) ||
 || **QUICK_ANSWERS_IBLOCK_ID**
-[`unknown`](../../data-types.md) | Identifier of the quick answers info block (default 0) ||
+[`unknown`](../../data-types.md) | Identifier of the quick answers info block (default, 0) ||
 || **LANGUAGE_ID**
 [`unknown`](../../data-types.md) | Language preference settings (char(2), default `null`) ||
 || **OPERATOR_DATA**
@@ -143,7 +143,7 @@ This method adds a new open line.
 [`unknown`](../../data-types.md) | Default operator information. Array, fields:
 - NAME — name
 - AVATAR — link to avatar
-- AVATAR_ID — identifier of the avatar file in the account ||
+- AVATAR_ID — identifier of the avatar file on the account ||
 || **QUEUE**
 [`unknown`](../../data-types.md) | Queue of responsible employees. Array, fields:
 - U — array of user IDs to add to the queue. Can be passed in the format
@@ -154,22 +154,22 @@ This method adds a new open line.
             ENTITY_ID: "1"
         }
     ]
-    ```
- ||
+    ``` ||
 || **QUEUE_OPERATOR_DATA**
 [`unknown`](../../data-types.md) | Operator data for display in chat. Array, fields:
 - U — array of users with data in the form "User ID" => array of data:
   - NAME — name
   - USER_WORK_POSITION — position
   - AVATAR — link to avatar
-  - AVATAR_ID — identifier of the avatar file in the account ||
+  - AVATAR_ID — identifier of the avatar file on the account ||
 |#
 
 \* — *The social network is recognized as extremist and is banned in the United States.*
 
+
 ## Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Example note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 

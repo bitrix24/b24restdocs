@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -32,9 +32,9 @@ This method saves a message as a quick reply.
 #|
 || **Name**
 `Type` | **Example** | **Description** ||
-|| **CHAT_ID***
+|| **CHAT_ID***  
 [`unknown`](../../../data-types.md) | `2014` | Identifier of the chat ||
-|| **MESSAGE_ID***
+|| **MESSAGE_ID***  
 [`unknown`](../../../data-types.md) | `18715` | Identifier of the message ||
 |#
 

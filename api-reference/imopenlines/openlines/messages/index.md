@@ -1,8 +1,8 @@
-# Send a message to the open line imopenlines.crm.message.add
+# Send a message to the open channel imopenlines.crm.message.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ Some data may be missing here — we will complete it soon.
 - examples are missing
 - success response is missing
 - error response is missing
-- from Sergei's file: on behalf of the employee, specify the features and recommended sequence of actions
+- from Sergei's file: on behalf of the employee, specify features and recommended sequence of actions
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-This method sends a message on behalf of the user in the CRM entity chat.
+The method sends a message on behalf of the user in the CRM entity chat.
 
 ## Method Parameters
 
@@ -33,20 +33,20 @@ This method sends a message on behalf of the user in the CRM entity chat.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CRM_ENTITY_TYPE***
+|| **CRM_ENTITY_TYPE***  
 [`unknown`](../../../data-types.md) | Type of CRM entity:
 - lead — lead
 - deal — deal
 - company — company
 - contact — contact
  ||
-|| **CRM_ENTITY_ID***
+|| **CRM_ENTITY_ID***  
 [`unknown`](../../../data-types.md) | Identifier of the CRM entity ||
-|| **USER_ID***
+|| **USER_ID***  
 [`unknown`](../../../data-types.md) | Identifier of the user or bot we want to add to the chat ||
-|| **CHAT_ID***
+|| **CHAT_ID***  
 [`unknown`](../../../data-types.md) | Identifier of the chat ||
-|| **MESSAGE***
+|| **MESSAGE***  
 [`unknown`](../../../data-types.md) | Message text ||
 |#
 
@@ -109,7 +109,7 @@ Returns the identifier of the sent message.
 #|
 || **Code** | **Description** ||
 || **ACCESS_DENIED** | The user does not have access ||
-|| **ERROR_ARGUMENT** | One of the arguments is missing or specified incorrectly ||
+|| **ERROR_ARGUMENT** | One of the arguments is missing or incorrect ||
 || **CHAT_NOT_IN_CRM** | The chat does not belong to the CRM entity ||
 || **MESSAGE_ADD_ERROR** | Error sending the message ||
 |#

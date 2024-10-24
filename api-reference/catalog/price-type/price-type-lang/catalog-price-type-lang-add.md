@@ -1,14 +1,14 @@
-# Add Translation for Price Type Title catalog.priceTypeLang.add
+# Add Translation for Price Type Name catalog.priceTypeLang.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
 - no response in case of success
@@ -19,7 +19,7 @@ Some data may be missing here — we will complete it soon.
 
 {% endif %}
 
-> Scope: [`catalog`](../../scopes/permissions.md)
+> Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -29,17 +29,17 @@ Some data may be missing here — we will complete it soon.
 catalog.priceTypeLang.add(fields)
 ```
 
-This method adds a translation for the price type title.
+This method adds a translation for the price type name.
 
 ## Parameters
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **fields**
 [`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-type-lang-get-fields.md). ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
@@ -49,7 +49,7 @@ BX24.callMethod(
     {
         fields: {
             catalogGroupId: 14,
-            lang: "en",
+            lang: "de",
             name: "Wholesale Price"
         }
     },
@@ -61,4 +61,4 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../../_includes/examples.md) %}

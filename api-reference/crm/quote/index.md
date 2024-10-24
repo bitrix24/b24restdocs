@@ -1,28 +1,118 @@
-# Estimates
+# Estimates in CRM: Overview of Methods
 
-{% note warning "We are still updating this page" %}
+An estimate is a CRM object that allows you to create printed documents and send them to the client before a deal.
 
-Some data may be missing here — we will complete it soon.
+> Quick navigation: [all methods and events](#all-methods)
+> 
+> User documentation: [estimates in Bitrix24](https://helpdesk.bitrix24.com/open/17643444/) 
+
+## Connection of Estimates with Other CRM Objects
+
+**Deal.** An estimate can be created based on a deal and vice versa. The connection is established in the estimate field `DEAL_ID`.
+
+**Products.** Adding, modifying, and deleting product items in estimates can be done through the group of methods [crm.item.productrow.*](../universal/product-rows/index.md). 
+
+**Details.** The buyer's details are pulled into the estimate form from the associated contact or company. The seller's details are pulled from the field `MYCOMPANY_ID`.
+
+**Client.** A field in the estimate detail form that consists of the associated company and contacts. There is one company in the field, and it is accessed directly through the field `COMPANY_ID`. Multiple contacts can be specified, and their modification is done through an array of data in the multiple field `CONTACT_IDS`.
+
+{% note tip "User Documentation" %}
+
+- [How to add products to deals, leads, and estimates](https://helpdesk.bitrix24.com/open/14303190/)
+- [How to use your company's details](https://helpdesk.bitrix24.com/open/16059544/)
 
 {% endnote %}
+
+## Estimate Detail Form
+
+The main workspace in an estimate is the General tab of its detail form. It consists of two parts:
+
+* The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. They allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom fields for estimates, the group of methods [crm.quote.userfield.*](./crm-quote-user-field-add.md) is used.
+
+* The right part contains the estimate timeline. In it, you can create, edit, filter, and delete CRM activities — the group of methods [crm.activity.*](../timeline/activities/index.md), and timeline records — the group of methods [crm.timeline.*](../timeline/index.md).
+
+{% note tip "User Documentation" %}
+
+- [CRM Card: Features and Settings](https://helpdesk.bitrix24.com/open/22879716/)
+- [System Fields in CRM](https://helpdesk.bitrix24.com/open/18529390/)
+- [Custom Fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
+- [Timeline in CRM Entity](https://helpdesk.bitrix24.com/open/16767378/)
+
+{% endnote %}
+
+## Widgets
+
+You can embed an application into the estimate detail form. This allows you to use the application without leaving the estimate detail form.
+
+There are two embedding scenarios: 
+* Use special [embedding locations](../../widgets/crm/index.md). For example, by creating your own tab.
+* Create a [custom field](../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md), where the content of your application will be loaded.
+
+{% note tip "Typical Use-Cases and Scenarios" %}
+
+- [Widget Embedding Mechanism](../../widgets/index.md)
+- [Embed a Widget in the CRM Detail Form](../../../tutorials/crm/crm-widgets/widget-as-detail-tab.md)
+
+{% endnote %}
+
+## Overview of Methods and Events {#all-methods}
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-#|
-|| **Method** | **Description** ||
-|| [crm.quote.fields](./crm-quote-fields.md) | Returns the description of the fields of the estimate. ||
-|| [crm.quote.add](./crm-quote-add.md) | Creates a new estimate. ||
-|| [crm.quote.get](./crm-quote-get.md) | Returns the estimate by its identifier. ||
-|| [crm.quote.list](./crm-quote-list.md) | Returns a list of estimates based on a filter. This is an implementation of the listing method for estimates. ||
-|| [crm.quote.update](./crm-quote-update.md) | Updates an existing estimate. ||
-|| [crm.quote.delete](./crm-quote-delete.md) | Deletes the estimate and all associated objects. ||
-|| [crm.quote.productrows.get](./crm-quote-product-rows-get.md) | Returns the product items of the estimate. ||
-|| [crm.quote.productrows.set](./crm-quote-product-rows-set.md) | Sets (creates or updates) the product items of the estimate. ||
-|| [crm.quote.userfield.add](./crm-quote-user-field-add.md) | Creates a new custom field for estimates. ||
-|| [crm.quote.userfield.delete](./crm-quote-user-field-delete.md) | Deletes a custom field from estimates. ||
-|| [crm.quote.userfield.get](./crm-quote-user-field-get.md) | Returns a custom field from estimates by its identifier. ||
-|| [crm.quote.userfield.list](./crm-quote-user-field-list.md) | Returns a list of custom fields for estimates based on a filter. ||
-|| [crm.quote.userfield.update](./crm-quote-user-field-update.md) | Updates an existing custom field for estimates. ||
-|#
+### Main
+
+{% list tabs %}
+
+- Methods
+  
+    #| 
+    || **Method** | **Description** ||
+    || [crm.quote.add](./crm-quote-add.md) | Creates a new estimate ||
+    || [crm.quote.update](./crm-quote-update.md) | Modifies an existing estimate ||
+    || [crm.quote.get](./crm-quote-get.md) | Returns an estimate by ID ||
+    || [crm.quote.list](./crm-quote-list.md) | Returns a list of estimates by filter ||
+    || [crm.quote.delete](./crm-quote-delete.md) | Deletes an estimate and all associated objects ||
+    || [crm.quote.fields](./crm-quote-fields.md) | Returns the description of estimate fields ||
+    || [crm.quote.productrows.get](./crm-quote-product-rows-get.md) | Returns the product items of the estimate ||
+    || [crm.quote.productrows.set](./crm-quote-product-rows-set.md) | Sets (creates or updates) the product items of the estimate ||
+    |#
+
+- Events 
+
+    #| 
+    || **Event** | **Triggered** ||
+    || [onCrmQuoteAdd](./events/on-crm-quote-add.md) | When an estimate is created ||
+    || [onCrmQuoteUpdate](./events/on-crm-quote-update.md) | When an estimate is updated ||
+    || [onCrmQuoteDelete](./events/on-crm-quote-delete.md) | When an estimate is deleted ||
+    |#
+
+{% endlist %}
+
+### Custom Fields
+
+{% list tabs %}
+
+- Methods
+
+    #| 
+    || **Method** | **Description** ||
+    || [crm.quote.userfield.add](./crm-quote-user-field-add.md) | Creates a new custom field for estimates ||
+    || [crm.quote.userfield.update](./crm-quote-user-field-update.md) | Updates an existing custom field for estimates ||
+    || [crm.quote.userfield.get](./crm-quote-user-field-get.md) | Returns a custom field for estimates by ID ||
+    || [crm.quote.userfield.list](./crm-quote-user-field-list.md) | Returns a list of custom fields for estimates by filter ||
+    || [crm.quote.userfield.delete](./crm-quote-user-field-delete.md) | Deletes a custom field for estimates ||
+    |#
+
+- Events 
+  
+    #| 
+    || **Event** | **Triggered** ||
+    || [onCrmQuoteUserFieldAdd](./events/on-crm-quote-user-field-add.md) | When a custom field is added ||
+    || [onCrmQuoteUserFieldUpdate](./events/on-crm-quote-user-field-update.md) | When a custom field is modified ||
+    || [onCrmQuoteUserFieldDelete](./events/on-crm-quote-user-field-delete.md) | When a custom field is deleted ||
+    || [onCrmQuoteUserFieldSetEnumValues](./events/on-crm-quote-user-field-set-enum-values.md) | When the set of values for a custom field of list type is changed ||
+    |#
+
+ {% endlist %}

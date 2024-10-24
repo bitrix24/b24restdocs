@@ -1,4 +1,4 @@
-# Unregister Widget for Vibe landing.repowidget.unregister
+# Enable Debug Mode landing.repowidget.debug
 
 {% note warning "We are still working on the tool" %}
 
@@ -10,7 +10,7 @@ The functionality will be released soon.
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.unregister` removes the widget for the Main page: our vibe. On success, it returns `true`; otherwise, it returns `false` or an error with a description.
+The method `landing.repowidget.debug` enables debug mode for all widgets of the current application. In this case, the Vue application will report more errors in the JS console for the developer's convenience. By default, the mode is disabled.
 
 ## Method Parameters
 
@@ -19,8 +19,8 @@ The method `landing.repowidget.unregister` removes the widget for the Main page:
 #|
 || **Name**
 `type` | **Description** ||
-|| **code***
-[`string`](../data-types.md) | Unique code of the widget to be removed ||
+|| **enable**
+[`boolean`](../data-types.md) | Debug mode activation flag ||
 |#
 
 ## Code Examples
@@ -33,8 +33,8 @@ The method `landing.repowidget.unregister` removes the widget for the Main page:
 
     ```js
     BX24.callMethod(
-        'landing.repowidget.unregister', {
-            code: 'my_widget'
+        'landing.repowidget.debug', {
+            enable: true,
         },
         function(result)
         {
@@ -52,9 +52,9 @@ The method `landing.repowidget.unregister` removes the widget for the Main page:
     require_once('crest.php');
 
     $result = CRest::call(
-        'landing.repowidget.unregister',
+        'landing.repowidget.debug',
         [
-            'code' => 'my_widget'
+            'enable' => true,
         ]
     );
 
@@ -67,7 +67,7 @@ The method `landing.repowidget.unregister` removes the widget for the Main page:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -90,17 +90,35 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Result of the widget removal ||
+[`boolean`](../data-types.md) | On success — `true`, otherwise — an error ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
+HTTP Status: **400**
+
+```json
+{
+    "error":"APP_NOT_FOUND",
+    "error_description":"Cannot find REST application"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `APP_NOT_FOUND` | REST application not found. Occurs when there are issues with the authorization of the REST application on the account ||
+|#
+
 {% include [system errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./landing-repowidget-register.md)
+- [{#T}](./landing-repowidget-unregister.md)
 - [{#T}](./landing-repowidget-get-list.md)
-- [{#T}](./landing-repowidget-debug.md)

@@ -1,14 +1,14 @@
-# Rate Employee's Performance in the imopenlines.session.head.vote Dialog
+# Rate Employee Performance in the imopenlines.session.head.vote Dialog
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -32,11 +32,11 @@ This method is used for rating the dialogue by a supervisor.
 #|
 || **Name**
 `Type` | **Example** | **Description** ||
-|| **SESSION_ID***
+|| **SESSION_ID***  
 [`unknown`](../../../data-types.md) | `494` | Session identifier ||
-|| **RATING**
+|| **RATING**  
 [`unknown`](../../../data-types.md) | `5` | Number of stars from 1 to 5 ||
-|| **COMMENT**
+|| **COMMENT**  
 [`unknown`](../../../data-types.md) | `Well done` | Supervisor's comment ||
 |#
 
@@ -57,7 +57,6 @@ This method is used for rating the dialogue by a supervisor.
     // example for cURL (OAuth)
 
 - JS
-
 
     ```js
     BX24.callMethod(
@@ -99,6 +98,6 @@ true
 || **Code** | **Description** ||
 || **ACCESS_DENIED** | The current user does not have access to the specified chat ||
 || **CHAT_TYPE** | The specified chat is not an open line ||
-|| **CHAT_ID** | An incorrect chat identifier has been provided ||
+|| **CHAT_ID** | An incorrect chat identifier has been specified ||
 || **WRONG_PARAMETER** | At least one of the optional parameters must be specified ||
 |#

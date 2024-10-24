@@ -1,8 +1,8 @@
-# Finish another operator's dialog imopenlines.operator.another.finish
+# Finish the dialog of another operator imopenlines.operator.another.finish
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-This method finishes another operator's dialog.
+This method finishes the dialog of another operator.
 
 ## Method Parameters
 

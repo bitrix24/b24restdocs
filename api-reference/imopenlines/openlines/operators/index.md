@@ -1,8 +1,8 @@
-# Open Line Operators
+# Open Channel Operators
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- from Sergey’s file: where it is indicated how it looks in the interface.
+- from Sergei's file: where it is indicated how it looks in the interface.
 
 {% endnote %}
 

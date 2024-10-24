@@ -2,6 +2,18 @@
 
 ## 2024
 
+### October 23, 2024
+
+- Updated the main pages of the [Sprints](./api-reference/sonet-group/scrum/sprint/index.md), [Epics](./api-reference/sonet-group/scrum/epic/index.md) sections. Added introductory information as well as an overview of methods and connections.
+- Updated the main pages of the [Pricing Rounding Rules](./api-reference/catalog/rounding-rule/index.md), [Price Types](./api-reference/catalog/price-type/index.md) sections. Added introductory information as well as an overview of methods and connections.
+- Updated the main page of the [Universal Lists](./api-reference/lists/index.md) section. Added introductory information as well as an overview of methods and connections.
+- Updated the main pages of the [Details](./api-reference/crm/requisites/index.md), [Estimates](./api-reference/crm/quote/index.md) sections. Added introductory information, an overview of methods and connections.
+
+- Updated the documentation for working with product images [catalog.productImage.*](./api-reference/catalog/product-image/index.md).
+
+- Added documentation for the methods [landing.repowidget.getlist](./api-reference/vibe/landing-repowidget-get-list.md) and [landing.repowidget.debug](./api-reference/vibe/landing-repowidget-debug.md).
+
+
 ### October 16, 2024
 
 - Updated documentation on price rounding rules [catalog.roundingrule.*](./api-reference/catalog/rounding-rule/index.md)

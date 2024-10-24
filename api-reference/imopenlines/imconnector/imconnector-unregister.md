@@ -10,10 +10,10 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Type and requiredness of parameters are not specified
-- Examples are missing
-- Success response is absent
-- Error response is absent
+- Type and required parameter specifications are missing
+- Examples are absent
+- Success response is missing
+- Error response is missing
   
 {% endnote %}
 
@@ -26,7 +26,7 @@ Some data may be missing here — we will complete it shortly.
 Method to delete the connector.
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Parameter** | **Description** | **Available since** ||
 || **ID**
 [`unknown`](../../data-types.md) | Unique identifier of the connector. | ||
 |#

@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -32,25 +32,24 @@ This method removes a user from the CRM entity chat.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CRM_ENTITY_TYPE***
+|| **CRM_ENTITY_TYPE*** 
 [`unknown`](../../../data-types.md) | Type of CRM entity:
 - lead
 - deal
 - company
 - contact
  ||
-|| **CRM_ENTITY***
+|| **CRM_ENTITY*** 
 [`unknown`](../../../data-types.md) | Identifier of the CRM entity ||
-|| **USER_ID***
+|| **USER_ID*** 
 [`unknown`](../../../data-types.md) | Identifier of the user or bot we want to add to the chat ||
-|| **CHAT_ID**
+|| **CHAT_ID** 
 [`unknown`](../../../data-types.md) | Identifier of the chat. If not specified, the last chat linked to the CRM entity will be used ||
 |#
 
 ## Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
-
 
 {% list tabs %}
 

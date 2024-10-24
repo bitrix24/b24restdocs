@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter type is not specified
-- parameter requirement is not specified
+- parameter mandatory status is not specified
 - examples are missing
 - responses in case of success and error are not specified
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-Method for updating messages in OL.
+Method for updating messages in Open Lines.
 
 ## Parameters
 
@@ -59,7 +59,7 @@ array(
                     //Allowed formatting (BB codes) is described 
                     //here: https://apidocs.bitrix24.com/api-reference/chats/messages/index.html
             'files' => array(//Array of file descriptions, where each file is described 
-                            //by an array with a link that is available for the account
+                            //by an array with a link available for the account
                 array('url'),
                 array('url'),
                 ...

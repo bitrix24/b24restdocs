@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- from Sergey's file: please note that this returns the complete list of connected connectors in the current B24
+- from Sergey's file: please note that this returns the complete list of connected connectors in the current Bitrix24
 - parameters are not specified
 - required parameters are not indicated
 - examples in other languages are missing
@@ -39,15 +39,15 @@ BX24.callMethod('imconnector.list', {}, function(result) {
     }
 });
 ```
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}
 
 ## Response on success
 
-A list of connectors with their names.
+A list of connectors with names.
 
 ```json
 {
-    "livechat": "Live Chat",
+    "livechat": "Live chat",
     "whatsappbytwilio": "WhatsApp",
     "avito": "Avito",
     "viber": "Viber",
@@ -69,5 +69,5 @@ A list of connectors with their names.
 
 #|
 || **Code** | **Description** ||
-|| **ACCESS_DENIED** | The current user does not have access || 
+|| **ACCESS_DENIED** | The current user does not have access ||
 |#

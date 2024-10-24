@@ -1,4 +1,4 @@
-# Chatbots in Open Lines
+# Chatbots in Open Channels
 
 {% note warning "We are still updating this page" %}
 
@@ -8,9 +8,9 @@ Some data may be missing here — we will complete it soon.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- From Sergey’s file: we are writing about how chatbots can operate in open lines, how it works, what scenarios we recommend supporting - automation rules, and providing a link to the section on creating chatbots.
+- from Sergei's file: we write about how chatbots can operate in open channels, how it works, what scenarios we recommend supporting - Automation rules, and provide a link to the section on creating chatbots.
 
 {% endnote %}
 

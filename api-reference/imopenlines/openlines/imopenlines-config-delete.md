@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -32,8 +32,8 @@ This method deletes an open line.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CONFIG_ID***
-[`unknown`](../../data-types.md) | Identifier of the line ||
+|| **CONFIG_ID***  
+[`unknown`](../../data-types.md) | Line identifier ||
 |#
 
 ## Examples

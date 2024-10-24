@@ -11,9 +11,9 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter type is not specified
-- parameter mandatory status is not specified
+- parameter requirement is not specified
 - examples are missing
-- responses for success and error cases are not specified
+- responses in case of success and error are not specified
 
 {% endnote %}
 
@@ -28,13 +28,13 @@ Method for updating messages in OL.
 ## Parameters
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Parameter** | **Description** | **Available since** ||
 || **CONNECTOR**
-[`unknown`](../../data-types.md) | Connector ID (as specified during handler registration). | ||
+[`unknown`](../../data-types.md) | Connector ID (which was specified during the handler registration). | ||
 || **LINE**
-[`unknown`](../../data-types.md) | ID of the open line. | ||
+[`unknown`](../../data-types.md) | Open line ID. | ||
 || **MESSAGES**
-[`unknown`](../../data-types.md) | Array of messages, where messages are described in the following format: 
+[`unknown`](../../data-types.md) | Array of messages, where messages are described by an array of the following format: 
 
 ```js
 array(
@@ -59,4 +59,4 @@ array(
 | ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}

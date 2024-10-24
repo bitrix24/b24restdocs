@@ -1,7 +1,7 @@
-title: Open Line Connectors
+title: Open Channel Connectors
 href: index.md
 items: 
-  - name: Custom Open Line Connectors
+  - name: Custom Open Channel Connectors
     href: index.md
   - name: Register Connector
     href: imconnector-register.md

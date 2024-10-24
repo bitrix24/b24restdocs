@@ -1,4 +1,4 @@
-# Finish Dialog imopenlines.bot.session.finish
+# Finish the dialog imopenlines.bot.session.finish
 
 {% note warning "We are still updating this page" %}
 
