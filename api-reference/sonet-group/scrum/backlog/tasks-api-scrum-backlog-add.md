@@ -6,7 +6,7 @@
 
 The method `tasks.api.scrum.backlog.add` adds a backlog in Scrum.
 
-It may be necessary to explicitly create a backlog during import after creating the Scrum.
+It may be necessary to create a backlog during import after creating the Scrum.
 
 ## Method Parameters
 
@@ -16,7 +16,16 @@ It may be necessary to explicitly create a backlog during import after creating 
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | An object containing records about the group and user (detailed description provided below) in the form of a structure ||
+[`object`](../../../data-types.md) | An object containing records about the group and user (detailed description provided below) in the following structure:
+
+```js
+"fields": {
+    "groupId": value,
+    "createdBy": value,
+    "modifiedBy": value,
+}    
+```
+||
 |#
 
 ### Parameter fields
@@ -27,7 +36,9 @@ It may be necessary to explicitly create a backlog during import after creating 
 || **Name**
 `type` | **Description** ||
 || **groupId***
-[`integer`](../../../data-types.md) | The identifier of the group for which the backlog is being created. The group identifier can be obtained when creating a new group [sonet_group.create](../../sonet-group-create.md) or when retrieving a list of existing groups [socialnetwork-api-workgroup-list.md](../../socialnetwork-api-workgroup-list.md) ||
+[`integer`](../../../data-types.md) | The identifier of the group for which the backlog is created.
+
+The group identifier can be obtained when creating a new group [sonet_group.create](../../sonet-group-create.md) or when retrieving a list of existing groups [socialnetwork-api-workgroup-list.md](../../socialnetwork-api-workgroup-list.md) ||
 || **createdBy***
 [`integer`](../../../data-types.md) | The identifier of the user who will create the backlog ||
 || **modifiedBy**
@@ -66,8 +77,8 @@ It may be necessary to explicitly create a backlog during import after creating 
     BX24.callMethod(
         'tasks.api.scrum.backlog.add',{
             "fields": {
-                "groupId": 1,
-                "createdBy": 1,
+                "groupId": 125,
+                "createdBy": 6,
             },
         },
         function(result) {
@@ -85,12 +96,15 @@ It may be necessary to explicitly create a backlog during import after creating 
     ```php
     require_once('crest.php');
 
-    $result = CRest::call('tasks.api.scrum.backlog.add', [
-        'fields' => [
-            'groupId' => 1,
-            'createdBy' => 1,
-        ],
-    ]);
+    $result = CRest::call(
+    'tasks.api.scrum.backlog.add',
+        [
+            'fields' => [
+                'groupId' => 1,
+                'createdBy' => 1,
+            ],
+        ]
+    );
 
     echo '<PRE>';
     print_r($result);
@@ -106,18 +120,18 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-      "id": 1,
-      "groupId": 1,
-      "createdBy": 1,
-      "modifiedBy": 0
+        "id": 1,
+        "groupId": 125,
+        "createdBy": 6,
+        "modifiedBy": 0
     },
     "time":{
         "start":1712137817.343984,
         "finish":1712137817.605804,
         "duration":0.26182007789611816,
         "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+        "date_start":"2024-04-03T12:50:17+02:00",
+        "date_finish":"2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -153,8 +167,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `0` | Backlog already added | The error occurs when trying to create a backlog while an active backlog already exists in the group ||
-|| `0` | Access denied | There are insufficient access permissions ||
+|| `0` | Backlog already added | The error occurs when attempting to create a backlog while an active backlog already exists in the group ||
+|| `0` | Access denied | Missing appropriate access permissions ||
 || `0` | createdBy user not found | The provided user identifier is invalid. For example, a user with such an identifier does not exist ||
 || `0` | modifiedBy user not found | The provided user identifier is invalid. For example, a user with such an identifier does not exist ||
 || `0` | Unknown error | Another error ||

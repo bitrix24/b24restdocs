@@ -6,7 +6,7 @@
 
 This method deletes a stage.
 
-The stage will not be deleted if it contains tasks.
+The stage will not be deleted if there are tasks in it.
 
 ## Method Parameters
 
@@ -92,13 +92,13 @@ In case of a successful request, the server will return true
 ```json
 {
     "result": true,
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -109,8 +109,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"ERROR_CODE",
-    "error_description":"ACTION_NOT_ALLOWED"
+    "error": 0,
+    "error_description": "Stage has tasks"
 }
 ```
 
@@ -119,19 +119,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | `Stage id not found`
-
-The required field `stageId` is not filled ||
-|| `0` | `Stage not found`
-
-An unknown stage identifier `stageId` was provided ||
-|| `0` | `Stage has tasks`
-
-The stage has tasks and cannot be deleted ||
-|| `0` | `Access denied`
-
-Access is denied ||
+|| **Code** | **Description** | **Value** ||
+|| `0` | `Stage id not found` | Required field `stageId` is not filled ||
+|| `0` | `Stage not found` | An unknown stage identifier `stageId` was provided ||
+|| `0` | `Stage has tasks` | There are tasks in the stage, and it cannot be deleted ||
+|| `0` | `Access denied` | Access is denied ||
 || `0` | Unknown error ||
 |#
 

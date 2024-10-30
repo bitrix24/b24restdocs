@@ -1,4 +1,4 @@
-# Change Scrum Kanban Stage tasks.api.scrum.kanban.updateStage
+# Update Kanban Stage tasks.api.scrum.kanban.updateStage
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -120,13 +120,13 @@ HTTP status: **200**
 ```json
 {
     "result": true,
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -137,8 +137,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"ERROR_CODE",
-    "error_description":"ACTION_NOT_ALLOWED"
+    "error": 0,
+    "error_description": "Incorrect sprintId value"
 }
 ```
 
@@ -147,20 +147,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | `Stage id not found`
-
-The required field `stageId` is not filled ||
-|| `0` | `Stage not found`
-
-An unknown stage identifier `stageId` was provided ||
-|| `0` | `Incorrect sprintId value`
-
-An unknown sprint identifier was provided or there is no access to the sprint ||
-|| `0` | `Access denied`
-
-Access is forbidden ||
-|| `0` | Unknown error ||
+|| **Code** | **Description** | **Value** ||
+|| `0` | `Stage id not found` | Required field `stageId` is not filled ||
+|| `0` | `Stage not found` | Unknown stage identifier `stageId` provided ||
+|| `0` | `Incorrect sprintId value` | Unknown sprint identifier provided or no access to the sprint ||
+|| `0` | `Access denied` | Access is denied ||
+|| `0` | Unknown error | ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -2,17 +2,22 @@
 
 ## 2024
 
+### October 30, 2024
+
+- Updated the main pages of the [Scrum Tasks](./api-reference/sonet-group/scrum/task/index.md), [Kanban](./api-reference/sonet-group/scrum/backlog/index.md), [Backlog](./api-reference/sonet-group/scrum/backlog/index.md) sections. Added introductory information, as well as an overview of methods and connections
+- Updated the main page of the [Working with Fields](./api-reference/lists/fields/index.md) section of universal lists. Added introductory information, as well as an overview of methods and connections
+- Added a new tutorial [How to Get a Client's Address from CRM](./tutorials/crm/how-to-get-lists/how-to-get-address.md)
+
 ### October 23, 2024
 
-- Updated the main pages of the [Sprints](./api-reference/sonet-group/scrum/sprint/index.md), [Epics](./api-reference/sonet-group/scrum/epic/index.md) sections. Added introductory information as well as an overview of methods and connections.
-- Updated the main pages of the [Pricing Rounding Rules](./api-reference/catalog/rounding-rule/index.md), [Price Types](./api-reference/catalog/price-type/index.md) sections. Added introductory information as well as an overview of methods and connections.
-- Updated the main page of the [Universal Lists](./api-reference/lists/index.md) section. Added introductory information as well as an overview of methods and connections.
-- Updated the main pages of the [Details](./api-reference/crm/requisites/index.md), [Estimates](./api-reference/crm/quote/index.md) sections. Added introductory information, an overview of methods and connections.
+- Updated the main pages of the [Sprints](./api-reference/sonet-group/scrum/sprint/index.md), [Epics](./api-reference/sonet-group/scrum/epic/index.md) sections. Added introductory information as well as an overview of methods and connections
+- Updated the main pages of the [Pricing Rounding Rules](./api-reference/catalog/rounding-rule/index.md), [Price Types](./api-reference/catalog/price-type/index.md) sections. Added introductory information as well as an overview of methods and connections
+- Updated the main page of the [Universal Lists](./api-reference/lists/index.md) section. Added introductory information as well as an overview of methods and connections
+- Updated the main pages of the [Details](./api-reference/crm/requisites/index.md), [Estimates](./api-reference/crm/quote/index.md) sections. Added introductory information, an overview of methods and connections
 
-- Updated the documentation for working with product images [catalog.productImage.*](./api-reference/catalog/product-image/index.md).
+- Updated the documentation for working with product images [catalog.productImage.*](./api-reference/catalog/product-image/index.md)
 
-- Added documentation for the methods [landing.repowidget.getlist](./api-reference/vibe/landing-repowidget-get-list.md) and [landing.repowidget.debug](./api-reference/vibe/landing-repowidget-debug.md).
-
+- Added documentation for the methods [landing.repowidget.getlist](./api-reference/vibe/landing-repowidget-get-list.md) and [landing.repowidget.debug](./api-reference/vibe/landing-repowidget-debug.md)
 
 ### October 16, 2024
 

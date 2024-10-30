@@ -14,11 +14,11 @@ This method adds a task to the Scrum kanban.
 || **Name**
 `type` | **Description** ||
 || **sprintId***
-[`integer`](../../../data-types.md) | Identifier of the sprint. You can obtain the identifier using the method [tasks.api.scrum.sprint.list](../sprint/tasks-api-scrum-sprint-list.md) ||
+[`integer`](../../../data-types.md) | Sprint identifier. You can obtain the identifier using the [tasks.api.scrum.sprint.list](../sprint/tasks-api-scrum-sprint-list.md) method ||
 || **taskId***
-[`integer`](../../../data-types.md) | Identifier of the task. You can obtain the identifier using the method [tasks.task.list](../../../tasks/tasks-task-list.md) ||
+[`integer`](../../../data-types.md) | Task identifier. You can obtain the identifier using the [tasks.task.list](../../../tasks/tasks-task-list.md) method ||
 || **stageId***
-[`integer`](../../../data-types.md) | Identifier of the stage. You can obtain the identifier using the method [tasks.api.scrum.kanban.getStages](./tasks-api-scrum-kanban-get-stages.md) ||
+[`integer`](../../../data-types.md) | Stage identifier. You can obtain the identifier using the [tasks.api.scrum.kanban.getStages](./tasks-api-scrum-kanban-get-stages.md) method ||
 |#
 
 ## Code Examples
@@ -95,13 +95,13 @@ HTTP status: **200**
 ```json
 {
     "result": true,
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -112,8 +112,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"ERROR_CODE",
-    "error_description":"ACTION_NOT_ALLOWED"
+    "error": 0,
+    "error_description": "TaskId id not found"
 }
 ```
 
@@ -122,29 +122,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | `Sprint id not found`
-
-The required field `sprintId` is not filled ||
-|| `0` | `TaskId id not found`
-
-The required field `taskId` is not filled ||
-|| `0` | `StageId id not found`
-
-The required field `stageId` is not filled ||
-|| `0` | `Sprint not found`
-
-An unknown sprint identifier was provided ||
-|| `0` | `Stage not found`
-
-An unknown stage identifier was provided ||
-|| `0` | `Task not found. The task must be with GROUP_ID`
-
-An unknown task identifier was provided or the task does not belong to the sprint group ||
-|| `0` | `Access denied`
-
-Access is denied ||
-|| `0` | Unknown error ||
+|| **Code** | **Description** | **Value** ||
+|| `0` | `Sprint id not found` | Required field `sprintId` is not filled ||
+|| `0` | `TaskId id not found` | Required field `taskId` is not filled ||
+|| `0` | `StageId id not found` | Required field `stageId` is not filled ||
+|| `0` | `Sprint not found` | An unknown sprint identifier was provided ||
+|| `0` | `Stage not found` | An unknown stage identifier was provided ||
+|| `0` | `Task not found. The task must be with GROUP_ID` | An unknown task identifier was provided or the task does not belong to the sprint group ||
+|| `0` | `Access denied` | Access is denied ||
+|| `0` | Unknown error | ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

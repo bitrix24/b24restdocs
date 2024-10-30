@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method returns the Kanban stages by sprint ID.
+The method returns the Kanban stages by the sprint ID.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method returns the Kanban stages by sprint ID.
 || **Name**
 `type` | **Description** ||
 || **sprintId***
-[`integer`](../../../data-types.md) | Sprint ID. You can obtain the ID using the method [tasks.api.scrum.sprint.list](../sprint/tasks-api-scrum-sprint-list.md) ||
+[`integer`](../../../data-types.md) | The identifier of the sprint. You can obtain the identifier using the method [tasks.api.scrum.sprint.list](../sprint/tasks-api-scrum-sprint-list.md) ||
 |#
 
 ## Code Examples
@@ -113,13 +113,13 @@ HTTP Status: **200**
         "color": "75D900"
       }
     ],
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -130,15 +130,15 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Stage ID ||
+[`integer`](../../../data-types.md) | The identifier of the stage ||
 || **name***
-[`string`](../../../data-types.md) | Name of the Kanban stage ||
+[`string`](../../../data-types.md) | The name of the Kanban stage ||
 || **type**
-[`string`](../../../data-types.md) | Type of the Kanban stage. Possible values: `NEW`, `WORK`, `FINISH` ||
+[`string`](../../../data-types.md) | The type of the Kanban stage. Possible values: `NEW`, `WORK`, `FINISH` ||
 || **sort**
-[`integer`](../../../data-types.md) | Sort order ||
+[`integer`](../../../data-types.md) | The sorting order ||
 || **color**
-[`string`](../../../data-types.md) | Color of the Kanban stage ||
+[`string`](../../../data-types.md) | The color of the Kanban stage ||
 |#
 
 ## Error Handling
@@ -147,8 +147,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":"ERROR_CODE",
-    "error_description":"ACTION_NOT_ALLOWED"
+    "error": 0,
+    "error_description": "Sprint id not found"
 }
 ```
 
@@ -157,17 +157,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | `Sprint id not found`
-
-The required field `sprintId` is not filled ||
-|| `0` | `Sprint not found`
-
-An unknown sprint ID `sprintId` was provided ||
-|| `0` | `Access denied`
-
-Access is denied ||
-|| `0` | Unknown error ||
+|| **Code** | **Description** | **Value** ||
+|| `0` | `Sprint id not found` | The required field `sprintId` is not filled ||
+|| `0` | `Sprint not found` | An unknown sprint identifier `sprintId` was provided ||
+|| `0` | `Access denied` | Access is denied ||
+|| `0` | Unknown error | ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

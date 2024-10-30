@@ -1,4 +1,4 @@
-# Typical use-cases for REST API in CRM and tutorials
+# Typical use-cases and scenarios for REST API in CRM and tutorials
 
 In this section, you will find ready-made examples for solving typical tasks related to CRM.
 
@@ -29,15 +29,16 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [{#T}](how-to-edit-crm-objects/how-to-generate-edit-form-for-company.md)
 - [{#T}](how-to-edit-crm-objects/how-to-generate-edit-form-for-deal.md)
 
-## How to find clients by phone; how to get all deals of a client and other examples of working with lists of entities
+## How to find clients by phone; how to get all deals of a client and other examples of working with item lists
 
 - [{#T}](how-to-get-lists/search-by-phone-and-email.md)
 - [{#T}](how-to-get-lists/get-activity-list-by-contact.md)
 - [{#T}](how-to-get-lists/lead-statuses-with-semantics.md)
 - [{#T}](how-to-get-lists/quote-statuses-with-semantics.md)
 - [{#T}](how-to-get-lists/how-to-get-deal-funnels.md)
+- [{#T}](how-to-get-lists/how-to-get-address.md)
 
-## How to use the Sales Intelligence tools in Bitrix24?
+## How to use Bitrix24's Sales Intelligence tools?
 
 - [{#T}](how-to-use-analitycs/info-to-analitics.md)
 - [{#T}](how-to-use-analitycs/use-analitics-for-add-lead.md)

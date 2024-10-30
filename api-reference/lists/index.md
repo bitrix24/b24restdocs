@@ -1,8 +1,8 @@
 # Universal Lists: Overview of Methods
 
-Universal lists are a tool for creating and managing structured information. They allow for the creation of customizable tables with various types of fields: text, number, date, file, and others.
+Universal lists are a tool for creating and managing structured information. They allow for the creation of customizable tables with various field types: text, number, date, file, and others.
 
-Universal lists integrate with *Bitrix24* modules, enabling the automation of data processing and access management. Imagine a list of employee vacation requests. A workflow is set up for the list, and access permissions are configured so that only the manager and HR department employees can modify the requests. As a result, when an employee submits a vacation request, the HR manager automatically receives a notification to review and approve or deny the request.
+Universal lists integrate with *Bitrix24* modules, enabling the automation of data processing and access management. Imagine a list of employee vacation requests. A workflow is set up for the list, and access permissions are configured so that only the manager and HR department employees can modify the requests. As a result, when an employee submits a vacation request, the HR manager automatically receives a notification to review and approve or decline the request.
 
 Each list represents an [information block](*iblock). Use the group of methods [lists.*](./lists/index.md) to work with lists.
 
@@ -30,21 +30,21 @@ Workflows in universal lists create a custom scenario for processing elements. W
 
 Element fields are unique to each list. Fields can be created, modified, and deleted using the group of methods [lists.field.*](./fields/index.md).
 
-The `TYPE` parameter defines the data type of the field. The list of available types is provided in the description of the `FIELDS` parameter of the method [lists.field.add](./fields/lists-field-add.md). 
+The `TYPE` parameter defines the data type of the field. A list of available types is provided in the description of the `FIELDS` parameter of the method [lists.field.add](./fields/lists-field-add.md). 
 
 Information in universal lists can be linked to CRM and Drive through fields of the following types:
-- Link to CRM elements (`S:ECrm`)
+- Link to CRM entities (`S:ECrm`)
 - File (Drive) (`S:DiskFile`)
 
-Read about the specifics of these types in the article [Fields: Overview of Methods](./fields/index.md).
+Read about the specifics of these types in the article [Universal List Fields: Overview of Methods](./fields/index.md).
 
-## Working Groups and Projects
+## Workgroups and Projects
 
-Universal lists are integrated [into working groups and projects](../sonet-group/sonet-group-create.md). You can create your lists within any group or project with various levels of access for participants.
+Universal lists are integrated [into workgroups and projects](../sonet-group/sonet-group-create.md). You can create your lists within any group or project with various access levels for participants.
 
-The identifier for the information block type `IBLOCK_TYPE_ID` for group lists takes the value `lists_socnet`.
+The information block type identifier `IBLOCK_TYPE_ID` for group lists takes the value `lists_socnet`.
 
-## Overview of Methods
+## Overview of Methods {#all-methods}
 
 > Scope: [`lists`](../scopes/permissions.md)
 >
@@ -52,18 +52,18 @@ The identifier for the information block type `IBLOCK_TYPE_ID` for group lists t
 
 ### Lists
 
-#| 
+#|
 || **Method** | **Description** ||
 || [lists.add](./lists/lists-add.md) | Creates a list ||
 || [lists.delete](./lists/lists-delete.md) | Deletes a list ||
 || [lists.get](./lists/lists-get.md) | Returns data on lists ||
 || [lists.update](./lists/lists-update.md) | Updates an existing list ||
-|| [lists.get.iblock.type.id](./lists/lists-get-iblock-type-id.md) | Returns the identifier of the information block type ||
+|| [lists.get.iblock.type.id](./lists/lists-get-iblock-type-id.md) | Returns the information block type identifier ||
 |#
 
 ### Elements
 
-#| 
+#|
 || **Method** | **Description** ||
 || [lists.element.add](./elements/lists-element-add.md) | Creates a list element ||
 || [lists.element.delete](./elements/lists-element-delete.md) | Deletes a list element ||
@@ -74,7 +74,7 @@ The identifier for the information block type `IBLOCK_TYPE_ID` for group lists t
 
 ### Fields
 
-#| 
+#|
 || **Method** | **Description** ||
 || [lists.field.add](./fields/lists-field-add.md) | Creates a list field ||
 || [lists.field.delete](./fields/lists-field-delete.md) | Deletes a list field ||
@@ -85,7 +85,7 @@ The identifier for the information block type `IBLOCK_TYPE_ID` for group lists t
 
 ### Sections
 
-#| 
+#|
 || **Method** | **Description** ||
 || [lists.section.add](./sections/lists-section-add.md) | Creates a list section ||
 || [lists.section.get](./sections/lists-section-get.md) | Returns data about sections ||

@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user with access to Scrum
 
-This method returns the values of the Scrum task fields by its identifier `id`.
+This method retrieves the values of the Scrum task fields by its identifier `id`.
 
 ## Method Parameters
 
@@ -82,7 +82,7 @@ This method returns the values of the Scrum task fields by its identifier `id`.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -128,12 +128,12 @@ Data type is a string, as story points do not necessarily have to be a number ||
 || **modifiedBy**
 [`integer`](../../../data-types.md) | Identifier of the user who last modified the task ||
 || **time**
-[`array`](../../../data-types.md#time) | Information about the request execution time ||
+[`array`](../../../data-types.md#time) | Information about the request processing time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -147,7 +147,7 @@ HTTP Status: **200**
 #|
 || **Code** | **Description**  | **Value** ||
 || `0` | Task not found | The task does not exist or the user does not have access to this task ||
-|| `100` | Could not find value for parameter {id} | Incorrect parameter name or parameter not provided ||
+|| `100` | Could not find value for parameter {id} | Incorrect parameter name or parameter not set ||
 || `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
 |#
 

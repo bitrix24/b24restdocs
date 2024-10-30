@@ -1,16 +1,16 @@
-# Get a List of Available Fields for the Backlog tasks.api.scrum.backlog.getFields
+# Get a list of available backlog fields tasks.api.scrum.backlog.getFields
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.api.scrum.backlog.getFields` returns the available fields for the backlog.
+The method `tasks.api.scrum.backlog.getFields` returns the available fields of the backlog.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -55,7 +55,10 @@ No parameters.
     ```php
     require_once('crest.php');
 
-    $result = CRest::call('tasks.api.scrum.backlog.getFields', []);
+    $result = CRest::call(
+        'tasks.api.scrum.backlog.getFields',
+        []
+    );
 
     echo '<PRE>';
     print_r($result);
@@ -66,30 +69,30 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
-      "fields": {
-        "groupId": {
-          "type": "integer"
-        },
-        "createdBy": {
-          "type": "integer"
-        },
-        "modifiedBy": {
-          "type": "integer"
+        "fields": {
+            "groupId": {
+                "type": "integer"
+            },
+            "createdBy": {
+                "type": "integer"
+            },
+            "modifiedBy": {
+                "type": "integer"
+            }
         }
-      }
     },
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```

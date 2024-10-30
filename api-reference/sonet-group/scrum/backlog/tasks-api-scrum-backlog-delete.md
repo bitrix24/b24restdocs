@@ -1,4 +1,4 @@
-# Delete Backlog tasks.api.scrum.backlog.delete
+# Delete backlog tasks.api.scrum.backlog.delete
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -8,16 +8,19 @@ The method `tasks.api.scrum.backlog.delete` removes the backlog.
 
 In normal circumstances, there is no need to delete the backlog. When the backlog is deleted, *Bitrix24* will automatically recreate it when the planning page in Scrum tasks is opened.
 
-This method is used if the backlog was mistakenly added to a group/project.
+The method is used if the backlog was mistakenly added to a group or project that is not Scrum.
 
-## Parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Backlog identifier. It can be obtained when creating [tasks.api.scrum.backlog.add](./tasks-api-scrum-backlog-add.md) or [tasks.api.scrum.backlog.get](./tasks-api-scrum-backlog-get.md) ||
+[`integer`](../../../data-types.md) | Backlog identifier.
+
+It can be obtained using the backlog creation method [tasks.api.scrum.backlog.add](./tasks-api-scrum-backlog-add.md) or by retrieving backlog fields by Scrum identifier using [tasks.api.scrum.backlog.get](./tasks-api-scrum-backlog-get.md) ||
 |#
 
 ## Code Examples
@@ -50,7 +53,8 @@ This method is used if the backlog was mistakenly added to a group/project.
 
     ```js
     BX24.callMethod(
-        'tasks.api.scrum.backlog.delete',{
+        'tasks.api.scrum.backlog.delete',
+        {
             "id": 1
         },
         function(result) {
@@ -68,9 +72,12 @@ This method is used if the backlog was mistakenly added to a group/project.
     ```php
     require_once('crest.php');
 
-    $result = CRest::call('tasks.api.scrum.backlog.delete', [
-        'id' => 1,
-    ]);
+    $result = CRest::call(
+        'tasks.api.scrum.backlog.delete',
+        [
+            'id' => 1,
+        ]
+    );
 
     echo '<PRE>';
     print_r($result);
@@ -88,13 +95,13 @@ In case of successful execution, the server will return the following response:
 ```json
 {
     "result": [],
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -105,8 +112,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"Access denied"
+    "error": 0,
+    "error_description": "Access denied"
 }
 ```
 
@@ -116,9 +123,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `0` | Backlog not found | This error occurs when trying to delete a non-existent backlog ||
-|| `0` | Access denied | There are insufficient access permissions ||
-|| `0` | Unknown error | Another error occurred ||
+|| `0` | Backlog not found | The error occurs when trying to delete a non-existent backlog ||
+|| `0` | Access denied | Missing appropriate access permissions ||
+|| `0` | Unknown error | Another error ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -6,6 +6,10 @@
 
 This method creates a Scrum Kanban stage.
 
+A Scrum Kanban must include stages of type new `NEW` and final `FINISH`.
+
+Use this method only for active sprints, meaning with the field `"status": "active"`.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -14,7 +18,7 @@ This method creates a Scrum Kanban stage.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Fields corresponding to the available list of fields [tasks.api.scrum.kanban.getFields](./tasks-api-scrum-kanban-get-fields.md) (detailed description provided [below](#parametr-fields)) ||
+[`object`](../../../data-types.md) | Fields corresponding to the available list of fields [tasks.api.scrum.kanban.getFields](./tasks-api-scrum-kanban-get-fields.md) (detailed description provided [below](#parameter-fields)) ||
 |#
 
 ### Parameter fields
@@ -118,13 +122,13 @@ HTTP status: **200**
 ```json
 {
     "result": 5,
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -135,8 +139,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"ERROR_CODE",
-    "error_description":"ACTION_NOT_ALLOWED"
+    "error": 0,
+    "error_description": "Sprint not found"
 }
 ```
 
@@ -145,20 +149,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | `Sprint id not found` 
-
-The required field `sprintId` is not filled ||
-|| `0` | `Sprint not found`
-
-An unknown sprint identifier was provided ||
-|| `0` | `Access denied`
-
-Access is denied ||
-|| `0` | `Incorrect name format` 
-
-The required field `name` is not filled ||
-|| `0` | Unknown error ||
+|| **Code** | **Description** | **Value** ||
+|| `0` | `Sprint id not found` | Required field `sprintId` is not filled ||
+|| `0` | `Sprint not found` | An unknown sprint identifier was provided ||
+|| `0` | `Access denied` | Access is denied ||
+|| `0` | `Incorrect name format` | Required field `name` is not filled ||
+|| `0` | Unknown error | ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

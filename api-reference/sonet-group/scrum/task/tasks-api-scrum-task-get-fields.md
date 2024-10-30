@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method returns the available fields for a Scrum task.
+This method retrieves the available fields for a Scrum task.
 
 No parameters.
 
@@ -108,7 +108,7 @@ The response returns an object `fields`, which contains all the fields of the Sc
 || **entityId**
 `integer` | Identifier of the backlog or sprint ||
 || **storyPoints**
-`string` | Story Points (relative complexity estimate of the task).
+`string` | Story Points (relative assessment of task complexity).
 
 Can have a string value ||
 || **epicId**
@@ -116,9 +116,9 @@ Can have a string value ||
 || **sort**
 `integer` | Sorting ||
 || **createdBy**
-`integer` | Who created the task ||
+`integer` | Created by whom ||
 || **modifiedBy**
-`integer` | Who modified the task ||
+`integer` | Modified by whom ||
 |#
 
 ## Error Handling

@@ -4,9 +4,16 @@
 >
 > Who can execute the method: any user with access to Scrum
 
-This method creates or modifies a Scrum task. You can create a task in Scrum, move a task from another project, transfer it between the backlog and sprints, change story points, and link an epic.
+This method creates or updates a Scrum task. You will be able to:
+- create a task in Scrum
+- move a task from another project
+- transfer it between the backlog and sprints
+- change story points
+- link an epic
 
-The task must first be created using the [tasks.task.add](../../../tasks/tasks-task-add.md) method, or you can retrieve an existing task using the [tasks.task.update](../../../tasks/tasks-task-update.md) method. The link to Scrum is specified in the `GROUP_ID` parameter.
+A task must be created using the [tasks.task.add](../../../tasks/tasks-task-add.md) method or updated using the [tasks.task.update](../../../tasks/tasks-task-update.md) method. Linking the task to Scrum is specified in the group identifier parameter `GROUP_ID`. 
+
+You can obtain the group identifier using the [create new group](../../sonet-group-create.md) method or the [get group list](../../socialnetwork-api-workgroup-list.md) method. A group is considered a Scrum if the `SCRUM_MASTER_ID` field is filled.
 
 ## Method Parameters
 
@@ -16,22 +23,21 @@ The task must first be created using the [tasks.task.add](../../../tasks/tasks-t
 || **id***
 [`integer`](../../../data-types.md) | Task identifier ||
 || **fields***
-[`object`](../../../data-types.md) | An object containing records about the Scrum task (detailed description provided [below](#parametr-fields)) in the following structure:
+[`object`](../../../data-types.md) | Object containing records about the Scrum task (detailed description provided [below](#parametr-fields)) in the following structure:
 
 ```js
-fields: 
-    {
-        entityId: 'value'
-        storyPoints: 'value',
-        epicId: 'value',
-        sort: 'value'
-    }
+fields: {
+    entityId: 'value'
+    storyPoints: 'value',
+    epicId: 'value',
+    sort: 'value'
+}
 ```
 
 ||
 |#
 
-### Parameter fields
+### Fields Parameter
 
 #|
 || **Name**
@@ -39,15 +45,15 @@ fields:
 || **entityId**
 `integer` | Identifier of the backlog or sprint.
 
-If the value is not specified, *Bitrix24* will automatically add the task to the Scrum backlog if it exists. ||
+If the value is not specified, *Bitrix24* will automatically add the task to the Scrum backlog if it exists ||
 || **storyPoints**
-`string` | Story Points (relative estimate of task complexity).
+`string` | Story Points — relative assessment of the task's complexity.
 
-Can have a string value. ||
+Can have a string value ||
 || **epicId**
-`integer` | Epic identifier. ||
+`integer` | Epic identifier ||
 || **sort**
-`integer` | Sorting. ||
+`integer` | Sorting ||
 |#
 
 ## Code Examples
@@ -137,7 +143,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **status**
-`string` | Response status. Possible values:
+`string` | Response status.
+
+Possible values:
 - `success` 
 - `error` 
 ||
@@ -147,7 +155,7 @@ HTTP Status: **200**
 - `null` — in case of error 
 ||
 || **errors**
-`array` | Array of errors. ||
+`array` | Array of errors ||
 |#  
 
 ## Error Handling
