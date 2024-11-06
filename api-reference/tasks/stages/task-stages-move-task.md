@@ -1,16 +1,16 @@
-# Move Task from One Stage to Another task.stages.movetask
+# Move a task from one stage to another task.stages.movetask
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for stages of My Plan
-> - any user with access to the group for Kanban stages
+> - any user for stages in "My Planner"
+> - any user with access to the group for kanban stages
 
-This method moves a task from one stage to another and allows changing the position of the task within the group's Kanban or My Plan.
+The method moves a task from one stage to another and allows changing the position of the task within the group's kanban or "My Planner".
 
 The method works as follows:
-- If a group stage is provided, the move occurs within the group's Kanban.
-- If a My Plan stage is provided, the move occurs within it.
+- If a group stage is provided, the move occurs within the group's kanban
+- If "My Planner" stage is provided, the move occurs within it
 
 ## Method Parameters
 
@@ -22,18 +22,18 @@ The method works as follows:
 || **id***
 [`integer`](../../data-types.md) | Task identifier ||
 || **stageId***
-[`integer`](../../data-types.md) | ID of the stage to which the task should be moved ||
+[`integer`](../../data-types.md) | `ID` of the stage to which the task should be moved ||
 || **before**
-[`integer`](../../data-types.md) | ID of the task before which the task should be placed in the stage ||
+[`integer`](../../data-types.md) | `ID` of the task before which the task should be placed in the stage ||
 || **after**
-[`integer`](../../data-types.md) | ID of the task after which the task should be placed in the stage ||
+[`integer`](../../data-types.md) | `ID` of the task after which the task should be placed in the stage ||
 |#
 
 {% note info %}
 
 The `before` and `after` parameters are mutually exclusive. You must specify either one or the other.
 
-If both parameters are not filled, the task is added to the column of the stage according to the project/My Plan settings.
+If both parameters are not filled, the task is added to the stage column according to the project or "My Planner" settings.
 
 {% endnote %}
 
@@ -109,7 +109,7 @@ If both parameters are not filled, the task is added to the column of the stage 
         ]
     );
 
-    // Handling response from Bitrix24
+    // Handling the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -157,7 +157,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED_MOVE` | You cannot move this task ||
-|| `TASK_NOT_FOUND` | Task not found or access to it is denied ||
+|| `TASK_NOT_FOUND` | Task not found or access denied ||
 || `NOT_FOUND` | Stage not found ||
 |#
 

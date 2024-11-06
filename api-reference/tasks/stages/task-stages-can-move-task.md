@@ -3,10 +3,10 @@
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for stages of My Plan
-> - any user with access to the group for Kanban stages
+> - any user for stages of "My Planner"
+> - any user with access to the group for kanban stages
 
-The method checks if the current user can move tasks in the specified entity.
+The method checks if the current user can move tasks in the specified object.
 
 ## Method Parameters
 
@@ -16,13 +16,13 @@ The method checks if the current user can move tasks in the specified entity.
 || **Name**
 `type` | **Description** ||
 || **entityId***
-[`integer`](../../data-types.md) | `ID` of the entity ||
+[`integer`](../../data-types.md) | `ID` of the object ||
 || **entityType***
-[`string`](../../data-types.md) | Type of entity: 
+[`string`](../../data-types.md) | Type of the object: 
 - `U` — user
 - `G` — group
 
-In the case of `U` (My Plan) — the value `true` will only be returned if the `entityId` contains the identifier of the current user ||
+In the case of `U` ("My Planner") — the value `true` will be returned only if the `entityId` contains the identifier of the current user ||
 |#
 
 ## Code Examples
@@ -40,7 +40,7 @@ In the case of `U` (My Plan) — the value `true` will only be returned if the `
     "entityId": 1,
     "entityType": "U"
     }' \
-    https://your-domain.com/rest/_USER_ID_/_CODE_/task.stages.canmovetask
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.canmovetask
     ```
 
 - cURL (OAuth)
@@ -53,7 +53,7 @@ In the case of `U` (My Plan) — the value `true` will only be returned if the `
     "entityId": 1,
     "entityType": "U"
     }' \
-    https://your-domain.com/rest/task.stages.canmovetask
+    https://your-domain.bitrix24.com/rest/task.stages.canmovetask
     ```
 
 - JS
@@ -82,7 +82,7 @@ In the case of `U` (My Plan) — the value `true` will only be returned if the `
     $entityId = 1;
     $entityType = 'U';
 
-    // executing the request to the REST API
+    // executing request to REST API
     $result = CRest::call(
         'task.stages.canmovetask',
         [
@@ -120,7 +120,7 @@ HTTP Status: **200**
 [`boolean`](../../data-types.md) | Returns `true` if the current user can move the task.
 
 Otherwise — `false`
-||
+|| 
 |#
 
 ## Error Handling

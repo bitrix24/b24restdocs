@@ -1,6 +1,6 @@
 # Universal List Fields: Overview of Methods
 
-Fields define the format and type of information that can be stored in list items: one field for the title, another for the date, and a third for a text description. Each field has a specified type: String, Creation Date, and HTML/Text. A complete list of field types is described in the `FIELDS` parameter of the [lists.field.add](./lists-field-add.md) method. Through field types, universal lists are integrated with the CRM and Drive modules.
+Fields define the format and type of information that can be stored in list items: one field for the title, another for the date, and a third for the text description. Each field has a specified type: String, Creation Date, and HTML/Text. A complete list of field types is described in the `FIELDS` parameter of the [lists.field.add](./lists-field-add.md) method. Through field types, universal lists are integrated with the CRM and Drive modules.
 
 {% note warning "" %}
 
@@ -14,23 +14,19 @@ The type is set when creating the field and cannot be changed.
 
 ## Linking to CRM Entities
 
-The "Link to CRM Entities" field type connects list items with CRM objects: [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [SPA's](../../crm/universal/index.md), [contacts](../../crm/contacts/index.md), and [companies](../../crm/companies/index.md). In list items, this field is displayed as a link to the CRM object, and a tab with the list name is automatically created in the CRM object card.
+The "Link to CRM Entities" field type connects list items with CRM objects: [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [SPAs](../../crm/universal/index.md), [contacts](../../crm/contacts/index.md), and [companies](../../crm/companies/index.md). In list items, this field is displayed as a link to the CRM object, and a tab with the list name is automatically created in the CRM object card.
 
-{% note warning "" %}
-
-When filling out the list, consider the linkage to CRM objects: leads, deals, SPAs, contacts, and companies.
-- If the field settings allow linking to only one object, fill in the field value with the [object identifier](../../crm/data-types.md#object_type) without the symbolic prefix. For example, `3` — contact. Otherwise, the field will be displayed but not exported to Excel.
+When filling out the list, consider the link to CRM objects: leads, deals, SPAs, contacts, and companies.
+- If the field settings allow linking to only one object, fill in the field value with the [object identifier](../../crm/data-types.md#object_type) without the symbolic prefix. For example, `3` — contact. Otherwise, the field will be displayed but will not be exported to Excel.
 - If linking to multiple objects is allowed, fill in the field value with the [identifier with prefix](../../crm/data-types.md#object_type). For example, `C_3` — contact.
-
-{% endnote %}
 
 ## Documents and Files
 
 Universal lists support two types of fields for working with files.
 
-**File (Drive).** This field type is linked to Bitrix24 Drive and stores the identifier of the Drive object. Work with the file should be done using its identifier through the [disk.*](../../disk/index.md) methods.
+**File (Drive).** This field type is associated with Bitrix24 Drive and stores the identifier of the Drive object. Work with the file should be done using its identifier through the [disk.*](../../disk/index.md) methods.
 
-**File.** This field type allows uploading and storing files directly within the list item. It does not have a Drive object identifier. The use of Drive methods is not possible.
+**File.** This field type allows uploading and storing files directly in the list item. It does not have a Drive object identifier. Using Drive methods is not possible.
 
 ## Overview of Methods {#all-methods}
 

@@ -4,9 +4,9 @@ REST methods for working with additional content blocks in the timeline:
 
 #|
 || **Method** | **Description** ||
-|| [crm.timeline.layout.blocks.set](./crm-timeline-layout-blocks-set.md) | This method allows REST applications to set a set of additional content blocks in a timeline record. ||
-|| [crm.timeline.layout.blocks.get](./crm-timeline-layout-blocks-get.md) | This method allows REST applications to retrieve the set of additional content blocks that they have set for a timeline record. ||
-|| [crm.timeline.layout.blocks.delete](./crm-timeline-layout-blocks-delete.md) | This method allows REST applications to delete the set of additional content blocks that they have set for a timeline record. ||
+|| [crm.timeline.layout.blocks.set](./crm-timeline-layout-blocks-set.md) | Sets a collection of additional content blocks in the timeline record ||
+|| [crm.timeline.layout.blocks.get](./crm-timeline-layout-blocks-get.md) | Retrieves the set of additional content blocks established by the application for the timeline record ||
+|| [crm.timeline.layout.blocks.delete](./crm-timeline-layout-blocks-delete.md) | Deletes the set of additional content blocks established by the application for the timeline record ||
 |#
 
 ## Deleting Timeline Records
@@ -15,7 +15,7 @@ When a timeline record is deleted, the sets of additional content blocks added b
 
 ## Deleting REST Application
 
-When a REST application is deleted, all sets of additional content blocks added by it in timeline records will be permanently removed.
+When a REST application is deleted, all sets of additional content blocks added by it in the timeline records will be permanently removed.
 
 ## See Also
 

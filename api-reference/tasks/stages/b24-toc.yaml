@@ -1,17 +1,17 @@
-title: My Plan
-href: index.md
-items:
-  - name: Overview of Methods
-    href: index.md
-  - name: Add Kanban Stage / My Plan
-    href: task-stages-add.md
-  - name: Change Kanban Stage / My Plan
-    href: task-stages-update.md
-  - name: List of Kanban Stages / My Plan
-    href: task-stages-get.md
-  - name: Check Task Movement Capability
-    href: task-stages-can-move-task.md
-  - name: Move Task from One Stage to Another
-    href: task-stages-move-task.md
-  - name: Delete Kanban Stage / My Plan
-    href: task-stages-delete.md
+title: My Planner and Kanban Stages  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Add a Kanban Stage or "My Planner"  
+    href: task-stages-add.md  
+  - name: Update a Kanban Stage or "My Planner"  
+    href: task-stages-update.md  
+  - name: Get a List of Kanban Stages or "My Planner"  
+    href: task-stages-get.md  
+  - name: Check the Possibility of Moving a Task  
+    href: task-stages-can-move-task.md  
+  - name: Move a Task from One Stage to Another  
+    href: task-stages-move-task.md  
+  - name: Delete a Kanban Stage or "My Planner"  
+    href: task-stages-delete.md  

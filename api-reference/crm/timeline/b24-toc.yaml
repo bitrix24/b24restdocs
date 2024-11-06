@@ -1,17 +1,17 @@
-title: Timeline and CRM activities
+title: Timeline and CRM Activities
 href: index.md
 items:
-  - name: Timeline and CRM activities
+  - name: Timeline and CRM Activities
     href: index.md
   - name: Activities
     include:
-      path: activities/toc.yaml
+      path: activities/b24-toc.yaml
       mode: link
-  - name: Notes for the timeline entry
+  - name: Notes for Timeline Entry
     include:
       path: note/b24-toc.yaml
       mode: link
-  - name: Managing relationships of the timeline entry
+  - name: Managing Relationships of Timeline Entry
     include:
       path: bindings/b24-toc.yaml
       mode: link      
@@ -19,11 +19,11 @@ items:
     include:
       path: comments/b24-toc.yaml
       mode: link
-  - name: Log record journal
+  - name: Log Record Journal
     include:
       path: logmessage/b24-toc.yaml
       mode: link
-  - name: Additional content blocks
+  - name: Additional Content Blocks
     include:
       path: layout-blocks/b24-toc.yaml
       mode: link

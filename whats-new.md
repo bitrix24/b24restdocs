@@ -2,6 +2,14 @@
 
 ## 2024
 
+### November 6, 2024
+
+- Updated the main pages in the CRM section — [Search and Process Duplicates](./api-reference/crm/duplicates/index.md), [Activities](./api-reference/crm/timeline/activities/index.md), [Statuses and dropdowns](./api-reference/crm/status/index.md), [Timeline](./api-reference/crm/timeline/index.md). Added introductory information, as well as an overview of methods and connections
+
+- Updated the main pages in the Drive section — [Folder](./api-reference/disk/folder/index.md), [File](./api-reference/disk/file/index.md), [Drive](./api-reference/disk/index.md). Added introductory information, as well as an overview of methods and connections
+
+- Updated the main pages in the Tasks section —  [Kanban Stages and "My Planner"](./api-reference/tasks/stages/index.md) in tasks, [Scrum](./api-reference/sonet-group/scrum/index.md) in groups. Added introductory information, as well as an overview of methods and connections
+
 ### October 30, 2024
 
 - Updated the main pages of the [Scrum Tasks](./api-reference/sonet-group/scrum/task/index.md), [Kanban](./api-reference/sonet-group/scrum/backlog/index.md), [Backlog](./api-reference/sonet-group/scrum/backlog/index.md) sections. Added introductory information, as well as an overview of methods and connections

@@ -1,14 +1,14 @@
-# Delete Kanban / My Plan Stage task.stages.delete
+# Delete a Kanban or "My Planner" Stage task.stages.delete
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for My Plan stages
+> - any user for "My Planner" stages
 > - any user with access to the group for Kanban stages
 
-This method deletes a Kanban / My Plan stage.
+This method deletes a Kanban or "My Planner" stage.
 
-It takes the `id` of the stage as input. The stage is checked for sufficient access permissions and whether it has any tasks.
+It takes the `id` of the stage as input. The stage is checked for sufficient access permission, as well as for the absence of tasks within it.
 
 ## Method Parameters
 
@@ -17,10 +17,10 @@ It takes the `id` of the stage as input. The stage is checked for sufficient acc
 #|
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **id*** 
 [`integer`](../../data-types.md) | Identifier of the stage to be deleted ||
 || **isAdmin**
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided that the requester is an account administrator ||
+[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an account administrator ||
 |#
 
 ## Code Examples
@@ -137,7 +137,7 @@ HTTP Status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./task-stages-add.md)

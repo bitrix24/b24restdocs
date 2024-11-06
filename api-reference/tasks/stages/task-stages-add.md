@@ -1,12 +1,12 @@
-# Add a Kanban / My Plan Stage task.stages.add
+# Add a Kanban or "My Planner" Stage task.stages.add
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for My Plan stages
+> - any user for "My Planner" stages
 > - any user with access to the group for Kanban stages
 
-This method adds a Kanban / My Plan stage.
+This method adds a Kanban or "My Planner" stage.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ This method adds a Kanban / My Plan stage.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new stage ||
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a new stage ||
 || **isAdmin**
 [`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an account administrator ||
 |#
@@ -28,18 +28,22 @@ This method adds a Kanban / My Plan stage.
 #|
 || **Name**
 `type` | **Description** ||
-|| **TITLE*** [`string`](../../data-types.md) | Stage title ||
-|| **COLOR** [`string`](../../data-types.md) | Stage color in RGB format ||
-|| **AFTER_ID** [`integer`](../../data-types.md) | Identifier of the stage after which the new stage should be added.
+|| **TITLE***
+[`string`](../../data-types.md) | Stage title ||
+|| **COLOR**
+[`string`](../../data-types.md) | Stage color in RGB format ||
+|| **AFTER_ID**
+[`integer`](../../data-types.md) | Identifier of the stage after which the new stage should be added.
 
 If not specified or equal to `0`, it will be added at the beginning ||
-|| **ENTITY_ID** [`integer`](../../data-types.md)| Identifier of the entity.
+|| **ENTITY_ID**
+[`integer`](../../data-types.md)| Identifier of the object.
 
 Can equal the `ID` of the group, in which case the stage will be added to the group's Kanban.
 
-If equal to `0` or absent, the stage is added to the current user's My Plan.
+If equal to `0` or absent, the stage is added to "My Planner" of the current user.
 
-If the permission level is insufficient, an access error will be displayed ||
+An access permission error will be displayed if the permission level is insufficient ||
 |#
 
 ## Code Examples
@@ -62,7 +66,7 @@ If the permission level is insufficient, an access error will be displayed ||
     },
     "isAdmin": false
     }' \
-    https://your-domain.com/rest/_USER_ID_/_CODE_/task.stages.add
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.add
     ```
 
 - cURL (OAuth)
@@ -80,7 +84,7 @@ If the permission level is insufficient, an access error will be displayed ||
     },
     "isAdmin": false
     }' \
-    https://your-domain.com/rest/task.stages.add
+    https://your-domain.bitrix24.com/rest/task.stages.add
     ```
 
 - JS
@@ -110,7 +114,7 @@ If the permission level is insufficient, an access error will be displayed ||
 - PHP
 
     ```php
-    require_once('crest.php'); // include CRest PHP SDK
+    require_once('crest.php'); // connecting CRest PHP SDK
 
     $fields = [
         "TITLE" => "Stage Title",
@@ -119,7 +123,7 @@ If the permission level is insufficient, an access error will be displayed ||
         "ENTITY_ID" => 1
     ];
 
-    // execute request to REST API
+    // executing the request to the REST API
     $result = CRest::call(
         'task.stages.add',
         [
@@ -128,7 +132,7 @@ If the permission level is insufficient, an access error will be displayed ||
         ]
     );
 
-    // Handle response from Bitrix24
+    // Handling the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {

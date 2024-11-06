@@ -1,12 +1,12 @@
-# Get the List of Kanban / My Plan Stages task.stages.get
+# Get the list of Kanban stages or "My Planner" task.stages.get
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: 
-> - any user for My Plan stages
+> - any user for "My Planner" stages
 > - any user with access to the group for Kanban stages
 
-This method retrieves the stages of Kanban / My Plan.
+This method retrieves the stages of the Kanban or "My Planner".
 
 ## Method Parameters
 
@@ -16,11 +16,13 @@ This method retrieves the stages of Kanban / My Plan.
 || **Name**
 `type` | **Description** ||
 || **entityId*** 
-[`integer`](../../data-types.md) | Entity identifier. Possible values:
+[`integer`](../../data-types.md) | Identifier of the object.
+
+Possible values:
 - `ID` of the group — the method will retrieve the Kanban stages of the group. An access error will be returned if the permission level is insufficient.
-- `0` — the method will retrieve the stages of My Plan for the current user ||
+- `0` — the method will retrieve the stages of "My Planner" for the current user. ||
 || **isAdmin** 
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not be performed, provided that the requester is an account administrator ||
+[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided that the requester is an administrator of the account. ||
 |#
 
 ## Code Examples
@@ -71,11 +73,11 @@ This method retrieves the stages of Kanban / My Plan.
 - PHP
 
     ```php
-    require_once('crest.php'); // include CRest PHP SDK
+    require_once('crest.php'); // connecting CRest PHP SDK
 
     $entityId = 0;
 
-    // execute request to REST API
+    // executing the request to the REST API
     $result = CRest::call(
         'task.stages.get',
         [
@@ -83,7 +85,7 @@ This method retrieves the stages of Kanban / My Plan.
         ]
     );
 
-    // Process the response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -134,33 +136,33 @@ HTTP Status: **200**
 || **Field**
 `type` | **Description** ||
 || **result** 
-`object` | An object containing data about the Kanban / My Plan stages, with stage identifiers as keys ||
+`object` | An object containing data about the Kanban / My Planner stages, with stage identifiers as keys. ||
 || **ID** 
-`integer` | Stage identifier ||
+`integer` | Identifier of the stage. ||
 || **TITLE** 
-`string` | Name ||
+`string` | Name. ||
 || **SORT** 
-`integer` | Sorting ||
+`integer` | Sorting. ||
 || **COLOR** 
-`string` | Color in RGB format ||
+`string` | Color in RGB format. ||
 || **SYSTEM_TYPE** 
-`string` | System type (e.g., `NEW`, `PROGRESS`, `WORK`, `REVIEW`, `FINISH`) ||
+`string` | System type. Possible values: `NEW`, `PROGRESS`, `WORK`, `REVIEW`, `FINISH`. ||
 || **ENTITY_ID** 
-`integer` | Entity identifier (group or user) ||
+`integer` | Identifier of the object, i.e., group or user. ||
 || **ENTITY_TYPE** 
-`string` | Entity type (e.g., `U` for user, `G` for group) ||
+`string` | Type of the object. `U` for user, `G` for group. ||
 || **ADDITIONAL_FILTER** 
 `array` | Additional filters. 
 
-System parameter. Always has the value of an empty array ||
+System parameter. Always has the value of an empty array. ||
 || **TO_UPDATE** 
 `array` | Array of items to update.
 
-System parameter. Always has the value of an empty array ||
+System parameter. Always has the value of an empty array. ||
 || **TO_UPDATE_ACCESS** 
 `null` | Functions applied to the task when moving to this stage.
 
-System parameter. Always has the value `null` ||
+System parameter. Always has the value of `null`. ||
 |#
 
 ## Error Handling
@@ -170,7 +172,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "You cannot view stages in this group"
+    "error_description": "You cannot view stages in this group."
 }
 ```
 
@@ -180,7 +182,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Value** ||
-|| `ACCESS_DENIED` | You cannot view stages in this group ||
+|| `ACCESS_DENIED` | You cannot view stages in this group. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

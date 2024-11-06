@@ -1,14 +1,14 @@
-# Update Kanban Stage / My Plan task.stages.update
+# Update the stage of the kanban or "Planner" task.stages.update
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for My Plan stages
-> - any user with group access for Kanban stages
+> - any user for "Planner" stages
+> - any user with access to the group for kanban stages
 
-This method updates the stages of the Kanban / My Plan.
+The method updates the stages of the kanban or "Planner".
 
-The method can also be used to move a stage from one position to another — simply provide the desired `AFTER_ID`.
+The method is also used to move a stage from one position to another. To do this, simply provide the desired `AFTER_ID`.
 
 ## Method Parameters
 
@@ -20,9 +20,9 @@ The method can also be used to move a stage from one position to another — sim
 || **id***
 [`integer`](../../data-types.md) | Identifier of the stage ||
 || **fields***
-[`array`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the Kanban / My Plan stage ||
+[`array`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the kanban or "Planner" stage ||
 || **isAdmin**
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an account administrator ||
+[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided that the requester is an administrator of the account ||
 |#
 
 ### Parameter fields
@@ -37,7 +37,7 @@ The method can also be used to move a stage from one position to another — sim
 If not specified or equal to `0`, it will be added at the beginning ||
 |#
 
-When updating a group stage with insufficient permission level, an access error will be displayed.
+When updating a group stage with insufficient permission level, an access error is returned.
 
 ## Code Examples
 
@@ -112,7 +112,7 @@ When updating a group stage with insufficient permission level, an access error 
         "COLOR" => "FF5733"
     ];
 
-    // executing request to REST API
+    // executing the request to the REST API
     $result = CRest::call(
         'task.stages.update',
         [
@@ -121,7 +121,7 @@ When updating a group stage with insufficient permission level, an access error 
         ]
     );
 
-    // Handling response from Bitrix24
+    // Handling the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {

@@ -1,8 +1,8 @@
-# Get a list of open channels imopenlines.config.list.get
+# Get the list of open channels imopenlines.config.list.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -32,7 +32,7 @@ This method retrieves a list of open channels.
 || **Name**
 `Type` | **Description** ||
 || **PARAMS**
-[`array`](../../data-types.md) | Array of parameters for selection (select, order, filter) (optional). A list of available fields can be found in the description of the method [imopenlines.config.add](./imopenlines-config-add.md) ||
+[`array`](../../data-types.md) | Array of parameters for selection (select, order, filter) (optional). A list of available fields can be found in the method description [imopenlines.config.add](./imopenlines-config-add.md) ||
 || **OPTIONS**
 [`array`](../../data-types.md) | Array of additional options (optional). Currently includes only the field 'QUEUE' => 'Y'/'N' — queue of responsible employees ||
 |#
@@ -94,3 +94,124 @@ This method retrieves a list of open channels.
     // example for PHP
 
 {% endlist %}
+
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": [
+        {
+            "ID": "1",
+            "ACTIVE": "Y",
+            "LINE_NAME": "WhatsApp",
+            "CRM": "Y",
+            "CRM_CREATE": "lead",
+            "CRM_CREATE_SECOND": "0",
+            "CRM_CREATE_THIRD": "Y",
+            "CRM_FORWARD": "Y",
+            "CRM_CHAT_TRACKER": "N",
+            "CRM_TRANSFER_CHANGE": "Y",
+            "CRM_SOURCE": "1|WZ_WHATSAPP_CASJK2QWBRWQ5ASBQWKEBN4QWBENAL2BA",
+            "QUEUE_TIME": "900",
+            "NO_ANSWER_TIME": "60",
+            "QUEUE_TYPE": "all",
+            "CHECK_AVAILABLE": "N",
+            "WATCH_TYPING": "Y",
+            "WELCOME_BOT_ENABLE": "N",
+            "WELCOME_MESSAGE": "N",
+            "WELCOME_MESSAGE_TEXT": "Welcome to the Open channel [br]The first available operator will respond to you.",
+            "VOTE_MESSAGE": "N",
+            "VOTE_TIME_LIMIT": "0",
+            "VOTE_BEFORE_FINISH": "Y",
+            "VOTE_CLOSING_DELAY": "N",
+            "VOTE_MESSAGE_1_TEXT": "Please rate the quality of service.",
+            "VOTE_MESSAGE_1_LIKE": "Thank you for your feedback!",
+            "VOTE_MESSAGE_1_DISLIKE": "We are sorry we couldn't help you, we will strive to improve.",
+            "VOTE_MESSAGE_2_TEXT": "Please rate the quality of service.\r\n\r\nSend: 1 - good, 0 - bad",
+            "VOTE_MESSAGE_2_LIKE": "Thank you for your feedback!",
+            "VOTE_MESSAGE_2_DISLIKE": "We are sorry we couldn't help you, we will strive to improve.",
+            "AGREEMENT_MESSAGE": "N",
+            "AGREEMENT_ID": "0",
+            "CATEGORY_ENABLE": "N",
+            "CATEGORY_ID": "0",
+            "WELCOME_BOT_JOIN": "always",
+            "WELCOME_BOT_ID": "0",
+            "WELCOME_BOT_TIME": "600",
+            "WELCOME_BOT_LEFT": "queue",
+            "NO_ANSWER_RULE": "none",
+            "NO_ANSWER_FORM_ID": "0",
+            "NO_ANSWER_BOT_ID": "0",
+            "NO_ANSWER_TEXT": "Unfortunately, we cannot respond to you at this moment, we will definitely get back to you.",
+            "WORKTIME_ENABLE": "N",
+            "WORKTIME_FROM": "9",
+            "WORKTIME_TO": "18",
+            "WORKTIME_TIMEZONE": "Europe/Berlin",
+            "WORKTIME_HOLIDAYS": [
+                ""
+            ],
+            "WORKTIME_DAYOFF": [
+                "SA",
+                "SU"
+            ],
+            "WORKTIME_DAYOFF_RULE": "text",
+            "WORKTIME_DAYOFF_FORM_ID": "0",
+            "WORKTIME_DAYOFF_BOT_ID": "0",
+            "WORKTIME_DAYOFF_TEXT": "Welcome to the Open channel [br]Unfortunately, we cannot respond to you at this moment.[br][br]Please write your question and we will definitely get back to you during working hours.",
+            "CLOSE_RULE": "none",
+            "CLOSE_FORM_ID": "0",
+            "CLOSE_BOT_ID": "0",
+            "CLOSE_TEXT": "Thank you for contacting our company.",
+            "FULL_CLOSE_TIME": "10",
+            "AUTO_CLOSE_RULE": "none",
+            "AUTO_CLOSE_FORM_ID": "0",
+            "AUTO_CLOSE_BOT_ID": "0",
+            "AUTO_CLOSE_TIME": "2678400",
+            "AUTO_CLOSE_TEXT": "",
+            "AUTO_EXPIRE_TIME": "86400",
+            "DATE_CREATE": {},
+            "DATE_MODIFY": {},
+            "MODIFY_USER_ID": "177",
+            "TEMPORARY": "N",
+            "XML_ID": null,
+            "LANGUAGE_ID": "de",
+            "QUICK_ANSWERS_IBLOCK_ID": "53",
+            "SESSION_PRIORITY": "0",
+            "TYPE_MAX_CHAT": "answered",
+            "MAX_CHAT": "0",
+            "OPERATOR_DATA": "queue",
+            "DEFAULT_OPERATOR_DATA": [],
+            "KPI_FIRST_ANSWER_TIME": "0",
+            "KPI_FIRST_ANSWER_ALERT": "N",
+            "KPI_FIRST_ANSWER_LIST": false,
+            "KPI_FIRST_ANSWER_TEXT": "Employee #OPERATOR# exceeded the allowable response time to the client's first message. Dialog №#DIALOG#.",
+            "KPI_FURTHER_ANSWER_TIME": "0",
+            "KPI_FURTHER_ANSWER_ALERT": "N",
+            "KPI_FURTHER_ANSWER_LIST": false,
+            "KPI_FURTHER_ANSWER_TEXT": "Employee #OPERATOR# exceeded the allowable response time to the client's message. Dialog №#DIALOG#.",
+            "KPI_CHECK_OPERATOR_ACTIVITY": "N",
+            "SEND_NOTIFICATION_EMPTY_QUEUE": "N",
+            "USE_WELCOME_FORM": "N",
+            "WELCOME_FORM_ID": "5",
+            "WELCOME_FORM_DELAY": "Y",
+            "SEND_WELCOME_EACH_SESSION": "N",
+            "CONFIRM_CLOSE": "Y",
+            "IGNORE_WELCOME_FORM_RESPONSIBLE": "N"
+        },
+        // .. 49 more items
+    ],
+    "next": 50,
+    "total": 123456,
+    "time": {
+        "start": 1730383163.284897,
+        "finish": 1730383163.308128,
+        "duration": 0.023231029510498047,
+        "processing": 0.001950979232788086,
+        "date_start": "2024-10-31T16:59:23+02:00",
+        "date_finish": "2024-10-31T16:59:23+02:00",
+        "operating_reset_at": 1730383763,
+        "operating": 0
+    }
+}
+```

@@ -3,9 +3,9 @@ href: index.md
 items:
   - name: CRM Objects and Methods
     href: index.md
-  - name: Data Types and Structure of Objects in CRM REST API
+  - name: Data Types and Structure of Objects in the CRM REST API
     href: data-types.md 
-  - name: Typical Use-Cases and Scenarios
+  - name: Typical Use-Cases and Tutorials
     href: tutorials.md
   - name: Determine the Current CRM Operating Mode
     href: crm-settings-mode-get.md
@@ -33,19 +33,19 @@ items:
     include:
       path: quote/b24-toc.yaml
       mode: link
-  - name: Requisites
+  - name: Details
     include:
       path: requisites/b24-toc.yaml
       mode: link
-  - name: Timeline and CRM Activities
+  - name: Timeline and Activities
     include:
       path: timeline/b24-toc.yaml
       mode: link
-  - name: CRM Search and Duplicates
+  - name: Search and Process Duplicates in CRM
     include:
       path: duplicates/b24-toc.yaml
       mode: link
-  - name: Directories
+  - name: Statuses and dropdowns
     include:
       path: status/b24-toc.yaml
       mode: link
@@ -75,5 +75,5 @@ items:
       mode: link
   - name: Get Stage Movement History
     href: crm-stage-history-list.md
-  - name: Fields of Main CRM Entities
+  - name: Fields of Main CRM Objects
     href: main-entities-fields.md

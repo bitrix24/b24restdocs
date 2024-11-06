@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -16,12 +16,12 @@ Some data may be missing here — we will fill it in shortly.
 
 {% endif %}
 
-External applications can add their elements to the Deals interface. See also the section [Embedding applications](.).
+External applications can add their elements to the Deals interface. See also the section [Embedding applications](../../../../widgets/index.md).
 
 ## Embedding Locations
 
 #|
 || **Code** | **Description** ||
-|| | [Create deals from applications](./activity-app.md) ||
-|| **CRM_ACTIVITY_LIST_MENU** | Context menu for deals ||
+|| | [Create activities from applications](./activity-app.md) ||
+|| **CRM_ACTIVITY_LIST_MENU** | Context menu for activities ||
 |#
