@@ -4,10 +4,10 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the requirement for parameters is not specified
+- required parameters are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of success is missing
-- response in case of error is missing
+- no response in case of success
+- no response in case of error
 
 {% endnote %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -34,11 +34,19 @@ The method `tasks.task.result.list` allows you to view the list of results for a
 ## Example
 
 ```js
-BX.ajax.runAction("tasks.task.result.list", {
-    data: {
-        taskId: 100500
+BX24.callMethod(
+    'tasks.task.result.list',
+    {
+        "taskId" : 7811
+    },
+    function(result) {
+        if (result.error()) {
+            console.error(result.error());
+        } else {
+            console.info(result.data());
+        }
     }
-}).then(function (response) { console.log(response);});
+);
 ```
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

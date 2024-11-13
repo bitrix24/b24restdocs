@@ -1,17 +1,17 @@
 title: Flows
 href: index.md
 items:
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Create Flow
+  - name: Create a flow
     href: tasks-flow-flow-create.md
-  - name: Get Flow
+  - name: Get a flow
     href: tasks-flow-flow-get.md
-  - name: Update Flow
+  - name: Update a flow
     href: tasks-flow-flow-update.md
-  - name: Delete Flow
+  - name: Delete a flow
     href: tasks-flow-flow-delete.md
-  - name: Check Flow Name for Uniqueness
+  - name: Check flow name for uniqueness
     href: tasks-flow-flow-is-exists.md
-  - name: Enable/Disable Flow
+  - name: Enable or disable a flow
     href: tasks-flow-flow-activate.md

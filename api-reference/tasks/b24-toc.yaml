@@ -3,8 +3,6 @@ href: index.md
 items:
   - name: About Tasks in Bitrix24
     href: index.md
-  - name: Structure of Task Object Connections
-    href: structure-connections.md
   - name: Task Fields
     href: fields.md
   - name: Add Task
@@ -61,7 +59,7 @@ items:
     href: task-dependence-delete.md
   - name: Task Result
     include:
-      path: result/toc.yaml
+      path: result/b24-toc.yaml
       mode: link
   - name: Events
     include:

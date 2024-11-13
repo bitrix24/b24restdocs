@@ -5,8 +5,8 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - missing examples (there should be three examples - curl, js, php)
-- missing response in case of error
-- missing response in case of success
+- no response in case of error
+- no response in case of success
  
 {% endnote %}
 
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -40,7 +40,7 @@ BX24.callMethod(
 );
 ```
 
-{% include [Note about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 ## List of fields
 
@@ -79,11 +79,13 @@ Default - No. ||
 N - No.
 Default - No. ||
 || **REPLICATE**
-[`enum`](../data-types.md) | Recurrent task. | Y - Yes,
+[`enum`](../data-types.md) | Repeating task. | Y - Yes,
 N - No.
 Default - No. ||
 || **GROUP_ID**
-[`integer`](../data-types.md) | Project. | Default - 0 ||
+[`integer`](../data-types.md) | Group or project | Default - 0 ||
+|| **FLOW_ID**
+[`integer`](../data-types.md) | Flow | null ||
 || **STAGE_ID**
 [`integer`](../data-types.md) | Stage. | Default - 0 ||
 || **CREATED_BY^*^**
@@ -91,11 +93,11 @@ Default - No. ||
 || **CREATED_DATE**
 [`datetime`](../data-types.md) | Creation date. | ||
 || **RESPONSIBLE_ID^*^**
-[`integer`](../data-types.md) | Executor. | ||
+[`integer`](../data-types.md) | Assignee. | ||
 || **ACCOMPLICES**
 [`array`](../data-types.md) | Participants. | ||
 || **AUDITORS**
-[`array`](../data-types.md) | Observers. | ||
+[`array`](../data-types.md) | Auditors. | ||
 || **CHANGED_BY**
 [`integer`](../data-types.md) | Modified by. | ||
 || **CHANGED_DATE**
@@ -187,7 +189,7 @@ L_XX - lead,
 C_XX - contact,
 D_XX - deal | ||
 || **UF_TASK_WEBDAV_FILES**
-[`disk_file`](../data-types.md) | File (Disk). | ||
+[`disk_file`](../data-types.md) | File (Drive). | ||
 || **UF_MAIL_MESSAGE**
 [`mail_message`](../data-types.md) | E-mail. | ||
 || **IS_MUTED**
@@ -206,4 +208,4 @@ Default - No. ||
 [`integer`](../data-types.md) | SERVICE_COMMENTS_COUNT | ||
 |#
 
-{% include [Note about parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}

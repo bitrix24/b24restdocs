@@ -6,15 +6,15 @@ This method is used to send multiple requests in succession, as well as related 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **halt**
 [`boolean`](../data-types.md) | Determines whether to stop the sequence of requests in case of an error. Defaults to `false` ||
 || **cmd**
-[`array`](../data-types.md) | An array of requests in standard format (keep in mind the need for double encoding of request data) ||
+[`array`](../data-types.md) | An array of requests in standard format (remember to [URL-encode](./data-encoding.md) the request data; this means that the data for sub-requests must undergo double encoding) ||
 |#
 
 {% note info %}
@@ -33,7 +33,7 @@ $result[request_id][response_field]
 
 where the request identifier is its key in the array of requests.
 
-Since version **rest 24.0.0**, nesting is prohibited for the `batch` method (you cannot call another `batch` within a `batch` method).
+Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` method (you cannot call another `batch` within a `batch` method call).
 
 ## Code Examples
 
@@ -78,7 +78,7 @@ Since version **rest 24.0.0**, nesting is prohibited for the `batch` method (you
 
     {% note info %}
     
-    **Note** that the parameters are URL-encoded. It is mandatory to encode parameters; otherwise, the correctness of the result is not guaranteed.
+    **Note**, that the parameters are URL-encoded. It is mandatory to encode parameters; otherwise, the correctness of the result is not guaranteed.
     
     {% endnote %}
 
@@ -262,11 +262,11 @@ Since version **rest 24.0.0**, nesting is prohibited for the `batch` method (you
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | An object is returned with fields as objects containing the results of the called methods ||
+[`object`](../data-types.md) | An object is returned with fields in the form of objects containing the results of the invoked methods ||
 || **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
@@ -303,7 +303,7 @@ As a result:
 
 {% note info %}
 
-**Note** that in the `user_lead` request we use nesting `[0][ID]`. Since the `user.search` method is list-based, it can return up to 50 results, and in this case, we will take the identifier of the first returned user.
+**Note**, that in the `user_lead` request we use nesting `[0][ID]`. Since the `user.search` method is list-based, it can return up to 50 results, and in this case, we will take the identifier of the first returned user.
 
 {% endnote %}
 

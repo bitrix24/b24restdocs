@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -13,9 +13,9 @@ Some data may be missing — we will complete it soon.
 - edits needed for writing standards
 - parameter types are not specified
 - examples are missing
-- success response is missing
-- error response is missing
-- links to pages that have not yet been created are not specified
+- success response is absent
+- error response is absent
+- links to pages not yet created are not provided
 
 {% endnote %}
 
@@ -33,25 +33,26 @@ All fields of the element and their values must be passed in the request.
 
 {% endnote %}
 
+
 ## Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
-|| **IBLOCK_TYPE_ID*** 
+|| **IBLOCK_TYPE_ID***
 [`unknown`](../../data-types.md) | `id` of the information block:
 - `lists` — list information block type
 - `bitrix_processes` — processes information block type
 - `lists_socnet` — group lists information block type ||
-|| **IBLOCK_CODE/IBLOCK_ID*** 
+|| **IBLOCK_CODE/IBLOCK_ID***
 [`unknown`](../../data-types.md) | Code or `id` of the information block ||
-|| **ELEMENT_CODE/ELEMENT_ID*** 
+|| **ELEMENT_CODE/ELEMENT_ID***
 [`unknown`](../../data-types.md) | Code or `id` of the element ||
 || **FIELDS**
-[`unknown`](../../data-types.md) | Array of fields and values ||
-|| **SOCNET_GROUP_ID*** 
+[`unknown`](../../data-types.md) | Array of fields and values. In the File type field `F`, you cannot pass the file ID from Drive ||
+|| **SOCNET_GROUP_ID***
 [`unknown`](../../data-types.md) | `id` of the group. This parameter is required if the list is created for a group ||
 |#
 
@@ -145,11 +146,11 @@ All fields of the element and their values must be passed in the request.
 
 {% endlist %}
 
-### How to Upload a File to a File Type Field (Disk)
+### How to Upload a File in a File Type Field (Drive)
 
 1. Use the REST API of the disk module: `disk.folder.uploadfile` and `disk.storage.uploadfile`. In the response when uploading these files, you will receive `"ID": 290`.
-2. Get the list of `ID`s of uploaded files.
-3. Using the REST API of the lists module, add files to the required field. If the field already has attached files, you need to get the previous values from [lists.element.get](./lists-element-get.md) and pass them along with the new ones.
+2. Get the list of uploaded file `IDs`.
+3. Using the REST API of the lists module, add files to the required field. If the field already has attached files, you need to retrieve the previous values from [lists.element.get](./lists-element-get.md) and pass them along with the new ones.
 
 {% list tabs %}
 
@@ -207,7 +208,7 @@ All fields of the element and their values must be passed in the request.
         'lists.element.update',
         [
             'IBLOCK_TYPE_ID' => 'lists',
-            'IBLOCK_ID' => 41,
+            'IBLOCK_ID' => '41',
             'ELEMENT_CODE' => 'element1',
             'FIELDS' => [
                 'NAME' => 'Test element 1',
@@ -223,11 +224,11 @@ All fields of the element and their values must be passed in the request.
 
 {% endlist %}
 
-Values in the File (Disk) field without the prefix `"n"` are already attached files (`attachedId`), while those with the prefix are your new files that have already been uploaded to the disk.
+Values in the File (Drive) field without the prefix `"n"` are already attached files (`attachedId`), while those with the prefix are your new files that have been previously uploaded to the drive.
 
 ### How to Delete a File
 
-Find out the ID of the file values using the method [lists.element.get](./lists-element-get.md).
+Find out the file value IDs using the method [lists.element.get](./lists-element-get.md).
 
 {% list tabs %}
 
@@ -301,7 +302,7 @@ You will receive a response in the following format.
 
 Here, `PROPERTY_133` is a multiple file type field. It represents an object where the key is the `ID` of the property value needed for deletion, and the value is the `ID` of the file.
 
-To delete a property value, pass a field with the suffix `_DEL` to the method `lists.element.update`. In it, specify the list of values to be deleted. Use the `ID` of the property value as the key and `"Y"` as the value.
+To delete a property value, pass a field with the suffix `_DEL` to the method `lists.element.update`. Specify the list of values to be deleted. Use the `ID` of the property value as the key and `"Y"` as the value.
 
 {% list tabs %}
 

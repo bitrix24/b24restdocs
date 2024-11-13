@@ -16,4 +16,9 @@ Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
-Assigned tasks can be included in the daily work plan.
+Assigned tasks can be added to the daily work plan.
+
+#|
+|| **Method** | **Description** ||
+|| [task.planer.getList](./task-planner-get-list.md) | Retrieves a list of tasks from the "Daily Plan" ||
+|#

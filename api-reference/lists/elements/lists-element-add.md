@@ -1,20 +1,20 @@
-# Create a List Element lists.element.add
+# Create a list element lists.element.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - examples are missing
 - success response is absent
 - error response is absent
-- links to pages that have not yet been created are not provided
+- links to pages that are not yet created are not provided
 
 {% endnote %}
 
@@ -24,13 +24,13 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `lists.element.add` creates a list element. If the element is created successfully, the response is `true`; otherwise, it returns *Exception*.
+The method `lists.element.add` creates a list element. If the element is created successfully, the response is `true`, otherwise *Exception*.
 
-To upload files to a File (Disk) type field, you need to:
+To upload files to a File (Drive) type field, you need to:
 
 1. use the REST API of the disk module: disk.folder.uploadfile and disk.storage.uploadfile. In the response when uploading these files, you will receive `"FILE_ID": 290`.
 2. Get the list of uploaded file `IDs`.
-3. Then, using the REST API of the lists module, add the files to the desired field:
+3. Then, using the REST API of the lists module, add files to the required field:
 
 ```js
 var params = {
@@ -60,23 +60,23 @@ BX24.callMethod(
 #|
 || **Parameter** | **Description** ||
 || **IBLOCK_TYPE_ID**^*^
-[`unknown`](../../data-types.md) | `id` of the information block type (required):
+[`unknown`](../../data-types.md) | Identifier of the information block type (required):
 - **lists** - list information block type
 - **bitrix_processes** - processes information block type
 - **lists_socnet** - group lists information block type ||
 || **IBLOCK_CODE/IBLOCK_ID**^*^
-[`unknown`](../../data-types.md) | code or `id` of the information block (required) ||
+[`unknown`](../../data-types.md) | Code or `id` of the information block (required) ||
 || **ELEMENT_CODE**^*^
-[`unknown`](../../data-types.md) | code of the information block element (required) ||
+[`unknown`](../../data-types.md) | Code of the information block element (required) ||
 || **LIST_ELEMENT_URL**
-[`unknown`](../../data-types.md) | template address to list elements ||
+[`unknown`](../../data-types.md) | Template address to list elements ||
 || **FIELDS**
-[`unknown`](../../data-types.md) | array of fields and values ||
+[`unknown`](../../data-types.md) | Array of fields and values. In the File type field `F`, you cannot pass the file identifier from Drive ||
 || **SOCNET_GROUP_ID**^*^
 [`unknown`](../../data-types.md) | `id` of the group (required if the list is created for a group); ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -134,4 +134,4 @@ BX24.callMethod(
 );
 ```
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}

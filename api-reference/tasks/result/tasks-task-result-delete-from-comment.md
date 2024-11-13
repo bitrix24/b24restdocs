@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -34,11 +34,19 @@ The method `tasks.task.result.deleteFromComment` removes the task result based o
 ## Example
 
 ```js
-BX.ajax.runAction("tasks.task.result.deleteFromComment", {
-    data: {
-        commentId: 100500
+BX24.callMethod(
+    'tasks.task.result.deleteFromComment',
+    {
+        "commentId" : 2549
+    },
+    function(result) {
+        if (result.error()) {
+            console.error(result.error());
+        } else {
+            console.info(result.data());
+        }
     }
-}).then(function (response) { console.log(response);});
+);
 ```
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

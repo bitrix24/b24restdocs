@@ -1,28 +1,36 @@
-# About Task Execution Results
+# Task Results: Overview of Methods
 
-{% if build == 'dev' %}
+The result of a task is a fixed comment summarizing the work done on the task. The result is highlighted in a separate block within the task card, so it doesn't need to be searched among all comments. A task can have multiple results.
 
-{% note alert "TO-DO _not exported to prod_" %}
+> Quick navigation: [all methods and events](#all-methods) 
+> 
+> User documentation: [how to fix the result of the task](https://helpdesk.bitrix24.com/open/21841518/) 
 
-- write an introductory article: what execution result is, how it is displayed
+## Linking Results to Other Objects
+
+**Task.** Results are linked to the task by the identifier `taskId`. This can be obtained using the [create new task](../tasks-task-add.md) method or the [get task list](../tasks-task-list.md) method.
+
+**Comment.** The task result is created from a comment using the identifier `commentId`. The comment identifier can be obtained using the [create comment](../comment-item/task-comment-item-add.md) method or the [get comment list](../comment-item/task-comment-item-get-list.md) method for the task.
+
+{% note tip "User Documentation" %}
+
+- [Bitrix24 Tasks](https://helpdesk.bitrix24.com/open/18034564/)
 
 {% endnote %}
 
-{% endif %}
+## How to Delete a Comment
 
-{% note warning "We are still updating this page" %}
+The [tasks.task.result.deleteFromComment](./tasks-task-result-delete-from-comment.md) method does not delete the comment; it only removes its fixation as a result. To delete a comment with a result, use the [task.commentitem.delete](../comment-item/task-comment-item-delete.md) method.
 
-Some data may be missing here — we will complete it soon
-
-{% endnote %}
+## Overview of Methods {#all-methods}
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-#|
+#| 
 || **Method** | **Description** ||
-|| [tasks.task.result.list](./tasks-task-result-list.md) | View the list of results for a task. ||
-|| [tasks.task.result.addFromComment](./tasks-task-result-add-from-comment.md) | Create a task result from a comment. ||
-|| [tasks.task.result.deleteFromComment](./tasks-task-result-delete-from-comment.md) | Delete a task result based on the comment from which it was created. ||
+|| [tasks.task.result.addFromComment](./tasks-task-result-add-from-comment.md) | Adds a comment to the result ||
+|| [tasks.task.result.list](./tasks-task-result-list.md) | Retrieves the list of task results ||
+|| [tasks.task.result.deleteFromComment](./tasks-task-result-delete-from-comment.md) | Deletes a comment from the task result ||
 |#

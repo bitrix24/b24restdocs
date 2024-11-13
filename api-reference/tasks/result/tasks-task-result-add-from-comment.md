@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -28,17 +28,25 @@ The method `tasks.task.result.addFromComment` creates a task result from a comme
 #|
 || **Parameter** / **Type**| **Description** ||
 || **commentId**
-[`int`](../../data-types.md) | Identifier of the comment. ||
+[`int`](../../data-types.md) | Comment identifier. ||
 |#
 
 ## Example
 
 ```js
-BX.ajax.runAction("tasks.task.result.addFromComment", {
-    data: {
-        commentId: 100500
+BX24.callMethod(
+    'tasks.task.result.addFromComment',
+    {
+        "commentId" : 2549
+    },
+    function(result) {
+        if (result.error()) {
+            console.error(result.error());
+        } else {
+            console.info(result.data());
+        }
     }
-}).then(function (response) { console.log(response);});
+);
 ```
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

@@ -4,7 +4,7 @@ In CRM, activities are used for any tasks related to clients: calls, meetings, d
 
 Activities are divided into incoming and scheduled:
 
-* Incoming — activities that come from the client, such as an email, call, or chat. For these activities, it's important to correctly set the parameter `DIRECTION` = `1` so that the incoming activity counter in CRM works.
+* Incoming — activities that come from the client, such as an email, call, or chat. For these activities, it is important to correctly specify the `DIRECTION` parameter = `1` so that the incoming activities counter in CRM works.
 
 * Scheduled — activities created by employees, such as tasks or universal activities. They can have a deadline, include links to CRM entities, integrate with the calendar, invite colleagues, and attach files.
 
@@ -16,25 +16,25 @@ Activities are divided into incoming and scheduled:
 
 Activities linked to CRM entities are stored in the timeline of the entity's card. If an activity is linked to multiple entities — for example, an email can be linked to both a deal and a contact — it will be stored in the timelines of all related entities.
 
-Links between activities and CRM entities can be added and removed using the methods from the group [crm.activity.binding.*](./binding/index.md).
+Links between activities and CRM entities can be added and removed using the methods from the [crm.activity.binding.*](./binding/index.md) group.
 
 ## System Activities
 
 System activities in CRM are created automatically:
 
-* A call activity is created by the connected telephony in Bitrix. To finish a call, use the method [telephony.externalcall.finish](../../../telephony/telephony-external-call-finish.md). This method ends the call, creates an activity in the entity's card, and returns the ID of the created activity in the parameter `CRM_ACTIVITY_ID`.
+* A call activity is created by the connected telephony in Bitrix. To finish a call, use the [telephony.externalcall.finish](../../../telephony/telephony-external-call-finish.md) method. This method ends the call, creates an activity in the entity's card, and returns the ID of the created activity in the `CRM_ACTIVITY_ID` parameter.
 
-* An email activity is created by the email service. When an email from a client arrives at the connected Bitrix24 address, CRM checks if there is a client in the database with the email from the message. Based on the results, an activity will be created in the card of the found entity or a new client will be created, where the activity will appear.
+* An email activity is created by the email service. When an email from a client arrives at the connected Bitrix24 address, CRM checks if a client with the email from the message exists in the database. Based on the results, an activity will be created in the card of the found entity or a new client will be created, in whose card the activity will appear.
 
-To create, modify, or delete a system activity, use the group of methods [crm.activity.*](./crm-activity-add.md). When creating a system activity, specify `TYPE_ID`, for example, for an email activity `TYPE_ID` = `2`. To get values for other types of activities, use the method [crm.enum.activitytype](../../auxiliary/enum/crm-enum-activity-type.md).
+To create, modify, or delete a system activity, use the methods from the [crm.activity.*](./crm-activity-add.md) group. When creating a system activity, specify `TYPE_ID`, for example, for an email activity `TYPE_ID` = `2`. To get values for other types of activities, use the [crm.enum.activitytype](../../auxiliary/enum/crm-enum-activity-type.md) method.
 
 ### Custom Activity Types
 
-Applications can register custom activity types: upload a custom icon and specify the type name. For example, you can create your own activity type with an icon and name of your application.
+Applications can register custom activity types: upload their own icon and specify the type name. For example, you can create your own activity type with an icon and name of your application.
 
-* To register an activity type — use the methods from the group [crm.activity.type.*](./types/index.md). When creating a type, you need to set its code designation in the parameter `TYPE_ID`.
-
-* To create an activity with the application type — use the group of system activity methods [crm.activity.*](./crm-activity-add.md). When creating an activity, specify the code designation of the custom type `TYPE_ID`, registered for the activity type, in the parameter `PROVIDER_TYPE_ID`.
+* To register an activity type — use the methods from the [crm.activity.type.*](./types/index.md) group. When creating a type, you need to specify its code designation in the `TYPE_ID` parameter.
+  
+* To create an activity with the application type — use the group of system activity methods [crm.activity.*](./crm-activity-add.md). When creating an activity, specify the code designation of the custom type `TYPE_ID`, registered for the activity type, in the `PROVIDER_TYPE_ID` parameter.
 
 {% note tip "" %}
 
@@ -46,7 +46,7 @@ The methods [crm.activity.delete](./crm-activity-delete.md) (deletes an activity
 
 Universal activities are a type of activity with extended settings. In the card of a universal activity, you can synchronize the activity with the calendar, choose a meeting location with the client, add colleagues, select a client from a CRM entity, categorize activities by color, and choose a meeting room. Extended settings are available to employees on the Bitrix24 side.
 
-To create a universal activity, use the method [crm.activity.todo.add](./crm-activity-todo-add.md). To change the deadline of an activity — use the method [crm.activity.todo.updateDeadline](./todo-update/crm-activity-todo-update-deadline.md), and to change the description of the activity — [crm.activity.todo.updateDescription](./todo-update/crm-activity-todo-update-description.md).
+To create a universal activity, use the [crm.activity.todo.add](./crm-activity-todo-add.md) method. To change the deadline of an activity — use the [crm.activity.todo.updateDeadline](./todo-update/crm-activity-todo-update-deadline.md) method, and to change the description of an activity — [crm.activity.todo.updateDescription](./todo-update/crm-activity-todo-update-description.md). 
 
 {% note tip "User Documentation" %}
 
@@ -61,32 +61,32 @@ Configurable activities are a type of activity that can only be created from an 
 * [Structure of Configurable Activity](./structure/layout.md)
 * [Badges of Configurable Activity](./badges/index.md)
 
-To create or modify a configurable activity, use the group of methods [crm.activity.configurable.*](./crm-activity-configurable-add.md).
+To create or modify a configurable activity, use the methods from the [crm.activity.configurable.*](./crm-activity-configurable-add.md) group.
 
 ## Widgets
 
-Applications can be embedded into activities. For embedding, special places are used, and there is one available in activities — [Context Menu Item of the Activity in the Entity Card](../../../widgets/crm/activity-timeline-menu.md) `CRM_XXX_ACTIVITY_TIMELINE_MENU`.
+Applications can be embedded in activities. For embedding, special places are used, and there is one available in activities — [Context menu item of the activity in the entity card](../../../widgets/crm/activity-timeline-menu.md) `CRM_XXX_ACTIVITY_TIMELINE_MENU`.
 
 Thanks to the embedding, you can use the application without leaving the entity card. The application will open on the page you specify during the registration of the embedding.
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [Widget Embedding Mechanism](../../../widgets/index.md)
-- [Create Activities from Applications](./app-embedding/activity-app.md)
+- [Widget embedding mechanism](../../../widgets/index.md)
+- [Create activities from applications](./app-embedding/activity-app.md)
 
 {% endnote %}
 
 ## Additional Features
 
-**Text notes** can be added to activities and deleted. Use the group of methods [crm.timeline.note.*](../note/index.md).
+**Text notes** can be added to activities and removed. Use the methods from the [crm.timeline.note.*](../note/index.md) group.
 
-**Content blocks** can be added to activities and deleted. Use the group of methods [crm.activity.layout.blocks.*](./layout-blocks/index.md).
+**Content blocks** can be added to activities and removed. Use the methods from the [crm.activity.layout.blocks.*](./layout-blocks/index.md) group.
 
-* [Available Content Blocks](./structure/body.md#contentblockdto)
+* [Available content blocks](./structure/body.md#contentblockdto)
 
 ## Overview of Methods and Events {#all-methods}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can perform methods: any user
 
@@ -131,7 +131,7 @@ Thanks to the embedding, you can use the application without leaving the entity 
 
 #|
 || **Method** | **Description** ||
-|| [crm.activity.type.add](./types/crm-activity-type-add.md) | Registers a new subtype of activity ||
+|| [crm.activity.type.add](./types/crm-activity-type-add.md) | Registers a new subtype of activities ||
 || [crm.activity.type.list](./types/crm-activity-type-list.md) | Returns a list of activity subtypes ||
 || [crm.activity.type.delete](./types/crm-activity-type-delete.md) | Deletes an activity subtype ||
 |#
@@ -169,6 +169,6 @@ Thanks to the embedding, you can use the application without leaving the entity 
 #|
 || **Method** | **Description** ||
 || [crm.activity.layout.blocks.set](./layout-blocks/crm-activity-layout-blocks-set.md) | Sets a set of additional content blocks in an activity ||
-|| [crm.activity.layout.blocks.get](./layout-blocks/crm-activity-layout-blocks-get.md) | Retrieves the set of additional content blocks in the activity set by the application ||
-|| [crm.activity.layout.blocks.delete](./layout-blocks/crm-activity-layout-blocks-delete.md) | Deletes the set of additional content blocks for the activity set by the application ||
+|| [crm.activity.layout.blocks.get](./layout-blocks/crm-activity-layout-blocks-get.md) | Retrieves the set of additional content blocks in an activity set by the application ||
+|| [crm.activity.layout.blocks.delete](./layout-blocks/crm-activity-layout-blocks-delete.md) | Deletes the set of additional content blocks for an activity set by the application ||
 |#

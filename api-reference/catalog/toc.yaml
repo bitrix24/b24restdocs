@@ -37,7 +37,7 @@ items:
     include:
       path: product-property/toc.yaml
       mode: link
-  - name: List Property Values
+  - name: Values of List Properties
     include:
       path: product-property-enum/toc.yaml
       mode: link
@@ -55,7 +55,7 @@ items:
       mode: link
   - name: Unit of Measurement Ratio
     include:
-      path: ratio/toc.yaml
+      path: ratio/b24-toc.yaml
       mode: link
   - name: Price Rounding Rules
     include:
@@ -65,19 +65,19 @@ items:
     include:
       path: section/b24-toc.yaml
       mode: link
-  - name: Warehouse
+  - name: Inventory
     include:
       path: store/toc.yaml
       mode: link
-  - name: Warehouse Stock
+  - name: Inventory Balances
     include:
       path: store-product/toc.yaml
       mode: link
-  - name: Warehouse Accounting
+  - name: Inventory Management
     include:
       path: document/toc.yaml
       mode: link
-  - name: Custom Fields for Warehouse Accounting Documents
+  - name: Custom Fields for Inventory Documents
     include:
       path: userfield-document/toc.yaml
       mode: link

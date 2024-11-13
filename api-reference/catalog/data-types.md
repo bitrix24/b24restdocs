@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,13 +10,13 @@ Some data may be missing — we will complete it soon
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Create a description for the object rest_field_description
+- Create a description for the object rest_field_description.
 
 {% endnote %}
 
 {% endif %}
 
-Basic data types are listed in a separate [article](../data-types.md).
+The basic data types are listed in a separate [article](../data-types.md).
 
 In this article, we will discuss the data types and object structure specific to the CRM Catalog.
 
@@ -31,8 +31,9 @@ In this article, we will discuss the data types and object structure specific to
 || [`catalog_product_service.id`](#catalog_product_service) | Integer identifier of the service (e.g., `1`). You can obtain the identifiers of services using the method [catalog.product.service.list](./product/service/catalog-product-service-list.md) ||
 || [`catalog_product_image.id`](#catalog_product_image) | Integer identifier of the product image (e.g., `1`). You can obtain the identifiers of product images using the method [catalog.productImage.list](./product-image/catalog-product-image-list.md) ||
 || [`catalog_measure.id`](#catalog_measure) | Integer identifier of the unit of measurement (e.g., `1`). You can obtain the identifiers of units of measurement using the method [catalog.measure.list](./measure/catalog-measure-list.md) ||
+|| [`catalog_ratio.id`](#catalog_ratio) | Integer identifier of the unit of measurement ratio (e.g., `1`). You can obtain the identifiers of unit ratios using the method [catalog.ratio.list](./ratio/catalog-ratio-list.md) ||
 || [`catalog_price_type.id`](#catalog_price_type) | Integer identifier of the price type (e.g., `1`). You can obtain the identifiers of price types using the method [catalog.priceType.list](./price-type/catalog-price-type-list.md) ||
-|| [`catalog_rounding_rule.id`](#catalog_rounding_rule) | Integer identifier of the price rounding rule (e.g., `1`). You can obtain the identifiers of price rounding rules using the method [catalog.roundingRule.list](./rounding-rule/catalog-rounding-rule-list.md) ||
+|| [`catalog_rounding_rule.id`](#catalog_rounding_rule) | Integer identifier of the price rounding rule (e.g., `1`). You can obtain the identifiers of rounding rules using the method [catalog.roundingRule.list](./rounding-rule/catalog-rounding-rule-list.md) ||
 || [`catalog_section.id`](#catalog_section) | Integer identifier of the catalog section (e.g., `1`). You can obtain the identifiers of product sections using the method [catalog.section.list](./section/catalog-section-list.md) ||
 || [`catalog_vat.id`](#catalog_vat) | Integer identifier of the VAT rate (e.g., `1`). You can obtain the identifiers of VAT rates using the method [catalog.vat.list](./vat/catalog-vat-list.md) ||
 |#
@@ -60,9 +61,9 @@ In this article, we will discuss the data types and object structure specific to
 To obtain existing identifiers of information blocks, you need to use [catalog.catalog.list](./catalog/catalog-catalog-list.md)
 ||
 || **skuPropertyId**
-[`integer`](../data-types.md) | Identifier of the property that stores the identifier of the parent product. Filled only for the trade catalog of trade offers
+[`integer`](../data-types.md) | Identifier of the property that stores the identifier of the parent product. Filled only for the trade catalog of trade offers.
 
-To obtain existing property identifiers, you need to use [catalog.productProperty.list](./product-property/catalog-product-property-list.md)
+To obtain existing identifiers of properties, you need to use [catalog.productProperty.list](./product-property/catalog-product-property-list.md)
 ||
 || **subscription**
 [`string`](../data-types.md) | Is content being sold? Possible values:
@@ -74,7 +75,7 @@ This parameter is used only in the on-premise version
 || **vatId**
 [`catalog_vat.id`](#catalog_vat) | Identifier of VAT.
 
-To obtain existing VAT identifiers, you need to use [catalog.vat.list](./vat/catalog-vat-list.md)
+To obtain existing identifiers of VAT, you need to use [catalog.vat.list](./vat/catalog-vat-list.md)
 ||
 |#
 
@@ -126,15 +127,15 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Date of activity start ||
+[`datetime`](../data-types.md) | Start date of activity ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | Date of activity end ||
+[`datetime`](../data-types.md) | End date of activity ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Date of creation ||
+[`datetime`](../data-types.md) | Creation date ||
 || **timestampX**
-[`datetime`](../data-types.md) | Date of modification. Read-only ||
+[`datetime`](../data-types.md) | Modification date. Read-only ||
 || **iblockSectionId**
-[`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
+[`catalog_section.id`](#catalog_section) | Identifier of the section of the information block ||
 || **measure**
 [`catalog_measure.id`](#catalog_measure) | Unit of measurement ||
 || **previewText**
@@ -142,11 +143,11 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
+[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — file name with extension, `value2` — image in base64 format. 
 
 To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
+[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — file name with extension, `value2` — image in base64 format. 
 
 To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
@@ -197,22 +198,22 @@ To delete the image, use the object in the format `{remove: ‘Y’}` ||
 
 The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
 ||
 || **purchasingPrice**
 [`float`](../data-types.md) | Purchasing price.
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
 ||
 || **quantity**
 [`float`](../data-types.md) | Quantity.
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
 ||
 || **quantityReserved**
 [`float`](../data-types.md) | Reserved quantity.
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
 ||
 || **recurSchemeLength**
 [`integer`](../data-types.md) | Length of the payment period.
@@ -242,11 +243,11 @@ Used only in the on-premise version for content sales ||
 Used only in the on-premise version for content sales
 ||
 || **propertyN**
-[`object\|array`](../data-types.md) | Value of the product property, where `N` — identifier of the property. There can be multiple properties. 
+[`object\|array`](../data-types.md) | Value of the product property, where `N` — property identifier. There can be multiple properties. 
 
-The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
+The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]` if the property is multiple. Here, `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
 
 `valueId` of all product properties can be obtained using the methods [catalog.product.get](./product/catalog-product-get.md) and [catalog.product.list](./product/catalog-product-list.md)
 ||
@@ -290,36 +291,36 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 - `Y` — yes
 - `N` — no 
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **createdBy**
 [`user.id`](../data-types.md) | Created by ||
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Date of activity start ||
+[`datetime`](../data-types.md) | Start date of activity ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | Date of activity end ||
+[`datetime`](../data-types.md) | End date of activity ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Date of creation ||
+[`datetime`](../data-types.md) | Creation date ||
 || **timestampX**
-[`datetime`](../data-types.md) | Date of modification. Read-only ||
+[`datetime`](../data-types.md) | Modification date. Read-only ||
 || **iblockSectionId**
-[`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
+[`catalog_section.id`](#catalog_section) | Identifier of the section of the information block ||
 || **measure**
 [`catalog_measure.id`](#catalog_measure) | Unit of measurement.
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled ||
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled ||
 || **previewText**
 [`string`](../data-types.md) | Description for the announcement ||
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
+[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — file name with extension, `value2` — image in base64 format. 
 
 To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
+[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — file name with extension, `value2` — image in base64 format. 
 
 To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
@@ -340,35 +341,35 @@ To delete the image, use the object in the format `{remove: ‘Y’}` ||
 - `N` — no
 - `D` — default
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **vatId**
 [`catalog_vat.id`](#catalog_vat) | Identifier of VAT.
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled ||
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled ||
 || **vatIncluded**
 [`string`](../data-types.md) | Is VAT included in the price? Possible values:
 - `Y` — yes
 - `N` — no
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **height**
 [`float`](../data-types.md) | Height of the parent product.
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled ||
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled ||
 || **length**
 [`float`](../data-types.md) | Length of the parent product.
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled ||
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled ||
 || **weight**
 [`float`](../data-types.md) | Weight of the parent product.
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled ||
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled ||
 || **width**
 [`float`](../data-types.md) | Width of the parent product.
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled ||
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled ||
 || **type**
 [`integer`](../data-types.md) | Type of product. Read-only. Possible values:
 - `3` — parent product with offers
@@ -379,30 +380,30 @@ For parent products, the ability to edit this field is available only in the on-
 
 The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
-Not editable when inventory accounting is enabled.
+Not editable when inventory management is enabled.
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **purchasingPrice**
 [`float`](../data-types.md) | Purchasing price.
 
-Not editable when inventory accounting is enabled.
+Not editable when inventory management is enabled.
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **quantity**
 [`float`](../data-types.md) | Quantity.
 
-Not editable when inventory accounting is enabled.
+Not editable when inventory management is enabled.
 
-For parent products, the ability to edit this field is available only in the on-premise version with the option "Show the Trade Catalog tab for products with trade offers" enabled
+For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **propertyN**
-[`object\|array`](../data-types.md) | Value of the parent product property, where `N` — identifier of the property. There can be multiple properties. 
+[`object\|array`](../data-types.md) | Value of the parent product property, where `N` — property identifier. There can be multiple properties. 
 
-The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
+The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]` if the property is multiple. Here, `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
 
 `valueId` of all parent product properties can be obtained using the methods [catalog.product.sku.get](./product/sku/catalog-product-sku-get.md) and [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md)
 ||
@@ -456,15 +457,15 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Date of activity start ||
+[`datetime`](../data-types.md) | Start date of activity ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | Date of activity end ||
+[`datetime`](../data-types.md) | End date of activity ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Date of creation ||
+[`datetime`](../data-types.md) | Creation date ||
 || **timestampX**
-[`datetime`](../data-types.md) | Date of modification. Read-only ||
+[`datetime`](../data-types.md) | Modification date. Read-only ||
 || **iblockSectionId**
-[`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
+[`catalog_section.id`](#catalog_section) | Identifier of the section of the information block ||
 || **measure**
 [`catalog_measure.id`](#catalog_measure) | Unit of measurement ||
 || **previewText**
@@ -472,11 +473,11 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
+[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — file name with extension, `value2` — image in base64 format. 
 
 To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
+[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — file name with extension, `value2` — image in base64 format. 
 
 To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
@@ -521,29 +522,29 @@ To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **type**
 [`integer`](../data-types.md) | Type of product. Read-only. Possible values:
 - `4` — offer
-- `5` — offer without a product
+- `5` — offer without product
 ||
 || **purchasingCurrency**
 [`string`](../data-types.md) | Currency of the purchasing price.
 
 The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
 ||
 || **purchasingPrice**
 [`float`](../data-types.md) | Purchasing price.
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
 ||
 || **quantity**
 [`float`](../data-types.md) | Quantity.
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
 ||
 || **quantityReserved**
 [`float`](../data-types.md) | Reserved quantity.
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
 ||
 || **recurSchemeLength**
 [`integer`](../data-types.md) | Length of the payment period.
@@ -573,11 +574,11 @@ Used only in the on-premise version for content sales ||
 Used only in the on-premise version for content sales
 ||
 || **propertyN**
-[`object\|array`](../data-types.md) | Value of the trade offer property, where `N` — identifier of the property. There can be multiple properties. 
+[`object\|array`](../data-types.md) | Value of the trade offer property, where `N` — property identifier. There can be multiple properties. 
 
-The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
+The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]` if the property is multiple. Here, `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
 
 `valueId` of all trade offer properties can be obtained using the methods [catalog.product.offer.get](./product/offer/catalog-product-offer-get.md) and [catalog.product.offer.list](./product/offer/catalog-product-offer-list.md)
 ||
@@ -621,25 +622,25 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Date of activity start ||
+[`datetime`](../data-types.md) | Start date of activity ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | Date of activity end ||
+[`datetime`](../data-types.md) | End date of activity ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Date of creation ||
+[`datetime`](../data-types.md) | Creation date ||
 || **timestampX**
-[`datetime`](../data-types.md) | Date of modification. Read-only ||
+[`datetime`](../data-types.md) | Modification date. Read-only ||
 || **iblockSectionId**
-[`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
+[`catalog_section.id`](#catalog_section) | Identifier of the section of the information block ||
 || **previewText**
 [`string`](../data-types.md) | Description for the announcement ||
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
+[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — file name with extension, `value2` — image in base64 format. 
 
 To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
+[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — file name with extension, `value2` — image in base64 format. 
 
 To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
@@ -666,11 +667,11 @@ To delete the image, use the object in the format `{remove: ‘Y’}` ||
 - `7` — service
 ||
 || **propertyN**
-[`object\|array`](../data-types.md) | Value of the service property, where `N` — identifier of the property. There can be multiple properties. 
+[`object\|array`](../data-types.md) | Value of the service property, where `N` — property identifier. There can be multiple properties. 
 
-The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
+The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]` if the property is multiple. Here, `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
 
 `valueId` of all service properties can be obtained using the methods [catalog.product.service.get](./product/service/catalog-product-service-get.md) and [catalog.product.service.list](./product/service/catalog-product-service-list.md)
 ||
@@ -694,9 +695,9 @@ If `valueId` is not specified, the existing value will be removed from the datab
 - `MORE_PHOTO` — product images
 ||
 || **createTime**
-[`datetime`](../data-types.md) | Date of image creation ||
+[`datetime`](../data-types.md) | Creation date of the image ||
 || **downloadUrl**
-[`string`](../data-types.md) | Download link, signed with the current access token ||
+[`string`](../data-types.md) | Download link signed with the current access token ||
 || **detailUrl**
 [`string`](../data-types.md) | Link to the image ||
 |#
@@ -727,6 +728,24 @@ Only one unit of measurement from the entire directory can take the value `Y`
 [`string`](../data-types.md) | International code letter designation ||
 |#
 
+### catalog_ratio
+
+#|
+|| **Value**
+`type` | **Description** ||
+|| **id**
+[`integer`](../data-types.md) | Identifier of the unit of measurement ratio ||
+|| **productId**
+[`integer`](../data-types.md) | Identifier of the product ||
+|| **ratio**
+[`double`](../data-types.md) | Ratio of the unit of measurement ||
+|| **isDefault**
+[`string`](../data-types.md) | Is this unit of measurement ratio the default ratio? Possible values:
+- `Y` — yes
+- `N` — no
+||
+|#
+
 ### catalog_price_type
 
 #|
@@ -737,7 +756,7 @@ Only one unit of measurement from the entire directory can take the value `Y`
 || **name**
 [`string`](../data-types.md) | Code of the price type ||
 || **base**
-[`string`](../data-types.md) | Is the price type basic? Possible values:
+[`string`](../data-types.md) | Is the price type base? Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -748,13 +767,13 @@ Only one unit of measurement from the entire directory can take the value `Y`
 
 Can be used to synchronize the current price type with a similar position in an external system ||
 || **timestampX**
-[`datetime`](../data-types.md) | Date of modification ||
+[`datetime`](../data-types.md) | Modification date ||
 || **createdBy**
 [`user.id`](../data-types.md) | Created by ||
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Date of creation ||
+[`datetime`](../data-types.md) | Creation date ||
 |#
 
 ### catalog_rounding_rule
@@ -781,9 +800,9 @@ Can be used to synchronize the current price type with a similar position in an 
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Date of creation ||
+[`datetime`](../data-types.md) | Creation date ||
 || **dateModify**
-[`datetime`](../data-types.md) | Date of modification ||
+[`datetime`](../data-types.md) | Modification date ||
 |#
 
 ### catalog_section
@@ -814,7 +833,7 @@ Can be used to synchronize the current product section with a similar position i
 || **sort**
 [`integer`](../data-types.md) | Sorting ||
 || **active**
-[`string`](../data-types.md) | Indicator of the activity of the catalog section:
+[`string`](../data-types.md) | Activity indicator of the catalog section:
 - `Y` — active
 - `N` — inactive ||
 || **description**
@@ -833,7 +852,7 @@ Can be used to synchronize the current product section with a similar position i
 || **name**
 [`string`](../data-types.md) | Name of the VAT rate ||
 || **active**
-[`string`](../data-types.md) | Indicator of the activity of the VAT rate. Possible values:
+[`string`](../data-types.md) | Activity indicator of the VAT rate. Possible values:
 - `Y` — active
 - `N` — inactive
 ||

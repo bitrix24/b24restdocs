@@ -2,6 +2,15 @@
 
 ## 2024
 
+### November 13, 2024
+
+- New tutorials added: [How to create a task with an attached file](./tutorials/tasks/how-to-create-task-with-file.md), [How to upload a file to a task](./tutorials/tasks/how-to-upload-file-to-task.md)
+
+- Updated the main pages in the Tasks section — [Tasks](./api-reference/tasks/index.md), [Flows](./api-reference/tasks/flow/index.md), [Task Result](./api-reference/tasks/flow/index.md). Added introductory information and an overview of methods and relationships.
+  
+- Updated the main page of the [Products](./api-reference/catalog/product/index.md) section. Added introductory information and an overview of methods and relationships.
+- Updated the documentation for working with the unit ratio [catalog.ratio.*](./api-reference/catalog/ratio/index.md)
+
 ### November 6, 2024
 
 - Updated the main pages in the CRM section — [Search and Process Duplicates](./api-reference/crm/duplicates/index.md), [Activities](./api-reference/crm/timeline/activities/index.md), [Statuses and dropdowns](./api-reference/crm/status/index.md), [Timeline](./api-reference/crm/timeline/index.md). Added introductory information, as well as an overview of methods and connections
