@@ -101,7 +101,6 @@
 ### August 21, 2024
 
 - Added [section with recordings of meetups and presentations for developers](./meetups.md)
-- Added [section with recordings of meetups and presentations for developers](./market/meetups.md)
 
 ### August 2024
 

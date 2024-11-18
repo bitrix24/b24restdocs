@@ -11,12 +11,12 @@ In Bitrix24, there are two types of file fields:
 
 To create a task with a file, we will sequentially execute two methods:
 
-1. [drive.folder.uploadfile](../../api-reference/drive/folder/drive-folder-upload-file.md) — this method uploads a file to the drive.
+1. [drive.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) — this method uploads a file to the drive.
 2. [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) — this method creates a task.
 
 ## 1. Uploading a File to the Bitrix24 Drive
 
-To upload a file to the drive, we use the method [drive.folder.uploadfile](../../api-reference/drive/folder/drive-folder-upload-file.md) with the following parameters:
+To upload a file to the drive, we use the method [drive.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) with the following parameters:
 
 * `id` — specify the value `1739` — the identifier of the drive folder where the file will be uploaded.
 * `data` — specify the file name `NAME`, under which the file will be saved on the Bitrix24 drive.
@@ -295,7 +295,7 @@ We created a task with ID `3711`.
 
 In the received result, there is no information about the task files. To check if the file was successfully attached to the task, we will execute the method [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) specifying the `UF_TASK_WEBDAV_FILES` field in `SELECT`.
 
-As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we will obtain the ID of the record linking the drive file to the task — this is the ID of the connection that links the task and the drive file. To get information about the file by the connection ID, we use the method [drive.attachedObject.get](../../api-reference/drive/attached-object/drive-attached-object-get.md).
+As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), we will obtain the ID of the record linking the drive file to the task — this is the ID of the connection that links the task and the drive file. To get information about the file by the connection ID, we use the method [drive.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md).
 
 ## Code Example
 
