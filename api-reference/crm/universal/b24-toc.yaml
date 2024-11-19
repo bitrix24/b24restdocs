@@ -37,11 +37,11 @@ items:
       mode: link
   - name: Custom Field Settings
     include:
-      path: userfieldconfig/toc.yaml
+      path: userfieldconfig/b24-toc.yaml
       mode: link
   - name: Custom Field Types
     include:
-      path: user-defined-field-types/toc.yaml
+      path: user-defined-field-types/b24-toc.yaml
       mode: link
   - name: CRM Sales Funnels
     include:

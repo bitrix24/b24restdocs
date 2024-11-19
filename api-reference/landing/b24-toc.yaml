@@ -7,7 +7,7 @@ items:
     href: types.md
   - name: Site Entity
     include:
-      path: site/toc.yaml
+      path: site/b24-toc.yaml
       mode: link
   - name: Page Entity
     include:
@@ -15,27 +15,27 @@ items:
       mode: link
   - name: Block Entity
     include:
-      path: block/toc.yaml
+      path: block/b24-toc.yaml
       mode: link
   - name: View Template Entity
     include:
-      path: template/toc.yaml
+      path: template/b24-toc.yaml
       mode: link
   - name: Embedding Locations
     include:
-      path: embedding/toc.yaml
+      path: embedding/b24-toc.yaml
       mode: link
   - name: Custom Blocks
     include:
-      path: user-blocks/toc.yaml
+      path: user-blocks/b24-toc.yaml
       mode: link
   - name: Custom Templates
     include:
-      path: demos/toc.yaml
+      path: demos/b24-toc.yaml
       mode: link
   - name: Permissions
     include:
-      path: rights/toc.yaml
+      path: rights/b24-toc.yaml
       mode: link
   - name: Useful Links
     href: additional-links.md

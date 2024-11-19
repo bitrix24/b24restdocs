@@ -13,19 +13,19 @@ items:
     href: voximplant-tts-voices-get.md
   - name: Events
     include:
-      path: events/toc.yaml
+      path: events/b24-toc.yaml
       mode: link
   - name: Manage SIP Connections
     include:
-      path: sip/toc.yaml
+      path: sip/b24-toc.yaml
       mode: link
   - name: Manage Lines
     include:
-      path: lines/toc.yaml
+      path: lines/b24-toc.yaml
       mode: link
   - name: Manage Users
     include:
-      path: sip/toc.yaml
+      path: users/b24-toc.yaml
       mode: link
   - name: Get Links to Key Telephony Pages
     href: voximplant-url-get.md

@@ -51,5 +51,5 @@ items:
     href: calendar-grid-view.md
   - name: Events
     include:
-      path: events-calendar/toc.yaml
+      path: events-calendar/b24-toc.yaml
       mode: link

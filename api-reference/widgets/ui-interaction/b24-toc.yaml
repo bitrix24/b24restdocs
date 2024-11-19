@@ -17,9 +17,9 @@ items:
     href: crm-card.md
   - name: Interaction with Call Card
     include:
-      path: call-card/toc.yaml
+      path: call-card/b24-toc.yaml
       mode: link
   - name: WebRTC - Manage Call Card
     include:
-      path: page-background-worker/toc.yaml
+      path: page-background-worker/b24-toc.yaml
       mode: link

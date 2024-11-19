@@ -15,13 +15,13 @@ items:
     href: localization.md
   - name: Special Blocks
     include:
-      path: special/toc.yaml
+      path: special/b24-toc.yaml
       mode: link
   - name: Interactive Blocks
     include:
-      path: interactive/toc.yaml
+      path: interactive/b24-toc.yaml
       mode: link
   - name: Methods for Working with Blocks
     include:
-      path: methods/toc.yaml
+      path: methods/b24-toc.yaml
       mode: link

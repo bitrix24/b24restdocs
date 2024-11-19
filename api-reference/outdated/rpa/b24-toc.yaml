@@ -5,29 +5,29 @@ items:
     href: index.md  
   - name: Processes  
     include:  
-      path: type/toc.yaml  
+      path: type/b24-toc.yaml 
       mode: link  
   - name: Stages  
     include:  
-      path: stage/toc.yaml  
+      path: stage/b24-toc.yaml 
       mode: link  
   - name: Elements  
     include:  
-      path: item/toc.yaml  
+      path: item/b24-toc.yaml
       mode: link  
   - name: Tasks  
     include:  
-      path: task/toc.yaml  
+      path: task/b24-toc.yaml  
       mode: link  
   - name: Field Visibility Settings  
     include:  
-      path: fields/toc.yaml  
+      path: fields/b24-toc.yaml  
       mode: link  
   - name: Timeline Records  
     include:  
-      path: timeline/toc.yaml  
+      path: timeline/b24-toc.yaml  
       mode: link  
   - name: Comments  
     include:  
-      path: comment/toc.yaml  
+      path: comment/b24-toc.yaml  
       mode: link  

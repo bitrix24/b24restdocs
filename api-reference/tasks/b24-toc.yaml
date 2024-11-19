@@ -63,15 +63,15 @@ items:
       mode: link
   - name: Events
     include:
-      path: events-tasks/toc.yaml
+      path: events-tasks/b24-toc.yaml
       mode: link
   - name: Checklists
     include:
-      path: checklist-item/toc.yaml
+      path: checklist-item/b24-toc.yaml
       mode: link
   - name: Comments
     include:
-      path: comment-item/toc.yaml
+      path: comment-item/b24-toc.yaml
       mode: link
   - name: Time Spent
     include:
@@ -79,7 +79,7 @@ items:
       mode: link
   - name: Custom Fields
     include:
-      path: user-field/toc.yaml
+      path: user-field/b24-toc.yaml
       mode: link
   - name: Kanban Stages and Planner
     include:
@@ -87,7 +87,7 @@ items:
       mode: link
   - name: Workday Plan
     include:
-      path: planner/toc.yaml
+      path: planner/b24-toc.yaml
       mode: link
   - name: Flows
     include:

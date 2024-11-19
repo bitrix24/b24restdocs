@@ -11,9 +11,9 @@ items:
     href: landing-role-is-enabled.md
   - name: Extended Model
     include:
-      path: extended-model/toc.yaml
+      path: extended-model/b24-toc.yaml
       mode: link
   - name: Role-Based Model
     include:
-      path: role-model/toc.yaml
+      path: role-model/b24-toc.yaml
       mode: link

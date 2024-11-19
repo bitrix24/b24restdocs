@@ -59,7 +59,7 @@ items:
     href: close-application.md
   - name: UI Interaction from Widgets
     include:
-      path: ui-interaction/toc.yaml
+      path: ui-interaction/b24-toc.yaml
       mode: link
   - name: Embedding as Custom Field Types
     include:

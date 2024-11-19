@@ -11,11 +11,11 @@ items:
       mode: link
   - name: Enumerations
     include:
-      path: enum/toc.yaml
+      path: enum/b24-toc.yaml
       mode: link
   - name: Markup
     include:
-      path: extra/toc.yaml
+      path: extra/b24-toc.yaml
       mode: link
   - name: Unit of Measurement
     include:
@@ -23,7 +23,7 @@ items:
       mode: link
   - name: Price
     include:
-      path: price/toc.yaml
+      path: price/b24-toc.yaml
       mode: link
   - name: Price Types
     include:
@@ -35,19 +35,19 @@ items:
       mode: link
   - name: Product and Trade Offer Properties
     include:
-      path: product-property/toc.yaml
+      path: product-property/b24-toc.yaml
       mode: link
   - name: Values of List Properties
     include:
-      path: product-property-enum/toc.yaml
+      path: product-property-enum/b24-toc.yaml
       mode: link
   - name: Product and Trade Offer Property Parameters
     include:
-      path: product-property-feature/toc.yaml
+      path: product-property-feature/b24-toc.yaml
       mode: link
   - name: Section Settings for Properties
     include:
-      path: product-property-section/toc.yaml
+      path: product-property-section/b24-toc.yaml
       mode: link
   - name: Product and Trade Offer Images
     include:
@@ -67,23 +67,23 @@ items:
       mode: link
   - name: Inventory
     include:
-      path: store/toc.yaml
+      path: store/b24-toc.yaml
       mode: link
   - name: Inventory Balances
     include:
-      path: store-product/toc.yaml
+      path: store-product/b24-toc.yaml
       mode: link
   - name: Inventory Management
     include:
-      path: document/toc.yaml
+      path: document/b24-toc.yaml
       mode: link
   - name: Custom Fields for Inventory Documents
     include:
-      path: userfield-document/toc.yaml
+      path: userfield-document/b24-toc.yaml
       mode: link
   - name: Working with CRM Vendors
     include:
-      path: documentcontractor/toc.yaml
+      path: documentcontractor/b24-toc.yaml
       mode: link
   - name: VAT Rates
     include:
@@ -91,5 +91,5 @@ items:
       mode: link
   - name: Events
     include:
-      path: events/toc.yaml
+      path: events/b24-toc.yaml
       mode: link

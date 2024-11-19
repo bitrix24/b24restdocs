@@ -5,13 +5,13 @@ items:
     href: index.md
   - name: Storage
     include:
-      path: entities/toc.yaml
+      path: entities/b24-toc.yaml
       mode: link
   - name: Sections
     include:
-      path: sections/toc.yaml
+      path: sections/b24-toc.yaml
       mode: link
   - name: Elements
     include:
-      path: items/toc.yaml
+      path: items/b24-toc.yaml
       mode: link

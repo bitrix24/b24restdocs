@@ -3,8 +3,6 @@ href: index.md
 items: 
   - name: Overview of Methods
     href: index.md
-  - name: Markup Resource
-    href: resource.md
   - name: Get Markup Field Values
     href: catalog-extra-get.md
   - name: Get Markup Fields

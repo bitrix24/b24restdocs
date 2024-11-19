@@ -7,5 +7,5 @@ items:
     href: entity-id.md
   - name: Working with Custom Fields
     include:
-      path: userfieldconfig/toc.yaml
+      path: userfieldconfig/b24-toc.yaml
       mode: link

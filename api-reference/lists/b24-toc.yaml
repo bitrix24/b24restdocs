@@ -5,17 +5,17 @@ items:
     href: index.md
   - name: Working with Lists
     include:
-      path: lists/toc.yaml
+      path: lists/b24-toc.yaml
       mode: link
   - name: Working with Elements
     include:
-      path: elements/toc.yaml
+      path: elements/b24-toc.yaml
       mode: link
   - name: Working with Fields
     include:
-      path: fields/toc.yaml
+      path: fields/b24-toc.yaml
       mode: link
   - name: Working with Sections
     include:
-      path: sections/toc.yaml
+      path: sections/b24-toc.yaml
       mode: link
