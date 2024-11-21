@@ -14,16 +14,16 @@ This method creates a new product.
 || **Name**
 `type` | **Description** ||
 || **fields**
-[`array`](../../../data-types.md) | Field values for creating the product.
+[`array`](../../../data-types.md) | Field values for creating a product.
 
 To find out the required format of the fields, execute the method [crm.product.fields](./crm-product-fields.md) and check the format of the incoming values for these fields ||
 |#
 
 {% note info %}
 
-Starting from version **CRM 21.700.0**, support for auto-generating the product's symbolic code has been included, provided that the generation is enabled in the infoblock settings and no external service is used. The method [generateMnemonicCode](https://dev.1c-bitrix.com/api_help/iblock/classes/ciblockelement/generatemnemoniccode.php) is utilized.
+Starting from version **CRM 21.700.0**, support for auto-generating the product mnemonic code has been included, provided that the generation is enabled in the infoblock settings and no external service is used. 
 
-If the generated symbolic code exceeds 100 characters, it is automatically truncated to 100 characters. This should be taken into account when creating requests by passing a unique value at the beginning/middle of the product name to avoid duplicate symbolic codes.
+If the generated mnemonic code exceeds 100 characters, it is automatically truncated to 100 characters. This should be taken into account when creating requests by passing a unique value at the beginning/middle of the product name to avoid mnemonic code collisions.
 
 {% endnote %}
 
@@ -97,6 +97,35 @@ If the generated symbolic code exceeds 100 characters, it is automatically trunc
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- B24-PHP-SDK
+
+    ```php        
+    try {
+        $fields = [
+            'NAME' => 'Sample Product',
+            'PRICE' => '100.00',
+            'CURRENCY_ID' => 'USD',
+            'ACTIVE' => 'Y',
+            'DATE_CREATE' => (new DateTime())->format(DateTime::ATOM),
+            'TIMESTAMP_X' => (new DateTime())->format(DateTime::ATOM),
+            'CREATED_BY' => 1,
+            'MODIFIED_BY' => 1,
+            'CATALOG_ID' => 1,
+            'DESCRIPTION' => 'This is a sample product.',
+            'VAT_ID' => 1,
+            'VAT_INCLUDED' => 'Y',
+            'MEASURE' => 1,
+            'SECTION_ID' => 1,
+            'SORT' => 100,
+            'XML_ID' => 'sample_product_001',
+        ];
+        $result = $serviceBuilder->getCRMScope()->product()->add($fields);
+        print($result->getId());
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage());
+    }
     ```
 
 {% endlist %}

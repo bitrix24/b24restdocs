@@ -33,7 +33,7 @@ As a result, you will get the correct file structure, which will be convenient t
     /log
         application-YYYY-m-d.log – application logs
 /composer.json - composer configuration file, available for modification
-/composer.lock - automatically generated composer settings file used for transferring the assembly of used libraries to the prod environment
+/composer.lock - automatically generated composer settings file, used for transferring the assembly of used libraries to the prod environment
 ```
 
 For working with incoming webhooks, it can be even simpler:
@@ -43,13 +43,13 @@ For working with incoming webhooks, it can be even simpler:
     /bitrix24
         /b24phpsdk - the SDK itself
     /yyy - other open-source libraries used in the SDK
-/public - folder with the "functionality"  
+/public - folder with "functionality"  
     app.php - basic script that calls the REST API        
 /var
     /log
         application-YYYY-m-d.log – application logs
 /composer.json - composer configuration file, available for modification
-/composer.lock - automatically generated composer settings file used for transferring the assembly of used libraries to the prod environment
+/composer.lock - automatically generated composer settings file, used for transferring the assembly of used libraries to the prod environment
 ```
 
 In both cases, the web server should point to the public folder or its equivalent on your server. Other folders should be inaccessible for security reasons.
@@ -84,7 +84,7 @@ $result = $B24->getCRMScope()->deal()->add([
 ])->getId();
 ```
 
-If there is no ready-made "wrapper" in the SDK for the method you need, you can use a universal way to call REST API methods:
+If there is no ready-made "wrapper" for the method you need in the SDK, you can use a universal way to call REST API methods:
 
 ```php
 $result = $B24->core->call('crm.deal.add', [
@@ -94,8 +94,50 @@ $result = $B24->core->call('crm.deal.add', [
 ]);
 ```
 
-In this case, code autocompletion in the IDE does not work, and type conversion in the received data does not occur.
+In this case, code autocompletion in the IDE does not work, and type casting does not occur in the received data.
+
+[Download example](https://helpdesk.bitrix24.com/examples/b24phpsdk-webhook-example.zip)
 
 ## Using in Local and Mass-Market Applications
 
-The specifics of using B24PhpSDK in local and mass-market applications, in other words, the specifics of using OAuth 2.0 authorization tokens, will be discussed later, so stay tuned for [updates](../../whats-new.md) in the documentation.
+To connect the SDK within your code (assuming your file is in the public folder from the structure described above), use the minimally required construct:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Bitrix24\SDK\Core\Credentials\ApplicationProfile;
+use Bitrix24\SDK\Services\ServiceBuilderFactory;
+use Symfony\Component\HttpFoundation\Request;
+
+require_once 'vendor/autoload.php';
+
+$appProfile = ApplicationProfile::initFromArray([
+    'BITRIX24_PHP_SDK_APPLICATION_CLIENT_ID' => 'put-your-client-id-here',
+    'BITRIX24_PHP_SDK_APPLICATION_CLIENT_SECRET' => 'put-your-client-secret-here',
+    'BITRIX24_PHP_SDK_APPLICATION_SCOPE' => 'crm,user_basic'
+]);
+
+$B24 = ServiceBuilderFactory::createServiceBuilderFromPlacementRequest(
+    Request::createFromGlobals(), 
+    $appProfile
+);
+```
+
+In the case of a local application, you will need to take the values for `BITRIX24_PHP_SDK_APPLICATION_CLIENT_ID` (Application Code (client_id)), `BITRIX24_PHP_SDK_APPLICATION_CLIENT_SECRET` (Application Key (client_secret)), and `BITRIX24_PHP_SDK_APPLICATION_SCOPE` (Access Permissions) from the corresponding settings of the local application in your Bitrix24.
+
+The code provided above also assumes that the application is opened "inside" Bitrix24 either as the main interface or as a widget. Other scenarios for using the SDK, such as external applications, require different initialization methods.
+
+Once the `$B24` object is initialized, you can use it to call various REST API methods. In the example below, the variable `$result` will receive the value of the deal identifier as a result of its creation:
+
+```php
+$result = $B24->getCRMScope()->deal()->add([
+    'TITLE' => 'New Deal',
+    'TYPE_ID' => 'SALE',
+    'STAGE_ID' => 'NEW'
+])->getId();
+```
+
+
+[Download example](https://helpdesk.bitrix24.com/examples/b24phpsdk-local-app-example.zip)

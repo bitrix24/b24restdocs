@@ -13,9 +13,9 @@ Some data may be missing here — we will complete it shortly.
 - edits needed for writing standards
 - missing parameters or fields
 - parameter types not specified
-- required parameters not indicated
-- success response missing
-- error response missing
+- parameter requirements not specified
+- missing response in case of success
+- missing response in case of error
 
 {% endnote %}
 
@@ -25,32 +25,67 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: administrator
 
-This method updates the fields of the Automation rule. The same parameters used in [bizproc.robot.add](./bizproc-robot-add.md) are passed in the **FIELDS** array.
+This method updates the robot fields. The **FIELDS** array receives the same parameters used in [bizproc.robot.add](./bizproc-robot-add.md).
 
 ## Examples
 
-```js
-function updateRobot1()
-{
-    var params = {
-        'CODE': 'hash',
-        'FIELDS': {
-            'DOCUMENT_TYPE': '',
-            'FILTER': ''
-        },
-    };
-    BX24.callMethod(
-        'bizproc.robot.update',
-        params,
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
-            else
-                alert("Successfully: " + result.data());
-        }
-    );
-}
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    function updateRobot1()
+    {
+        var params = {
+            'CODE': 'hash',
+            'FIELDS': {
+                'DOCUMENT_TYPE': '',
+                'FILTER': ''
+            },
+        };
+        BX24.callMethod(
+            'bizproc.robot.update',
+            params,
+            function(result)
+            {
+                if(result.error())
+                    alert("Error: " + result.error());
+                else
+                    alert("Success: " + result.data());
+            }
+        );
+    }
+    ```
+
+- B24-PHP-SDK
+
+    ```php
+    try {
+        $result = $serviceBuilder
+            ->getBizProcScope()
+            ->robot()
+            ->update(
+                'robot_code',
+                'https://example.com/handler',
+                1,
+                ['en' => 'Localized Name'],
+                true,
+                ['property1' => 'value1'],
+                false,
+                ['returnProperty1']
+            );
+
+        // Process the result
+        if ($result->isSuccess()) {
+            print_r($result->getCoreResponse()->getResponseData()->getResult());
+        } else {
+            print("Update failed.");
+        }
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage());
+    }
+    ```
+        
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

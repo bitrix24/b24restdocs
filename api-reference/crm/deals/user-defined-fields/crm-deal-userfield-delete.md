@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -21,34 +21,60 @@ Some data may be missing — we will complete it soon.
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can perform the method: any user
 
-The method `crm.deal.userfield.delete` removes a custom field from deals.
+The method `crm.deal.userfield.delete` deletes a custom field of deals.
 
 #|
 || **Parameter** | **Description** ||
 || **id**^*^ | Identifier of the custom field. ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../../_includes/required.md) %}
 
 ## Example
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.deal.userfield.delete",
-    {
-        id: id
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.deal.userfield.delete",
+        {
+            id: id
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+- B24-PHP-SDK
+
+    ```php
+    try {
+        $userfieldId = 123; // Replace with the actual userfield ID you want to delete
+        $result = $serviceBuilder
+            ->getCRMScope()
+            ->dealUserfield()
+            ->delete($userfieldId);
+
+        if ($result->isSuccess()) {
+            print("Userfield deleted successfully.");
+        } else {
+            print("Failed to delete userfield.");
+        }
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage());
+    }
+    ```
+
+{% endlist %}
+
+{% include [Example Notes](../../../../_includes/examples.md) %}

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.lead.fields` returns the description of lead fields, including custom ones.
+The method `crm.lead.fields` returns a description of lead fields, including custom ones.
 
-No parameters.
+No parameters required.
 
 ## Examples
 
@@ -57,6 +57,22 @@ No parameters.
     ```http
     https://xxx.bitrix24.com/rest/1/5***/crm.lead.fields.json
     ```
+
+- B24-PHP-SDK
+
+  ```php      
+  try {
+      $fieldsResult = $serviceBuilder
+          ->getCRMScope()
+          ->lead()
+          ->fields();
+      $fieldsDescription = $fieldsResult->getFieldsDescription();
+      // Assuming you want to print the fields description
+      print_r($fieldsDescription);
+  } catch (Throwable $e) {
+      print("Error: " . $e->getMessage());
+  }
+  ```
 
 {% endlist %}
 
@@ -159,7 +175,7 @@ No parameters.
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Source Description"
+      "title": "Additional Source Information"
     },
     "STATUS_ID": {
       "type": "crm_status",
@@ -178,7 +194,7 @@ No parameters.
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Stage Description"
+      "title": "Additional Stage Information"
     },
     "STATUS_SEMANTIC_ID": {
       "type": "string",
@@ -349,7 +365,7 @@ No parameters.
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Open Line Assigned"
+      "title": "Open Channel Provided"
     },
     "ASSIGNED_BY_ID": {
       "type": "user",
@@ -358,7 +374,7 @@ No parameters.
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Responsible"
+      "title": "Responsible Person"
     },
     "CREATED_BY_ID": {
       "type": "user",
@@ -452,7 +468,7 @@ No parameters.
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Returning Lead"
+      "title": "Repeat Lead"
     },
     "DATE_CLOSED": {
       "type": "datetime",
@@ -506,7 +522,7 @@ No parameters.
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Campaign Designation"
+      "title": "Campaign Identifier"
     },
     "UTM_CONTENT": {
       "type": "string",
@@ -595,8 +611,8 @@ No parameters.
     "finish": 1716903270.017765,
     "duration": 0.06658601760864258,
     "processing": 0.029553890228271484,
-    "date_start": "2024-05-28T16:34:29+03:00",
-    "date_finish": "2024-05-28T16:34:30+03:00",
+    "date_start": "2024-05-28T16:34:29+02:00",
+    "date_finish": "2024-05-28T16:34:30+02:00",
     "operating": 0
   }
 }
@@ -607,7 +623,7 @@ No parameters.
 #|
 || **Value** / **Type** | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Result of the request ||
+[`array`](../../data-types.md) | Request result ||
 || **ID**
 [`integer`](../../data-types.md) | Integer identifier of the lead. ||
 || **TITLE**
@@ -640,7 +656,7 @@ No parameters.
 || **POST**
 [`string`](../../data-types.md) | Position. ||
 || **ADDRESS**
-[`string`](../../data-types.md) | Address of the contact. ||
+[`string`](../../data-types.md) | Contact address. ||
 || **ADDRESS_2**
 [`string`](../../data-types.md) | Second line of the address. In some countries, it is customary to split the address into 2 parts. ||
 || **ADDRESS_CITY**
@@ -672,7 +688,7 @@ No parameters.
 || **HAS_EMAIL**
 [`char`](../../data-types.md) | Indicator of whether the email field is filled. Allowed values are Y or N. ||
 || **HAS_IMOL**
-[`char`](../../data-types.md) | Indicator of whether an open line is assigned. Allowed values are Y or N. ||
+[`char`](../../data-types.md) | Indicator of whether an open channel is attached. Allowed values are Y or N. ||
 || **ASSIGNED_BY_ID**
 [`user`](../../data-types.md) | Identifier of the user responsible for the lead. ||
 || **CREATED_BY_ID**
@@ -690,9 +706,9 @@ No parameters.
 || **COMPANY_ID**
 [`crm_company`](../../data-types.md) | Link of the lead to the company (Client->Company field) ||
 || **CONTACT_ID**
-[`crm_contact`](../../data-types.md) | Link of the lead to the contact (Client->Contact field. In case of multiple linked contacts, this field will contain the id of the first linked contact). ||
+[`crm_contact`](../../data-types.md) | Link of the lead to the contact (Client->Contact field. If there are multiple linked contacts, this field will contain the ID of the first linked contact). ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Indicator of a returning lead. Allowed values are Y or N. ||
+[`char`](../../data-types.md) | Indicator of a repeat lead. Allowed values are Y or N. ||
 || **DATE_CLOSED**
 [`datetime`](../../data-types.md) | Closing date. ||
 || **ORIGINATOR_ID**
@@ -700,21 +716,21 @@ No parameters.
 || **ORIGIN_ID**
 [`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source. ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Yandex-Direct, Google-Adwords, and others. ||
+[`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, etc. ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Traffic type. CPC (ads), CPM (banners). ||
+[`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners). ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Designation of the advertising campaign. ||
+[`string`](../../data-types.md) | Campaign identifier. ||
 || **UTM_CONTENT**
-[`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads. ||
+[`string`](../../data-types.md) | Campaign content. For example, for contextual ads. ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising. ||
+[`string`](../../data-types.md) | Campaign search condition. For example, keywords for contextual advertising. ||
 || **LAST_ACTIVITY_TIME**
 [`datetime`](../../data-types.md) | Time of the last activity. ||
 || **LAST_ACTIVITY_BY**
-[`string`](../../data-types.md) | Identifier of the user responsible for the last activity in this lead (for example, who created a new CRM activity in the lead). ||
+[`string`](../../data-types.md) | Identifier of the user responsible for the last activity in this lead (e.g., who created a new activity in the lead). ||
 || **PHONE**
-[`crm_multifield`](../../data-types.md) | Phone of the contact. ||
+[`crm_multifield`](../../data-types.md) | Contact phone. ||
 || **EMAIL**
 [`crm_multifield`](../../data-types.md) | Email address. ||
 || **WEB**
@@ -723,19 +739,19 @@ No parameters.
 [`crm_multifield`](../../data-types.md) | Messengers. ||
 || **LINK**
 [`crm_multifield`](../../data-types.md) |  ||
-|| **ufCrm_xxx** | [Custom fields.](./userfield/index.md) ||
+|| **ufCrm_ххх** | [Custom fields.](./userfield/index.md) ||
 || **time**
 [`array`](../../data-types.md) | Information about the execution time of the request ||
 || **start**
 [`double`](../../data-types.md) | Timestamp of the moment the request was initialized ||
 || **finish**
-[`double`](../../data-types.md) | Timestamp of the moment the request execution was completed ||
+[`double`](../../data-types.md) | Timestamp of the moment the request was completed ||
 || **duration**
 [`double`](../../data-types.md) | How long in milliseconds the request took (finish - start) ||
 || **date_start**
 [`string`](../../data-types.md) | String representation of the date and time of the moment the request was initialized ||
 || **date_finish**
-[`double`](../../data-types.md) | String representation of the date and time of the moment the request execution was completed ||
+[`double`](../../data-types.md) | String representation of the date and time of the moment the request was completed ||
 || **operating_reset_at**
 [`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limit](../../../limits.md) ||
 || **operating**
@@ -745,17 +761,17 @@ No parameters.
 ### Field Description
 
 |#
-|| type | Type of the field. Described above. ||
+|| type | Field type. Described above. ||
 || isRequired | Indicator of whether the field is mandatory when creating a new lead. ||
-|| isReadOnly | Indicator of whether the value of the field can be edited. ||
+|| isReadOnly | Indicator of whether the field value can be edited. ||
 || isImmutable | Indicator of whether the field value can only be filled once when creating a new item. ||
 || isMultiple | Indicator of whether the field can have multiple values. If true, values in the field are passed as an array. ||
 || isDynamic | Indicates whether the field is [custom](./userfield/index.md). ||
-|| title | Title of the field ||
+|| title | Field title ||
 #|
 
 {% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Example Response in Case of Error
 
-The method does not return errors.
+The method does not anticipate returning errors.

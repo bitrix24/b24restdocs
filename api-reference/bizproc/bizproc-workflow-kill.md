@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method deletes a running workflow along with all process data.
+This method deletes a running workflow along with all its data.
 
 ## Method Parameters
 
@@ -76,6 +76,24 @@ This method deletes a running workflow along with all process data.
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- B24-PHP-SDK
+  
+    ```php     
+    try {
+        $workflowId = 'your_workflow_id'; // Replace with your actual workflow ID
+        $result = $serviceBuilder->getBizProcScope()
+            ->workflow()
+            ->kill($workflowId);
+        if ($result->isSuccess()) {
+            print_r($result->getCoreResponse()->getResponseData()->getResult());
+        } else {
+            print('Failed to kill workflow: ' . json_encode($result->getCoreResponse()->getResponseData()->getResult()));
+        }
+    } catch (Throwable $e) {
+        print('Error occurred: ' . $e->getMessage());
+    }
     ```
 
 {% endlist %}

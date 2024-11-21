@@ -2,16 +2,16 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- revisions needed for writing standards
-- parameter types not specified
+- edits needed for writing standards
+- parameter types are not specified
 - examples are missing
 
 {% endnote %}
@@ -32,7 +32,7 @@ The method `im.notify.confirm` interacts with notification buttons.
 [`unknown`](../../data-types.md) | `'Y'` | Value of the selected response (button value) | `30` ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 For example, consider the notification:
 
@@ -41,29 +41,57 @@ For example, consider the notification:
 
 ## Examples
 
-```js
-B24.callMethod(
-    'im.notify.confirm',
-    {
-        ID: 288,
-        NOTIFY_VALUE: 'Y'
-    },
-    res => {
-        if (res.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    B24.callMethod(
+        'im.notify.confirm',
         {
-        console.error(result.error().ex);
+            ID: 288,
+            NOTIFY_VALUE: 'Y'
+        },
+        res => {
+            if (res.error())
+            {
+            console.error(result.error().ex);
+            }
+            else
+            {
+            console.log(res.data())
+            }
         }
-        else
-        {
-        console.log(res.data())
+    );
+    ```
+
+- B24-PHP-SDK
+
+    ```php
+    try {
+        $notificationId = 123; // Example notification ID
+        $isAccept = true; // Example acceptance status
+
+        $result = $serviceBuilder
+            ->getIMScope()
+            ->notify()
+            ->confirm($notificationId, $isAccept);
+
+        if ($result->isSuccess()) {
+            print_r($result->getCoreResponse()->getResponseData()->getResult());
+        } else {
+            print("Confirmation failed.");
         }
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage());
     }
-);
-```
+    ```
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% endlist %}
 
-## Success Response
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Successful Response
 
 ```json
 {
@@ -91,6 +119,6 @@ B24.callMethod(
 
 #|
 || **Code** | **Description** ||
-|| **ID_ERROR** | Parameter `ID` not provided or it is not a number ||
-|| **NOTIFY_VALUE_ERROR** | Parameter `NOTIFY_VALUE` not specified or it is empty ||
+|| **ID_ERROR** | Parameter `ID` is not provided or is not a number ||
+|| **NOTIFY_VALUE_ERROR** | Parameter `NOTIFY_VALUE` is not specified or is empty ||
 |#

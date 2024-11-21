@@ -1,12 +1,12 @@
-# Get a List of CRM Items
+# Get a list of crm.item.list elements
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM entity items
+> Who can execute the method: any user with "read" access permission for CRM entity elements
 
-This method retrieves a list of items of a specific type from the CRM.
+This method retrieves a list of elements of a specific type of CRM entity.
 
-CRM entity items will not be included in the final selection if the user does not have "read" access permission for those items.  
+CRM entity elements will not be included in the final selection if the user does not have "read" access permission for those elements.  
 
 ## Method Parameters
 
@@ -16,13 +16,13 @@ CRM entity items will not be included in the final selection if the user does no
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [custom type](./user-defined-object-types/index.md) whose items need to be retrieved ||
+[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose elements need to be retrieved ||
 || **select**
-[`array`][1] | List of fields that must be populated in the selected items.
+[`array`][1] | List of fields that must be populated in the selected elements.
 
-Can contain only the names of the item fields or `'*'`.
+Can contain only field names or `'*'`.
 
-The list of available fields for selection can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method
+The list of available fields for selection can be obtained via the [`crm.item.fields`](./crm-item-fields.md) method
 ||
 || **filter**
 [`object`][1] |
@@ -36,13 +36,13 @@ Object format:
 }
 ```
 where
-- `field_n` — the name of the field by which the selection of items will be filtered
-- `value_n` — the filter value
+- `field_n` — name of the field by which the selection of elements will be filtered
+- `value_n` — filter value
 
 The filter can have unlimited nesting and number of conditions.
-By default, all conditions are combined using `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
+By default, all conditions are combined with `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
 
-You can add a prefix to the keys `field_n` to specify the filter operation.
+You can add a prefix to the `field_n` keys to specify the filter operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -50,14 +50,14 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol must be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search is done from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol must be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -66,7 +66,7 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-The list of available fields for filtering can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method
+The list of available fields for filtering can be obtained via the [`crm.item.fields`](./crm-item-fields.md) method
 ||
 || **order**
 [`object`][1] |
@@ -80,12 +80,12 @@ Object format:
 }
 ```
 where
-- `field_n` — the name of the field by which the selection of items will be sorted
-- `value_n` — a `string` value equal to:
+- `field_n` — name of the field by which the selection of elements will be sorted
+- `value_n` — value of type `string` equal to:
   - `ASC` — ascending order
   - `DESC` — descending order
 
-The list of available fields for sorting can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method
+The list of available fields for sorting can be obtained via the [`crm.item.fields`](./crm-item-fields.md) method
 ||
 || **start**
 [`integer`][1] | This parameter is used to manage pagination.
@@ -102,12 +102,12 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-**Get a list of leads where:**
-1. First name or last name is not empty
-2. They are in the status "In Progress" or "Unprocessed".
-3. They came from sources "Advertising" or "Website".
-4. They are assigned to managers with IDs 1 or 6.
-5. They have a deal amount between 5000 and 20000.
+**Get a list of leads that:**
+1. Have non-empty first or last names
+2. Are in the status "In Progress" or "Unprocessed".
+3. Came from sources "Advertising" or "Website".
+4. Are assigned to managers with IDs 1 or 6.
+5. Have a deal amount from 5000 to 20000.
 6. The calculation mode for the amount is manual.
 
 **Set the following sort order for this selection:**
@@ -248,11 +248,39 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- B24-PHP-SDK
+  
+    ```php        
+    try {
+        $entityTypeId = 1; // Replace with actual entity type ID
+        $order = []; // Replace with actual order array
+        $filter = []; // Replace with actual filter array
+        $select = []; // Replace with actual select array
+        $startItem = 0; // Optional, can be adjusted as needed
+        $itemsResult = $serviceBuilder
+            ->getCRMScope()
+            ->item()
+            ->list($entityTypeId, $order, $filter, $select, $startItem);
+        foreach ($itemsResult->getItems() as $item) {
+            print("ID: " . $item->id . PHP_EOL);
+            print("XML ID: " . $item->xmlId . PHP_EOL);
+            print("Title: " . $item->title . PHP_EOL);
+            print("Created By: " . $item->createdBy . PHP_EOL);
+            print("Updated By: " . $item->updatedBy . PHP_EOL);
+            print("Created Time: " . $item->createdTime->format(DATE_ATOM) . PHP_EOL);
+            print("Updated Time: " . $item->updatedTime->format(DATE_ATOM) . PHP_EOL);
+            // Add more fields as necessary
+        }
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage() . PHP_EOL);
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -323,24 +351,24 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | The root element of the response. Contains a single key `items` ||
+[`object`][1] | Root element of the response. Contains a single key `items` ||
 || **items**
-[`item[]`](./crm-item-add.md#item) | An array containing information about the found items.
+[`item[]`](./crm-item-add.md#item) | Array containing information about the found elements.
 
-Fields of an individual [`item`](./crm-item-add.md#item) are configured by the `select` parameter ||
+Fields of a single [`item`](./crm-item-add.md#item) are configured by the `select` parameter ||
 || **total**
-[`integer`][1] | The total number of found items ||
+[`integer`][1] | Total number of found elements ||
 || **next**
 [`integer`][1] | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
 
-The `next` parameter appears in the response if the number of items matching your request exceeds `50`. ||
+The `next` parameter appears in the response if the number of elements matching your request exceeds `50`. ||
 || **time**
 [`time`][1] | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -355,12 +383,12 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code**                          | **Description**                                             | **Value**                                          ||
-|| `403`      | `allowed_only_intranet_user`     | Action is allowed only for intranet users                 | User is not an intranet user                      ||
-|| `400`      | `NOT_FOUND`                      | SPA not found                                             | Occurs when an invalid `entityTypeId` is passed   ||
+|| `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users                     | User is not an intranet user                       ||
+|| `400`      | `NOT_FOUND`                      | Smart process not found                                    | Occurs when an invalid `entityTypeId` is passed    ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' is not allowed in filter | The field `field` passed in `filter` is not available for filtering ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' has invalid value        | The value passed for the field `field` in `filter` is incorrect ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid order: field '`field`' is not allowed in order   | The field `field` passed in `order` is not available for sorting ||
-|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: allowed sort directions are `ASC, DESC`. But got '`orderValue`' for field '`field`' | The `orderValue` passed for the field `field` in the `order` parameter is incorrect ||
+|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: allowed sort directions are `ASC, DESC`. But got '`orderValue`' for field '`field`' | The value `orderValue` passed for the field `field` in the `order` parameter is incorrect ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

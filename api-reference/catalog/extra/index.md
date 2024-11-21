@@ -1,20 +1,12 @@
-# Methods for Working with Markups
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
+# Overview of Methods
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can perform the method: any user
-
-Methods for working with markups:
+> Who can execute the methods: administrator
 
 #|
 || **Method** | **Description** ||
-|| [catalog.extra.get](catalog-extra-get.md) | Method for retrieving markup field values by ID. ||
-|| [catalog.extra.getFields](catalog-extra-get-fields.md) | Method returns markup fields. ||
-|| [catalog.extra.list](catalog-extra-list.md) | Method retrieves a list of markups based on a filter. ||
+|| [catalog.extra.get](catalog-extra-get.md) | Returns information about the margin by its identifier ||
+|| [catalog.extra.list](catalog-extra-list.md) | Returns a list of margins based on the filter ||
+|| [catalog.extra.getFields](catalog-extra-get-fields.md) | Returns the fields of the margin ||
 |#

@@ -1,8 +1,8 @@
-# Get a List of Leads crm.lead.list
+# Get the list of leads crm.lead.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- mention search by phone and email with a link to a special method
+- mention search by phone numbers and email with a link to a special method.
 
 {% endnote %}
 
@@ -18,13 +18,13 @@ Some data may be missing — we will fill it in shortly.
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with read access to leads
+> Who can execute the method: a user with read access permission for leads.
 
 The method `crm.lead.list` returns a list of leads based on a filter. It is an implementation of the list method for leads.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note about required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -36,10 +36,10 @@ When selecting, use masks:
 - "*" - to select all fields (excluding custom and multiple fields)
 - "UF_*" - to select all custom fields (excluding multiple fields)
 
-There is no mask for selecting multiple fields. To select multiple fields, specify the required ones in the selection list ("PHONE", "EMAIL", etc.).
-It is not possible to add a logical OR condition to the filter if you need to select by several different fields. ||
+There are no masks for selecting multiple fields. To select multiple fields, specify the required ones in the selection list ("PHONE", "EMAIL", etc.).
+There is no option to add a logical OR condition to the filter if you need to select by several different fields.||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering selected leads in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering the selected leads in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to lead fields [crm-lead-fields](./crm-lead-fields.md).
 
@@ -50,20 +50,20 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `<` — less than
 - `@` — IN (an array is passed as a value)
 - `!@` — NOT IN (an array is passed as a value)
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The "%" character in the filter value does not need to be passed. The search looks for a substring in any position of the string.
+- `=%` — LIKE, substring search. The "%" character needs to be passed in the value. Examples:
   - "mol%" — searching for values starting with "mol"
   - "%mol" — searching for values ending with "mol"
-  - "%mol%" — searching for values where "mol" can be in any position
+  - "%mol%" — searching for values where "mol" can be in any position.
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The "%" character in the filter value does not need to be passed. The search goes from both sides.
 
-- `=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `=%` — NOT LIKE, substring search. The "%" character needs to be passed in the value. Examples:
   - "mol%" — searching for values not starting with "mol"
   - "%mol" — searching for values not ending with "mol"
-  - "%mol%" — searching for values where the substring "mol" is not present in any position
+  - "%mol%" — searching for values where the substring "mol" is not present in any position.
 
 - `!%=` — NOT LIKE (see description above)
 
@@ -82,7 +82,7 @@ The page size of results is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
-The formula for calculating the `start` parameter value:
+The formula for calculating the value of the `start` parameter:
 
 `start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
@@ -150,12 +150,46 @@ The formula for calculating the `start` parameter value:
     https://xxx.bitrix24.com/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.lead.list.json?select[]=*&select=UF_*&start=50&filter[=OPPORTUNITY]=15000.00&order[STATUS_ID]=ASC
     ```
 
+- B24-PHP-SDK
+
+  ```php      
+  try {
+      $order = [];
+      $filter = []; // Define your filter criteria here
+      $select = [
+          'ID', 'TITLE', 'HONORIFIC', 'NAME', 'SECOND_NAME', 'LAST_NAME', 
+          'BIRTHDATE', 'COMPANY_TITLE', 'SOURCE_ID', 'SOURCE_DESCRIPTION', 
+          'STATUS_ID', 'STATUS_DESCRIPTION', 'STATUS_SEMANTIC_ID', 'POST', 
+          'ADDRESS', 'ADDRESS_2', 'ADDRESS_CITY', 'ADDRESS_POSTAL_CODE', 
+          'ADDRESS_REGION', 'ADDRESS_PROVINCE', 'ADDRESS_COUNTRY', 
+          'ADDRESS_COUNTRY_CODE', 'ADDRESS_LOC_ADDR_ID', 'CURRENCY_ID', 
+          'OPPORTUNITY', 'IS_MANUAL_OPPORTUNITY', 'OPENED', 'COMMENTS', 
+          'HAS_PHONE', 'HAS_EMAIL', 'HAS_IMOL', 'ASSIGNED_BY_ID', 
+          'CREATED_BY_ID', 'MODIFY_BY_ID', 'MOVED_BY_ID', 'DATE_CREATE', 
+          'DATE_MODIFY', 'MOVED_TIME', 'COMPANY_ID', 'CONTACT_ID', 
+          'CONTACT_IDS', 'IS_RETURN_CUSTOMER', 'DATE_CLOSED', 
+          'ORIGINATOR_ID', 'ORIGIN_ID', 'UTM_SOURCE', 'UTM_MEDIUM', 
+          'UTM_CAMPAIGN', 'UTM_CONTENT', 'UTM_TERM', 'PHONE', 'EMAIL', 
+          'WEB', 'IM', 'LINK'
+      ];
+      $startItem = 0;
+      $leadsResult = $serviceBuilder->getCRMScope()->lead()->list($order, $filter, $select, $startItem);
+      
+      foreach ($leadsResult->getLeads() as $lead) {
+          print("ID: {$lead->ID}, TITLE: {$lead->TITLE}, NAME: {$lead->NAME}, BIRTHDATE: " . 
+                ($lead->BIRTHDATE ? $lead->BIRTHDATE->format(DATE_ATOM) : 'N/A') . "\n");
+      }
+  } catch (Throwable $e) {
+      print("Error: " . $e->getMessage());
+  }
+  ```
+
 {% endlist %}
 
-## Some Practical Examples
+## Some practical examples
 {% list tabs %}
 
-- Searching for unconverted leads with an amount greater than zero
+- Search for unconverted leads with an amount greater than zero
 
   ```js
   BX24.callMethod(
@@ -182,7 +216,7 @@ The formula for calculating the `start` parameter value:
   );
   ```
 
-- Searching for a lead by phone
+- Search for a lead by phone
 
   ```js
   BX24.callMethod(
@@ -227,9 +261,9 @@ The formula for calculating the `start` parameter value:
   ```
 {% endlist %}
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note about examples](../../../_includes/examples.md) %}
 
-## Successful Response
+## Successful response
 
 > 200 OK
 
@@ -263,15 +297,15 @@ The formula for calculating the `start` parameter value:
       "ASSIGNED_BY_ID": "1",
       "CREATED_BY_ID": "1",
       "MODIFY_BY_ID": "1",
-      "DATE_CREATE": "2021-05-31T15:10:16+03:00",
-      "DATE_MODIFY": "2021-11-26T18:56:13+03:00",
-      "DATE_CLOSED": "2021-07-16T16:43:44+03:00",
+      "DATE_CREATE": "2021-05-31T15:10:16+02:00",
+      "DATE_MODIFY": "2021-11-26T18:56:13+02:00",
+      "DATE_CLOSED": "2021-07-16T16:43:44+02:00",
       "STATUS_SEMANTIC_ID": "S",
       "OPENED": "Y",
       "ORIGINATOR_ID": null,
       "ORIGIN_ID": null,
       "MOVED_BY_ID": "1",
-      "MOVED_TIME": "2021-07-16T16:43:44+03:00",
+      "MOVED_TIME": "2021-07-16T16:43:44+02:00",
       "ADDRESS": "7677 Hollow Ridge Alley",
       "ADDRESS_2": null,
       "ADDRESS_CITY": null,
@@ -287,7 +321,7 @@ The formula for calculating the `start` parameter value:
       "UTM_CONTENT": null,
       "UTM_TERM": null,
       "LAST_ACTIVITY_BY": "1",
-      "LAST_ACTIVITY_TIME": "2021-05-31T15:10:16+03:00",
+      "LAST_ACTIVITY_TIME": "2021-05-31T15:10:16+02:00",
       "UF_CRM_1704817278": null,
       "UF_CRM_1706782596092": null,
       "UF_CRM_1708952993785": false
@@ -319,15 +353,15 @@ The formula for calculating the `start` parameter value:
       "ASSIGNED_BY_ID": "1",
       "CREATED_BY_ID": "1",
       "MODIFY_BY_ID": "1",
-      "DATE_CREATE": "2021-05-31T15:10:16+03:00",
-      "DATE_MODIFY": "2021-11-26T18:56:13+03:00",
-      "DATE_CLOSED": "2021-07-16T16:43:47+03:00",
+      "DATE_CREATE": "2021-05-31T15:10:16+02:00",
+      "DATE_MODIFY": "2021-11-26T18:56:13+02:00",
+      "DATE_CLOSED": "2021-07-16T16:43:47+02:00",
       "STATUS_SEMANTIC_ID": "S",
       "OPENED": "Y",
       "ORIGINATOR_ID": null,
       "ORIGIN_ID": null,
       "MOVED_BY_ID": "1",
-      "MOVED_TIME": "2021-07-16T16:43:47+03:00",
+      "MOVED_TIME": "2021-07-16T16:43:47+02:00",
       "ADDRESS": "35 Mosinee Street",
       "ADDRESS_2": null,
       "ADDRESS_CITY": null,
@@ -343,7 +377,7 @@ The formula for calculating the `start` parameter value:
       "UTM_CONTENT": null,
       "UTM_TERM": null,
       "LAST_ACTIVITY_BY": "1",
-      "LAST_ACTIVITY_TIME": "2021-05-31T15:10:16+03:00",
+      "LAST_ACTIVITY_TIME": "2021-05-31T15:10:16+02:00",
       "UF_CRM_1704817278": null,
       "UF_CRM_1706782596092": null,
       "UF_CRM_1708952993785": true
@@ -359,8 +393,8 @@ The formula for calculating the `start` parameter value:
     "finish": 1718292234.657739,
     "duration": 0.10295796394348145,
     "processing": 0.05574321746826172,
-    "date_start": "2024-06-13T18:23:54+03:00",
-    "date_finish": "2024-06-13T18:23:54+03:00",
+    "date_start": "2024-06-13T18:23:54+02:00",
+    "date_finish": "2024-06-13T18:23:54+02:00",
     "operating": 0
   }
 }
@@ -375,7 +409,7 @@ The formula for calculating the `start` parameter value:
 || **next**
 [`integer`](../../data-types.md) | The value to send to get the next page of data from the list method. Shown if such elements exist. ||
 || **total**
-[`integer`](../../data-types.md) | The total number of leads that match the request ||
+[`integer`](../../data-types.md) | The total number of leads that meet the request ||
 || **time**
 [`array`](../../data-types.md) | Information about the execution time of the request ||
 || **start**
@@ -383,15 +417,15 @@ The formula for calculating the `start` parameter value:
 || **finish**
 [`double`](../../data-types.md) | Timestamp of the moment the request execution was completed ||
 || **duration**
-[`double`](../../data-types.md) | How long in milliseconds the request took (finish - start) ||
+[`double`](../../data-types.md) | How long the request took in milliseconds (finish - start) ||
 || **date_start**
 [`string`](../../data-types.md) | String representation of the date and time of the moment the request was initialized ||
 || **date_finish**
 [`double`](../../data-types.md) | String representation of the date and time of the moment the request execution was completed ||
 || **operating_reset_at**
-[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limits](../../../limits.md) ||
+[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limit](../../../limits.md) ||
 || **operating**
-[`double`](../../data-types.md) | In how many milliseconds will the limit on REST API resources be reset? Read more in the article [operation limits](../../../limits.md) ||
+[`double`](../../data-types.md) | In how many milliseconds will the limit on REST API resources be reset? Read more in the article [operation limit](../../../limits.md) ||
 |#
 
 ## Error Response
@@ -412,4 +446,4 @@ The formula for calculating the `start` parameter value:
 || Access denied. | The user does not have permission to read leads. ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}

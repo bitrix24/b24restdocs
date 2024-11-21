@@ -17,6 +17,7 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [{#T}](how-to-add-crm-objects/how-to-product-binding.md)
 - [{#T}](how-to-add-crm-objects/how-to-add-product-with-custom-props.md)
 - [{#T}](how-to-add-crm-objects/how-to-generate-documents.md) 
+- [{#T}](how-to-add-crm-objects/how-to-add-comment-to-spa.md)
 
 ## How to replace an outdated phone number for an existing client; how to update product information and other examples
 
@@ -29,7 +30,7 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [{#T}](how-to-edit-crm-objects/how-to-generate-edit-form-for-company.md)
 - [{#T}](how-to-edit-crm-objects/how-to-generate-edit-form-for-deal.md)
 
-## How to find clients by phone; how to get all deals of a client and other examples of working with item lists
+## How to find clients by phone; how to get all activities of a client and other examples of working with lists of entities
 
 - [{#T}](how-to-get-lists/search-by-phone-and-email.md)
 - [{#T}](how-to-get-lists/get-activity-list-by-contact.md)

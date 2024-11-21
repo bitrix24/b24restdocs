@@ -1,8 +1,8 @@
-# Update CRM Item
+# Update CRM Item `crm.item.update`
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "edit" access permission for CRM object items
+> Who can execute the method: any user with "edit" access permission for CRM object elements
 
 This method updates an item of a specific type in the CRM object by assigning new values from the `fields` parameter.
 
@@ -10,22 +10,22 @@ When updating an item, a standard series of checks, modifications, and automatic
 - access permissions are checked
 - required fields are validated if the item's stage has changed within the same direction
 - dependent required fields are validated if the item's stage has changed within the same direction
-- correctness of field entries is verified
+- correctness of field values is checked
 - default values are assigned to fields
 - if it turns out that no field values have been changed before saving, then the save **is not performed**
 - automation rules are triggered after saving
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose item we want to modify ||
+[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose element we want to modify ||
 || **id^*^**
-[`integer`][1] | Identifier of the item we want to change.
+[`integer`][1] | Identifier of the element we want to modify.
 
 Can be obtained using the [`crm.item.list`](crm-item-list.md) or [`crm.item.add`](crm-item-add.md) methods ||
 || **fields***
@@ -42,7 +42,7 @@ where
 - `field_n` — field name
 - `value_n` — new field value
 
-Each CRM entity type has its own set of fields. This means that the set of fields for updating a Lead does not have to match the set of fields for updating a Contact or SPA.
+Each CRM entity type has its own set of fields. This means that the set of fields for modifying a Lead does not have to match the set of fields for modifying a Contact or SPA.
 
 The list of available fields for each entity type is described [below](#parametr-fields).
 
@@ -54,12 +54,12 @@ Only those fields that need to be changed should be passed in `fields`
 
 {% endnote %}
 
-|| 
+||
 |#
 
 ### Fields Parameter
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 {% list tabs %}
 
@@ -71,10 +71,10 @@ Only those fields that need to be changed should be passed in `fields`
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title 
+  [`string`][1] | Title of the item 
   ||
   || **honorific**
-  [`crm_status`][1] | String identifier for the lead's honorific (e.g., `'HNR_US_1' = 'Mr.'`).
+  [`crm_status`][1] | String identifier for the lead's honorific (e.g., `'HNR_RU_1' = 'Mr.'`).
 
   The list of available honorifics can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONOFIRIC" }` ||
   || **name**
@@ -106,9 +106,9 @@ Only those fields that need to be changed should be passed in `fields`
   || **post**
   [`string`][1] | Position ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier for the item's currency  ||
+  [`crm_currency`][1] | Identifier of the item's currency  ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Mode for calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -144,7 +144,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **webformId**
   [`integer`][1] | Identifier of the CRM Form ||
   || **observers**
-  [`user[]`][1] | Array of identifiers of users who will be observers in the item ||
+  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
   || **utmSource**
   [`string`][1] | Advertising system. For example: Google Ads, Bing Ads, etc. ||
   || **utmMedium**
@@ -168,7 +168,7 @@ Only those fields that need to be changed should be passed in `fields`
   To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another CRM object type that is linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}` ||
   |#
@@ -182,7 +182,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title ||
+  [`string`][1] | Title of the item ||
   || **typeId**
   [`crm_status`][1] | String identifier for the entity type.
 
@@ -210,9 +210,9 @@ Only those fields that need to be changed should be passed in `fields`
   || **probability**
   [`integer`][1] | Probability % ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier for the item's currency ||
+  [`crm_currency`][1] | Identifier of the item's currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Mode for calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -266,7 +266,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **originId**
   [`string`][1] | Identifier of the item in the external source ||
   || **observers**
-  [`user[]`][1] | Array of identifiers of users who will be observers in the item ||
+  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
   || **locationId**
   [`location`][1] | Identifier of the location. Service field  ||
   || **utmSource**
@@ -289,7 +289,7 @@ Only those fields that need to be changed should be passed in `fields`
   
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another CRM object type that is linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
@@ -306,7 +306,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **honorific**
   [`crm_status`][1] | String identifier for the contact's honorific. 
   
-  For example, `'HNR_US_1' = 'Mr.'`.
+  For example, `'HNR_RU_1' = 'Mr.'`.
 
   The list of available honorifics can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONOFIRIC" }` ||
   || **name**
@@ -360,9 +360,9 @@ Only those fields that need to be changed should be passed in `fields`
   || **originId**
   [`string`][1] | Identifier of the item in the external source ||
   || **originVersion**
-  [`string`][1]          | Original version ||
+  [`string`][1]          | Version of the original ||
   || **observers**
-  [`user[]`][1] | Array of identifiers of users who will be observers in the item ||
+  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
@@ -384,7 +384,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another CRM object type that is linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}`
   ||
@@ -399,7 +399,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title ||
+  [`string`][1] | Title of the item ||
   || **typeId**
   [`crm_status`][1] | String identifier for the entity type.
   
@@ -419,11 +419,11 @@ Only those fields that need to be changed should be passed in `fields`
   || **employees**
   [`crm_status`][1] | String identifier for the number of employees.
   
-  The value is taken from the available list, for example, `'EMPLOYEES_1' = 'less than 50'`.
+  The value is taken from the list of available options, for example, `'EMPLOYEES_1' = 'less than 50'`.
 
   The list of available employee counts can be obtained using the [`crm.status.list`][2] method with the filter `{ ENTITY_ID: "EMPLOYEES" }` ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier for the item's currency ||
+  [`crm_currency`][1] | Identifier of the item's currency ||
   || **revenue**
   [`double`][1] | Annual revenue ||
   || **opened**
@@ -449,9 +449,9 @@ Only those fields that need to be changed should be passed in `fields`
   || **originId**
   [`string`][1] | Identifier of the item in the external source ||
   || **originVersion**
-  [`string`][1] | Original version ||
+  [`string`][1] | Version of the original ||
   || **observers**
-  [`user[]`][1] | Array of identifiers of users who will be observers in the item ||
+  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
@@ -472,7 +472,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another CRM object type that is linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}`
   ||
@@ -487,7 +487,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title ||
+  [`string`][1] | Title of the item ||
   || **assignedById**
   [`user`][1] | Identifier of the person responsible for the item ||
   || **opened**
@@ -510,7 +510,7 @@ Only those fields that need to be changed should be passed in `fields`
   [`integer`][1] | Identifier of the storage type. Possible values:
   - `1` — file
   - `2` — WebDAV
-  - `3` — disk
+  - `3` — Drive
   ||
   || **storageElementIds**
   [`integer`][1] | Array of files ||
@@ -531,9 +531,9 @@ Only those fields that need to be changed should be passed in `fields`
   || **locationId**
   [`location`][1] | Identifier of the location. Service field ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier for the item's currency ||
+  [`crm_currency`][1] | Identifier of the item's currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode.
+  [`boolean`][1] | Mode for calculating the amount.
 
   - `Y` — manual
   - `N` — automatic
@@ -577,7 +577,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another CRM object type that is linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this item.
 
   Each such field has the code `parentId + {parentEntityTypeId}`
   ||
@@ -592,7 +592,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title
+  [`string`][1] | Title of the item
   ||
   || **xmlId**
   [`string`][1] | External code ||
@@ -623,7 +623,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3` ||
   || **observers**
-  [`user[]`][1] | Array of identifiers of users who will be observers in the item ||
+  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
   || **stageId**
   [`crm_status`][1] | String identifier for the item's stage. 
   
@@ -640,9 +640,9 @@ Only those fields that need to be changed should be passed in `fields`
   || **sourceDescription**
   [`text`][1] | Additional information about the source ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier for the item's currency ||
+  [`crm_currency`][1] | Identifier of the item's currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Mode for calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -665,7 +665,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another CRM object type that is linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this item.
 
   Each such field has the code `parentId + {parentEntityTypeId}`
   ||
@@ -680,7 +680,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Item title  ||
+  [`string`][1] | Title of the item  ||
   || **xmlId**
   [`string`][1] | External code ||
   || **assignedById**
@@ -721,7 +721,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   Available only when the `isClientEnabled` setting is enabled for the corresponding SPA ||
   || **observers**
-  [`user[]`][1] | Array of identifiers of users who will be observers in the item.
+  [`user[]`][1] | Array of user identifiers who will be observers in the item.
 
   Available only when the `isObserversEnabled` setting is enabled for the corresponding SPA ||
   || **categoryId**
@@ -729,7 +729,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   If the identifier is not specified, the SPA will be moved to the main funnel.
 
-  The list of available funnels can be obtained using the [`crm.category.list`](category/crm-category-list.md) with the corresponding `entityTypeId` ||
+  The list of available funnels can be obtained using [`crm.category.list`](category/crm-category-list.md) with the corresponding `entityTypeId` ||
   || **stageId**
   [`crm_status`][1] | String identifier for the item's stage. 
   
@@ -753,11 +753,11 @@ Only those fields that need to be changed should be passed in `fields`
 
   Available only when the `isSourceEnabled` setting is enabled for the corresponding SPA ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier for the item's currency.
+  [`crm_currency`][1] | Identifier of the item's currency.
 
   Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA  ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Mode for calculating the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -783,9 +783,9 @@ Only those fields that need to be changed should be passed in `fields`
 
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another CRM object type that is linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this item.
 
-  Each such field has the code `parentId + {parentEntityTypeId}`
+  Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
   |#
 
@@ -797,7 +797,7 @@ Only those fields that need to be changed should be passed in `fields`
 
 {% endlist %}
 
-## How to Update a User-Defined File Field
+## How to Update a User-defined File Field
 
 1. Upload a new file instead of the old one (non-multiple field)
 
@@ -814,13 +814,13 @@ Only those fields that need to be changed should be passed in `fields`
     }
     ```
 
-2. Remove the value of the file-type user-defined field
+2. Remove the value of the user-defined file field
 
     To do this, simply pass an empty string (`''`) instead of the value.
 
-3. Leave the value of the non-multiple file-type field unchanged
+3. Leave the value of the non-multiple file field unchanged
 
-    The simplest option is to not add a key for this field in `fields`.
+    The simplest option is to not add a key with this field in `fields`.
     
     But if you need to pass it and not change it, then the value should be passed as a list where the key `id` will be the file identifier.
 
@@ -840,17 +840,17 @@ Only those fields that need to be changed should be passed in `fields`
     
     {% endnote %}
 
-4. Working with a multiple file-type field
+4. Working with a multiple file field
 
     The value of a multiple field is an array. Each element of the array is subject to the same rules as for non-multiple values.
 
-    **How to Partially Overwrite Values in a Multiple File-Type Field**
+    **How to partially overwrite values in a multiple file field**
 
-    For example, currently, the multiple file-type field contains values `[12, 255, 44]`.
+    For example, currently, the multiple file field contains values `[12, 255, 44]`.
 
     You need to keep files `12` and `44`, and upload a new one instead of `255`.
 
-    The request should look like this:
+    The request should look as follows:
 
     ```json
     {
@@ -967,11 +967,36 @@ Update a deal with `id = 351`
     echo '</PRE>';
     ```
 
+- B24-PHP-SDK
+
+    ```php
+    try {
+        $entityTypeId = 1; // Set your entity type ID
+        $id = 123; // Set the ID of the item to update
+        $fields = [
+            'TITLE' => 'Updated Title',
+            'DATE_MODIFIED' => (new DateTime())->format(DateTime::ATOM), // Example DateTime field
+            // Add other fields as necessary
+        ];
+
+        $itemService = $serviceBuilder->getCRMScope()->item();
+        $updateResult = $itemService->update($entityTypeId, $id, $fields);
+
+        if ($updateResult->isSuccess()) {
+            print("Item updated successfully: " . json_encode($updateResult));
+        } else {
+            print("Failed to update item.");
+        }
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage());
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -1022,7 +1047,7 @@ HTTP Status: **200**
             "originatorId": null,
             "originId": null,
             "additionalInfo": "Updating deal via REST",
-            "searchContent": "351 Deal #351 10200.00 US Dollar No Did Not Come Up Sale Title2134234233 07/23/2024 07/31/2024",
+            "searchContent": "351 Deal #351 10200.00 US Dollar No Did Not Come Up Sale Title2134234233 23.07.2024 31.07.2024",
             "orderStage": null,
             "movedBy": 1,
             "movedTime": "2024-07-23T18:19:21+02:00",
@@ -1075,12 +1100,12 @@ HTTP Status: **200**
 || **item**
 [`item`](./crm-item-add.md#item) | Information about the updated item ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -1095,13 +1120,13 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
-|| `403`      | `allowed_only_intranet_user`      | Action allowed only for intranet users                               | User is not an intranet user                                                               ||
+|| `403`      | `allowed_only_intranet_user`      | Action allowed only for intranet users                               | User is not an intranet user                                                                ||
 || `400`      | `NOT_FOUND`                       | SPA not found                                                        | Occurs when an invalid `entityTypeId` is passed                                          ||
-|| `400`      | `ACCESS_DENIED`                   | Access denied                                                        | User does not have permission to modify items of type `entityTypeId`                      ||
-|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                    | Incorrect value passed for field `field`                                                  ||
+|| `400`      | `ACCESS_DENIED`                   | Access denied                                                        | User does not have permission to modify elements of type `entityTypeId`                   ||
+|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                    | An incorrect value for the field `field` was passed                                        ||
 || `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | One of the multiple fields received a value of type `type`, while an iterable type was expected ||
-|| `400`      | `-`                               | Insufficient rights to change the stage                              | If the user tries to change the stage of an item without sufficient rights                ||
-|| `400`      | `UPDATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot change the item due to your plan's restrictions          | Plan restrictions do not allow changing SPA items                                          ||
+|| `400`      | `-`                               | Insufficient rights to change the stage                              | If a user tries to change the stage of an item without sufficient rights                   ||
+|| `400`      | `UPDATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot modify the item due to your plan's restrictions          | Plan restrictions do not allow modifying SPA elements                                       ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

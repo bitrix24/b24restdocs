@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,10 +10,10 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types not specified
 - examples missing
-- links to pages not yet created are not provided
+- links to yet-to-be-created pages not provided
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.notify.delete` removes a notification.
+The method `im.notify.delete` deletes a notification.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -35,7 +35,7 @@ The method `im.notify.delete` removes a notification.
 [`unknown`](../../data-types.md) | `SUB`\|`TEST` | Additional tag, without uniqueness check | 18 ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 {% note warning %}
 
@@ -47,23 +47,51 @@ You must specify **one of the three** required parameters: `ID` (notification id
 
 {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.notify.delete',
-    Array(
-        'ID' => 13,
-        'TAG' => 'TEST',
-        'SUB_TAG' => 'SUB|TEST'
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+- PHP
 
-## Successful Response
+    ```php
+    $result = restCommand(
+        'im.notify.delete',
+        Array(
+            'ID' => 13,
+            'TAG' => 'TEST',
+            'SUB_TAG' => 'SUB|TEST'
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+- B24-PHP-SDK
+
+    ```php
+    try {
+        $notificationId = 123; // Replace with actual notification ID
+        $notificationTag = null; // Replace with actual notification tag if needed
+        $subTag = null; // Replace with actual sub tag if needed
+
+        $result = $serviceBuilder->getIMScope()
+            ->notify()
+            ->delete($notificationId, $notificationTag, $subTag);
+
+        if ($result->isSuccess()) {
+            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
+        } else {
+            print("Failed to delete notification.");
+        }
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage());
+    }
+    ```
+
+{% endlist %}
+
+{% include [Notes on examples](../../../_includes/examples.md) %}
+
+## Success Response
 
 ```json
 {
@@ -71,7 +99,7 @@ $result = restCommand(
 }
 ```
 
-**Execution Result**: `true` or an error.
+**Execution result**: `true` or an error.
 
 ## Error Response
 

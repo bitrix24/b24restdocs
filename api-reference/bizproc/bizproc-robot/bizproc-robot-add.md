@@ -1,8 +1,8 @@
-# Register a New Automation Rule bizproc.robot.add
+# Register a New Robot bizproc.robot.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing here — we will fill it in shortly.
 - No parameter types and links to the types page.
 - No note about required parameters.
 - Need to add separate tables and describe array parameters like PROPERTIES.
-- A link to the article about Automation rules with "waiting" is needed. Also, that article is needed :)
+- A link to the article about robots with "waiting" is needed. Also, that article is necessary :)
 - Examples are missing.
 - No standard blocks.
 
@@ -27,8 +27,8 @@ Some data may be missing here — we will fill it in shortly.
 
 - Edits are needed to meet the writing standard.
 - Parameter types are not specified.
-- No response in case of success.
-- No response in case of error.
+- No success response.
+- No error response.
 
 {% endnote %}
 
@@ -38,20 +38,20 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: administrator
 
-This method registers a new Automation rule.
+This method registers a new robot.
 
 #|
 || **Parameter**         | **Description**  ||
 
-|| **CODE^*^**         | Internal identifier of the Automation rule. Allowed characters are `a-z`, `A-Z`, `0-9`, dot, dash, and underscore. Required parameter.   ||
-|| **HANDLER^*^**        | URL of the application to which data will be sent. Required parameter. ||
-|| **AUTH_USER_ID^*^** | ID of the user whose token will be sent to the application. ||
-|| **NAME^*^**         | Name of the Automation rule. It can be a string or an associative array of localized strings. Required parameter. ||
-|| **USE_SUBSCRIPTION** | Use of subscription. Allowed values are `Y` or `N`. It can specify whether the Automation rule should wait for a response from the application. If the parameter is empty or not specified, the user can configure this parameter in the action settings in the workflow designer. ||
-|| **PROPERTIES**     | Array of parameters for the Automation rule. The list of values is similar to the values of the `RETURN_PROPERTIES` parameter. ||
-|| **USE_PLACEMENT** | Allows opening additional settings for the Automation rule in the application slider. Accepts values (`Y`/`N`). Optional parameter. ||
-|| **PLACEMENT_HANDLER** | Widget code (handler on the application side). If the `USE_PLACEMENT` parameter is set to "Y" but `PLACEMENT_HANDLER` is not specified, an error occurs.   ||
-|| **RETURN_PROPERTIES** | Array of returned values from the Automation rule. This parameter controls the ability of the Automation rule to wait for a response from the application and work with the data that comes in the response.
+|| **CODE^*^**         | Internal identifier of the robot. Allowed characters are `a-z`, `A-Z`, `0-9`, dot, dash, and underscore. Required parameter.   ||
+|| **HANDLER^*^**        | Application URL to which data will be sent. Required parameter. ||
+|| **AUTH_USER_ID^*^** | ID of the user whose token will be passed to the application. ||
+|| **NAME^*^**         | Name of the robot. It can be a string or an associative array of localized strings. Required parameter. ||
+|| **USE_SUBSCRIPTION** | Use of subscription. Allowed values are `Y` or `N`. It can specify whether the robot should wait for a response from the application. If the parameter is empty or not specified, the user can configure this parameter in the action settings in the workflow designer. ||
+|| **PROPERTIES**     | Array of robot parameters. The list of values is similar to the values of the `RETURN_PROPERTIES` parameter. ||
+|| **USE_PLACEMENT** | Allows opening additional robot settings in the application slider. Accepts values (`Y`/`N`). Optional parameter. ||
+|| **PLACEMENT_HANDLER** | Widget code (handler on the application side). If the `USE_PLACEMENT` parameter is used with the value "Y" but `PLACEMENT_HANDLER` is not specified, an error occurs.   ||
+|| **RETURN_PROPERTIES** | Array of returned values from the robot. This parameter controls the ability of the robot to wait for a response from the application and work with the data that comes in the response.
 
 The system name of the parameter must start with a letter and can only contain characters `a-z`, `A-Z`, `0-9`, and underscore.
 
@@ -90,69 +90,102 @@ Each parameter must contain:
 
 ## Example
 
-```js
-var params = {
-	'CODE': 'robot',
-	'HANDLER': 'http:///robot.php',
-	'AUTH_USER_ID': 1,
-	'NAME': 'Example Automation Rule',
-	'PROPERTIES': {
-		'bool': {
-			'Name': 'Yes/No',
-			'Type': 'bool',
-			'Required': 'Y',
-			'Multiple': 'N'
-		},
-		'date': {
-			'Name': 'Date',
-			'Type': 'date'
-		},
-		'datetime': {
-			'Name': 'Date/Time',
-			'Type': 'datetime'
-		},
-		'double': {
-			'Name': 'Number',
-			'Type': 'double',
-			'Required': 'Y'
-		},
-		'int': {
-			'Name': 'Integer',
-			'Type': 'int'
-		},
-		'select': {
-			'Name': 'List',
-			'Type': 'select',
-			'Options': {
-				'one': 'one',
-				'two': 'two'
-			}
-		},
-		'string': {
-			'Name': 'String',
-			'Type': 'string',
-			'Default': 'default string value'
-		},
-		'text': {
-			'Name': 'Text',
-			'Type': 'text'
-		},
-		'user': {
-			'Name': 'User',
-			'Type': 'user'
-		}
-	}
-};
+{% list tabs %}
 
-BX24.callMethod(
-	'bizproc.robot.add',
-	params,
-	function(result)
-	{
-		if(result.error())
-			alert("Error: " + result.error());
-		else
-			alert("Success: " + result.data());
+- JS
+
+	```js
+	var params = {
+		'CODE': 'robot',
+		'HANDLER': 'http:///robot.php',
+		'AUTH_USER_ID': 1,
+		'NAME': 'Robot Example',
+		'PROPERTIES': {
+			'bool': {
+				'Name': 'Yes/No',
+				'Type': 'bool',
+				'Required': 'Y',
+				'Multiple': 'N'
+			},
+			'date': {
+				'Name': 'Date',
+				'Type': 'date'
+			},
+			'datetime': {
+				'Name': 'Date/Time',
+				'Type': 'datetime'
+			},
+			'double': {
+				'Name': 'Number',
+				'Type': 'double',
+				'Required': 'Y'
+			},
+			'int': {
+				'Name': 'Integer',
+				'Type': 'int'
+			},
+			'select': {
+				'Name': 'List',
+				'Type': 'select',
+				'Options': {
+					'one': 'one',
+					'two': 'two'
+				}
+			},
+			'string': {
+				'Name': 'String',
+				'Type': 'string',
+				'Default': 'default string value'
+			},
+			'text': {
+				'Name': 'Text',
+				'Type': 'text'
+			},
+			'user': {
+				'Name': 'User',
+				'Type': 'user'
+			}
+		}
+	};
+
+	BX24.callMethod(
+		'bizproc.robot.add',
+		params,
+		function(result)
+		{
+			if(result.error())
+				alert("Error: " + result.error());
+			else
+				alert("Successfully: " + result.data());
+		}
+	);
+	```
+
+- B24-PHP-SDK
+  
+	```php
+	try {
+		$result = $serviceBuilder
+			->getBizProcScope()
+			->robot()
+			->add(
+				'robot_code', // string $code
+				'https://example.com/handler', // string $handlerUrl
+				1, // int $b24AuthUserId
+				['en' => 'Robot Name'], // array $localizedRobotName
+				true, // bool $isUseSubscription
+				[], // array $properties
+				false, // bool $isUsePlacement
+				[] // array $returnProperties
+			);
+
+		if ($result->isSuccess()) {
+			print_r($result->getCoreResponse()->getResponseData()->getResult());
+		} else {
+			print("Failed to add robot.");
+		}
+	} catch (Throwable $e) {
+		print("Error: " . $e->getMessage());
 	}
-);
-```
+	```
+{% endlist %}

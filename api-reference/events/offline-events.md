@@ -80,12 +80,12 @@ To ensure the processing of all offline events, you can call the `event.offline.
 sequenceDiagram
     autonumber
     Application->>Bitrix24: event.offline.get?clear=0
-    Note over Application,Bitrix24: receives a batch of events<br>(process_id = 565)
+    Note over Application,Bitrix24: receives a batch of events (process_id = 565)
     Application-->>External system: Sends changed data
     Note over Application,External system: "remembers" process_id = 565
     External system-->>Application: Confirms processing of changes
     Application->>Bitrix24: event.offline.clear?process_id=565
-    Note over Application,Bitrix24: Entries marked with process_id = 565,<br>deleted
+    Note over Application,Bitrix24: Entries marked with process_id = 565, deleted
 ```
 
 After processing the received events, the application must inform Bitrix24 that these events can be deleted.

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameters and their types are not specified
-- response in case of error and success is missing
+- no response in case of error and success
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will fill it in shortly.
 
 The method `crm.userfield.types` returns descriptions of fields for custom fields.
 
-List of custom field types. Contains descriptions of types:
+A list of custom field types. Contains descriptions of the types:
 
 - string
 - integer
@@ -40,7 +40,7 @@ List of custom field types. Contains descriptions of types:
 - money
 - url
 
-It will also return [types](../user-defined-field-types/index.md) of custom fields registered by the current application.
+Also, the [types](../user-defined-field-types/index.md) of custom fields registered by the current application will be returned.
 
 ## Example
 
@@ -48,7 +48,7 @@ It will also return [types](../user-defined-field-types/index.md) of custom fiel
 
 - JS
   
-    ```
+    ```js
     BX24.callMethod(
         "crm.userfield.types",
         {},
@@ -64,7 +64,7 @@ It will also return [types](../user-defined-field-types/index.md) of custom fiel
 
 - PHP
   
-    ```
+    ```php
     require_once('crest.php');
 
     $result = CRest::call(
@@ -85,7 +85,6 @@ It will also return [types](../user-defined-field-types/index.md) of custom fiel
     -H "Accept: application/json" \
     -d '{}' \
     https://**put_your_bitrix24_address**/rest/crm.userfield.types?auth=**put_access_token_here**
-
     ```
 
 - CURL (webhook)
@@ -98,6 +97,22 @@ It will also return [types](../user-defined-field-types/index.md) of custom fiel
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.userfield.types
     ```
 
+- B24-PHP-SDK
+
+    ```php
+    try {
+        $userfieldService = $serviceBuilder->getCRMScope()->userfield();
+        $userfieldTypesResult = $userfieldService->types();
+
+        foreach ($userfieldTypesResult->getTypes() as $item) {
+            print("ID: " . $item->ID . "\n");
+            print("Title: " . $item->title . "\n");
+        }
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage() . "\n");
+    }
+    ```
+
 {% endlist %}
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

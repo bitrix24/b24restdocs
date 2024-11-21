@@ -14,7 +14,7 @@ This method adds a new activity of type "Comment" to the timeline.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new activity of type "Comment" in the following structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new activity of type "Comment" in the form of a structure:
 
 ```json
 
@@ -37,7 +37,7 @@ fields:
 }
 ```
 
-File content is transmitted as a base64 string.
+The file content is transmitted as a base64 string.
 
 {% note warning %}
 
@@ -66,7 +66,7 @@ The value can be obtained using the [`crm.item.list`](../../universal/crm-item-l
 || **COMMENT***
 [`string`](../../../data-types.md) | Text of the comment ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described by [rules](../../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
+[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described according to [the rules](../../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
 |#
 
 ## Code Examples
@@ -166,8 +166,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-03T17:19:01+02:00",
+        "date_finish": "2024-05-03T17:19:01+02:00",
         "operating": 0
     }
 }
@@ -217,3 +217,4 @@ HTTP Status: **400**
 - [{#T}](./crm-timeline-comment-list.md)
 - [{#T}](./crm-timeline-comment-delete.md)
 - [{#T}](./crm-timeline-comment-fields.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md)

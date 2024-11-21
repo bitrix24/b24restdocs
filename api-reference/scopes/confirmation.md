@@ -1,6 +1,6 @@
 # Method Calls with Confirmation
 
-Some methods require permission from the account administrator to be called. When such a method is invoked by an application, the account administrator will receive a notification asking to allow or deny the call, while the application will receive an error.
+Some methods require the account administrator's permission to be called. When such a method is invoked by the application, the account administrator will receive a notification asking to allow or deny the call, while the application will receive an error.
 
 The permission or denial is granted to a specific authorization token used to call the method. This means that the permission is valid for the lifetime of the token, and a new permission must be obtained when receiving the next token.
 
@@ -17,7 +17,7 @@ HTTP/1.1 401 Unauthorized
 
 Calling the method before receiving confirmation or a response will yield the same reply, but without a request for re-confirmation.
 
-When the administrator confirms or denies the permission, the event handler [`OnAppMethodConfirm`](../common/events/on-app-method-confirm.md) will be triggered, passing the confirmation result along with the token that was granted this permission:
+When the administrator confirms or denies the permission, an event handler [`OnAppMethodConfirm`](../common/events/on-app-method-confirm.md) will be triggered, passing the confirmation result and the token to which this permission was granted:
 
 ```js
 array (
@@ -27,7 +27,7 @@ array (
         'TOKEN' => 'fkp963yuv1ggkfbs5z3f5hy8lilm0iw6',
         'METHOD' => 'voximplant.user.get',
         'CONFIRMED' => '1',
-        'LANGUAGE_ID' => 'en',
+        'LANGUAGE_ID' => 'de',
         ),
     'ts' => '1478790852',
     'auth' => 
@@ -60,7 +60,7 @@ HTTP/1.1 200 OK
 }
 ```
 
-In case of denial, the corresponding error will be returned:
+In the case of denial, a corresponding error will be returned:
 
 ```js
 GET https://portal.bitrix24.com/rest/voximplant.user.get?auth=fkp963yuv1ggkfbs5z3f5hy8lilm0iw6&USER_ID=1

@@ -55,7 +55,7 @@ You can only complete your own task (related to the user whose access token is u
 - `1` or yes - response "Yes" (approved)
 - `2` or no - response "No" (rejected)
 - `3` or ok - response "Ok" (acknowledged)
-- `4` or cancel - response "Cancel" | Statuses: **1** and **2** for Document Approval action; <br> **3** and **4** for Request for Additional Information action; **3** for Request for Additional Information with rejection. |  ||
+- `4` or cancel - response "Cancel" | Statuses: **1** and **2** for Document Approval action;  **3** and **4** for Request for Additional Information action; **3** for Request for Additional Information with rejection. |  ||
 || **COMMENT** | User comment, required depending on task parameters | |  ||
 |#
 

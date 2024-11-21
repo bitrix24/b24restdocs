@@ -37,7 +37,7 @@ Example of a block:
             <div class="landing-block-node-card-container text-center g-pa-30 w-100">
                 <div class="landing-block-node-card-header text-uppercase u-heading-v2-4--bottom g-brd-primary g-mb-40">
                     <h2 class="landing-block-node-title h1 u-heading-v2__title g-line-height-1_3 g-font-weight-600 g-font-size-40 g-color-white g-mb-minus-10">Help
-make <br> money</h2>
+make money</h2>
                 </div>
 
                 <div class="landing-block-node-text g-color-gray-light-v2">
@@ -52,7 +52,7 @@ risus purus.</p>
             <div class="landing-block-node-card-container text-center g-pa-30 w-100">
                 <div class="landing-block-node-card-header text-uppercase u-heading-v2-4--bottom g-brd-primary g-mb-40">
                     <h2 class="landing-block-node-title h1 u-heading-v2__title g-line-height-1_3 g-font-weight-600 g-font-size-40 g-color-white g-mb-minus-10">Help
-make <br> money</h2>
+make money</h2>
                 </div>
 
                 <div class="landing-block-node-text g-color-gray-light-v2">

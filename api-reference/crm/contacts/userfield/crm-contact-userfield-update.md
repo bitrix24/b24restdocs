@@ -1,20 +1,20 @@
-# Update Existing User Field for Contacts crm.contact.userfield.update
+# Update Existing Custom Field for Contacts crm.contact.userfield.update
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `crm.contact.userfield.update` updates an existing user field for contacts.
+The method `crm.contact.userfield.update` updates an existing custom field for contacts.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the user field.
+[`integer`][1] | Identifier of the custom field.
 
 The identifier can be obtained using the methods [`crm.contact.userfield.add`](./crm-contact-userfield-add.md) and [`crm.contact.userfield.list`](./crm-contact-userfield-list.md) ||
 || **fields***
@@ -31,7 +31,7 @@ The identifier can be obtained using the methods [`crm.contact.userfield.add`](.
 
 where:
 - `field_n` — field name
-- `value_n` — new field value
+- `value_n` — new value for the field
 
 The list of available fields is described [below](#parameter-fields).
 
@@ -62,11 +62,11 @@ Only those fields that need to be changed should be passed in `fields` ||
 
 The field only overwrites the passed values ||
 || **LIST**
-[`uf_enum_element[]`](#uf_enum_element) | List of possible values for the user field of type `enumeration`. This parameter is meaningless for user fields of other types ||
+[`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. This parameter is meaningless for custom fields of other types ||
 || **SORT**
 [`integer`][1] | Sort index. Must be greater than zero ||
 || **SHOW_IN_LIST**
-[`boolean`][1] | Should the user field be shown in the list?
+[`boolean`][1] | Should the custom field be shown in the list?
 
 This parameter has no effect within `crm`.
 
@@ -121,7 +121,7 @@ For languages where no value is explicitly specified, `''` will be recorded.
 
 The field completely overwrites the previous value ||
 || **HELP_MESSAGE**
-[`string`][1]\|[`lang_map`](../../data-types.md) | Help message.
+[`string`][1]\|[`lang_map`](../../data-types.md) | Help.
 
 When passing a string, it is set for each language.
 
@@ -132,7 +132,7 @@ The field completely overwrites the previous value ||
 
 ### Parameter SETTINGS {#settings}
 
-Each type of user fields has its own set of additional settings. This method supports changing only those described below.
+Each type of custom field has its own set of additional settings. This method supports changing only those described below.
 
 {% list tabs %}
 
@@ -260,7 +260,7 @@ Each type of user fields has its own set of additional settings. This method sup
     [`integer`][1] | Height of the list. Must be greater than 0
     ||
     || **ACTIVE_FILTER**
-    [`boolean`][1] | Should items with the active flag be shown? Possible values:
+    [`boolean`][1] | Should elements with the active flag be shown? Possible values:
     - `Y` — yes
     - `N` — no
     ||
@@ -336,16 +336,16 @@ Default is `N`
 - `Y` — yes
 - `N` — no
 
-For a multiple field, multiple `DEF = Y` are allowed. For a non-multiple field, the first passed list element with `DEF = Y` will be considered the default value ||
+For a multiple field, several `DEF = Y` are allowed. For a non-multiple field, the first passed list element with `DEF = Y` will be considered the default value ||
 || **XML_ID**
-[`string`][1] | External code of the value. Must be unique within the elements of the user field list ||
+[`string`][1] | External code of the value. Must be unique within the elements of the custom field ||
 |#
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
-### Example of Updating a User Field of Type String
+### Example of Updating a String Type Custom Field
 
 {% list tabs %}
 
@@ -457,9 +457,48 @@ For a multiple field, multiple `DEF = Y` are allowed. For a non-multiple field, 
     echo '</PRE>';
     ```
 
+- B24-PHP-SDK
+
+    ```php
+    try {
+        $contactUserfieldItemId = 123; // Example ID
+        $userfieldFieldsToUpdate = [
+            'FIELD_NAME' => 'New Field Name',
+            'USER_TYPE_ID' => 'string',
+            'SORT' => '100',
+            'MULTIPLE' => 'N',
+            'MANDATORY' => 'N',
+            'SHOW_FILTER' => 'Y',
+            'SHOW_IN_LIST' => 'Y',
+            'EDIT_IN_LIST' => 'Y',
+            'IS_SEARCHABLE' => 'Y',
+            'EDIT_FORM_LABEL' => 'New Label',
+            'LIST_COLUMN_LABEL' => 'Column Label',
+            'LIST_FILTER_LABEL' => 'Filter Label',
+            'ERROR_MESSAGE' => 'Error Message',
+            'HELP_MESSAGE' => 'Help Message',
+            'LIST' => '',
+            'SETTINGS' => '',
+        ];
+
+        $result = $serviceBuilder
+            ->getCRMScope()
+            ->contactUserfield()
+            ->update($contactUserfieldItemId, $userfieldFieldsToUpdate);
+
+        if ($result->isSuccess()) {
+            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
+        } else {
+            print("Update failed.");
+        }
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage());
+    }
+    ```
+
 {% endlist %}
 
-### Example of Updating a User Field of Type List
+### Example of Updating a List Type Custom Field
 
 Current list elements:
 
@@ -497,7 +536,7 @@ Current list elements:
 ```
 
 Change it as follows:
-- delete list items with `ID = 115` and `ID = 116`
+- remove list items with `ID = 115` and `ID = 116`
 - update the list item with `ID  = 117`:
     - `VALUE`: "List item #3" -> "List item #3 (changed)"
     - `SORT`: 300 -> 50
@@ -619,7 +658,7 @@ Change it as follows:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -649,7 +688,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -668,9 +707,9 @@ HTTP Status: **400**
 || `-`     | `ID is not defined or invalid`     | The passed `id` is less than zero or not passed at all ||
 || `-`     | `Access denied`                    | Occurs when:
 - the user does not have administrative rights
-- the user tries to delete a user field not linked to contacts ||
-|| `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The user field with the passed `id` does not exist ||
-|| `ERROR_CORE`               | List element with value XML_ID=`XML_ID` already exists | The passed `XML_ID` for the list element must be unique within the elements of the user field list ||
+- the user tries to delete a custom field not linked to contacts ||
+|| `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the passed `id` does not exist ||
+|| `ERROR_CORE`               | List element with value XML_ID=`XML_ID` already exists | The passed `XML_ID` for the list element must be unique within the elements of a given custom field ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

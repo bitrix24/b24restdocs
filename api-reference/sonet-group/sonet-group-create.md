@@ -55,7 +55,8 @@ https://mydomain.bitrix24.com/rest/sonet_group.create.json?auth=803f65e30340ff39
 - **K** - all group members.
 **CLOSED** - flag Y/N - whether the group is archived,
 **SPAM_PERMS** - who has the right to send messages to the group (required field). Values are similar to the INITIATE_PERMS parameter.
-**PROJECT** - flag Y/N - whether the group is a project or not. By default - it is not. (Since version 18.0.0)<br>**PROJECT_DATE_FINISH** - specifies the project end date. (Since version 18.0.0)
+**PROJECT** - flag Y/N - whether the group is a project or not. By default - it is not. (Since version 18.0.0)
+**PROJECT_DATE_FINISH** - specifies the project end date. (Since version 18.0.0)
 **PROJECT_DATE_START** - specifies the project start date. (Since version 18.0.0)
 **SCRUM_MASTER_ID** - if filled with a user ID, this project will become a scrum. (Since version 22.300) ||
 || **bAutoSubscribe** | Auto-subscription to the created topic. Optional parameter. Defaults to True. (Since version 10.0.0) ||

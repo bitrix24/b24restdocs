@@ -10,7 +10,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- The description needs to include what this log is, where it is stored, and what it looks like.
+- The description needs to include what this log is, where it is located, and what it looks like.
 - Parameter types and a link to the types page are missing.
 - It needs to clarify what the unique identifier is and why it is needed.
 - There is no note about required parameters.
@@ -41,34 +41,62 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: administrator
 
-This method logs information in the business process.
+The method logs information into the business process log.
 
 ## Parameters
 
 #|
 || **Parameter**    | **Description**  ||
 || **EVENT_TOKEN**^*^ | A unique key that must be used when sending an event to the business process.    ||
-|| **LOG_MESSAGE**^*^ | Message to be logged. ||
+|| **LOG_MESSAGE**^*^ | Messages to be recorded in the log. ||
 |#
 
 ## Example
 
-```javascript
-var params = {
-    event_token: '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
-    log_message: 'Please wait for answer!'
-};
+{% list tabs %}
 
-BX24.callMethod(
-    'bizproc.activity.log',
-    params,
-    function(result) {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            alert("Success: " + result.data());
+- JS
+
+    ```javascript
+    var params = {
+        event_token: '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
+        log_message: 'Please wait for answer!'
+    };
+
+    BX24.callMethod(
+        'bizproc.activity.log',
+        params,
+        function(result) {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data());
+        }
+    );
+    ```
+
+- B24-PHP-SDK
+
+    ```php
+    try {
+        $eventToken = 'your_event_token'; // Replace with actual event token
+        $message = 'Your log message'; // Replace with actual message
+
+        $result = $serviceBuilder
+            ->getBizProcScope()
+            ->activity()
+            ->log($eventToken, $message);
+
+        if ($result->isSuccess()) {
+            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
+        } else {
+            print('Log entry failed.');
+        }
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
     }
-);
-```
+    ```
 
-{% include [Note about examples](../../../_includes/examples.md) %}
+{% endlist %}
+
+{% include [Note on examples](../../../_includes/examples.md) %}

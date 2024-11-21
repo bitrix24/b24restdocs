@@ -67,6 +67,26 @@ No parameters.
     echo '</PRE>';
     ```
 
+- B24-PHP-SDK
+
+    ```php        
+    try {
+        $applicationInfoResult = $serviceBuilder->getMainScope()->main()->getApplicationInfo();
+        $itemResult = $applicationInfoResult->applicationInfo();
+        print("ID: " . $itemResult->ID . PHP_EOL);
+        print("Code: " . $itemResult->CODE . PHP_EOL);
+        print("Scope: " . json_encode($itemResult->SCOPE, JSON_THROW_ON_ERROR) . PHP_EOL);
+        print("Version: " . $itemResult->VERSION . PHP_EOL);
+        print("Status: " . $itemResult->getStatus()->getStatusCode() . PHP_EOL);
+        print("Installed: " . ($itemResult->INSTALLED ? 'true' : 'false') . PHP_EOL);
+        print("Payment Expired: " . $itemResult->PAYMENT_EXPIRED . PHP_EOL);
+        print("Days: " . $itemResult->DAYS . PHP_EOL);
+        print("License: " . $itemResult->LICENSE . PHP_EOL);
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage() . PHP_EOL);
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -116,12 +136,12 @@ HTTP status: **200**
     - `D` (Demo) — demo version
     - `T` (Trial) — trial version (time-limited)
     - `P` (Paid) — paid application
-    - `L` (Local) — local application
+    - `L` (Local) — on-premise application
     - `S` (Subscription) — subscription application 
-- `INSTALLED` — [true\|false] status of the application's installation. If the application is not installed, it is only available to account administrators and should signal the end of installation by calling [BX24.installFinish](../../bx24-js-sdk/system-functions/bx24-install-finish.md)
+- `INSTALLED` — [true\|false] status of the application's installation. If the application is not installed, it is only available to account administrators and should signal the completion of installation by calling [BX24.installFinish](../../bx24-js-sdk/system-functions/bx24-install-finish.md)
 - `PAYMENT_EXPIRED` — [Y\|N] flag indicating whether the paid period or trial period has expired
 - `DAYS` — number of days remaining until the end of the paid period or trial period
-- `LICENSE` — designation of the plan with the region indicated as a prefix. Consists of the base language of the account and the identifier of the tariff plan. In cases where the composition of the tariffs has changed while maintaining the public name (such as CRM+, Team, and Company), it is not possible to determine which tariff is in effect based on this field. Examples of possible values:
+- `LICENSE` — designation of the plan with the region indicated as a prefix. Consists of the base language of the account and the identifier of the plan. In cases where the plans have changed while retaining the public name (like CRM+, Team, and Company), it is not possible to determine which plan is currently active based on this field. Examples of possible values:
     - `de_project` — Project plan
     - `de_basic` — Basic plan
     - `de_std` — Standard plan
@@ -132,7 +152,7 @@ HTTP status: **200**
     - `de_ent2000` — Enterprise 2000
     - `de_ent10000` — Enterprise 10000 ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 {% note info "" %}
@@ -158,7 +178,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Access denied! Application context required | Method called outside of application context ||
+|| `ACCESS_DENIED` | Access denied! Application context required | Method called outside the application context ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

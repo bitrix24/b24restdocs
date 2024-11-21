@@ -1,4 +1,4 @@
-# Get CRM Deal Fields crm.deal.fields
+# Get Deal Fields crm.deal.fields
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
@@ -12,7 +12,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -66,11 +66,38 @@ No parameters.
     echo '</PRE>';
     ```
 
+- B24-PHP-SDK
+
+    ```php        
+    try {
+        $id = 123; // Example deal ID
+        $dealService = $serviceBuilder->getCRMScope()->deal();
+        $dealResult = $dealService->get($id);
+        $itemResult = $dealResult->deal();
+        print("ID: " . $itemResult->ID . PHP_EOL);
+        print("Title: " . $itemResult->TITLE . PHP_EOL);
+        print("Type ID: " . $itemResult->TYPE_ID . PHP_EOL);
+        print("Category ID: " . $itemResult->CATEGORY_ID . PHP_EOL);
+        print("Stage ID: " . $itemResult->STAGE_ID . PHP_EOL);
+        print("Is New: " . ($itemResult->IS_NEW ? 'Yes' : 'No') . PHP_EOL);
+        print("Is Recurring: " . ($itemResult->IS_RECURRING ? 'Yes' : 'No') . PHP_EOL);
+        print("Probability: " . $itemResult->PROBABILITY . PHP_EOL);
+        print("Currency ID: " . $itemResult->CURRENCY_ID . PHP_EOL);
+        print("Opportunity: " . $itemResult->OPPORTUNITY . PHP_EOL);
+        print("Lead ID: " . $itemResult->LEAD_ID . PHP_EOL);
+        print("Company ID: " . $itemResult->COMPANY_ID . PHP_EOL);
+        print("Begin Date: " . ($itemResult->BEGINDATE ? $itemResult->BEGINDATE->format(DATE_ATOM) : 'N/A') . PHP_EOL);
+        print("Close Date: " . ($itemResult->CLOSEDATE ? $itemResult->CLOSEDATE->format(DATE_ATOM) : 'N/A') . PHP_EOL);
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage() . PHP_EOL);
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -280,7 +307,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Available to Everyone"
+            "title": "Available to All"
         },
         "CLOSED": {
             "type": "char",
@@ -307,7 +334,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Responsible"
+            "title": "Assignee"
         },
         "CREATED_BY_ID": {
             "type": "user",
@@ -380,7 +407,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Additional Source Information"
+            "title": "Additional Info about Source"
         },
         "LEAD_ID": {
             "type": "crm_lead",
@@ -455,7 +482,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Campaign Designation"
+            "title": "Campaign Identifier"
         },
         "UTM_CONTENT": {
             "type": "string",
@@ -528,7 +555,6 @@ where:
 - `value_n` — information about the field in the format [crm_rest_field_description](../data-types.md#crm_rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
-
 |#
 
 ## Error Handling

@@ -7,11 +7,11 @@ items:
     href: user-add.md
   - name: Update User Data
     href: user-update.md
-  - name: Get Information About the Current User
+  - name: Get Current User Information
     href: user-current.md
-  - name: Get List of Users by Filter
+  - name: Get User List by Filter
     href: user-get.md
-  - name: Get List of Users with Personal Data Search
+  - name: Get User List with Personal Data Search
     href: user-search.md
   - name: Get User Fields
     href: user-fields.md

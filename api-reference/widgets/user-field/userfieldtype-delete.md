@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `userfieldtype.delete` removes a registered user field type from the application. It returns _true_ or an error with a description of the reason.
+The method `userfieldtype.delete` removes a user-defined field type registered by the application. It returns _true_ or an error with a description of the reason.
 
 ## Method Parameters
 
@@ -85,6 +85,25 @@ The method `userfieldtype.delete` removes a registered user field type from the 
     echo '</PRE>';
     ```
 
+- B24-PHP-SDK
+
+    ```php        
+    try {
+        $userTypeId = 'example_user_type_id'; // Replace with the actual user type ID
+        $result = $serviceBuilder
+            ->getPlacementScope()
+            ->userFieldType()
+            ->delete($userTypeId);
+        if ($result->isSuccess()) {
+            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
+        } else {
+            print("Error occurred while deleting user field type.");
+        }
+    } catch (\Throwable $e) {
+        print("Exception: " . $e->getMessage());
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -112,9 +131,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of deleting the user field type ||
+[`boolean`](../../data-types.md) | Result of the user field type deletion ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -135,7 +154,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `ERROR_ARGUMENT` | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not specified ||
-|| `ERROR_NOT_FOUND` | User Field Type not found | User field with the specified `USER_TYPE_ID` was not found ||
+|| `ERROR_NOT_FOUND` | User Field Type not found | User field with the specified `USER_TYPE_ID` not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

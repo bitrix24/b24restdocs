@@ -1,16 +1,16 @@
-# Get a List of Registered Custom Field Types userfieldtype.list
+# Get a list of registered custom field types userfieldtype.list
 
-> Scope: [`depending on the integration point`](../../scopes/permissions.md)
+> Scope: [`depending on the embedding location`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method retrieves a list of custom field types registered by the application. It returns a paginated list of field types.
+The method retrieves a list of custom field types registered by the application. It returns a paginated list of field types.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -65,6 +65,23 @@ No parameters.
     echo '</PRE>';
     ```
 
+- B24-PHP-SDK
+
+    ```php        
+    try {
+        $userFieldTypesResult = $serviceBuilder->getPlacementScope()->userFieldType()->list();
+        $userFieldTypes = $userFieldTypesResult->getUserFieldTypes();
+        foreach ($userFieldTypes as $userFieldType) {
+            print("Description: " . $userFieldType->DESCRIPTION . "\n");
+            print("Handler: " . $userFieldType->HANDLER . "\n");
+            print("Title: " . $userFieldType->TITLE . "\n");
+            print("User Type ID: " . $userFieldType->USER_TYPE_ID . "\n");
+        }
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage());
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -94,14 +111,14 @@ HTTP status: **200**
         }
     ],
     "total": 3,
-    "time": {
-        "start": 1724423274.842117,
-        "finish": 1724423275.558021,
-        "duration": 0.7159039974212646,
-        "processing": 0.0018908977508544922,
-        "date_start": "2024-08-23T16:27:54+02:00",
-        "date_finish": "2024-08-23T16:27:55+02:00",
-        "operating": 0
+    "time":{
+        "start":1724423274.842117,
+        "finish":1724423275.558021,
+        "duration":0.7159039974212646,
+        "processing":0.0018908977508544922,
+        "date_start":"2024-08-23T16:27:54+02:00",
+        "date_finish":"2024-08-23T16:27:55+02:00",
+        "operating":0
     }
 }
 ```
@@ -116,7 +133,7 @@ HTTP status: **200**
 || **total**
 [`integer`](../../data-types.md) | Number of processed records ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Continue Learning

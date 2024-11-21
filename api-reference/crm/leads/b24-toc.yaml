@@ -31,7 +31,7 @@ items:
     include:
       path: events/b24-toc.yaml
       mode: link
-  - name: Manage Lead Cards
+  - name: Lead Card Management
     include:
       path: custom-form/b24-toc.yaml
       mode: link

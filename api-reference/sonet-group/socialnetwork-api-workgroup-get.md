@@ -64,13 +64,13 @@ Available fields:
 || **OWNER_DATA** | Fields of the group's owner. | ||
 || **NUMBER_OF_MEMBERS** | Number of group members | ||
 || **NUMBER_OF_MODERATORS** | Number of group moderators. | ||
-|| **INITIATE_PERMS** | Who has the right to invite users to the group (required field):<ul><li>A - only the group owner,</li><li>E - group owner and group moderators,</li><li>K - all group members.</li></ul> | ||
+|| **INITIATE_PERMS** | Who has the right to invite users to the group (required field): A - only the group owner, E - group owner and group moderators, K - all group members.  | ||
 || **PROJECT_DATE_START** | Project start date | ||
 || **PROJECT_DATE_FINISH** | Project finish date | ||
 || **SCRUM_OWNER_ID** | SCRUM identifier | ||
 || **SCRUM_MASTER_ID** | SCRUM master identifier | ||
 || **SCRUM_SPRINT_DURATION** | Duration of the sprint in scrum in seconds | ||
-|| **SCRUM_TASK_RESPONSIBLE** | Default responsible person in the scrum project. available values:<ul><li>A - Creator</li><li>M - scrum master</li></ul> | ||
+|| **SCRUM_TASK_RESPONSIBLE** | Default responsible person in the scrum project. available values: A - Creator M - scrum master | ||
 || **TAGS** | Group tags. ||
 || **ACTIONS** | Data on available operations for the current user on the group. ||
 || **USER_DATA** | Data on the current user's role in the group. ||

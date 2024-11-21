@@ -82,7 +82,7 @@ Code for setting properties (called once), where the variable `handlerUrl` is th
     );
     if ($resultAddPropType['result'] == true)
     {
-        echo 'property type ' . $type . ' has been added successfully <br>';
+        echo 'property type ' . $type . ' has been added successfully ';
         $resultAddProp = CRest::call(
             'crm.lead.userfield.add',
             [
@@ -105,7 +105,7 @@ Code for setting properties (called once), where the variable `handlerUrl` is th
         }
         else
         {
-            echo 'property ' . $propCode . ' has been added successfully <br>';
+            echo 'property ' . $propCode . ' has been added successfully ';
         }
     }
     elseif ($resultAddPropType['error'])

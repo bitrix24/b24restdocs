@@ -13,7 +13,7 @@ items:
     include:
       path: enum/b24-toc.yaml
       mode: link
-  - name: Markup
+  - name: Margin
     include:
       path: extra/b24-toc.yaml
       mode: link
@@ -37,7 +37,7 @@ items:
     include:
       path: product-property/b24-toc.yaml
       mode: link
-  - name: Values of List Properties
+  - name: List Property Values
     include:
       path: product-property-enum/b24-toc.yaml
       mode: link

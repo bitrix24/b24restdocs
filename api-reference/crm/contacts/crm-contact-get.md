@@ -81,11 +81,32 @@ Get contact with `id = 23`
     echo '</PRE>';
     ```
 
+- B24-PHP-SDK
+
+    ```php        
+    try {
+        $contactId = 123; // Example contact ID
+        $contactResult = $serviceBuilder
+            ->getCRMScope()
+            ->contact()
+            ->get($contactId);
+        $itemResult = $contactResult->contact();
+        print("ID: " . $itemResult->ID . PHP_EOL);
+        print("Name: " . $itemResult->NAME . PHP_EOL);
+        print("Last Name: " . $itemResult->LAST_NAME . PHP_EOL);
+        print("Birthday: " . $itemResult->BIRTHDATE?->format(DATE_ATOM) . PHP_EOL);
+        print("Created Date: " . $itemResult->DATE_CREATE->format(DATE_ATOM) . PHP_EOL);
+        print("Modified Date: " . $itemResult->DATE_MODIFY->format(DATE_ATOM) . PHP_EOL);
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage() . PHP_EOL);
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -93,10 +114,10 @@ HTTP Status: **200**
         "ID": "43",
         "POST": "Administrator",
         "COMMENTS": "\nExample comment within the contact\n\n[B]Bold text[\/B]\n[I]Italic[\/I]\n[U]Underlined[\/U]\n[S]Strikethrough[\/S]\n[B][I][U][S]Mix[\/S][\/U][\/I][\/B]\n\n[LIST]\n[*]List item #1\n[*]List item #2\n[*]List item #3\n[\/LIST]\n\n[LIST=1]\n[*]Numbered list item #1\n[*]Numbered list item #2\n[*]Numbered list item #3\n[\/LIST]\n",
-        "HONORIFIC": "HNR_EN_1",
+        "HONORIFIC": "HNR_RU_1",
         "NAME": "John",
-        "SECOND_NAME": "Doe",
-        "LAST_NAME": "Smith",
+        "SECOND_NAME": "Ivanovich",
+        "LAST_NAME": "Ivanov",
         "PHOTO": null,
         "LEAD_ID": null,
         "TYPE_ID": "PARTNER",
@@ -153,13 +174,13 @@ HTTP Status: **200**
         {
             "ID": "158",
             "VALUE_TYPE": "MAILING",
-            "VALUE": "john.smith@example.mailing",
+            "VALUE": "ivanov@example.mailing",
             "TYPE_ID": "EMAIL"
         },
         {
             "ID": "159",
             "VALUE_TYPE": "WORK",
-            "VALUE": "john.smith@example.work",
+            "VALUE": "ivanov@example.work",
             "TYPE_ID": "EMAIL"
         }
         ]
@@ -208,7 +229,7 @@ HTTP Status: **200**
 || **PHOTO**
 [`file`][1] | Photo ||
 || **LEAD_ID**
-[`crm_lead`](../data-types.md) | Identifier of the lead based on which the contact was created ||
+[`crm_lead`](../data-types.md) | Identifier of the lead from which the contact was created ||
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | Type of contact ||
 || **SOURCE_ID**
@@ -232,7 +253,7 @@ HTTP Status: **200**
 - `Y` — yes
 - `N` — no ||
 || **HAS_IMOL**
-[`boolean`][1] | Is an open line provided. Possible values:
+[`boolean`][1] | Is an open channel provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **DATE_CREATE**
@@ -256,7 +277,7 @@ HTTP Status: **200**
 || **LAST_ACTIVITY_BY**
 [`user`][1] | Who performed the last activity in the timeline ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, etc.) ||
+[`string`][1] | Advertising system (Google Ads, Google AdWords, etc.) ||
 || **UTM_MEDIUM**
 [`string`][1] | Type of traffic. Possible values:
 - `CPC` — ads
@@ -279,12 +300,12 @@ HTTP Status: **200**
 [`crm_multifield[]`](../data-types.md) | Links. Service field ||
 |#
 
-**Fields for connections with external data sources**
+**Fields for linking with external data sources**
 
 If the contact was created by an external system, then:
-- the field `ORIGINATOR_ID` stores the string identifier of that system
-- the field `ORIGIN_ID` stores the string identifier of the contact in that external system
-- the field `ORIGIN_VERSION` stores the version of the contact data in that external system
+- the `ORIGINATOR_ID` field stores the string identifier of that system
+- the `ORIGIN_ID` field stores the string identifier of the contact in that external system
+- the `ORIGIN_VERSION` field stores the version of the contact data in that external system
 
 #|
 || **Name**
@@ -299,7 +320,7 @@ If the contact was created by an external system, then:
 
 **Deprecated Fields**
 
-Address fields in the contact are deprecated and are only used in compatibility mode. To work with the address, use [attributes](../requisites/index.md).
+Address fields in the contact are deprecated and are only used in compatibility mode. To work with the address, use [details](../requisites/index.md).
 
 #|
 || **Name**
@@ -319,7 +340,7 @@ Address fields in the contact are deprecated and are only used in compatibility 
 || **ADDRESS_COUNTRY**
 [`string`][1] | Country ||
 || **ADDRESS_LOC_ADDR_ID**
-[`integer`][1] | Identifier of the location address ||
+[`integer`][1] | Location address identifier ||
 |#
 
 {% note tip "Fields of type `crm_multifield`" %}
@@ -330,7 +351,7 @@ Fields of type `crm_multifield` (`PHONE`, `EMAIL`, `WEB`, `IM`, `LINK`) are expl
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -346,8 +367,8 @@ HTTP Status: **400**
 #|
 || **Description** | **Value** ||
 || `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not a positive integer ||
-|| `Access denied` | The user does not have permission to "Read" the contact ||
-|| `Not found` | Contact with the provided `id` was not found ||
+|| `Access denied` | The user does not have permission for "Read" contact ||
+|| `Not found` | Contact with the provided `id` not found ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

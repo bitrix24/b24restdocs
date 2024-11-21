@@ -84,11 +84,31 @@ The identifier can be obtained using the [bizproc.workflow.instances](./bizproc-
     echo '</PRE>';
     ```
 
+- B24-PHP-SDK
+  
+    ```php       
+    try {
+        $workflowId = 'your_workflow_id'; // Replace with actual workflow ID
+        $message = 'Workflow terminated'; // Replace with actual message
+        $result = $serviceBuilder
+            ->getBizProcScope()
+            ->workflow()
+            ->terminate($workflowId, $message);
+        if ($result->isSuccess()) {
+            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
+        } else {
+            print('Termination failed.');
+        }
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -121,7 +141,7 @@ Contains `true` in case of success. ||
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -136,13 +156,13 @@ HTTP status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator. ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator. ||
 || `400` | `ERROR_WRONG_WORKFLOW_ID` | Empty workflow instance ID | An empty value was passed to the `ID` parameter. ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Learning 
 
 - [{#T}](./index.md)
 - [{#T}](./bizproc-workflow-start.md)

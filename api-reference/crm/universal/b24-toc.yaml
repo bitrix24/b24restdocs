@@ -63,7 +63,7 @@ items:
     include:
       path: delivery/b24-toc.yaml
       mode: link
-  - name: Managing Entity Detail Forms
+  - name: Managing Item Detail Forms
     include:
       path: item-details-configuration/b24-toc.yaml
       mode: link

@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with "add|import" permission for contacts
+> Who can execute the method: any user with the "add|import" access permission for contacts
 
 The method `crm.contact.add` creates a new contact.
 
@@ -31,7 +31,7 @@ The list of available fields is described [below](#parameter-fields).
 
 An incorrect field in `fields` will be ignored ||
 || **params**
-[`object`][1] | Object containing a set of additional parameters.
+[`object`][1] | An object containing a set of additional parameters.
 
 The structure and possible values are described [below](#parameter-params) ||
 |#
@@ -46,7 +46,7 @@ The structure and possible values are described [below](#parameter-params) ||
 
 The list of available salutation types can be obtained using the method [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONORIFIC" }`.
 
-Default — the first available salutation type ||
+By default — the first available salutation type ||
 || **NAME**
 [`string`][1] | First name ||
 || **SECOND_NAME**
@@ -62,13 +62,13 @@ Default — the first available salutation type ||
 
 The list of available contact types can be obtained using the method [`crm.status.list`][2] with the filter `{ ENTITY_ID: "CONTACT_TYPE" }`.
 
-Default — the first available contact type ||
+By default — the first available contact type ||
 || **SOURCE_ID**
 [`crm_status`](../data-types.md) | Source.
 
 The list of available source types can be obtained using the method [`crm.status.list`][2] with the filter `{ ENTITY_ID: "SOURCE" }`.
 
-Default — the first available source type ||
+By default — the first available source type ||
 || **SOURCE_DESCRIPTION**
 [`string`][1] | Additional information about the source ||
 || **POST**
@@ -76,27 +76,27 @@ Default — the first available source type ||
 || **COMMENTS**
 [`string`][1] | Comment. Supports bb-codes ||
 || **OPENED**
-[`boolean`][1] | Is it available to everyone? Possible values:
+[`boolean`][1] | Available to everyone. Possible values:
 - `Y` — yes
 - `N` — no
 
-Default is `Y`. The default value can be changed in the CRM settings ||
+By default `Y`. The default value can be changed in the CRM settings ||
 || **EXPORT**
 [`boolean`][1] | Is the contact included in the export? Possible values:
 - `Y` — yes
 - `N` — no
 
-Default is `Y` ||
+By default `Y` ||
 || **ASSIGNED_BY_ID**
-[`user`][1] | Identifier of the user responsible for the element.
+[`user`][1] | Identifier of the user responsible for the item.
 
-Default — the identifier of the user calling the method ||
+By default — the identifier of the user calling the method ||
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the main company for the contact.
 
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **COMPANY_IDS**
-[`crm_company[]`](../data-types.md) | Array of identifiers of companies associated with the contact.
+[`crm_company[]`](../data-types.md) | Array of company identifiers to which the contact is linked.
 
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **UTM_SOURCE**
@@ -130,12 +130,12 @@ Depending on the account settings, contacts may have a set of custom fields of s
 You can add a custom field to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md) ||
 ||**PARENT_ID_...** | Relationship fields. 
 
-If there are SPAs associated with contacts in the account, there is a field for each such SPA that stores the relationship between this SPA and the contact. The field itself stores the identifier of the element of that SPA. 
+If there are SPAs associated with contacts in the account, there is a field for each such SPA that stores the relationship between that SPA and the contact. The field itself stores the identifier of the item of that SPA. 
 
-For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the element of this SPA associated with the current contact ||
+For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the item of that SPA associated with the current contact ||
 |#
 
-**Fields for external data sources**
+**Fields for linking with external data sources**
 
 If the contact is created by an external system, then:
 - the field `ORIGINATOR_ID` stores the string identifier of that system
@@ -150,7 +150,7 @@ If the contact is created by an external system, then:
 || **ORIGIN_ID**
 [`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system. 
 
-If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
+If the data was imported and not changed in the external system, such data can be edited in the CRM without fear that the next export will lead to data overwriting ||
 || **ORIGIN_VERSION**
 [`string`][1] | Version of the original ||
 |#
@@ -182,9 +182,9 @@ Available when `IMPORT = Y` is passed in `params` ||
 Available when `IMPORT = Y` is passed in `params` ||
 |#
 
-**Deprecated fields**
+**Deprecated Fields**
 
-Address fields in the contact are deprecated and are only used in compatibility mode. To work with the address, use [requisites](../requisites/index.md).
+Address fields in the contact are deprecated and are only used for compatibility mode. To work with the address, use [details](../requisites/index.md).
 
 #|
 || **Name**
@@ -215,18 +215,18 @@ Address fields in the contact are deprecated and are only used in compatibility 
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`][1] | Should the event of adding a contact be registered in the activity stream? Possible values:
+[`boolean`][1] | Whether to register the event of adding a contact in the activity stream. Possible values:
 - `Y` — yes
 - `N` — no
 
-Default is `N` ||
+By default `N` ||
 || **IMPORT**
 [`boolean`][1] | Is import mode enabled? Possible values:
 - `Y` — yes
 
-To pass the value `No`, you must either not pass the parameter at all or pass the value `0`, `''`
+To pass the value "No", you must either not pass the parameter at all or pass the value `0`, `''`
 
-Default is `No` ||
+By default "No" ||
 |#
 
 ## Code Examples
@@ -241,7 +241,7 @@ Default is `No` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FIELDS":{"HONORIFIC":"HNR_RU_1","NAME":"John","SECOND_NAME":"Doe","LAST_NAME":"Smith","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+1333333555","VALUE_TYPE":"WORK"},{"VALUE":"+15599888666","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"john@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"john@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12}}' \
+    -d '{"FIELDS":{"HONORIFIC":"HNR_RU_1","NAME":"John","SECOND_NAME":"Doe","LAST_NAME":"Smith","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+12333333555","VALUE_TYPE":"WORK"},{"VALUE":"+15599888666","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"smith@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"smith@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.add
     ```
 
@@ -251,7 +251,7 @@ Default is `No` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FIELDS":{"HONORIFIC":"HNR_RU_1","NAME":"John","SECOND_NAME":"Doe","LAST_NAME":"Smith","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+1333333555","VALUE_TYPE":"WORK"},{"VALUE":"+15599888666","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"john@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"john@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12},"auth":"**put_access_token_here**"}' \
+    -d '{"FIELDS":{"HONORIFIC":"HNR_RU_1","NAME":"John","SECOND_NAME":"Doe","LAST_NAME":"Smith","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+12333333555","VALUE_TYPE":"WORK"},{"VALUE":"+15599888666","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"smith@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"smith@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.contact.add
     ```
 
@@ -309,7 +309,7 @@ Default is `No` ||
                 UTM_TERM: "discount",
                 PHONE: [
                     {
-                        VALUE: "+1333333555",
+                        VALUE: "+12333333555",
                         VALUE_TYPE: "WORK",
                     },
                     {
@@ -319,11 +319,11 @@ Default is `No` ||
                 ],
                 EMAIL: [
                     {
-                        VALUE: "john@example.mailing",
+                        VALUE: "smith@example.mailing",
                         VALUE_TYPE: "MAILING",
                     },
                     {
-                        VALUE: "john@example.work",
+                        VALUE: "smith@example.work",
                         VALUE_TYPE: "WORK",
                     }
                 ],
@@ -374,7 +374,7 @@ Default is `No` ||
                 'UTM_TERM' => 'discount',
                 'PHONE' => [
                     [
-                        'VALUE' => '+1333333555',
+                        'VALUE' => '+12333333555',
                         'VALUE_TYPE' => 'WORK',
                     ],
                     [
@@ -384,11 +384,11 @@ Default is `No` ||
                 ],
                 'EMAIL' => [
                     [
-                        'VALUE' => 'john@example.mailing',
+                        'VALUE' => 'smith@example.mailing',
                         'VALUE_TYPE' => 'MAILING',
                     ],
                     [
-                        'VALUE' => 'john@example.work',
+                        'VALUE' => 'smith@example.work',
                         'VALUE_TYPE' => 'WORK',
                     ]
                 ],
@@ -401,6 +401,34 @@ Default is `No` ||
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- B24-PHP-SDK
+
+    ```php        
+    try {
+        $fields = [
+            'NAME' => 'John',
+            'LAST_NAME' => 'Doe',
+            'BIRTHDATE' => (new DateTime('1990-01-01'))->format(DateTime::ATOM),
+            'PHONE' => '+1234567890',
+            'EMAIL' => 'john.doe@example.com',
+            'ADDRESS' => '123 Main St',
+            'ADDRESS_CITY' => 'Anytown',
+            'ADDRESS_COUNTRY' => 'USA',
+            'ASSIGNED_BY_ID' => '1',
+            'COMPANY_ID' => '2',
+        ];
+        $params = [
+            'REGISTER_SONET_EVENT' => 'N',
+        ];
+        $result = $serviceBuilder->getCRMScope()
+            ->contact()
+            ->add($fields, $params);
+        print($result->getId());
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
     ```
 
 {% endlist %}
@@ -455,7 +483,7 @@ HTTP status: **400**
 || `-`     | `Parameter 'params' must be array` | The parameter `params` is not an object ||
 || `-`     | `Access denied` | The user does not have permission to "Add" or "Import" contacts ||
 || `-`     | Disk resource exhausted | ||
-|| `ERROR_CORE` | The field `Work e-mail` contains an invalid address | ||
+|| `ERROR_CORE` | The field `Working e-mail` contains an incorrect address | ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

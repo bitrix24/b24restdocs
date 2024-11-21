@@ -1,11 +1,11 @@
-title: Markup
+title: Margin
 href: index.md
 items: 
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Get Markup Field Values
+  - name: Get margin field values
     href: catalog-extra-get.md
-  - name: Get Markup Fields
-    href: catalog-extra-get-fields.md
-  - name: Get List of Markups
+  - name: Get list of margins
     href: catalog-extra-list.md
+  - name: Get margin fields
+    href: catalog-extra-get-fields.md

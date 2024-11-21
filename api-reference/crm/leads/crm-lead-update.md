@@ -14,7 +14,7 @@ The method `crm.lead.update` updates an existing lead.
 
 {% note warning %}
 
-It is strongly recommended to pass the complete set of address fields when updating the address. The specifics of updating address fields are described [here](../data-types.md).
+It is strongly recommended to pass the full set of address fields when updating the address. The specifics of updating address fields are described [here](../data-types.md).
 
 {% endnote %}
 
@@ -23,14 +23,14 @@ It is strongly recommended to pass the complete set of address fields when updat
 || **id**^*^
 [`integer`](../../data-types.md) | Integer identifier of the lead. The method to obtain it is described below. ||
 || **fields**^*^
-[`object`](../../data-types.md) | A set of fields in the form `["field to update" => "value"[, ...]]`. The method to obtain the list of possible fields is described below. ||
+[`object`](../../data-types.md) | A set of fields in the format `["updated field" => "value"[, ...]]`. The method to obtain the list of possible fields is described below. ||
 || **options**
 [`object`](../../data-types.md) | An optional set of options. (`"optionName"=>"value"[, ...]`). The list of possible fields is described below. ||
 |#
 
 ## Parameter id
 
-To find the complete list of available identifiers, execute the method [crm.lead.list](./crm-lead-list.md).
+To find out the full list of available identifiers, execute the method [crm.lead.list](./crm-lead-list.md).
 
 ## Parameter fields
 
@@ -71,7 +71,7 @@ To find the complete list of available identifiers, execute the method [crm.lead
 || **EMAIL**
 [`crm_multifield`](../../data-types.md) | Email address. Multiple. ||
 || **HONORIFIC**
-[`crm_status`](../../data-types.md) | Salutation. ||
+[`crm_status`](../../data-types.md) | Form of address. ||
 || **IM**
 [`crm_multifield`](../../data-types.md) | Messenger. Multiple. ||
 || **LINK**
@@ -81,11 +81,11 @@ To find the complete list of available identifiers, execute the method [crm.lead
 || **NAME**
 [`string`](../../data-types.md) | First name. ||
 || **OPENED**
-[`char`](../../data-types.md) | Indicator of lead availability for everyone. Acceptable values are Y or N. ||
+[`char`](../../data-types.md) | Indicates the availability of the lead to everyone. Allowed values are Y or N. ||
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount. ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicator of manual calculation mode for the amount. Acceptable values are Y or N. ||
+[`char`](../../data-types.md) | Indicates manual mode for calculating the amount. Allowed values are Y or N. ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source. ||
 || **ORIGIN_ID**
@@ -135,9 +135,9 @@ The list of all possible identifiers from the directory can be obtained using th
 
 The list of all possible stages from the directory can be obtained using the method crm.status.list with the filter `filter[ENTITY_ID]=STATUS`. ||
 || **TITLE**
-[`string`](../../data-types.md) | Lead title. ||
+[`string`](../../data-types.md) | Title of the lead. ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Designation of the advertising campaign. ||
+[`string`](../../data-types.md) | Identifier of the advertising campaign. ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads. ||
 || **UTM_MEDIUM**
@@ -153,13 +153,13 @@ The list of all possible stages from the directory can be obtained using the met
 
 {% note info %}
 
-Additionally, to find out the required format of the fields, you can execute the method [crm.lead.fields](crm-lead-fields.md) and check the format of the incoming values of these fields.
+Also, to find out the required format of the fields, you can execute the method [crm.lead.fields](crm-lead-fields.md) and check the format of the received values for these fields.
 
 {% endnote %}
 
 {% note info %}
 
-When adding a lead, you cannot explicitly set the indicator for a repeat lead (the `IS_RETURN_CUSTOMER` field), however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when adding the lead.
+When adding a lead, you cannot explicitly set the repeat lead indicator (the `IS_RETURN_CUSTOMER` field), however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when adding the lead.
 
 {% endnote %}
 
@@ -168,10 +168,10 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 #|
 || **Parameter** / **Type** | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`char`](../../data-types.md) | Register the event of adding a lead in the live feed. A notification will also be sent to the person responsible for the lead. Acceptable values are Y or N. ||
+[`char`](../../data-types.md) | Register the event of adding a lead in the live feed. A notification will also be sent to the responsible person for the lead. Allowed values are Y or N. ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -183,7 +183,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1608,"fields":{"TITLE":"IP Titov","PHONE":{0:{"VALUE":"555888","VALUE_TYPE":"WORK"}}} ,"auth":"**put_access_token_here**"}' \
+    -d '{"id":1608,"fields":{"TITLE":"John Smith","PHONE":{0:{"VALUE":"555888","VALUE_TYPE":"WORK"}}} ,"auth":"**put_access_token_here**"}' \
     https://xxx.bitrix24.com/rest/crm.lead.update
     ```
 
@@ -196,10 +196,10 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
             id: 1608,
             fields:
             {
-                TITLE: "LLC Titov",
+                TITLE: "John Smith",
                 NAME: "Gleb",
                 SECOND_NAME: "Yegorovich",
-                LAST_NAME: "Titov",
+                LAST_NAME: "Smith",
                 STATUS_ID: "NEW",
                 OPENED: "Y",
                 ASSIGNED_BY_ID: 1,
@@ -262,18 +262,48 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 - HTTPS
 
     ```http
-    https://xxx.bitrix24.com/rest/1/5***/crm.lead.update.json?id=1734&fields[NAME]=Vasiliy&fields[SECOND_NAME]=Petrovich&fields[LAST_NAME]=Kosmonavt&fields[PHONE][0][VALUE]=89994445556&fields[PHONE][0][VALUE_TYPE]=WORK&fields[EMAIL][0][VALUE]=test@site.com&fields[EMAIL][0][VALUE_TYPE]=WORK
+    https://xxx.bitrix24.com/rest/1/5***/crm.lead.update.json?id=1734&fields[NAME]=Vasily&fields[SECOND_NAME]=Petrovich&fields[LAST_NAME]=Cosmonaut&fields[PHONE][0][VALUE]=89994445556&fields[PHONE][0][VALUE_TYPE]=WORK&fields[EMAIL][0][VALUE]=test@example.com&fields[EMAIL][0][VALUE_TYPE]=WORK
+    ```
+
+- B24-PHP-SDK
+
+    ```php        
+    try {
+        $id = 123; // Example lead ID
+        $fields = [
+            'TITLE' => 'Updated Lead Title',
+            'NAME' => 'John',
+            'LAST_NAME' => 'Doe',
+            'BIRTHDATE' => (new DateTime('1980-01-01'))->format(DateTime::ATOM),
+            'COMPANY_TITLE' => 'Example Company',
+            'STATUS_ID' => 'NEW',
+            'COMMENTS' => 'Updated comments for the lead.',
+            'PHONE' => '1234567890',
+            'EMAIL' => 'john.doe@example.com',
+        ];
+        $params = [
+            'REGISTER_SONET_EVENT' => 'Y',
+        ];
+        $result = $serviceBuilder->getCRMScope()->lead()->update($id, $fields, $params);
+        if ($result->isSuccess()) {
+            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
+        } else {
+            print("Update failed.");
+        }
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage());
+    }
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## See also
 
 - [How to update a field of type "resource booking"](../../calendar/calendar-resource-booking-list.md)
 
-## Successful response
+## Response on success
 
 > 200 OK
 
@@ -312,12 +342,12 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 || **date_finish**
 [`double`](../../data-types.md) | String representation of the date and time of the moment the request was completed. ||
 || **operating_reset_at**
-[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limit](../../../limits.md). ||
+[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limits](../../../limits.md). ||
 || **operating**
-[`double`](../../data-types.md) | In how many milliseconds will the limit on REST API resources be reset? Read more in the article [operation limit](../../../limits.md). ||
+[`double`](../../data-types.md) | In how many milliseconds will the limit on REST API resources be reset? Read more in the article [operation limits](../../../limits.md). ||
 |#
 
-## Error response
+## Response on error
 
 > HTTP status: 40x, 50x Error
 

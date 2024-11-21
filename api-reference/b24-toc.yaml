@@ -15,11 +15,11 @@ items:
     include:
       path: oauth/b24-toc.yaml
       mode: link
-  - name: Application Installation
+  - name: Installing Applications
     include:
       path: app-installation/b24-toc.yaml
       mode: link
-  - name: Application Uninstallation
+  - name: Uninstalling Applications
     href: app-uninstallation.md 
   - name: Method Scopes
     include:
@@ -81,7 +81,7 @@ items:
     include:
       path: document-generator/b24-toc.yaml
       mode: link
-  - name: Disk
+  - name: Drive
     include:
       path: disk/b24-toc.yaml
       mode: link
@@ -141,7 +141,7 @@ items:
     include:
       path: telephony/b24-toc.yaml
       mode: link
-  - name: Trade Catalog
+  - name: Product Catalog
     include:
       path: catalog/b24-toc.yaml
       mode: link

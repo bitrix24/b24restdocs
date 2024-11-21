@@ -1,7 +1,9 @@
 title: Messages
 href: index.md
 items: 
-  - name: Send a message in an open channel
+  - name: Messages in open channels
     href: index.md
+  - name: Send a message to an open channel
+    href: imopenlines-crm-message-add.md
   - name: Save a message as a quick reply
     href: imopenlines-message-quick-save.md

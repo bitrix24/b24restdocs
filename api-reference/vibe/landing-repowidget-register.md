@@ -1,4 +1,4 @@
-# Add Widget to the Homepage: our vibe landing.repowidget.register
+# Add Widget to Start Page: the Vibe landing.repowidget.register
 
 {% note warning "We are still working on the tool" %}
 
@@ -10,9 +10,9 @@ The functionality will be released soon.
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.register` adds a widget for the Homepage: our vibe. It returns an error or the `ID` of the added widget.
+The method `landing.repowidget.register` adds a widget for the Start page: the Vibe. It returns an error or the `ID` of the added widget.
 
-When adding, a check is performed. If a widget with the code `code` has already been registered, its content will be updated. Widgets that are already placed on the vibes will be automatically updated in case of content updates.
+When adding, a check is performed. If a widget with the code `code` has already been registered, its content will be updated. Widgets already placed on the Vibe will automatically update their content in case of an update.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ When adding, a check is performed. If a widget with the code `code` has already 
 || **Name**
 `type` | **Description** ||
 || **code***
-[`string`](../data-types.md) | Unique widget code. It is highly recommended to use a unique prefix for your widgets to avoid the risk of code collisions with widgets from other developers. ||
+[`string`](../data-types.md) | Unique code for the widget. It is highly recommended to use a unique prefix for your widgets to avoid the risk of code conflicts with widgets from other developers ||
 || **fields***
 [`object`](../data-types.md) | Field values for creating the widget ||
 |#
@@ -41,7 +41,7 @@ When adding, a check is performed. If a widget with the code `code` has already 
 || **DESCRIPTION**
 [`string`](../data-types.md) | Widget description ||
 || **CONTENT**
-[`string`](../data-types.md) | Widget markup using Vue constructs ||
+[`string`](../data-types.md) | Widget layout using Vue constructs ||
 || **SECTIONS**
 [`string`](../data-types.md) | Code of the section where the widget will be added. List of available sections:
 
@@ -60,7 +60,7 @@ When adding, a check is performed. If a widget with the code `code` has already 
 - `widgets_image` — Images
 - `widgets_video` — Video ||
 || **WIDGET_PARAMS**
-[`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue template engine. If they are absent, the block will remain as regular HTML code with `{{}}` ||
+[`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue template engine. If absent, the block will remain regular HTML code with `{{}}` ||
 || **ACTIVE**
 [`char`](../data-types.md) | Widget activity. Accepts values: 
 
@@ -70,7 +70,7 @@ When adding, a check is performed. If a widget with the code `code` has already 
 [`string`](../data-types.md) | Binding the widget to a specific site template. **Only for on-premise Bitrix24!** ||
 |#
 
-#### Parameter WIDGET_PARAMS {#anchor-widget-params}
+#### Parameter WIDGET_PARAMS  {#anchor-widget-params}
 
 {% include [Note on required parameters](../../_includes/required.md) %}
 
@@ -78,7 +78,7 @@ When adding, a check is performed. If a widget with the code `code` has already 
 || **Name**
 `type` | **Description** ||
 || **rootNode***
-[`string`](../data-types.md) | Selector for the root element in the markup that will be turned into a Vue component. The root element must be the only element in the passed template; all other markup will be cleared. ||
+[`string`](../data-types.md) | Selector for the root element in the layout that will be turned into a Vue component. The root element must be the only element in the passed template; all other markup will be cleared ||
 || **lang**
 [`string`](../data-types.md) | Array of language phrases used in constructs `{{$Bitrix.Loc.getMessage('W_EMPTY')}}` ||
 || **handler***
@@ -89,12 +89,13 @@ When adding, a check is performed. If a widget with the code `code` has already 
  ||
 || **style**
 [`string`](../data-types.md) | Address of styles for the widget. Styles can also be set inline in the markup via binding `:style="{borderBottom: '1px solid red'}"` ||
-|| **demoData***
-[`array`](../data-types.md) | In preview mode, the widget will not make requests to `handler`; it will be filled with data from this array. 
+|| **data***
+[`object`](../data-types.md) | Demo data for the widget that will be used to showcase the widget in the Vibe templates in [Bitrix24 Market](../../market/index.md).
 
-The array must contain all reactive variables used in the template. If this condition is not met, Vue constructs such as `v-if="persons == null"` may lead to errors if the `persons` parameter is absent.
+If you are developing a widget for a specific Bitrix24 and do not plan to publish it in the Market, you can specify any array as the parameter value; it will not be used anyway.
 
-If this parameter is not used when registering the widget, a request to `handler` will be made before rendering the widget. ||
+However, if you are preparing a mass-market solution with a widget, pay maximum attention to the demo data - they will be displayed in the preview slider of the Vibe template! Obviously, the structure of the demo data should match what your handler `handler` would return in normal widget usage.
+ ||
 |#
 
 ## Code Examples

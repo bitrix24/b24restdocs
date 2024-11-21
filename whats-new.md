@@ -2,6 +2,15 @@
 
 ## 2024
 
+### November 21, 2024
+
+- Added a new tutorial [How to add a comment to the smart process timeline](./tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md)
+
+- Updated documentation on working with margins [catalog.extra.*](./api-reference/catalog/extra/index.md)
+- Updated the main page of the [Product Catalog](./api-reference/catalog/catalog/index.md) section. Added introductory information and an overview of methods and relationships.
+  
+- Updated the main pages of the [Currencies](./api-reference/crm/currency/index.md) and [Currency Localizations](./api-reference/crm/currency/localizations/index.md) sections. Added introductory information and an overview of methods and relationships.
+
 ### November 13, 2024
 
 - New tutorials added: [How to create a task with an attached file](./tutorials/tasks/how-to-create-task-with-file.md), [How to upload a file to a task](./tutorials/tasks/how-to-upload-file-to-task.md)

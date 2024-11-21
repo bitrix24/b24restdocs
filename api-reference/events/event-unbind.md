@@ -2,7 +2,7 @@
 
 > Who can execute the method: administrator
 
-The method `event.unbind` cancels a registered event handler.
+The method `event.unbind` cancels the registration of an event handler.
 
 It only works when logged in as a user with administrative rights to the account.
 
@@ -18,16 +18,16 @@ It only works when logged in as a user with administrative rights to the account
 || **handler***
 [`string`](../data-types.md) | Link to the event handler ||
 || **auth_type**
-[`integer`](../data-types.md) | Identifier of the user under whom the event handler is authorized.
+[`integer`](../data-types.md) | User identifier under which the event handler is authorized.
 
 {% note info %}
 
-If you need to remove event handlers set with an empty `auth_type` (authorized on behalf of the user who triggered the event), but keep the other handlers, specify `auth_type=0` or an empty value for the parameter.
+If you need to remove event handlers set with an empty `auth_type` (authorized on behalf of the user who triggered the event), but keep other handlers, specify `auth_type=0` or an empty value for the parameter.
 
 {% endnote %} 
 ||
 || **event_type**
-[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior does not change. If `event_type=offline` is called, the method works with [offline events](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=99&CHAPTER_ID=04462&LESSON_PATH=8771.5380.2461.4462) ||
+[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=99&CHAPTER_ID=04462&LESSON_PATH=8771.5380.2461.4462) ||
 |#
 
 If any parameters are not specified, all event handlers that meet the other requirements will be removed.
@@ -63,7 +63,7 @@ If any parameters are not specified, all event handlers that meet the other requ
         "auth": "**put_access_token_here**"
     }' \
     https://**put_your_bitrix24_address**/rest/event.unbind
-        ```
+    ```
 
 - JS
 
@@ -93,6 +93,23 @@ If any parameters are not specified, all event handlers that meet the other requ
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- B24-PHP-SDK
+
+    ```php        
+    try {
+        $eventCode = 'your_event_code'; // Replace with your actual event code
+        $handlerUrl = 'https://your.handler.url'; // Replace with your actual handler URL
+        $userId = null; // Replace with your actual user ID or leave as null
+        $result = $serviceBuilder
+            ->getMainScope()
+            ->event()
+            ->unbind($eventCode, $handlerUrl, $userId);
+        print($result->getUnbindedHandlersCount());
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
     ```
 
 {% endlist %}

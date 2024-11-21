@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly
 
 {% endnote %}
 
@@ -30,9 +30,9 @@ The method `im.notify.system.add` sends a system notification.
 || **USER_ID^*^**
 [`unknown`](../../data-types.md) | `1` | Identifier of the user to whom the notification will be addressed | 18 ||
 || **MESSAGE^*^**
-[`unknown`](../../data-types.md) | System notification | Text of the notification | 18 ||
+[`unknown`](../../data-types.md) | System notification | Notification text | 18 ||
 || **MESSAGE_OUT**
-[`unknown`](../../data-types.md) | Text of the system notification for email | Text of the notification for email. If not specified, the MESSAGE field is used | 18 ||
+[`unknown`](../../data-types.md) | Text of the system notification for email | Notification text for email. If not specified, the MESSAGE field is used | 18 ||
 || **TAG**
 [`unknown`](../../data-types.md) | `TEST` | Notification tag, unique within the system. When adding a notification with an existing tag, other notifications will be deleted | 18 ||
 || **SUB_TAG**
@@ -41,30 +41,58 @@ The method `im.notify.system.add` sends a system notification.
 [`unknown`](../../data-types.md) | | Attachment | 18 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Explanation of restCommand](../_includes/rest-command.md) %}
+{% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.notify.system.add',
-    Array(
-        'USER_ID' => 1,
-        'MESSAGE' => 'System notification',
-        'MESSAGE_OUT' => 'Text of the system notification for email',
-        'TAG' => 'TEST',
-        'SUB_TAG' => 'SUB|TEST',
-        'ATTACH' => 'Array()'
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    $result = restCommand(
+        'im.notify.system.add',
+        Array(
+            'USER_ID' => 1,
+            'MESSAGE' => 'System notification',
+            'MESSAGE_OUT' => 'Text of the system notification for email',
+            'TAG' => 'TEST',
+            'SUB_TAG' => 'SUB|TEST',
+            'ATTACH' => 'Array()'
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+- B24-PHP-SDK
+
+    ```php
+    try {
+        $result = $serviceBuilder->getIMScope()
+            ->notify()
+            ->fromSystem(
+                123, // $userId
+                'This is a test message.', // $message
+                null, // $forEmailChannelMessage
+                null, // $notificationTag
+                null, // $subTag
+                null // $attachment
+            );
+
+        print($result->getId());
+    } catch (Throwable $e) {
+        // Handle exception
+        print('Error: ' . $e->getMessage());
+    }
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -97,7 +125,7 @@ $result = restCommand(
 || **USER_ID_EMPTY** | Recipient identifier is not specified ||
 || **MESSAGE_EMPTY** | Message text is not provided ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | The maximum allowable attachment size has been exceeded (30 KB) ||
+|| **ATTACH_OVERSIZE** | The maximum allowable attachment size (30 KB) has been exceeded ||
 |#
 
 ## Related Links

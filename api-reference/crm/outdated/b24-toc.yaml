@@ -1,4 +1,4 @@
-title: Deprecated REST Methods of CRM
+title: Deprecated CRM REST Methods
 href: index.md
 items: 
   - name: Overview of Methods
@@ -19,7 +19,7 @@ items:
     include:
       path: invoice-status-old/b24-toc.yaml
       mode: link
-  - name: Deal Directions
+  - name: Deal Categories
     include:
       path: category-old/b24-toc.yaml
       mode: link

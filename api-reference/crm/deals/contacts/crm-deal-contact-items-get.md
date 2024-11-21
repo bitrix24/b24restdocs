@@ -1,4 +1,4 @@
-# Get the set of contacts associated with the deal crm.deal.contact.items.get
+# Get a set of contacts associated with a deal crm.deal.contact.items.get
 
 {% note warning "We are still updating this page" %}
 
@@ -24,42 +24,69 @@ Some data may be missing — we will complete it shortly.
 
 The method `crm.deal.contact.items.get` returns a set of contacts associated with the specified deal.
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **id**^*^ | Identifier of the deal. ||
 |#
 
-{% include [Parameter notes](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 ## Example
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.deal.contact.items.get",
-    {
-        id: id
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
+{% list tabs %}
+
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.deal.contact.items.get",
+        {
+            id: id
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- B24-PHP-SDK
+
+    ```php
+    try {
+        $dealId = 123; // Replace with the actual deal ID
+        $result = $serviceBuilder
+            ->getCRMScope()
+            ->dealContact()
+            ->itemsGet($dealId);
+
+        foreach ($result->getDealContacts() as $item) {
+            print("CONTACT_ID: " . $item->CONTACT_ID . "\n");
+            print("SORT: " . $item->SORT . "\n");
+            print("ROLE_ID: " . $item->ROLE_ID . "\n");
+            print("IS_PRIMARY: " . $item->IS_PRIMARY . "\n");
+        }
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage());
     }
-);
-```
+    ```
 
-{% include [Example notes](../../../../_includes/examples.md) %}
+{% endlist %}
 
-## Response on success
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
+
+## Response in case of success
 
 The result is returned as an array of objects, each containing the following fields:
 
-#|
+#| 
 || **Field** | **Description** ||
 || **CONTACT_ID** | Identifier of the contact ||
-|| **SORT** | Sort index ||
-|| **ROLE_ID** | Identifier of the role (reserved) ||
+|| **SORT** | Sorting index ||
+|| **ROLE_ID** | Role identifier (reserved) ||
 || **IS_PRIMARY** | Primary contact flag ||
 |#

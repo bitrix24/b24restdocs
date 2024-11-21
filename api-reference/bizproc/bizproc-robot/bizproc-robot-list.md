@@ -1,8 +1,8 @@
-# Get a list of registered application Automation rules bizproc.robot.list
+# Get a list of registered application robots bizproc.robot.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -14,8 +14,8 @@ Some data may be missing here — we will add it soon
 - missing parameters or fields
 - parameter types not specified
 - required parameters not indicated
-- success response missing
-- error response missing
+- no response in case of success
+- no response in case of error
 
 {% endnote %}
 
@@ -25,22 +25,53 @@ Some data may be missing here — we will add it soon
 >
 > Who can execute the method: administrator
 
-The method returns a list of Automation rules registered by the application.
+The method returns a list of robots registered by the application.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-	'bizproc.robot.list',
-	{},
-	function(result)
-	{
-		if(result.error())
-			alert("Error: " + result.error());
-		else
-			alert("Success: " + result.data().join(', '));
-	}
-);
-```
+{% list tabs %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+- JS
+
+	```javascript
+	BX24.callMethod(
+		'bizproc.robot.list',
+		{},
+		function(result)
+		{
+			if(result.error())
+				alert("Error: " + result.error());
+			else
+				alert("Success: " + result.data().join(', '));
+		}
+	);
+	```
+
+- B24-PHP-SDK
+
+	```php
+	try {
+		$result = $serviceBuilder
+			->getBizProcScope()
+			->robot()
+			->list();
+
+		foreach ($result->getRobots() as $robot) {
+			print($robot->code);
+			print($robot->name);
+			print($robot->handlerUrl);
+			print($robot->authUserId);
+			print($robot->isUseSubscription ? 'Yes' : 'No');
+			print($robot->isUsePlacement ? 'Yes' : 'No');
+			if ($robot->createdDate instanceof DateTime) {
+				print($robot->createdDate->format(DateTime::ATOM));
+			}
+		}
+	} catch (Throwable $e) {
+		// Handle the exception
+		print('Error: ' . $e->getMessage());
+	}
+	```
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

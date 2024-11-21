@@ -8,7 +8,7 @@ The method `crm.contact.userfield.delete` removes a custom contact field.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ The identifier can be obtained using the methods [`crm.contact.userfield.add`](.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 Delete the custom field with `id = 432`
 
@@ -81,11 +81,30 @@ Delete the custom field with `id = 432`
     echo '</PRE>';
     ```
 
+- B24-PHP-SDK
+
+    ```php       
+    try {
+        $userfieldId = 123; // Replace with the actual userfield ID you want to delete
+        $result = $serviceBuilder
+            ->getCRMScope()
+            ->contactUserfield()
+            ->delete($userfieldId);
+        if ($result->isSuccess()) {
+            print("Deleted item successfully.");
+        } else {
+            print("Failed to delete item.");
+        }
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage());
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -108,14 +127,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response, contains `true` on success ||
+[`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

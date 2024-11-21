@@ -2,17 +2,17 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
-- parameter types not specified
-- examples missing
+- adjustments needed for writing standards
+- parameter types are not specified
+- examples are missing
 - response in case of error is absent
 
 {% endnote %}
@@ -35,9 +35,9 @@ The method `im.notify.read` sets the cancellation of read notifications.
 [`unknown`](../../data-types.md) | `N` | Read only the specified notification | 18 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
-- If the `ONLY_CURRENT` parameter is passed as `Y`, the read mark will be set only for the specified `ID`. Otherwise, the mark will be set for notifications equal to or greater than the specified `ID`.
+- If the parameter `ONLY_CURRENT` is passed as `Y`, the read mark will be set only for the specified `ID`. Otherwise, the mark will be set for notifications equal to or greater than the specified `ID`.
 
 ## Examples
 
@@ -84,9 +84,28 @@ The method `im.notify.read` sets the cancellation of read notifications.
     );    
     ```
 
+- B24-PHP-SDK
+
+    ```php       
+    try {
+        $notificationIds = [1, 2, 3]; // Example notification IDs
+        $result = $serviceBuilder
+            ->getIMScope()
+            ->notify()
+            ->markMessagesAsUnread($notificationIds);
+        if ($result->isSuccess()) {
+            print_r($result->getCoreResponse()->getResponseData()->getResult());
+        } else {
+            print("Failed to mark messages as unread.");
+        }
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage());
+    }
+    ```
+
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 

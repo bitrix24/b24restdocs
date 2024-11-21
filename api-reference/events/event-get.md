@@ -2,7 +2,7 @@
 
 > Who can execute the method: any user
 
-The method `event.get` allows you to retrieve a list of registered event handlers.
+The `event.get` method allows you to retrieve a list of registered event handlers.
 
 Without parameters.
 
@@ -61,6 +61,24 @@ Without parameters.
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- B24-PHP-SDK
+
+    ```php        
+    try {
+        $eventService = $serviceBuilder->getMainScope()->event();
+        $result = $eventService->get();
+        $eventHandlers = $result->getEventHandlers();
+        foreach ($eventHandlers as $handler) {
+            print("Event: " . $handler->event . "\n");
+            print("Handler: " . $handler->handler . "\n");
+            print("Auth Type: " . $handler->auth_type . "\n");
+            print("Offline: " . $handler->offline . "\n");
+        }
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage());
+    }
     ```
 
 {% endlist %}
