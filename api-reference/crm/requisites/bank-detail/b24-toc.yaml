@@ -1,17 +1,17 @@
-title: Bank Details
-href: index.md
-items:
-  - name: About Bank Details
-    href: index.md
-  - name: Create New Bank Detail
-    href: crm-requisite-bank-detail-add.md
-  - name: Update Bank Detail
-    href: crm-requisite-bank-detail-update.md
-  - name: Get Bank Detail by ID
-    href: crm-requisite-bank-detail-get.md
-  - name: Get List of Bank Details by Filter
-    href: crm-requisite-bank-detail-list.md
-  - name: Delete Bank Detail
-    href: crm-requisite-bank-detail-delete.md
-  - name: Get Description of Bank Detail Fields
-    href: crm-requisite-bank-detail-fields.md
+title: Bank Details  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Create New Bank Detail  
+    href: crm-requisite-bank-detail-add.md  
+  - name: Update Bank Detail  
+    href: crm-requisite-bank-detail-update.md  
+  - name: Get Bank Detail by ID  
+    href: crm-requisite-bank-detail-get.md  
+  - name: Get List of Bank Details by Filter  
+    href: crm-requisite-bank-detail-list.md  
+  - name: Delete Bank Detail  
+    href: crm-requisite-bank-detail-delete.md  
+  - name: Get Description of Bank Detail Fields  
+    href: crm-requisite-bank-detail-fields.md  

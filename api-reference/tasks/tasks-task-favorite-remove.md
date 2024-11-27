@@ -5,7 +5,7 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
 - no error response provided
  
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -36,13 +36,19 @@ Upon successful execution, it returns the parameter `true` (otherwise `false`).
 
 ## Example
 
-```js
-BX24.callMethod('tasks.task.favorite.remove', {taskId: 119}, (res)=>{console.log(res.answer.result);});
-```
+{% list tabs %}
 
-{% include [Examples Note](../../_includes/examples.md) %}
+- JS
 
-## Success Response
+    ```js
+    BX24.callMethod('tasks.task.favorite.remove', {taskId: 119}, (res)=>{console.log(res.answer.result);});
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../_includes/examples.md) %}
+
+## Response on Success
 
 > 200 OK
 

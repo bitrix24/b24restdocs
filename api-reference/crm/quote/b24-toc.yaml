@@ -1,33 +1,33 @@
 title: Estimates
 href: index.md
 items:
-  - name: List of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Add Estimate
+  - name: Add estimate
     href: crm-quote-add.md
-  - name: Delete Estimate
+  - name: Delete estimate
     href: crm-quote-delete.md
-  - name: Get Estimate Fields
+  - name: Get estimate fields
     href: crm-quote-fields.md
-  - name: Get Estimate by ID
+  - name: Get estimate by ID
     href: crm-quote-get.md
-  - name: Get List of Estimates by Filter
+  - name: Get list of estimates by filter
     href: crm-quote-list.md
-  - name: Update Estimate
+  - name: Update estimate
     href: crm-quote-update.md
-  - name: Get Product Items of Estimate
+  - name: Get product items of estimate
     href: crm-quote-product-rows-get.md
-  - name: Create/Update Product Items of Estimate
+  - name: Create/update product items of estimate
     href: crm-quote-product-rows-set.md
-  - name: Create Custom Field for Estimates
+  - name: Create custom field for estimates
     href: crm-quote-user-field-add.md
-  - name: Delete Custom Field of Estimates
+  - name: Delete custom field of estimates
     href: crm-quote-user-field-delete.md
-  - name: Get Custom Fields of Estimates by ID
+  - name: Get custom fields of estimates by ID
     href: crm-quote-user-field-get.md
-  - name: Get List of Custom Fields of Estimates by Filter
+  - name: Get list of custom fields of estimates by filter
     href: crm-quote-user-field-list.md
-  - name: Update Custom Field of Estimates
+  - name: Update custom field of estimates
     href: crm-quote-user-field-update.md
   - name: Events 
     include:

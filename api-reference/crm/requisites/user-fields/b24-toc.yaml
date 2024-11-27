@@ -1,15 +1,15 @@
 title: Custom Fields
 href: index.md
 items:
-  - name: About Custom Fields of Requisites
+  - name: Overview of Methods
     href: index.md
-  - name: Create a New Custom Field for Requisites
+  - name: Create a New Custom Requisite Field
     href: crm-requisite-userfield-add.md
-  - name: Update a Custom Field for Requisites
+  - name: Update a Custom Requisite Field
     href: crm-requisite-userfield-update.md
   - name: Get a Custom Field by ID
     href: crm-requisite-userfield-get.md
-  - name: Get a List of Custom Fields for Requisites by Filter
+  - name: Get a List of Custom Requisite Fields by Filter
     href: crm-requisite-userfield-list.md
-  - name: Delete a Custom Field for Requisites
+  - name: Delete a Custom Requisite Field
     href: crm-requisite-userfield-delete.md

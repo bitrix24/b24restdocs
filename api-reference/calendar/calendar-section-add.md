@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -22,11 +22,11 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `calendar.section.add` adds a new calendar. Here and further, the section will be referred to as "calendar".
+The method `calendar.section.add` adds a new calendar. Here and further, section will be referred to as "calendar".
 
 {% note info %}
 
-Currently, the method adds a new calendar only for the user executing the calendar.section.add method. This limitation will be lifted in the future.
+Currently, the method adds a new calendar only for the user from whom the method calendar.section.add is executed. This limitation will be lifted in the future.
 
 {% endnote %}
 
@@ -36,41 +36,47 @@ Currently, the method adds a new calendar only for the user executing the calend
 - user; 
 - group. ||
 || **ownerId**^*^ | Identifier of the calendar owner. ||
-|| **name**^*^ | Name of the calendar. ||
-|| **description** | Description of the calendar. ||
-|| **color** | Color of the calendar. ||
+|| **name**^*^ | Calendar name. ||
+|| **description** | Calendar description. ||
+|| **color** | Calendar color. ||
 || **text_color** | Text color in the calendar. ||
 || **export** | List of parameters: 
 - ALLOW - allow calendar export; 
 - SET - sets the period for which to perform the export. ||
-|| **access** | Array of access permissions for the calendar. ||
+|| **access** | Array of access permissions to the calendar. ||
 |#
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Example
 
-```js
-BX24.callMethod("calendar.section.add",
-    {
-        type: 'user',
-        ownerId: '2',
-        name: 'New Section',
-        description: 'Description for section',
-        color: '#9cbeee',
-        text_color: '#283000',
-        export: [{ALLOW: false}],
-        access: {
-            'D114': 17,
-            'G2': 13,
-            'U2': 15
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod("calendar.section.add",
+        {
+            type: 'user',
+            ownerId: '2',
+            name: 'New Section',
+            description: 'Description for section',
+            color: '#9cbeee',
+            text_color: '#283000',
+            export: [{ALLOW: false}],
+            access: {
+                'D114': 17,
+                'G2': 13,
+                'U2': 15
+            }
         }
-    }
-);
-```
+    );
+    ```
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% endlist %}
 
-## Response on Success
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
-Returns the IDs of the created calendars.
+## Response in case of success
+
+Returns the id of the created calendars.

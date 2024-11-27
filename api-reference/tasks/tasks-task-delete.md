@@ -7,8 +7,8 @@
 - parameter types are not specified
 - parameter requirements are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
+- no response in case of error
+- no response in case of success
  
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -24,22 +24,28 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `tasks.task.delete` removes a task.
+The method `tasks.task.delete` deletes a task.
 
-#|
+#| 
 || **Parameter** / **Type** | **Description** ||
-|| **taskId**
+|| **taskId** 
 [`unknown`](../data-types.md) | Task identifier. ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.delete',
-    {taskId:1},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.delete',
+        {taskId:1},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../_includes/examples.md) %}

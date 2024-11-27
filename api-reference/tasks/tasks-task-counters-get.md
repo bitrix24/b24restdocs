@@ -4,19 +4,19 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing (there should be three examples - curl, js, php)
-- response in case of error is absent
-
+- adjustments needed for standard writing
+- parameter types not specified
+- parameter requirements not indicated
+- examples missing (should include three examples - curl, js, php)
+- no error response provided
+ 
 {% endnote %}
 
 {% endif %}
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -38,24 +38,30 @@ You can filter by:
 || **groupId**
 [`unknown`](../data-types.md) | User group identifier. ||
 || **type**
-[`unknown`](../data-types.md) |Counter roles: 
+[`unknown`](../data-types.md) | Counter roles: 
 - **view_all** - all roles; 
-- **view_role_responsible** - "Doing" role; 
-- **view_role_accomplice** - "Helping" role; 
-- **view_role_auditor** - "Observing" role; 
-- **view_role_originator** - "Assigned" role. 
+- **view_role_responsible** - "Responsible" role; 
+- **view_role_accomplice** - "Accomplice" role; 
+- **view_role_auditor** - "Auditor" role; 
+- **view_role_originator** - "Originator" role. 
 ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod('tasks.task.counters.get', {userId:1, groupId:0, type:'view_all'}, (res)=>{console.log(res.answer.result);});
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod('tasks.task.counters.get', {userId:1, groupId:0, type:'view_all'}, (res)=>{console.log(res.answer.result);});
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../_includes/examples.md) %}
 
-## Response in case of success
+## Success Response
 
 > 200 OK
 

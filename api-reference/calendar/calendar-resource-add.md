@@ -1,17 +1,17 @@
-# Add New Resource calendar.resource.add
+# Add a new resource calendar.resource.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
-- no response in case of error
+- response in case of error is missing
 
 {% endnote %}
 
@@ -23,26 +23,32 @@ Some data may be missing here — we will complete it shortly.
 
 The method `calendar.resource.add` adds a new resource and takes an array of parameters as input.
 
-#|
+#| 
 || **Parameter** / **Type** | **Description** ||
 || **name**^*^ 
-[`string`](../data-types.md) | Name of the resource. ||
+[`string`](../data-types.md) | Resource name. ||
 |#
 
-{% include [Parameter Note](../../_includes/required.md) %}
+{% include [Parameter notes](../../_includes/required.md) %}
 
 ## Example
 
-```js
-BX24.callMethod("calendar.resource.add",
-    {
-        name: 'My resource title'
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Note](../../_includes/examples.md) %}
+- JS
 
-## Response on Success
+    ```js
+    BX24.callMethod("calendar.resource.add",
+        {
+            name: 'My resource title'
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Example notes](../../_includes/examples.md) %}
+
+## Response in case of success
 
 Returns the ID of the added resource.

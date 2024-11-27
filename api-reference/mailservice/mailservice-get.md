@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- missing description of parameter types
+- missing descriptions of parameter types
 - no response examples
 
 {% endnote %}
@@ -13,7 +13,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -33,23 +33,30 @@ The method `mailservice.get` returns the parameters of the specified mail servic
 
 ## Example
 
-```js
-BX24.callMethod(
-    "mailservice.get",
-    {
-        'ID': 10
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "mailservice.get",
         {
-            console.error(result.error());
-        }
-        else
+            'ID': 10
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote on examples](../../_includes/examples.md) %}

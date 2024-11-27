@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- from Sergey's file: please note that this returns the complete list of connected connectors in the current Bitrix24
+- from Sergei's file: please note that this returns the complete list of connected connectors in the current Bitrix24
 - parameters are not specified
 - required parameters are not indicated
 - examples in other languages are missing
@@ -27,19 +27,26 @@ The method retrieves the list of connectors.
 
 ## Example
 
-```js
-BX24.callMethod('imconnector.list', {}, function(result) {
-    if(result.error())
-    {
-        console.error(result.error().ex);
-    }
-    else
-    {
-        console.log(result.data());
-    }
-});
-```
-{% include [Examples note](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod('imconnector.list', {}, function(result) {
+        if(result.error())
+        {
+            console.error(result.error().ex);
+        }
+        else
+        {
+            console.log(result.data());
+        }
+    });
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on success
 

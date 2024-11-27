@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
-- response in case of an error is missing
+- response in case of error is missing
 
 {% endnote %}
 
@@ -23,16 +23,22 @@ Some data may be missing — we will complete it soon.
 
 The method `calendar.resource.list` returns a list (array) of all resources.
 
-No parameters.
+Without parameters.
 
 ## Example
 
-```js
-BX24.callMethod("calendar.resource.list")
-```
+{% list tabs %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod("calendar.resource.list")
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 ## Successful response
 
-Returns an array, where each element has the fields "ID", "NAME", "CREATED_BY".
+Returns an array, each element of which has the fields "ID", "NAME", "CREATED_BY".

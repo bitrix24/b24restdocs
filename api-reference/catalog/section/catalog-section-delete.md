@@ -82,7 +82,7 @@ The method `catalog.section.delete` removes a section from the catalog.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -112,7 +112,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -130,13 +130,13 @@ HTTP Status: **400**
 || `200040300050` | Insufficient permissions to delete the catalog section ||
 || `200040300020` | Errors during deletion (e.g., fatal errors) ||
 || `200700300030` | No catalog section exists with that identifier ||
-|| `100` | The parameter `id` is not specified ||
+|| `100` | Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Learning 
 
 - [{#T}](./catalog-section-add.md)
 - [{#T}](./catalog-section-update.md)

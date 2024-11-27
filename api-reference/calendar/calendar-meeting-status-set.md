@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -36,14 +36,20 @@ The method `calendar.meeting.status.set` sets the participation status in an eve
 
 ## Example
 
-```js
-BX24.callMethod("calendar.meeting.status.set",
-    {
-        eventId: '651',
-        status: 'Y'
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod("calendar.meeting.status.set",
+        {
+            eventId: '651',
+            status: 'Y'
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../_includes/examples.md) %}
 

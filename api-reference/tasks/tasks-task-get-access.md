@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -31,18 +31,24 @@ The method `tasks.task.getaccess` is used to check access to a task.
 || **taskId**
 [`unknown`](../data-types.md) | Task identifier. ||
 || **users**
-[`unknown`](../data-types.md) | Array of user IDs for whom access needs to be checked. By default, the current user is used. ||
+[`unknown`](../data-types.md) | Array of user IDs for which access needs to be checked. By default, the current user is used. ||
 
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.getaccess',
-    {taskId:1, users:[1]},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.getaccess',
+        {taskId:1, users:[1]},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../_includes/examples.md) %}

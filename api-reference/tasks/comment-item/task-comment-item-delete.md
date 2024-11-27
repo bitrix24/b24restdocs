@@ -6,7 +6,7 @@
 
 - parameter types are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
+- response in case of an error is missing
 - response in case of success is missing
 - add a description that access permission can be checked using a special method
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -31,9 +31,9 @@ The method `task.commentitem.delete` deletes a comment. Mandatory authorization 
 #|
 || **Parameter** / **Type** | **Description** ||
 || **TASKID^*^**
-[`unknown`](../../data-types.md) | Identifier of the task. ||
+[`unknown`](../../data-types.md) | Task identifier. ||
 || **ITEMID^*^**
-[`unknown`](../../data-types.md) | Identifier of the comment. ||
+[`unknown`](../../data-types.md) | Comment identifier. ||
 |#
 
 {% include [Footnote about parameters](../../../_includes/required.md) %}
@@ -46,14 +46,21 @@ Maintaining the order of parameters in the request is mandatory. If violated, th
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.commentitem.delete',
-    [13, 1205],
-    function(result){
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.commentitem.delete',
+        [13, 1205],
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote about examples](../../../_includes/examples.md) %}

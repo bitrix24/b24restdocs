@@ -4,9 +4,9 @@
 >
 > Who can execute the method: any user
 
-The method `catalog.section.getFields` is designed to retrieve the available fields of the catalog section.
+The method `catalog.section.getFields` returns the available fields of the catalog section.
 
-No parameters.
+Without parameters.
 
 ## Code Examples
 
@@ -159,7 +159,7 @@ HTTP status: **200**
 || **section**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`catalog_section`](../data-types.md#catalog_section), and `value` is an object of type [`rest_field_description`](../data-types.md) ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -184,7 +184,7 @@ HTTP status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Learning 
 
 - [{#T}](./catalog-section-add.md)
 - [{#T}](./catalog-section-update.md)

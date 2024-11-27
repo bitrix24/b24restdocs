@@ -70,7 +70,7 @@ This field is relevant only for services of type `list (enum)`.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-Adding a service of type `Quantitative Service`:
+Adding a service with type `Quantitative service`:
 
 {% list tabs %}
 
@@ -123,9 +123,20 @@ Adding a service of type `Quantitative Service`:
     ```php
     require_once('crest.php');
 
+    $params = [
+        'DELIVERY_ID' => 197,
+        'ACTIVE' => 'Y',
+        'CODE' => 'door_delivery',
+        'NAME' => 'Door Delivery',
+        'DESCRIPTION' => 'Door Delivery Description',
+        'TYPE' => 'checkbox',
+        'SORT' => 100,
+        'PRICE' => 99.99
+    ];
+
     $result = CRest::call(
-        'sale.basketitem.getFields',
-        []
+        'sale.delivery.extra.service.add',
+        $params
     );
 
     echo '<PRE>';
@@ -135,7 +146,7 @@ Adding a service of type `Quantitative Service`:
 
 {% endlist %}
 
-Adding a service of type `List`:
+Adding a service with type `List`:
 
 {% list tabs %}
 
@@ -242,8 +253,8 @@ HTTP status: **200**
         "finish": 1714204589.95374,
         "duration": 0.23619484901428223,
         "processing": 0.031846046447753906,
-        "date_start": "2024-04-27T10:56:29+03:00",
-        "date_finish": "2024-04-27T10:56:29+03:00"
+        "date_start": "2024-04-27T10:56:29+02:00",
+        "date_finish": "2024-04-27T10:56:29+02:00"
     }
 }
 ```

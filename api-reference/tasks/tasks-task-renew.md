@@ -1,4 +1,4 @@
-# Renew Task After Completion tasks.task.renew
+# Renew a task after its completion tasks.task.renew
 
 {% if build == 'dev' %}
 
@@ -7,8 +7,8 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
+- no response in case of error
+- no response in case of success
  
 {% endnote %}
 
@@ -36,12 +36,18 @@ The method `tasks.task.renew` renews a task after its completion.
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.renew',
-    {taskId:1},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.renew',
+        {taskId:1},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../_includes/examples.md) %}

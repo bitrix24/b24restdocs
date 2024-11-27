@@ -1,4 +1,4 @@
-# Get Available User Messages from News Feed log.blogpost.get
+# Access Available User Messages from the News Feed log.blogpost.get
 
 {% note warning "We are still updating this page" %}
 
@@ -12,7 +12,7 @@ Some data may be missing — we will complete it shortly.
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- response in case of error is missing
+- response in case of an error is missing
 
 {% endnote %}
 
@@ -22,32 +22,45 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-Returns a list of messages from the News Feed available to the [current user](../how-to-call-rest-api/authorization.md#concept-of-current-user).
+Returns a list of news feed messages available to the [current user](../how-to-call-rest-api/authorization.md#concept-of-current-user).
 
 #|
 || **Parameter** | **Description** ||
 || **POST_ID** | Filter by the numeric identifier of the message. ||
-|| **LOG_RIGHTS** | Filter by recipients who have the right to view messages. The filter value can be either a string (specific permission value) or an array. Possible permission values:
+|| **LOG_RIGHTS** | Filter by recipients who have the right to view messages. The filter value can be either a string (specific rights value) or an array. Possible rights values:
 
 {% include notitle [message recipients](./_includes/log-recepients.md) %}
 
 Default value - `['UA']` ||
 |#
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Footnote on parameters](../../_includes/required.md) %}
 
 ## Examples
 
-```js
-BX24.callMethod('log.blogpost.get', { POST_ID: 755 });
-```
-{% include [Example Notes](../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod('log.blogpost.get', { POST_ID: 755 });
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../_includes/examples.md) %}
 
 ## Request
 
-```http
-https://my.bitrix24.com/rest/log.blogpost.get.xml?auth=xxxxxxx
-```
+{% list tabs %}
+
+- URL request
+
+    ```http
+    https://my.bitrix24.com/rest/log.blogpost.get.xml?auth=xxxxxxx
+    ```
+
+{% endlist %}
 
 ## Response:
 

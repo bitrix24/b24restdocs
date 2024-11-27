@@ -2,7 +2,7 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - missing parameter type descriptions
 - no response examples
@@ -26,7 +26,7 @@ The method `mailservice.add` adds a new mail service.
 
 ## Parameters
 
-#| 
+#|
 ||  **Parameter** / **Type**| **Description** | **Available from** ||
 || **ACTIVE**
 [`unknown`](../data-types.md) | Service activity (Y / N) | ||
@@ -46,29 +46,36 @@ The method `mailservice.add` adds a new mail service.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "mailservice.add",
-    {
-        'ACTIVE': 'Y',
-        'NAME': 'My Mail Service',
-        'SERVER': 'imap.my-mail.com',
-        'PORT': '993',
-        'ENCRYPTION': 'Y',
-        'LINK': 'https://mail.my-mail.com/',
-        'SORT': '500'
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "mailservice.add",
         {
-            console.error(result.error());
-        }
-        else
+            'ACTIVE': 'Y',
+            'NAME': 'My Mail Service',
+            'SERVER': 'imap.my-mail.com',
+            'PORT': '993',
+            'ENCRYPTION': 'Y',
+            'LINK': 'https://mail.my-mail.com/',
+            'SORT': '500'
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
-{% include [Note on examples](../../_includes/examples.md) %}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

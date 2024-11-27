@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,101 +10,149 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits are needed to meet the writing standard
 
 {% endnote %}
 
 {% endif %}
 
-The **CALENDAR_GRIDVIEW** placement allows you to embed in the calendar view (at the top - where day/week/month/list is located).
+The **CALENDAR_GRIDVIEW** placement allows you to embed into the calendar view (at the top - where day/week/month/list options are located).
 
 ## Example
 
 How to bind the application to the calendar embed:
 
-```javascript
-BX24.callMethod('placement.bind', {
-    PLACEMENT:'CALENDAR_GRIDVIEW',
-    HANDLER: 'http://svd.com/svdapp.php',
-    TITLE: 'Custom tab'
-}, (result) => {console.log(result)});
-```
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.callMethod('placement.bind', {
+        PLACEMENT:'CALENDAR_GRIDVIEW',
+        HANDLER: 'http://svd.com/svdapp.php',
+        TITLE: 'Custom tab'
+    }, (result) => {console.log(result)});
+    ```
+
+{% endlist %}
 
 If you call in the application:
 
-```php
-echo "<pre>";
-print_r($_REQUEST);
-echo "</pre>";
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    echo "<pre>";
+    print_r($_REQUEST);
+    echo "</pre>";
+    ```
+
+{% endlist %}
 
 you will see that certain parameters are received. In particular:
 
-```php
-[PLACEMENT_OPTIONS] => {
-    "viewRangeFrom":"2018-09-30",
-    "viewRangeTo":"2018-11-04"
-}
-```
+{% list tabs %}
 
-Also, when working in the embed, there is a specific interface: methods and events.
+- PHP
+
+    ```php
+    [PLACEMENT_OPTIONS] => {
+        "viewRangeFrom":"2018-09-30",
+        "viewRangeTo":"2018-11-04"
+    }
+    ```
+
+{% endlist %}
+
+Additionally, when working in the embed, there is a specific interface: methods and events.
 
 ## Methods (js methods)
 
 - **getEvents** – retrieving events.
 
-```javascript
-var dateFrom = new Date();
-var dateTo = new Date(dateFrom.getTime() + 86400 * 30 * 1000); // Multiply by 1000 to convert seconds to milliseconds
-dateFrom.setHours(0, 0, 0, 0);
-dateTo.setHours(0, 0, 0, 0);
+{% list tabs %}
 
-BX24.placement.call('getEvents',
-    {
-        dateFrom: dateFrom,
-        dateTo: dateTo
-    },
-    function(events) {
-        console.log('getEvents response:');
-        console.dir(events);
-    }
-);
-```
-  
+- JS
+
+    ```javascript
+    var dateFrom = new Date();
+    var dateTo = new Date(dateFrom.getTime() + 86400 * 30 * 1000); // Multiply by 1000 to convert seconds to milliseconds
+    dateFrom.setHours(0, 0, 0, 0);
+    dateTo.setHours(0, 0, 0, 0);
+
+    BX24.placement.call('getEvents',
+        {
+            dateFrom: dateFrom,
+            dateTo: dateTo
+        },
+        function(events) {
+            console.log('getEvents response:');
+            console.dir(events);
+        }
+    );
+    ```
+
+{% endlist %}
+
 - **viewEvent** – viewing an event (opening the view card).
 
-```javascript
-BX24.placement.call('viewEvent',
-	{
-		id: "1431170", // event id
-		dateFrom: "11.07.2018" // event date (not mandatory, but important for recurring events)
-	},
-	function(){}
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.placement.call('viewEvent',
+        {
+            id: "1431170", // event id
+            dateFrom: "11.07.2018" // event date (optional, but important for recurring events)
+        },
+        function(){}
+    );
+    ```
+
+{% endlist %}
 
 - **addEvent** – adding a new event (opening the card).
 
-```javascript
-BX24.placement.call('addEvent', function(){});
-```
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.placement.call('addEvent', function(){});
+    ```
+
+{% endlist %}
 
 - **editEvent** – editing an event (opening the card).
 
-```javascript
-BX24.placement.call('editEvent', {uid: "1431171|19.07.2018"}, function(){});
-```
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.placement.call('editEvent', {uid: "1431171|19.07.2018"}, function(){});
+    ```
+
+{% endlist %}
 
 - **deleteEvent** – deleting an event.
 
-```javascript
-BX24.placement.call('deleteEvent',
-	{
-		id: "1431169"
-	},
-	function(){}
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.placement.call('deleteEvent',
+        {
+            id: "1431169"
+        },
+        function(){}
+    );
+    ```
+
+{% endlist %}
 
 ## Events that can be tracked in the placement
 
@@ -112,8 +160,8 @@ BX24.placement.call('deleteEvent',
 || **Event** | **Description** ||
 || Calendar.customView:refreshEntries | Refreshing events. ||
 || Calendar.customView:decreaseViewRangeDate | Clicking the back arrow, i.e., rewinding the calendar to previous dates. ||
-|| Calendar.customView:increaseViewRangeDate | Clicking the forward arrow, i.e., rewinding the calendar to upcoming dates. ||
-|| Calendar.customView:adjustToDate | Jumping to a specific date. ||
+|| Calendar.customView:increaseViewRangeDate | Clicking the forward arrow, i.e., rewinding the calendar to future dates. ||
+|| Calendar.customView:adjustToDate | Navigating to a specific date. ||
 |#
 
 ## See also
@@ -121,4 +169,3 @@ BX24.placement.call('deleteEvent',
 - [{#T}](../widgets/index.md)
 - [{#T}](../../local-integrations/local-apps.md)
 - [{#T}](../widgets/user-field/index.md)
-- [Adding your own REST API methods](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=43&LESSON_ID=7985) in the training course

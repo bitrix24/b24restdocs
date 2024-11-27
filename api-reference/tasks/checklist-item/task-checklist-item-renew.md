@@ -8,7 +8,7 @@
 - examples are missing (there should be three examples - curl, js, php)
 - success response is missing
 - error response is missing
-- add description with hints on how to check access permission using a special method
+- add a description with hints on how to check access permission using a special method
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `task.checklistitem.renew` marks a completed checklist item as newly active.
+The method `task.checklistitem.renew` marks a completed checklist item as active again.
 
 ## Parameters
 
@@ -36,7 +36,7 @@ The method `task.checklistitem.renew` marks a completed checklist item as newly 
 [`unknown`](../../data-types.md) | Checklist item identifier. ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
@@ -46,18 +46,24 @@ The order of parameters in the request must be followed. If violated, the reques
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.checklistitem.renew',
-    [13, 21],
-    function(result){
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.checklistitem.renew',
+        [13, 21],
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## See also
 

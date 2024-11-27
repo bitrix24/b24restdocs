@@ -5,6 +5,8 @@ items:
     href: index.md
   - name: Register Provider
     href: messageservice-sender-add.md
+  - name: Update Provider
+    href: messageservice-sender-update.md
   - name: Get List of Providers
     href: messageservice-sender-list.md
   - name: Delete Provider

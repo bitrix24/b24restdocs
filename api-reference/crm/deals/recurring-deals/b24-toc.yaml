@@ -1,19 +1,19 @@
 title: Recurring Deals
 href: index.md
 items: 
-  - name: What is a recurring deal?
+  - name: Overview of Methods
     href: index.md
-  - name: Create a new recurring deal
+  - name: Create a New Recurring Deal
     href: crm-deal-recurring-add.md
-  - name: Get the list of fields for the recurring deal template
+  - name: Get the List of Recurring Deal Template Fields
     href: crm-deal-recurring-fields.md
-  - name: Create a new deal from a template
+  - name: Create a New Deal from a Template
     href: crm-deal-recurring-expose.md
-  - name: Modify an existing setting for the recurring deal template
+  - name: Modify an Existing Setting for a Recurring Deal Template
     href: crm-deal-recurring-update.md
-  - name: Get the fields of the recurring deal template setting by Id
+  - name: Get Template Setting Fields for a Recurring Deal by Id
     href: crm-deal-recurring-get.md
-  - name: Get the list of settings for recurring deal templates
+  - name: Get the List of Recurring Deal Template Settings
     href: crm-deal-recurring-list.md
-  - name: Delete an existing setting for the recurring deal template
+  - name: Delete an Existing Setting for a Recurring Deal Template
     href: crm-deal-recurring-delete.md

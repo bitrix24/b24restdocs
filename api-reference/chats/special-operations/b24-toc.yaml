@@ -1,13 +1,15 @@
 title: Special Operations
 href: index.md
 items:
-  - name: Disable notifications from chat
+  - name: Special Operations in Bitrix24 Chats
     href: index.md
-  - name: Mark chat as read or unread
+  - name: Mark a Chat as "Read" or "Unread"
     href: im-recent-unread.md
-  - name: Mark all chats as read
+  - name: Mark All Chats as "Read"
     href: im-dialog-read-all.md
-  - name: Pin chat to favorites
+  - name: Pin a Chat to Favorites
     href: im-recent-pin.md
-  - name: Remove chat from recent list
+  - name: Remove a Chat from Recent List
     href: im-recent-hide.md
+  - name: Mute Notifications from a Chat
+    href: im-chat-mute.md

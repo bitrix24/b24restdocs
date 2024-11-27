@@ -1,15 +1,15 @@
-title: Automation Rules for Workflows
-href: index.md
-items:
-  - name: Automation Rules for Workflows
-    href: index.md
-  - name: Register a New Automation Rule
-    href: bizproc-robot-add.md
-  - name: Get a List of Registered Automation Rules
-    href: bizproc-robot-list.md
-  - name: Update Automation Rule Fields
-    href: bizproc-robot-update.md
-  - name: Delete a Registered Automation Rule
-    href: bizproc-robot-delete.md
-  - name: Automation Rules and Workflow Actions with Result Waiting
-    href: bizproc-robot-with-subscription.md
+title: Workflow Automation Rules  
+href: index.md  
+items:  
+  - name: Workflow Automation Rules  
+    href: index.md  
+  - name: Register a New Automation Rule  
+    href: bizproc-robot-add.md  
+  - name: Get a List of Registered Automation Rules  
+    href: bizproc-robot-list.md  
+  - name: Update Automation Rule Fields  
+    href: bizproc-robot-update.md  
+  - name: Delete a Registered Automation Rule  
+    href: bizproc-robot-delete.md  
+  - name: Automation Rules and Workflow Actions with Result Waiting  
+    href: bizproc-event-send.md  

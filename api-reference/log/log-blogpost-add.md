@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
-- no error response is provided
+- parameter requirements are not indicated
+- no response in case of error
 - No examples in other languages
 
 {% endnote %}
@@ -61,28 +61,40 @@ Default value is `['UA']` ||
 
 ## Examples
 
-```js
-BX24.callMethod('log.blogpost.add', {
-    POST_TITLE: 'Title',
-    POST_MESSAGE: 'Text',
-    DEST: ['SG1', 'U2']
-}, result => {
-    if(result.error())
-    {
-        console.log(result.error());
-    }
-    else
-    {
-        alert('OK!');
-    }
-});
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod('log.blogpost.add', {
+        POST_TITLE: 'Title',
+        POST_MESSAGE: 'Text',
+        DEST: ['SG1', 'U2']
+    }, result => {
+        if(result.error())
+        {
+            console.log(result.error());
+        }
+        else
+        {
+            alert('OK!');
+        }
+    });
+    ```
+
+{% endlist %}
 
 ## Request
 
-```http
-https://my.bitrix24.com/rest/log.blogpost.add.json?POST_MESSAGE=Hello%2C%20world!&auth=d9a76e2929b7bc1ff21aee9c0ce7e3e2
-```
+{% list tabs %}
+
+- URL request
+
+    ```http
+    https://my.bitrix24.com/rest/log.blogpost.add.json?POST_MESSAGE=Hello%2C%20world!&auth=d9a76e2929b7bc1ff21aee9c0ce7e3e2
+    ```
+
+{% endlist %}
 
 ## Response
 

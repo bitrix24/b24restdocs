@@ -8,7 +8,7 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -24,7 +24,7 @@ Some data may be missing — we will complete it shortly.
 
 The method `calendar.event.delete` removes an event.
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **type**^*^ | Calendar type: 
 - user; 
@@ -33,21 +33,27 @@ The method `calendar.event.delete` removes an event.
 || **id**^*^ | Identifier of the event. ||
 |#
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Example
 
-```js
-BX24.callMethod("calendar.event.delete",
-    {
-        id: 698,
-        type: 'user',
-        ownerId: '2'
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod("calendar.event.delete",
+        {
+            id: 698,
+            type: 'user',
+            ownerId: '2'
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 ## Response on Success
 

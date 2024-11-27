@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it soon.
 
 The method `calendar.meeting.params.set` sets the event parameters for the current user if they are a participant.
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **eventId** | Event identifier. ||
 || **accessibility** | Availability during the event: 
@@ -40,15 +40,21 @@ The method `calendar.meeting.params.set` sets the event parameters for the curre
 
 ## Example
 
-```js
-BX24.callMethod("calendar.meeting.params.set",
-    {
-        eventId: '651',
-        accessibility: 'free',
-        remind: [{type: 'min', count: 20}]
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod("calendar.meeting.params.set",
+        {
+            eventId: '651',
+            accessibility: 'free',
+            remind: [{type: 'min', count: 20}]
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../_includes/examples.md) %}
 

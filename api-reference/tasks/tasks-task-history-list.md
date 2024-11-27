@@ -1,12 +1,12 @@
-# Task History `tasks.task.history.list`
+# Task History: tasks.task.history.list
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
-- no response in case of error
+- parameter requirements are not indicated
+- no response in case of an error
 
 {% endnote %}
 
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -33,21 +33,21 @@ You can filter and sort by all fields (see [tasks.task.list](./tasks-task-list.m
 || **taskId**
 [`unknown`](../data-types.md) | Task identifier. ||
 || **start**
-[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, this parameter's value must always be a multiple of 50. For example, with a value of 50, the result will display the 51st record and subsequent ones, while the first 50 records will be skipped.
+[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, the value of this parameter must always be a multiple of 50. For example, with a value of 50, the result will display the 51st record and subsequent ones, while the first 50 records will be skipped.
 
 With a value of -1, the count will be disabled.
 
-Works for HTTPS requests.||
+Works for https requests.||
 |#
 
 ## Example 1
 
-Output the history of a specific task using the `NEW` filter (i.e., when the task was created):
+Output the history of a specific task using the filter `NEW` (i.e., when the task was created):
 ```js
 BX24.callMethod('tasks.task.history.list', {taskId: 119, filter:{FIELD:'NEW'}}, (res)=>{console.log(res.answer.result);});
 ```
 
-## Successful Response
+## Response on Success
 
 > 200 OK
 
@@ -57,7 +57,7 @@ BX24.callMethod('tasks.task.history.list', {taskId: 119, filter:{FIELD:'NEW'}}, 
         "list": [
             {
                 "id": "1230",
-                "createdDate": "03.01.2019 15:29:28",
+                "createdDate": "03/01/2019 15:29:28",
                 "field": "NEW",
                 "value": {
                     "from": null,
@@ -88,16 +88,22 @@ BX24.callMethod('tasks.task.history.list', {taskId: 119, filter:{FIELD:'NEW'}}, 
 
 Output the history of a specific task without using filters:
 
-```js
-BX24.callMethod(
-    'task.planner.getlist',
-    [],
-    function(result)
-    {
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.planner.getlist',
+        [],
+        function(result)
+        {
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../_includes/examples.md) %}

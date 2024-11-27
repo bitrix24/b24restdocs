@@ -5,8 +5,8 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - missing examples (there should be three examples - curl, js, php)
-- no response in case of error
-- no response in case of success
+- missing response in case of error
+- missing response in case of success
  
 {% endnote %}
 
@@ -28,17 +28,23 @@ Without parameters.
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.getFields',
-    {},
-    function(result)
-    {
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.getFields',
+        {},
+        function(result)
+        {
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Note on examples](../../_includes/examples.md) %}
 
@@ -64,7 +70,7 @@ Default - null ||
 0 - Low.
 Default - 1 ||
 || **STATUS**
-[`enum`](../data-types.md) | Status. | 2 - Waiting for execution,
+[`enum`](../data-types.md) | Status. | 2 - Pending,
 3 - In progress,
 4 - Awaiting control,
 5 - Completed,
@@ -79,7 +85,7 @@ Default - No. ||
 N - No.
 Default - No. ||
 || **REPLICATE**
-[`enum`](../data-types.md) | Repeating task. | Y - Yes,
+[`enum`](../data-types.md) | Recurring task. | Y - Yes,
 N - No.
 Default - No. ||
 || **GROUP_ID**
@@ -107,7 +113,7 @@ Default - No. ||
 || **CLOSED_BY**
 [`integer`](../data-types.md) | Closed by. | ||
 || **CLOSED_DATE**
-[`datetime`](../data-types.md) | Closing date. | ||
+[`datetime`](../data-types.md) | Closure date. | ||
 || **DATE_START**
 [`datetime`](../data-types.md) | Start date. | null ||
 || **DEADLINE**

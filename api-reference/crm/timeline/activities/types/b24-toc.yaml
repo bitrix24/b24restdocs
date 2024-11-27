@@ -1,11 +1,11 @@
-title: Custom Activity Types
-href: index.md
-items:
-  - name: About Custom Activity Types
-    href: index.md
-  - name: Add Custom Activity Type
-    href: crm-activity-type-add.md
-  - name: Get List of Custom Activity Types
-    href: crm-activity-type-list.md
-  - name: Delete Custom Activity Type
-    href: crm-activity-type-delete.md
+title: Custom Activity Types  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Add Custom Activity Type  
+    href: crm-activity-type-add.md  
+  - name: Get List of Custom Activity Types  
+    href: crm-activity-type-list.md  
+  - name: Delete Custom Activity Type  
+    href: crm-activity-type-delete.md  

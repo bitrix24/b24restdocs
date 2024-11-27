@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- An additional example with an explanation for linking the task to CRM is needed
+- An additional example is needed with an explanation on linking the task to CRM
 - Parameter types are not specified
 - Parameter requirements are not indicated
 - Examples are missing (there should be three examples - curl, js, php)
@@ -17,7 +17,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -27,31 +27,37 @@ Some data may be missing here — we will add it soon
 
 The method `tasks.task.update` updates a task.
 
-#|
-|| **Parameter** / **Type** | **Description** ||
-|| **taskId**
-[`unknown`](../data-types.md) | Task identifier. ||
-|| **fields**
-[`unknown`](../data-types.md) | Fields corresponding to the available list of fields [tasks.task.getfields](./tasks-task-get-fields.md). ||
+#| 
+|| **Parameter** / **Type** | **Description** || 
+|| **taskId** 
+[`unknown`](../data-types.md) | Task identifier. || 
+|| **fields** 
+[`unknown`](../data-types.md) | Fields corresponding to the available list of fields [tasks.task.getfields](./tasks-task-get-fields.md). || 
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.update',
-    {taskId:1, fields:{TITLE:'task for test', RESPONSIBLE_ID:1}},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
 
-Method parameters for attaching a file to the task from the drive:
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.update',
+        {taskId:1, fields:{TITLE:'task for test', RESPONSIBLE_ID:1}},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
+
+Method parameters for attaching a file to the task from the Drive:
 
 ```json
 {"taskId": "77", "fields": {"UF_TASK_WEBDAV_FILES": ["n111"]}}
 ```
 
-where "111" is the file id on the drive.
+where "111" is the file id on the Drive.
 
 {% note warning %}
 
@@ -61,26 +67,32 @@ You need to add the letter `n` at the beginning.
 
 **Starting from version 22.1300.0**, you can pass the parameter `SE_PARAMETER` to the method - a list of objects with additional task parameters.
 
-```js
-BX.ajax.runAction("tasks.task.add", {
-    data: {
-        fields: {
-            "TITLE": 'REST',
-            "RESPONSIBLE_ID": 1,
-            "SE_PARAMETER": [
-                {
-                    'VALUE': 'Y',
-                    'CODE': 3
-                },
-                {
-                    'VALUE': 'Y',
-                    'CODE': 2
-                },
-            ]
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX.ajax.runAction("tasks.task.add", {
+        data: {
+            fields: {
+                "TITLE": 'REST',
+                "RESPONSIBLE_ID": 1,
+                "SE_PARAMETER": [
+                    {
+                        'VALUE': 'Y',
+                        'CODE': 3
+                    },
+                    {
+                        'VALUE': 'Y',
+                        'CODE': 2
+                    },
+                ]
+            }
         }
-    }
-}).then(function (response) { console.log(response);});
-```
+    }).then(function (response) { console.log(response);});
+    ```
+
+{% endlist %}
 
 Code values:
 

@@ -1,4 +1,4 @@
-# Update Checklist Item task.checklistitem.update
+# Update checklist item task.checklistitem.update
 
 {% if build == 'dev' %}
 
@@ -8,7 +8,7 @@
 - examples are missing (there should be three examples - curl, js, php)
 - success response is missing
 - error response is missing
-- add a description with hints on how to check access permission for modification using a special method
+- add a description with hints on how to check access permission using a special method
 
 {% endnote %}
 
@@ -40,7 +40,7 @@ It is recommended to check if this action is allowed before updating the data ([
 [`unknown`](../../data-types.md) | Array of checklist item fields (**TITLE**, **SORT_INDEX**, **IS_COMPLETE**). ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
@@ -50,16 +50,22 @@ The order of parameters in the request is mandatory. If violated, the request wi
 
 ## Example
 
-```js
-// Updating the item with ID=25 status to "not completed", and text to "Item not completed"
-BX24.callMethod(
-    'task.checklistitem.update',
-    [13, 25, {'TITLE': 'Item not completed', 'IS_COMPLETE': 'N'}],
-    function(result){
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    // Updating the item with ID=25 to set its status to "not completed" and text to "Item not completed"
+    BX24.callMethod(
+        'task.checklistitem.update',
+        [13, 25, {'TITLE': 'Item not completed', 'IS_COMPLETE': 'N'}],
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../_includes/examples.md) %}

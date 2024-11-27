@@ -2,18 +2,18 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -30,27 +30,33 @@ The method `calendar.event.getbyid` returns a calendar event by its ID.
 || **id**^*^ | Number. Returns an array with the fields of the event entity or `null`. ||
 |#
 
-{% include [Parameter Note](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Example
 
-```js
-BX24.callMethod("calendar.event.getbyid", {id: 324});
-/*
-    * Returns event by its id
-    *
-    * @param array $params - incoming params:
-    * $params['id'] - int, (required) calendar event id
-    * @return event or null
-    * @throws \Bitrix\Rest\RestException
-    *
-    * @example (Javascript)
-    * BX24.callMethod("calendar.event.getbyid",
-    * {
-    *     id: 324
-    * });
-    *
-    */
-```
+{% list tabs %}
 
-{% include [Example Note](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod("calendar.event.getbyid", {id: 324});
+    /*
+        * Returns event by its id
+        *
+        * @param array $params - incoming params:
+        * $params['id'] - int, (required) calendar event id
+        * @return event or null
+        * @throws \Bitrix\Rest\RestException
+        *
+        * @example (Javascript)
+        * BX24.callMethod("calendar.event.getbyid",
+        * {
+        *     id: 324
+        * });
+        *
+        */
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

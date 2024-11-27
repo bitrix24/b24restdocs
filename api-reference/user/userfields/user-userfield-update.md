@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method updates a user field.
+The method updates a user field.
 
 {% note info "" %}
 
@@ -34,16 +34,23 @@ This method updates a user field.
 
 ## Example
 
-```php
-CRest::call(
-    'user.userfield.update',
-    [
-        'id' => 42,
-        'fields' => [
-            'LIST_FILTER_LABEL' => 'Title',
-            'LIST_COLUMN_LABEL' => 'List Title',
-        ],
-    ]
-);
-```
-{% include [Example Note](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- PHP
+
+    ```php
+    CRest::call(
+        'user.userfield.update',
+        [
+            'id' => 42,
+            'fields' => [
+                'LIST_FILTER_LABEL' => 'Title',
+                'LIST_COLUMN_LABEL' => 'List Title',
+            ],
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

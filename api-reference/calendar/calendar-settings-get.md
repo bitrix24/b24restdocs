@@ -1,14 +1,14 @@
-# Get Main Calendar Settings calendar.settings.get
+# Get main calendar settings calendar.settings.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
 - success response is missing
@@ -22,14 +22,20 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: administrator
 
-The method `calendar.settings.get` returns the main settings of the calendar. It pertains to module settings, accessible only to administrators.
+The method `calendar.settings.get` returns the main calendar settings. It pertains to module settings, accessible only to administrators.
 
 No parameters.
 
 ## Example
 
-```js
-BX24.callMethod("calendar.settings.get", {});
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod("calendar.settings.get", {});
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

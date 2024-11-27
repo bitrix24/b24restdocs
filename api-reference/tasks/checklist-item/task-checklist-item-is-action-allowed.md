@@ -6,8 +6,8 @@
 
 - parameter types are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- success response is missing
-- error response is missing
+- no response in case of success
+- no response in case of error
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `task.checklistitem.isactionallowed` checks if the action is permitted.
+The method `task.checklistitem.isactionallowed` checks whether the action is permitted.
 
 ## Parameters
 
@@ -41,20 +41,26 @@ The method `task.checklistitem.isactionallowed` checks if the action is permitte
 - **4** - ACTION_TOGGLE. ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Example
 
-```js
-// For the item with ID=21, check if the modification action is allowed
-BX24.callMethod(
-    'task.checklistitem.isactionallowed',
-    [13, 21, 2],
-    function(result){
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    // For the item with ID=21, check if the modification action is allowed
+    BX24.callMethod(
+        'task.checklistitem.isactionallowed',
+        [13, 21, 2],
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

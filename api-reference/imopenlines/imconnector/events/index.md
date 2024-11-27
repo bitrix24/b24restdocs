@@ -1,8 +1,8 @@
-# Receiving New Messages OnImConnectorMessageAdd
+# When Receiving New Messages OnImConnectorMessageAdd
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -21,14 +21,14 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can subscribe: any user
 
-This event marks a new message from the open channel. The event is triggered for full-fledged connectors, such as Facebook. It does not work with the [widget or online chat](*widget_key), which are more like js applications.
+This event marks a new message from the open line. The event is triggered for full-fledged connectors, such as Telegram or VKontakte. It does not work with the [widget or online chat](*widget_key), which are more like js applications.
 
 It is essential to call the method [**imconnector.send.status.delivery**](../imconnector-send-status-delivery.md) in response; otherwise, the message will be marked as undelivered in the messenger.
 
 ## Parameters
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Parameter** | **Description** | **Since version** ||
 || **CONNECTOR** | Connector ID (this is used to check if the event belongs to the verifier). | ||
 || **LINE** | Open line ID. | ||
 || **MESSAGES** | An array of messages, where each message is described by an array of the following format:
@@ -51,6 +51,6 @@ It is essential to call the method [**imconnector.send.status.delivery**](../imc
 | ||
 |#
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../../_includes/required.md) %}
 
 [*widget_key]: See the documentation for CHAT API. [Learn more...](../../../chats/index.md)

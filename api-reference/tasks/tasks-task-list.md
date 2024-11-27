@@ -5,10 +5,10 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
-- curl examples are missing
-- response in case of error is absent
+- parameter types not specified
+- parameter requirements not specified
+- curl examples missing
+- response in case of error missing
 
 {% endnote %}
 
@@ -64,14 +64,14 @@ The sorting field can take the following values:
 - **MARK** — Rating for task completion.
 - **CREATED_BY_LAST_NAME** — Last name of the task creator.
 - **RESPONSIBLE_LAST_NAME** — Last name of the task assignee.
-- **GROUP_ID** — Identifier of the working group.
+- **GROUP_ID** — Workgroup identifier.
 - **TIME_ESTIMATE** — Time spent on task execution.
 - **ALLOW_CHANGE_DEADLINE** — Flag allowing the assignee to change the deadline.
 - **ALLOW_TIME_TRACKING** — Flag enabling time tracking for the task.
 - **MATCH_WORK_TIME** — Flag indicating the need to skip weekends.
 - **FAVORITE** — Flag indicating that the task has been added to favorites.
 - **SORTING** — Sorting index.
-- **MESSAGE_ID** — Identifier of the search index.
+- **MESSAGE_ID** — Search index identifier.
 
 {% note info %}
 
@@ -84,17 +84,17 @@ The sorting direction can take the following values:
 - **asc** — ascending;
 - **desc** — descending;
 
-Optional. By default, it is filtered in descending order by task identifier. 
+Optional. By default, it is sorted in descending order by task identifier. 
  ||
 || **filter**
 [`unknown`](../data-types.md) | An array in the format `{"filter_field": "filter_value" [, ...]}`. The filter field can take the following values:
 - **ID** - task identifier;
-- **PARENT_ID** - identifier of the parent task;
-- **GROUP_ID** - identifier of the working group;
+- **PARENT_ID** - parent task identifier;
+- **GROUP_ID** - workgroup identifier;
 - **CREATED_BY** - creator;
 - **STATUS_CHANGED_BY** - user who last changed the task status;
 - **PRIORITY** - priority;
-- **FORUM_TOPIC_ID** - identifier of the forum topic;
+- **FORUM_TOPIC_ID** - forum topic identifier;
 - **RESPONSIBLE_ID** - assignee;
 - **TITLE** - task title (can search by pattern [\%_]);
 - **TAG** - tag;
@@ -118,10 +118,10 @@ Optional. By default, it is filtered in descending order by task identifier.
 - **CREATED_DATE** - creation date;
 - **CLOSED_DATE** - completion date;
 - **CHANGED_DATE** - last modification date;
-- **ACCOMPLICE** - identifier of the participant;
-- **AUDITOR** - identifier of the auditor;
+- **ACCOMPLICE** - co-assignee identifier;
+- **AUDITOR** - auditor identifier;
 - **DEPENDS_ON** - identifier of the previous task;
-- **ONLY_ROOT_TASKS** - only tasks that are not subtasks (root tasks), as well as subtasks of the parent task to which the current user does not have access (Y\|N).
+- **ONLY_ROOT_TASKS** - only tasks that are not sub-tasks (root tasks), as well as sub-tasks of the parent task to which the current user does not have access (Y\|N).
 - **STAGE_ID** - stage;
 - **UF_CRM_TASK** - CRM entities;
 
@@ -140,7 +140,7 @@ Optional. By default, records are not filtered. ||
 
 Available fields: 
 - **ID** - task identifier;
-- **PARENT_ID** - identifier of the parent task;
+- **PARENT_ID** - parent task identifier;
 - **TITLE** - task title;
 - **DESCRIPTION** - description;
 - **MARK** - rating;
@@ -149,16 +149,16 @@ Available fields:
     - **1** - medium;
     - **2** - high.
 - **STATUS** - status;
-- **MULTITASK** - multiple task;
+- **MULTITASK** - multi-task;
 - **NOT_VIEWED** - unviewed task;
 - **REPLICATE** - recurring task;
-- **GROUP_ID** - working group;
+- **GROUP_ID** - workgroup;
 - **STAGE_ID** - stage;
 - **CREATED_BY** - creator;
 - **CREATED_DATE** - creation date;
 - **RESPONSIBLE_ID** - assignee;
-- **ACCOMPLICES** - identifier of the participant;
-- **AUDITORS** - identifier of the auditor;
+- **ACCOMPLICES** - co-assignee identifier;
+- **AUDITORS** - auditor identifier;
 - **CHANGED_BY** - who modified the task;
 - **CHANGED_DATE** - modification date;
 - **STATUS_CHANGED_DATE** - status change date;
@@ -172,28 +172,28 @@ Available fields:
 - **XML_ID** - external code;
 - **COMMENTS_COUNT** - number of comments;
 - **NEW_COMMENTS_COUNT** - number of new comments;
-- **TASK_CONTROL** - accept for work;
+- **TASK_CONTROL** - take into work;
 - **ADD_IN_REPORT** - add to report;
 - **FORKED_BY_TEMPLATE_ID** - created from a template;
 - **TIME_ESTIMATE** - time spent;
 - **TIME_SPENT_IN_LOGS** - time spent from the change history;
 - **MATCH_WORK_TIME** - skip weekends;
-- **FORUM_TOPIC_ID** - identifier of the forum topic;
-- **FORUM_ID** - identifier of the forum;
-- **SITE_ID** - identifier of the site;
+- **FORUM_TOPIC_ID** - forum topic identifier;
+- **FORUM_ID** - forum identifier;
+- **SITE_ID** - site identifier;
 - **SUBORDINATE** - subordinate's task;
-- **FAVORITE** - Favorites;
-- **VIEWED_DATE** - date of last view;
+- **FAVORITE** - Favorite;
+- **VIEWED_DATE** - last viewed date;
 - **SORTING** - sorting index;
 - **DURATION_PLAN** - time spent (planned);
 - **DURATION_FACT** - time spent (actual);
 - **DURATION_TYPE** - unit type in planned duration: days, hours, or minutes.
 
-By default, all **non-computed** fields of the main query table will be returned.
+By default, all **non-computable** fields from the main query table will be returned.
 
 The list of fields can be specified by sending a request to [tasks.task.getFields](tasks-task-get-fields.md). ||
 || **limit**
-[`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to retrieve a number of records greater than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in several requests of 50 records each. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
+[`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to retrieve more records than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in multiple requests of 50 records in response. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
 ```js
 start=0
 start=50
@@ -201,7 +201,7 @@ start=100
 ```
 ||
 || **start**
-[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, the value of this parameter must always be a multiple of 50. For example, with a value of 50, the 51st record and subsequent ones will be displayed, while the first 50 records will be skipped.
+[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, this parameter's value must always be a multiple of 50. For example, with a value of 50, the 51st record and subsequent ones will be displayed, while the first 50 records will be skipped.
 
 With a value of `-1`, the count will be disabled. 
 
@@ -216,13 +216,19 @@ BX24.callMethod('tasks.task.list',{start: 1150})
 
 Output all unique tasks added to "Favorites" with a status greater than 2:
 
-```js
-BX24.callMethod(
-    'tasks.task.list',
-    {filter:{'>STATUS':2, REPLICATE:'N', '::SUBFILTER-PARAMS':{FAVORITE:'Y'}}},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.list',
+        {filter:{'>STATUS':2, REPLICATE:'N', '::SUBFILTER-PARAMS':{FAVORITE:'Y'}}},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
 
 ## Response in case of success
 
@@ -234,7 +240,7 @@ BX24.callMethod(
         "list": [
             {
                 "id": "1230",
-                "createdDate": "03.01.2019 15:29:28",
+                "createdDate": "01.03.2019 15:29:28",
                 "field": "NEW",
                 "value": {
                     "from": null,
@@ -243,7 +249,7 @@ BX24.callMethod(
                 "user": {
                     "id": "1",
                     "name": "Max",
-                    "lastName": "Greechushnikov",
+                    "lastName": "Grechushnikov",
                     "secondName": "",
                     "login": "admin"
                 }
@@ -265,29 +271,41 @@ BX24.callMethod(
 
 Output all tasks with the title "task for test", filtering by fields `ID`, `TITLE`, `STATUS`, sorting by the field `ID` (ascending):
 
-```js
-BX24.callMethod(
-    'tasks.task.list',
-    {filter:{TITLE:'task for test'}, select: ['ID','TITLE','STATUS'], order:{ID:'asc'}},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.list',
+        {filter:{TITLE:'task for test'}, select: ['ID','TITLE','STATUS'], order:{ID:'asc'}},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
 
 ## Example 3
 
 Example of disabling pagination:
 
-```php
-$result = CRest::call(
-    'tasks.task.list',
-    [
-        'filter' => [
-            '>ID' => 50
-        ],
-        'start' => -1,
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = CRest::call(
+        'tasks.task.list',
+        [
+            'filter' => [
+                '>ID' => 50
+            ],
+            'start' => -1,
+        ]
+    );
+    ```
+
+{% endlist %}
 
 ## Example 4
 
@@ -295,53 +313,59 @@ $result = CRest::call(
 
 Task filters by ID, date, status. For the filter `'=ID' => 3`, it is recommended to use [tasks.task.get](.) as it does not have pagination.
 
-```php
-$filter = [];
-//by id
-$filter = [
-    '>ID' => 3
-];
-$filter = [
-    '=ID' => 3//recommend: CRest::call('tasks.task.get');
-];
-//by date
-$filter = [
-    '<CREATED_DATE' => date(DATE_ATOM, mktime(12, 22, 37, 7, 25, 2019))
-];
-//by status
-$filter = [
-    '>STATUS' => 2 // 2 is enum value. for current client: CRest::call( 'tasks.task.getFields');
-];
-$result = CRest::call(
-    'tasks.task.list',
-    [
-        'filter' => $filter,
-        'select' => [
-            'ID',
-            'TITLE',
-            'CREATED_DATE'
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $filter = [];
+    //by id
+    $filter = [
+        '>ID' => 3
+    ];
+    $filter = [
+        '=ID' => 3//recommend: CRest::call('tasks.task.get');
+    ];
+    //by date
+    $filter = [
+        '<CREATED_DATE' => date(DATE_ATOM, mktime(12, 22, 37, 7, 25, 2019))
+    ];
+    //by status
+    $filter = [
+        '>STATUS' => 2 // 2 is enum value. for current client: CRest::call( 'tasks.task.getFields');
+    ];
+    $result = CRest::call(
+        'tasks.task.list',
+        [
+            'filter' => $filter,
+            'select' => [
+                'ID',
+                'TITLE',
+                'CREATED_DATE'
+            ]
         ]
-    ]
-);
-//all fields
-$fields = CRest::call( 'tasks.task.getFields');
-echo '<pre>';
-print_r([$filter, $result, $fields]);
-echo '</pre>';
-$result = CRest::call(
-    'tasks.task.get',
-    [
-        'taskId' => 3,
-        'select' => [
-            'ID',
-            'TITLE',
-            'CREATED_DATE'
+    );
+    //all fields
+    $fields = CRest::call( 'tasks.task.getFields');
+    echo '<pre>';
+    print_r([$filter, $result, $fields]);
+    echo '</pre>';
+    $result = CRest::call(
+        'tasks.task.get',
+        [
+            'taskId' => 3,
+            'select' => [
+                'ID',
+                'TITLE',
+                'CREATED_DATE'
+            ]
         ]
-    ]
-);
-echo '<pre>';
-print_r($result);
-echo '</pre>';
-```
+    );
+    echo '<pre>';
+    print_r($result);
+    echo '</pre>';
+    ```
+
+{% endlist %}
 
 {% include [Note on examples](../../_includes/examples.md) %}

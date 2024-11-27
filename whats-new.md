@@ -2,6 +2,21 @@
 
 ## 2024
 
+### November 27, 2024
+
+- Updated the main page of the [Auxiliary Methods](./api-reference/crm/auxiliary/index.md) section in CRM. Added introductory information and an overview of methods
+- Updated the main page of the [Orders](./api-reference/sale/order/index.md) section. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the [Catalog Sections](./api-reference/catalog/section/index.md) section. Added introductory information, as well as an overview of methods and relationships
+
+- Added a new method [messageservice.sender.update](./api-reference/messageservice/messageservice-sender-update.md)
+
+- Added new events [OnImConnectorDialogStart](./api-reference/imopenlines/imconnector/events/on-im-connector-dialog-start.md) and [OnImConnectorDialogFinish](./api-reference/imopenlines/imconnector/events/on-im-connector-dialog-finish.md)
+- Added new events [OnSessionStart](./api-reference/imopenlines/openlines/events/on-session-start.md) and [OnSessionFinish](./api-reference/imopenlines/openlines/events/on-session-finish.md)
+- Added new events [OnOpenLineMessageAdd](./api-reference/imopenlines/openlines/events/on-open-line-message-add.md), [OnOpenLineMessageUpdate](./api-reference/imopenlines/openlines/events/on-open-line-message-update.md), and [OnOpenLineMessageDelete](./api-reference/imopenlines/openlines/events/on-open-line-message-delete.md)
+
+- Added the `ACTIVE_ONLY` parameter to the [imopenlines.crm.chat.get](./api-reference/imopenlines/openlines/chats/imopenlines-crm-chat-get.md) method
+- Added an example response with a description of the returned data in the [imconnector.send.messages](./api-reference/imopenlines/imconnector/imconnector-send-messages.md) method. Now it returns information about the open line dialog
+
 ### November 21, 2024
 
 - Added a new tutorial [How to add a comment to the smart process timeline](./tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md)

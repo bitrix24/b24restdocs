@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -33,21 +33,27 @@ The method `calendar.section.delete` removes a calendar. Here and further, secti
 || **id**^*^ | Identifier of the calendar. ||
 |#
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Example
 
-```js
-BX24.callMethod("calendar.section.delete",
-    {
-        type: 'user',
-        ownerId: '2',
-        id: 521
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Notes](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod("calendar.section.delete",
+        {
+            type: 'user',
+            ownerId: '2',
+            id: 521
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 ## Response on Success
 

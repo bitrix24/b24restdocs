@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- possibly, parameters or fields need to be detailed in a table
-- the mandatory nature of parameters is not specified
+- parameters or fields may need to be detailed in a table
+- the requirement for parameters is not specified
 - examples in other languages are missing
 - response in case of success is missing
 - response in case of error is missing
- 
+
 {% endnote %}
 
 {% endif %}
@@ -28,9 +28,9 @@ This method allows you to retrieve a file from a user field.
 
 ## Example
 
-There is a field `UF_USR_1604998606834` of type file. By calling the method [user.current](../user-current.md), you can get the file in this field for the current user, where:
-- **showUrl** - this is the URL that will display the file in the browser if the user is authenticated;
-- **downloadData** - the data that needs to be submitted to this method.
+There is a field `UF_USR_1604998606834` of type file. By calling the [user.current](../user-current.md) method, you can get the file in this field for the current user, where:
+- **showUrl** - is the URL that will display the file in the browser if the user is authenticated;
+- **downloadData** - the data that should be submitted to this method.
 
 ```
 [UF_USR_1604998606834] => Array
@@ -45,15 +45,21 @@ There is a field `UF_USR_1604998606834` of type file. By calling the method [use
         )
 )
 ```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 Webhook request:
 
-```http
-/rest/1/a2ebx1rfao5pq5cr/user.userfield.file.get?id=1&field=UF_USR_1604998606834&value=774
-```
+{% list tabs %}
+
+- URL request
+
+    ```http
+    /rest/1/a2ebx1rfao5pq5cr/user.userfield.file.get?id=1&field=UF_USR_1604998606834&value=774
+    ```
+
+{% endlist %}
+
 {% note info "" %}
 
-The method returns the file as content for download, not as json/xml.
+The method returns the file as content for download, not json/xml.
 
 {% endnote %}

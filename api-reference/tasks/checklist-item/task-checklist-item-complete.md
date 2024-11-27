@@ -1,4 +1,4 @@
-# Mark the item as "completed" task.checklistitem.complete
+# Mark checklist item as "completed" task.checklistitem.complete
 
 {% if build == 'dev' %}
 
@@ -9,7 +9,7 @@
 - missing 1 example (there should be three examples - curl, js, php)
 - no success response
 - no error response
-- add a description with hints on how to check access permission using a special method
+- add description with hints on how to check access permission using a special method
 
 {% endnote %}
 
@@ -37,7 +37,7 @@ The method `task.checklistitem.complete` marks a checklist item as completed.
 [`unknown`](../../data-types.md) | Checklist item identifier. ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
@@ -47,18 +47,24 @@ The order of parameters in the request is mandatory. If violated, the request wi
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.checklistitem.complete',
-    [13, 21],
-    function(result){
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.checklistitem.complete',
+        [13, 21],
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## See also
 

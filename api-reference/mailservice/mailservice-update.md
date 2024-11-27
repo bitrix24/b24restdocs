@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -27,7 +27,7 @@ The method `mailservice.update` updates the parameters of the mail service.
 ## Parameters
 
 #|
-||  **Parameter** / **Type**| **Description** | **From version** ||
+||  **Parameter** / **Type**| **Description** | **Available from** ||
 || **ID**
 [`unknown`](../data-types.md) | Identifier of the mail service | ||
 || **ACTIVE**
@@ -48,30 +48,37 @@ The method `mailservice.update` updates the parameters of the mail service.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "mailservice.update",
-    {
-        'ID': 5,
-        'ACTIVE': 'N',
-        'NAME': 'Mail Service Yandex',
-        'SERVER': 'imap.yandex.com',
-        'PORT': '993',
-        'ENCRYPTION': 'Y',
-        'LINK': 'https://mail.yandex.com/',
-        'SORT': '666'
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "mailservice.update",
         {
-            console.error(result.error());
-        }
-        else
+            'ID': 5,
+            'ACTIVE': 'N',
+            'NAME': 'Mail Service Yandex',
+            'SERVER': 'imap.yandex.com',
+            'PORT': '993',
+            'ENCRYPTION': 'Y',
+            'LINK': 'https://mail.yandex.com/',
+            'SORT': '666'
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
-{% include [Note on examples](../../_includes/examples.md) %}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../_includes/examples.md) %}

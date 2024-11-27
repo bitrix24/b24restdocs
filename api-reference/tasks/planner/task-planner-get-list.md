@@ -1,4 +1,4 @@
-# Get the list of tasks from the daily plan task.planner.getlist
+# Get the list of tasks from the Planner for the day task.planner.getlist
 
 {% if build == 'dev' %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -23,26 +23,32 @@ Some data may be missing here — we will add it soon
 >
 > Who can execute the method: any user
 
-The method `task.planner.getlist` returns an array containing the identifiers of tasks in the [daily plan](https://helpdesk.bitrix24.com/open/18068292/).
+The method `task.planner.getlist` returns an array containing the identifiers of tasks in the [Planner for the day](https://helpdesk.bitrix24.com/open/18068292/).
 
 {% note info %}
 
-It is essential to maintain the order of parameters in the request. If this order is violated, the request will be executed with errors.
+It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
 
 {% endnote %}
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.planner.getlist',
-    [],
-    function(result)
-    {
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.planner.getlist',
+        [],
+        function(result)
+        {
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

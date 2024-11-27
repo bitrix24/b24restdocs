@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 
 The method `calendar.accessibility.get` returns the availability of users from the list.
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **users**^*^ | List of user IDs. ||
 || **from**^*^ | Start date of the period for determining availability. ||
@@ -35,18 +35,24 @@ The method `calendar.accessibility.get` returns the availability of users from t
 
 ## Example
 
-```js
-BX24.callMethod("calendar.accessibility.get",
-    {
-        from: '2013-06-20',
-        to: '2013-12-20',
-        users: [1, 2, 34]
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod("calendar.accessibility.get",
+        {
+            from: '2013-06-20',
+            to: '2013-12-20',
+            users: [1, 2, 34]
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../_includes/examples.md) %}
 
-## Successful Response
+## Response on Success
 
 Returns information about the availability for each requested user.

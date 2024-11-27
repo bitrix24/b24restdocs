@@ -1,17 +1,17 @@
-title: Universal Requisites
-href: index.md
-items:
-  - name: About Universal Requisites
-    href: index.md
-  - name: Add Requisite
-    href: crm-requisite-add.md
-  - name: Update Requisite
-    href: crm-requisite-update.md
-  - name: Get Requisite by ID
-    href: crm-requisite-get.md
-  - name: Get List of Requisites by Filter
-    href: crm-requisite-list.md
-  - name: Delete Requisite and Related Objects
-    href: crm-requisite-delete.md
-  - name: Get Requisite Fields
-    href: crm-requisite-fields.md
+title: Universal details  
+href: index.md  
+items:  
+  - name: Overview of methods  
+    href: index.md  
+  - name: Add detail  
+    href: crm-requisite-add.md  
+  - name: Update detail  
+    href: crm-requisite-update.md  
+  - name: Get detail by id  
+    href: crm-requisite-get.md  
+  - name: Get list of details by filter  
+    href: crm-requisite-list.md  
+  - name: Delete detail and related objects  
+    href: crm-requisite-delete.md  
+  - name: Get detail fields  
+    href: crm-requisite-fields.md  

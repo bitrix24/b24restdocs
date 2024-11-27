@@ -1,8 +1,8 @@
-# Get Calendar Events List calendar.event.get
+# Get the list of calendar events calendar.event.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing here — we will fill it in shortly.
 
 - parameter types are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The `calendar.event.get` method returns a list of calendar events.
+The method `calendar.event.get` returns a list of calendar events.
 
 #|
 || **Parameter** | **Description** ||
@@ -31,32 +31,44 @@ The `calendar.event.get` method returns a list of calendar events.
 - user; 
 - group. ||
 || **ownerId** | Identifier of the calendar owner. ||
-|| **from** | Start date of the selection. Default value is one month before the current date. ||
-|| **to** | End date of the selection. Default value is three months after the current date. ||
+|| **from** | Start date of the selection. Default value - one month before the current date. ||
+|| **to** | End date of the selection. Default value - three months after the current date. ||
 || **section** | Array of sections. ||
 |#
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Example
 
-```js
-BX24.callMethod("calendar.event.get",
-    {
-        type: 'user',
-        ownerId: '1',
-        from: '2013-06-20',
-        to: '2013-08-20',
-        section: [21, 44]
-    }
-);
-```
+{% list tabs %}
 
-Get company calendar events:
+- JS
 
-```js
-'type'=> 'company_calendar',
-'ownerId' => '' // ownerId is not specified when retrieving company calendar events. It is empty for all events of this type.
-```
+    ```js
+    BX24.callMethod("calendar.event.get",
+        {
+            type: 'user',
+            ownerId: '1',
+            from: '2013-06-20',
+            to: '2013-08-20',
+            section: [21, 44]
+        }
+    );
+    ```
 
-{% include [Example Notes](../../_includes/examples.md) %}
+{% endlist %}
+
+Get events from the company calendar:
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    'type'=> 'company_calendar',
+    'ownerId' => '' // ownerId is not specified when retrieving events from the company calendar. It is empty for all events of this type.
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

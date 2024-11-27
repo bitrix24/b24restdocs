@@ -1,25 +1,25 @@
 title: Enumerations
 href: index.md
 items:
-  - name: Enumerations 
+  - name: Overview of methods 
     href: index.md
   - name: Get description of enumeration fields
     href: crm-enum-fields.md
   - name: Get IDs of objects to which an order can be linked
     href: crm-enum-get-order-owner-types.md
-  - name: "Owner Type"
+  - name: "Owner type"
     href: crm-enum-owner-type.md
-  - name: "Content Type"
+  - name: "Content type"
     href: crm-enum-content-type.md
-  - name: "Activity Type"
+  - name: "Activity type"
     href: crm-enum-activity-type.md
-  - name: "Activity Direction"
+  - name: "Activity direction"
     href: crm-enum-activity-direction.md
-  - name: "Activity Priority"
+  - name: "Activity priority"
     href: crm-enum-activity-priority.md
-  - name: "Notification Type for Activity Start"
+  - name: "Notification type for activity start"
     href: crm-enum-activity-notify-type.md
-  - name: "Address Type"
+  - name: "Address type"
     href: crm-enum-address-type.md
   - name: "Status"
     href: crm-enum-activity-status.md

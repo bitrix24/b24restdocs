@@ -11,10 +11,10 @@ Some data may be missing — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameters or fields and their types may be needed
-- the mandatory nature of parameters is not specified
+- required parameters are not specified
 - examples in other languages are missing
-- response in case of success is missing
-- response in case of error is missing
+- response on success is missing
+- response on error is missing
 
 {% endnote %}
 
@@ -43,13 +43,20 @@ Filtering is available by the following keys:
 
 ## Example
 
-```php
-CRest::call(
-    'user.userfield.list',
-    [
-        'order' => ['ID' => 'desc'],
-        'filter' => ['ID' => 42],
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    CRest::call(
+        'user.userfield.list',
+        [
+            'order' => ['ID' => 'desc'],
+            'filter' => ['ID' => 42],
+        ]
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote on examples](../../../_includes/examples.md) %}

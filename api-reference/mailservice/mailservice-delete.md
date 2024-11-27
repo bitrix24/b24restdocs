@@ -2,7 +2,7 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - missing parameter type descriptions
 - no response examples
@@ -13,7 +13,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it shortly
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -26,30 +26,37 @@ The method `mailservice.delete` removes a mail service.
 ## Parameters
 
 #|
-||  **Parameter** / **Type**| **Description** | **Available since** ||
+||  **Parameter** / **Type**| **Description** | **Available from** ||
 || **ID**
 [`unknown`](../data-types.md) | Identifier of the mail service | ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    "mailservice.delete",
-    {
-        'ID': 8
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "mailservice.delete",
         {
-            console.error(result.error());
-        }
-        else
+            'ID': 8
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote on examples](../../_includes/examples.md) %}

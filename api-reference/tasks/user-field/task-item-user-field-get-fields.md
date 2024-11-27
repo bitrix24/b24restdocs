@@ -30,18 +30,25 @@ No parameters.
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.item.userfield.getfields',
-    {},
-    function(result)
-    {
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.item.userfield.getfields',
+        {},
+        function(result)
+        {
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## List of Fields
 
@@ -70,7 +77,7 @@ BX24.callMethod(
 || **EDIT_IN_LIST**
 [`char`](../../data-types.md) | Allow user editing ||
 || **IS_SEARCHABLE**
-[`char`](../../data-types.md) | Field values are searchable ||
+[`char`](../../data-types.md) | Field values participate in search ||
 || **EDIT_FORM_LABEL**
 [`string`](../../data-types.md) | Label in edit form ||
 || **LIST_COLUMN_LABEL**

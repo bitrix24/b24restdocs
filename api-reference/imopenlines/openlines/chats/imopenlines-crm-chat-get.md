@@ -10,9 +10,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- parameter types are not specified
-- examples are missing
-- response in case of error is absent
+- no response in case of error
 
 {% endnote %}
 
@@ -22,7 +20,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method retrieves the chat for a CRM object.
+This method retrieves chats for a CRM object.
 
 ## Method Parameters
 
@@ -31,18 +29,26 @@ This method retrieves the chat for a CRM object.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CRM_ENTITY_TYPE*** 
-[`unknown`](../../../data-types.md) | Type of CRM entity 
-- lead
-- deal
-- company
-- contact
+|| **CRM_ENTITY_TYPE***  
+[`string`](../../../data-types.md) | Type of CRM object: 
+- `lead` — lead
+- `deal` — deal
+- `company` — company
+- `contact` — contact
  ||
-|| **CRM_ENTITY*** 
-[`unknown`](../../../data-types.md) | Identifier of the CRM entity ||
+|| **CRM_ENTITY_ID***  
+[`integer`](../../../data-types.md) | Identifier of the CRM object ||
+|| **ACTIVE_ONLY**  
+[`boolean`](../../../data-types.md) | Return only active chats.
+
+Possible values:
+- `Y` — will return only active chats
+- `N` — will return all chats
+ 
+Default — `Y` ||
 |#
 
-## Examples
+## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -50,11 +56,23 @@ This method retrieves the chat for a CRM object.
 
 - cURL (Webhook)
 
-    // example for cURL (Webhook)
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CRM_ENTITY_TYPE":"deal","CRM_ENTITY":288,"ACTIVE_ONLY":"N"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.crm.chat.get
+    ```
 
 - cURL (OAuth)
 
-    // example for cURL (OAuth)
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CRM_ENTITY_TYPE":"deal","CRM_ENTITY":288,"ACTIVE_ONLY":"N","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imopenlines.crm.chat.get
+    ```
 
 - JS
 
@@ -64,7 +82,9 @@ This method retrieves the chat for a CRM object.
         {
             CRM_ENTITY_TYPE: 'deal',
             CRM_ENTITY: 288,
-        }, function(result) {
+            ACTIVE_ONLY: 'N'
+        },
+        function(result) {
             if(result.error())
             {
                 console.error(result.error().ex);
@@ -79,13 +99,28 @@ This method retrieves the chat for a CRM object.
 
 - PHP
 
-    // example for PHP
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imopenlines.crm.chat.get',
+        [
+            'CRM_ENTITY_TYPE' => 'deal',
+            'CRM_ENTITY' => 288,
+            'ACTIVE_ONLY' => 'N'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
 
 {% endlist %}
 
-## Successful Response
+## Response Handling
 
-An array of objects with the chat identifier, connector identifier, and connector title.
+HTTP status: **200**
 
 ```json
 {
@@ -99,7 +134,22 @@ An array of objects with the chat identifier, connector identifier, and connecto
 }
 ```
 
-## Error Response
+### Returned Data
+
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**  
+[`object`](../../data-types.md) | Array of objects. Each object contains a chat description ||
+|| **CHAT_ID**  
+[`string`](../../data-types.md) | Identifier of the chat ||
+|| **CONNECTOR_ID**  
+[`string`](../../data-types.md) | Identifier of the connector ||
+|| **CONNECTOR_TITLE**  
+[`string`](../../data-types.md) | Name of the connector ||
+|#
+
+## Error Handling
 
 ### Possible Error Codes
 

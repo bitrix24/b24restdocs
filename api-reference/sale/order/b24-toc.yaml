@@ -1,17 +1,17 @@
 title: Order
 href: index.md
 items: 
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Add Order
+  - name: Add order
     href: sale-order-add.md
-  - name: Update Order
+  - name: Update order
     href: sale-order-update.md
-  - name: Get Order Field Values and Related Entities
+  - name: Get order field values and related objects
     href: sale-order-get.md 
-  - name: Get List of Orders
+  - name: Get list of orders
     href: sale-order-list.md
-  - name: Delete Order and Related Entities
+  - name: Delete order and related objects
     href: sale-order-delete.md 
-  - name: Get Order Fields
+  - name: Get order fields
     href: sale-order-get-fields.md

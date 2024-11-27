@@ -1,6 +1,6 @@
 title: Tasks
 href: index.md
-items:
+items: 
   - name: About Tasks in Bitrix24
     href: index.md
   - name: Task Fields
@@ -17,11 +17,11 @@ items:
     href: tasks-task-files-attach.md
   - name: Accept Task
     href: tasks-task-approve.md
-  - name: Mark Task as Completed
+  - name: Move Task to "Completed" Status
     href: tasks-task-complete.md
   - name: Get User Counters
     href: tasks-task-counters-get.md
-  - name: Mark Task as Deferred
+  - name: Move Task to "Deferred" Status
     href: tasks-task-defer.md
   - name: Delegate Task
     href: tasks-task-delegate.md
@@ -33,25 +33,25 @@ items:
     href: tasks-task-favorite-add.md
   - name: Remove Task from Favorites
     href: tasks-task-favorite-remove.md
-  - name: Get List of Fields
+  - name: Get Field List
     href: tasks-task-get-fields.md
   - name: Check Access to Task
     href: tasks-task-get-access.md
   - name: Task History
     href: tasks-task-history-list.md
-  - name: Mark Task as Waiting for Execution
+  - name: Move Task to "Waiting for Execution" Status
     href: tasks-task-pause.md
-  - name: Resume Task After Completion
+  - name: Renew Task After Completion
     href: tasks-task-renew.md
-  - name: Mark Task as In Progress
+  - name: Move Task to "In Progress" Status
     href: tasks-task-start.md
   - name: Enable Task Watching
     href: tasks-task-start-watch.md
   - name: Disable Task Watching
     href: tasks-task-stop-watch.md
-  - name: Enable Silent Mode
+  - name: Enable "Silent" Mode
     href: tasks-task-mute.md
-  - name: Disable Silent Mode
+  - name: Disable "Silent" Mode
     href: tasks-task-unmute.md
   - name: Create Dependency Between Tasks
     href: task-dependence-add.md
@@ -81,7 +81,7 @@ items:
     include:
       path: user-field/b24-toc.yaml
       mode: link
-  - name: Kanban Stages and Planner
+  - name: Kanban Stages and "Planner"
     include:
       path: stages/b24-toc.yaml
       mode: link

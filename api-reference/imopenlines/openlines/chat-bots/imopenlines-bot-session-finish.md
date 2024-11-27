@@ -35,17 +35,23 @@ This method ends the current session.
 
 ## Examples
 
-{% include [Explanation about restCommand](../../../chat-bots/_includes/rest-command.md) %}
+{% include [Explanation of restCommand](../../../chat-bots/_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imopenlines.bot.session.finish',
-    Array(
-        'CHAT_ID' => 112
-    ),
-    $_REQUEST["auth"]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imopenlines.bot.session.finish',
+        Array(
+            'CHAT_ID' => 112
+        ),
+        $_REQUEST["auth"]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 

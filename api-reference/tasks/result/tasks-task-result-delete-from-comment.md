@@ -1,4 +1,4 @@
-# Delete Comment from Result tasks.task.result.deleteFromComment
+# Delete comment from result tasks.task.result.deleteFromComment
 
 {% if build == 'dev' %}
 
@@ -28,25 +28,31 @@ The method `tasks.task.result.deleteFromComment` removes the task result based o
 #|
 || **Parameter** / **Type**| **Description** ||
 || **commentId**
-[`int`](../../data-types.md) | Identifier of the comment. ||
+[`int`](../../data-types.md) | Comment identifier. ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.result.deleteFromComment',
-    {
-        "commentId" : 2549
-    },
-    function(result) {
-        if (result.error()) {
-            console.error(result.error());
-        } else {
-            console.info(result.data());
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.result.deleteFromComment',
+        {
+            "commentId" : 2549
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

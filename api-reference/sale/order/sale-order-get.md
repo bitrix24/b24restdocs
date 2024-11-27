@@ -1,10 +1,10 @@
-# Get Order Field Values and Related Entities sale.order.get
+# Get Order Field Values and Related Objects sale.order.get
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `sale.order.get` is designed to retrieve the values of all fields of an order and related entities.
+The method `sale.order.get` is designed to retrieve the values of all fields of an order and related objects.
 
 ## Method Parameters
 
@@ -254,7 +254,7 @@ HTTP Status: **200**
                 {
                     "code": "FIO",
                     "id": 1514,
-                    "name": "First Last Name",
+                    "name": "Full Name",
                     "orderPropsId": 20,
                     "orderPropsXmlId": null,
                     "value": "Artem Gavrilenko"
@@ -273,7 +273,7 @@ HTTP Status: **200**
                     "name": "Phone1",
                     "orderPropsId": 22,
                     "orderPropsXmlId": "bx_63a082a06864d",
-                    "value": "191814561312"
+                    "value": "14151234567"
                 },
                 {
                     "code": "CONTACT_ADDRESS",

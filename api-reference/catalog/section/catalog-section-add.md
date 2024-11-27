@@ -1,14 +1,14 @@
-# Add Section to the Catalog catalog.section.add
+# Add a section to the trade catalog catalog.section.add
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `catalog.section.add` adds a section to the catalog.
+The method `catalog.section.add` adds a section to the trade catalog.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ The method `catalog.section.add` adds a section to the catalog.
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -45,13 +45,13 @@ Can be used to synchronize the current catalog section with a similar position i
 || **sort**
 [`integer`](../data-types.md) | Sorting.
 
-Defaults to 500 ||
+Default is 500 ||
 || **active**
 [`string`](../data-types.md) | Indicator of the catalog section's activity:
 - `Y` — active
 - `N` — inactive
 
-Defaults to `Y` ||
+Default is `Y` ||
 || **description**
 [`string`](../data-types.md) | Description ||
 || **descriptionType**
@@ -60,7 +60,7 @@ Defaults to `Y` ||
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -168,7 +168,7 @@ Defaults to `Y` ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -213,7 +213,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -222,14 +222,14 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || `200040300040` | No access to edit ||
-|| `200700300000` | Errors while adding, for example, the identifier of the information block of the created section does not match the identifier of the parent section's information block ||
+|| `200700300000` | Errors while adding, for example, the identifier of the information block of the created section does not match the identifier of the parent section ||
 || `200700300040` | Violation of the uniqueness of the `code` field ||
 || `200700300050` | Information block with the specified `iblockId` does not exist ||
 || `100` | Required parameter `fields` not provided ||
@@ -237,7 +237,7 @@ HTTP Status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

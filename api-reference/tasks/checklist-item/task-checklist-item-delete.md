@@ -1,4 +1,4 @@
-# Delete checklist item task.checklistitem.delete
+# Delete Checklist Item task.checklistitem.delete
 
 {% if build == 'dev' %}
 
@@ -6,8 +6,8 @@
 
 - parameter types are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- success response is missing
-- error response is missing
+- no response in case of success
+- no response in case of error
 
 {% endnote %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ The method `task.checklistitem.delete` removes a checklist item.
 [`unknown`](../../data-types.md) | Checklist item identifier. ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
@@ -45,15 +45,21 @@ The order of parameters in the request must be followed. If violated, the reques
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.checklistitem.delete',
-    [13, 20],
-    function(result){
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.checklistitem.delete',
+        [13, 20],
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

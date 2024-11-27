@@ -41,32 +41,38 @@ The method `calendar.section.update` updates the calendar. Here and further, sec
 || **access** | Array of access permissions for the calendar. ||
 |#
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Example
 
-```js
-BX24.callMethod("calendar.section.update",
-    {
-        id: 325,
-        type: 'user',
-        ownerId: '2',
-        name: 'Changed Section Name',
-        description: 'New description for section',
-        color: '#9cbeAA',
-        text_color: '#283099',
-        export: [{ALLOW: false}],
-        access: {
-            'D114': 17,
-            'G2': 13,
-            'U2': 15
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod("calendar.section.update",
+        {
+            id: 325,
+            type: 'user',
+            ownerId: '2',
+            name: 'Changed Section Name',
+            description: 'New description for section',
+            color: '#9cbeAA',
+            text_color: '#283099',
+            export: [{ALLOW: false}],
+            access: {
+                'D114': 17,
+                'G2': 13,
+                'U2': 15
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 ## Response in case of success
 
-Returns the id of the modified calendars.
+Returns the id of modified calendars.

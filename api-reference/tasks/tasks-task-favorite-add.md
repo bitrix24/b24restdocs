@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -35,13 +35,19 @@ Upon successful execution, it returns the parameter `true` (otherwise `false`).
 
 ## Example
 
-```js
-BX24.callMethod('tasks.task.favorite.add', {taskId: 119}, (res)=>{console.log(res.answer.result);});
-```
+{% list tabs %}
 
-{% include [Examples Note](../../_includes/examples.md) %}
+- JS
 
-## Success Response
+    ```js
+    BX24.callMethod('tasks.task.favorite.add', {taskId: 119}, (res)=>{console.log(res.answer.result);});
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}
+
+## Response on Success
 
 > 200 OK
 

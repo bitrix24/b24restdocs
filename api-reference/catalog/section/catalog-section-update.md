@@ -1,10 +1,10 @@
-# Update the section of the trade catalog catalog.section.update
+# Update the catalog section catalog.section.update
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `catalog.section.update` updates a section of the trade catalog.
+The method `catalog.section.update` updates a section of the catalog.
 
 ## Method Parameters
 
@@ -189,7 +189,7 @@ HTTP status: **200**
 || **section**
 [`catalog_section`](../data-types.md#catalog_section) | Object with information about the updated catalog section ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -211,12 +211,12 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `200040300040` | No access to edit ||
 || `200700300010` | Errors during update, for example, the identifier of the information block of the updated section does not match the identifier of the parent section ||
-|| `200700300030` | No catalog section exists with that identifier ||
+|| `200700300030` | No catalog section exists with such an identifier ||
 || `200700300040` | Violation of the uniqueness of the `code` field ||
 || `200700300050` | No information block exists with the specified `iblockId` ||
-|| `100` | Parameter `id` not specified ||
-|| `100` | Parameter `fields` not specified or empty ||
-|| `0` | Required fields of the `fields` structure not provided ||
+|| `100` | The `id` parameter is not specified ||
+|| `100` | The `fields` parameter is not specified or is empty ||
+|| `0` | Required fields of the `fields` structure are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

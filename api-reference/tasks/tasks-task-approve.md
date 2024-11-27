@@ -1,4 +1,4 @@
-# Accept Task
+# Approve Task tasks.task.approve
 
 {% if build == 'dev' %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will add it soon
 >
 > Who can execute the method: any user
 
-The method `tasks.task.approve` allows you to accept a task.
+The method `tasks.task.approve` allows you to approve a task.
 
 #|
 || **Parameter** / **Type** | **Description** ||
@@ -34,12 +34,18 @@ The method `tasks.task.approve` allows you to accept a task.
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.approve',
-    {taskId:1},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.approve',
+        {taskId:1},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
 
 {% include [Note on examples](../../_includes/examples.md) %}

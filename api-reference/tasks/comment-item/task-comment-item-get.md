@@ -1,4 +1,4 @@
-# Get Comment by ID task.commentitem.get
+# Get Comment by Identifier task.commentitem.get
 
 {% if build == 'dev' %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `task.commentitem.get` returns a comment for a task by its ID.
+The method `task.commentitem.get` returns a comment for a task by its identifier.
 
 ## Parameters
 
@@ -35,24 +35,31 @@ The method `task.commentitem.get` returns a comment for a task by its ID.
 [`unknown`](../../data-types.md) | Comment identifier. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
-It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
+The order of parameters in the request must be followed. If violated, the request will be executed with errors.
 
 {% endnote %}
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.commentitem.get',
-    [13, 1205],
-    function(result){
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.commentitem.get',
+        [13, 1205],
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

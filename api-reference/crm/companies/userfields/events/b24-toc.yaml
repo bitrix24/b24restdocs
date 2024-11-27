@@ -1,13 +1,13 @@
-title: List of Events When Working with Custom Company Fields
+title: List of events when working with custom company fields
 href: index.md
 items:
-  - name: List of Events
+  - name: Overview of events 
     href: index.md
-  - name: When Adding a Custom Field
+  - name: When adding a custom field
     href: on-crm-company-user-field-add.md
-  - name: When Deleting a Custom Field
+  - name: When deleting a custom field
     href: on-crm-company-user-field-delete.md
-  - name: When Changing Values for a List Type Field
+  - name: When changing values for a List type field
     href: on-crm-company-user-field-set-enum-values.md
-  - name: When Updating a Custom Field
+  - name: When updating a custom field
     href: on-crm-company-user-field-update.md

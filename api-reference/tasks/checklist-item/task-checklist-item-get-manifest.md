@@ -5,8 +5,8 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - missing examples (there should be three examples - curl, js, php)
-- missing response in case of success
-- missing response in case of error
+- no response in case of success
+- no response in case of error
 
 {% endnote %}
 
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -30,22 +30,28 @@ The method can be useful as reference information, as it always contains up-to-d
 
 {% note info %}
 
-It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
+Maintaining the order of parameters in the request is mandatory. If violated, the request will be executed with errors.
 
 {% endnote %}
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.checklistitem.getmanifest',
-    [],
-    function(result)
-    {
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.checklistitem.getmanifest',
+        [],
+        function(result)
+        {
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

@@ -1,4 +1,4 @@
-# View Users Who Read an Important Message log.blogpost.getusers.important
+# View users who read an important message log.blogpost.getusers.important
 
 {% note warning "We are still updating this page" %}
 
@@ -13,7 +13,7 @@ Some data may be missing — we will complete it shortly.
 - parameter types are not specified
 - parameter requirements are not indicated
 - no error response is provided
-- no examples in other languages
+- examples in other languages are missing
 - the description needs a link to the user documentation on important messages
 
 {% endnote %}
@@ -28,32 +28,45 @@ Returns an array of user IDs who have read the specified important message.
 
 #|
 || **Parameter** | **Description** ||
-|| **POST_ID** | ID of the news feed message that is marked as important. ||
+|| **POST_ID** | ID of the news feed message that is an important message. ||
 |#
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 ## Example
 
-```js
-BX24.callMethod(
-    'log.blogpost.getusers.important',
-    {
-        POST_ID: 345
-    },
-    function(result)
-    {
-        console.log(result.data());
-    }
-);
-```
-{% include [Example Notes](../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'log.blogpost.getusers.important',
+        {
+            POST_ID: 345
+        },
+        function(result)
+        {
+            console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../_includes/examples.md) %}
 
 ## Request:
 
-```http
-https://my.bitrix24.com/rest/log.blogpost.getusers.important.json?POST_ID=345&auth=xxxxxxx
-```
+{% list tabs %}
+
+- URL request
+
+    ```http
+    https://my.bitrix24.com/rest/log.blogpost.getusers.important.json?POST_ID=345&auth=xxxxxxx
+    ```
+
+{% endlist %}
 
 ## Response:
 

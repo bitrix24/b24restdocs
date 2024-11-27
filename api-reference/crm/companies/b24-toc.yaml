@@ -1,7 +1,7 @@
 title: List of Methods for Working with Companies
 href: index.md
 items:
-  - name: List of Methods
+  - name: Overview of Methods
     href: index.md
   - name: Create a New Company
     href: crm-company-add.md

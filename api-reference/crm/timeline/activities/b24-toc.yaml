@@ -1,53 +1,53 @@
-title: Deals
+title: Activities
 href: index.md
 items:
-  - name: Overview of Ativities
+  - name: Overview of methods
     href: index.md
-  - name: CRM Activity Fields
+  - name: CRM activity fields
     href: fields.md
-  - name: Get List of Activity Fields
+  - name: Get list of activity fields
     href: crm-activity-fields.md
-  - name: Add System Activity
+  - name: Add system activity
     href: crm-activity-add.md
-  - name: Add Universal Activity
+  - name: Add universal activity
     href: crm-activity-todo-add.md
-  - name: Add Configurable Activity
+  - name: Add configurable activity
     href: crm-activity-configurable-add.md
-  - name: Update System Activity
+  - name: Update system activity
     href: crm-activity-update.md
-  - name: Update Configurable Activity
+  - name: Update configurable activity
     href: crm-activity-configurable-update.md
-  - name: Update Universal Activity
+  - name: Update universal activity
     include:
       path: todo-update/b24-toc.yaml
       mode: link
-  - name: Get List of Activities
+  - name: Get list of activities
     href: crm-activity-list.md
-  - name: Get Activity by ID
+  - name: Get activity by ID
     href: crm-activity-get.md
-  - name: Get Configurable Activity by ID
+  - name: Get configurable activity by ID
     href: crm-activity-configurable-get.md
-  - name: Get Communication Description
+  - name: Get communication description
     href: crm-activity-communication-fields.md
-  - name: Delete Activity
+  - name: Delete activity
     href: crm-activity-delete.md 
-  - name: Binding Activities to CRM Objects
+  - name: Binding activities to CRM objects
     include:
       path: binding/b24-toc.yaml
       mode: link
-  - name: Custom Activity Types
+  - name: Custom activity types
     include:
       path: types/b24-toc.yaml
       mode: link
-  - name: Badges for Configurable Activities
+  - name: Badges for configurable activities
     include:
       path: badges/b24-toc.yaml
       mode: link
-  - name: Structure of Configurable Activity
+  - name: Structure of configurable activity
     include:
       path: structure/b24-toc.yaml
       mode: link
-  - name: Additional Content Blocks
+  - name: Additional content blocks
     include:
       path: layout-blocks/b24-toc.yaml
       mode: link
@@ -55,7 +55,7 @@ items:
     include:
       path: events/b24-toc.yaml
       mode: link
-  - name: Application Embedding
+  - name: Embedding applications
     include:
       path: app-embedding/b24-toc.yaml
       mode: link

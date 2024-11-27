@@ -1,17 +1,17 @@
-title: Connection Between Leads and Contacts  
+title: Connection between leads and contacts  
 href: index.md  
 items:  
-  - name: About the Connection Between Leads and Contacts  
+  - name: Overview of methods  
     href: index.md  
-  - name: Add Contact Binding to Lead  
+  - name: Add contact binding to lead  
     href: crm-lead-contact-add.md  
-  - name: Remove Contact Binding from Lead  
+  - name: Remove contact binding from lead  
     href: crm-lead-contact-delete.md  
-  - name: Get List of Related Contacts  
+  - name: Get list of related contacts  
     href: crm-lead-contact-items-get.md  
-  - name: Attach List of Contacts to Lead  
+  - name: Attach list of contacts to lead  
     href: crm-lead-contact-items-set.md  
-  - name: Remove List of Contacts from Lead  
+  - name: Remove list of contacts from lead  
     href: crm-lead-contact-items-delete.md  
-  - name: Get Lead-Contact Binding Fields  
+  - name: Get lead-contact binding fields  
     href: crm-lead-contact-fields.md  

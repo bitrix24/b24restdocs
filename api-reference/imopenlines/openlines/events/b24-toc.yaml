@@ -1,0 +1,15 @@
+title: Events
+href: index.md
+items: 
+  - name: Overview of Events
+    href: index.md
+  - name: When Creating a Chat
+    href: on-session-start.md    
+  - name: When Adding a Message
+    href: on-open-line-message-add.md
+  - name: When Updating a Message
+    href: on-open-line-message-update.md
+  - name: When Deleting a Message
+    href: on-open-line-message-delete.md 
+  - name: When Closing a Chat
+    href: on-session-finish.md

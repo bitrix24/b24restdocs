@@ -1,7 +1,7 @@
 title: VAT Rates
 href: index.md
 items:
-  - name: VAT Rates 
+  - name: Overview of Methods
     href: index.md
   - name: Create a New VAT Rate
     href: crm-vat-add.md

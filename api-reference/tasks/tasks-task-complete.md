@@ -1,4 +1,4 @@
-# Translate task to status "completed" tasks.task.complete
+# Translate task to "completed" status tasks.task.complete
 
 {% if build == 'dev' %}
 
@@ -7,8 +7,8 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- no response in case of error
-- no response in case of success
+- no error response is provided
+- no success response is provided
  
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `tasks.task.complete` changes the task status to "completed".
+The method `tasks.task.complete` changes the status of a task to "completed".
 
 #|
 || **Parameter** / **Type** | **Description** ||
@@ -34,12 +34,18 @@ The method `tasks.task.complete` changes the task status to "completed".
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.complete',
-    {taskId:1},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.complete',
+        {taskId:1},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

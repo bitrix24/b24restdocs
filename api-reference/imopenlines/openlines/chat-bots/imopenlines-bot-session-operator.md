@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,30 +24,36 @@ This method switches the conversation to a free operator.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
-#| 
-|| **Name** 
+#|
+|| **Name**
 `Type` | **Example** | **Description** | **Revision** ||
-|| **CHAT_ID^*^** 
-[`integer`](../../../data-types.md) | `12` | Identifier of the chat | 1 ||
+|| **CHAT_ID^*^**
+[`integer`](../../../data-types.md) | `12` | Chat identifier | 1 ||
 |#
 
 ## Examples
 
-{% include [Explanation of restCommand](../../../chat-bots/_includes/rest-command.md) %}
+{% include [Explanation about restCommand](../../../chat-bots/_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imopenlines.bot.session.operator',
-    Array(
-        'CHAT_ID' => 12
-    ),
-    $_REQUEST["auth"]
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imopenlines.bot.session.operator',
+        Array(
+            'CHAT_ID' => 12
+        ),
+        $_REQUEST["auth"]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 ## Response on success
 
@@ -73,7 +79,7 @@ $result = restCommand(
 
 ### Possible error codes
 
-#| 
+#|
 || **Code** | **Description** ||
 || **CHAT_ID_EMPTY** | Chat identifier not provided ||
 || **WRONG_CHAT** | The specified chat is not managed by the bot ||

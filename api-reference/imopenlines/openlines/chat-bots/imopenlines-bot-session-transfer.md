@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -33,7 +33,7 @@ This method switches the conversation to a specific operator.
 || **CHAT_ID*** 
 [`unknown`](../../../data-types.md) | `112` | Identifier of the chat | 1 ||
 || **USER_ID*** 
-[`unknown`](../../../data-types.md) | `12` | Identifier of the user to whom the conversation is being redirected | 1 ||
+[`unknown`](../../../data-types.md) | `12` | Identifier of the user to whom the conversation is redirected | 1 ||
 || **LEAVE*** 
 [`unknown`](../../../data-types.md) | `N` | Y/N. If N is specified — the chatbot will not leave this chat after redirection and will remain until the user confirms | 1 ||
 |#
@@ -48,17 +48,23 @@ Instead of `USER_ID`, you can specify `QUEUE_ID` to switch to another open line.
 
 {% include [Explanation about restCommand](../../../chat-bots/_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imopenlines.bot.session.transfer',
-    Array(
-        'CHAT_ID' => 112,
-        'USER_ID' => 12,
-        'LEAVE' => 'N'
-    ),
-    $_REQUEST["auth"]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imopenlines.bot.session.transfer',
+        Array(
+            'CHAT_ID' => 112,
+            'USER_ID' => 12,
+            'LEAVE' => 'N'
+        ),
+        $_REQUEST["auth"]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 

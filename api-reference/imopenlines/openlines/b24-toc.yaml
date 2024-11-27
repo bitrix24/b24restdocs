@@ -39,5 +39,9 @@ items:
     include:
       path: chat-bots/b24-toc.yaml
       mode: link
-  - name: Get Information about API Revisions
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link
+  - name: Get Information About API Revisions
     href: imopenlines-revision-get.md

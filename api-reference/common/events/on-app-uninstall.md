@@ -1,14 +1,14 @@
-# Event on Application Uninstallation onAppUninstall
+# Event on Application Uninstall: onAppUninstall
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - missing parameters or fields
 - parameter types not specified
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can subscribe: any user
 
-The `onAppUnistall` event is triggered when an application is uninstalled.
+The `onAppUninstall` event is triggered when an application is uninstalled.
 
 ## Event Parameters:
 

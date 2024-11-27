@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
 - success response is missing
@@ -22,14 +22,20 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `calendar.user.settings.get` returns the user calendar settings.
+The method `calendar.user.settings.get` returns user calendar settings.
 
 No parameters.
 
 ## Example
 
-```js
-BX24.callMethod("calendar.user.settings.get", {});
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod("calendar.user.settings.get", {});
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

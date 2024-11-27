@@ -1,10 +1,10 @@
-# Get List of Comments task.commentitem.getlist
+# Get the list of comments task.commentitem.getlist
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
+- revisions needed for writing standards
 - parameter types are not specified
 - examples are missing (there should be three examples - curl, js, php)
 - response in case of error is missing
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -33,24 +33,24 @@ The method `task.commentitem.getlist` returns a list of comments for a task.
 || **TASKID^*^**
 [`unknown`](../../data-types.md) | Task identifier. ||
 || **ORDER**
-[`unknown`](../../data-types.md) | Array for sorting the result. The sorting field can take the following values:
+[`unknown`](../../data-types.md) | Array for sorting the result. The field for sorting can take the following values:
 - `ID` — comment identifier; 
 - `AUTHOR_ID` — comment author's identifier; 
 - `AUTHOR_NAME` — author's name;
 - `AUTHOR_EMAIL` — author's email address; 
-- `POST_DATE` — date of comment publication. 
+- `POST_DATE` — comment publication date. 
 
 The sorting direction can take the following values:
 - `asc` — ascending; 
 - `desc` — descending.
 
-By default, it is sorted in descending order by comment identifier. ||
+By default, it is filtered in descending order by comment identifier. ||
 || **FILTER**
-[`unknown`](../../data-types.md) | Array in the form `{"filter_field": "filter_value" [, ...]}`. The filter field can take the following values: 
+[`unknown`](../../data-types.md) | An array of the form `{"filter_field": "filter value" [, ...]}`. The filter field can take the following values: 
 - `ID` — comment identifier; 
 - `AUTHOR_ID` — comment author's identifier; 
 - `AUTHOR_NAME` — author's name; 
-- `POST_DATE` — date of comment publication.
+- `POST_DATE` — comment publication date.
 
 Before the name of the filter field, you can specify the type of filtering:
 - "!" — not equal; 
@@ -59,29 +59,36 @@ Before the name of the filter field, you can specify the type of filtering:
 - ">" — greater than;  
 - ">=" — greater than or equal to.  
 
-"filter_value" — a single value or an array.
+"filter values" — a single value or an array.
 
 By default, records are not filtered. ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
-It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
+Maintaining the order of parameters in the request is mandatory. If violated, the request will be executed with errors.
 
 {% endnote %}
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.commentitem.getlist',
-    [1, {'ID': 'asc'}, {'>AUTHOR_ID': 2}],
-    function(result){
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.commentitem.getlist',
+        [1, {'ID': 'asc'}, {'>AUTHOR_ID': 2}],
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../_includes/examples.md) %}

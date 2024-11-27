@@ -1,25 +1,25 @@
-# Delete Order and Related Entities sale.order.delete
+# Delete Order and Related Objects sale.order.delete
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The `sale.order.delete` method is designed to remove an order and its related entities.
+The `sale.order.delete` method is designed to remove an order and its related objects.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order.id`](../../data-types.md) | Identifier of the order ||
+[`sale_order.id`](../../data-types.md) | Order identifier ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -91,8 +91,8 @@ HTTP Status: **200**
         "finish": 1712761143.127523,
         "duration": 1.8668880462646484,
         "processing": 1.4157729148864746,
-        "date_start": "2024-04-10T17:59:01+03:00",
-        "date_finish": "2024-04-10T17:59:03+03:00"
+        "date_start": "2024-04-10T17:59:01+02:00",
+        "date_finish": "2024-04-10T17:59:03+02:00"
     }
 }
 ```
@@ -103,7 +103,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the order deletion ||
+[`boolean`](../../data-types.md) | Result of order deletion ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -134,7 +134,7 @@ HTTP Status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Learning 
 
 - [{#T}](./sale-order-add.md)
 - [{#T}](./sale-order-update.md)

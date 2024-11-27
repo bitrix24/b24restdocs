@@ -2,19 +2,19 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - Required parameters are not specified
 - Examples in other languages are missing
-- Success response is absent
-- Error response is absent
-
+- Success response is missing
+- Error response is missing
+ 
 {% endnote %}
 
 {% endif %}
@@ -53,29 +53,36 @@ Some types have their own additional settings. ||
 
 ## Example
 
-```php
-CRest::call(
-    'user.userfield.add',
-    [
-        'fields' => [
-            'FIELD_NAME' => 'MY_TEST_FIELD_STR3',
-            'USER_TYPE_ID' => 'string',
-            'XML_ID' => 'MY_TEST_FIELD_STR_xml',
-            'MULTIPLE' => 'Y',
-            'SHOW_FILTER' => 'Y',
-            'SORT' => 100,
-            'LIST_FILTER_LABEL' => 'Title',
-            'LIST_COLUMN_LABEL' => 'List Title',
-            'EDIT_FORM_LABEL' => 'Title',
-            'ERROR_MESSAGE' => 'Title',
-            'HELP_MESSAGE' => 'Title',
-            'SETTINGS' => [
-                'DEFAULT_VALUE' => 'value'
-            ]
-        ],
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    CRest::call(
+        'user.userfield.add',
+        [
+            'fields' => [
+                'FIELD_NAME' => 'MY_TEST_FIELD_STR3',
+                'USER_TYPE_ID' => 'string',
+                'XML_ID' => 'MY_TEST_FIELD_STR_xml',
+                'MULTIPLE' => 'Y',
+                'SHOW_FILTER' => 'Y',
+                'SORT' => 100,
+                'LIST_FILTER_LABEL' => 'Title',
+                'LIST_COLUMN_LABEL' => 'List Title',
+                'EDIT_FORM_LABEL' => 'Title',
+                'ERROR_MESSAGE' => 'Title',
+                'HELP_MESSAGE' => 'Title',
+                'SETTINGS' => [
+                    'DEFAULT_VALUE' => 'value'
+                ]
+            ],
+        ]
+    );
+    ```
+
+{% endlist %}
+
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 Instead of

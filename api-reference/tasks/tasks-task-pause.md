@@ -34,12 +34,18 @@ The method `tasks.task.pause` stops the execution of a task, changing its status
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.pause',
-    {taskId:1},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.pause',
+        {taskId:1},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../_includes/examples.md) %}

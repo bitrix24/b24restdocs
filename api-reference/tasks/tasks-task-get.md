@@ -6,10 +6,10 @@
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- examples are missing (there should be three examples - **curl, js, php**)
-- response in case of error is missing
-- response in case of success is missing
- 
+- examples are missing (should include three examples - **curl, js, php**)
+- no error response provided
+- no success response provided
+
 {% endnote %}
 
 {% endif %}
@@ -53,15 +53,15 @@ The field can take the following values:
 - **MULTITASK** — multiple task; 
 - **NOT_VIEWED** — unviewed task; 
 - **REPLICATE** — recurring task; 
-- **GROUP_ID** — working group; 
+- **GROUP_ID** — workgroup; 
 - **STAGE_ID** — stage; 
 - **CREATED_BY** — creator; 
 - **CREATED_DATE** — creation date; 
-- **RESPONSIBLE_ID** — executor; 
-- **ACCOMPLICE** — participant identifier; 
-- **AUDITOR** — auditor identifier; 
-- **CHANGED_BY** — who changed the task; 
-- **CHANGED_DATE** — date of change; 
+- **RESPONSIBLE_ID** — assignee; 
+- **ACCOMPLICE** — co-executor identifier; 
+- **AUDITOR** — observer identifier; 
+- **CHANGED_BY** — who modified the task; 
+- **CHANGED_DATE** — modification date; 
 - **STATUS_CHANGED_DATE** — who changed the status; 
 - **CLOSED_BY** — who closed the task; 
 - **CLOSED_DATE** — task closure date; 
@@ -82,9 +82,9 @@ The field can take the following values:
 - **FORUM_TOPIC_ID** — forum topic identifier; 
 - **FORUM_ID** — forum identifier; 
 - **SITE_ID** — site identifier; 
-- **SUBORDINATE** — subordinate's task; 
+- **SUBORDINATE** — subordinate task; 
 - **FAVORITE** — Favorites; 
-- **VIEWED_DATE** — date of last view; 
+- **VIEWED_DATE** — last viewed date; 
 - **SORTING** — sorting index; 
 - **DURATION_PLAN** — spent (planned); 
 - **DURATION_FACT** — spent (actual); 
@@ -98,39 +98,57 @@ The field can take the following values:
     - **6** — years
 - **UF_CRM_TASK** — binding to CRM entities.
 
-By default, all non-computed fields of the main request table will be returned.
+By default, all non-computed fields from the main query table will be returned.
 
-To obtain custom fields and the field binding to CRM entities (`UF_CRM_TASK`), they must be specified directly in `SELECT`. The list of fields can be clarified by sending a request [tasks.task.getFields](./tasks-task-get-fields.md). ||
+To retrieve custom fields and the binding field to CRM entities (`UF_CRM_TASK`), they must be specified directly in `SELECT`. The list of fields can be clarified by sending a request to [tasks.task.getFields](./tasks-task-get-fields.md). ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'tasks.task.get',
-    {taskId:1, select:['ID','TITLE']},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
 
-To get tags of a specific task:
+- JS
 
-```js
-BX24.callMethod(
-    'tasks.task.get',
-    {taskId:1367, select:['TAGS']},
-    function(res){console.log(res.answer.result);}
-);
-```
+    ```js
+    BX24.callMethod(
+        'tasks.task.get',
+        {taskId:1, select:['ID','TITLE']},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
 
-Syntax for selecting all fields:
+{% endlist %}
 
-```js
-BX24.callMethod(
-    'tasks.task.get',
-    {taskId:1367, select:['*']},
-    function(res){console.log(res.answer.result);}
-)
-```
+To retrieve tags for a specific task:
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.get',
+        {taskId:1367, select:['TAGS']},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
+
+Syntax for retrieving all fields:
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.get',
+        {taskId:1367, select:['*']},
+        function(res){console.log(res.answer.result);}
+    )
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../_includes/examples.md) %}

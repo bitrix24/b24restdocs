@@ -7,8 +7,8 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- no error response is provided
-- no success response is provided
+- no response in case of error
+- no response in case of success
  
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will add it soon
 >
 > Who can execute the method: any user
 
-The method `tasks.task.startwatch` allows you to monitor a task.
+The method `tasks.task.startwatch` allows monitoring a task.
 
 #|
 || **Parameter** / **Type** | **Description** ||
@@ -34,12 +34,18 @@ The method `tasks.task.startwatch` allows you to monitor a task.
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.startwatch',
-    {taskId:1},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.startwatch',
+        {taskId:1},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../_includes/examples.md) %}

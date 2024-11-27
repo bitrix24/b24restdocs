@@ -3,15 +3,15 @@ href: index.md
 items: 
   - name: Overview of Methods
     href: index.md
-  - name: Add Section to the Trade Catalog
+  - name: Add Catalog Section
     href: catalog-section-add.md
-  - name: Update Section of the Trade Catalog
+  - name: Update Catalog Section
     href: catalog-section-update.md
-  - name: Access Fields of the Catalog Section
+  - name: Get Field Values of Catalog Section
     href: catalog-section-get.md
-  - name: Get List of Sections in the Trade Catalog
+  - name: Get List of Catalog Sections
     href: catalog-section-list.md
-  - name: Delete Section from the Trade Catalog
+  - name: Delete Catalog Section
     href: catalog-section-delete.md
-  - name: Get Fields of the Catalog Section
+  - name: Get Fields of Catalog Section
     href: catalog-section-get-fields.md

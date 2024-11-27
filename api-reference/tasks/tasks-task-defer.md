@@ -1,4 +1,4 @@
-# Translate the task to "deferred" status tasks.task.defer
+# Translate task to "deferred" status tasks.task.defer
 
 {% if build == 'dev' %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -24,22 +24,28 @@ Some data may be missing here — we will add it soon
 >
 > Who can execute the method: any user
 
-The method `tasks.task.defer` changes the status of a task to "deferred".
+The method `tasks.task.defer` changes the task status to "deferred".
 
 #|
 || **Parameter** / **Type** | **Description** ||
 || **taskId**
-[`unknown`](../data-types.md) | Identifier of the task. ||
+[`unknown`](../data-types.md) | Task identifier. ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.defer',
-    {taskId:1},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.defer',
+        {taskId:1},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

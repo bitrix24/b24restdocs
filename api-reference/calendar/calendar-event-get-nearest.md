@@ -40,16 +40,22 @@ The method `calendar.event.get.nearest` returns a list of upcoming events for th
 
 ## Example
 
-```js
-BX24.callMethod("calendar.event.get.nearest",
-    {
-        type: 'user',
-        ownerId: '2',
-        days: 10,
-        forCurrentUser: true,
-        detailUrl: '/company/personal/user/#user_id#/calendar/'
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod("calendar.event.get.nearest",
+        {
+            type: 'user',
+            ownerId: '2',
+            days: 10,
+            forCurrentUser: true,
+            detailUrl: '/company/personal/user/#user_id#/calendar/'
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

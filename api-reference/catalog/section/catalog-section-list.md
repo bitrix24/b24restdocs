@@ -1,52 +1,52 @@
-# Get a List of Sections from the Trade Catalog catalog.section.list
+# Get a List of Sections in the Trade Catalog catalog.section.list
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `catalog.section.list` allows you to retrieve a list of sections from the trade catalog.
+The method `catalog.section.list` returns a list of sections in the trade catalog.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the [catalog_section](../data-types.md#catalog_section) object).
+[`array`](../../data-types.md) | An array containing the list of fields to be selected (see fields of the [catalog_section](../data-types.md#catalog_section) object).
 
 If not provided or an empty array is passed, all available fields of the catalog section will be selected. ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected sections of the catalog in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering the selected catalog sections in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_section](../data-types.md#catalog_section) object.
 
 **The `iblockId` field is required**.
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
-    - "milk%" — searching for values starting with "milk"
-    - "%milk" — searching for values ending with "milk"
-    - "%milk%" — searching for values where "milk" can be in any position
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring at any position in the string.
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+    - "mol%" — searching for values starting with "mol"
+    - "%mol" — searching for values ending with "mol"
+    - "%mol%" — searching for values where "mol" can be at any position
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
 
 - `!%=` — NOT LIKE (see description above)
 
 - `=` — equal, exact match (used by default)
 - `!=` - not equal ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting the selected sections of the catalog in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting the selected catalog sections in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_section](../data-types.md#catalog_section) object.
 
@@ -62,12 +62,12 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number ||
+`start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -161,7 +161,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -203,7 +203,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
 || **section**
-[`catalog_section[]`](../data-types.md#catalog_section) | An array of objects containing information about the selected sections of the catalog ||
+[`catalog_section[]`](../data-types.md#catalog_section) | An array of objects containing information about the selected catalog sections ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
@@ -212,7 +212,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

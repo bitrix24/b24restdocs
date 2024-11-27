@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,26 +24,32 @@ Some data may be missing here — we will complete it soon.
 
 The method `calendar.resource.update` modifies a resource.
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **resourceId** | Resource identifier. ||
 || **name**^*^ | Resource name. ||
 |#
 
-{% include [Parameter note](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Example
 
-```js
-BX24.callMethod("calendar.resource.update",
-    {
-        resourceId: 325,
-        name: 'Changed Resource Name'
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example note](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod("calendar.resource.update",
+        {
+            resourceId: 325,
+            name: 'Changed Resource Name'
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 ## Response on success
 

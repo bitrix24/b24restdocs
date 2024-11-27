@@ -1,4 +1,4 @@
-# Get the list of checklist items task.checklistitem.getlist
+# Get the checklist items list task.checklistitem.getlist
 
 {% if build == 'dev' %}
 
@@ -6,8 +6,8 @@
 
 - parameter types are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- success response is missing
-- error response is missing
+- no response in case of success
+- no response in case of error
 
 {% endnote %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -48,7 +48,7 @@ The sorting direction can take the following values:
 Optional. By default, it is filtered in descending order by the checklist item identifier. ||
 |#
 
-{% include [Parameter note](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
@@ -58,15 +58,21 @@ Maintaining the order of parameters in the request is mandatory. If violated, th
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.checklistitem.getlist',
-    [13, {'TOGGLED_DATE': 'desc'}],
-    function(result){
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example note](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.checklistitem.getlist',
+        [13, {'TOGGLED_DATE': 'desc'}],
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../_includes/examples.md) %}

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -29,20 +29,26 @@ The method `calendar.meeting.status.get` returns the participation status of the
 || **eventId**^*^ | Event identifier. ||
 |#
 
-{% include [Parameter Note](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Example
 
-```js
-BX24.callMethod("calendar.meeting.status.get",
-    {
-        eventId: '651'
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../_includes/examples.md) %}
+- JS
 
-## Successful Response
+    ```js
+    BX24.callMethod("calendar.meeting.status.get",
+        {
+            eventId: '651'
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}
+
+## Response in case of success
 
 Returns the status ("Y", "N", "Q").

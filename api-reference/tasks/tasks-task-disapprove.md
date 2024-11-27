@@ -34,12 +34,18 @@ The method `tasks.task.disapprove` allows you to disapprove a task.
 
 ## Example
 
-```js
-BX24.callMethod(
-    'tasks.task.disapprove',
-    {taskId:1},
-    function(res){console.log(res.answer.result);}
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'tasks.task.disapprove',
+        {taskId:1},
+        function(res){console.log(res.answer.result);}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

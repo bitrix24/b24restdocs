@@ -1,15 +1,15 @@
-title: Numbering Systems  
+title: Numberers  
 href: index.md  
 items:  
-  - name: Numbering Systems  
+  - name: Overview of methods  
     href: index.md  
-  - name: Add New Numbering System  
+  - name: Add a new numberer  
     href: crm-document-generator-numerator-add.md  
-  - name: Modify Existing Numbering System  
+  - name: Modify an existing numberer  
     href: crm-document-generator-numerator-update.md  
-  - name: Get Numbering System Information by Id  
+  - name: Get information about a numberer by Id  
     href: crm-document-generator-numerator-get.md  
-  - name: Get List of Numbering Systems  
+  - name: Get a list of numberers  
     href: crm-document-generator-numerator-list.md  
-  - name: Delete Numbering System  
+  - name: Delete a numberer  
     href: crm-document-generator-numerator-delete.md  

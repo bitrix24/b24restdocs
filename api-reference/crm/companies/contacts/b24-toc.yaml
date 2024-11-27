@@ -1,17 +1,17 @@
-title: List of Methods for Working with Company Contacts
+title: List of methods for working with company contacts
 href: index.md
 items:
-  - name: List of Methods
+  - name: Overview of methods 
     href: index.md
-  - name: Add Contact to Company
+  - name: Add contact to company
     href: crm-company-contact-add.md
-  - name: Remove Contact from Company
+  - name: Remove contact from company
     href: crm-company-contact-delete.md
-  - name: Get Field Descriptions
+  - name: Get field descriptions
     href: crm-company-contact-fields.md
-  - name: Clear Contact Set
+  - name: Clear contact set
     href: crm-company-contact-items-delete.md
-  - name: Get Contact Set
+  - name: Get contact set
     href: crm-company-contact-items-get.md
-  - name: Set Contact Set
+  - name: Set contact set
     href: crm-company-contact-items-set.md

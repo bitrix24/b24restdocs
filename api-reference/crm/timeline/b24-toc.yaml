@@ -1,17 +1,17 @@
 title: Timeline and CRM Activities
 href: index.md
 items:
-  - name: Timeline and CRM Activities
+  - name: Overview of Methods
     href: index.md
   - name: Activities
     include:
       path: activities/b24-toc.yaml
       mode: link
-  - name: Notes for Timeline Entry
+  - name: Timeline Entry Notes
     include:
       path: note/b24-toc.yaml
       mode: link
-  - name: Managing Relationships of Timeline Entry
+  - name: Managing Timeline Entry Relationships
     include:
       path: bindings/b24-toc.yaml
       mode: link      

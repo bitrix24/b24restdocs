@@ -1,10 +1,10 @@
-# Accessing Fields of the Catalog Section catalog.section.get
+# Get Field Values of the Trade Catalog Section catalog.section.get
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `catalog.section.get` is used to access the values of the fields of a catalog section by its identifier.
+The method `catalog.section.get` returns the field values of the trade catalog section by its identifier.
 
 ## Method Parameters
 
@@ -143,8 +143,8 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `200040300040` | No access to read ||
-|| `200700300030` | No catalog section exists with this identifier ||
-|| `100` | Parameter `id` not specified ||
+|| `200700300030` | The catalog section with such an identifier does not exist ||
+|| `100` | The parameter `id` is not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

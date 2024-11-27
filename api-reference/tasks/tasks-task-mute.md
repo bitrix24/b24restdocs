@@ -6,8 +6,8 @@
 
 - parameter types are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- no response in case of error
-- no response in case of success
+- response in case of error is missing
+- response in case of success is missing
  
 {% endnote %}
 
@@ -31,16 +31,22 @@ The method `tasks.task.mute` enables "Mute" mode.
 [`unknown`](../data-types.md) | Task identifier. ||
 |#
 
-{% include [Parameter Note](../../_includes/required.md) %}
+{% include [Parameter Notes](../../_includes/required.md) %}
 
 ## Return Value
 
-Returns a JSON array of task data (similar to the method [`tasks.task.get`](./tasks-task-get.md)).
+Returns a json array of task data (similar to the method [`tasks.task.get`](./tasks-task-get.md)).
 
 ## Example
 
-```js
-BX24.callMethod('tasks.task.mute', {id: 1223})
-```
+{% list tabs %}
 
-{% include [Example Note](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod('tasks.task.mute', {id: 1223})
+    ```
+
+{% endlist %}
+
+{% include [Example Notes](../../_includes/examples.md) %}

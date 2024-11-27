@@ -6,8 +6,8 @@
 
 - parameter types are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- success response is missing
-- error response is missing
+- no response in case of success
+- no response in case of error
 
 {% endnote %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -30,30 +30,36 @@ The method `task.checklistitem.get` returns a checklist item by its ID.
 #|
 || **Parameter** / **Type**| **Description** ||
 || **TASKID^*^**
-[`unknown`](../../data-types.md) | Task identifier. ||
+[`unknown`](../../data-types.md) | Task ID. ||
 || **ITEMID^*^**
-[`unknown`](../../data-types.md) | Checklist item identifier. ||
+[`unknown`](../../data-types.md) | Checklist item ID. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
-The order of parameters in the request is mandatory. If violated, the request will be executed with errors.
+The order of parameters in the request must be followed. If violated, the request will be executed with errors.
 
 {% endnote %}
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.checklistitem.get',
-    [13, 20],
-    function(result){
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.checklistitem.get',
+        [13, 20],
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

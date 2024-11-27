@@ -2,19 +2,19 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 This article explains how result waiting works for Automation rules and workflow actions. Key points:
 
 - In which scenarios are such Automation rules and actions needed?
 - What are the drawbacks and features?
-- How does it work? Here we introduce the method bizproc.event.send in its standard format
+- How does it work? Here, the method bizproc.event.send comes into play in its standard format.
 
 {% endnote %}
 
@@ -24,12 +24,12 @@ This article explains how result waiting works for Automation rules and workflow
 >
 > Who can execute the method: any user
 
-The method returns the output parameters of the action as specified in the action description.
+The method returns the output parameters of the action specified in the action description.
 
 #|
 || Parameter     | Description  ||
 || **EVENT_TOKEN** | A unique key that must be used when sending an event to the workflow. The value of this token is obtained by the handler of the Automation rule or workflow action in the array of input data passed.    ||
-|| **RETURN_VALUES** | An array of returned values from the action. This will also appear in the _Insert value_ form under the _Additional results_ tab. ||
+|| **RETURN_VALUES** | An array of returned values from the action. It will also appear in the _Insert value_ form under the _Additional results_ tab. ||
 |#
 
 ## Example

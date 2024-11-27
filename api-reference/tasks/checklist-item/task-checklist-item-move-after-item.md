@@ -37,7 +37,7 @@ The method `task.checklistitem.moveafteritem` moves a checklist item in the list
 [`unknown`](../../data-types.md) | Identifier of the checklist item after which the specified item will be placed. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
@@ -47,15 +47,21 @@ Maintaining the order of parameters in the request is mandatory. If violated, th
 
 ## Example
 
-```js
-BX24.callMethod(
-    'task.checklistitem.moveafteritem',
-    [13, 21, 9],
-    function(result){
-        console.info(result.data());
-        console.log(result);
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'task.checklistitem.moveafteritem',
+        [13, 21, 9],
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

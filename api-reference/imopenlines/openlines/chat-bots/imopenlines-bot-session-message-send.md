@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing — we will complete it soon
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for description standard
-- parameter types not specified
+- edits needed for the description standard
+- parameter types are not specified
 - examples are missing
 - response in case of error is absent
 
@@ -40,7 +40,7 @@ This method sends an automatic message via the chatbot.
 [`unknown`](../../../data-types.md) | `WELCOME` | Type of message:
 - `WELCOME` — welcome message
 - `DEFAULT` — regular message
- 
+
 By default, empty value | 1 ||
 |#
 
@@ -48,17 +48,23 @@ By default, empty value | 1 ||
 
 {% include [Explanation of restCommand](../../../chat-bots/_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imopenlines.bot.session.message.send',
-    Array(
-        'CHAT_ID' => 2,
-        'MESSAGE' => 'message text',
-        'NAME' => 'WELCOME'
-    ),
-    $_REQUEST["auth"]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imopenlines.bot.session.message.send',
+        Array(
+            'CHAT_ID' => 2,
+            'MESSAGE' => 'message text',
+            'NAME' => 'WELCOME'
+        ),
+        $_REQUEST["auth"]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -72,4 +78,4 @@ $result = restCommand(
 
 ## Response in case of error
 
-or error.
+or an error.

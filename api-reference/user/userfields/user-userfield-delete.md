@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -26,12 +26,19 @@ Some data may be missing here — we will complete it soon.
 
 This method deletes a custom field.
 
-```php
-CRest::call(
-    'user.userfield.delete',
-    [
-        'id' => 42,
-    ]
-);
-```
-{% include [Example Note](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- PHP
+
+    ```php
+    CRest::call(
+        'user.userfield.delete',
+        [
+            'id' => 42,
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
