@@ -96,7 +96,7 @@ In the script, everything is in a single code flow; this is for example purposes
 
 {% endnote %}
 
-[Template](https://dev.bitrix.com/docs/chm_files/endpoint.rar) for creating a custom endpoint can be used to customize your own service.
+[Template](https://helpdesk.bitrix24.com/examples/endpoint.zip) for creating a custom endpoint can be used to customize your own service.
 
 ## Important points:
 
