@@ -25,7 +25,7 @@ blocks:
       - text: 'Get Started'
         theme: 'outlined'
         size: 'promo'
-        url: 'about.md'
+        url: 'about.html'
       - text: 'GitHub'
         theme: 'outlined'
         size: 'promo'
@@ -42,7 +42,7 @@ blocks:
           - text: 'Learn More'
             theme: 'outlined'
             size: 'promo'
-            url: 'about.md'
+            url: 'about.html'
       - title: 'How to Get Access'
         icon: './_images/img_restapi_icon_02.svg'
         text: 'Review the requirements for the Bitrix24 plan and start exploring the Developer resources within the product'
@@ -50,7 +50,7 @@ blocks:
           - text: 'Learn More'
             theme: 'outlined'
             size: 'promo'
-            url: 'access-to-rest-api.md'
+            url: 'access-to-rest-api.html'
       - title: 'How to Make a Request'
         icon: './_images/img_restapi_icon_03.svg'
         text: 'Get a practical guide for your first Bitrix24 REST API call'
@@ -58,7 +58,7 @@ blocks:
           - text: 'Try It'
             theme: 'outlined'
             size: 'promo'
-            url: 'first-rest-api-call.md'
+            url: 'first-rest-api-call.html'
 
   - type: 'card-layout-block'
     title: 'Typical Use-Cases and Scenarios'
@@ -131,7 +131,7 @@ blocks:
           content:
             links:
               - text: 'View Documentation'
-                url: './local-integrations/index.md'
+                url: './local-integrations/index.html'
                 theme: 'normal'
                 arrow: true
                 color: #54BA7E
@@ -162,7 +162,7 @@ blocks:
           content:
             links:
               - text: 'View Documentation'
-                url: './api-reference/index.md'
+                url: './api-reference/index.html'
                 theme: 'normal'
                 arrow: true
                 color: #54BA7E
@@ -180,7 +180,7 @@ blocks:
         buttons:
           - text: 'Details'
             theme: 'raised'
-            url: 'change-article.md'
+            url: 'change-article.html'
         border: none
         theme: 'light'
       - type: 'background-card'
@@ -193,7 +193,7 @@ blocks:
         buttons:
           - text: 'Details'
             theme: 'raised'
-            url: 'support.md'
+            url: 'support.html'
         border: none
         theme: 'light'
       - type: 'background-card'
@@ -206,7 +206,7 @@ blocks:
         buttons:
           - text: 'Details'
             theme: 'raised'
-            url: 'support.md'
+            url: 'support.html'
         theme: 'light'
         border: none
 

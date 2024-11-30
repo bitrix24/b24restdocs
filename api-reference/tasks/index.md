@@ -22,7 +22,7 @@ The task description contains information about what needs to be done. You can a
 
 Checklists help create a list of steps to complete the task. You can manage checklists using the group of methods [task.checklistitem.*](./checklist-item/index.md).
 
-Create dependencies with tasks using the method [task.dependence.add](./task-dependence-add.md). Remove them using the method [task.dependence.delete](./task-dependence-delete.md).
+Create dependencies with tasks using the method [task.dependence.add](task-dependence-add.md). Remove them using the method [task.dependence.delete](task-dependence-delete.md).
 
 When creating a task, fill in the system fields: specify the Assignee, watchers, deadline, tags, and so on.
 
@@ -191,7 +191,7 @@ In the task management modes Kanban or "My Planner," there are two more special 
     || [tasks.task.mute](./tasks-task-mute.md) | Enables "Mute" mode ||
     || [tasks.task.unmute](./tasks-task-unmute.md) | Disables "Mute" mode ||
     || [task.dependence.add](./task-dependence-add.md) | Creates a dependency of one task on another ||
-    || [task.dependence.delete](./task.dependence-delete.md) | Deletes a dependency of one task on another ||
+    || [task.dependence.delete](task-dependence-delete.md) | Deletes a dependency of one task on another ||
     |#
 
 - Events
