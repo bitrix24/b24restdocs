@@ -1,8 +1,8 @@
-# Add Inventory Document Item catalog.document.element.add
+# Add Product to Inventory Management Document catalog.document.element.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -28,17 +28,17 @@ Some data may be missing here — we will complete it soon.
 catalog.document.element.add(fields)
 ```
 
-This method adds an item to the inventory document. If the operation is successful, the `id` of the added item is returned.
+This method adds a product to the inventory management document. If the operation is successful, it returns the `id` of the added product.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **fields**
-[`array`](../../../data-types.md)| Parameters of the item being added. The fields correspond to the available list of fields [`fields`](catalog-document-element-get-fields.md) ||
+[`array`](../../../data-types.md)| Parameters of the product being added. The fields correspond to the available list of fields [`fields`](catalog-document-element-get-fields.md) ||
 |#
 
-{% include [Notes on parameters](../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
@@ -46,7 +46,7 @@ This method adds an item to the inventory document. If the operation is successf
 
 - js
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.document.element.add',
         {
@@ -71,7 +71,7 @@ This method adds an item to the inventory document. If the operation is successf
 
 - php
   
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.element.add',
         [
@@ -93,4 +93,4 @@ This method adds an item to the inventory document. If the operation is successf
 
 {% endlist %}
 
-{% include [Notes on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing here — we will complete it shortly.
 
 - edits needed for writing standards
 - parameter types are not specified
-- examples are missing for some parameters in the table
-- examples are absent
+- not all parameters have examples in the table
+- examples are missing
 - response in case of success is missing
 - response in case of error is missing
 - links to pages that have not yet been created are not specified
@@ -26,7 +26,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `imbot.message.update` sends updates to a chatbot message.
+The method `imbot.message.update` sends changes to a chatbot message.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -52,23 +52,29 @@ The method `imbot.message.update` sends updates to a chatbot message.
 
 {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.message.update',
-    Array(
-        'BOT_ID' => 39,
-        'MESSAGE_ID' => 1,
-        'MESSAGE' => 'answer text',
-        'ATTACH' => '',
-        'KEYBOARD' => '',
-        'MENU' => '',
-        'URL_PREVIEW' => 'Y'
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.message.update',
+        Array(
+            'BOT_ID' => 39,
+            'MESSAGE_ID' => 1,
+            'MESSAGE' => 'answer text',
+            'ATTACH' => '',
+            'KEYBOARD' => '',
+            'MENU' => '',
+            'URL_PREVIEW' => 'Y'
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 
@@ -85,15 +91,15 @@ error
 #|
 || **Code** | **Description** ||
 || **BOT_ID_ERROR** | Chatbot not found. ||
-|| **APP_ID_ERROR** | The chatbot does not belong to this application. You can only work with chatbots installed within the application. ||
-|| **MESSAGE_EMPTY** | No message text was provided. ||
+|| **APP_ID_ERROR** | Chatbot does not belong to this application. You can only work with chatbots installed within the application. ||
+|| **MESSAGE_EMPTY** | Message text not provided. ||
 || **CANT_EDIT_MESSAGE** | You do not have access to this message or the time to modify it has expired (more than 3 days have passed since publication). ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation. ||
-|| **ATTACH_OVERSIZE** | The maximum allowed size for the attachment (30 KB) has been exceeded. ||
+|| **ATTACH_OVERSIZE** | The maximum allowable size for the attachment (30 KB) has been exceeded. ||
 || **KEYBOARD_ERROR** | The entire provided keyboard object failed validation. ||
-|| **KEYBOARD_OVERSIZE** | The maximum allowed size for the keyboard (30 KB) has been exceeded. ||
+|| **KEYBOARD_OVERSIZE** | The maximum allowable size for the keyboard (30 KB) has been exceeded. ||
 || **MENU_ERROR** | The entire provided menu object failed validation. ||
-|| **MENU_OVERSIZE** | The maximum allowed size for the menu (30 KB) has been exceeded. ||
+|| **MENU_OVERSIZE** | The maximum allowable size for the menu (30 KB) has been exceeded. ||
 |#
 
 ## Continue Learning

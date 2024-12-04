@@ -51,14 +51,14 @@ The list of available deal types can be obtained using the method [crm.status.li
 By default — the first available deal type
 ||
 || **CATEGORY_ID**
-[`crm_category`](../data-types.md) | Identifier of the funnel. Must be greater than or equal to 0.
+[`crm_category`](../data-types.md) | Identifier of the sales funnel. Must be greater than or equal to 0.
 
 The list of available funnels can be obtained using the method [crm.category.list](../universal/category/crm-category-list.md) by passing `entityTypeId = 2`.
 
 By default — the identifier of the default funnel
 ||
 || **STAGE_ID**
-[`crm_status`](../data-types.md) | Deal stage. 
+[`crm_status`](../data-types.md) | Stage of the deal. 
 
 The list of available stages can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter:
 - `{ ENTITY_ID: "DEAL_STAGE" }` — if the deal is in the general funnel (direction)
@@ -66,21 +66,21 @@ The list of available stages can be obtained using the method [crm.status.list](
 
 By default — the first available stage relative to the funnel ||
 || **IS_RECURRING**
-[`char`](../../data-types.md) | Is the deal a template for a recurring deal? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a template for a recurring deal. Possible values:
 - `Y` — yes
 - `N` — no
 
 By default `N`
 ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Is the deal a repeat? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a repeat. Possible values:
 - `Y` — yes
 - `N` — no
 
 By default `N`
 ||
 || **IS_REPEATED_APPROACH**
-[`char`](../../data-types.md) | Is the deal a repeated approach? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a repeated approach. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -98,7 +98,7 @@ The list of available currencies can be obtained using the method [crm.currency.
 
 By default `0.00` ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Is manual calculation of the amount enabled? Possible values:
+[`char`](../../data-types.md) | Indicates whether manual calculation of the amount is enabled. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -124,21 +124,21 @@ The list of contacts can be obtained using the method [crm.item.list](../univers
 || **BEGINDATE**
 [`date`](../../data-types.md) | Start date. 
 
-By default — the date of deal creation ||
+By default — the date the deal is created ||
 || **CLOSEDATE**
 [`date`](../../data-types.md) | Completion date. 
 
-By default — the date of deal creation plus 7 days
+By default — the date the deal is created plus 7 days
 ||
 || **OPENED**
-[`char`](../../data-types.md) | Is the deal available to everyone? Possible values:
+[`char`](../../data-types.md) | Is the deal available to everyone. Possible values:
 - `Y` — yes
 - `N` — no
 
-By default `Y`. The default value can be changed in CRM settings
+By default `Y`. The default value can be changed in the CRM settings
 ||
 || **CLOSED**
-[`char`](../../data-types.md) | Is the deal closed? Possible values:
+[`char`](../../data-types.md) | Is the deal closed. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -182,11 +182,11 @@ Used only for linking to an external source
 - `CPM` — banners 
 ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Designation of the advertising campaign ||
+[`string`](../../data-types.md) | Identifier of the advertising campaign ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Search term of the campaign. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **TRACE**
 [`string`](../../data-types.md) | Information for Sales Intelligence — read more in the article [{#T}](../../../tutorials/crm/how-to-use-analitycs/info-to-analitics.md) ||
 || **UF_CRM_...** | Custom fields. For example, `UF_CRM_25534736`. 
@@ -197,7 +197,7 @@ You can add a custom field to a deal using the method [crm.deal.userfield.add](.
 || **PARENT_ID_...**
 [`crm_entity`](../data-types.md) | Relationship fields. 
 
-If there are SPAs related to deals on the portal, there is a field for each such SPA that stores the relationship between this SPA and the deal. The field itself stores the identifier of the element of that SPA. 
+If there are SPAs related to deals on the portal, each such SPA has a field that stores the relationship between this SPA and the deal. The field itself stores the identifier of the element of that SPA. 
 
 For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`, stores the identifier of the element of this SPA related to the current deal ||
 |#
@@ -208,7 +208,7 @@ For example, the field `PARENT_ID_153` — relationship with the SPA `entityType
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT** 
-[`boolean`](../../data-types.md) | Should the event of adding the deal be registered in the live feed? Possible values:
+[`boolean`](../../data-types.md) | Should the event of adding a deal be registered in the live feed. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -217,7 +217,7 @@ By default `Y` ||
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -340,7 +340,7 @@ By default `Y` ||
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
   
     ```php        
     try {

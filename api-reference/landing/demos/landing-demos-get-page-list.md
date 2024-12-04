@@ -2,19 +2,19 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - missing parameters or fields
 - required parameters not specified
-- examples are missing
-- success response is missing
-- error response is missing
+- missing examples
+- missing success response
+- missing error response
 
 {% endnote %}
 
@@ -31,25 +31,31 @@ The method `landing.demos.getPageList` retrieves a list of available templates f
 #|
 || **Parameter** | **Description** ||
 || **type**
-[`unknown`](../../data-types.md) | Template type (page: regular websites, store: stores). ||
+[`unknown`](../../data-types.md) | Template type (page: regular sites, store: stores). ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    'landing.demos.getPageList',
-    {
-        type: 'page'
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.demos.getPageList',
+        {
+            type: 'page'
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

@@ -26,7 +26,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Edits are needed to meet writing standards.
+- Edits are needed to meet the writing standard.
 - Parameter types are not specified.
 - The requirement for parameters is not indicated.
 - Examples are absent.
@@ -41,7 +41,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: administrator
 
-The method logs information into the business process log.
+The method logs information in the business process.
 
 ## Parameters
 
@@ -75,7 +75,7 @@ The method logs information into the business process log.
     );
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -33,33 +33,37 @@ The method `entity.item.property.get` retrieves a list of additional properties 
 [`string`](../../../data-types.md) | String identifier of the required property. ||
 |#
 
-{% include [Parameter note](../../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../../_includes/required.md) %}
 
-## Example
+## Examples
 
-Call
+{% list tabs %}
 
-```js
-BX24.callMethod(
-    'entity.item.property.get',
-    {
-        ENTITY: 'menu_new'
-    },
-    function(r){
-        console.log(r.data());
-    }
-);
-```
+- JS
 
-Request
+    ```js
+    BX24.callMethod(
+        'entity.item.property.get',
+        {
+            ENTITY: 'menu_new'
+        },
+        function(r){
+            console.log(r.data());
+        }
+    );
+    ```
 
-```http
-https://my.bitrix24.com/rest/entity.item.property.get.json?ENTITY=menu_new&auth=340bf57f35ee95e0debf98399632999c
-```
+- HTTP
 
-{% include [Example note](../../../../_includes/examples.md) %}
+    ```http
+    https://my.bitrix24.com/rest/entity.item.property.get.json?ENTITY=menu_new&auth=340bf57f35ee95e0debf98399632999c
+    ```
 
-## Response on success
+{% endlist %}
+
+{% include [Notes on examples](../../../../_includes/examples.md) %}
+
+## Response in case of success
 
 > 200 OK
 ```json

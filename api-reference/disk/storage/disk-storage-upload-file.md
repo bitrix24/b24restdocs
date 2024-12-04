@@ -2,11 +2,11 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not uploaded to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no response in case of error
+- no response in case of an error
 
 {% endnote %}
 
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -48,43 +48,50 @@ Please note that the list of available `TASK_ID` identifiers for setting permiss
 
 {% endnote %}
 
-```js
-BX24.callMethod(
-    "disk.storage.uploadFile",
-    {
-        id: 4,
-        data: {
-            NAME: "avatar.jpg"
-        },
-        fileContent: document.getElementById('test_file_input'),
-        generateUniqueName: true,
-        rights: [
-            {
-                TASK_ID: 42,
-                ACCESS_CODE: 'U35' // access for user with ID=35
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.storage.uploadFile",
+        {
+            id: 4,
+            data: {
+                NAME: "avatar.jpg"
             },
-            {
-                TASK_ID: 38,
-                ACCESS_CODE: 'U2' // access for user with ID=2
-            }
-        ]
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Footnote on Examples](../../../_includes/examples.md) %}
+            fileContent: document.getElementById('test_file_input'),
+            generateUniqueName: true,
+            rights: [
+                {
+                    TASK_ID: 42,
+                    ACCESS_CODE: 'U35' //access for user with ID=35
+                },
+                {
+                    TASK_ID: 38,
+                    ACCESS_CODE: 'U2' //access for user with ID=2
+                }
+            ]
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 
 > 200 OK
 
-On success, it returns a structure similar to that provided in [disk.file.get](../file/disk-file-get.md).
+On success, it returns a structure similar to that in [disk.file.get](../file/disk-file-get.md).
 
 ```json
 "result": {
@@ -95,8 +102,8 @@ On success, it returns a structure similar to that provided in [disk.file.get](.
     "TYPE": "file",
     "PARENT_ID": "8",
     "DELETED_TYPE": "0",
-    "CREATE_TIME": "2015-04-24T10:41:51+03:00",
-    "UPDATE_TIME": "2015-04-24T15:52:43+03:00",
+    "CREATE_TIME": "2015-04-24T10:41:51+02:00",
+    "UPDATE_TIME": "2015-04-24T15:52:43+02:00",
     "DELETE_TIME": null,
     "CREATED_BY": "1",
     "UPDATED_BY": "1",

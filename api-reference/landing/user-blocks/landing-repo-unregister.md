@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.repo.unregister` deletes a block. It returns *true* upon deletion or *false* if the block was already deleted or did not exist.
+The method `landing.repo.unregister` deletes a block. It returns *true* upon deletion or *false* if the block has already been deleted or did not exist.
 
 ## Parameters
 
@@ -36,18 +36,24 @@ The method `landing.repo.unregister` deletes a block. It returns *true* upon del
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.repo.unregister',
-    {code: 'myblockx'},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.repo.unregister',
+        {code: 'myblockx'},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

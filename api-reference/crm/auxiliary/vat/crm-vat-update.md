@@ -8,13 +8,13 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- The requiredness and type of parameters are not specified
-- No response in case of an error
-- No response in case of success
-- No examples in other languages
-
+- the requirement and type of parameters are not specified
+- no response in case of error 
+- no response in case of success
+- no examples in other languages
+  
 {% endnote %}
 
 {% endif %}
@@ -34,34 +34,41 @@ This method updates an existing VAT rate.
 #|
 || **Parameter** | **Description** ||
 || **id** | Identifier of the VAT rate. ||
-|| **fields** | Set of fields - an array of the form `array("updating field"=>"value"[, ...])`, where "updating field" can take values from the method [crm.vat.fields](crm-vat-fields.md). ||
+|| **fields** | Set of fields - an array of the form `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values from the method [crm.vat.fields](crm-vat-fields.md). ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.vat.update",
-    {
-        "id": id,
-        "fields":
-        {
-            "ACTIVE": "N"
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+- JS
+  
+    ```javascript
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.vat.update",
+        {
+            "id": id,
+            "fields":
+            {
+                "ACTIVE": "N"
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+
+{% include [Notes on examples](../../../../_includes/examples.md) %}

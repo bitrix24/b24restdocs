@@ -2,7 +2,7 @@
 
 You can read about what contextual applications are [here](./chat-apps.md#contextual-applications).
 
-To work with the context, perform the following actions:
+To work with the context, follow these steps:
 
 1. [Register an application](./create-app/index.md). You can register a hidden application so that it does not appear on the text input panel.
 
@@ -14,34 +14,41 @@ To work with the context, perform the following actions:
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-restCommand(
-    'imbot.message.add',
-    Array(
-        "DIALOG_ID" => 2,
-        "BOT_ID" => 17,
-        "MESSAGE" => "Hello! My name is EchoBot :)",
-        "KEYBOARD" => [
-            {
-                "TEXT":"Open App",
-                "APP_ID":11
-            }
-        ],
-        "MENU" => [
-            {
-                "TEXT":"Open App",
-                "APP_ID":11
-            }
-        ]
-    ),
-    $_REQUEST["auth"]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    restCommand(
+        'imbot.message.add',
+        Array(
+            "DIALOG_ID" => 2,
+            "BOT_ID" => 17,
+            "MESSAGE" => "Hello! My name is EchoBot :)",
+            "KEYBOARD" => [
+                {
+                    "TEXT":"Open App",
+                    "APP_ID":11
+                }
+            ],
+            "MENU" => [
+                {
+                    "TEXT":"Open App",
+                    "APP_ID":11
+                }
+            ]
+        ),
+        $_REQUEST["auth"]
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% note info %}
 
-In addition to `APP_ID`, you can pass any string in the `APP_PARAMS` parameter. When your IFRAME is opened, the data will be passed to the `BUTTON_PARAMS` parameter.
+In addition to `APP_ID`, you can pass any string in the `APP_PARAMS` parameter. When your IFRAME opens, the data will be passed to the `BUTTON_PARAMS` parameter.
 
 The rules for developing the IFRAME handler and limitations are presented [in the documentation](./iframe.md). When creating a message, you can use one of two options — [keyboard (KEYBOARD)](../messages/keyboards.md) or [context menu (MENU)](../messages/menu.md).
 

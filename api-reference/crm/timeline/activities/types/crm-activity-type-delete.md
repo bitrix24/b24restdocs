@@ -8,13 +8,13 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -36,22 +36,28 @@ The method `crm.activity.type.delete` removes a subtype of activities.
 
 ## Example
 
-```js
-BX24.callMethod(
-    'crm.activity.type.delete',
-    {
-        TYPE_ID: id
-    },
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-        {
-            alert("Success: " + result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'crm.activity.type.delete',
+        {
+            TYPE_ID: id
+        },
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+            {
+                alert("Success: " + result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}

@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
 - response in case of error is missing
@@ -21,7 +21,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `entity.section.delete` removes a storage section. The user must have at least write access (**W**) to the storage.
+The `entity.section.delete` method removes a storage section. The user must have at least write access (**W**) to the storage.
 
 ## Parameters
 
@@ -33,29 +33,35 @@ The method `entity.section.delete` removes a storage section. The user must have
 [`integer`](../../data-types.md) | Required. Identifier of the section to be deleted. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
-## Example
+## Examples
 
-Call
-```javascript
-BX24.callMethod(
-    'entity.section.delete',
-    {
-        ENTITY: 'menu_new',
-        ID: 220
-    }
-);
-```
+{% list tabs %}
 
-Request
-```http
-https://my.bitrix24.com/rest/entity.section.delete.json?ENTITY=menu_new&ID=220&auth=9affe382af74d9c5caa588e28096e872
-```
+- JS
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+    ```javascript
+    BX24.callMethod(
+        'entity.section.delete',
+        {
+            ENTITY: 'menu_new',
+            ID: 220
+        }
+    );
+    ```
 
-## Response on success
+- HTTP
+
+    ```http
+    https://my.bitrix24.com/rest/entity.section.delete.json?ENTITY=menu_new&ID=220&auth=9affe382af74d9c5caa588e28096e872
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Response in case of success
 
 > 200 OK
 ```json

@@ -1,4 +1,4 @@
-# Add Custom Field to Task task.item.userfield.add
+# Add Custom Field task.item.userfield.add
 
 {% if build == 'dev' %}
 
@@ -22,11 +22,11 @@ Some data may be missing here — we will complete it shortly
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
 The method `task.item.userfield.add` creates a new property.
 
-The system limitation on the field name is 20 characters. The prefix `UF_TASK_` is always added to the custom field name, meaning the actual length of the name is 12 characters.
+When creating a custom field, the field name `FIELD_NAME` must use the prefix `UF_`. If the prefix is not specified, the system will automatically add it to the beginning of the name.
 
 ## Parameters
 
@@ -35,15 +35,15 @@ The system limitation on the field name is 20 characters. The prefix `UF_TASK_` 
 || **auth**
 [`unknown`](../../data-types.md) | Authorization token. ||
 || **PARAMS**
-[`unknown`](../../data-types.md) | An array with property parameters in the form `array("parameter": 'value' [, ...])`, containing the following parameters: 
-- `USER_TYPE_ID` - the data type of the custom field. Allowed values: 
+[`unknown`](../../data-types.md) | An array with property parameters of the form `array("parameter": 'value' [, ...])`, containing the following parameters: 
+- `USER_TYPE_ID` - data type of the custom field. Allowed values: 
     - `string` (**String**);
     - `double` (**Number**); 
     - `date` (**Date**);
     - `boolean` (**Yes/No**); 
 - `FIELD_NAME` - field code; 
 - `XML_ID` - external code; 
-- `EDIT_FORM_LABEL` - label in the formatting form (specified in English ('en') and Russian ('ru') languages); 
+- `EDIT_FORM_LABEL` - label in the formatting form (specified in English ('en') and German ('de') languages); 
 - `LABEL` - field title. ||
 |#
 
@@ -61,7 +61,8 @@ The system limitation on the field name is 20 characters. The prefix `UF_TASK_` 
             'FIELD_NAME' => 'NEW_TASKS_FIELD',
             'XML_ID' => 'MY_TASK_FIELD',
             'EDIT_FORM_LABEL' => array(
-                'en' => 'New task field'
+                'en' => 'New task field',
+                'de' => 'Neues Aufgabenfeld'
             ),
             'LABEL' => 'New task field'
         ),
@@ -80,7 +81,7 @@ The system limitation on the field name is 20 characters. The prefix `UF_TASK_` 
                 'USER_TYPE_ID' : 'string',
                 'FIELD_NAME' : 'NEW_TASKS_FIELD',
                 'XML_ID' : 'MY_TASK_FIELD',
-                'EDIT_FORM_LABEL' : {'en':'New task field'},
+                'EDIT_FORM_LABEL' : {'en':'New task field', 'de':'Neues Aufgabenfeld'},
                 'LABEL' : 'New task field'
             }
         },
@@ -94,4 +95,4 @@ The system limitation on the field name is 20 characters. The prefix `UF_TASK_` 
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}

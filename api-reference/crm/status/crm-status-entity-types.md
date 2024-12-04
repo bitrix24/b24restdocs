@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -34,18 +34,24 @@ No parameters.
 
 ## Example
 
-```javascript
-BX24.callMethod(
-    "crm.status.entity.types",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        "crm.status.entity.types",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

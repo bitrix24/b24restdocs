@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
@@ -28,7 +28,7 @@ To access the method, the application must request the call access permission. T
 
 #|
 || **Parameter** | **Description** ||
-|| **FROM_LINE** | The ID of the line from which the call will be made. A list of available lines can be obtained using the [voximplant.line.get](lines/voximplant-line-get.md) method. ||
+|| **FROM_LINE** | ID of the line from which the call will be made. A list of available lines can be obtained using the [voximplant.line.get](lines/voximplant-line-get.md) method. ||
 || **TO_NUMBER** | The number to call. ||
 || **TEXT_TO_PRONOUNCE** | The text to be pronounced. ||
 || **VOICE** | The voice to pronounce this text (optional). A list of voices can be obtained using the [voximplant.tts.voices.get](voximplant-tts-voices-get.md) method. ||
@@ -36,22 +36,28 @@ To access the method, the application must request the call access permission. T
 
 ## Example
 
-```js
-BX24.callMethod(
-    'voximplant.infocall.startwithtext',
-    {
-        "FROM_LINE": "reg1332",
-        "TO_NUMBER": "+1911xxxxxxx",
-        "PRONOUNCE": "Good afternoon. Your request has been completed.",
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'voximplant.infocall.startwithtext',
+        {
+            "FROM_LINE": "reg1332",
+            "TO_NUMBER": "+1911xxxxxxx",
+            "TEXT_TO_PRONOUNCE": "Good afternoon. Your request has been completed.",
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

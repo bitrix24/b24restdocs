@@ -3,21 +3,23 @@ href: index.md
 items: 
   - name: Concept and Benefits of Event Processing
     href: index.md
-  - name: Get List of Available Events
+  - name: Get a List of Available Events
     href: events.md
-  - name: Register Handler 
+  - name: Register a Handler
     href: event-bind.md
-  - name: Get List of Handlers
+  - name: How to Test Your Handler
+    href: test-handler.md
+  - name: Get a List of Handlers
     href: event-get.md
-  - name: Unregister Handler
+  - name: Unregister a Handler
     href: event-unbind.md
   - name: Security
     href: safe-event-handlers.md
-  - name: Offline Events 
+  - name: Offline Events
     href: offline-events.md
-  - name: Get List of Offline Events 
+  - name: Get a List of Offline Events
     href: event-offline-list.md
-  - name: Get List of Offline Events with "Cleanup"
+  - name: Get a List of Offline Events with "Cleanup"
     href: event-offline-get.md
   - name: Clear Offline Event Queues
     href: event-offline-clear.md

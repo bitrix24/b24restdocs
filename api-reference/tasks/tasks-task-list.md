@@ -5,11 +5,11 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- parameter requirements not specified
-- curl examples missing
-- response in case of error missing
-
+- parameter types are not specified
+- parameter requirements are not specified
+- curl examples are missing
+- response in case of error is missing
+ 
 {% endnote %}
 
 {% endif %}
@@ -24,9 +24,9 @@ Some data may be missing here — we will fill it in shortly
 >
 > Who can execute the method: any user
 
-The method `tasks.task.list` returns an array of tasks, each containing an array of fields. Unlike [task.item.list](./deprecated/task-item/task-item-list.md), parameters in the `tasks.task.list` request can be specified in any order, and unnecessary parameters can be omitted.
+The method `tasks.task.list` returns an array of tasks, each containing an array of fields. Unlike [task.item.list](./deprecated/task-item/task-item-list.md), parameters in the request `tasks.task.list` can be specified in any order, and unnecessary parameters can be omitted.
 
-To retrieve data for all tasks, the user must have admin rights. A department head will only have access to tasks within their branch of the hierarchy.
+To retrieve data for all tasks, the user must have admin rights. A department head will only have access to tasks in their branch of the hierarchy.
 
 Tasks marked as "Favorite" can also be retrieved by setting the filter parameter `$filter[::SUBFILTER-PARAMS][FAVORITE]=Y`.
 
@@ -71,7 +71,7 @@ The sorting field can take the following values:
 - **MATCH_WORK_TIME** — Flag indicating the need to skip weekends.
 - **FAVORITE** — Flag indicating that the task has been added to favorites.
 - **SORTING** — Sorting index.
-- **MESSAGE_ID** — Search index identifier.
+- **MESSAGE_ID** — Identifier of the search index.
 
 {% note info %}
 
@@ -98,7 +98,7 @@ Optional. By default, it is sorted in descending order by task identifier.
 - **RESPONSIBLE_ID** - assignee;
 - **TITLE** - task title (can search by pattern [\%_]);
 - **TAG** - tag;
-- **REAL_STATUS** - task status. Constants reflecting task statuses:
+- **REAL_STATUS** - task status. Corresponds to the `status` field in the response. Constants reflecting task statuses:
     - STATE_NEW = 1;
     - STATE_PENDING = 2;
     - STATE_IN_PROGRESS = 3;
@@ -106,7 +106,7 @@ Optional. By default, it is sorted in descending order by task identifier.
     - STATE_COMPLETED = 5;
     - STATE_DEFERRED = 6;
     - STATE_DECLINED = 7;
-- **STATUS** - status for sorting. Similar to **REAL_STATUS**, but has three additional meta-statuses:
+- **STATUS** - status for sorting. Corresponds to the `subStatus` field in the response. Similar to **REAL_STATUS**, but has three additional meta-statuses:
     - **-3** - task is almost overdue;
     - **-2** - unviewed task;
     - **-1** - overdue task.
@@ -121,11 +121,11 @@ Optional. By default, it is sorted in descending order by task identifier.
 - **ACCOMPLICE** - co-assignee identifier;
 - **AUDITOR** - auditor identifier;
 - **DEPENDS_ON** - identifier of the previous task;
-- **ONLY_ROOT_TASKS** - only tasks that are not sub-tasks (root tasks), as well as sub-tasks of the parent task to which the current user does not have access (Y\|N).
+- **ONLY_ROOT_TASKS** - only tasks that are not sub-tasks (root tasks), as well as sub-tasks of the parent task, to which the current user does not have access (Y\|N).
 - **STAGE_ID** - stage;
 - **UF_CRM_TASK** - CRM entities;
 
-Before the filter field name, the type of filtering can be specified:
+Before the name of the filter field, the type of filtering can be specified:
 - "!" - not equal
 - "<" - less than
 - "<=" - less than or equal to
@@ -136,7 +136,7 @@ Before the filter field name, the type of filtering can be specified:
 
 Optional. By default, records are not filtered. ||
 || **select**
-[`unknown`](../data-types.md) | An array of record fields that will be returned by the method. Only the necessary fields can be specified.
+[`unknown`](../data-types.md) | An array of record fields that will be returned by the method. Only those fields that are necessary can be specified.
 
 Available fields: 
 - **ID** - task identifier;
@@ -148,7 +148,7 @@ Available fields:
     - **0** - low;
     - **1** - medium;
     - **2** - high.
-- **STATUS** - status;
+- **STATUS** - status. Returns the regular status `status` and meta-status `subStatus`;
 - **MULTITASK** - multi-task;
 - **NOT_VIEWED** - unviewed task;
 - **REPLICATE** - recurring task;
@@ -172,7 +172,7 @@ Available fields:
 - **XML_ID** - external code;
 - **COMMENTS_COUNT** - number of comments;
 - **NEW_COMMENTS_COUNT** - number of new comments;
-- **TASK_CONTROL** - take into work;
+- **TASK_CONTROL** - accept for work;
 - **ADD_IN_REPORT** - add to report;
 - **FORKED_BY_TEMPLATE_ID** - created from a template;
 - **TIME_ESTIMATE** - time spent;
@@ -181,7 +181,7 @@ Available fields:
 - **FORUM_TOPIC_ID** - forum topic identifier;
 - **FORUM_ID** - forum identifier;
 - **SITE_ID** - site identifier;
-- **SUBORDINATE** - subordinate's task;
+- **SUBORDINATE** - subordinate task;
 - **FAVORITE** - Favorite;
 - **VIEWED_DATE** - last viewed date;
 - **SORTING** - sorting index;
@@ -189,11 +189,11 @@ Available fields:
 - **DURATION_FACT** - time spent (actual);
 - **DURATION_TYPE** - unit type in planned duration: days, hours, or minutes.
 
-By default, all **non-computable** fields from the main query table will be returned.
+By default, all **non-computed** fields of the main query table will be returned.
 
 The list of fields can be specified by sending a request to [tasks.task.getFields](tasks-task-get-fields.md). ||
 || **limit**
-[`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to retrieve more records than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in multiple requests of 50 records in response. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
+[`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to obtain a number of records greater than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in several requests of 50 records each. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
 ```js
 start=0
 start=50
@@ -201,7 +201,7 @@ start=100
 ```
 ||
 || **start**
-[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, this parameter's value must always be a multiple of 50. For example, with a value of 50, the 51st record and subsequent ones will be displayed, while the first 50 records will be skipped.
+[`unknown`](../data-types.md) | How many of the first records to skip in the result. Due to technical limitations, the value of this parameter must always be a multiple of 50. For example, with a value of 50, the 51st record and subsequent ones will be displayed, while the first 50 records will be skipped.
 
 With a value of `-1`, the count will be disabled. 
 
@@ -223,7 +223,15 @@ Output all unique tasks added to "Favorites" with a status greater than 2:
     ```js
     BX24.callMethod(
         'tasks.task.list',
-        {filter:{'>STATUS':2, REPLICATE:'N', '::SUBFILTER-PARAMS':{FAVORITE:'Y'}}},
+        {
+            filter:{
+                '>STATUS':2,
+                'REPLICATE':'N',
+                '::SUBFILTER-PARAMS':{
+                    FAVORITE:'Y'
+                }
+            }
+        },
         function(res){console.log(res.answer.result);}
     );
     ```
@@ -237,22 +245,85 @@ Output all unique tasks added to "Favorites" with a status greater than 2:
 ```js
 {
     "result": {
-        "list": [
+        "tasks": [
             {
-                "id": "1230",
-                "createdDate": "01.03.2019 15:29:28",
-                "field": "NEW",
-                "value": {
-                    "from": null,
-                    "to": null
-                },
-                "user": {
+                "id": "434",
+                "parentId": "0",
+                "title": "test task 1",
+                "description": "",
+                "mark": null,
+                "priority": "1",
+                "multitask": "N",
+                "notViewed": "N",
+                "replicate": "N",
+                "stageId": "0",
+                "createdBy": "1",
+                "createdDate": "2024-11-22T13:58:17+02:00",
+                "responsibleId": "1",
+                "changedBy": "1",
+                "changedDate": "2024-11-26T13:43:28+02:00",
+                "statusChangedBy": "1",
+                "closedBy": "0",
+                "closedDate": null,
+                "activityDate": "2024-11-22T13:58:17+02:00",
+                "dateStart": "2024-11-26T13:43:28+02:00",
+                "deadline": null,
+                "startDatePlan": null,
+                "endDatePlan": null,
+                "guid": "{8a261464-64eb-4d04-827b-37ded5433e85}",
+                "xmlId": null,
+                "commentsCount": null,
+                "serviceCommentsCount": null,
+                "allowChangeDeadline": "Y",
+                "allowTimeTracking": "N",
+                "taskControl": "Y",
+                "addInReport": "N",
+                "forkedByTemplateId": null,
+                "timeEstimate": "0",
+                "timeSpentInLogs": null,
+                "matchWorkTime": "N",
+                "forumTopicId": null,
+                "forumId": null,
+                "siteId": "s1",
+                "subordinate": "N",
+                "exchangeModified": null,
+                "exchangeId": null,
+                "outlookVersion": "2",
+                "viewedDate": "2024-11-26T13:40:45+02:00",
+                "sorting": null,
+                "durationFact": null,
+                "isMuted": "N",
+                "isPinned": "N",
+                "isPinnedInGroup": "N",
+                "flowId": null,
+                "descriptionInBbcode": "Y",
+                "status": "3",
+                "statusChangedDate": "2024-11-26T13:43:28+02:00",
+                "durationPlan": null,
+                "durationType": "days",
+                "favorite": "N",
+                "groupId": "0",
+                "auditors": [],
+                "accomplices": [],
+                "newCommentsCount": 0,
+                "group": [],
+                "creator": {
                     "id": "1",
-                    "name": "Max",
-                    "lastName": "Grechushnikov",
-                    "secondName": "",
-                    "login": "admin"
-                }
+                    "name": "Admin Adminov",
+                    "link": "/company/personal/user/1/",
+                    "icon": "/bitrix/images/tasks/default_avatar.png",
+                    "workPosition": "Chief"
+                },
+                "responsible": {
+                    "id": "1",
+                    "name": "Admin Adminov",
+                    "link": "/company/personal/user/1/",
+                    "icon": "/bitrix/images/tasks/default_avatar.png",
+                    "workPosition": "Chief"
+                },
+                "accomplicesData": [],
+                "auditorsData": [],
+                "subStatus": "3"
             }
         ]
     },
@@ -311,7 +382,7 @@ Example of disabling pagination:
 
 ### How to get a filtered list of tasks via an HTTP request?
 
-Task filters by ID, date, status. For the filter `'=ID' => 3`, it is recommended to use [tasks.task.get](.) as it does not have pagination.
+Task filters by ID, date, status. For the filter `'=ID' => 3`, it is recommended to use [tasks.task.get](./tasks-task-get.md) as it does not have pagination.
 
 {% list tabs %}
 
@@ -368,4 +439,10 @@ Task filters by ID, date, status. For the filter `'=ID' => 3`, it is recommended
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note about examples](../../_includes/examples.md) %}
+
+## Continue your study
+
+- [{#T}](../../tutorials/tasks/how-to-create-comment-with-file.md)
+- [{#T}](../../tutorials/tasks/how-to-upload-file-to-task.md)
+- [{#T}](../../tutorials/tasks/how-to-create-task-with-file.md)

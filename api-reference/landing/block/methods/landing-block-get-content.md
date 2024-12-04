@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- parameter requirements not specified
+- parameter types are not specified
+- parameter requirements are not specified
 - examples are missing
 - success response is missing
 - error response is missing
@@ -43,29 +43,35 @@ The method `landing.block.getcontent` retrieves the content of a block. It retur
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.block.getContent',
-    {
-        lid: 4858,
-        block: 39556,
-        editMode: 1,
-        params: {
-            wrapper_show: 0
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.block.getContent',
+        {
+            lid: 4858,
+            block: 39556,
+            editMode: 1,
+            params: {
+                wrapper_show: 0
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

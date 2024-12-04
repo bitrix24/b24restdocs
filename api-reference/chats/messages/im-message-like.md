@@ -1,4 +1,4 @@
-# Change the "Like" Status of a Message im.message.like
+# Change the "Like" status for the message im.message.like
 
 {% note warning "We are still updating this page" %}
 
@@ -8,11 +8,11 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types not specified
-- examples are missing
+- examples missing
 
 {% endnote %}
 
@@ -27,33 +27,39 @@ The `im.message.like` method sets a "Like" for a message.
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **MESSAGE_ID^*^**
-[`unknown`](../../data-types.md) | `1` | Identifier of the message (any message sent in private chats or group chats where a chatbot is present) | 18 ||
+[`unknown`](../../data-types.md) | `1` | Identifier of the message (any message sent in personal chats or in group chats where a chatbot is present) | 18 ||
 || **ACTION**
 [`unknown`](../../data-types.md) | `auto` | Action related to the method: plus - will set the "Like" label; minus - will remove the "Like" label; auto - will automatically determine whether to set or remove the label. If not specified, it will operate in auto mode | 18 ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Examples
 
 {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.message.like',
-    Array(
-        'MESSAGE_ID' => 1,
-        'ACTION' => 'auto',
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+- PHP
 
-## Response on Success
+    ```php
+    $result = restCommand(
+        'im.message.like',
+        Array(
+            'MESSAGE_ID' => 1,
+            'ACTION' => 'auto',
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Example notes](../../../_includes/examples.md) %}
+
+## Response on success
 
 ```json
 {
@@ -61,9 +67,9 @@ $result = restCommand(
 }
 ```
 
-**Execution Result**: `true` or an error.
+**Execution result**: `true` or an error.
 
-## Response on Error
+## Response on error
 
 ```json
 {
@@ -72,12 +78,12 @@ $result = restCommand(
 }
 ```
 
-### Description of Keys
+### Description of keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||

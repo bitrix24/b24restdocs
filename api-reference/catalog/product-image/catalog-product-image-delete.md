@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method removes an image from a product, parent product, trade offer, or service.
+This method removes an image from a product, parent product, variation, or service.
 
 ## Method Parameters
 
@@ -17,12 +17,12 @@ This method removes an image from a product, parent product, trade offer, or ser
 [`catalog_product.id`](../data-types.md#catalog_product)\|
 [`catalog_product_sku.id`](../data-types.md#catalog_product_sku)\|
 [`catalog_product_offer.id`](../data-types.md#catalog_product_offer)\|
-[`catalog_product_service.id`](../data-types.md#catalog_product_service) | Identifier of the product, parent product, trade offer, or service.
+[`catalog_product_service.id`](../data-types.md#catalog_product_service) | Identifier of the product, parent product, variation, or service.
 
 To obtain existing identifiers, use the following methods:
 - for products — [catalog.product.list](../product/catalog-product-list.md)
 - for parent products — [catalog.product.sku.list](../product/sku/catalog-product-sku-list.md)
-- for trade offers — [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md)
+- for product variations — [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md)
 - for services — [catalog.product.service.list](../product/service/catalog-product-service-list.md)
 ||
 || **id***
@@ -140,9 +140,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to modify the trade catalog
+|| `200040300020` | Insufficient rights to modify the trade catalog
 ||
-|| `200040300020` | Insufficient permissions to modify the product
+|| `200040300020` | Insufficient rights to modify the product
 ||
 || `100` | Parameter `productId` is missing or empty
 ||

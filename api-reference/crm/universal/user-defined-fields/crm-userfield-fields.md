@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -30,7 +30,7 @@ The method `crm.userfield.fields` returns the description of fields for custom f
 
 - JS
   
-    ```
+    ```js
     BX24.callMethod(
         "crm.userfield.fields",
         {},

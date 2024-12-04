@@ -1,8 +1,8 @@
-# Change Parameters of Social Network Group sonet_group.update
+# Change Social Network Group Parameters sonet_group.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will complete it soon.
 
 - no parameters table
 - parameter types not specified
-- parameter requirements not specified
+- parameter requirements not indicated
 - no error response
 - no examples in other languages
 
@@ -24,23 +24,31 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-This method modifies the parameters of a social network group using the API method `CSocNetGroup::Update()`. To perform the operation, the current user must either be the owner of the group or have social network administrator rights.
+This method modifies the parameters of a social network group using the API method `CSocNetGroup::Update()`. To perform this operation, the current user must either be the owner of the group or have social network administrator rights.
 
 ## Parameters:
 
-Receives all fields necessary for the `CSocNetGroup::Update()` method, as well as `GROUP_ID` - the ID of the group that needs to be modified.
+It receives all fields necessary for the `CSocNetGroup::Update()` method, as well as `GROUP_ID` - the ID of the group that needs to be modified.
 
 In case of a successful group modification, it returns its ID; otherwise, it returns an error message.
 
 ## Example
 
-```js
-// Changing the name of the social network group with ID=11 to 'Test sonet group XXX'
-BX24.callMethod('sonet_group.update', {
-    'GROUP_ID': 11,
-    'NAME': 'Test sonet group XXX'
-});
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    // Changing the name of the social network group with ID=11 to 'Test sonet group XXX'
+    BX24.callMethod('sonet_group.update', {
+        'GROUP_ID': 11,
+        'NAME': 'Test sonet group XXX'
+    });
+    ```
+
+{% endlist %}
+
+
 {% include [Footnote on examples](../../_includes/examples.md) %}
 
 ## Request:

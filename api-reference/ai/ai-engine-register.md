@@ -8,15 +8,15 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing
 - success response is absent
 - error response is absent
-- links to pages that have not yet been created are not specified.
+- links to pages that have not yet been created are not provided.
 
 {% endnote %}
 
@@ -60,33 +60,39 @@ Array of parameters:
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'ai.engine.register',
-    {
-        name: 'Smith GPT',
-        code: 'smith_gpt',
-        category: 'text',
-        completions_url: 'https://antonds.com/ai/aul/completions/',
-        settings: {
-            code_alias: 'ChatGPT',
-            model_context_type: 'token',
-            model_context_limit: 16*1024,
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        'ai.engine.register',
+        {
+            name: 'Johnson GPT',
+            code: 'johnson_gpt',
+            category: 'text',
+            completions_url: 'https://antonds.com/ai/aul/completions/',
+            settings: {
+                code_alias: 'ChatGPT',
+                model_context_type: 'token',
+                model_context_limit: 16*1024,
+            },
         },
-    },
-    function(result)
-    {
-        if(result.error())
+        function(result)
         {
-            console.error(result.error());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 ## Endpoint
 

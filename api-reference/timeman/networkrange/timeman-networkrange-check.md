@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - adjustments needed for writing standards
 - parameter types are not specified
@@ -40,7 +40,7 @@ If the `IP` parameter is not specified, the check will be performed for the curr
 
 - JS
 
-    ```javascript
+    ```js
     BX24.callMethod('timeman.networkrange.check',
         {
             'IP': '10.10.255.255'
@@ -72,7 +72,7 @@ If the `IP` parameter is not specified, the check will be performed for the curr
 
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Successful Response
 
@@ -112,5 +112,5 @@ If the `IP` parameter is not specified, the check will be performed for the curr
 
 #|
 || **Code** | **Description** ||
-|| **ACCESS_ERROR** | The specified method is only available to administrators. ||
+|| **ACCESS_ERROR** | The specified method is available only to administrators. ||
 |#

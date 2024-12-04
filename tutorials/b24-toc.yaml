@@ -15,7 +15,7 @@ items:
     include:
       path: bizproc/b24-toc.yaml
       mode: link
-  - name: Bitrix24 CoPilot
+  - name: CoPilot Bitrix24
     include:
       path: ai/b24-toc.yaml
       mode: link
@@ -30,4 +30,8 @@ items:
   - name: Tasks
     include:
       path: tasks/b24-toc.yaml
+      mode: link
+  - name: Open channels
+    include:
+      path: openlines/b24-toc.yaml
       mode: link

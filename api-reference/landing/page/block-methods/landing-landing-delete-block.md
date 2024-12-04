@@ -1,4 +1,4 @@
-# Deleting a Block from a Page
+# Deleting a Block from the Page
 
 {% note warning "We are still updating this page" %}
 
@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
@@ -40,25 +40,31 @@ The method `landing.landing.deleteblock` completely removes a block from the pag
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.landing.deleteblock',
-    {
-        lid: 351,
-        block: 6483
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.deleteblock',
+        {
+            lid: 351,
+            block: 6483
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

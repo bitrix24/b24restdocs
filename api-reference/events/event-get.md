@@ -1,14 +1,14 @@
-# Get a List of Registered Event Handlers event.get
+# Get a list of registered event handlers event.get
 
 > Who can execute the method: any user
 
-The `event.get` method allows you to retrieve a list of registered event handlers.
+The method `event.get` allows you to retrieve a list of registered event handlers.
 
 Without parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -63,7 +63,7 @@ Without parameters.
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -124,7 +124,7 @@ HTTP status: **200**
 || **result**
 [`object`](../data-types.md) | Root element of the response ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

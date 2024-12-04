@@ -42,7 +42,7 @@ An incorrect field in `fields` will be ignored ||
 || **Name**
 `type` | **Description** ||
 || **USER_TYPE_ID***
-[`string`][1] | Data type of the custom field. Possible values:
+[`string`][1] | The data type of the custom field. Possible values:
 - `string` — string
 - `integer` — integer
 - `double` — number
@@ -54,11 +54,11 @@ An incorrect field in `fields` will be ignored ||
 - `address` — address
 - `enumeration` — list
 - `file` — file
-- `employee` — employee binding
-- `crm_status` — binding to CRM directory
-- `iblock_section` — binding to information block sections
-- `iblock_element` — binding to information block elements
-- `crm` — binding to CRM elements
+- `employee` — link to employee
+- `crm_status` — link to CRM directory
+- `iblock_section` — link to information block sections
+- `iblock_element` — link to information block elements
+- `crm` — link to CRM elements
 - [custom field types](../../universal/user-defined-field-types/index.md)
 ||
 || **FIELD_NAME***
@@ -79,7 +79,7 @@ The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LI
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages not provided.
+When a `lang_map` value is provided, the value from `LABEL` will be set for all languages not provided.
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **LIST_COLUMN_LABEL**
@@ -87,7 +87,7 @@ By default, the value passed in `LABEL` is set for all language identifiers ||
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages not provided.
+When a `lang_map` value is provided, the value from `LABEL` will be set for all languages not provided.
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **EDIT_FORM_LABEL**
@@ -95,7 +95,7 @@ By default, the value passed in `LABEL` is set for all language identifiers ||
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages not provided.
+When a `lang_map` value is provided, the value from `LABEL` will be set for all languages not provided.
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **ERROR_MESSAGE**
@@ -103,15 +103,15 @@ By default, the value passed in `LABEL` is set for all language identifiers ||
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages not provided.
+When a `lang_map` value is provided, the value from `LABEL` will be set for all languages not provided.
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **HELP_MESSAGE**
-[`string`][1]\|[`lang_map`](../../data-types.md) | Help.
+[`string`][1]\|[`lang_map`](../../data-types.md) | Help message.
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages not provided.
+When a `lang_map` value is provided, the value from `LABEL` will be set for all languages not provided.
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **MULTIPLE**
@@ -258,8 +258,8 @@ Each type of custom field has its own set of additional settings. This method on
     - `VALUE` — default value of type `datetime` or `date`
     - `TYPE` — type of default value:
       - `NONE` — do not set a default value
-      - `NOW` — use current time/date
-      - `FIXED` — use time/date from `VALUE`
+      - `NOW` — use the current time/date
+      - `FIXED` — use the time/date from `VALUE`
 
     Default value:
 
@@ -285,7 +285,7 @@ Each type of custom field has its own set of additional settings. This method on
     - `DIALOG` — entity selection dialog
 
     By default `LIST` ||
-    || **LIST_HEIGHT** | Height of the list. Must be greater than 0.
+    || **LIST_HEIGHT** | List height. Must be greater than 0.
 
     Available only when `DISPLAY = LIST` or `DISPLAY = UI`.
 
@@ -318,7 +318,7 @@ Each type of custom field has its own set of additional settings. This method on
 
     By default `LIST` ||
     || **LIST_HEIGHT**
-    [`integer`][1] | Height of the list. Must be greater than 0.
+    [`integer`][1] | List height. Must be greater than 0.
 
     By default `1` ||
     || **ACTIVE_FILTER**
@@ -344,31 +344,31 @@ Each type of custom field has its own set of additional settings. This method on
 
 - crm
 
-    If none of the following options are provided, the binding to leads will be enabled by default (`LEAD = Y`).
+    If none of the following options are provided, the link to leads will be enabled by default (`LEAD = Y`).
 
     #|
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`][1] | Is the binding to [Leads](../../leads/index.md) enabled? Possible values:
+    [`boolean`][1] | Is the link to [Leads](../../leads/index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
     By default `N` ||
     || **CONTACT**
-    [`boolean`][1] | Is the binding to [Contacts](../index.md) enabled? Possible values:
+    [`boolean`][1] | Is the link to [Contacts](../index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
     By default `N` ||
     || **COMPANY**
-    [`boolean`][1] | Is the binding to [Companies](../../companies/index.md) enabled? Possible values:
+    [`boolean`][1] | Is the link to [Companies](../../companies/index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
     By default `N` ||
     || **DEAL**
-    [`boolean`][1] | Is the binding to [Deals](../../deals/index.md) enabled? Possible values:
+    [`boolean`][1] | Is the link to [Deals](../../deals/index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -395,7 +395,7 @@ By default `0` ||
 - `Y` — yes
 - `N` — no
 
-For multiple fields, several `DEF = Y` are allowed. For non-multiple fields, the first provided list item with `DEF = Y` will be considered the default value.
+For multiple fields, multiple `DEF = Y` are allowed. For non-multiple fields, the first provided list item with `DEF = Y` will be considered the default value.
 
 By default `N` ||
 || **XML_ID**
@@ -524,7 +524,7 @@ By default `N` ||
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -571,7 +571,7 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Custom Field (list)","USER_TYPE_ID":"enumeration","FIELD_NAME":"ENUMERATION_EXAMPLE","MULTIPLE":"N","MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"VALUE":"List item #1","DEF":"Y","XML_ID":"XML_ID_1","SORT":100},{"VALUE":"List item #2","XML_ID":"XML_ID_2","SORT":200},{"VALUE":"List item #3","XML_ID":"XML_ID_3","SORT":300},{"VALUE":"List item #4","XML_ID":"XML_ID_4","SORT":400}],"SETTINGS":{"DISPLAY":"UI","LIST_HEIGHT":2},"SORT":2000}}' \
+    -d '{"fields":{"LABEL":"Custom Field (list)","USER_TYPE_ID":"enumeration","FIELD_NAME":"ENUMERATION_EXAMPLE","MULTIPLE":"N","MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"VALUE":"List Item #1","DEF":"Y","XML_ID":"XML_ID_1","SORT":100},{"VALUE":"List Item #2","XML_ID":"XML_ID_2","SORT":200},{"VALUE":"List Item #3","XML_ID":"XML_ID_3","SORT":300},{"VALUE":"List Item #4","XML_ID":"XML_ID_4","SORT":400}],"SETTINGS":{"DISPLAY":"UI","LIST_HEIGHT":2},"SORT":2000}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.userfield.add
     ```
 
@@ -581,7 +581,7 @@ By default `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Custom Field (list)","USER_TYPE_ID":"enumeration","FIELD_NAME":"ENUMERATION_EXAMPLE","MULTIPLE":"N","MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"VALUE":"List item #1","DEF":"Y","XML_ID":"XML_ID_1","SORT":100},{"VALUE":"List item #2","XML_ID":"XML_ID_2","SORT":200},{"VALUE":"List item #3","XML_ID":"XML_ID_3","SORT":300},{"VALUE":"List item #4","XML_ID":"XML_ID_4","SORT":400}],"SETTINGS":{"DISPLAY":"UI","LIST_HEIGHT":2},"SORT":2000},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"LABEL":"Custom Field (list)","USER_TYPE_ID":"enumeration","FIELD_NAME":"ENUMERATION_EXAMPLE","MULTIPLE":"N","MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"VALUE":"List Item #1","DEF":"Y","XML_ID":"XML_ID_1","SORT":100},{"VALUE":"List Item #2","XML_ID":"XML_ID_2","SORT":200},{"VALUE":"List Item #3","XML_ID":"XML_ID_3","SORT":300},{"VALUE":"List Item #4","XML_ID":"XML_ID_4","SORT":400}],"SETTINGS":{"DISPLAY":"UI","LIST_HEIGHT":2},"SORT":2000},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.contact.userfield.add
     ```
 
@@ -600,23 +600,23 @@ By default `N` ||
                 SHOW_FILTER: "Y",
                 LIST: [
                     {
-                        VALUE: "List item #1",
+                        VALUE: "List Item #1",
                         DEF: "Y",
                         XML_ID: "XML_ID_1",
                         SORT: 100,
                     },
                     {
-                        VALUE: "List item #2",
+                        VALUE: "List Item #2",
                         XML_ID: "XML_ID_2",
                         SORT: 200,
                     },
                     {
-                        VALUE: "List item #3",
+                        VALUE: "List Item #3",
                         XML_ID: "XML_ID_3",
                         SORT: 300,
                     },
                     {
-                        VALUE: "List item #4",
+                        VALUE: "List Item #4",
                         XML_ID: "XML_ID_4",
                         SORT: 400,
                     },
@@ -654,23 +654,23 @@ By default `N` ||
                 'SHOW_FILTER' => "Y",
                 'LIST' => [
                     [
-                        'VALUE' => "List item #1",
+                        'VALUE' => "List Item #1",
                         'DEF' => "Y",
                         'XML_ID' => "XML_ID_1",
                         'SORT' => 100,
                     ],
                     [
-                        'VALUE' => "List item #2",
+                        'VALUE' => "List Item #2",
                         'XML_ID' => "XML_ID_2",
                         'SORT' => 200,
                     ],
                     [
-                        'VALUE' => "List item #3",
+                        'VALUE' => "List Item #3",
                         'XML_ID' => "XML_ID_3",
                         'SORT' => 300,
                     ],
                     [
-                        'VALUE' => "List item #4",
+                        'VALUE' => "List Item #4",
                         'XML_ID' => "XML_ID_4",
                         'SORT' => 400,
                     ],
@@ -725,7 +725,7 @@ HTTP status: **200**
 
 HTTP status: **400**
 
-This method may return errors not immediately, but by collecting several and concatenating them into a string: `\n`.
+This method may return errors not immediately, but by collecting several and concatenating them with the string: `\n`.
 
 ```json
 {

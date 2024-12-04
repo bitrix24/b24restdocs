@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
-- examples are missing
+- required parameter specifications are missing
+- examples are absent
 - success response is missing
 - error response is missing
 
@@ -35,24 +35,30 @@ The method `timeman.schedule.get` allows you to retrieve the work schedule by it
 
 ## Example
 
-```javascript
-BX24.callMethod(
-    "timeman.schedule.get",
-    {
-        id: 2
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-        {
-            console.dir(result.data());
-            if(result.more())
-                result.next();
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        "timeman.schedule.get",
+        {
+            id: 2
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.dir(result.data());
+                if(result.more())
+                    result.next();
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../_includes/examples.md) %}

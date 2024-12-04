@@ -5,7 +5,7 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing (there should be three examples - curl, js, php)
 - success response is missing
 - error response is missing
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `disk.rights.getTasks` allows you to retrieve a list of access levels that can be used in assigning permissions. It returns the available access levels.
+The method `disk.rights.getTasks` allows you to retrieve a list of access levels that can be used for assigning permissions. It returns the available access levels.
 
 ## Parameters
 
@@ -41,19 +41,26 @@ The method `disk.rights.getTasks` allows you to retrieve a list of access levels
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.rights.getTasks",
-    {},
-    function (result) {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-)
-```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.rights.getTasks",
+        {},
+        function (result) {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    )
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Success response
 

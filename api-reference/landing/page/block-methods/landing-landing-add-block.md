@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types not specified
@@ -16,7 +16,7 @@ Some data may be missing here — we will complete it shortly.
 - examples are missing
 - success response is absent
 - error response is absent
-- links to pages that have not yet been created are not provided (3 links from the Sites section)
+- links to pages that have not yet been created are not specified (3 links in the Sites section)
 
 {% endnote %}
 
@@ -38,7 +38,7 @@ The method `landing.landing.addblock` adds a new block to the page. It returns t
 [`unknown`](../../../data-types.md) | Identifier of the page ||
 || **fields**
 [`unknown`](../../../data-types.md) | Array of block fields, where currently only the following values are supported:
-- **CODE** - symbolic code of the block. The block code can be obtained from the method [landing.block.getrepository](.). If a block registered by a vendor through [landing.repo.register](.) is being added, the CODE value must be passed as `repo_<ID>`, where `<ID>` is the identifier of that block.
+- **CODE** - symbolic code of the block. The block code can be obtained from the method [landing.block.getrepository](.). If a block registered by a partner through [landing.repo.register](.) is being added, the value for CODE must be passed as `repo_<ID>`, where `<ID>` is the identifier of that block.
 - **AFTER_ID** - after which block (its ID) the new block should be added (if not specified, the block will be added at the beginning)
 - **ACTIVE** - activity status of the block (Y/N)
 - **CONTENT** - entirely different content of the block (see notes for the method [landing.block.updatecontent](.)) ||
@@ -46,27 +46,33 @@ The method `landing.landing.addblock` adds a new block to the page. It returns t
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.landing.addblock',
-    {
-        lid: 351,
-        fields: {
-            CODE: '15.social'
-        }
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.addblock',
         {
-            console.error(result.error());
-        }
-        else
+            lid: 351,
+            fields: {
+                CODE: '15.social'
+            }
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

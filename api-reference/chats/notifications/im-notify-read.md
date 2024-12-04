@@ -11,8 +11,8 @@ Some data may be missing here — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - adjustments needed for writing standards
-- parameter types are not specified
-- examples are missing
+- parameter types not specified
+- examples missing
 - response in case of error is absent
 
 {% endnote %}
@@ -23,7 +23,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `im.notify.read` sets the cancellation of read notifications.
+The `im.notify.read` method sets the cancellation of read notifications.
 
 ## Parameters
 
@@ -37,7 +37,7 @@ The method `im.notify.read` sets the cancellation of read notifications.
 
 {% include [Footnote about parameters](../../../_includes/required.md) %}
 
-- If the parameter `ONLY_CURRENT` is passed as `Y`, the read mark will be set only for the specified `ID`. Otherwise, the mark will be set for notifications equal to or greater than the specified `ID`.
+- If the `ONLY_CURRENT` parameter is passed as `Y`, the read mark will be set only for the specified `ID`. Otherwise, the mark will be set for notifications equal to or greater than the specified `ID`.
 
 ## Examples
 
@@ -84,7 +84,7 @@ The method `im.notify.read` sets the cancellation of read notifications.
     );    
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php       
     try {
@@ -107,7 +107,7 @@ The method `im.notify.read` sets the cancellation of read notifications.
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Response on Success
+## Response in case of success
 
 ```json
 {

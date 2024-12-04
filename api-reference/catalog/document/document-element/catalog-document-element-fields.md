@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -47,7 +47,7 @@ No parameters.
 
 - js
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.document.element.fields',
         {},
@@ -63,7 +63,7 @@ No parameters.
 
 - php
   
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.element.fields'
     );
@@ -74,9 +74,9 @@ No parameters.
     ```
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../_includes/examples.md) %}
 
-## Returned Fields
+## Returned fields
 
 #|
 || **Field** | **Description** | **Note** ||
@@ -85,9 +85,9 @@ No parameters.
 || **docId^*^** 
 [`integer`](../../../data-types.md) | Document identifier. |  ||
 || **storeFrom** 
-[`integer`](../../../data-types.md) | Sender's inventory. | ||
+[`integer`](../../../data-types.md) | Source warehouse. | ||
 || **storeTo^*^** 
-[`integer`](../../../data-types.md) | Recipient's inventory. | ||
+[`integer`](../../../data-types.md) | Destination warehouse. | ||
 || **elementId^*^** 
 [`integer`](../../../data-types.md) | Product identifier [catalog.product.list](../../../catalog/product/catalog-product-list.md). | ||
 || **amount^*^** 

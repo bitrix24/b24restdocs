@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- examples missing
+- parameter types are not specified
+- examples are missing
 
 {% endnote %}
 
@@ -32,32 +32,38 @@ The method `im.dialog.writing` sends the status "someone is writing to you...".
 - **XXX** – identifier of the recipient, if the message is for a private dialog | 30 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```js
-B24.callMethod(
-    'im.dialog.writing',
-    {
-        'DIALOG_ID': '13'
-    },
-    function(result){
-        if(result.error())
-        {
-            console.error(result.error().ex);
-        }
-        else
-        {
-            console.log(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples Notes](../../../_includes/examples.md) %}
+- JS
 
-## Response on Success
+    ```js
+    B24.callMethod(
+        'im.dialog.writing',
+        {
+            'DIALOG_ID': '13'
+        },
+        function(result){
+            if(result.error())
+            {
+                console.error(result.error().ex);
+            }
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+## Response on success
 
 ```json
 {
@@ -65,7 +71,7 @@ B24.callMethod(
 }
 ```
 
-## Response on Error
+## Response on error
 
 ```json
 {
@@ -74,16 +80,16 @@ B24.callMethod(
 }
 ```
 
-### Description of Keys
+### Description of keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
-|| **DIALOG_ID_EMPTY** | The `DIALOG_ID` parameter is not provided or does not match the format `XXX` ||
-|| **CHAT_ID_EMPTY** | The `DIALOG_ID` parameter is not provided or does not match the format `chatXXX` ||
-|| **ACCESS_ERROR**| The user does not have permission for this chat ||
+|| **DIALOG_ID_EMPTY** | Parameter `DIALOG_ID` not provided or does not match the format `XXX` ||
+|| **CHAT_ID_EMPTY** | Parameter `DIALOG_ID` not provided or does not match the format `chatXXX` ||
+|| **ACCESS_ERROR**| User does not have permission for this chat ||
 |#

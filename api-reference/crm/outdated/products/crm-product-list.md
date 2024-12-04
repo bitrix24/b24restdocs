@@ -12,7 +12,7 @@ See the description of [list methods](../../../common/index.md).
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -88,7 +88,7 @@ See the description of [list methods](../../../common/index.md).
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {

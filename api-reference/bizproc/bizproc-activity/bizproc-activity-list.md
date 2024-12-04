@@ -1,8 +1,8 @@
-# Get a List of Installed Actions bizproc.activity.list
+# Get the list of installed actions bizproc.activity.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing here — we will complete it soon.
 - edits needed for writing standards
 - missing parameters or fields
 - parameter types not specified
-- required parameters not indicated
+- parameter requirements not specified
 - examples missing
 - success response missing
 - error response missing
@@ -30,17 +30,23 @@ The method returns a list of actions installed by the application.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'bizproc.activity.list',
-    {},
-    function(result) {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            alert("Success: " + result.data().join(', '));
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        'bizproc.activity.list',
+        {},
+        function(result) {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data().join(', '));
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

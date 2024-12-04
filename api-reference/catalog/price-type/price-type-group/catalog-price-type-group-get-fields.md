@@ -1,4 +1,4 @@
-# Get Price Type Binding Fields for Customer Groups catalog.priceTypeGroup.getFields
+# Get Fields for Price Type Bindings to Customer Groups catalog.priceTypeGroup.getFields
 
 {% note warning "We are still updating this page" %}
 
@@ -28,7 +28,7 @@ Some data may be missing here — we will complete it shortly.
 catalog.priceTypeGroup.getFields()
 ```
 
-This method returns the fields for binding price types to customer groups.
+The method returns the fields for binding price types to customer groups.
 
 ## Parameters
 
@@ -36,36 +36,43 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.priceTypeGroup.getFields',
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        'catalog.priceTypeGroup.getFields',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 ## Returned Fields
 
-#| 
+#|
 || **Field** | **Description** | **Note** ||
 || **access^*^** 
 [`char`](../../data-types.md) | Type of added binding:
 - `N` – permission to view this price type;
 - `Y` – permission to purchase at this price type.
-To add both permissions, the method must be called twice, sequentially specifying both binding types (`N` and `Y`). |  ||
+To add both permissions, the method must be called twice, sequentially specifying both types of binding (`N` and `Y`). |  ||
 || **catalogGroupId^*^** 
 [`integer`](../../data-types.md) | ID of the price type. |  ||
 || **groupId^*^** 
 [`integer`](../../data-types.md) | ID of the group to which the price is bound. |  ||
 || **id**
 [`integer`](../../data-types.md) | Identifier of the binding. | Immutable field. ||
-|#
+|# 
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}

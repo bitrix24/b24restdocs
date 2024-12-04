@@ -1,8 +1,8 @@
-# Get the list of custom blocks landing.repo.getList
+# Get a list of custom blocks landing.repo.getList
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing here — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.repo.getList` retrieves the list of blocks for the current application.
+The method `landing.repo.getList` retrieves a list of blocks from the current application.
 
 ## Parameters
 
@@ -53,7 +53,7 @@ which contain values from the main fields table of the entity. The table is prov
 || **ACTIVE**
 [`unknown`](../../data-types.md) | Activity status (Y / N). ||
 || **NAME**
-[`unknown`](../../data-types.md) | Name. ||
+[`unknown`](../../data-types.md) | Title. ||
 || **DESCRIPTION**
 [`unknown`](../../data-types.md) | Description. ||
 || **SECTIONS**
@@ -76,27 +76,33 @@ which contain values from the main fields table of the entity. The table is prov
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.repo.getList',
-    {
-        params: {
-            select: [
-                'ID', 'NAME', 'MANIFEST'
-            ],
-            filter: {
-                '>ID': '1'
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.repo.getList',
+        {
+            params: {
+                select: [
+                    'ID', 'NAME', 'MANIFEST'
+                ],
+                filter: {
+                    '>ID': '1'
+                }
             }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
         }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

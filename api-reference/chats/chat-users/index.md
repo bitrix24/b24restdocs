@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
-- examples missing
+- edits are needed for standard writing
+- parameter types are not specified
+- examples are missing
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.chat.user.add` invites participants to a chat.
+The method `im.chat.user.add` invites participants to the chat.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -34,27 +34,33 @@ The method `im.chat.user.add` invites participants to a chat.
 [`unknown`](../../data-types.md) | `N` | Display of chat history for the user being added to the chat by this method. Y/N - defaults to N. If Y is passed, the new user will not see the history. | 18 ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Explanation of restCommand](../_includes/rest-command.md) %}
+{% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.chat.user.add',
-    Array(
-        'CHAT_ID' => 13,
-        'USERS' => Array(3,4),
-        'HIDE_HISTORY' => 'N',
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    $result = restCommand(
+        'im.chat.user.add',
+        Array(
+            'CHAT_ID' => 13,
+            'USERS' => Array(3,4),
+            'HIDE_HISTORY' => 'N',
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 

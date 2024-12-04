@@ -1,8 +1,8 @@
-# Get a list of CRM entity (Contact/Company) bindings to documents catalog.documentcontractor.list
+# Get a list of CRM entity bindings (Contact/Company) to documents catalog.documentcontractor.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing here — we will fill it in shortly
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the requiredness of parameters is not specified
-- no response in case of an error
+- the required parameters are not specified
+- there is no response in case of an error
 - no examples in other languages
   
 {% endnote %}
@@ -26,7 +26,7 @@ Some data may be missing here — we will fill it in shortly
 catalog.documentcontractor.list(select, filter, order, start)
 ```
 
-The method retrieves a list of CRM entity (Contact/Company) bindings to documents based on the filter.
+The method retrieves a list of CRM entity bindings (Contact/Company) to documents based on the filter.
 
 Returns a list of bindings with the structure described in the **select** parameter (if not specified, all fields are returned, as in the [getFields](catalog-documentcontractor-get-fields.md) method).
 
@@ -44,15 +44,15 @@ Returns a list of bindings with the structure described in the **select** parame
 [`string`](../../data-types.md) | Page number for output. Works for HTTPS requests. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
-- js
+- JS
   
-    ```
+    ```js
     BX.callMethod(
         'catalog.documentcontractor.list',
         {
@@ -74,10 +74,10 @@ Returns a list of bindings with the structure described in the **select** parame
     ```
 - For HTTPS:
 
-    ```
+    ```http
     https://your_account/rest/catalog.documentcontractor.list?auth=_authorization_key_&start=50
     ```
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}

@@ -1,16 +1,16 @@
-# Get Folders of the Site landing.site.getFolders
+# Get site folders landing.site.getFolders
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing
@@ -25,31 +25,28 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.site.getFolders` retrieves the folders of the site.
+The method `landing.site.getFolders` retrieves the site's folders.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** | **Available since** ||
 || **siteId**
-[`unknown`](../../data-types.md) | The identifier of the site. 
+[`unknown`](../../data-types.md) | Site identifier. 
 
 {% note warning %}
 
-Write permissions for the specified site are required. 
+Write access permission is required for the specified site. 
 
 {% endnote %}
 
 | ||
-
-
-
 || **filter**
 [`unknown`](../../data-types.md) | Optional filter. Can accept the following fields:
 - ACTIVE – folder activity (Y/N). By default, it is created as inactive;
 - DELETED – folder deleted (Y/N). By default, non-deleted folders are returned;
 - PARENT_ID – identifier of the parent folder;
-- TITLE – title of the folder;
+- TITLE – folder title;
 - INDEX_ID – identifier of the folder's index page;
 - CODE – symbolic code of the folder;
 - CREATED_BY_ID – identifier of the user who created the folder;
@@ -58,27 +55,33 @@ Write permissions for the specified site are required.
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.site.getFolders',
-    {
-        siteId: 1817,
-        filter: {
-            TITLE: 'Modified Folder'
-        }
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.getFolders',
         {
-            console.error(result.error());
-        }
-        else
+            siteId: 1817,
+            filter: {
+                TITLE: 'Modified folder'
+            }
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

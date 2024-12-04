@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -26,9 +26,9 @@ Some data may be missing here — we will fill it in shortly.
 catalog.storeproduct.list(select, filter, order, start)
 ```
 
-This method retrieves inventory balances filtered by the specified criteria.
+The method retrieves inventory balances by warehouse, filtered according to the specified criteria.
 
-If the operation is successful, a list of inventory balances will be returned in the response body.
+If the operation is successful, a list of inventory balances by warehouse is returned in the response body.
 
 ## Parameters
 
@@ -48,28 +48,32 @@ If the operation is successful, a list of inventory balances will be returned in
 
 ## Examples
 
-For JS
+{% list tabs %}
 
-```javascript
-BX24.callMethod(
-    'catalog.storeproduct.list',
-    {
-        select: {
-            id
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.storeproduct.list',
+        {
+            select: {
+                id
+            },
+            filter: {
+                productId: 8
+            },
         },
-        filter: {
-            productId: 8
-        },
-    },
-    function(result) {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-        result.next();
-    }
-);
-```
+        function(result) {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+            result.next();
+        }
+    );
+    ```
+
+{% endlist %}
 
 Example HTTPS request
 

@@ -1,4 +1,4 @@
-# Get a list of product properties or trade offers catalog.productProperty.list
+# Get a list of product properties or variations catalog.productProperty.list
 
 {% note warning "We are still updating this page" %}
 
@@ -10,8 +10,8 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the mandatory parameters are not specified
-- there is no response in case of an error
+- required parameter specifications are missing
+- no response in case of an error
 - no examples in other languages
   
 {% endnote %}
@@ -26,8 +26,7 @@ Some data may be missing here — we will fill it in shortly.
 catalog.productProperty.list(select, filter, order, start)
 ```
 
-The method retrieves a list of product properties or trade offers. If the operation is successful, a list of product properties or trade offers is returned in the response body.
-
+The method retrieves a list of product properties or variations. If the operation is successful, a list of product properties or variations is returned in the response body.
 
 ## Parameters
 
@@ -43,31 +42,35 @@ The method retrieves a list of product properties or trade offers. If the operat
 [`string`](../../data-types.md)| Page number for output. Works for HTTPS requests. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Examples
 
-For JS
+{% list tabs %}
 
-```javascript
-BX24.callMethod(
-    'catalog.productProperty.list',
-    {
-        select: ['id'],
-        filter: {
-            iblockId: 16
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.productProperty.list',
+        {
+            select: ['id'],
+            filter: {
+                iblockId: 16
+            },
         },
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-        result.next();
-    }
-);
-```
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+            result.next();
+        }
+    );
+    ```
+
+{% endlist %}
 
 Example HTTPS request
 
@@ -75,4 +78,4 @@ Example HTTPS request
 https://your_account/rest/catalog.productProperty.list?auth=_authorization_key_&start=50
 ```
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}

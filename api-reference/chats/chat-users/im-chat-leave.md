@@ -2,16 +2,16 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - adjustments needed for writing standards
-- parameter types not specified
+- parameter types are not specified
 - examples are missing
 
 {% endnote %}
@@ -36,21 +36,27 @@ The `im.chat.leave` method is used to leave a chat.
 
 {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.chat.leave',
-    Array(
-        'CHAT_ID' => 13
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+- PHP
 
-## Success Response
+    ```php
+    $result = restCommand(
+        'im.chat.leave',
+        Array(
+            'CHAT_ID' => 13
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Examples Note](../../../_includes/examples.md) %}
+
+## Successful Response
 
 ```json
 {

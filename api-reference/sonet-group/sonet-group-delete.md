@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - no error response is provided
 - no examples in other languages
 
@@ -32,20 +32,28 @@ Deletes a social network group. To perform this operation, the current user must
 || **GROUP_ID** | ID of the group to be deleted. ||
 |#
 
-{% include [Parameter Note](../../_includes/required.md) %}
+{% include [Footnote on parameters](../../_includes/required.md) %}
 
-In case of successful deletion of the group, it returns **true**, otherwise - an error message.
+In case of successful group deletion, it returns **true**, otherwise - an error message.
 
 ## Example
 
-```js
-// Deleting social network group with ID=11
+{% list tabs %}
 
-BX24.callMethod('sonet_group.delete', {
-    'GROUP_ID': 11
-});
-```
-{% include [Example Note](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    // Deleting social network group with ID=11
+
+    BX24.callMethod('sonet_group.delete', {
+        'GROUP_ID': 11
+    });
+    ```
+
+{% endlist %}
+
+
+{% include [Footnote on examples](../../_includes/examples.md) %}
 
 ## Request:
 

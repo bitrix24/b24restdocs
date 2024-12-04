@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- examples missing
-- success response missing
-- error response missing
+- parameter types are not specified
+- examples are missing
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The `lists.update` method updates an existing list. If the list is successfully updated, the response is `true`; otherwise, it returns *Exception*.
+The `lists.update` method updates an existing list. On successful list update, the response is `true`, otherwise *Exception*.
 
 ## Parameters
 
@@ -45,42 +45,48 @@ The `lists.update` method updates an existing list. If the list is successfully 
 - **DESCRIPTION** - description;
 - **SORT** - sorting;
 - **PICTURE** - image;
-- **BIZPROC** - enable business process support. ||
+- **BIZPROC** - enabling business process support. ||
 || **MESSAGES**
 [`unknown`](../../data-types.md) | labels for list items and sections; ||
 || **RIGHTS**
-[`unknown`](../../data-types.md) | manage access permissions. ||
+[`unknown`](../../data-types.md) | access permission management. ||
 |#
 
-{% include [Parameter Footnote](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 ## Example
 
-```javascript
-var params = {
-    'IBLOCK_TYPE_ID': 'lists_socnet',
-    'IBLOCK_CODE': 'rest_1',
-    'FIELDS': {
-        'NAME': 'List 1 (Update)',
-        'DESCRIPTION': 'Test list (Update)',
-        'SORT': '20',
-        'PICTURE': document.getElementById('iblock-image-update')
-    },
-    'RIGHTS': {
-        'G1': 'X'
-    }
-};
-BX24.callMethod(
-    'lists.update',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            alert("Success: " + result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Footnote](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists_socnet',
+        'IBLOCK_CODE': 'rest_1',
+        'FIELDS': {
+            'NAME': 'List 1 (Update)',
+            'DESCRIPTION': 'Test list (Update)',
+            'SORT': '20',
+            'PICTURE': document.getElementById('iblock-image-update')
+        },
+        'RIGHTS': {
+            'G1': 'X'
+        }
+    };
+    BX24.callMethod(
+        'lists.update',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Example Notes](../../../_includes/examples.md) %}

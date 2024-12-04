@@ -1,4 +1,4 @@
-# Create Social Network Group sonet_group.create
+# Create a social network group sonet_group.create
 
 {% note warning "We are still updating this page" %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will fill it in shortly.
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no error response is provided
+- no response in case of error
 - no examples in other languages
 
 {% endnote %}
@@ -56,32 +56,40 @@ https://mydomain.bitrix24.com/rest/sonet_group.create.json?auth=803f65e30340ff39
 **CLOSED** - flag Y/N - whether the group is archived,
 **SPAM_PERMS** - who has the right to send messages to the group (required field). Values are similar to the INITIATE_PERMS parameter.
 **PROJECT** - flag Y/N - whether the group is a project or not. By default - it is not. (Since version 18.0.0)
-**PROJECT_DATE_FINISH** - specifies the project end date. (Since version 18.0.0)
-**PROJECT_DATE_START** - specifies the project start date. (Since version 18.0.0)
+**PROJECT_DATE_FINISH** - sets the project end date. (Since version 18.0.0)
+**PROJECT_DATE_START** - sets the project start date. (Since version 18.0.0)
 **SCRUM_MASTER_ID** - if filled with a user ID, this project will become a scrum. (Since version 22.300) ||
 || **bAutoSubscribe** | Auto-subscription to the created topic. Optional parameter. Defaults to True. (Since version 10.0.0) ||
 |#
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 In case of successful group creation, it returns its ID; otherwise, it returns an error message.
 
 {% note info "" %}
 
-**Note**: Creating extranet groups via REST API is not possible yet.
+**Note**: Creating extranet groups via REST API is not yet possible.
 
 {% endnote %}
 
 ## Example
 
-```js
-// Let's create a visible and open social network group named 'Test sonet group' with the right to invite new group members for all current group members
+{% list tabs %}
 
-BX24.callMethod('sonet_group.create', {
-    'NAME': 'Test sonet group',
-    'VISIBLE': 'Y',
-    'OPENED': 'N',
-    'INITIATE_PERMS': 'K'
-});
-```
-{% include [Example Notes](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    // Let's create a visible and open social network group named 'Test sonet group' with the right to invite new members for all current group members
+
+    BX24.callMethod('sonet_group.create', {
+        'NAME': 'Test sonet group',
+        'VISIBLE': 'Y',
+        'OPENED': 'N',
+        'INITIATE_PERMS': 'K'
+    });
+    ```
+
+{% endlist %}
+
+
+{% include [Note on examples](../../_includes/examples.md) %}

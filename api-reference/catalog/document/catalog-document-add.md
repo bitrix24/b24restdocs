@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -47,7 +47,7 @@ If the operation is successful, it returns the `id` of the added document.
 
 - js
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.document.element.update',
         {
@@ -69,7 +69,7 @@ If the operation is successful, it returns the `id` of the added document.
 
 - php
   
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.element.update',
         [

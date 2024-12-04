@@ -1,8 +1,8 @@
-# Perform Bulk Deletion of Inventory Documents catalog.document.deleteList
+# Perform bulk deletion of inventory management documents catalog.document.deleteList
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -27,37 +27,43 @@ Some data may be missing — we will complete it shortly.
 catalog.document.deleteList(documentIds)
 ```
 
-Method for bulk deletion of inventory documents.
+Method for bulk deletion of inventory management documents.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **documentIds** 
-[`array`](../../data-types.md)| An array of document IDs that need to be deleted. ||
+[`array`](../../data-types.md)| An array of document identifiers to be deleted. ||
 |#
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'catalog.document.deleteList',
-    {
-        "documentIds": [
-            "110",
-            "112"
-        ]
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.document.deleteList',
+        {
+            "documentIds": [
+                "110",
+                "112"
+            ]
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Note on examples](../../../_includes/examples.md) %}

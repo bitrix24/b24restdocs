@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
+- edits needed for writing standards
 - parameter types not specified
 - parameter requirements not indicated
 - examples missing
@@ -37,34 +37,40 @@ The method `landing.template.getlist` retrieves a list of templates.
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.template.getlist',
-    {
-        params: {
-            select: [
-                'ID', 'TITLE'
-            ],
-            filter: {
-                '>ID': 0
-            },
-            order: {
-                ID: 'DESC'
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.template.getlist',
+        {
+            params: {
+                select: [
+                    'ID', 'TITLE'
+                ],
+                filter: {
+                    '>ID': 0
+                },
+                order: {
+                    ID: 'DESC'
+                }
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
             }
         }
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+    );
+    ```
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

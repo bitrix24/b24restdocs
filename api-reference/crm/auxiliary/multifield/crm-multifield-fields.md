@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -40,18 +40,25 @@ No parameters.
 
 ## Example of searching for a contact by phone:
 
-```javascript
-BX24.callMethod(
-    "crm.multifield.fields",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+  
+    ```javascript
+    BX24.callMethod(
+        "crm.multifield.fields",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

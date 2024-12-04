@@ -5,8 +5,8 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - missing examples (there should be three examples - curl, js, php)
-- missing response in case of success
-- missing response in case of error
+- missing success response
+- missing error response
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it soon
 The method `disk.file.getfields` returns the description of file fields.
 
 - `TYPE` — field type;
-- `USE_IN_FILTER` — whether the field can be used for filtering the selection;
+- `USE_IN_FILTER` — ability to use the field when filtering the selection;
 - `USE_IN_SHOW` — whether this field is available when receiving a response.
 
 ## Parameters
@@ -34,17 +34,24 @@ No parameters
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.file.getfields",
-    {},
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.file.getfields",
+        {},
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote on examples](../../../_includes/examples.md) %}

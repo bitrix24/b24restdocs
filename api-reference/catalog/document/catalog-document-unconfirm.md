@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of an error
+- no response in case of error
 - no examples in other languages
   
 {% endnote %}
@@ -34,7 +34,7 @@ This method has been deprecated since version **22.400.0**. It is recommended to
 catalog.document.unconfirm(id)
 ```
 
-Method to cancel the processing of a document. If the operation is successful, it returns `true` for the added inventory.
+This method is used to cancel the processing of a document. If the operation is successful, it returns `true` for the added inventory.
 
 ## Parameters
 
@@ -44,15 +44,15 @@ Method to cancel the processing of a document. If the operation is successful, i
 [`integer`](../../data-types.md)| Document number. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
-- js
+- JS
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.document.unconfirm',
         {
@@ -68,9 +68,9 @@ Method to cancel the processing of a document. If the operation is successful, i
     );
     ```
 
-- php
+- PHP
   
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.unconfirm',
         [
@@ -84,4 +84,4 @@ Method to cancel the processing of a document. If the operation is successful, i
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

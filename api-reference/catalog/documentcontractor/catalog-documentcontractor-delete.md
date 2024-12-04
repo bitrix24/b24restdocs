@@ -1,7 +1,7 @@
 # Remove the binding of the CRM entity (Contact/Company) to the document catalog.documentcontractor.delete
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -17,7 +17,7 @@ Some data may be missing here — we will fill it in shortly.
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can execute the method: any user
 
 ## Description
 
@@ -25,11 +25,11 @@ Some data may be missing here — we will fill it in shortly.
 catalog.documentcontractor.delete(id)
 ```
 
-This method is used to remove the vendor binding to the document. If the operation is successful, it returns `true` in the response body.
+Method for removing the vendor binding to the document. If the operation is successful, `true` is returned in the response body.
 
 Cases when errors may occur:
 
-- if there is no access to inventory accounting, no access to view incoming documents, or no access to edit the incoming document (adding/removing a binding is considered editing the document);
+- if there is no access to inventory management, no access to view stock receipt documents, or no access to edit the stock receipt document (adding/removing a binding is considered editing the document);
 - if the binding with the specified id is not found.
 
 ## Parameters
@@ -37,24 +37,30 @@ Cases when errors may occur:
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | Identifier of the CRM entity (Contact/Company) binding to the document. ||
+[`integer`](../../data-types.md) | Identifier of the CRM entity binding (Contact/Company) to the document. ||
 |#
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```js
-BX.callMethod(
-    'catalog.documentcontractor.delete',
-    { id: 20 },
-    function(result) {
-        if (result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX.callMethod(
+        'catalog.documentcontractor.delete',
+        { id: 20 },
+        function(result) {
+            if (result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Note on examples](../../../_includes/examples.md) %}

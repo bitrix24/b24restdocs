@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- types and requiredness of parameters are not specified
+- types and required parameters are not specified
 - no response in case of error
 - no examples
   
@@ -30,22 +30,40 @@ Retrieving a filtered list of departments.
 || **order** | sorting direction: 
 - ASC - ascending
 - DESC - descending ||
-|| **ID** | filter by department ID ||
+|| **ID** | filter by department identifier ||
 || **NAME** | filter by department name ||
 || **PARENT** | filter by parent department ||
 || **UF_HEAD** | filter by department head ||
 || **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Footnote on parameters](../../_includes/required.md) %}
 
 Filtering parameters can accept array values.
 
-## Call
+## Code Examples
 
-```js
-BX24.callMethod('department.get', {"ID": 222});
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'department.get',
+        {
+            "ID": 222
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
 
 ## Request
 

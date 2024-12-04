@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types are not specified
+- edits needed for writing standards
+- parameter types not specified
 - examples are missing
 
 {% endnote %}
@@ -40,7 +40,7 @@ The method `timeman.timecontrol.reports.get` is used to retrieve a report on ide
 [`unknown`](../../data-types.md) | 15 | No | Maximum time of absence at the workplace that will not be counted as absence. ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ^**^ – The parameter `IDLE_MINUTES` is available only if you are a manager or administrator. If not specified, the time is automatically taken from the module settings.
 
@@ -50,7 +50,7 @@ The method `timeman.timecontrol.reports.get` is used to retrieve a report on ide
 
 - JS
 
-    ```javascript
+    ```js
     BX24.callMethod('timeman.timecontrol.reports.get', {
         user_id: 2,
         year: 2018,
@@ -83,7 +83,7 @@ The method `timeman.timecontrol.reports.get` is used to retrieve a report on ide
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Successful Response
 
@@ -93,15 +93,15 @@ The method `timeman.timecontrol.reports.get` is used to retrieve a report on ide
     "result": {
         "report": {
             "month_title": "August",
-            "date_start": "2018-08-01T00:00:00+03:00",
-            "date_finish": "2018-08-31T23:59:59+03:00",
+            "date_start": "2018-08-01T00:00:00+02:00",
+            "date_finish": "2018-08-31T23:59:59+02:00",
             "days": [
                 {
                     "index": "20180816",
                     "day_title": "08/16/2018",
                     "workday_complete": false,
-                    "workday_date_start": "2018-08-16T14:08:35+03:00",
-                    "workday_date_finish": "2018-08-16T11:20:00+03:00",
+                    "workday_date_start": "2018-08-16T14:08:35+02:00",
+                    "workday_date_finish": "2018-08-16T11:20:00+02:00",
                     "workday_duration": 10115,
                     "workday_duration_config": 28800,
                     "workday_duration_final": 6914,
@@ -112,8 +112,8 @@ The method `timeman.timecontrol.reports.get` is used to retrieve a report on ide
                         {
                             "id": 459,
                             "type": "TM_START",
-                            "date_start": "2018-08-16T14:08:35+03:00",
-                            "date_finish": "2018-08-16T14:08:35+03:00",
+                            "date_start": "2018-08-16T14:08:35+02:00",
+                            "date_finish": "2018-08-16T14:08:35+02:00",
                             "duration": 0,
                             "active": false,
                             "entry_id": 35,
@@ -142,7 +142,7 @@ The method `timeman.timecontrol.reports.get` is used to retrieve a report on ide
             "last_name": "Ivshina",
             "work_position": "IT Specialist",
             "avatar": "http://test.bitrix24.com/upload/resize_cache/main/072/100_100_2/42-17948709.gif",
-            "last_activity_date": "2018-08-15T16:25:34+03:00"
+            "last_activity_date": "2018-08-15T16:25:34+02:00"
         }
     }
 }
@@ -151,7 +151,7 @@ The method `timeman.timecontrol.reports.get` is used to retrieve a report on ide
 ### Key Descriptions
 
 - **report** - information about the report.
-- **month_title** - title of the month.
+- **month_title** - name of the month.
 - **date_start** - start date of the selection period in ATOM format.
 - **date_finish** - end date of the selection period in ATOM format.
 - **days** - list of worked days.
@@ -160,19 +160,19 @@ The method `timeman.timecontrol.reports.get` is used to retrieve a report on ide
     - **workday_complete** - workday completed (true / false).
     - **workday_date_start** - start date of the workday in ATOM format.
     - **workday_date_finish** - end date of the workday in ATOM format (if `workday_complete = false`, this field shows the date at the time of report generation).
-    - **workday_duration** - duration of the workday according to the schedule in seconds (considering the break set by the user).
+    - **workday_duration** - duration of the workday according to the timesheet in seconds (considering the break set by the user).
     - **workday_duration_final** - duration of the workday based on actual work in seconds (considering the break set by the user, unconfirmed absences, and absences for personal matters).
     - **workday_duration_config** - required duration of the workday in seconds.
     - **workday_time_leaks_user** - duration of the break set by the user in seconds.
-    - **workday_time_leaks_real** - duration of the break recorded by the automatic system (unconfirmed absences and absences for personal matters).
+    - **workday_time_leaks_real** - duration of the break recorded by the automatic tracking system (unconfirmed absences and absences for personal matters).
     - **workday_time_leaks_final** - if the number is positive: amount of unworked time in seconds; if the number is negative: amount of time worked beyond the required time (overtime).
     - **reports** - list of records of identified absences (values are available only at the head and full detail levels).
-     - **id** - record identifier, necessary for using the method `timeman.timecontrol.report.add`.
+     - **id** - identifier of the record, necessary for using the method `timeman.timecontrol.report.add`.
      - **type** - type of record (the directory of types is described below).
      - **active** - activity status of the record.
      - **date_start**- start date of the record in ATOM format.
      - **date_finish** - end date of the record in ATOM format (if active = true, this field shows the date at the time of report generation).
-     - **report_type** - type of absence (work - for work-related issues, private - personal matters, none - not specified, equated to private).
+     - **report_type** - type of absence (work - for work matters, private - personal matters, none - not specified, equated to private).
      - **report_text** - description of the reason for absence.
      - **system_text** - system description of the reason for absence (parameter available only at the head detail level).
      - **source_start** - data provider for the start of the record (the directory of types is described below).
@@ -190,23 +190,23 @@ The method `timeman.timecontrol.reports.get` is used to retrieve a report on ide
 
 - **user** - information about the user.
 - **id** - user identifier.
-- **name** - user's full name.
+- **name** - full name of the user.
 - **first_name** - user's first name.
 - **last_name** - user's last name.
 - **work_position** - position.
-- **avatar** - link to the avatar (if empty, the avatar is not set).
+- **avatar** - link to the avatar (if empty, it means the avatar is not set).
 - **personal_gender** - user's gender.
 - **last_activity_date** - date of the user's last action in ATOM format.
 
 #### Possible Record Types (type)
 
-- **IDLE** - Stepped away (recorded using the desktop application).
+- **IDLE** - Away (recorded using the desktop application).
 - **OFFLINE** - Offline.
 - **DESKTOP_ONLINE** - Desktop application launch recorded (type available only at the head detail level).
 - **DESKTOP_OFFLINE** - Desktop application shutdown recorded (type available only at the head detail level).
 - **DESKTOP_START** - Desktop application launch recorded (type available only at the head detail level).
 - **TM_START** - Workday started.
-- **TM_PAUSE** - Went on break.
+- **TM_PAUSE** - On break.
 - **TM_CONTINUE** - Continued the day.
 - **TM_END** - Workday ended.
 
@@ -217,7 +217,7 @@ The method `timeman.timecontrol.reports.get` is used to retrieve a report on ide
 - **DESKTOP_OFFLINE_AGENT** - Agent marking the desktop application as shut down.
 - **DESKTOP_ONLINE_EVENT** - Event marking the desktop application as online.
 - **DESKTOP_START_EVENT** - Event marking the desktop application as started.
-- **IDLE_EVENT** - Event changing the status to stepped away (recorded using the desktop application).
+- **IDLE_EVENT** - Event changing the status to away (recorded using the desktop application).
 - **TM_EVENT** - Event changing the workday (start, break, end).
 
 ## Error Response
@@ -243,9 +243,9 @@ The method `timeman.timecontrol.reports.get` is used to retrieve a report on ide
 || **USER_ACCESS_ERROR** | No access to the specified user. ||
 |#
 
-## If returns an empty days
+## If Returns Empty Days
 
-If an empty array of days is returned, first set the necessary options for accessing the report and data collection (you need to be an administrator and execute the following in the console on any account page):
+If an empty array of days is returned, first set the necessary options for accessing the report and collecting data (you need to be an administrator and execute the following in the console on any page of the account):
 
 ```js
 BX24.callMethod('timeman.timecontrol.settings.set', {

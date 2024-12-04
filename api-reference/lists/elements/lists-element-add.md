@@ -14,7 +14,7 @@ Some data may be missing — we will complete it shortly.
 - examples are missing
 - success response is absent
 - error response is absent
-- links to pages that are not yet created are not provided
+- links to pages that have not yet been created are not provided
 
 {% endnote %}
 
@@ -69,69 +69,81 @@ BX24.callMethod(
 || **ELEMENT_CODE**^*^
 [`unknown`](../../data-types.md) | Code of the information block element (required) ||
 || **LIST_ELEMENT_URL**
-[`unknown`](../../data-types.md) | Template address to list elements ||
+[`unknown`](../../data-types.md) | Template address for list elements ||
 || **FIELDS**
 [`unknown`](../../data-types.md) | Array of fields and values. In the File type field `F`, you cannot pass the file identifier from Drive ||
 || **SOCNET_GROUP_ID**^*^
 [`unknown`](../../data-types.md) | `id` of the group (required if the list is created for a group); ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```js
-var params = {
-    'IBLOCK_TYPE_ID': 'lists_socnet',
-    'IBLOCK_CODE': 'rest_1',
-    'ELEMENT_CODE': 'element_1',
-    'LIST_ELEMENT_URL': '#list_id#/element/#section_id#/#element_id#/',
-    'FIELDS': {
-        'NAME': 'Test element',
-        'PROPERTY_62': 'Text string',
-        'PROPERTY_63': {
-            '0': '7',
-            '1': '9',
-            '2': '10'
+{% list tabs %}
+
+- JS
+
+    ```js
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists_socnet',
+        'IBLOCK_CODE': 'rest_1',
+        'ELEMENT_CODE': 'element_1',
+        'LIST_ELEMENT_URL': '#list_id#/element/#section_id#/#element_id#/',
+        'FIELDS': {
+            'NAME': 'Test element',
+            'PROPERTY_62': 'Text string',
+            'PROPERTY_63': {
+                '0': '7',
+                '1': '9',
+                '2': '10'
+            }
         }
-    }
-};
-BX24.callMethod(
-    'lists.element.add',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            alert("Success: " + result.data());
-    }
-);
-```
+    };
+    BX24.callMethod(
+        'lists.element.add',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 Example of adding a file:
 
-```js
-var params = {
-    'IBLOCK_TYPE_ID': 'lists',
-    'IBLOCK_ID': '41',
-    'ELEMENT_CODE': 'element1',
-    'FIELDS': {
-        'NAME': 'Test element 1',
-        'PROPERTY_122': document.getElementById('fileInputId') // PROPERTY_122 - Custom property of type "File"
-    }
-};
-BX24.callMethod(
-    'lists.element.add',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            alert("Success: " + result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists',
+        'IBLOCK_ID': '41',
+        'ELEMENT_CODE': 'element1',
+        'FIELDS': {
+            'NAME': 'Test element 1',
+            'PROPERTY_122': document.getElementById('fileInputId') // PROPERTY_122 - Custom property of type "File"
+        }
+    };
+    BX24.callMethod(
+        'lists.element.add',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Notes on examples](../../../_includes/examples.md) %}

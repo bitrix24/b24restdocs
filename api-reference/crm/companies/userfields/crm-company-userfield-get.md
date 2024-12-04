@@ -1,8 +1,8 @@
-# Get Custom Company Field by ID crm.company.userfield.get
+# Get Company User Field by ID crm.company.userfield.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -26,33 +26,39 @@ Some data may be missing here — we will complete it shortly.
 
 `crm.company.userfield.get(id)`
 
-The method `crm.company.userfield.get` returns a custom company field by its ID.
+The method `crm.company.userfield.get` returns the company user field by its identifier.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`unknown`](../../../data-types.md) | The identifier of the custom field. ||
+[`unknown`](../../../data-types.md) | Identifier of the user field. ||
 |#
 
 ## Example
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.company.userfield.get",
-    {
-        id: id
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.company.userfield.get",
+        {
+            id: id
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

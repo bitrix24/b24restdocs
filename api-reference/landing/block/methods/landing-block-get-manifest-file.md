@@ -1,8 +1,8 @@
-# Get the block manifest from the repository landing.block.getmanifestfile
+# Get Block Manifest from Repository landing.block.getmanifestfile
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -37,24 +37,30 @@ The method `landing.block.getmanifestfile` retrieves the block manifest from the
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.block.getmanifestfile',
-    {
-        code: '01.big_with_text'
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example notes](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.block.getmanifestfile',
+        {
+            code: '01.big_with_text'
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

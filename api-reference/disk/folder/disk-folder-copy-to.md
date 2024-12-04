@@ -2,13 +2,13 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- no error response provided
-- detailed success response is needed
+- response in case of error is absent
+- detailed response in case of success is needed
 
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -38,25 +38,32 @@ The method `disk.folder.copyto` copies a folder to the specified folder.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.folder.copyto",
-    {
-        id: 8,
-        targetFolderId: 22081990
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.folder.copyto",
+        {
+            id: 8,
+            targetFolderId: 22081990
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Response in case of success
 
 > 200 OK
 

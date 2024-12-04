@@ -1,22 +1,22 @@
 title: Comments
 href: index.md
 items:
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Get List of Methods and Their Descriptions
-    href: task-comment-item-get-manifest.md
-  - name: Add Comment
+  - name: Add comment
     href: task-comment-item-add.md
-  - name: Update Comment
+  - name: Update comment
     href: task-comment-item-update.md
-  - name: Get Comment by ID
+  - name: Get comment by id
     href: task-comment-item-get.md
-  - name: Get List of Comments
+  - name: Get list of comments
     href: task-comment-item-get-list.md
-  - name: Delete Comment
+  - name: Delete comment
     href: task-comment-item-delete.md
-  - name: Check Available Actions on the Task
+  - name: Check if action is allowed
     href: task-comment-item-is-action-allowed.md
+  - name: Get list of methods and their description
+    href: task-comment-item-get-manifest.md
   - name: Events
     include:
       path: events-comment/b24-toc.yaml

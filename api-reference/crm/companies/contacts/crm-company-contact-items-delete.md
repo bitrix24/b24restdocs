@@ -11,10 +11,10 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -31,26 +31,32 @@ The method `crm.company.contact.items.delete` clears the set of contacts associa
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`unknown`](../../../data-types.md) | Identifier of the company. ||
+[`unknown`](../../../data-types.md) | Company identifier. ||
 |#
 
 ## Examples
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.company.contact.items.delete",
-    {
-        id: id
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example notes](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.company.contact.items.delete",
+        {
+            id: id
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

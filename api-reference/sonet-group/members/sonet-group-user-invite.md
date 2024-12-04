@@ -1,14 +1,14 @@
-# Invite Users to Group sonet_group.user.invite
+# Invite users to group sonet_group.user.invite
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
@@ -27,7 +27,7 @@ Some data may be missing here — we will complete it soon.
 
 This method invites users to a social network group on behalf of the current user, while checking the current user's access rights to the group.
 
-## Returns an array of user IDs that were successfully invited to the group.
+## Returns an array of IDs of users successfully invited to the group.
 
 ## Parameters
 
@@ -38,19 +38,27 @@ This method invites users to a social network group on behalf of the current use
 || **MESSAGE** | Invitation text. ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Example
 
-```js
-// Inviting user with ID=3 to the social network group with ID=15
-BX24.callMethod('sonet_group.user.invite', {
-    'GROUP_ID': 15,
-    'USER_ID': 3,
-    'MESSAGE': 'Invitation'
-});
-```
-{% include [Notes on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    // Inviting user with ID=3 to social network group with ID=15
+    BX24.callMethod('sonet_group.user.invite', {
+        'GROUP_ID': 15,
+        'USER_ID': 3,
+        'MESSAGE': 'Invitation'
+    });
+    ```
+
+{% endlist %}
+
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 
 ## Request:

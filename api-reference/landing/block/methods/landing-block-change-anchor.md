@@ -1,20 +1,20 @@
-# Change the anchor symbol code landing.block.changeAnchor
+# Change the anchor character code landing.block.changeAnchor
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.block.changeAnchor` changes the anchor symbol code. By default, the anchor looks like this: `#block12345`, where 12345 is the block identifier.
+The method `landing.block.changeAnchor` changes the anchor character code. By default, the anchor looks like this: `#block12345`, where 12345 is the block identifier.
 
 ## Parameters
 
@@ -35,31 +35,37 @@ The method `landing.block.changeAnchor` changes the anchor symbol code. By defau
 || **block**
 [`unknown`](../../../data-types.md) | Block identifier. | ||
 || **data**
-[`unknown`](../../../data-types.md) | Anchor symbol code. | ||
+[`unknown`](../../../data-types.md) | Anchor character code. | ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.block.changeAnchor',
-    {
-        lid: 3496,
-        block: 29356,
-        data: 'about'
-    },
-    function (result)
-    {
-        if (result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.block.changeAnchor',
         {
-            console.error(result.error());
-        }
-        else
+            lid: 3496,
+            block: 29356,
+            data: 'about'
+        },
+        function (result)
         {
-            console.info(result.data());
+            if (result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

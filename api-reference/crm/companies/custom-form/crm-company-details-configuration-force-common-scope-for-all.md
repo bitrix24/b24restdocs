@@ -1,8 +1,8 @@
-# Set Common Detail Form for All Users crm.company.details.configuration.forceCommonScopeForAll
+# Set a common card for all users crm.company.details.configuration.forceCommonScopeForAll
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -22,27 +22,33 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.company.details.configuration.forceCommonScopeForAll` allows you to forcibly set a common company detail form for all users.
+The method `crm.company.details.configuration.forceCommonScopeForAll` allows you to forcibly set a common company card for all users.
 
 Without parameters
 
 ## Examples
 
-```js
-//---
-//Set a common company detail form for all users.
-BX24.callMethod(
-    "crm.company.details.configuration.forceCommonScopeForAll",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-//---
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+  
+    ```js
+    //--- 
+    //Set a common company card for all users.
+    BX24.callMethod(
+        "crm.company.details.configuration.forceCommonScopeForAll",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    //---
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

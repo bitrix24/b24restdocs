@@ -1,8 +1,8 @@
-# Get a List of Custom Company Fields by Filter crm.company.userfield.list
+# Get a list of custom company fields by filter crm.company.userfield.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing here — we will add it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -39,25 +39,31 @@ The method `crm.company.userfield.list` returns a list of custom company fields 
 
 ## Example
 
-```js
-BX24.callMethod(
-    "crm.company.userfield.list",
-    {
-        order: { "SORT": "ASC" },
-        filter: { "MANDATORY": "N" }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
+{% list tabs %}
+
+- JS
+  
+    ```js
+    BX24.callMethod(
+        "crm.company.userfield.list",
         {
-            console.dir(result.data());             
-            if(result.more())
-                result.next();                        
+            order: { "SORT": "ASC" },
+            filter: { "MANDATORY": "N" }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.dir(result.data());             
+                if(result.more())
+                    result.next();                        
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../../_includes/examples.md) %}

@@ -1,10 +1,10 @@
-# Get Product Image Information catalog.productImage.get
+# Get Information About Product Image catalog.productImage.get
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns information about a specific product image, parent product, trade offer, or service.
+The method returns information about a specific product image, parent product, variation, or service.
 
 ## Method Parameters
 
@@ -17,12 +17,12 @@ This method returns information about a specific product image, parent product, 
 [`catalog_product.id`](../data-types.md#catalog_product)\|
 [`catalog_product_sku.id`](../data-types.md#catalog_product_sku)\|
 [`catalog_product_offer.id`](../data-types.md#catalog_product_offer)\|
-[`catalog_product_service.id`](../data-types.md#catalog_product_service) | Identifier of the product, parent product, trade offer, or service.
+[`catalog_product_service.id`](../data-types.md#catalog_product_service) | Identifier of the product, parent product, variation, or service.
 
 To obtain existing identifiers, use the following methods:
 - for products — [catalog.product.list](../product/catalog-product-list.md)
 - for parent products — [catalog.product.sku.list](../product/sku/catalog-product-sku-list.md)
-- for trade offers — [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md)
+- for product variations — [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md)
 - for services — [catalog.product.service.list](../product/service/catalog-product-service-list.md)
 ||
 || **id***
@@ -130,7 +130,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **productImage**
-[`catalog_product_image`](../data-types.md#catalog_product_image) | Object containing image information ||
+[`catalog_product_image`](../data-types.md#catalog_product_image) | Object containing information about the image ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -152,13 +152,13 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to view the trade catalog
+|| `200040300010` | Insufficient permissions to view the product catalog
 ||
 || `200040300010` | Insufficient permissions to view the product 
 ||
-|| `100` | Parameter `productId` not specified
+|| `100` | Parameter `productId` is missing
 || 
-|| `100` | Parameter `id` not specified
+|| `100` | Parameter `id` is missing
 || 
 || `0` | Product with the specified identifier not found
 || 

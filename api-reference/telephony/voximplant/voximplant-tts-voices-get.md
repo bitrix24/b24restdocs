@@ -1,8 +1,8 @@
-# Get an Array of Available Voices for Text-to-Speech voximplant.tts.voices.get
+# Get an array of available voices for text-to-speech voximplant.tts.voices.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -20,24 +20,30 @@ Some data may be missing here — we will complete it soon.
 
 {% include notitle [Scope telephony all](../_includes/scope-telephony-all.md) %}
 
-The method `voximplant.tts.voices.get` returns an array of available voices for text-to-speech in the format of voice ID => voice name. The method has no restrictions on [access permissions](https://helpdesk.bitrix24.com/open/18216960/).
+The method `voximplant.tts.voices.get` returns an array of available voices for text-to-speech in the format voice ID => voice name. The method has no restrictions on [access permissions](https://helpdesk.bitrix24.com/open/18216960/).
 
 There are no incoming parameters.
 
 ## Example
 
-```javascript
-BX24.callMethod(
-    'voximplant.tts.voices.get',
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'voximplant.tts.voices.get',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

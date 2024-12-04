@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing
-- success response missing
-- error response missing
+- edits are needed to meet writing standards
+- parameter types are not specified
+- parameter requirements are not indicated
+- examples are missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -40,7 +40,7 @@ The method is suitable only for changing content. When modifying the manifest, t
 #|
 || **Method** | **Description** | **Version** ||
 || **code**
-[`unknown`](../../data-types.md) | Unique code for your block, which will be used for block removal if necessary. ||
+[`unknown`](../../data-types.md) | Unique code for your block, which will be used for its removal if necessary. ||
 || **fields**
 [`unknown`](../../data-types.md) | An array of fields describing your block, consisting of keys:
 - NAME - block name
@@ -49,19 +49,19 @@ The method is suitable only for changing content. When modifying the manifest, t
 
   {% note info %}
   
-  If the desired category is not in the list, simply write its text in the manifest, and the category will be added. The key for the new category becomes the value `md5(strtolower($sectionName))`.
+  If the required category is not in the list, simply write its text in the manifest, and the category will be added. The key for the new category becomes the value `md5(strtolower($sectionName))`.
   
   {% endnote %}
 
 - PREVIEW - URL of the block's cover image
 - CONTENT - HTML content of the block
 - ACTIVE - block activity (Y / N)
-- SITE_TEMPLATE_ID – binding the block to a specific template of the main module's site. **Only for on-premise versions!**
+- SITE_TEMPLATE_ID – binding of the block to a specific template of the main module's site. **Only for on-premise versions!**
 
 Additional parameters:
 - RESET - if passed with the value Y, the system will automatically update all blocks added to the pages to the new layout. [Learn more...](https://dev.bitrix24.com/company/personal/user/3/blog/2091/) ||
 || **manifest**
-[`unknown`](../../data-types.md) | An array of the manifest that describes the block. ||
+[`unknown`](../../data-types.md) | An array of the manifest describing the block. ||
 |#
 
 {% note info %}
@@ -73,92 +73,98 @@ The **style** attribute may be stripped by the built-in sanitizer. To bypass thi
 
 ## Examples
 
-```php
-<?
-// For clarity, we will pass a PHP array for execution in JS
-$data = array(
-    'code' => 'myblockx',
-    'fields' => array(
-        'NAME' => 'Test block',
-        'DESCRIPTION' => 'Just try!',
-        'SECTIONS' => 'cover,about',
-        'PREVIEW' => 'https://www.bitrix24.com/images/b24_screen.png',
-        'CONTENT' => '
-<section class="landing-block">
-    <div class="text-center g-color-gray-dark-v3 g-pa-10">
-        <div class="g-width-600 mx-auto">
-            <div class="landing-block-node-text g-font-size-12 ">
-                <p>© 2017 All rights reserved. Developed by
-                <a href="#" class="landing-block-node-link g-color-primary">Bitrix24</a></p>
+{% list tabs %}
+
+- JS
+
+    ```js
+    <?php
+    //for clarity, we will pass a PHP array to JS
+    $data = array(
+        'code' => 'myblockx',
+        'fields' => array(
+            'NAME' => 'Test block',
+            'DESCRIPTION' => 'Just try!',
+            'SECTIONS' => 'cover,about',
+            'PREVIEW' => 'https://www.bitrix24.com/images/b24_screen.png',
+            'CONTENT' => '
+    <section class="landing-block">
+        <div class="text-center g-color-gray-dark-v3 g-pa-10">
+            <div class="g-width-600 mx-auto">
+                <div class="landing-block-node-text g-font-size-12 ">
+                    <p>© 2017 All rights reserved. Developed by
+                    <a href="#" class="landing-block-node-link g-color-primary">Bitrix24</a></p>
+                </div>
             </div>
         </div>
-    </div>
-</section>'
-    ),
-    'manifest' => array(
-        'assets' => array(
-            'css' => array(
-                'https://site.com/aaa.css'
-            ),
-            'js' => array(
-                'https://site.com/aaa.js'
-            )
+    </section>'
         ),
-        'nodes' =>
-            array(
+        'manifest' => array(
+            'assets' => array(
+                'css' => array(
+                    'https://site.com/aaa.css'
+                ),
+                'js' => array(
+                    'https://site.com/aaa.js'
+                )
+            ),
+            'nodes' =>
+                array(
+                    '.landing-block-node-text' =>
+                        array(
+                            'name' => 'Text',
+                            'type' => 'text',
+                        ),
+                    '.landing-block-node-link' =>
+                        array(
+                            'name' => 'Link',
+                            'type' => 'link',
+                        ),
+                ),
+            'style' =>
+                array(
+                    '.landing-block-node-text' =>
+                        array(
+                            'name' => 'Text',
+                            'type' => 'typo',
+                        ),
+                    '.landing-block-node-link' =>
+                        array(
+                            'name' => 'Link',
+                            'type' => 'typo',
+                        ),
+                ),
+            'attrs' =>
+                array(
                 '.landing-block-node-text' =>
                     array(
-                        'name' => 'Text',
-                        'type' => 'text',
-                    ),
-                '.landing-block-node-link' =>
-                    array(
-                        'name' => 'Link',
-                        'type' => 'link',
-                    ),
-            ),
-        'style' =>
-            array(
-                '.landing-block-node-text' =>
-                    array(
-                        'name' => 'Text',
-                        'type' => 'typo',
-                    ),
-                '.landing-block-node-link' =>
-                    array(
-                        'name' => 'Link',
-                        'type' => 'typo',
-                    ),
-            ),
-        'attrs' =>
-            array(
-             '.landing-block-node-text' =>
-                 array(
-                     'name' => 'Copyright settings',
-                     'type' => 'dropdown',
-                     'attribute' => 'data-copy',
-                     'items' => array(
-                         'val1' => 'Value 1',
-                         'val2' => 'Value 2'
-                            )
-                     ),
-            ),
-    ),
-);
-?>
-// Note! The following is JS code.
-BX24.callMethod(
-    'landing.repo.register',
-    // Abstract method that converts PHP array to JS object
-    <?= \CUtil::PhpToJSObject($data)?>,
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+                        'name' => 'Copyright settings',
+                        'type' => 'dropdown',
+                        'attribute' => 'data-copy',
+                        'items' => array(
+                            'val1' => 'Value 1',
+                            'val2' => 'Value 2'
+                                )
+                        ),
+                ),
+        ),
+    );
+    ?>
+    // note! the following is JS code.
+    BX24.callMethod(
+        'landing.repo.register',
+        //abstract method that converts PHP array to JS object
+        <?= \CUtil::PhpToJSObject($data)?>,
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

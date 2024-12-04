@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method removes a product from the sales catalog.
+This method removes a product from the trade catalog.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ This method removes a product from the sales catalog.
 || **id*** 
 [`catalog_product.id`](../data-types.md#catalog_product)| Product identifier.
 
-To obtain product identifiers, use the [catalog.product.list](./catalog-product-list.md) method.
+To obtain product identifiers, use the method [catalog.product.list](./catalog-product-list.md)
  ||
 |#
 
@@ -81,11 +81,30 @@ To obtain product identifiers, use the [catalog.product.list](./catalog-product-
     echo '</PRE>';
     ```
 
+- PHP (B24PhpSdk)
+  
+    ```php       
+    try {
+        $productId = 123; // Replace with the actual product ID you want to delete
+        $result = $serviceBuilder
+            ->getCatalogScope()
+            ->product()
+            ->delete($productId);
+        if ($result->isSuccess()) {
+            print("Product with ID {$productId} was deleted successfully.");
+        } else {
+            print("Failed to delete product with ID {$productId}.");
+        }
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage());
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -95,8 +114,8 @@ HTTP Status: **200**
         "finish": 1717578176.028261,
         "duration": 150.32769083976746,
         "processing": 149.8356819152832,
-        "date_start": "2024-06-05T12:00:25+03:00",
-        "date_finish": "2024-06-05T12:02:56+03:00"
+        "date_start": "2024-06-05T12:00:25+02:00",
+        "date_finish": "2024-06-05T12:02:56+02:00"
     }
 }
 ```
@@ -114,7 +133,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {	
@@ -131,7 +150,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200040300040` | Insufficient permissions to delete the product ||
 || `200040300040` | Insufficient permissions to delete the information block ||
-|| `200040300010` | Insufficient permissions to view the sales catalog ||
+|| `200040300010` | Insufficient permissions to view the trade catalog ||
 || `200040300000` | Information block not found ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

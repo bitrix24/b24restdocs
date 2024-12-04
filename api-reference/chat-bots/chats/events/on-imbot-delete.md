@@ -1,4 +1,4 @@
-# ONIMBOTDELETE Chatbot Deletion
+# Deleting the ONIMBOTDELETE Chatbot
 
 {% note warning "We are still updating this page" %}
 
@@ -8,9 +8,9 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits are needed to meet writing standards
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 
 {% endnote %}
 
@@ -20,11 +20,11 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can subscribe: any user
 
-The event `ONIMBOTDELETE` is for deleting a chatbot.
+The `ONIMBOTDELETE` event is for deleting a chatbot.
 
 {% note warning %}
 
-The fields described below are the contents of the [data] field in the event. The authorization data in the [auth] key contains the data of the user who initiated the event. To obtain the authorization data of the bot, you need to use [data][BOT][__BOT_CODE__].
+The fields described below are the contents of the [data] field in the event. The authorization data in the [auth] key contains the data of the user who initiated the event. To obtain the bot's authorization data, you need to use [data][BOT][__BOT_CODE__].
 
 {% endnote %}
 
@@ -38,9 +38,15 @@ The fields described below are the contents of the [data] field in the event. Th
 
 ## Examples
 
-```js
-[BOT_ID] => 39
-[BOT_CODE] => giphy
-```
+{% list tabs %}
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    [BOT_ID] => 39
+    [BOT_CODE] => giphy
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

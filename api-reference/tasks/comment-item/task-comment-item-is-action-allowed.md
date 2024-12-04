@@ -1,4 +1,4 @@
-# Check Available Actions on Task task.commentitem.isactionallowed
+# Check if the action is allowed with task.commentitem.isactionallowed
 
 {% if build == 'dev' %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will add it soon
 >
 > Who can execute the method: any user
 
-The method `task.commentitem.isactionallowed` checks if the action is permitted.
+The method `task.commentitem.isactionallowed` checks if the action is allowed.
 
 ## Parameters
 

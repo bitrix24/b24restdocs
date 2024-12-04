@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
-- examples are missing
-- response in case of error is absent
+- required parameter specifications are missing
+- examples are absent
+- response in case of error is missing
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The `entity.get` method retrieves the storage parameters or a list of all storages in the application.
+The `entity.get` method retrieves the storage parameters or a list of all storages of the application.
 
 ## Parameters
 
@@ -36,32 +36,45 @@ The `entity.get` method retrieves the storage parameters or a list of all storag
 
 ## Examples
 
-```javascript
-BX24.callMethod('entity.get');
-```
+{% list tabs %}
 
-Request
-```http
-https://my.bitrix24.com/rest/entity.get.json?auth=59efe32d01c0e9dc5732e8dfa68a4baa
-```
+- JS
 
-Example of successfully retrieving a list of all available storages:
+    ```javascript
+    BX24.callMethod('entity.get');
+    ```
 
-```javascript
-BX24.callMethod(
-    "entity.get",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
+- HTTP
+
+    ```http
+    https://my.bitrix24.com/rest/entity.get.json?auth=59efe32d01c0e9dc5732e8dfa68a4baa
+    ```
+
+{% endlist %}
+
+Example of correctly retrieving a list of all available storages:
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        "entity.get",
+        {},
+        function(result)
         {
-            console.info("List of created storages:", result.data());
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.info("List of created storages:", result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 

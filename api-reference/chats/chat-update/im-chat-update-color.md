@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- revisions needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -22,36 +22,42 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.chat.updateColor` updates the chat color.
+The `im.chat.updateColor` method updates the chat color.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **CHAT_ID^*^**
 [`unknown`](../../data-types.md) | `13` | Chat identifier | 18 ||
 || **COLOR^*^**
-[`unknown`](../../data-types.md) | `MINT` | Chat color for the mobile application (RED, GREEN, MINT, LIGHT_BLUE, DARK_BLUE, PURPLE, AQUA, PINK, LIME, BROWN, AZURE, KHAKI, SAND, MARENGO, GRAY, GRAPHITE) | 18 ||
+[`unknown`](../../data-types.md) | `MINT` | Chat color for the mobile app (RED, GREEN, MINT, LIGHT_BLUE, DARK_BLUE, PURPLE, AQUA, PINK, LIME, BROWN, AZURE, KHAKI, SAND, MARENGO, GRAY, GRAPHITE) | 18 ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 ## Examples
 
 {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.chat.updateColor',
-    Array(
-        'CHAT_ID' => 13,
-        'COLOR' => 'MINT'
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    $result = restCommand(
+        'im.chat.updateColor',
+        Array(
+            'CHAT_ID' => 13,
+            'COLOR' => 'MINT'
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -70,7 +76,7 @@ $result = restCommand(
 }
 ```
 
-### Description of Keys
+### Key Descriptions
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error

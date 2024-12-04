@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.block.addcard` fully replicates the functionality of [landing.block.clonecard](./landing-block-clone-card.md) but allows you to insert a card with modified content right away.
+The method `landing.block.addcard` fully replicates the functionality of [landing.block.clonecard](./landing-block-clone-card.md) but allows you to insert a card with modified content directly.
 
 ## Parameters
 
@@ -36,7 +36,7 @@ The method `landing.block.addcard` fully replicates the functionality of [landin
 || **block**
 [`unknown`](../../../data-types.md) | Block identifier | ||
 || **selector**
-[`unknown`](../../../data-types.md) | [Card selector](../manifest.md#key-cards) taken from the manifest, with the card identifier added.
+[`unknown`](../../../data-types.md) | [Card selector](../manifest.md#key-cards) taken from the manifest, with the added card identifier.
 For example: `.landing-block-card@0`. The 0 at the end indicates that we are affecting the first card in order. | ||
 || **content**
 [`unknown`](../../../data-types.md) | Content of the new card. | ||
@@ -44,33 +44,41 @@ For example: `.landing-block-card@0`. The 0 at the end indicates that we are aff
 
 {% note warning %}
 
-Please note that once you clone a card, their counters change.
+Please note that once you have cloned a card, their counters have changed.
 
 {% endnote %}
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.block.addCard',
-    {
-        lid: 634,
-        block: 12079,
-        selector: '.landing-block-node-menu-list-item@0',
-        content: '<li class="landing-block-node-menu-list-item nav-item g-mx-30--lg g-mb-7 g-mb-0--lg">' + '<a href="#about" class="landing-block-node-menu-list-item-link nav-link g-color-white p-0">New card item</a>' + '</li>'
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.block.addCard',
+        {
+            lid: 634,
+            block: 12079,
+            selector: '.landing-block-node-menu-list-item@0',
+            content: '<li class="landing-block-node-menu-list-item nav-item g-mx-30--lg g-mb-7 g-mb-0--lg">' + '<a href="#about" class="landing-block-node-menu-list-item-link nav-link g-color-white p-0">New card item</a>' + '</li>'
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

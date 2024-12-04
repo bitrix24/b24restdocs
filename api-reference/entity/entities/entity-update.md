@@ -2,19 +2,19 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
-- examples missing
-- success response missing
-- error response missing
+- edits needed for standard writing
+- parameter types are not specified
+- examples are missing
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -36,26 +36,32 @@ The `entity.update` method updates the parameters of the data storage. The user 
 [`string`](../../data-types.md) | New name of the storage. ||
 || **ACCESS**
 [`unknown`](../../data-types.md) | Description of the new set of access permissions for the storage. 
-It should be in the form of an associative array, where the keys are the identifiers of the access permissions, and the values are **R** (read), **W** (write), or **X** (manage). ||
+It should be in the form of an associative array, where the keys are the access permission identifiers, and the values are **R** (read), **W** (write), or **X** (manage). ||
 || **ENTITY_NEW**
-[`string`](../../data-types.md) | New string identifier for the storage. ||
+[`string`](../../data-types.md) | New string identifier of the storage. ||
 |#
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Example
 
-```javascript
-BX24.callMethod(
-    'entity.update',
-    {
-        'ENTITY': 'dish',
-        'ACCESS': {
-            U1:'W',
-            AU:'R'
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        'entity.update',
+        {
+            'ENTITY': 'dish',
+            'ACCESS': {
+                U1:'W',
+                AU:'R'
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Note on examples](../../../_includes/examples.md) %}

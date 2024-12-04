@@ -11,9 +11,9 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- examples missing
-- links to pages not yet created are not provided
+- parameter types are not specified
+- examples are missing
+- links to pages that have not yet been created are not provided
 
 {% endnote %}
 
@@ -41,30 +41,36 @@ The method `im.notify.personal.add` sends a personal notification.
 [`unknown`](../../data-types.md) | | Attachment | 18 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 ## Examples
 
 {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.notify.personal.add',
-    Array(
-        'USER_ID' => 1,
-        'MESSAGE' => 'Personal notification',
-        'MESSAGE_OUT' => 'Text of the personal notification for email',
-        'TAG' => 'TEST',
-        'SUB_TAG' => 'SUB|TEST',
-        'ATTACH' => ''
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    $result = restCommand(
+        'im.notify.personal.add',
+        Array(
+            'USER_ID' => 1,
+            'MESSAGE' => 'Personal notification',
+            'MESSAGE_OUT' => 'Text of the personal notification for email',
+            'TAG' => 'TEST',
+            'SUB_TAG' => 'SUB|TEST',
+            'ATTACH' => ''
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Example Note](../../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -74,7 +80,7 @@ $result = restCommand(
 }
 ```
 
-**Execution Result**: notification identifier `ID` or error.
+**Execution result**: notification identifier `ID` or error.
 
 ## Response on Error
 
@@ -97,7 +103,7 @@ $result = restCommand(
 || **USER_ID_EMPTY** | Recipient identifier is not specified ||
 || **MESSAGE_EMPTY** | Message text is not provided ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | The maximum allowable attachment size (30 KB) has been exceeded ||
+|| **ATTACH_OVERSIZE** | The maximum allowable size of the attachment (30 KB) has been exceeded ||
 |#
 
 ## Related Links

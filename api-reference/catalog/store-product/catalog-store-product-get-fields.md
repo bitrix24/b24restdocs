@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will fill it in shortly.
 
 - no response in case of error
 - no response in case of success
-- required fields not specified
+- required fields are not specified
 - no examples in other languages
   
 {% endnote %}
@@ -37,18 +37,25 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.storeproduct.getFields',
-    {},
-    function(result) {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.storeproduct.getFields',
+        {},
+        function(result) {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Returned Fields
@@ -56,15 +63,15 @@ BX24.callMethod(
 #|
 || **Field** | **Description** | **Note** ||
 || **amount** 
-[`double`](../../data-types.md) | Quantity. | Read-only. ||
+[`double`](../../data-types.md) | Quantity | Read-only. ||
 || **id** 
-[`integer`](../../data-types.md) | Primary key of the record. | Read-only. ||
+[`integer`](../../data-types.md) | Primary key of the record | Read-only. ||
 || **productId** 
-[`integer`](../../data-types.md) | Identifier of the product or trade offer. | Read-only. ||
+[`integer`](../../data-types.md) | Identifier of the product or variation | Read-only. ||
 || **quantityReserved** 
-[`double`](../../data-types.md) | Reserved quantity. | Read-only. ||
+[`double`](../../data-types.md) | Reserved quantity | Read-only. ||
 || **storeId** 
-[`integer`](../../data-types.md) | Identifier of the inventory. | Read-only. ||
+[`integer`](../../data-types.md) | Identifier of the inventory | Read-only. ||
 |#
 
 {% include [Footnote about parameters](../../../_includes/required.md) %}

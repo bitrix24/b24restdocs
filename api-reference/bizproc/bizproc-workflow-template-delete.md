@@ -56,7 +56,7 @@ Deleting a Business Process Template. This method only deletes templates that we
 	}
 	```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
 	```php
 	try {
@@ -79,4 +79,4 @@ Deleting a Business Process Template. This method only deletes templates that we
 {% endlist %}
 
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}

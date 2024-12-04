@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for standard writing
 - parameter types not specified
-- parameter requirements not indicated
+- parameter requirements not specified
 - examples missing
 - success response missing
 - error response missing
@@ -36,43 +36,49 @@ The method `crm.company.details.configuration.get` retrieves the settings of com
 - **C** - general settings.
  ||
 || **userId**
-[`unknown`](../../../data-types.md) | User identifier. If not specified, the current user is taken. Required only when requesting personal settings. ||
+[`unknown`](../../../data-types.md) | User identifier. If not specified, the current user is used. Required only when requesting personal settings. ||
 |#
 
 ## Examples
 
-```js
-//--
-//Request personal settings of the company card for the user with identifier 1.
-BX24.callMethod(
-    "crm.company.details.configuration.get",
-    {
-        scope: "P",
-        userId: 1
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-//Request general settings of the company card.
-BX24.callMethod(
-    "crm.company.details.configuration.get",
-    {
-        scope: "C"
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-//---
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    //-- 
+    //Request personal settings of the company card for the user with identifier 1.
+    BX24.callMethod(
+        "crm.company.details.configuration.get",
+        {
+            scope: "P",
+            userId: 1
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    //Request general settings of the company card.
+    BX24.callMethod(
+        "crm.company.details.configuration.get",
+        {
+            scope: "C"
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    //---
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

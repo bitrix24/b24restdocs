@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -35,22 +35,29 @@ The method `disk.folder.get` returns a folder by its ID.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.folder.get",
-    {
-        id: 8
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.folder.get",
+        {
+            id: 8
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -65,8 +72,8 @@ BX24.callMethod(
     "TYPE": "folder",
     "PARENT_ID": "12", //parent folder identifier
     "DELETED_TYPE": "0", //deletion marker
-    "CREATE_TIME": "2015-04-24T10:41:51+03:00", //creation time
-    "UPDATE_TIME": "2015-04-24T15:52:43+03:00", //modification time
+    "CREATE_TIME": "2015-04-24T10:41:51+02:00", //creation time
+    "UPDATE_TIME": "2015-04-24T15:52:43+02:00", //modification time
     "DELETE_TIME": null, //time moved to trash
     "CREATED_BY": "1", //identifier of the user who created the file
     "UPDATED_BY": "1", //identifier of the user who modified the file

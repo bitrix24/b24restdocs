@@ -11,8 +11,8 @@ Some data may be missing — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - no parameters and parameter types
-- required parameters are not specified
-- no response in case of an error
+- required parameters not specified
+- no response in case of error
 - no examples in other languages
 
 {% endnote %}
@@ -36,10 +36,18 @@ The method returns an array of social network groups for the current user by cal
 
 ## Example
 
-```js
-// Getting the list of groups for the current user
-BX24.callMethod('sonet_group.user.groups', {});
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    // Getting the list of groups for the current user
+    BX24.callMethod('sonet_group.user.groups', {});
+    ```
+
+{% endlist %}
+
+
 {% include [Footnote on examples](../../_includes/examples.md) %}
 
 ## Request:

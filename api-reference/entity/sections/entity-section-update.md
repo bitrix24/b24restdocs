@@ -1,4 +1,4 @@
-# Update the entity.section.update storage section
+# Update the entity.section.update method
 
 {% note warning "We are still updating this page" %}
 
@@ -48,28 +48,34 @@ The `entity.section.update` method updates a storage section. The user must have
 [`unknown`](../../data-types.md) | Identifier of the parent section. ||
 |#
 
-{% include [Parameter note](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
-## Example
+## Examples
 
-Call
-```js
-BX24.callMethod(
-    'entity.section.update',
-    {
-        ENTITY: 'menu_new',
-        ID: 220,
-        NAME: 'Not a very test section'
-    }
-);
-```
+{% list tabs %}
 
-Request
-```http
-https://my.bitrix24.com/rest/entity.section.update.json?auth=9affe382af74d9c5caa588e28096e872&ENTITY=menu_new&ID=220&NAME=Not%20a%20very%20test%20section
-```
+- JS
 
-{% include [Example note](../../../_includes/examples.md) %}
+    ```js
+    BX24.callMethod(
+        'entity.section.update',
+        {
+            ENTITY: 'menu_new',
+            ID: 220,
+            NAME: 'Not a very test section'
+        }
+    );
+    ```
+
+- HTTP
+
+    ```http
+    https://my.bitrix24.com/rest/entity.section.update.json?auth=9affe382af74d9c5caa588e28096e872&ENTITY=menu_new&ID=220&NAME=Not%20a%20very%20test%20section
+    ```
+
+{% endlist %}
+
+{% include [Example notes](../../../_includes/examples.md) %}
 
 ## Success response
 

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -13,8 +13,8 @@ Some data may be missing here — we will complete it soon.
 - edits needed for writing standards
 - parameter types are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 - links to pages that have not yet been created are not specified
 
 {% endnote %}
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `imbot.message.delete` removes a message from the chatbot.
+The method `imbot.message.delete` deletes a message from the chatbot.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -37,27 +37,33 @@ The method `imbot.message.delete` removes a message from the chatbot.
 [`unknown`](../../data-types.md) | `'N'` | If the message needs to be deleted completely, without traces, then 'Y' must be specified | ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Explanation of restCommand](../_includes/rest-command.md) %}
+{% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.message.delete',
-    Array(
-        'BOT_ID' => 39,
-        'MESSAGE_ID' => 1,
-        'COMPLETE' => 'N',
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.message.delete',
+        Array(
+            'BOT_ID' => 39,
+            'MESSAGE_ID' => 1,
+            'COMPLETE' => 'N',
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Success Response
 

@@ -15,8 +15,8 @@ Some data may be missing here — we will fill it in shortly.
 - parameter requirements are not indicated
 - not all parameters have examples in the table
 - examples are missing
-- no response in case of success
-- no response in case of error
+- success response is missing
+- error response is missing
 - links to pages that have not yet been created are not specified
 
 {% endnote %}
@@ -50,7 +50,7 @@ The method `imbot.command.answer` publishes a response to the command.
 || **URL_PREVIEW**
 [`unknown`](../../data-types.md) | `'Y'` | Convert links to rich links, optional field, default is 'Y' | ||
 || **CLIENT_ID**
-[`unknown`](../../data-types.md) | `''` | String identifier of the chatbot, used only in Webhook mode | ||
+[`unknown`](../../data-types.md) | `''` | String identifier of the chat bot, used only in Webhook mode | ||
 |#
 
 {% note warning %}
@@ -63,26 +63,32 @@ To process the command, the application must handle the event of adding a comman
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.command.answer',
-    Array(
-        'COMMAND_ID' => 13,
-        'COMMAND' => 'echo',
-        'MESSAGE_ID' => 1122,
-        'MESSAGE' => 'answer text',
-        'ATTACH' => '',
-        'KEYBOARD' => '',
-        'MENU' => '',
-        'SYSTEM' => 'N',
-        'URL_PREVIEW' => 'Y',
-        'CLIENT_ID' => '',
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.command.answer',
+        Array(
+            'COMMAND_ID' => 13,
+            'COMMAND' => 'echo',
+            'MESSAGE_ID' => 1122,
+            'MESSAGE' => 'answer text',
+            'ATTACH' => '',
+            'KEYBOARD' => '',
+            'MENU' => '',
+            'SYSTEM' => 'N',
+            'URL_PREVIEW' => 'Y',
+            'CLIENT_ID' => '',
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
@@ -99,19 +105,19 @@ error
 #|
 || **Code** | **Description** ||
 || **COMMAND_ID_ERROR** | Command not found. ||
-|| **APP_ID_ERROR** | The chatbot does not belong to this application. You can only work with chatbots installed within the application. ||
+|| **APP_ID_ERROR** | The chat bot does not belong to this application. You can only work with chat bots installed within the application. ||
 || **MESSAGE_EMPTY** | No message text provided. ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation. ||
-|| **ATTACH_OVERSIZE** | The maximum allowable size for the attachment has been exceeded (30 KB). ||
+|| **ATTACH_OVERSIZE** | The maximum allowable size of the attachment (30 KB) has been exceeded. ||
 || **KEYBOARD_ERROR** | The entire provided keyboard object failed validation. ||
-|| **KEYBOARD_OVERSIZE** | The maximum allowable size for the keyboard has been exceeded (30 KB). ||
+|| **KEYBOARD_OVERSIZE** | The maximum allowable size of the keyboard (30 KB) has been exceeded. ||
 || **MENU_ERROR** | The entire provided menu object failed validation. ||
-|| **MENU_OVERSIZE** | The maximum allowable size for the menu has been exceeded (30 KB). ||
+|| **MENU_OVERSIZE** | The maximum allowable size of the menu (30 KB) has been exceeded. ||
 || **WRONG_REQUEST** | Something went wrong. ||
 |#
 
 ## Related Links
 
-- [How to work with keyboards](../../chats/messages/keyboards.md)
+- [How to work with virtual keyboards](../../chats/messages/keyboards.md)
 - [How to work with attachments](../../chats/messages/attachments/index.md)
 - [Message formatting](../../chats/messages/index.md)

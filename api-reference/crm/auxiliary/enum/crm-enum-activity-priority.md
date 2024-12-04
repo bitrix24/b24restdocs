@@ -1,8 +1,8 @@
-# Get the enumeration items "Activity Priority" crm.enum.activitypriority
+# Get enumeration items "Activity Priority" crm.enum.activitypriority
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -36,18 +36,25 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    "crm.enum.activitypriority",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+- JS
+  
+    ```javascript
+    BX24.callMethod(
+        "crm.enum.activitypriority",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

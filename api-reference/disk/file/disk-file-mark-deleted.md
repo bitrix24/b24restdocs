@@ -1,4 +1,4 @@
-# Move File to Trash disk.file.markdeleted
+# Move file to trash disk.file.markdeleted
 
 {% if build == 'dev' %}
 
@@ -7,7 +7,7 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- no error response provided
+- response in case of error is absent
 
 {% endnote %}
 
@@ -35,24 +35,31 @@ The method `disk.file.markdeleted` moves a file to the trash.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.file.markdeleted",
-    {
-        id: 10
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% list tabs %}
 
-## Success Response
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.file.markdeleted",
+        {
+            id: 10
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+## Response on success
 
 > 200 OK
 

@@ -1,8 +1,8 @@
-# Delete Department department.delete
+# Delete department department.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly
 
 {% endnote %}
 
@@ -22,20 +22,38 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: a user with permissions to modify the structure
 
-Deletes the specified department.
+Deletes the specified department
 
 #|
 || **Parameter** | **Description** ||
 || **ID^*^** | department identifier ||
 |#
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
-## Call
+## Code examples
 
-```js
-BX24.callMethod('department.delete', {"ID": 222});
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'department.delete',
+        {
+            "ID": 222
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
 
 ## Request
 

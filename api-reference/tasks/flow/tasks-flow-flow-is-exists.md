@@ -1,14 +1,14 @@
-# Check for the existence of tasks.flow.flow.isExists
+# Check if the flow tasks.flow.flow.isExists exists
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.flow.flow.isExists` checks whether a flow with the specified name exists. If an `id` is provided, it checks for flows with the same name, excluding the specified one.
+The method `tasks.flow.flow.isExists` checks if a flow with the specified name exists. If an `id` is provided, it checks if flows with the same name exist, excluding the specified one.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -20,12 +20,12 @@ The method `tasks.flow.flow.isExists` checks whether a flow with the specified n
 || **id** 
 [`integer`](../../data-types.md) | The identifier of the flow to exclude from the check (optional). 
 
-You can obtain the identifier using the [tasks.task.get](../tasks-task-get.md) method for a task that has already been added to the flow, or create a new flow using the [tasks.flow.flow.create](./tasks-flow-flow-create.md) method ||
+You can obtain the identifier using the method to create a new flow [tasks.flow.flow.create](./tasks-flow-flow-create.md) or the method to get a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -143,7 +143,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or flow not found | The account's plan may not allow working with flows, or the user may not have permission to perform the check ||
+|| `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to perform the check ||
 || `0` | `Unknown error` | An unknown error occurred ||
 |#
 
@@ -152,7 +152,8 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./tasks-flow-flow-create.md)
-- [{#T}](./tasks-flow-flow-get.md)
 - [{#T}](./tasks-flow-flow-update.md)
+- [{#T}](./tasks-flow-flow-get.md)
 - [{#T}](./tasks-flow-flow-delete.md)
 - [{#T}](./tasks-flow-flow-activate.md)
+- [{#T}](./tasks-flow-flow-pin.md)

@@ -12,7 +12,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -66,7 +66,7 @@ No parameters.
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -455,7 +455,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Identifier in External Source"
+            "title": "Identifier of the item in the external source"
         },
         "UTM_SOURCE": {
             "type": "string",
@@ -482,7 +482,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Campaign Identifier"
+            "title": "Campaign Designation"
         },
         "UTM_CONTENT": {
             "type": "string",

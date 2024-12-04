@@ -1,10 +1,10 @@
-# Get the List of Product Images catalog.productImage.list
+# Get a List of Product Images catalog.productImage.list
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns a list of product images, parent product images, trade offer images, or service images.
+The method returns a list of product images, parent product images, variations, or services.
 
 ## Method Parameters
 
@@ -17,16 +17,16 @@ This method returns a list of product images, parent product images, trade offer
 [`catalog_product.id`](../data-types.md#catalog_product)\|
 [`catalog_product_sku.id`](../data-types.md#catalog_product_sku)\|
 [`catalog_product_offer.id`](../data-types.md#catalog_product_offer)\|
-[`catalog_product_service.id`](../data-types.md#catalog_product_service) | Identifier of the product, parent product, trade offer, or service.
+[`catalog_product_service.id`](../data-types.md#catalog_product_service) | Identifier of the product, parent product, variation, or service.
 
 To obtain existing identifiers, use the following methods:
 - for products — [catalog.product.list](../product/catalog-product-list.md)
 - for parent products — [catalog.product.sku.list](../product/sku/catalog-product-sku-list.md)
-- for trade offers — [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md)
+- for product variations — [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md)
 - for services — [catalog.product.service.list](../product/service/catalog-product-service-list.md)
 ||
 || **select** 
-[`array`](../../data-types.md)| An array with the list of fields to select (see fields of the [catalog_product_image](../data-types.md#catalog_product_image) object) ||
+[`array`](../../data-types.md)| An array with a list of fields to select (see fields of the object [catalog_product_image](../data-types.md#catalog_product_image)) ||
 |#
 
 ## Code Examples
@@ -174,7 +174,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to view the trade catalog
+|| `200040300010` | Insufficient rights to view the product catalog
 ||
 || `200040300010` | Insufficient rights to view the product
 || 
@@ -188,7 +188,7 @@ HTTP Status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Exploring 
 
 - [{#T}](./catalog-product-image-add.md)
 - [{#T}](./catalog-product-image-get.md)

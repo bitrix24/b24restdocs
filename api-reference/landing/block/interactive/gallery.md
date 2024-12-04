@@ -24,7 +24,7 @@ The gallery is created using standard node images and cards. In the [block manif
 ),
 ```
 
-In the markup, designate the container with the class **.js-gallery-cards**, and inside it, add the required number of **<img>** nodes. Add the attribute **data-fancybox="gallery"** to each image. This attribute can have any value except for empty.
+In the markup, designate the container with the class **.js-gallery-cards**, and inside it, add the required number of `<img>` nodes. Add the attribute **data-fancybox="gallery"** to each image. This attribute can have any value except for empty.
 
 The gallery has only one version of the image, not a thumbnail and a full version as usual. Therefore, use images of sufficient size or scale them using browser tools (limit width/height). The gallery script will wrap each image in a link, and clicking will open the image specified in **src**.
 

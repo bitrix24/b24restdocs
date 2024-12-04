@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -26,7 +26,7 @@ Some data may be missing here — we will add it soon.
 crm.status.fields()
 ```
 
-The method returns the description of the fields in the directory.
+The method returns a description of the fields in the directory.
 
 ## Parameters
 
@@ -34,18 +34,24 @@ No parameters.
 
 ## Example
 
-```javascript
-BX24.callMethod(
-    "crm.status.fields",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        "crm.status.fields",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

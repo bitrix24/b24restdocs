@@ -1,22 +1,22 @@
-# Send Typing Indicator "Chat-bot is typing a message..." imbot.chat.sendTyping
+# Send the "Chat-bot is typing a message..." imbot.chat.sendTyping
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing
-- success response not provided
-- error response not provided
-- links to yet-to-be-created pages not specified
+- parameter types are not specified
+- parameter requirements are not indicated
+- examples are missing
+- success response is absent
+- error response is absent
+- links to pages that have not yet been created are not provided
 
 {% endnote %}
 
@@ -31,7 +31,7 @@ The method `imbot.chat.sendTyping` sends the message "Chat-bot is typing a messa
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **BOT_ID**
-[`unknown`](../../data-types.md) | `39` | Identifier of the chat-bot making the request; can be omitted if there is only one bot | ||
+[`unknown`](../../data-types.md) | `39` | Identifier of the chat-bot from which the request is made; can be omitted if there is only one bot | ||
 || **DIALOG_ID**
 [`unknown`](../../data-types.md) | `1` | Identifier of the dialog, which is either the USER_ID of the user or chatXX - where XX is the chat identifier, passed in the ONIMBOTMESSAGEADD and ONIMJOINCHAT events | ||
 |#
@@ -40,30 +40,36 @@ The method `imbot.chat.sendTyping` sends the message "Chat-bot is typing a messa
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.chat.sendTyping',
-    Array(
-        'BOT_ID' => 39,
-        'DIALOG_ID' => 1,
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.chat.sendTyping',
+        Array(
+            'BOT_ID' => 39,
+            'DIALOG_ID' => 1,
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Success response
 
 `true`.
 
-## Error Response
+## Error response
 
 error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
@@ -71,7 +77,7 @@ error
 || **DIALOG_ID_EMPTY** | Dialog identifier not provided. ||
 |#
 
-## Related Links
+## Related links
 
 - [Event for receiving a message by the chat-bot ONIMBOTMESSAGEADD](./events/index.md)
 - [Event for receiving information by the chat-bot about being added to a chat (or personal conversation) ONIMJOINCHAT](../chats/events/on-imbot-join-chat.md)

@@ -8,15 +8,15 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types are not specified
-- parameter requirements are not indicated
+- required parameters are not indicated
 - not all parameters have examples in the table
 - examples are missing
-- success response is absent
-- error response is absent
+- response on success is missing
+- response on error is missing
 - links to pages that have not yet been created are not specified
 
 {% endnote %}
@@ -47,26 +47,32 @@ All one-on-one chats of this chat-bot with users will be lost.
 
 {% include [Explanation about restCommand](./_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.unregister',
-    Array(
-        'BOT_ID' => 39,
-        'CLIENT_ID' => '',
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.unregister',
+        Array(
+            'BOT_ID' => 39,
+            'CLIENT_ID' => '',
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../_includes/examples.md) %}
 
-## Success response
+## Response on success
 
 `true`
 
-## Error response
+## Response on error
 
 error
 
@@ -75,7 +81,7 @@ error
 #|
 || **Code** | **Description** ||
 || **BOT_ID_ERROR** | Chat-bot not found. ||
-|| **APP_ID_ERROR** | Chat-bot does not belong to this application; only chat-bots installed within the application can be used. ||
+|| **APP_ID_ERROR** | Chat-bot does not belong to this application; you can only work with chat-bots installed within the application. ||
 |#
 
 ## Related links

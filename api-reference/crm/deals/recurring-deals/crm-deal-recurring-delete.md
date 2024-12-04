@@ -30,23 +30,29 @@ The method `crm.deal.recurring.delete` removes the existing configuration for th
 || **id**^*^ | Identifier of the recurring deal template configuration. ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 ## Example
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.deal.recurring.delete",
-    { id: id },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.deal.recurring.delete",
+        { id: id },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

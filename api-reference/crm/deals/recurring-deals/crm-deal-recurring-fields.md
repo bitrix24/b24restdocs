@@ -1,8 +1,8 @@
-# Get a List of Fields for the Recurring Deal Template crm.deal.recurring.fields
+# Get a list of fields for the recurring deal template crm.deal.recurring.fields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will add it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing — we will add it soon.
 - examples are missing (in other languages)
 - success response is missing
 - error response is missing
-- links to pages that have not yet been created are not specified
+- links to yet-to-be-created pages are not specified
 
 {% endnote %}
 
@@ -23,27 +23,33 @@ Some data may be missing — we will add it soon.
 >
 > Who can execute the method: any user
 
-The method `crm.deal.recurring.fields` returns a list of fields for configuring the recurring deal template along with descriptions.
+The method `crm.deal.recurring.fields` returns a list of fields for configuring the recurring deal template with descriptions.
 
 ## Example
 
-```
-BX24.callMethod(
-	"crm.deal.recurring.fields",
-	{},
-	function(result)
-	{
-		if(result.error())
-			console.error(result.error());
-		else
-			console.dir(result.data());
-	}
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+- JS
 
-## Returned Fields
+    ```js
+    BX24.callMethod(
+        "crm.deal.recurring.fields",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Example notes](../../../../_includes/examples.md) %}
+
+## Returned fields
 
 #|
 || **Field** | **Description** ||
@@ -66,7 +72,7 @@ BX24.callMethod(
 || **CATEGORY_ID**
 [`char`](../../../data-types.md) | Category that will be assigned to the deal created from the template. ||
 || **IS_LIMIT**
-[`char`](../../../data-types.md) | Are there any restrictions on creating new deals? Values: N - no restrictions, D - date restriction set, T - limit on the number of new deals set. ||
+[`char`](../../../data-types.md) | Are there restrictions on creating new deals? Values: N - no restrictions, D - date restriction set, T - limit on the number of new deals set. ||
 || **LIMIT_REPEAT**
 [`integer`](../../../data-types.md) | Maximum number of deals that can be created from this template. Considered if `IS_LIMIT` is T. ||
 || **LIMIT_DATE**
@@ -74,7 +80,7 @@ BX24.callMethod(
 || **PARAMS** | Set of parameters for calculation - `recurring_params`:
 
 - **MODE** - repetition mode:
-    - single - single (one deal will be created from the template, offset calculated to the value of START_DATE);
+    - single - single (one deal will be created from the template, offset is calculated to the value of START_DATE);
     - multiple - multiple
 
 - **MULTIPLE_TYPE** - type of repetition in multiple mode [MODE is multiple]:
@@ -93,25 +99,24 @@ BX24.callMethod(
 
 - **SINGLE_BEFORE_START_DATE_VALUE** - offset value before the start date, if not set - no offset [MODE is single]
 
-- **OFFSET_BEGINDATE_TYPE** - type of offset for calculating the "deal start date," calculated from the moment a new deal is created from the template:
+- **OFFSET_BEGINDATE_TYPE** - type of offset for calculating the "deal start date" field, calculation is made from the moment of creating a new deal from the template:
     - day - day
     - week - week
     - month - month
     - year - year
 
-- **OFFSET_BEGINDATE_VALUE** - offset value for calculating the "deal start date," calculated from the moment a new deal is created from the template
+- **OFFSET_BEGINDATE_VALUE** - offset value for calculating the "deal start date" field, calculation is made from the moment of creating a new deal from the template
 
-- **OFFSET_CLOSEDATE_TYPE** - value of the offset for calculating the "deal completion date," calculated from the moment a new deal is created from the template:
+- **OFFSET_CLOSEDATE_TYPE** - offset value for calculating the "deal completion date" field, calculation is made from the moment of creating a new deal from the template:
     - day - day
     - week - week
     - month - month
     - year - year
 
-- **OFFSET_CLOSEDATE_VALUE** - value of the offset for calculating the "deal completion date," calculated from the moment a new deal is created from the template ||
+- **OFFSET_CLOSEDATE_VALUE** - offset value for calculating the "deal completion date" field, calculation is made from the moment of creating a new deal from the template ||
 |#
 
-
-{% note tip "Related Methods and Topics" %}
+{% note tip "Related methods and topics" %}
 
 [{#T}](./crm-deal-recurring-add.md)
 

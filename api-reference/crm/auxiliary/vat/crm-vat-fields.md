@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -29,7 +29,7 @@ Some data may be missing here — we will complete it soon.
 crm.vat.fields()
 ```
 
-The method returns the description of VAT rate fields.
+The method returns a description of the VAT rate fields.
 
 ## Parameters
 
@@ -37,18 +37,24 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    "crm.vat.fields",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+  
+    ```javascript
+    BX24.callMethod(
+        "crm.vat.fields",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

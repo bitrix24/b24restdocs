@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -29,7 +29,7 @@ The method `disk.folder.uploadfile` uploads a new file to the specified folder.
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Folder identifier. In the current API, it is not possible to upload a file by the folder path. It is necessary to compute the `ID` of the folder. ||
+[`unknown`](../../data-types.md) | Identifier of the folder. In the current API, it is not possible to upload a file by the folder path. It is necessary to compute the `ID` of the folder. ||
 || **fileContent**
 [`unknown`](../../data-types.md) | Similar to `DETAIL_PICTURE` in the example [File Handling](../../bx24-js-sdk/how-to-call-rest-methods/files.md). ||
 || **data**
@@ -48,40 +48,48 @@ Please note that the list of available `TASK_ID` identifiers for setting permiss
 
 {% endnote %}
 
-### Example of Uploading a File
-```js
-BX24.callMethod(
-    "disk.folder.uploadfile",
-    {
-        id: 4,
-        data: {
-            NAME: "avatar.jpg"
-        },
-        fileContent: document.getElementById('test_file_input'),
-        generateUniqueName: true,
-        rights: [
-            {
-                TASK_ID: 42,
-                ACCESS_CODE: 'U35' // access for user with ID=35
-            },
-            {
-                TASK_ID: 38,
-                ACCESS_CODE: 'U2' // access for user with ID=2
-            }
-        ]
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Example Note](../../../_includes/examples.md) %}
+### Example of File Upload
 
-### Example of Directly Uploading a File to Disk
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.folder.uploadfile",
+        {
+            id: 4,
+            data: {
+                NAME: "avatar.jpg"
+            },
+            fileContent: document.getElementById('test_file_input'),
+            generateUniqueName: true,
+            rights: [
+                {
+                    TASK_ID: 42,
+                    ACCESS_CODE: 'U35' // access for user with ID=35
+                },
+                {
+                    TASK_ID: 38,
+                    ACCESS_CODE: 'U2' // access for user with ID=2
+                }
+            ]
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+### Example of Direct File Upload to Disk
 
 1. Call `/rest/disk.folder.uploadFile` and pass only the `ID` of the folder to the method.
     ```
@@ -94,8 +102,8 @@ BX24.callMethod(
     "uploadUrl": "http://b24.sigurd.bx/rest/upload.json?auth=n2423m863oil59f99c9g0bm4918l5erz&token=disk%7CaWQ9Mjg5Jl89QkYzazEzaXNnUjNHcVZQcDJZaGxGRmI4TGhXOG5EZXQ%3D%7CInVwbG9hZHxkaXNrfGFXUTlNamc1Smw4OVFrWXphekV6YVhOblVqTkhjVlpRY0RKWmFHeEdSbUk0VEdoWE9HNUVaWFE9fG4yNDIzbTg2M29pbDU5Zjk5YzlnMGJtNDkxOGw1ZXJ6Ig%3D%3D.Aga709nyY0%2BrFiv3laHjfg6XuOO5JT6ttjU%2F53ifphM%3D"
     }
     ```
-3. Send a POST request to the received `UploadUrl` in `multipart/form-data`, passing the file in the field with the name obtained from the `field` parameter.
-    ```
+3. Send a POST request to the received `UploadUrl` in `multipart/form-data`, where you pass the file in the field with the name received in the `field` parameter.
+    ``` 
     http --form POST "http://b24.sigurd.bx/rest/upload.json?auth=n2423m863oil59f99c9g0bm4918l5erz&token=disk%7CaWQ9Mjg5Jl89QkYzazEzaXNnUjNHcVZQcDJZaGxGRmI4TGhXOG5EZXQ%3D%7CInVwbG9hZHxkaXNrfGFXUTlNamc1Smw4OVFrWXphekV6YVhOblVqTkhjVlpRY0RKWmFHeEdSbUk0VEdoWE9HNUVaWFE9fG4yNDIzbTg2M29pbDU5Zjk5YzlnMGJtNDkxOGw1ZXJ6Ig%3D%3D.Aga709nyY0%2BrFiv3laHjfg6XuOO5JT6ttjU%2F53ifphM%3D" file@~/somelongfile.log
     ```
 4. In response, receive data about the uploaded file.
@@ -124,75 +132,87 @@ BX24.callMethod(
 
 ### How to Upload a File via `UploadUrl` in PHP
 
-```php
-<?php
-require_once (__DIR__.'/crest.php');
+{% list tabs %}
 
-$path = __DIR__ . '/pic.jpg';
-$folderId = 1;
+- PHP (crest)
 
-$result = [];
-if (file_exists($path))
-{
-    $file = CRest::call(
-        'disk.folder.uploadfile',
-        [
-            'id' => $folderId,
-        ]
-    );
-    if (!empty($file['result']['uploadUrl']))
+    ```php
+    <?php
+    require_once (__DIR__.'/crest.php');
+
+    $path = __DIR__ . '/pic.jpg';
+    $folderId = 1;
+
+    $result = [];
+    if (file_exists($path))
     {
-        $info = pathinfo($path);
-        if ($info['basename'])
+        $file = CRest::call(
+            'disk.folder.uploadfile',
+            [
+                'id' => $folderId,
+            ]
+        );
+        if (!empty($file['result']['uploadUrl']))
         {
-            $delimiter = '-------------' . uniqid('', true);
-            $name = $info['basename'];
-            $mime = mime_content_type($path);
-            $content = file_get_contents($path);
-
-            $body = '--' . $delimiter. "\r\n";
-            $body .= 'Content-Disposition: form-data; name="file"';
-            $body .= '; filename="' . $name . '"' . "\r\n";
-            $body .= 'Content-Type: ' . $mime . "\r\n\r\n";
-            $body .= $content . "\r\n";
-            $body .= "--" . $delimiter . "--\r\n";
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $file['result']['uploadUrl']);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-            curl_setopt(
-                $ch,
-                CURLOPT_HTTPHEADER,
-                [
-                    'Content-Type: multipart/form-data; boundary=' . $delimiter,
-                    'Content-Length: ' . strlen($body),
-                ]
-            );
-            $out = curl_exec($ch);
-            try
+            $info = pathinfo($path);
+            if ($info['basename'])
             {
-                $result = json_decode($out, true, 512, JSON_THROW_ON_ERROR);
-            }
-            catch (JsonException $e)
-            {
-                $result = [
-                    'error' => $e->getMessage(),
-                ];
+                $delimiter = '-------------' . uniqid('', true);
+                $name = $info['basename'];
+                $mime = mime_content_type($path);
+                $content = file_get_contents($path);
+
+                $body = '--' . $delimiter. "\r\n";
+                $body .= 'Content-Disposition: form-data; name="file"';
+                $body .= '; filename="' . $name . '"' . "\r\n";
+                $body .= 'Content-Type: ' . $mime . "\r\n\r\n";
+                $body .= $content . "\r\n";
+                $body .= "--" . $delimiter . "--\r\n";
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $file['result']['uploadUrl']);
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+                curl_setopt(
+                    $ch,
+                    CURLOPT_HTTPHEADER,
+                    [
+                        'Content-Type: multipart/form-data; boundary=' . $delimiter,
+                        'Content-Length: ' . strlen($body),
+                    ]
+                );
+                $out = curl_exec($ch);
+                try
+                {
+                    $result = json_decode($out, true, 512, JSON_THROW_ON_ERROR);
+                }
+                catch (JsonException $e)
+                {
+                    $result = [
+                        'error' => $e->getMessage(),
+                    ];
+                }
             }
         }
     }
-}
 
-echo '<pre>';
-    print_r($result);
-echo '</pre>';
-?>
-```
+    echo '<pre>';
+        print_r($result);
+    echo '</pre>';
+    ?>
+    ```
 
-## Response in Case of Success
+{% endlist %}
+
+## Response on Success
 
 > 200 OK
 
-In case of success, it returns a structure similar to [disk.file.get](../file/disk-file-get.md).
+On success, returns a structure similar to [disk.file.get](../file/disk-file-get.md).
+
+## Continue Learning
+
+- [{#T}](../../../tutorials/tasks/how-to-create-comment-with-file.md)
+- [{#T}](../../../tutorials/tasks/how-to-create-task-with-file.md)
+- [{#T}](../../../tutorials/tasks/how-to-upload-file-to-task.md)

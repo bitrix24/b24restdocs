@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -32,30 +32,36 @@ This method removes the product price from the collection of product prices. If 
 
 ## Parameters
 
-#| 
+#|
 || **Parameter** | **Description** ||
 || **id** 
 [`integer`](../../data-types.md)| Identifier of the price type binding to the customer group. ||
 |#
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.priceTypeGroup.delete',
-    {
-        id: 84
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-```
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.priceTypeGroup.delete',
+        {
+            id: 84
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

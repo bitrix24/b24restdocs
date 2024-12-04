@@ -1,4 +1,4 @@
-# Add the command imbot.command.register
+# Add the imbot.command.register Command
 
 {% note warning "We are still updating this page" %}
 
@@ -8,13 +8,13 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
-- edits needed for writing standards
-- parameter types are not specified
-- parameter mandatory status is not indicated
-- not all parameters have examples in the table
-- examples are missing
+- corrections needed for writing standards
+- parameter types not specified
+- required parameters not indicated
+- examples missing for some parameters in the table
+- examples are absent
 - success response is missing
 - error response is missing
 - links to pages that have not yet been created are not specified
@@ -27,24 +27,24 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `imbot.command.register` registers a command for processing by the chat bot.
+The method `imbot.command.register` registers a command for processing by the chatbot.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **BOT_ID**
-[`unknown`](../../data-types.md) | `62` | Identifier of the chat bot that owns the command | ||
+[`unknown`](../../data-types.md) | `62` | Identifier of the chatbot that owns the command | ||
 || **COMMAND**
 [`unknown`](../../data-types.md) | `'echo'` | The text of the command that the user will enter in chats.
 
 Only Latin letters and numbers can be used. Spaces and special characters are not accepted | ||
 || **COMMON**
-[`unknown`](../../data-types.md) | `'Y'` | If Y is specified, the command is available in all chats; if N, it is only available in those where the chat bot is present | ||
+[`unknown`](../../data-types.md) | `'Y'` | If Y is specified, the command is available in all chats; if N, it is only available in those where the chatbot is present | ||
 || **HIDDEN**
 [`unknown`](../../data-types.md) | `'N'` | Whether the command is hidden or not - defaults to N | ||
 || **EXTRANET_SUPPORT**
 [`unknown`](../../data-types.md) | `'N'` | Whether the command is available to Extranet users, defaults to N | ||
 || **CLIENT_ID**
-[`unknown`](../../data-types.md) | `''` | String identifier of the chat bot, used only in Webhook mode | ||
+[`unknown`](../../data-types.md) | `''` | String identifier of the chatbot, used only in Webhook mode | ||
 || **LANG^*^**
 [`unknown`](../../data-types.md) | 
 ```php
@@ -71,9 +71,9 @@ To process the command, the application must handle the event of adding a comman
 
 {% note warning %}
 
-Attention! If you plan to install more than one command for the chat bot: Bitrix24 Rest imposes a limitation on working with event handlers - there can only be one handler per application. Therefore, when registering a second command, the links to the handlers `EVENT_COMMAND_ADD` must be the same as those of the first command.
+Attention! If you plan to install more than one command for the chatbot: Bitrix24 Rest imposes a restriction on working with event handlers - there can only be one handler per application. Therefore, when registering a second command, the links to the handlers `EVENT_COMMAND_ADD` must be the same as for the first command.
 
-If it is necessary to handle multiple commands within one application, this must be accounted for within the event handler. For this, when the event occurs, an array of commands is passed to allow for correct processing.
+If it is necessary to process multiple commands within one application, this must be accounted for within the event handler. For this, an array of commands is passed when the event occurs, so they can be processed correctly.
 
 {% endnote %}
 
@@ -87,53 +87,59 @@ It is mandatory to specify the array of translations `LANG` for at least DE and 
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.command.register',
-    Array(
-        'BOT_ID' => 62,
-        'COMMAND' => 'echo',
-        'COMMON' => 'Y',
-        'HIDDEN' => 'N',
-        'EXTRANET_SUPPORT' => 'N',
-        'CLIENT_ID' => '',
-        'LANG' => Array(
-            Array(
-                'LANGUAGE_ID' => 'en',
-                'TITLE' => 'Get echo message',
-                'PARAMS' => 'some text'
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.command.register',
+        Array(
+            'BOT_ID' => 62,
+            'COMMAND' => 'echo',
+            'COMMON' => 'Y',
+            'HIDDEN' => 'N',
+            'EXTRANET_SUPPORT' => 'N',
+            'CLIENT_ID' => '',
+            'LANG' => Array(
+                Array(
+                    'LANGUAGE_ID' => 'en',
+                    'TITLE' => 'Get echo message',
+                    'PARAMS' => 'some text'
+                ),
             ),
+            'EVENT_COMMAND_ADD' => 'http://www.hazz/chatApi/bot.php',
         ),
-        'EVENT_COMMAND_ADD' => 'http://www.hazz/chatApi/bot.php',
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Notes on examples](../../../_includes/examples.md) %}
 
-## Success response
+## Success Response
 
 The command identifier `COMMAND_ID`.
 
-## Error response
+## Error Response
 
 error
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
 || **EVENT_COMMAND_ADD** | The event handler link is invalid or not specified. ||
-|| **COMMAND_ERROR** | The text of the command that the chat bot should respond to is not specified. ||
-|| **BOT_ID_ERROR** | The chat bot was not found. ||
-|| **APP_ID_ERROR** | The chat bot does not belong to this application. Only chat bots installed within the application can be used. ||
+|| **COMMAND_ERROR** | The text of the command that the chatbot should respond to is not specified. ||
+|| **BOT_ID_ERROR** | The chatbot was not found. ||
+|| **APP_ID_ERROR** | The chatbot does not belong to this application. Only chatbots installed within the application can be used. ||
 || **LANG_ERROR** | Language phrases for the visible command were not provided. ||
 || **WRONG_REQUEST** | Something went wrong. ||
 |#
 
-## Related links
+## Related Links
 
-- [Event for receiving a command by the chat bot ONIMCOMMANDADD](./events/index.md)
+- [Event for receiving a command by the chatbot ONIMCOMMANDADD](./events/index.md)

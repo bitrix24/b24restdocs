@@ -1,8 +1,8 @@
-# Update Inventory Document catalog.document.update
+# Update Inventory Management Document catalog.document.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the mandatory parameters are not specified
-- there is no response in case of an error
+- required parameters are not specified
+- no response in case of error
 - no examples in other languages
-- clarify the parameter type id
-
+- clarify the type of the id parameter
+  
 {% endnote %}
 
 {% endif %}
@@ -27,7 +27,7 @@ Some data may be missing here — we will complete it shortly.
 catalog.document.update(id, fields)
 ```
 
-Method for updating an inventory document. If the operation is successful, it returns `true` for the added inventory.
+Method for updating an inventory management document. If the operation is successful, it returns `true` for the added inventory.
 
 ## Parameters
 
@@ -39,15 +39,15 @@ Method for updating an inventory document. If the operation is successful, it re
 [`array`](../../data-types.md)|  Document parameters. ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
-- js
+- JS
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.document.update',
         {
@@ -55,7 +55,7 @@ Method for updating an inventory document. If the operation is successful, it re
             'fields': {
                 'total': '1000', // total amount of all PURCHASING_PRICE multiplied by AMOUNT
                 'commentary': 'first document.',
-                'title': 'New Document', //title (field available since catalog version 22.200.0)
+                'title': 'New document', //title (field available since catalog version 22.200.0)
             }
         },
         function(result)
@@ -68,9 +68,9 @@ Method for updating an inventory document. If the operation is successful, it re
     );
     ```
 
-- php
+- PHP
 
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.update',
         [
@@ -78,7 +78,7 @@ Method for updating an inventory document. If the operation is successful, it re
             'fields' => [
                 'total' => '1000',
                 'commentary' => 'first document.',
-                'title' => 'New Document',
+                'title' => 'New document',
             ],
         ]
     );
@@ -89,4 +89,4 @@ Method for updating an inventory document. If the operation is successful, it re
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

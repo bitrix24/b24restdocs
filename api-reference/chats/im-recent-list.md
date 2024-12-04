@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -39,24 +39,30 @@ The method `im.recent.list` retrieves a list of the user's recent conversations 
 
 ## Examples
 
-```js
-B24.callMethod(
-    'im.recent.list',
-    {
-        LAST_MESSAGE_DATE: '2021-10-30'
-    },
-    res => {
-        if (res.error())
-        {
-        console.error(result.error().ex);
-        }
-        else
-        {
-        console.log(res.data())
-        }
-    }
-)
-```
+{% list tabs %}
+
+- JS
+
+   ```js
+   B24.callMethod(
+      'im.recent.list',
+      {
+         LAST_MESSAGE_DATE: '2021-10-30'
+      },
+      res => {
+         if (res.error())
+         {
+               console.error(result.error().ex);
+         }
+         else
+         {
+               console.log(res.data())
+         }
+      }
+   )
+   ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../_includes/examples.md) %}
 
@@ -76,7 +82,7 @@ B24.callMethod(
      "title": "Purple Guest #3 - Open Line 2",
      "message": {
         "id": 267,
-        "text": "Form \"Contact Information Form for Open Lines\" sent [Attachment]",
+        "text": "The form \"Contact Information Form for Open Lines\" has been sent [Attachment]",
         "file": false,
         "author_id": 0,
         "attach": true,
@@ -139,29 +145,29 @@ B24.callMethod(
 - `counter` – counter of unread messages
 - `user` – object describing user data (not available if the record type is chat):
   - `id` – identifier of the user
-  - `name` – first and last name of the user
-  - `first_name` – first name of the user
-  - `last_name` – last name of the user
+  - `name` – user's first and last name
+  - `first_name` – user's first name
+  - `last_name` – user's last name
   - `work_position` – position
-  - `color` – color of the user in **hex** format
+  - `color` – user's color in **hex** format
   - `avatar` – link to the avatar (if empty, the avatar is not set)
-  - `gender` – gender of the user
-  - `birthday` – birthday of the user in **DD-MM** format, if empty – not set
+  - `gender` – user's gender
+  - `birthday` – user's birthday in **DD-MM** format, if empty – not set
   - `extranet` – indicator of external extranet user (**true/false**)
   - `network` – indicator of **Bitrix24.Network** user (**true/false**)
-  - `bot` – indicator of a bot (**true/false**)
-  - `connector` – indicator of an open lines user (**true/false**)
+  - `bot` – indicator of bot (**true/false**)
+  - `connector` – indicator of open line user (**true/false**)
   - `external_auth_id` – external authorization code
   - `status` – selected status of the user
   - `idle` – date when the user stepped away from the computer, in **ATOM** format (if not set, then **false**)
   - `last_activity_date` – date of the user's last action in **ATOM** format
   - `mobile_last_date` – date of the last action in the mobile app in **ATOM** format (if not set, then **false**)
-  - `absent` – date until which the user is on vacation, in **ATOM** format (if not set, then **false**)
+  - `absent` – date until when the user is on vacation, in **ATOM** format (if not set, then **false**)
 - `chat` – object describing chat data (not available if the record type is user):
   - `id` – identifier of the chat
   - `title` – name of the chat
   - `owner` – identifier of the user who owns the chat
-  - `extranet` – indicator of participation in the chat of an external extranet user (**true/false**)
+  - `extranet` – indicator of participation in the chat by an external extranet user (**true/false**)
   - `color` – color of the chat in **hex** format
   - `avatar` – link to the avatar (if empty, the avatar is not set)
   - `type` – type of chat (group chat, call chat, open line chat, etc.)
@@ -171,7 +177,7 @@ B24.callMethod(
   - `entity_data_2` – external data for the chat
   - `entity_data_3` – external data for the chat
   - `date_create` – date of chat creation in **ATOM** format
-  - `message_type` – type of chat messages
+  - `message_type` – type of messages in the chat
 - `pinned` – whether the chat is pinned or not
 - `unread` – whether there is a manual mark that the chat is unread
 - `date_update` – date of the last change in related entities

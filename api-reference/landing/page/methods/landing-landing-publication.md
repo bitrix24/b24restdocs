@@ -1,32 +1,30 @@
-# Page Publication
+# Publish page landing.landing.publication
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
 {% endif %}
 
-{% note info "landing.landing.publication" %}
+> Scope: [`landing`](../../../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
-**Scope**: [`landing`](../../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
-
-The method `landing.landing.publication` publishes a page. It returns *true* or an error.
+The method `landing.landing.publication` publishes a page. Returns *true* or an error.
 
 ## Parameters
 
@@ -38,24 +36,30 @@ The method `landing.landing.publication` publishes a page. It returns *true* or 
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.landing.publication',
-    {
-        lid: 351
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.publication',
+        {
+            lid: 351
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

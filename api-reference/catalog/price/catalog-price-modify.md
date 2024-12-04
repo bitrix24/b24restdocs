@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
 - no response in case of error 
@@ -26,7 +26,7 @@ Some data may be missing here — we will complete it soon.
 catalog.price.modify(fields)
 ```
 
-Method for modifying elements of the product price collection.
+This method is used to modify elements of the product price collection.
 
 {% note info "" %}
 
@@ -50,46 +50,53 @@ If the operation is successful, a [price resource](resource.md) is returned in t
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.price.modify',
-    {
-        fields: {
-            product: {
-                id: 8,
-                prices: [
-                    {
-                        catalogGroupId: 1,
-                        currency: 'USD',
-                        price: 2001,
-                        quantityFrom: 1,
-                        quantityTo: 2
-                    },
-                    {
-                        catalogGroupId: 1,
-                        currency: 'USD',
-                        price: 2001,                
-                        quantityFrom: 3,
-                        quantityTo: 4
-                    },
-                    {
-                        catalogGroupId: 1,
-                        currency: 'USD',
-                        price: 2001,                
-                        quantityFrom: 5,
-                        id: 122
-                    },
-                ]
-            },
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.price.modify',
+        {
+            fields: {
+                product: {
+                    id: 8,
+                    prices: [
+                        {
+                            catalogGroupId: 1,
+                            currency: 'USD',
+                            price: 2001,
+                            quantityFrom: 1,
+                            quantityTo: 2
+                        },
+                        {
+                            catalogGroupId: 1,
+                            currency: 'USD',
+                            price: 2001,                
+                            quantityFrom: 3,
+                            quantityTo: 4
+                        },
+                        {
+                            catalogGroupId: 1,
+                            currency: 'USD',
+                            price: 2001,                
+                            quantityFrom: 5,
+                            id: 122
+                        },
+                    ]
+                },
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
         }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
+
 {% include [Example Note](../../../_includes/examples.md) %}

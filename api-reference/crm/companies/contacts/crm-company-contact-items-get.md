@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -15,9 +15,9 @@ Some data may be missing — we will complete it soon.
 - parameter types not specified
 - parameter requirements not specified
 - examples missing
-- success response not provided
-- error response not provided
-- links to pages not yet created are not specified
+- success response missing
+- error response missing
+- links to yet-to-be-created pages not provided
 
 {% endnote %}
 
@@ -42,32 +42,38 @@ The result is returned as an array of objects, each containing the following fie
 #|
 || **Field** | **Description** ||
 || **CONTACT_ID**
-[`unknown`](../../../data-types.md) | Contact identifier ||
+[`unknown`](../../../data-types.md) | Contact identifier. ||
 || **SORT**
-[`unknown`](../../../data-types.md) | Sort index ||
+[`unknown`](../../../data-types.md) | Sort index. ||
 || **ROLE_ID**
-[`unknown`](../../../data-types.md) | Role identifier (reserved) ||
+[`unknown`](../../../data-types.md) | Role identifier (reserved). ||
 || **IS_PRIMARY**
-[`unknown`](../../../data-types.md) | Primary contact flag ||
+[`unknown`](../../../data-types.md) | Primary contact flag. ||
 |#
 
 ## Examples
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.company.contact.items.get",
-    {
-        id: id
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.company.contact.items.get",
+        {
+            id: id
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

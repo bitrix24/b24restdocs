@@ -1,8 +1,8 @@
-# Get Enumeration Elements "Activity Direction" crm.enum.activitydirection
+# Get the enumeration items "Activity Direction" crm.enum.activitydirection
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ Some data may be missing here — we will fill it in shortly.
 crm.enum.activitydirection()
 ```
 
-Returns the enumeration elements "Activity Direction" (for e-mails and calls). Values: 1 - incoming, 2 - outgoing.
+Returns the enumeration items "Activity Direction" (for emails and calls). Values: 1 - incoming, 2 - outgoing.
 
 ## Parameters
 
@@ -36,18 +36,25 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    "crm.enum.activitydirection",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+  
+    ```javascript
+    BX24.callMethod(
+        "crm.enum.activitydirection",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

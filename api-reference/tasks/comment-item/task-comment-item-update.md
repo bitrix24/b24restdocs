@@ -1,4 +1,4 @@
-# Update comment task.commentitem.update
+# Update Comment task.commentitem.update
 
 {% if build == 'dev' %}
 
@@ -38,7 +38,7 @@ The method `task.commentitem.update` updates the comment data. Authorization via
 [`unknown`](../../data-types.md) | Array of data fields for the comment (`POST_MESSAGE` — required field). ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
@@ -67,4 +67,4 @@ Maintaining the order of parameters in the request is mandatory. If violated, th
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

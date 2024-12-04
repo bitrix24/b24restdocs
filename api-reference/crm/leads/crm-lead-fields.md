@@ -10,9 +10,9 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.lead.fields` returns a description of lead fields, including custom ones.
+The method `crm.lead.fields` returns the description of lead fields, including custom ones.
 
-No parameters required.
+No parameters.
 
 ## Examples
 
@@ -58,7 +58,7 @@ No parameters required.
     https://xxx.bitrix24.com/rest/1/5***/crm.lead.fields.json
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
   ```php      
   try {
@@ -329,7 +329,7 @@ No parameters required.
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Available to Everyone"
+      "title": "Available to All"
     },
     "COMMENTS": {
       "type": "string",
@@ -468,7 +468,7 @@ No parameters required.
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Repeat Lead"
+      "title": "Returning Lead"
     },
     "DATE_CLOSED": {
       "type": "datetime",
@@ -656,7 +656,7 @@ No parameters required.
 || **POST**
 [`string`](../../data-types.md) | Position. ||
 || **ADDRESS**
-[`string`](../../data-types.md) | Contact address. ||
+[`string`](../../data-types.md) | Address of the contact. ||
 || **ADDRESS_2**
 [`string`](../../data-types.md) | Second line of the address. In some countries, it is customary to split the address into 2 parts. ||
 || **ADDRESS_CITY**
@@ -680,7 +680,7 @@ No parameters required.
 || **IS_MANUAL_OPPORTUNITY**
 [`char`](../../data-types.md) | Indicator of manual calculation of the amount. Allowed values are Y or N. ||
 || **OPENED**
-[`char`](../../data-types.md) | Available to everyone. Allowed values are Y or N. ||
+[`char`](../../data-types.md) | Available to all. Allowed values are Y or N. ||
 || **COMMENTS**
 [`string`](../../data-types.md) | Comments. ||
 || **HAS_PHONE**
@@ -708,7 +708,7 @@ No parameters required.
 || **CONTACT_ID**
 [`crm_contact`](../../data-types.md) | Link of the lead to the contact (Client->Contact field. If there are multiple linked contacts, this field will contain the ID of the first linked contact). ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Indicator of a repeat lead. Allowed values are Y or N. ||
+[`char`](../../data-types.md) | Indicator of a returning lead. Allowed values are Y or N. ||
 || **DATE_CLOSED**
 [`datetime`](../../data-types.md) | Closing date. ||
 || **ORIGINATOR_ID**
@@ -716,7 +716,7 @@ No parameters required.
 || **ORIGIN_ID**
 [`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source. ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, etc. ||
+[`string`](../../data-types.md) | Advertising system. Google Ads, Bing Ads, etc. ||
 || **UTM_MEDIUM**
 [`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners). ||
 || **UTM_CAMPAIGN**
@@ -730,7 +730,7 @@ No parameters required.
 || **LAST_ACTIVITY_BY**
 [`string`](../../data-types.md) | Identifier of the user responsible for the last activity in this lead (e.g., who created a new activity in the lead). ||
 || **PHONE**
-[`crm_multifield`](../../data-types.md) | Contact phone. ||
+[`crm_multifield`](../../data-types.md) | Phone of the contact. ||
 || **EMAIL**
 [`crm_multifield`](../../data-types.md) | Email address. ||
 || **WEB**
@@ -739,19 +739,19 @@ No parameters required.
 [`crm_multifield`](../../data-types.md) | Messengers. ||
 || **LINK**
 [`crm_multifield`](../../data-types.md) |  ||
-|| **ufCrm_ххх** | [Custom fields.](./userfield/index.md) ||
+|| **ufCrm_xxx** | [Custom fields.](./userfield/index.md) ||
 || **time**
 [`array`](../../data-types.md) | Information about the execution time of the request ||
 || **start**
 [`double`](../../data-types.md) | Timestamp of the moment the request was initialized ||
 || **finish**
-[`double`](../../data-types.md) | Timestamp of the moment the request was completed ||
+[`double`](../../data-types.md) | Timestamp of the moment the request execution was completed ||
 || **duration**
 [`double`](../../data-types.md) | How long in milliseconds the request took (finish - start) ||
 || **date_start**
 [`string`](../../data-types.md) | String representation of the date and time of the moment the request was initialized ||
 || **date_finish**
-[`double`](../../data-types.md) | String representation of the date and time of the moment the request was completed ||
+[`double`](../../data-types.md) | String representation of the date and time of the moment the request execution was completed ||
 || **operating_reset_at**
 [`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limit](../../../limits.md) ||
 || **operating**
@@ -760,18 +760,18 @@ No parameters required.
 
 ### Field Description
 
-|#
-|| type | Field type. Described above. ||
-|| isRequired | Indicator of whether the field is mandatory when creating a new lead. ||
-|| isReadOnly | Indicator of whether the field value can be edited. ||
-|| isImmutable | Indicator of whether the field value can only be filled once when creating a new item. ||
-|| isMultiple | Indicator of whether the field can have multiple values. If true, values in the field are passed as an array. ||
-|| isDynamic | Indicates whether the field is [custom](./userfield/index.md). ||
-|| title | Field title ||
 #|
+|| **type** | **Field Type. Described above** ||
+|| **isRequired** | Indicator of whether the field is mandatory when creating a new lead. ||
+|| **isReadOnly** | Indicator of whether the value of the field can be edited. ||
+|| **isImmutable** | Indicator of whether the field can be filled only once when creating a new item. ||
+|| **isMultiple** | Indicator of whether the field can have multiple values. If true, values in the field are passed as an array. ||
+|| **isDynamic** | Is the field [custom](./userfield/index.md). ||
+|| **title** | Field name ||
+|#
 
 {% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Example Response in Case of Error
 
-The method does not anticipate returning errors.
+The method does not assume returning errors.

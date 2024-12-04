@@ -26,7 +26,7 @@ Some data may be missing here — we will fill it in shortly.
 || **CODE^*^**
 [`unknown`](../../data-types.md) | Unique symbolic code of the page. Added to the website address if it is not the main page. | Yes | Yes ||
 || **RULE**
-[`unknown`](../../data-types.md) | Regular expression for displaying the page by mask. For example, the rule `section/([\d]+)` for a page at the root of the site will match all pages of the form `/section/<n>/`, where <n> is any number. | Yes | No ||
+[`unknown`](../../data-types.md) | Regular expression for displaying the page by mask. For example, the rule `section/([\d]+)` for a page at the root of the site will match all pages of the form `/section/n/`, where n is any number. | Yes | No ||
 || **ACTIVE**
 [`unknown`](../../data-types.md) | Activity of the page: Y / N. | Yes | No ||
 || **DELETED**

@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - missing parameters or fields
 - parameter types not specified
@@ -29,24 +29,30 @@ The method `landing.syspage.deleteForSite` deletes all special pages of the site
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.syspage.deleteForSite',
-    {
-        id: 1391 // Site ID
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.syspage.deleteForSite',
         {
-            console.error(result.error());
-        }
-        else
+            id: 1391 // Site ID
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

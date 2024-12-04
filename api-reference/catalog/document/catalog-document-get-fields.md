@@ -1,8 +1,8 @@
-# Get Inventory Management Document Fields catalog.document.getFields
+# Get Fields of Inventory Management Documents catalog.document.getFields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
+- required parameter specifications are missing
 - no response in case of error
 - no response in case of success
 - no examples in other languages
@@ -37,21 +37,27 @@ No parameters.
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'catalog.document.getFields',
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.document.getFields',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -77,11 +83,11 @@ BX24.callMethod(
 [`string`](../../data-types.md) | Document number. |  ||
 || **docType^*^**
 [`char`](../../data-types.md) | Document type:
-- `A` – Inventory receipt; 
-- `S` – Stock adjustment; 
-- `M` – Transfers between inventories; 
-- `R` – Product return; 
-- `D` – Write-offs. |  Read-only field. ||
+- `A` – Stock receipt of goods; 
+- `S` – Stock adjustment of goods; 
+- `M` – Transfer of goods between inventories; 
+- `R` – Return of goods; 
+- `D` – Write-off of goods. |  Read-only field. ||
 || **id** 
 [`integer`](../../data-types.md) | Document identifier. | Read-only. ||
 || **modifiedBy** 
@@ -98,4 +104,4 @@ BX24.callMethod(
 [`double`](../../data-types.md) | Total amount of goods. |  ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}

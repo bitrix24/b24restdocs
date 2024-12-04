@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will fill it in shortly
 
 {% include notitle [Scope telephony admin](../../_includes/scope-telephony-admin.md) %}
 
-The method `voximplant.sip.get` returns a list of all SIP lines created by the application. This is a listing method. The method is available to the holder of the [access permission](https://helpdesk.bitrix24.com/open/18216960/) `Manage numbers - modify - any`.
+The method `voximplant.sip.get` returns a list of all SIP lines created by the application. It is a listing method. The method is available to the holder of the [access permissions](https://helpdesk.bitrix24.com/open/18216960/) `Manage numbers - modify - any`.
 
 #|
 || **Parameter** | **Description** ||
@@ -33,27 +33,33 @@ The method `voximplant.sip.get` returns a list of all SIP lines created by the a
 
 ## Example
 
-```javascript
-BX24.callMethod(
-    'voximplant.sip.get',
-    {
-        "FILTER": {"CONFIG_ID":12},
-        "SORT": "CONFIG_ID",
-        "ORDER": "DESC",
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'voximplant.sip.get',
+        {
+            "FILTER": {"CONFIG_ID":12},
+            "SORT": "CONFIG_ID",
+            "ORDER": "DESC",
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}
 
-## Returned Data
+## Returned data
 
 #|
 || **Field** | **Description** ||

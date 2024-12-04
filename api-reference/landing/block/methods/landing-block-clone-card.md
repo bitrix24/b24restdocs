@@ -2,20 +2,20 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- edits are needed to meet the writing standard
+- edits needed for standard writing
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `landing.block.clonecard` clones a block card. It returns _true_ or an error.
+The method `landing.block.clonecard` clones the card of a block. It returns _true_ or an error.
 
 ## Parameters
 
@@ -42,33 +42,39 @@ For example: '.landing-block-card@0'. The 0 at the end indicates that we are aff
 
 {% note warning %}
 
-Please note that once you have cloned a card, their counters have changed.
+Please note that once you have cloned the card, their counters have changed.
 
 {% endnote %}
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.block.cloneCard',
-    {
-        lid: 311,
-        block: 6057,
-        selector: '.landing-block-card@0'
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.block.cloneCard',
         {
-            console.error(result.error());
-        }
-        else
+            lid: 311,
+            block: 6057,
+            selector: '.landing-block-card@0'
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../../_includes/examples.md) %}
 

@@ -1,8 +1,8 @@
-# Get the list of leads crm.lead.list
+# Get a list of leads crm.lead.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -18,13 +18,13 @@ Some data may be missing — we will complete it shortly.
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with read access permission for leads.
+> Who can execute the method: a user with read access to leads.
 
 The method `crm.lead.list` returns a list of leads based on a filter. It is an implementation of the list method for leads.
 
 ## Method Parameters
 
-{% include [Note about required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -36,38 +36,38 @@ When selecting, use masks:
 - "*" - to select all fields (excluding custom and multiple fields)
 - "UF_*" - to select all custom fields (excluding multiple fields)
 
-There are no masks for selecting multiple fields. To select multiple fields, specify the required ones in the selection list ("PHONE", "EMAIL", etc.).
+There are no masks for selecting multiple fields. To select multiple fields, specify the desired ones in the selection list ("PHONE", "EMAIL", etc.).
 There is no option to add a logical OR condition to the filter if you need to select by several different fields.||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected leads in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering selected leads in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to lead fields [crm-lead-fields](./crm-lead-fields.md).
 
-An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
+An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN (an array is passed as a value)
-- `!@` — NOT IN (an array is passed as a value)
-- `%` — LIKE, substring search. The "%" character in the filter value does not need to be passed. The search looks for a substring in any position of the string.
-- `=%` — LIKE, substring search. The "%" character needs to be passed in the value. Examples:
+- `@` — IN (an array is passed as the value)
+- `!@` — NOT IN (an array is passed as the value)
+- `%` — LIKE, substring search. The `%` character in the filter value should not be passed. The search looks for a substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` character should be passed in the value. Examples:
   - "mol%" — searching for values starting with "mol"
   - "%mol" — searching for values ending with "mol"
   - "%mol%" — searching for values where "mol" can be in any position.
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The "%" character in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` character in the filter value should not be passed. The search goes from both sides.
 
-- `=%` — NOT LIKE, substring search. The "%" character needs to be passed in the value. Examples:
+- `=%` — NOT LIKE, substring search. The `%` character should be passed in the value. Examples:
   - "mol%" — searching for values not starting with "mol"
   - "%mol" — searching for values not ending with "mol"
   - "%mol%" — searching for values where the substring "mol" is not present in any position.
 
 - `!%=` — NOT LIKE (see description above)
 
-- `=` — equal, exact match (used by default)
+- `=` — equals, exact match (used by default)
 - `!=` - not equal
 - `!` — not equal
   ||
@@ -82,7 +82,7 @@ The page size of results is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
-The formula for calculating the value of the `start` parameter:
+The formula for calculating the `start` parameter value:
 
 `start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
@@ -150,7 +150,7 @@ The formula for calculating the value of the `start` parameter:
     https://xxx.bitrix24.com/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.lead.list.json?select[]=*&select=UF_*&start=50&filter[=OPPORTUNITY]=15000.00&order[STATUS_ID]=ASC
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
   ```php      
   try {
@@ -261,7 +261,7 @@ The formula for calculating the value of the `start` parameter:
   ```
 {% endlist %}
 
-{% include [Note about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 ## Successful response
 
@@ -417,7 +417,7 @@ The formula for calculating the value of the `start` parameter:
 || **finish**
 [`double`](../../data-types.md) | Timestamp of the moment the request execution was completed ||
 || **duration**
-[`double`](../../data-types.md) | How long the request took in milliseconds (finish - start) ||
+[`double`](../../data-types.md) | How long in milliseconds the request took (finish - start) ||
 || **date_start**
 [`string`](../../data-types.md) | String representation of the date and time of the moment the request was initialized ||
 || **date_finish**

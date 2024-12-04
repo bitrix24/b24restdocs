@@ -1,8 +1,8 @@
-# Get a List of Templates for Creating Sites landing.demos.getSiteList
+# Get a list of templates for creating sites landing.demos.getSiteList
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -36,19 +36,26 @@ The method `landing.demos.getSiteList` retrieves a list of available templates f
 
 ## Examples
 
-```js
-BX24.callMethod(
-    '',
-    {
-        type: 'page'
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.demos.getSiteList',
+        {
+            type: 'page'
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

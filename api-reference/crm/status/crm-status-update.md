@@ -1,8 +1,8 @@
-# Update Existing CRM Entity crm.status.update
+# Update an existing CRM directory item crm.status.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -27,39 +27,45 @@ Some data may be missing here — we will complete it shortly.
 crm.status.update(id, fields)
 ```
 
-This method updates an existing entity in the directory.
+This method updates an existing directory item.
 
 #|
 || **Parameter** | **Description** ||
-|| **id^*^** | Identifier of the directory entity. ||
-|| **fields^*^** | Set of fields - an array of the form `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values from the method [crm.status.fields](crm-status-fields.md) ||
+|| **id^*^** | Identifier of the directory item. ||
+|| **fields^*^** | Set of fields - an array of the form `array("field to update"=>"value"[, ...])`, where "field to update" can take values returned by the method [crm.status.fields](crm-status-fields.md) ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Example
 
-```javascript
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.status.update",
-    {
-        id: id,
-        fields:
-        {
-            "SORT": 75
-        }                
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-        {
-            console.info(result.data());                        
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```javascript
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.status.update",
+        {
+            id: id,
+            fields:
+            {
+                "SORT": 75
+            }                
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.info(result.data());                        
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

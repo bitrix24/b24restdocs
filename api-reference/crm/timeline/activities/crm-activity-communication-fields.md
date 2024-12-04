@@ -30,18 +30,24 @@ No parameters
 
 ## Examples
 
-```js
-BX24.callMethod(
-    "crm.activity.communication.fields",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        "crm.activity.communication.fields",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

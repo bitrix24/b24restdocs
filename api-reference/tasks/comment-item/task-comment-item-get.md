@@ -35,11 +35,11 @@ The method `task.commentitem.get` returns a comment for a task by its identifier
 [`unknown`](../../data-types.md) | Comment identifier. ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
-The order of parameters in the request must be followed. If violated, the request will be executed with errors.
+The order of parameters in the request is mandatory. If violated, the request will be executed with errors.
 
 {% endnote %}
 
@@ -62,4 +62,8 @@ The order of parameters in the request must be followed. If violated, the reques
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+## Continue Learning
+
+- [{#T}](../../../tutorials/tasks/how-to-create-comment-with-file.md)

@@ -1,4 +1,4 @@
-# Delete Custom Field task.item.userfield.delete
+# Delete User Field `task.item.userfield.delete`
 
 {% if build == 'dev' %}
 
@@ -6,9 +6,9 @@
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- missing 1 example (there should be three examples - curl, js, php)
-- no response in case of error
-- no response in case of success
+- one example is missing (there should be three examples - curl, js, php)
+- response in case of error is missing
+- response in case of success is missing
 
 {% endnote %}
 
@@ -16,13 +16,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
 The method `task.item.userfield.delete` removes a property.
 
@@ -33,7 +33,7 @@ The method `task.item.userfield.delete` removes a property.
 || **auth**
 [`unknown`](../../data-types.md) | Authorization token. ||
 || **ID**
-[`unknown`](../../data-types.md) | Identifier of the custom field. ||
+[`unknown`](../../data-types.md) | Identifier of the user field. ||
 |#
 
 ## Examples
@@ -73,4 +73,4 @@ The method `task.item.userfield.delete` removes a property.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}

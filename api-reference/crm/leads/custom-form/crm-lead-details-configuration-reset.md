@@ -1,8 +1,8 @@
-# Reset Lead Card Settings crm.lead.details.configuration.reset
+# Reset the parameters of crm.lead.details.configuration.reset
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing
-- success response missing
-- error response missing
+- edits needed for standard writing
+- parameter types are not specified
+- parameter requirements are not indicated
+- examples are missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -29,7 +29,7 @@ The method `crm.lead.details.configuration.reset` resets the settings of lead ca
 
 {% note warning %}
 
-Please note that the settings for repeat leads may differ from those for simple leads. The parameter **leadCustomerType** is used to switch between lead card settings.
+Please note that the settings for repeat leads may differ from the settings for simple leads. The parameter **leadCustomerType** is used to switch between lead card settings.
 
 {% endnote %}
 
@@ -42,7 +42,7 @@ Please note that the settings for repeat leads may differ from those for simple 
 - **C** - general settings.
  ||
 || **userId**
-[`unknown`](../../../data-types.md) | User identifier. If not specified, the current user is taken. Required only when resetting personal settings. ||
+[`unknown`](../../../data-types.md) | User identifier. If not specified, the current one is used. Required only when resetting personal settings. ||
 || **extras**
 [`unknown`](../../../data-types.md) | Additional parameters. Here, for leads, the parameter `leadCustomerType` can be specified, with acceptable values:
 
@@ -53,24 +53,30 @@ Please note that the settings for repeat leads may differ from those for simple 
 
 ## Examples
 
-```js
-//---
-//Reset personal lead card settings for the user with identifier 1.
-BX24.callMethod(
-    "crm.lead.details.configuration.reset",
-    {
-        scope: "P",
-        userId: 1
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-//---
-```
+{% list tabs %}
+
+- JS
+  
+    ```js
+    //---
+    //Reset personal settings of lead cards for the user with identifier 1.
+    BX24.callMethod(
+        "crm.lead.details.configuration.reset",
+        {
+            scope: "P",
+            userId: 1
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    //---
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

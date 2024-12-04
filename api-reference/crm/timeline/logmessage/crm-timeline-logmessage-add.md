@@ -37,14 +37,14 @@ fields:
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md#object_type) in which the record will be created ||
+[`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md#object_type) where the entry will be created ||
 || **entityId***
-[`integer`](../../../data-types.md) | Identifier of the entity item in which the record will be created ||
+[`integer`](../../../data-types.md) | Identifier of the entity item where the entry will be created ||
 || **title***
-[`string`](../../../data-types.md) | Title of the record ||
-|| **text**
-[`string`](../../../data-types.md) | Text of the record ||
-|| **iconCode**
+[`string`](../../../data-types.md) | Entry title ||
+|| **text***
+[`string`](../../../data-types.md) | Entry text ||
+|| **iconCode***
 [`string`](../../../data-types.md) | Icon code.
 
 A list of available codes can be obtained using the method [crm.timeline.icon.list](./icons/crm-timeline-icon-list.md) ||
@@ -178,9 +178,9 @@ The `result` field contains the [logMessage](#logMessage) object ||
 || **authorId** 
 [`integer`](../../../data-types.md)| User who created the entry ||
 || **title**
-[`string`](../../../data-types.md)| Title of the entry ||
+[`string`](../../../data-types.md)| Entry title ||
 || **text** 
-[`string`](../../../data-types.md)| Content of the entry ||
+[`string`](../../../data-types.md)| Entry content ||
 || **iconCode** 
 [`string`](../../../data-types.md)| Icon code ||
 |#
@@ -204,7 +204,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Access denied ||
 || `OWNER_NOT_FOUND` | The CRM entity with the specified `entityTypeId` and `entityId` does not exist ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are missing ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 

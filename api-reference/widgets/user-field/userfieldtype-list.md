@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user
 
-The method retrieves a list of custom field types registered by the application. It returns a paginated list of field types.
+The method retrieves a list of custom field types registered by the application. It returns a list of field types with pagination.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -65,7 +65,7 @@ No parameters.
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -133,7 +133,7 @@ HTTP status: **200**
 || **total**
 [`integer`](../../data-types.md) | Number of processed records ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Continue Learning

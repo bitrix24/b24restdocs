@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will fill it in shortly
 >
 > Who can execute the method: any user
 
-The method `disk.file.uploadversion` uploads a new version of a file.
+The method `disk.file.uploadversion` uploads a new version of the file.
 
 ## Parameters
 
@@ -36,22 +36,29 @@ The method `disk.file.uploadversion` uploads a new version of a file.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.file.uploadversion",
-    {
-        id: 4,
-        fileContent: document.getElementById('test_file_input')
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.file.uploadversion",
+        {
+            id: 4,
+            fileContent: document.getElementById('test_file_input')
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Response on Success

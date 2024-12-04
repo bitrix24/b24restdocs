@@ -1,19 +1,19 @@
-# Delete SMS Provider or Message Provider messageservice.sender.delete
+# Delete SMS provider or messageservice.sender.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it soon
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
-- success response is missing
-- error response is missing
+- parameter requirements are not indicated
+- no success response is provided
+- no error response is provided
 - No examples in other languages
 
 {% endnote %}
@@ -31,27 +31,33 @@ This method deletes a previously registered message provider. You cannot delete 
 || **CODE** | Provider identifier. ||
 |#
 
-{% include [Parameter Note](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Example
 
-```js
-function uninstallProvider(provider)
-{
-    BX24.callMethod(
-        'messageservice.sender.delete',
-        {
-            'CODE': provider
-        },
-        function(result)
-        {
-            if(result.error())
-                alert('Error: ' + result.error());
-            else
-                alert("Success: " + result.data());
-        }
-    );
-}
-```
+{% list tabs %}
 
-{% include [Examples Note](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    function uninstallProvider(provider)
+    {
+        BX24.callMethod(
+            'messageservice.sender.delete',
+            {
+                'CODE': provider
+            },
+            function(result)
+            {
+                if(result.error())
+                    alert('Error: ' + result.error());
+                else
+                    alert("Success: " + result.data());
+            }
+        );
+    }
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

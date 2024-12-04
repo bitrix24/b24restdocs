@@ -11,10 +11,10 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -31,29 +31,35 @@ The method `landing.site.unPublicFolder` unpublishes a site folder. Permissions 
 #|
 || **Parameter** | **Description** | **Version** ||
 || **folderId**
-[`unknown`](../../data-types.md) | Identifier of the folder. | ||
+[`unknown`](../../data-types.md) | Folder identifier. | ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    'landing.site.unPublicFolder',
-    {
-        id: 737
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.unPublicFolder',
         {
-            console.error(result.error());
-        }
-        else
+            id: 737
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

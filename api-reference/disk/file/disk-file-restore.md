@@ -5,9 +5,9 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
+- response in case of error is absent
 
 {% endnote %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -35,24 +35,31 @@ The method `disk.file.restore` restores a file from the trash.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.file.restore",
-    {
-        id: 10
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% list tabs %}
 
-## Response on success
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.file.restore",
+        {
+            id: 10
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Response in case of success
 
 > 200 OK
 

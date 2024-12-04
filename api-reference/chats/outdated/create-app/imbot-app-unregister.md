@@ -1,4 +1,4 @@
-# Remove the chat application imbot.app.unregister
+# Unregister Chat Application imbot.app.unregister
 
 > Scope: [`imbot`](../../../scopes/permissions.md)
 >
@@ -10,24 +10,30 @@ The method `imbot.app.unregister` removes the application from the chat.
 
 #|
 || **Name** | **Example** | **Description** ||
-|| **APP_ID** | `13` | Identifier of the team to be removed ||
+|| **APP_ID** | `13` | Identifier of the application to be removed ||
 |#
 
 ## Code Example
 
-{% include [Explanation of restCommand](../../_includes/rest-command.md) %}
+{% include [Explanation about restCommand](../../_includes/rest-command.md) %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
-```php
-$result = restCommand(
-    'imbot.app.unregister',
-    Array(
-        'APP_ID' => 13,
-    ),
-    $_REQUEST["auth"]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.app.unregister',
+        Array(
+            'APP_ID' => 13,
+        ),
+        $_REQUEST["auth"]
+    );
+    ```
+
+{% endlist %}
 
 ## Response on Success
 

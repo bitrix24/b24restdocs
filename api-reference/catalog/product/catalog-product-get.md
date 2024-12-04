@@ -81,6 +81,35 @@ To obtain product identifiers, you need to use [catalog.product.list](./catalog-
     echo '</PRE>';
     ```
 
+- PHP (B24PhpSdk)
+  
+    ```php       
+    try {
+        $productId = 123; // Replace with the actual product ID you want to retrieve
+        $productResult = $serviceBuilder->getCatalogScope()
+            ->product()
+            ->get($productId);
+        $itemResult = $productResult->product();
+        print("Active: " . ($itemResult->active ? 'Yes' : 'No') . PHP_EOL);
+        print("Available: " . ($itemResult->available ? 'Yes' : 'No') . PHP_EOL);
+        print("Bundle: " . ($itemResult->bundle ? 'Yes' : 'No') . PHP_EOL);
+        print("Code: " . $itemResult->code . PHP_EOL);
+        print("Created By: " . $itemResult->createdBy . PHP_EOL);
+        print("Date Active From: " . ($itemResult->dateActiveFrom ? $itemResult->dateActiveFrom->format(DATE_ATOM) : 'N/A') . PHP_EOL);
+        print("Date Active To: " . ($itemResult->dateActiveTo ? $itemResult->dateActiveTo->format(DATE_ATOM) : 'N/A') . PHP_EOL);
+        print("Date Created: " . $itemResult->dateCreate->format(DATE_ATOM) . PHP_EOL);
+        print("Name: " . $itemResult->name . PHP_EOL);
+        print("ID: " . $itemResult->id . PHP_EOL);
+        print("Iblock ID: " . $itemResult->iblockId . PHP_EOL);
+        print("Iblock Section ID: " . $itemResult->iblockSectionId . PHP_EOL);
+        print("Modified By: " . $itemResult->modifiedBy . PHP_EOL);
+        print("Timestamp: " . $itemResult->timestampX->format(DATE_ATOM) . PHP_EOL);
+        print("XML ID: " . $itemResult->xmlId . PHP_EOL);
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage() . PHP_EOL);
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -97,9 +126,9 @@ HTTP Status: **200**
             "canBuyZero": "Y",
             "code": "Product",
             "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-            "dateActiveTo": "2024-05-29T10:00:00+03:00",
-            "dateCreate": "2024-05-27T10:00:00+03:00",
+            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
+            "dateActiveTo": "2024-05-29T10:00:00+02:00",
+            "dateCreate": "2024-05-27T10:00:00+02:00",
             "detailPicture": {
                 "id": "6455",
                 "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6455\u0026fields%5BproductId%5D=1243",
@@ -136,14 +165,14 @@ HTTP Status: **200**
                     "valueId": "9745"
                 }
             ],
-            "purchasingCurrency": "USD",
+            "purchasingCurrency": "EUR",
             "purchasingPrice": "1000.000000",
             "quantity": 10,
             "quantityReserved": 1,
             "quantityTrace": "Y",
             "sort": 100,
             "subscribe": "Y",
-            "timestampX": "2024-06-06T16:45:35+03:00",
+            "timestampX": "2024-06-06T16:45:35+02:00",
             "type": 1,
             "vatId": 1,
             "vatIncluded": "Y",
@@ -157,8 +186,8 @@ HTTP Status: **200**
         "finish": 1717745699.571344,
         "duration": 0.8867809772491455,
         "processing": 0.47261500358581543,
-        "date_start": "2024-06-07T10:34:58+03:00",
-        "date_finish": "2024-06-07T10:34:59+03:00"
+        "date_start": "2024-06-07T10:34:58+02:00",
+        "date_finish": "2024-06-07T10:34:59+02:00"
     }
 }
 ```
@@ -196,7 +225,7 @@ HTTP Status: **400**
 || `200040300000` | The information block with the specified identifier does not exist ||
 || `200040300040` | Insufficient rights to read the information block element ||
 || `200040300010` | Insufficient rights to read the trade catalog ||
-|| `100` | The parameter `id` is not specified ||
+|| `100` | The `id` parameter is not specified ||
 || `0` | The product does not exist ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

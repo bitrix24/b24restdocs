@@ -2,11 +2,11 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}{% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types not specified
@@ -27,13 +27,13 @@ The method `imbot.chat.add` creates a chat on behalf of the chatbot.
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **TYPE**
-[`unknown`](../../data-types.md) | `'CHAT'` | OPEN - open chat for joining, CHAT – regular invitation-only chat, default is CHAT | ||
+[`unknown`](../../data-types.md) | `'CHAT'` | OPEN - open chat for joining, CHAT – regular chat by invitation, default is CHAT | ||
 || **TITLE**
 [`unknown`](../../data-types.md) | `'My new private chat'` | Title | ||
 || **DESCRIPTION**
 [`unknown`](../../data-types.md) | `'Very important events'` | Description | ||
 || **COLOR**
-[`unknown`](../../data-types.md) | `'PINK'` | Color for mobile app - RED, GREEN, MINT, LIGHT_BLUE, DARK_BLUE, PURPLE, AQUA, PINK, LIME, BROWN, AZURE, KHAKI, SAND, MARENGO, GRAY, GRAPHITE | ||
+[`unknown`](../../data-types.md) | `'PINK'` | Color for the mobile app - RED, GREEN, MINT, LIGHT_BLUE, DARK_BLUE, PURPLE, AQUA, PINK, LIME, BROWN, AZURE, KHAKI, SAND, MARENGO, GRAY, GRAPHITE | ||
 || **MESSAGE**
 [`unknown`](../../data-types.md) | `'Welcome!'` | First welcome message in the chat | ||
 || **USERS^*^**
@@ -41,11 +41,11 @@ The method `imbot.chat.add` creates a chat on behalf of the chatbot.
 || **AVATAR**
 [`unknown`](../../data-types.md) | `'/* base64 image */'` | Avatar in base64 format | ||
 || **ENTITY_TYPE**
-[`unknown`](../../data-types.md) | `'CHAT'` | Identifier of a custom entity (e.g., CHAT, CRM, OPENLINES, CALL, etc.), can be used to search for the chat and to easily determine the context in event handlers ONIMBOTMESSAGEADD, ONIMBOTMESSAGEUPDATE, ONIMBOTMESSAGEDELETE | ||
+[`unknown`](../../data-types.md) | `'CHAT'` | Identifier of an arbitrary entity (e.g., CHAT, CRM, OPENLINES, CALL, etc.), can be used to search for the chat and to easily determine the context in event handlers ONIMBOTMESSAGEADD, ONIMBOTMESSAGEUPDATE, ONIMBOTMESSAGEDELETE | ||
 || **ENTITY_ID**
 [`unknown`](../../data-types.md) | `13` | Numeric identifier of the entity, can be used to search for the chat and to easily determine the context in event handlers ONIMBOTMESSAGEADD, ONIMBOTMESSAGEUPDATE, ONIMBOTMESSAGEDELETE | ||
 || **OWNER_ID**
-[`unknown`](../../data-types.md) | `39` | Identifier of the owner. Can be omitted if you are creating a chat for the intended user | ||
+[`unknown`](../../data-types.md) | `39` | Identifier of the owner. Can be omitted if you are creating a chat for the required user | ||
 || **BOT_ID**
 [`unknown`](../../data-types.md) | `39` | Identifier of the bot making the request. Can be omitted if there is only one | ||
 |#
@@ -54,29 +54,35 @@ The method `imbot.chat.add` creates a chat on behalf of the chatbot.
 
 ## Examples
 
-{% include [Explanation of restCommand](../_includes/rest-command.md) %}
+{% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.chat.add',
-    Array(
-        'TYPE' => 'CHAT',
-        'TITLE' => 'My new private chat',
-        'DESCRIPTION' => 'Very important events',
-        'COLOR' => 'PINK',
-        'MESSAGE' => 'Welcome!',
-        'USERS' => Array(1,2),
-        'AVATAR' => '/* base64 image */',
-        'ENTITY_TYPE' => 'CHAT',
-        'ENTITY_ID' => 13,
-        'OWNER_ID' => 39,
-        'BOT_ID' => 39,
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.chat.add',
+        Array(
+            'TYPE' => 'CHAT',
+            'TITLE' => 'My new private chat',
+            'DESCRIPTION' => 'Very important events',
+            'COLOR' => 'PINK',
+            'MESSAGE' => 'Welcome!',
+            'USERS' => Array(1,2),
+            'AVATAR' => '/* base64 image */',
+            'ENTITY_TYPE' => 'CHAT',
+            'ENTITY_ID' => 13,
+            'OWNER_ID' => 39,
+            'BOT_ID' => 39,
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Example notes](../../../_includes/examples.md) %}
 

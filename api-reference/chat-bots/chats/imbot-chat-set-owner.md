@@ -1,8 +1,8 @@
-# Change Chat Owner on Behalf of the Chat Bot imbot.chat.setOwner
+# Change Chat Owner via Chatbot imbot.chat.setOwner
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
+- edits needed for writing standards
 - parameter types not specified
-- parameter requirements not indicated
-- examples are missing
-- success response is missing
-- error response is missing
+- parameter requirements not specified
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -25,12 +25,12 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `imbot.chat.setOwner` changes the owner of the chat on behalf of the chat bot.
+The method `imbot.chat.setOwner` changes the owner of the chat on behalf of the chatbot.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **CHAT_ID**
-[`unknown`](../../data-types.md) | `13` | Identifier of the chat | ||
+[`unknown`](../../data-types.md) | `13` | Chat identifier | ||
 || **USER_ID**
 [`unknown`](../../data-types.md) | `'2'` | Identifier of the new owner | ||
 || **BOT_ID**
@@ -41,19 +41,25 @@ The method `imbot.chat.setOwner` changes the owner of the chat on behalf of the 
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.chat.setOwner',
-    Array(
-        'CHAT_ID' => 13,
-        'USER_ID' => '2',
-        'BOT_ID' => 39,
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.chat.setOwner',
+        Array(
+            'CHAT_ID' => 13,
+            'USER_ID' => '2',
+            'BOT_ID' => 39,
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 

@@ -1,4 +1,4 @@
-# Remove Card Method landing.block.removecard
+# Remove Card of Block landing.block.removecard
 
 {% note warning "We are still updating this page" %}
 
@@ -25,12 +25,12 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.block.removecard` removes a card from the block. It returns *_true_* or an error.
+The method `landing.block.removecard` removes the card of the block. It returns *_true_* or an error.
 
 ## Parameters
 
 #|
-|| **Method** | **Description** | **Available since** ||
+|| **Method** | **Description** | **Version** ||
 || **lid**
 [`unknown`](../../../data-types.md) | Page identifier | ||
 || **block**
@@ -42,32 +42,38 @@ For example: '.landing-block-card@0'. The 0 at the end indicates that we are aff
 
 {% note warning %}
 
-Please note that once you have removed a card, their counters have changed.
+Please note that once you have removed the card, their counters have changed.
 
 {% endnote %}
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.block.removecard',
-    {
-        lid: 311,
-        block: 6057,
-        selector: '.landing-block-card@0'
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.block.removecard',
+        {
+            lid: 311,
+            block: 6057,
+            selector: '.landing-block-card@0'
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

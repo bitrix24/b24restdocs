@@ -1,4 +1,4 @@
-# Add Folder to the Site landing.site.addFolder
+# Add a folder to the site landing.site.addFolder
 
 {% note warning "We are still updating this page" %}
 
@@ -12,10 +12,10 @@ Some data may be missing here — we will complete it shortly.
 
 - edits needed for writing standards
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -32,7 +32,7 @@ The method `landing.site.addFolder` adds a folder to the site.
 #|
 || **Parameter** | **Description** | **Available since** ||
 || **siteId**
-[`unknown`](../../data-types.md) | Identifier of the site. 
+[`unknown`](../../data-types.md) | Site identifier. 
 
 {% note warning %}
 
@@ -44,34 +44,40 @@ Write permissions are required for the specified site.
 
 || **fields**
 [`unknown`](../../data-types.md) | Folder fields: 
-- ACTIVE – folder activity (Y/N). By default, it is created as inactive;
+- ACTIVE – folder activity (Y/N). By default, it is created inactive;
 - TITLE – title (name) of the folder; 
 - CODE – symbolic code of the folder (part of the folder page URL). By default, it is transliterated from the folder name. | ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.site.addFolder',
-    {
-        siteId: 1817,
-        fields: {
-            TITLE: 'New Folder'
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.addFolder',
+        {
+            siteId: 1817,
+            fields: {
+                TITLE: 'New Folder'
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

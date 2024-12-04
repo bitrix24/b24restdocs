@@ -1,8 +1,8 @@
-# Get Parameters of a Section or List of Sections `lists.section.get`
+# Get Parameters of the Section or List of Sections `lists.section.get`
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
-- parameter types not specified
-- examples missing
-- success response not provided
-- error response not provided
+- edits needed for writing standards
+- parameter types are not specified
+- examples are missing
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -36,40 +36,46 @@ The method `lists.section.get` returns a list of sections or a section. On succe
 || **IBLOCK_CODE/IBLOCK_ID**^*^
 [`unknown`](../../data-types.md) | Code or identifier of the information block (required). | ||
 || **FILTER**
-[`unknown`](../../data-types.md) | Array of fields and values for filtering. Fields from the filter `CIBlockSection::GetList` are available for filtering. | ||
+[`unknown`](../../data-types.md) | Array of fields and values for filtering. Fields available for filtering are from the `CIBlockSection::GetList` filter | ||
 || **SELECT**
-[`unknown`](../../data-types.md) | Array of fields to select. Available fields are described in the documentation `CIBlockSection::GetList` | ||
+[`unknown`](../../data-types.md) | Array of fields to select. Available fields are described in the `CIBlockSection::GetList` documentation | ||
 || **SOCNET_GROUP_ID**^*^
 [`unknown`](../../data-types.md) | Group identifier (required if the list is created for a group) | ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 (**) - except for user-defined (UF_) fields.
 
 ## Example
 
-```js
-/* lists.section.get */
-var params = {
-    'IBLOCK_TYPE_ID': 'lists',
-    'IBLOCK_CODE': 'rest_1',
-    'FILTER': {
-        'NAME': 'section_%'
-    },
-    'SELECT': ['ID', 'NAME']
-};
-BX24.callMethod(
-    'lists.section.get',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    /* lists.section.get */
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists',
+        'IBLOCK_CODE': 'rest_1',
+        'FILTER': {
+            'NAME': 'section_%'
+        },
+        'SELECT': ['ID', 'NAME']
+    };
+    BX24.callMethod(
+        'lists.section.get',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

@@ -1,15 +1,15 @@
-title: Product Property and Trade Offer Parameters
-href: index.md
-items: 
-  - name: Overview of Methods
-    href: index.md
-  - name: Add Property Parameters
-    href: catalog-product-property-feature-add.md
-  - name: Get Property Parameter Values
-    href: catalog-product-property-feature-get.md
-  - name: Get Fields of List Property Values
-    href: catalog-product-property-feature-get-fields.md
-  - name: Get Available Parameters
-    href: catalog-product-property-feature-get-available-features-by-property.md
-  - name: Update Parameter Values
-    href: catalog-product-property-feature-update.md
+title: Product property and variation parameters  
+href: index.md  
+items:  
+  - name: Overview of methods  
+    href: index.md  
+  - name: Add property parameters  
+    href: catalog-product-property-feature-add.md  
+  - name: Get property parameter values  
+    href: catalog-product-property-feature-get.md  
+  - name: Get fields of list property values  
+    href: catalog-product-property-feature-get-fields.md  
+  - name: Get available parameters  
+    href: catalog-product-property-feature-get-available-features-by-property.md  
+  - name: Update parameter values  
+    href: catalog-product-property-feature-update.md  

@@ -1,30 +1,28 @@
-# Getting the Path to the Page Preview
+# Get the path to the preview of landing.landing.getpreview
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
 {% endif %}
 
-{% note info "landing.landing.getpreview" %}
-
-**Scope**: [`landing`](../../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
+> Scope: [`landing`](../../../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
 The method `landing.landing.getpreview` returns the path to the page preview or an error.
 
@@ -38,24 +36,30 @@ The method `landing.landing.getpreview` returns the path to the page preview or 
 
 ## Example
 
-```js
-BX24.callMethod(
-    'landing.landing.getpreview',
-    {
-        lid: 351
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.getpreview',
+        {
+            lid: 351
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

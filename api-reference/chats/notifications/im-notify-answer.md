@@ -1,8 +1,8 @@
-# Responding to a notification that supports quick reply im.notify.answer
+# Responding to a notification that supports quick response im.notify.answer
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -22,17 +22,17 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The `im.notify.answer` method provides a response to a notification that supports quick reply.
+The method `im.notify.answer` provides a response to a notification that supports quick response.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **ID^*^**
-[`unknown`](../../data-types.md) | `270` | Identifier of the notification that supports quick reply | `30` ||
+[`unknown`](../../data-types.md) | `270` | Identifier of the notification that supports quick response | `30` ||
 || **ANSWER_TEXT^*^**
-[`unknown`](../../data-types.md) | `'Hello'` | Text of the quick reply | `30` ||
+[`unknown`](../../data-types.md) | `'Hello'` | Text of the quick response | `30` ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -60,7 +60,7 @@ The `im.notify.answer` method provides a response to a notification that support
     )
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -84,9 +84,9 @@ The `im.notify.answer` method provides a response to a notification that support
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Response on success
+## Successful response
 
 ```json
 {
@@ -98,7 +98,7 @@ The `im.notify.answer` method provides a response to a notification that support
 
 An array of messages regarding your response is returned.
 
-Example of a response if an identifier of a notification that does not support quick reply is provided:
+Example of a response if a notification identifier that does not support quick response is provided:
 
 ```json
 {
@@ -106,7 +106,7 @@ Example of a response if an identifier of a notification that does not support q
 }
 ```
 
-## Response on error
+## Error response
 
 ```json
 {
@@ -115,7 +115,7 @@ Example of a response if an identifier of a notification that does not support q
 }
 ```
 
-### Description of keys
+### Key descriptions
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
@@ -124,6 +124,6 @@ Example of a response if an identifier of a notification that does not support q
 
 #|
 || **Code** | **Description** ||
-|| **ID_ERROR** | Parameter `ID` is not provided or is not a number ||
-|| **ANSWER_TEXT_ERROR** | Parameter `ANSWER_TEXT` is not provided or is not a non-empty string ||
+|| **ID_ERROR** | The `ID` parameter was not provided or is not a number ||
+|| **ANSWER_TEXT_ERROR** | The `ANSWER_TEXT` parameter was not provided or is not a non-empty string ||
 |#

@@ -1,14 +1,14 @@
-# Get Directory Item by Its Symbolic Identifier crm.status.entity.items
+# Get the directory item by its symbolic identifier crm.status.entity.items
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter type is not specified
 - examples are missing (in other languages)
@@ -27,32 +27,38 @@ Some data may be missing here — we will complete it shortly.
 crm.status.entity.items()
 ```
 
-The method returns directory items by its symbolic identifier, sorted by the "SORT" field. This method is similar to [crm.status.list](crm-status-list.md), except that the latter allows you to define sorting rules.
+The method returns directory items by its symbolic identifier, sorted by the "SORT" field. This method is similar to [crm.status.list](crm-status-list.md), except that in the latter, sorting rules can be defined.
 
 #|
 || **Parameter** | **Description** ||
 || **entityId^*^** | Symbolic identifier of the directory (can be obtained by calling the method [crm.status.entity.types](crm-status-entity-types.md)). ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-var id = prompt('Enter ID');
-BX24.callMethod(
-    "crm.status.entity.items",
-    {
-        entityId: id
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+- JS
+
+    ```javascript
+    var id = prompt('Enter ID');
+    BX24.callMethod(
+        "crm.status.entity.items",
+        {
+            entityId: id
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Notes on examples](../../../_includes/examples.md) %}

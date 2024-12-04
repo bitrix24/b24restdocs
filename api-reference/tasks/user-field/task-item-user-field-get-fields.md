@@ -1,4 +1,4 @@
-# Custom Fields for Tasks task.item.userfield.getfields
+# Get Custom Field Fields task.item.userfield.getfields
 
 {% if build == 'dev' %}
 
@@ -48,7 +48,7 @@ No parameters.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 ## List of Fields
 
@@ -69,7 +69,7 @@ No parameters.
 || **MULTIPLE**
 [`char`](../../data-types.md) | Multiple ||
 || **MANDATORY**
-[`char`](../../data-types.md) | Required ||
+[`char`](../../data-types.md) | Mandatory ||
 || **SHOW_FILTER**
 [`char`](../../data-types.md) | Show in list filter ||
 || **SHOW_IN_LIST**

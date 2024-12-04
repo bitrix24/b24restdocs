@@ -1,8 +1,8 @@
-# Get Fields of the Estimate crm.quote.fields
+# Get fields of the estimate crm.quote.fields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
+- missing examples (there should be three examples - curl, js, php)
+- missing error response
+- missing success response
 
 {% endnote %}
 
@@ -22,27 +22,33 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `crm.quote.fields` returns the description of the fields of the [estimate](./crm-quote-add.md), including [custom fields](./crm-quote-user-field-add.md).
+The method `crm.quote.fields` returns the description of fields for the [estimate](./crm-quote-add.md), including [custom](./crm-quote-user-field-add.md) fields.
 
 No parameters required.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "crm.quote.fields",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        "crm.quote.fields",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Fields
 
@@ -51,21 +57,21 @@ BX24.callMethod(
 || **ASSIGNED_BY_ID** 
 [`user`](../../data-types.md) | Linked to user by ID | ||
 || **BEGINDATA** 
-[`date`](../../data-types.md) | Date of issue | ||
+[`date`](../../data-types.md) | Date of issuance | ||
 || **CLIENT_ADDR** 
 [`string`](../../data-types.md) | Contact address | ||
 || **CLIENT_CONTACT** 
-[`string`](../../data-types.md) | Contact | Deprecated. Kept for compatibility. ||
+[`string`](../../data-types.md) | Contact | Deprecated. Retained for compatibility. ||
 || **CLIENT_EMAIL** 
-[`string`](../../data-types.md) | Contact's e-mail address | Deprecated. Kept for compatibility. ||
+[`string`](../../data-types.md) | Contact's email address | Deprecated. Retained for compatibility. ||
 || **CLIENT_PHONE** 
-[`char`](../../data-types.md) | Phone field validation | Read-only. Deprecated. Kept for compatibility. ||
+[`char`](../../data-types.md) | Phone field validation | Read-only. Deprecated. Retained for compatibility. ||
 || **CLIENT_TITLE** 
-[`string`](../../data-types.md) | Client title | Deprecated. Kept for compatibility. ||
+[`string`](../../data-types.md) | Client name | Deprecated. Retained for compatibility. ||
 || **CLIENT_TPA_ID** 
-[`string`](../../data-types.md) | Client's KPP | Deprecated. Kept for compatibility. ||
+[`string`](../../data-types.md) | Client's TIN | Deprecated. Retained for compatibility. ||
 || **CLIENT_TP_ID** 
-[`string`](../../data-types.md) | Client's INN | Deprecated. Kept for compatibility. ||
+[`string`](../../data-types.md) | Client's VAT ID | Deprecated. Retained for compatibility. ||
 || **CLOSED** 
 [`char`](../../data-types.md) | Completed | ||
 || **CLOSEDATA** 
@@ -75,7 +81,7 @@ BX24.callMethod(
 || **COMPANY_ID** 
 [`crm_company`](../../data-types.md) | Linked to company | ||
 || **CONTACT_ID** 
-[`crm_contact`](../../data-types.md) | Linked to contact | Deprecated. Kept for compatibility. ||
+[`crm_contact`](../../data-types.md) | Linked to contact | Deprecated. Retained for compatibility. ||
 || **CONTACT_IDS** 
 [`crm_contact`](../../data-types.md) | Linked to multiple contacts | Multiple ||
 || **CONTENT** 
@@ -105,7 +111,7 @@ BX24.callMethod(
 || **OPPORTUNITY** 
 [`double`](../../data-types.md) | Amount | ||
 || **PERSON_TYPE_ID** 
-[`integer`](../../data-types.md) | Identifier of the payer type | ||
+[`integer`](../../data-types.md) | Payer type identifier | ||
 || **QUOTE_NUMBER** 
 [`string`](../../data-types.md) | Estimate number | Read-only ||
 || **STATUS_ID** 
@@ -117,13 +123,13 @@ BX24.callMethod(
 || **TITLE** 
 [`string`](../../data-types.md) | Title | Required ||
 || **UTM_CAMPAIGN** 
-[`string`](../../data-types.md) | Designation of the advertising campaign | ||
+[`string`](../../data-types.md) | Advertising campaign designation | ||
 || **UTM_CONTENT** 
-[`string`](../../data-types.md) | Content of the campaign | For example, for contextual ads. ||
+[`string`](../../data-types.md) | Campaign content | For example, for contextual ads. ||
 || **UTM_MEDIUM** 
-[`string`](../../data-types.md) | Type of traffic | CPC (ads), CPM (banners) ||
+[`string`](../../data-types.md) | Traffic type | CPC (ads), CPM (banners) ||
 || **UTM_SOURCE** 
-[`string`](../../data-types.md) | Advertising system | Yandex-Direct, Google-Adwords, and others. ||
+[`string`](../../data-types.md) | Advertising system | Google-Adwords and others. ||
 || **UTM_TERM** 
-[`string`](../../data-types.md) | Search condition of the campaign | For example, keywords for contextual advertising. ||
+[`string`](../../data-types.md) | Campaign search term | For example, keywords for contextual advertising. ||
 |#

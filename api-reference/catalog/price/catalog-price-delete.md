@@ -2,17 +2,17 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- The requirement for parameters is not specified
-- There is no response in case of an error
-- No examples in other languages
+- the required parameter specifications are missing
+- there is no response in case of an error
+- no examples in other languages
   
 {% endnote %}
 
@@ -28,33 +28,40 @@ Some data may be missing here — we will complete it soon.
 catalog.price.delete(id)
 ```
 
-This method removes the price of a product from the product price collection. If the operation is successful, it returns `true` in the response body.
+This method deletes the price of a product from the product price collection. If the operation is successful, it returns `true` in the response body.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **id** 
-[`integer`](../../data-types.md)| The identifier of the product price. ||
+[`integer`](../../data-types.md)| Identifier of the product price. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.price.delete',
-    {
-        id: 56
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.price.delete',
+        {
+            id: 56
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../_includes/examples.md) %}

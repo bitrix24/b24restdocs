@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - no response in case of success
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: administrator
 
-This method allows you to set the delivery status of a specified message sent via the messaging provider.
+This method allows you to set the delivery status of a specified message sent via a messaging provider.
 
 #|
 || **Parameter** | **Description** ||
@@ -35,26 +35,32 @@ This method allows you to set the delivery status of a specified message sent vi
 - `failed` - delivery error ||
 |#
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ### Example
 
-```js
-BX24.callMethod(
-    'messageservice.message.status.update',
-    {
-        CODE: 'provider1',
-        message_id: 1,
-        status: 'delivered'
-    },
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            alert("Success: " + result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Notes](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'messageservice.message.status.update',
+        {
+            CODE: 'provider1',
+            message_id: 1,
+            status: 'delivered'
+        },
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

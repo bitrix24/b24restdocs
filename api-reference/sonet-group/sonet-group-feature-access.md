@@ -1,8 +1,8 @@
-# Check Current User's Access Rights sonet_group.feature.access
+# Check Current User Permissions sonet_group.feature.access
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will fill it in shortly.
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no response in case of an error
+- no error response is provided
 - no examples in other languages
 
 {% endnote %}
@@ -23,7 +23,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-Checks whether the current user has the right to perform an operation in a social network group by calling the function `CSocNetFeaturesPerms::CurrentUserCanPerformOperation()`.
+Checks if the current user has permission to perform an operation in the social network group by calling the function `CSocNetFeaturesPerms::CurrentUserCanPerformOperation()`.
 
 ## Request:
 
@@ -50,23 +50,31 @@ https://mydomain.bitrix24.com/rest/sonet_group.feature.access.json?auth=52423d4a
 
 {% include [Footnote about parameters](../../_includes/required.md) %}
 
-Returns **true** if the user has the right to perform the operation, **false** if not, and an error in case of incorrect parameters.
+Returns **true** if the user has permission to perform the operation, **false** if not, and an error in case of incorrect parameters.
 
 {% note info "Note" %}
 
-See the operation and functionality codes in the description of the method `CanPerformOperation`.
+Operation and functionality codes can be found in the description of the method `CanPerformOperation`.
 
 {% endnote %}
 
 ## Example
 
-```js
-// Getting the list of the current user's groups
+{% list tabs %}
 
-BX24.callMethod('sonet_group.feature.access', {
-    'GROUP_ID': 1,
-    'FEATURE': 'blog',
-    'OPERATION': 'write_post'
-});
-```
+- JS
+
+    ```js
+    // Getting the list of the current user's groups
+
+    BX24.callMethod('sonet_group.feature.access', {
+        'GROUP_ID': 1,
+        'FEATURE': 'blog',
+        'OPERATION': 'write_post'
+    });
+    ```
+
+{% endlist %}
+
+
 {% include [Footnote about examples](../../_includes/examples.md) %}

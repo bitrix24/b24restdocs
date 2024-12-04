@@ -1,8 +1,8 @@
-# Get Product Rows of the Estimate crm.quote.productrows.get
+# Get product rows of the quote crm.quote.productrows.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,29 +24,35 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.quote.productrows.get` returns the product rows of the estimate.
+The method `crm.quote.productrows.get` returns the product rows of the quote.
 
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Identifier of the estimate. ||
+[`unknown`](../../data-types.md) | Identifier of the quote. ||
 |#
 
 ## Example
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.quote.productrows.get",
-    { id: id },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.quote.productrows.get",
+        { id: id },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

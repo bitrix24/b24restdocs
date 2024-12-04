@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -29,7 +29,7 @@ Some data may be missing here — we will add it soon.
 crm.enum.fields()
 ```
 
-The method returns the description of enumeration fields.
+The method returns the description of the enumeration fields.
 
 ## Parameters
 
@@ -37,18 +37,25 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    "crm.enum.fields",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        "crm.enum.fields",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

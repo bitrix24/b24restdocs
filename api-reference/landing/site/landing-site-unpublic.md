@@ -1,4 +1,4 @@
-# Unpublishing a Site landing.site.unpublic
+# Unpublishing a site landing.site.unpublic
 
 {% note warning "We are still updating this page" %}
 
@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
@@ -36,24 +36,30 @@ The method `landing.site.unpublic` unpublishes the site (and all its pages).
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.site.unpublic',
-    {
-        id: 1688
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.unpublic',
+        {
+            id: 1688
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

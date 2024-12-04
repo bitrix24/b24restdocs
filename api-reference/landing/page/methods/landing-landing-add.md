@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not specified
@@ -36,32 +36,38 @@ The method `landing.landing.add` adds a page. It returns the `LID` of the create
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.landing.add',
-    {
-        fields: {
-            TITLE: 'My first page!',
-            CODE: 'firstpage',
-            SITE_ID: 292,
-            ADDITIONAL_FIELDS: {
-                THEME_CODE: 'wedding'
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.add',
+        {
+            fields: {
+                TITLE: 'My first page!',
+                CODE: 'firstpage',
+                SITE_ID: 292,
+                ADDITIONAL_FIELDS: {
+                    THEME_CODE: 'wedding'
+                }
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
             }
         }
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../../_includes/examples.md) %}
 

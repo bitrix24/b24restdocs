@@ -54,7 +54,7 @@ The method `crm.deal.contact.items.get` returns a set of contacts associated wit
     );
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {

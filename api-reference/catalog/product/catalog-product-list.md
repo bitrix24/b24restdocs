@@ -1,4 +1,4 @@
-# Get a List of Products by Filter catalog.product.list
+# Get a list of products by filter catalog.product.list
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
@@ -12,14 +12,14 @@ This method retrieves a list of products from the trade catalog based on a filte
 || **Name**
 `type` | **Description** ||
 || **select** 
-[`array`](../../data-types.md)| An array containing the list of fields to select (see fields of the object [catalog_product](../data-types.md#catalog_product)).
+[`array`](../../data-types.md)| An array containing the list of fields to select (see fields of the [catalog_product](../data-types.md#catalog_product) object).
 
 Required fields: `id`, `iblockId`
  ||
 || **filter** 
 [`object`](../../data-types.md)| An object for filtering the selected products in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the object [catalog_product](../data-types.md#catalog_product).
+Possible values for `field` correspond to the fields of the [catalog_product](../data-types.md#catalog_product) object.
 
 Required fields: `iblockId`.
 
@@ -30,14 +30,14 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@` — NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for a substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
   - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
   - `"%mol%"` — searching for values where the substring "mol" is not present in any position
@@ -49,7 +49,7 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 || **order**
 [`object`](../../data-types.md)| An object for sorting the selected products in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the object [catalog_product](../data-types.md#catalog_product).
+Possible values for `field` correspond to the fields of the [catalog_product](../data-types.md#catalog_product) object.
 
 Possible values for order:
 
@@ -57,7 +57,7 @@ Possible values for order:
 - `desc` — in descending order
  ||
 || **start** 
-[`string`](../../data-types.md)| This parameter is used to manage pagination.
+[`string`](../../data-types.md)| This parameter is used to control pagination.
 
 The page size of results is always static — 50 records.
 
@@ -71,7 +71,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -236,6 +236,30 @@ The formula for calculating the `start` parameter value:
     echo '</PRE>';
     ```
 
+- PHP (B24PhpSdk)
+  
+    ```php        
+    try {
+        $select = ['id', 'name', 'price', 'active', 'available', 'dateCreate'];
+        $filter = ['active' => 'Y'];
+        $order = ['name' => 'ASC'];
+        $start = 0;
+        $result = $serviceBuilder
+            ->getCatalogScope()
+            ->product()
+            ->list($select, $filter, $order, $start);
+        foreach ($result->getProducts() as $itemResult) {
+            print("ID: {$itemResult->id}\n");
+            print("Name: {$itemResult->name}\n");
+            print("Active: {$itemResult->active}\n");
+            print("Available: {$itemResult->available}\n");
+            print("Date Created: {$itemResult->dateCreate->format(DATE_ATOM)}\n");
+        }
+    } catch (Throwable $e) {
+        print("Error: {$e->getMessage()}\n");
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -254,9 +278,9 @@ HTTP status: **200**
                 "canBuyZero": "Y",
                 "code": "Product",
                 "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-                "dateActiveTo": "2024-05-29T10:00:00+03:00",
-                "dateCreate": "2024-05-27T10:00:00+03:00",
+                "dateActiveFrom": "2024-05-28T10:00:00+02:00",
+                "dateActiveTo": "2024-05-29T10:00:00+02:00",
+                "dateCreate": "2024-05-27T10:00:00+02:00",
                 "detailPicture": {
                     "id": "6439",
                     "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6439\u0026fields%5BproductId%5D=1243",
@@ -293,7 +317,7 @@ HTTP status: **200**
                         "valueId": "9737"
                     }
                 ],
-                "purchasingCurrency": "USD",
+                "purchasingCurrency": "EUR",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "quantityReserved": 1,
@@ -302,7 +326,7 @@ HTTP status: **200**
                 "recurSchemeType": "D",
                 "sort": 100,
                 "subscribe": "Y",
-                "timestampX": "2024-06-05T10:05:06+03:00",
+                "timestampX": "2024-06-05T10:05:06+02:00",
                 "trialPriceId": 175,
                 "type": 1,
                 "vatId": 1,
@@ -320,8 +344,8 @@ HTTP status: **200**
         "finish": 1717661049.079089,
         "duration": 0.7764449119567871,
         "processing": 0.3525362014770508,
-        "date_start": "2024-06-06T11:04:08+03:00",
-        "date_finish": "2024-06-06T11:04:09+03:00"
+        "date_start": "2024-06-06T11:04:08+02:00",
+        "date_finish": "2024-06-06T11:04:09+02:00"
     }
 }
 ```
@@ -334,7 +358,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **products**
-[`catalog_product[]`](../data-types.md#catalog_product) | An array of objects containing information about the selected products ||
+[`catalog_product[]`](../data-types.md#catalog_product) | An array of objects with information about the selected products ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
@@ -358,7 +382,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog ||
+|| `200040300010` | Insufficient rights to read the trade catalog ||
 || `0` | Fields `id`, `iblockId` not specified in the selection fields ||
 || `0` | Field `iblockId` not specified in the filter ||
 || `0` | Other errors (e.g., fatal errors) ||

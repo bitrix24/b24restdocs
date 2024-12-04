@@ -1,16 +1,16 @@
-# Get Network Address Range timeman.networkrange.get
+# Get Network Address Ranges timeman.networkrange.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - examples are missing
 
 {% endnote %}
@@ -33,7 +33,7 @@ No parameters.
 
 - JS
 
-    ```javascript
+    ```js
     BX24.callMethod('timeman.networkrange.get', {}, function(result){
         if(result.error())
         {
@@ -49,7 +49,11 @@ No parameters.
 - PHP
 
     ```php
-    $result = restCommand('timeman.networkrange.get', Array(), $_REQUEST["auth"]);
+    $result = restCommand(
+        'timeman.networkrange.get',
+        Array(),
+        $_REQUEST["auth"]
+    );
     ```
 
 {% endlist %}
@@ -101,5 +105,5 @@ No parameters.
 
 #|
 || **Code** | **Description** ||
-|| **ACCESS_ERROR** | The specified method is available only to administrators. || 
+|| **ACCESS_ERROR** | The specified method is only available to administrators. ||
 |#

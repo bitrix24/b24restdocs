@@ -5,7 +5,7 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
 - response in case of error is missing
 - response in case of success is missing
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -36,19 +36,26 @@ The method `disk.folder.getExternalLink` returns a public link by folder ID.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.folder.getExternalLink",
-    {
-        id: 10
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.folder.getExternalLink",
+        {
+            id: 10
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

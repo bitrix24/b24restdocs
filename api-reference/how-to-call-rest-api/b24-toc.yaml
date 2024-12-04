@@ -13,3 +13,5 @@ items:
     href: batch.md  
   - name: How to Work with Files via REST API  
     href: how-to-upload-files.md  
+  - name: Features of REST Calls When Changing the Bitrix24 Address  
+    href: change-domen.md  

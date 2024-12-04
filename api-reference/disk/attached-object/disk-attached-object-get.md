@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -28,31 +28,38 @@ The method `disk.attachedObject.get` returns information about the attached file
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.attachedObject.get",
-    {
-        id: 318
-    },
-    function (result)
-    {
-        if (result.error())
-         console.error(result.error());
-        else
-         console.dir(result.data());
-    }
-);
-```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% list tabs %}
 
-## Successful Response
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.attachedObject.get",
+        {
+            id: 318
+        },
+        function (result)
+        {
+            if (result.error())
+            console.error(result.error());
+            else
+            console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+## Response on Success
 
 > 200 OK
 
 ```json
 result: {
     ID: "318",
-    OBJECT_ID: "13215", //file identifier from Disk
+    OBJECT_ID: "13215", //file identifier from Drive
     MODULE_ID: "blog", //module that owns the user property
     ENTITY_TYPE: "blog_comment", //entity type
     ENTITY_ID: "157", //identifier of the entity to which the attachment is made

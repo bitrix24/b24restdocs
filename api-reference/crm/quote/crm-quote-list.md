@@ -1,8 +1,8 @@
-# Get a List of Estimates by Filter crm.quote.list
+# Get a list of estimates by filter crm.quote.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -25,32 +25,38 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.quote.list` returns a list of estimates based on the filter. It is an implementation of the list method for estimates.
+The method `crm.quote.list` returns a list of estimates by filter. It is an implementation of the list method for estimates.
 
 See the description of [list methods](../../how-to-call-rest-api/list-methods-pecularities.md).
 
 ## Example
 
-```javascript
-BX24.callMethod(
-    "crm.quote.list",
-    {
-        order: { "STATUS_ID": "ASC" },
-        filter: { "=COMPANY_ID": 1 },
-        select: [ "ID", "TITLE", "STATUS_ID", "OPPORTUNITY", "CURRENCY_ID" ]
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-        {
-            console.dir(result.data());
-            if(result.more())
-                result.next();
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        "crm.quote.list",
+        {
+            order: { "STATUS_ID": "ASC" },
+            filter: { "=COMPANY_ID": 1 },
+            select: [ "ID", "TITLE", "STATUS_ID", "OPPORTUNITY", "CURRENCY_ID" ]
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.dir(result.data());
+                if(result.more())
+                    result.next();
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

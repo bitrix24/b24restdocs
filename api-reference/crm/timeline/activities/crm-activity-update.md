@@ -1,4 +1,4 @@
-# Update System CRM Activity
+# Update System Activity crm.activity.update
 
 {% note warning "We are still updating this page" %}
 
@@ -8,9 +8,9 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- revisions needed for writing standards
+- edits needed for standard writing
 - parameter types not specified
 - parameter requirements not indicated
 - examples missing
@@ -42,11 +42,11 @@ The method `crm.activity.update` updates an existing activity.
 || **id**
 [`unknown`](../../../data-types.md) | Identifier of the activity. ||
 || **fields**
-[`array`](../../../data-types.md) | Set of fields - an array in the form array("field_to_update"=>"value"[, ...]), where "field_to_update" can take values returned by the method [crm.activity.fields](./crm-activity-fields.md). 
+[`array`](../../../data-types.md) | Set of fields - an array in the form array("updatable field"=>"value"[, ...]), where "updatable field" can take values from the method [crm.activity.fields](./crm-activity-fields.md). 
 
 {% note info %}
 
-To find out the required format for the fields, execute the method [crm.activity.fields](./crm-activity-fields.md) and check the format of the returned values for those fields.
+To find out the required format of the fields, execute the method [crm.activity.fields](./crm-activity-fields.md) and check the format of the returned values for those fields.
 
 {% endnote %}
 
@@ -55,36 +55,42 @@ To find out the required format for the fields, execute the method [crm.activity
 
 ## Example
 
-```js
-var d = new Date();
-d.setSeconds(0);
-var dateStr = d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+00:00';
-var paddatepart = function(part)
-{
-    return part >= 10 ? part.toString() : '0' + part.toString();
-}
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.activity.update",
-    {
-        id: id,
-        fields:
-        {
-            "START_TIME": dateStr,
-            "END_TIME": dateStr,
-            COMPLETED: 'Y'
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var d = new Date();
+    d.setSeconds(0);
+    var dateStr = d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+00:00';
+    var paddatepart = function(part)
+    {
+        return part >= 10 ? part.toString() : '0' + part.toString();
+    }
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.activity.update",
+        {
+            id: id,
+            fields:
+            {
+                "START_TIME": dateStr,
+                "END_TIME": dateStr,
+                COMPLETED: 'Y'
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

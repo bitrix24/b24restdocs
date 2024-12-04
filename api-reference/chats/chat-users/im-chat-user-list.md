@@ -1,8 +1,8 @@
-# Get Chat Participant IDs im.chat.user.list
+# Get Chat Participant Identifiers im.chat.user.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- revisions needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -36,17 +36,23 @@ The method `im.chat.user.list` retrieves a list of chat participants.
 
 {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.chat.user.list',
-    Array(
-        'CHAT_ID' => 13
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'im.chat.user.list',
+        Array(
+            'CHAT_ID' => 13
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 
@@ -76,5 +82,5 @@ $result = restCommand(
 
 #|
 || **Code** | **Description** ||
-|| **CHAT_ID_EMPTY** | Chat identifier not provided, or an invalid identifier was given. ||
+|| **CHAT_ID_EMPTY** | Chat identifier not provided, or an invalid identifier was provided. ||
 |#

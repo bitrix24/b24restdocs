@@ -2,13 +2,13 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
 - detailed description of the data parameter is missing
 - examples are absent (there should be three examples - curl, js, php)
-- response in case of an error is missing
+- response in case of error is missing
 
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -38,25 +38,32 @@ The method `disk.folder.addsubfolder` creates a subfolder.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.folder.addsubfolder",
-    {
-        id: 8,
-        data: {
-            NAME: 'New sub folder'
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.folder.addsubfolder",
+        {
+            id: 8,
+            data: {
+                NAME: 'New sub folder'
+            }
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
         }
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Examples Note](../../../_includes/examples.md) %}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -65,7 +72,7 @@ BX24.callMethod(
 The response has the same structure as in [disk.folder.get](./disk-folder-get.md).
 
 ```json
-"result":{
+"result": {
     "ID": "13",
     "NAME": "New sub folder",
     "CODE": null,
@@ -73,8 +80,8 @@ The response has the same structure as in [disk.folder.get](./disk-folder-get.md
     "TYPE": "folder",
     "PARENT_ID": "8",
     "DELETED_TYPE": "0",
-    "CREATE_TIME": "2015-04-24T12:39:35+03:00",
-    "UPDATE_TIME": "2015-04-24T12:39:35+03:00",
+    "CREATE_TIME": "2015-04-24T12:39:35+02:00",
+    "UPDATE_TIME": "2015-04-24T12:39:35+02:00",
     "DELETE_TIME": null,
     "CREATED_BY": "1",
     "UPDATED_BY": "1",

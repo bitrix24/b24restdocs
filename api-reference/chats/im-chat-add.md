@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing here — we will complete it soon.
 - edits needed for writing standards
 - parameter types are not specified
 - examples are missing
-- links to pages that have not yet been created are not provided
+- links to yet-to-be-created pages are not included
 
 {% endnote %}
 
@@ -28,19 +28,19 @@ The method `im.chat.add` creates a chat.
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **TYPE**
-[`unknown`](../data-types.md) | `CHAT` | Type of chat OPEN \| CHAT (OPEN - open chat for joining, CHAT - regular invite-only chat, default is CHAT) | 18 ||
+[`unknown`](../data-types.md) | `CHAT` | Type of chat OPEN \| CHAT (OPEN - open for joining chat, CHAT - regular invitation-only chat, default is CHAT) | 18 ||
 || **TITLE**
-[`unknown`](../data-types.md) | `My new private chat` | Title of the chat | 18 ||
+[`unknown`](../data-types.md) | `My new private chat` | Chat title | 18 ||
 || **DESCRIPTION**
-[`unknown`](../data-types.md) | `Very important chat` | Description of the chat | 18 ||
+[`unknown`](../data-types.md) | `Very important chat` | Chat description | 18 ||
 || **COLOR**
-[`unknown`](../data-types.md) | `PINK` | Color of the chat for the mobile app: RED, GREEN, MINT, LIGHT_BLUE, DARK_BLUE, PURPLE, AQUA, PINK, LIME, BROWN, AZURE, KHAKI, SAND, MARENGO, GRAY, GRAPHITE | 18 ||
+[`unknown`](../data-types.md) | `PINK` | Chat color for mobile app: RED, GREEN, MINT, LIGHT_BLUE, DARK_BLUE, PURPLE, AQUA, PINK, LIME, BROWN, AZURE, KHAKI, SAND, MARENGO, GRAY, GRAPHITE | 18 ||
 || **MESSAGE**
 [`unknown`](../data-types.md) | `Welcome to the chat` | First welcome message in the chat | 18 ||
 || **USERS^*^**
-[`unknown`](../data-types.md) | `Array(1,2)` | Participants of the chat | 18 ||
+[`unknown`](../data-types.md) | `Array(1,2)` | Chat participants | 18 ||
 || **AVATAR**
-[`unknown`](../data-types.md) | `base64 image` | Avatar of the chat in base64 format | 18 ||
+[`unknown`](../data-types.md) | `base64 image` | Chat avatar in base64 format | 18 ||
 || **ENTITY_TYPE**
 [`unknown`](../data-types.md) | `CHAT` | Entity identifier, can be used for searching by this field and for easy context identification in event handlers [ONIMBOTMESSAGEADD](.), [ONIMBOTMESSAGEUPDATE](.), [ONIMBOTMESSAGEDELETE](.) | 18 ||
 || **ENTITY_ID**
@@ -55,26 +55,32 @@ The method `im.chat.add` creates a chat.
 
 {% include [Explanation of restCommand](./_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.chat.add',
-    Array(
-        'TYPE' => 'CHAT',
-        'TITLE' => 'My new private chat',
-        'DESCRIPTION' => 'Very important chat',
-        'COLOR' => 'PINK',
-        'MESSAGE' => 'Welcome to the chat',
-        'USERS' => Array(1,2),
-        'AVATAR' => 'base64 image',
-        'ENTITY_TYPE' => 'CHAT',
-        'ENTITY_ID' => 13,
-        'OWNER_ID' => 39,
-    ),
-    $_REQUEST["auth"]
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    $result = restCommand(
+        'im.chat.add',
+        Array(
+            'TYPE' => 'CHAT',
+            'TITLE' => 'My new private chat',
+            'DESCRIPTION' => 'Very important chat',
+            'COLOR' => 'PINK',
+            'MESSAGE' => 'Welcome to the chat',
+            'USERS' => Array(1,2),
+            'AVATAR' => 'base64 image',
+            'ENTITY_TYPE' => 'CHAT',
+            'ENTITY_ID' => 13,
+            'OWNER_ID' => 39,
+        ),
+        $_REQUEST["auth"]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Example Notes](../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -89,7 +95,7 @@ $result = restCommand(
 ```json
 {
     "error": "USERS_EMPTY",
-    "error_description": "Participants of the chat were not provided"
+    "error_description": "Chat participants were not provided"
 }
 ```
 
@@ -102,6 +108,6 @@ $result = restCommand(
 
 #|
 || **Code** | **Description** ||
-|| **USERS_EMPTY** | Participants of the chat were not provided ||
+|| **USERS_EMPTY** | Chat participants were not provided ||
 || **WRONG_REQUEST** | Something went wrong ||
 |#

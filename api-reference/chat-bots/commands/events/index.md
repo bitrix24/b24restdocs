@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,10 +10,10 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - parameter types are not specified
-- parameter mandatory status is not indicated
-- parameter tables are generated as examples. What is [14] in the example???
+- parameter requirements are not indicated
+- parameter tables are generated based on an example. What is [14] in the example???
 
 {% endnote %}
 
@@ -27,7 +27,7 @@ The `ONIMCOMMANDADD` event for application installation.
 
 {% note warning %}
 
-The fields described below are the contents of the [data] field in the event. The authorization data in the [auth] key contains the data of the user who initiated the event. To obtain the bot's authorization data, you need to use [data][BOT][__BOT_CODE__].
+The fields described below are the contents of the [data] field in the event. The authorization data in the [auth] key contains the data of the event initiator's user; to obtain the bot's authorization data, you need to use [data][BOT][__BOT_CODE__].
 
 {% endnote %}
 
@@ -48,13 +48,13 @@ The fields described below are the contents of the [data] field in the event. Th
 || **AUTH** 
 [`unknown`](../../../data-types.md) | Parameters for authorization under the chatbot to perform actions | ||
 || **BOT_ID** 
-[`unknown`](../../../data-types.md) | Identifier of the chatbot | ||
+[`unknown`](../../../data-types.md) | Chatbot identifier | ||
 || **BOT_CODE** 
-[`unknown`](../../../data-types.md) | Code of the chatbot | ||
+[`unknown`](../../../data-types.md) | Chatbot code | ||
 || **COMMAND** 
 [`unknown`](../../../data-types.md) | Invoked command | ||
 || **COMMAND_ID** 
-[`unknown`](../../../data-types.md) | Identifier of the command | ||
+[`unknown`](../../../data-types.md) | Command identifier | ||
 || **COMMAND_PARAMS** 
 [`unknown`](../../../data-types.md) | Parameters with which the command was invoked | ||
 || **COMMAND_CONTEXT** 
@@ -89,7 +89,7 @@ The fields described below are the contents of the [data] field in the event. Th
 || **TO_CHAT_ID** 
 [`unknown`](../../../data-types.md) | Identifier of the chat (parameter available only in group chats) | ||
 || **LANGUAGE** 
-[`unknown`](../../../data-types.md) | Identifier of the default account language | ||
+[`unknown`](../../../data-types.md) | Identifier of the default portal language | ||
 |#
 
 ## USER
@@ -112,42 +112,48 @@ The fields described below are the contents of the [data] field in the event. Th
 
 ## Examples
 
-```js
-[COMMAND] => Array (
-    [14] => Array (
-        [AUTH] => Array (
-            [domain] => b24.hazz
-            [member_id] => d41d8cd98f00b204e9800998ecf8427e
-            [application_token] => 8006ddd764e69deb28af0c768b10ed65
+{% list tabs %}
+
+- JS
+
+    ```js
+    [COMMAND] => Array (
+        [14] => Array (
+            [AUTH] => Array (
+                [domain] => b24.hazz
+                [member_id] => d41d8cd98f00b204e9800998ecf8427e
+                [application_token] => 8006ddd764e69deb28af0c768b10ed65
+            )
+            [BOT_ID] => 62
+            [BOT_CODE] => echobot
+            [COMMAND] => echo
+            [COMMAND_ID] => 14
+            [COMMAND_PARAMS] => test
+            [COMMAND_CONTEXT] => TEXTAREA
+            [MESSAGE_ID] => 1221
         )
-        [BOT_ID] => 62
-        [BOT_CODE] => echobot
-        [COMMAND] => echo
-        [COMMAND_ID] => 14
-        [COMMAND_PARAMS] => test
-        [COMMAND_CONTEXT] => TEXTAREA
-        [MESSAGE_ID] => 1221
     )
-)
-[PARAMS] => Array (
-    [DIALOG_ID] => 1
-    [CHAT_TYPE] => P
-    [MESSAGE_ID] => 1221
-    [MESSAGE] => /echo test
-    [MESSAGE_ORIGINAL] => /echo test
-    [FROM_USER_ID] => 1
-    [TO_USER_ID] => 2
-    [TO_CHAT_ID] => 6
-    [LANGUAGE] => en
-)
-[USER] => Array (
-    [ID] => 1
-    [NAME] => Eugene Shelenkov
-    [FIRST_NAME] => Eugene
-    [LAST_NAME] => Shelenkov
-    [WORK_POSITION] =>
-    [GENDER] => M
-)
-```
+    [PARAMS] => Array (
+        [DIALOG_ID] => 1
+        [CHAT_TYPE] => P
+        [MESSAGE_ID] => 1221
+        [MESSAGE] => /echo test
+        [MESSAGE_ORIGINAL] => /echo test
+        [FROM_USER_ID] => 1
+        [TO_USER_ID] => 2
+        [TO_CHAT_ID] => 6
+        [LANGUAGE] => de
+    )
+    [USER] => Array (
+        [ID] => 1
+        [NAME] => Eugene Shelenkov
+        [FIRST_NAME] => Eugene
+        [LAST_NAME] => Shelenkov
+        [WORK_POSITION] =>
+        [GENDER] => M
+    )
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

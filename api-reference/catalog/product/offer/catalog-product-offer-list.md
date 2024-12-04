@@ -1,10 +1,10 @@
-# Get a List of Trade Offers catalog.product.offer.list
+# Get a List of Product Variations catalog.product.offer.list
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns a list of trade offers based on the filter.
+The method returns a list of product variations based on the filter.
 
 ## Method Parameters
 
@@ -13,32 +13,32 @@ This method returns a list of trade offers based on the filter.
 `type` | **Description** ||
 || **select**
 [`array`](../../../data-types.md) | 
-An array of fields to select (see fields of the object [catalog_product_offer](../../data-types.md#catalog_product_offer)).
+An array of fields to select (see fields of the [catalog_product_offer](../../data-types.md#catalog_product_offer) object).
 
 Required fields: `id`, `iblockId`
 ||
 || **filter**
-[`object`](../../../data-types.md) | An object for filtering the selected trade offers in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../../data-types.md) | An object for filtering the selected product variations in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the object [catalog_product_offer](../../data-types.md#catalog_product_offer). 
+Possible values for `field` correspond to the fields of the [catalog_product_offer](../../data-types.md#catalog_product_offer) object. 
 
 Required fields: `iblockId`.
 
-An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol must be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol must be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -48,9 +48,9 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `!` — not equal ||
 || **order**
 [`object`](../../../data-types.md) | 
-An object for sorting the selected trade offers in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+An object for sorting the selected product variations in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the object [catalog_product_offer](../../data-types.md#catalog_product_offer).
+Possible values for `field` correspond to the fields of the [catalog_product_offer](../../data-types.md#catalog_product_offer) object.
 
 Possible values for `order`:
 - `asc` — in ascending order
@@ -255,9 +255,9 @@ HTTP Status: **200**
                 "canBuyZero": "Y",
                 "code": "Product",
                 "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-                "dateActiveTo": "2024-05-29T10:00:00+03:00",
-                "dateCreate": "2024-05-27T10:00:00+03:00",
+                "dateActiveFrom": "2024-05-28T10:00:00+02:00",
+                "dateActiveTo": "2024-05-29T10:00:00+02:00",
+                "dateCreate": "2024-05-27T10:00:00+02:00",
                 "detailPicture": {
                     "id": "6538",
                     "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6538\u0026fields%5BproductId%5D=1286",
@@ -272,7 +272,7 @@ HTTP Status: **200**
                 "length": 100,
                 "measure": 5,
                 "modifiedBy": 1,
-                "name": "Trade Offer",
+                "name": "Product Variation",
                 "parentId": {
                     "value": "1275",
                     "valueId": "9867"
@@ -284,7 +284,7 @@ HTTP Status: **200**
                 },
                 "previewText": null,
                 "previewTextType": "text",
-                "purchasingCurrency": "USD",
+                "purchasingCurrency": "EUR",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "quantityReserved": 1,
@@ -293,7 +293,7 @@ HTTP Status: **200**
                 "recurSchemeType": "D",
                 "sort": 100,
                 "subscribe": "Y",
-                "timestampX": "2024-06-17T12:29:59+03:00",
+                "timestampX": "2024-06-17T12:29:59+02:00",
                 "trialPriceId": null,
                 "type": 4,
                 "vatId": 1,
@@ -311,8 +311,8 @@ HTTP Status: **200**
         "finish": 1718625858.937026,
         "duration": 0.6454451084136963,
         "processing": 0.2336890697479248,
-        "date_start": "2024-06-17T15:04:18+03:00",
-        "date_finish": "2024-06-17T15:04:18+03:00"
+        "date_start": "2024-06-17T15:04:18+02:00",
+        "date_finish": "2024-06-17T15:04:18+02:00"
     }
 }
 ```
@@ -325,11 +325,11 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **offers**
-[`catalog_product_offer[]`](../../data-types.md#catalog_product_offer) | An array of objects containing information about the selected trade offers ||
+[`catalog_product_offer[]`](../../data-types.md#catalog_product_offer) | An array of objects with information about the selected product variations ||
 || **total**
 [`integer`](../../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

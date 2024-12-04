@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- corrections needed for writing standards
 - missing parameters or fields
 - parameter types not specified
 - parameter requirements not specified
-- missing response in case of success
-- missing response in case of error
+- no response in case of success
+- no response in case of error
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: administrator
 
-This method updates the robot fields. The **FIELDS** array receives the same parameters used in [bizproc.robot.add](./bizproc-robot-add.md).
+The method updates the robot fields. The **FIELDS** array receives the same parameters used in [bizproc.robot.add](./bizproc-robot-add.md).
 
 ## Examples
 
@@ -57,7 +57,7 @@ This method updates the robot fields. The **FIELDS** array receives the same par
     }
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {

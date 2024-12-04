@@ -1,28 +1,28 @@
-# Get Offer Field Values catalog.product.offer.get
+# Get Variation Field Values catalog.product.offer.get
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method returns the field values of the offer by its identifier.
+This method returns the field values of a product variation by its identifier.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the offer.
+[`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the product variation.
 
-To obtain the identifiers of offers, you need to use [catalog.product.offer.list](./catalog-product-offer-list.md)
+To obtain the identifiers of product variations, you need to use [catalog.product.offer.list](./catalog-product-offer-list.md)
  ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -96,9 +96,9 @@ HTTP Status: **200**
             "canBuyZero": "Y",
             "code": "Product",
             "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-            "dateActiveTo": "2024-05-29T10:00:00+03:00",
-            "dateCreate": "2024-05-27T10:00:00+03:00",
+            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
+            "dateActiveTo": "2024-05-29T10:00:00+02:00",
+            "dateCreate": "2024-05-27T10:00:00+02:00",
             "detailPicture": {
                 "id": "6538",
                 "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6538\u0026fields%5BproductId%5D=1286",
@@ -113,7 +113,7 @@ HTTP Status: **200**
             "length": 100,
             "measure": 5,
             "modifiedBy": 1,
-            "name": "Offer",
+            "name": "Product Variation",
             "parentId": {
                 "value": "1275",
                 "valueId": "9867"
@@ -139,14 +139,14 @@ HTTP Status: **200**
                     "valueId": "9870"
                 }
             ],
-            "purchasingCurrency": "USD",
+            "purchasingCurrency": "EUR",
             "purchasingPrice": "1000.000000",
             "quantity": 10,
             "quantityReserved": 1,
             "quantityTrace": "Y",
             "sort": 100,
             "subscribe": "Y",
-            "timestampX": "2024-06-17T12:29:59+03:00",
+            "timestampX": "2024-06-17T12:29:59+02:00",
             "type": 4,
             "vatId": 1,
             "vatIncluded": "Y",
@@ -160,8 +160,8 @@ HTTP Status: **200**
         "finish": 1718623874.871713,
         "duration": 0.6006419658660889,
         "processing": 0.1868131160736084,
-        "date_start": "2024-06-17T14:31:14+03:00",
-        "date_finish": "2024-06-17T14:31:14+03:00"
+        "date_start": "2024-06-17T14:31:14+02:00",
+        "date_finish": "2024-06-17T14:31:14+02:00"
     }
 }
 ```
@@ -174,7 +174,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **offer**
-[`catalog_product_offer`](../../data-types.md#catalog_product_offer) | Object containing information about the offer ||
+[`catalog_product_offer`](../../data-types.md#catalog_product_offer) | Object with information about the product variation ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -198,13 +198,13 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200040300000` | The information block with the specified identifier does not exist
 || 
-|| `200040300040` | Insufficient permissions to read the information block element
+|| `200040300040` | Insufficient rights to read the information block element
 || 
-|| `200040300010` | Insufficient permissions to read the product catalog
+|| `200040300010` | Insufficient rights to read the trade catalog
 || 
 || `100` | The `id` parameter is not specified
 || 
-|| `0` | The offer does not exist
+|| `0` | The product variation does not exist
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

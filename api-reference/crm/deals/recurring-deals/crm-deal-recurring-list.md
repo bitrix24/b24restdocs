@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,32 +24,38 @@ Some data may be missing — we will complete it soon.
 
 The method `crm.deal.recurring.list` returns a list of recurring deal template settings based on the filter.
 
-When querying, use the mask "*" to select all fields (excluding custom and multiple fields).
+When selecting, use the mask "*" to retrieve all fields (excluding custom and multiple fields).
 
 See the description of [list methods](../../../how-to-call-rest-api/list-methods-pecularities.md).
 
 ## Example
 
-```js
-BX24.callMethod(
-    "crm.deal.recurring.list",
-    {
-        order: { "DEAL_ID": "ASC" },
-        filter: { ">COUNTER_REPEAT": 5 },
-        select: [ "ID", "DEAL_ID ", "NEXT_EXECUTION", "LAST_EXECUTION", "CATEGORY_ID", "IS_LIMIT" ]
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
+{% list tabs %}
+
+- JS
+  
+    ```js
+    BX24.callMethod(
+        "crm.deal.recurring.list",
         {
-            console.dir(result.data());
-            if(result.more())
-                result.next();
+            order: { "DEAL_ID": "ASC" },
+            filter: { ">COUNTER_REPEAT": 5 },
+            select: [ "ID", "DEAL_ID ", "NEXT_EXECUTION", "LAST_EXECUTION", "CATEGORY_ID", "IS_LIMIT" ]
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.dir(result.data());
+                if(result.more())
+                    result.next();
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../../_includes/examples.md) %}

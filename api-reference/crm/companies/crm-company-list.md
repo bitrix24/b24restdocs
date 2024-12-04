@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -27,8 +27,8 @@ Some data may be missing here — we will complete it shortly.
 The method `crm.company.list` returns a list of companies based on a filter. It is an implementation of the list method for companies.
 
 When selecting, use masks:
-- "*" - to select all fields (excluding custom and multiple fields)
-- "UF_*" - to select all custom fields (excluding multiple fields)
+- "*" - to select all fields (excluding custom and multiple)
+- "UF_*" - to select all custom fields (excluding multiple)
 
 There is no mask for selecting multiple fields. To select multiple fields, specify the required ones in the selection list ("PHONE", "EMAIL", etc.).
 
@@ -38,51 +38,63 @@ See the description of [list methods](../../how-to-call-rest-api/list-methods-pe
 
 ## Examples
 
-**Searching for companies by industry and type**
+**Searching for Companies by Industry and Type**
 
-```js
-BX24.callMethod(
-    "crm.company.list",
-    {
-        order: { "DATE_CREATE": "ASC" },
-        filter: { "INDUSTRY": "MANUFACTURING", "COMPANY_TYPE": "CUSTOMER" },
-        select: [ "ID", "TITLE", "CURRENCY_ID", "REVENUE" ]
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "crm.company.list",
         {
-            console.dir(result.data());
-            if(result.more())
-                result.next();
-        }
-    }
-);
-```
-
-**Searching for a company by phone number**
-
-```js
-BX24.callMethod(
-    "crm.company.list",
-    {
-        filter: { "PHONE": "555888" },
-        select: [ "ID", "TITLE" ]
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
+            order: { "DATE_CREATE": "ASC" },
+            filter: { "INDUSTRY": "MANUFACTURING", "COMPANY_TYPE": "CUSTOMER" },
+            select: [ "ID", "TITLE", "CURRENCY_ID", "REVENUE" ]
+        },
+        function(result)
         {
-            console.dir(result.data());
-            if(result.more())
-                result.next();
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.dir(result.data());
+                if(result.more())
+                    result.next();
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
+
+**Searching for a Company by Phone**
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "crm.company.list",
+        {
+            filter: { "PHONE": "555888" },
+            select: [ "ID", "TITLE" ]
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.dir(result.data());
+                if(result.more())
+                    result.next();
+            }
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

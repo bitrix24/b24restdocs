@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ Some data may be missing — we will complete it soon.
 
 {% include notitle [Scope telephony admin](../../_includes/scope-telephony-admin.md) %}
 
-The method `voximplant.line.outgoing.sip.set` sets the selected SIP line as the default outgoing line. This method is available to the holder of the [permission](https://helpdesk.bitrix24.com/open/18216960/) `Manage numbers - change - any`.
+The method `voximplant.line.outgoing.sip.set` sets the selected SIP line as the default outgoing line. This method is available to the holder of the [access permissions](https://helpdesk.bitrix24.com/open/18216960/) `Manage numbers - change - any`.
 
 #|
 || **Parameter** | **Description** ||
@@ -30,24 +30,30 @@ The method `voximplant.line.outgoing.sip.set` sets the selected SIP line as the 
 
 ## Example
 
-```js
-BX24.callMethod(
-    "voximplant.line.outgoing.sip.set",
-    {
-        "CONFIG_ID": 57,
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        "voximplant.line.outgoing.sip.set",
+        {
+            "CONFIG_ID": 57,
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 ## Response on success
 
-Returns 1 upon successful execution.
+Returns 1 on successful execution.

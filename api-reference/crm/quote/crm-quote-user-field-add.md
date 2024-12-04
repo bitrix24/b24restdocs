@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - parameter types are not specified
 - parameter requirements are not specified
 - examples are missing (there should be three examples - curl, js, php)
@@ -27,7 +27,7 @@ Some data may be missing here — we will complete it soon.
 
 The method `crm.quote.userfield.add` creates a new custom field for estimates.
 
-The system limitation for the field name is 20 characters. The prefix `UF_CRM_` is always added to the custom field name, meaning the actual length of the name is 13 characters.
+The system limitation on the field name is 20 characters. The prefix `UF_CRM_` is always added to the custom field name, meaning the actual length of the name is 13 characters.
 
 #|
 ||  **Parameter** / **Type**| **Description** ||
@@ -38,28 +38,34 @@ The system limitation for the field name is 20 characters. The prefix `UF_CRM_` 
 
 ## Example
 
-```js
-BX24.callMethod(
-    "crm.quote.userfield.add",
-    {
-        fields:
-        {
-            "FIELD_NAME": "MY_STRING",
-            "EDIT_FORM_LABEL": "My String",
-            "LIST_COLUMN_LABEL": "My String",
-            "USER_TYPE_ID": "string",
-            "XML_ID": "MY_STRING",
-            "SETTINGS": { "DEFAULT_VALUE": "Hello, World!" }
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        "crm.quote.userfield.add",
+        {
+            fields:
+            {
+                "FIELD_NAME": "MY_STRING",
+                "EDIT_FORM_LABEL": "My String",
+                "LIST_COLUMN_LABEL": "My String",
+                "USER_TYPE_ID": "string",
+                "XML_ID": "MY_STRING",
+                "SETTINGS": { "DEFAULT_VALUE": "Hello, World!" }
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

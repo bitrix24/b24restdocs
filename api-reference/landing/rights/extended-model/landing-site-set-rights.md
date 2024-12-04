@@ -1,4 +1,4 @@
-# Set Access Permissions on landing.site.setRights
+# Set Access Permissions on site landing.site.setRights
 
 {% note warning "We are still updating this page" %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
+- corrections needed for writing standards
+- parameter types are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -37,49 +37,55 @@ The method `landing.site.setRights` sets access permissions for the site. It wil
 [`unknown`](../../../data-types.md) | An object with permissions, where the keys are unique identifiers (user, department, group, ...), and the values are the allowed operations:
 - **denied** – access denied
 - **read** – read
-- **edit** – edit (content of pages)
+- **edit** – edit (page content)
 - **sett** – change settings
 - **public** – publish
 - **delete** – delete (to trash, and restore from trash)
 
-Permissions are independent and can be granted selectively. For example, a user may have only the permission to publish without the ability to make any changes.
+Permissions are independent and can be granted selectively. For example, a user may only have the right to publish without the ability to make any changes.
 
 The following values can be used as keys:
-- **SG<X>** - workgroup
-- **U<X>** - user
-- **DR<X>** - department, including subdivisions
-- **UA** - all authorized users
-- **G<X>** - user group ||
+- `SG<X>` - workgroup
+- `U<X>` - user
+- `DR<X>` - department, including subdivisions
+- `UA` - all authorized users
+- `G<X>` - user group ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.site.setRights',
-    {
-        id: 645,
-        rights: {
-            'U3': [
-                'edit', 'delete'
-            ],
-            'U1': [
-                'edit', 'sett'
-            ]
-        }
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.setRights',
         {
-            console.error(result.error());
-        }
-        else
+            id: 645,
+            rights: {
+                'U3': [
+                    'edit', 'delete'
+                ],
+                'U1': [
+                    'edit', 'sett'
+                ]
+            }
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

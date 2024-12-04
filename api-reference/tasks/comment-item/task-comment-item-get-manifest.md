@@ -1,12 +1,12 @@
-# Get a list of methods and their descriptions task.commentitem.getmanifest
+# Get the list of methods and their description task.commentitem.getmanifest
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of an error is missing
-- response in case of success is missing
+- no response in case of error
+- no response in case of success
 - add a list of fields
 
 {% endnote %}
@@ -31,7 +31,7 @@ The method can be useful as reference information, as it always contains up-to-d
 
 {% note info %}
 
-The order of parameters in the request must be followed. If violated, the request will be executed with errors.
+Maintaining the order of parameters in the request is mandatory. If violated, the request will be executed with errors.
 
 {% endnote %}
 

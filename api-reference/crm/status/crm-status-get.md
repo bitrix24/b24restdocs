@@ -1,8 +1,8 @@
-# Get a directory item by ID crm.status.get
+# Get the directory item by ID crm.status.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter type is not specified
-- examples (in other languages) are missing
+- examples are missing (in other languages)
 - success response is missing
 - error response is missing
 
@@ -27,30 +27,36 @@ Some data may be missing here — we will complete it soon.
 crm.status.get(id)
 ```
 
-The method returns a directory item by its ID.
+The method returns the directory item by ID.
 
 #|
 || **Parameter** | **Description** ||
-|| **id^*^** | The ID of the directory item. ||
+|| **id^*^** | Identifier of the directory item. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.status.get",
-    { id: id },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- JS
+  
+    ```javascript
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.status.get",
+        { id: id },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

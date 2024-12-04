@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -23,7 +23,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `lists.element.delete` removes a list element. Upon successful deletion of the element, the response is `true`, otherwise *Exception*.
+The method `lists.element.delete` removes a list element. On successful deletion, the response is `true`, otherwise *Exception*.
 
 ## Parameters
 
@@ -46,23 +46,29 @@ The method `lists.element.delete` removes a list element. Upon successful deleti
 
 ## Example
 
-```js
-var params = {
-    'IBLOCK_TYPE_ID': 'lists_socnet',
-    'IBLOCK_CODE': 'rest_1',
-    'ELEMENT_CODE': 'element_1'
-};
-BX24.callMethod(
-    'lists.element.delete',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            alert("Success: " + result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists_socnet',
+        'IBLOCK_CODE': 'rest_1',
+        'ELEMENT_CODE': 'element_1'
+    };
+    BX24.callMethod(
+        'lists.element.delete',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Example Notes](../../../_includes/examples.md) %}

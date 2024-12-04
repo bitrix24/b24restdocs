@@ -1,17 +1,17 @@
-# Get Fields of Product Property Features or Trade Offers catalog.productPropertyFeature.getFields
+# Get Product Property Feature Parameter Fields or Variations catalog.productPropertyFeature.getFields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- missing response in case of error
-- missing response in case of success
+- no response in case of error
+- no response in case of success
 - no examples in other languages
   
 {% endnote %}
@@ -28,7 +28,7 @@ Some data may be missing here — we will complete it shortly.
 catalog.productPropertyFeature.getFields()
 ```
 
-The method returns the fields of product property features or trade offers.
+The method returns the fields of product property parameters or variations.
 
 ## Parameters
 
@@ -36,36 +36,41 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.productPropertyFeature.getFields',
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.productPropertyFeature.getFields',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
 #|
 || **Field** | **Description** | **Note** ||
-
-
 || **featureId^*^**
 [`string`](../../data-types.md)| Parameter code. |  ||
 || **id**
-[`integer`](../../data-types.md)| Identifier of the property feature. | Read-only. ||
+[`integer`](../../data-types.md)| Property parameter identifier. | Read-only. ||
 || **isEnabled^*^**
-[`char`](../../data-types.md)| Is the parameter enabled. |  ||
+[`char`](../../data-types.md)| Whether the parameter is enabled. |  ||
 || **moduleId^*^**
 [`string`](../../data-types.md)| Module identifier. |  ||
 || **propertyId^*^**
-[`integer`](../../data-types.md)| Identifier of the property. |  ||
+[`integer`](../../data-types.md)| Property identifier. |  ||
 |#
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}

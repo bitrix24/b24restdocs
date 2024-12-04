@@ -1,18 +1,18 @@
-# Invite Participants to the Chat imbot.chat.user.add
+# Invite Chat Participants imbot.chat.user.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- revisions needed for writing standards
+- edits needed for writing standards
 - parameter types not specified
-- parameter requirements not indicated
+- parameter requirements not specified
 - examples missing
 - success response missing
 - error response missing
@@ -30,30 +30,36 @@ The method `imbot.chat.user.add` invites participants to the chat.
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **CHAT_ID**
-[`unknown`](../../data-types.md) | `13` | Identifier of the chat | ||
+[`unknown`](../../data-types.md) | `13` | Chat identifier | ||
 || **USERS**
 [`unknown`](../../data-types.md) | `Array(3,4)` | Identifiers of new users | ||
 || **BOT_ID**
-[`unknown`](../../data-types.md) | `39` | Identifier of the chatbot making the request. It can be omitted if there is only one chatbot | ||
+[`unknown`](../../data-types.md) | `39` | Identifier of the chat bot making the request. Can be omitted if there is only one chat bot | ||
 |#
 
 ## Examples
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.chat.user.add',
-    Array(
-        'CHAT_ID' => 13,
-        'USERS' => Array(3,4),
-        'BOT_ID' => 39,
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.chat.user.add',
+        Array(
+            'CHAT_ID' => 13,
+            'USERS' => Array(3,4),
+            'BOT_ID' => 39,
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 

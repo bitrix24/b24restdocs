@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
+- edits are needed to meet the writing standard
 
 {% endnote %}
 
@@ -22,12 +22,12 @@ Sites can be of the following types.
 
 - Main:
   - PAGE (from Home Page) - regular sites.
-  - STORE - shops.
-  - SMN - sites used in the Sites24 section in the administrative area of the BUS.
+  - STORE - stores.
+  - SMN - sites used in the Sites24 section in the administrative area in the ERP.
 
 - Additional:
   - KNOWLEDGE – knowledge bases.
-  - GROUP – knowledge bases of social network groups.
+  - GROUP – knowledge bases for social network groups.
 
 Currently, the extension of types is not supported.
 
@@ -40,38 +40,44 @@ If working with **additional types**, you need to set the scope before starting.
 
 ## Example
 
-The example provides a method for retrieving a list of pages, but the rule applies to any other method, including working with permissions and changes to entities.
+The example provides a method for retrieving a list of pages, but the rule applies to any other method, including working with permissions and entity modifications.
 
-```js
-BX24.callMethod(
-    'landing.landing.getList',
-    {
-        params: {
-            select: [
-                'ID', 'TITLE'
-            ],
-            filter: {
-                TITLE: '%services%',
-                SITE_ID: 205
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.getList',
+        {
+            params: {
+                select: [
+                    'ID', 'TITLE'
+                ],
+                filter: {
+                    TITLE: '%services%',
+                    SITE_ID: 205
+                },
+                order: {
+                    ID: 'DESC'
+                }
             },
-            order: {
-                ID: 'DESC'
-            }
+            scope: 'knowledge'
         },
-        scope: 'knowledge'
-    },
-    function(result)
-    {
-        if(result.error())
+        function(result)
         {
-            console.error(result.error());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../_includes/examples.md) %}

@@ -1,16 +1,16 @@
-# Set or Remove the "Unread" Flag for the Chat im.recent.unread
+# Set or Remove the "Unread" Flag for the im.recent.unread Chat
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types not specified
 - examples are missing
 
@@ -22,53 +22,59 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.recent.unread` sets the "unread" flag on a chat or conversation.
+The `im.recent.unread` method sets the "unread" label on a chat or conversation.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **DIALOG_ID^*^**
-[`unknown`](../../data-types.md) | `'chat74'` | Identifier of the conversation. Format:
+[`unknown`](../../data-types.md) | `'chat74'` | Identifier of the dialog. Format:
 - **chatXXX** – chat of the recipient, if the message is for a chat
 - **XXX** – identifier of the recipient, if the message is for a private conversation | 30 ||
 || **ACTION**
-[`unknown`](../../data-types.md) | `'Y'` | Set / remove the "unread" flag on the conversation - `'Y'|'N'` | 30 ||
+[`unknown`](../../data-types.md) | `'Y'` | Set / remove the "unread" label on the dialog - `'Y'|'N'` | 30 ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```js
-B24.callMethod(
-    'im.recent.unread',
-    {
-        DIALOG_ID: 'chat74',
-        ACTION: 'Y'
-    },
-    res => {
-        if (res.error())
-        {
-        console.error(result.error().ex);
-        }
-        else
-        {
-        console.log(res.data())
-        }
-    }
-)
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- JS
 
-## Successful Response
+    ```js
+    B24.callMethod(
+        'im.recent.unread',
+        {
+            DIALOG_ID: 'chat74',
+            ACTION: 'Y'
+        },
+        res => {
+            if (res.error())
+            {
+            console.error(result.error().ex);
+            }
+            else
+            {
+            console.log(res.data())
+            }
+        }
+    )
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Response on Success
 
 ```json
 {
-    "result": true //if the flag was successfully set|removed
+    "result": true //if the label was successfully set|removed
 }
 ```
 
-## Error Response
+## Response on Error
 
 ```json
 {
@@ -77,7 +83,7 @@ B24.callMethod(
 }
 ```
 
-### Key Descriptions
+### Description of Keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error

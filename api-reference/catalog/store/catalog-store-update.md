@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing here — we will fill it in shortly.
 - required parameters are not specified
 - no response in case of error 
 - no examples in other languages
-- clarify the parameter type id
+- clarify the type of the id parameter
   
 {% endnote %}
 
@@ -39,15 +39,15 @@ Method for updating the inventory.
 [`array`](../../data-types.md)|  Parameters of the updated inventory. ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
-- js
+- JS
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.store.update',
         {
@@ -59,9 +59,9 @@ Method for updating the inventory.
                 'issuingCenter': 'Y',
                 'shippingCenter': 'Y',
                 'code': 'store_1',
-                'address': 'Main St. 52',
+                'address': 'Moscow Ave. 52',
                 'phone': '+1 123 456 789',
-                'schedule': 'Mon.-Fri. from 9:00 AM to 8:00 PM, Sat.-Sun. from 11:00 AM to 6:00 PM',
+                'schedule': 'Mon.-Fri. from 9:00 to 20:00, Sat.-Sun. from 11:00 to 18:00',
                 'xmlId': 'store_1',
             }
         },
@@ -75,9 +75,9 @@ Method for updating the inventory.
     );
     ```
 
-- php
+- PHP
 
-    ```
+    ```php
     $result = CRest::call(
         'catalog.store.update',
         [
@@ -89,9 +89,9 @@ Method for updating the inventory.
                 'issuingCenter' => 'Y',
                 'shippingCenter' => 'Y',
                 'code' => 'store_1',
-                'address' => 'Main St. 52',
+                'address' => 'Moscow Ave. 52',
                 'phone' => '+1 123 456 789',
-                'schedule' => 'Mon.-Fri. from 9:00 AM to 8:00 PM, Sat.-Sun. from 11:00 AM to 6:00 PM',
+                'schedule' => 'Mon.-Fri. from 9:00 to 20:00, Sat.-Sun. from 11:00 to 18:00',
                 'xmlId' => 'store_1',
             ],
         ]
@@ -104,4 +104,4 @@ Method for updating the inventory.
 
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

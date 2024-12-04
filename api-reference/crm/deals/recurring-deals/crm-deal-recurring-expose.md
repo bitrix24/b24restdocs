@@ -8,7 +8,7 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter type is not specified
 - examples are missing (in other languages)
@@ -23,34 +23,40 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.deal.recurring.expose` creates a new deal from a template.
+The method `crm.deal.recurring.expose` creates a new deal from the template.
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **id**^*^ | Identifier of the recurring deal template setting. ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 ## Example
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.deal.recurring.expose",
-    {
-        id: id,
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.deal.recurring.expose",
+        {
+            id: id,
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

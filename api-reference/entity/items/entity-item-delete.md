@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it soon.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
 - response in case of error is missing
@@ -21,7 +21,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `entity.item.delete` removes a storage element. The user must have at least write access (**W**) to the storage.
+The method `entity.item.delete` removes a storage element. The user must have at least write access permission (**W**) in the storage.
 
 ## Parameters
 
@@ -33,29 +33,33 @@ The method `entity.item.delete` removes a storage element. The user must have at
 [`integer`](../../data-types.md) | Required. Identifier of the element. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Example
 
-Call
+{% list tabs %}
 
-```js
-BX24.callMethod(
-    'entity.item.delete',
-    {
-        ENTITY: 'menu_new',
-        ID: 842
-    }
-);
-```
+- JS
 
-Request
+    ```js
+    BX24.callMethod(
+        'entity.item.delete',
+        {
+            ENTITY: 'menu_new',
+            ID: 842
+        }
+    );
+    ```
 
-```http
-https://my.bitrix24.com/rest/entity.item.delete.json?ENTITY=menu_new&ID=842&auth=340bf57f35ee95e0debf98399632999c
-```
+- HTTP
 
-{% include [Example Note](../../../_includes/examples.md) %}
+    ```http
+    https://my.bitrix24.com/rest/entity.item.delete.json?ENTITY=menu_new&ID=842&auth=340bf57f35ee95e0debf98399632999c
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 

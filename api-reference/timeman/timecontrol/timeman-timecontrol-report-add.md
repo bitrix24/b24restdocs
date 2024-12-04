@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -35,9 +35,9 @@ The method `timeman.timecontrol.report.add` is used to send an absence report.
 || **TEXT**^*^
 [`unknown`](../../data-types.md) | 'Was at lunch' | Yes | Description of the reason for absence. ||
 || **CALENDAR**
-[`unknown`](../../data-types.md) | true | No | Add absence to the calendar (only for the initial report). ||
+[`unknown`](../../data-types.md) | true | No | Add absence to calendar (only for the initial report). ||
 || **USER_ID**
-[`unknown`](../../data-types.md) | 2 | No | Identifier of the user for whom the report is generated (this field is available only to administrators). ||
+[`unknown`](../../data-types.md) | 2 | No | Identifier of the user for whom the report is generated (field available only to administrators). ||
 |#
 
 {% include [Parameter Notes](../../../_includes/required.md) %}
@@ -48,7 +48,7 @@ The method `timeman.timecontrol.report.add` is used to send an absence report.
 
 - JS
 
-    ```javascript
+    ```js
     BX24.callMethod('timeman.timecontrol.report.add', {
         'id': 468,
         'type': 'private',

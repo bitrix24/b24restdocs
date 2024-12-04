@@ -55,11 +55,11 @@ The order of parameters in the request is mandatory. If violated, the request wi
 || **AUTHOR_EMAIL**
 [`unknown`](../../data-types.md) | User's e-mail (optional). ||
 || **USE_SMILES**
-[`unknown`](../../data-types.md) | (Y|N) — whether to parse comments for smiles. ||
+[`unknown`](../../data-types.md) | (Y\|N) — whether to parse comments for smiles. ||
 || **POST_MESSAGE**
 [`unknown`](../../data-types.md) | Message text. ||
 || **UF_FORUM_MESSAGE_DOC**
-[`unknown`](../../data-types.md) | Array of files from the drive to attach in the form `['n123', ...]` ||
+[`unknown`](../../data-types.md) | Array of files from the Drive to attach in the form `['n123', ...]` ||
 |#
 
 ## Example
@@ -83,3 +83,7 @@ The order of parameters in the request is mandatory. If violated, the request wi
 {% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Continue Learning
+
+- [{#T}](../../../tutorials/tasks/how-to-create-comment-with-file.md)

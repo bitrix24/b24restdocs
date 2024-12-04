@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -36,20 +36,27 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.price.getFields',
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        'catalog.price.getFields',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -60,7 +67,7 @@ BX24.callMethod(
 || **currency^*^** 
 [`string`](../../data-types.md) | Currency |  ||
 || **extraId**
-[`integer`](../../data-types.md) | Surcharge identifier | ||
+[`integer`](../../data-types.md) | Markup identifier | ||
 || **id**
 [`integer`](../../data-types.md) | Price identifier | Read-only. ||
 || **price^*^**
@@ -77,4 +84,4 @@ BX24.callMethod(
 [`datetime`](../../data-types.md) | Date of change | Read-only. ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}

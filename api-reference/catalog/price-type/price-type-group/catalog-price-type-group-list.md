@@ -1,4 +1,4 @@
-# Get a List of Price Type Bindings to Customer Groups catalog.priceTypeGroup.list
+# Get a list of price type bindings to customer groups catalog.priceTypeGroup.list
 
 {% note warning "We are still updating this page" %}
 
@@ -27,7 +27,7 @@ Some data may be missing — we will complete it shortly.
 catalog.priceTypeGroup.list(select, filter, order, start)
 ```
 
-This method retrieves a list of price type bindings to customer groups.
+The method retrieves a list of price type bindings to customer groups.
 
 ## Parameters
 
@@ -43,31 +43,35 @@ This method retrieves a list of price type bindings to customer groups.
 [`string`](../../data-types.md)| Page number for output. Works for HTTPS requests. ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
-For JS
+{% list tabs %}
 
-```javascript
-BX24.callMethod(
-    'catalog.priceTypeGroup.list',
-    {
-        select: ['catalogGroupId'],
-        filter: {
-            groupId: 8
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.priceTypeGroup.list',
+        {
+            select: ['catalogGroupId'],
+            filter: {
+                groupId: 8
+            },
         },
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-        result.next();
-    }
-);
-```
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+            result.next();
+        }
+    );
+    ```
+
+{% endlist %}
 
 Example HTTPS request
 
@@ -75,4 +79,4 @@ Example HTTPS request
 https://your_account/rest/catalog.priceTypeGroup.list?auth=_authorization_key_&start=50
 ```
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}

@@ -6,7 +6,7 @@
 
 The method `crm.contact.get` returns a contact by its identifier.
 
-To retrieve a list of companies associated with the contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md).
+To get a list of companies associated with the contact, use the method [`crm.contact.company.items.get`](company/crm-contact-company-items-get.md).
 
 ## Method Parameters
 
@@ -81,7 +81,7 @@ Get contact with `id = 23`
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -106,7 +106,7 @@ Get contact with `id = 23`
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -114,10 +114,10 @@ HTTP status: **200**
         "ID": "43",
         "POST": "Administrator",
         "COMMENTS": "\nExample comment within the contact\n\n[B]Bold text[\/B]\n[I]Italic[\/I]\n[U]Underlined[\/U]\n[S]Strikethrough[\/S]\n[B][I][U][S]Mix[\/S][\/U][\/I][\/B]\n\n[LIST]\n[*]List item #1\n[*]List item #2\n[*]List item #3\n[\/LIST]\n\n[LIST=1]\n[*]Numbered list item #1\n[*]Numbered list item #2\n[*]Numbered list item #3\n[\/LIST]\n",
-        "HONORIFIC": "HNR_RU_1",
+        "HONORIFIC": "HNR_EN_1",
         "NAME": "John",
-        "SECOND_NAME": "Ivanovich",
-        "LAST_NAME": "Ivanov",
+        "SECOND_NAME": "Doe",
+        "LAST_NAME": "Smith",
         "PHOTO": null,
         "LEAD_ID": null,
         "TYPE_ID": "PARTNER",
@@ -174,13 +174,13 @@ HTTP status: **200**
         {
             "ID": "158",
             "VALUE_TYPE": "MAILING",
-            "VALUE": "ivanov@example.mailing",
+            "VALUE": "johnsmith@example.mailing",
             "TYPE_ID": "EMAIL"
         },
         {
             "ID": "159",
             "VALUE_TYPE": "WORK",
-            "VALUE": "ivanov@example.work",
+            "VALUE": "johnsmith@example.work",
             "TYPE_ID": "EMAIL"
         }
         ]
@@ -247,7 +247,8 @@ HTTP status: **200**
 || **HAS_PHONE**
 [`boolean`][1] | Is a phone number provided. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+||
 || **HAS_EMAIL**
 [`boolean`][1] | Is an e-mail provided. Possible values:
 - `Y` — yes
@@ -277,7 +278,7 @@ HTTP status: **200**
 || **LAST_ACTIVITY_BY**
 [`user`][1] | Who performed the last activity in the timeline ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, Google AdWords, etc.) ||
+[`string`][1] | Advertising system (Google Ads, Bing Ads, etc.) ||
 || **UTM_MEDIUM**
 [`string`][1] | Type of traffic. Possible values:
 - `CPC` — ads
@@ -300,12 +301,12 @@ HTTP status: **200**
 [`crm_multifield[]`](../data-types.md) | Links. Service field ||
 |#
 
-**Fields for linking with external data sources**
+**Fields for external data source connections**
 
 If the contact was created by an external system, then:
-- the `ORIGINATOR_ID` field stores the string identifier of that system
-- the `ORIGIN_ID` field stores the string identifier of the contact in that external system
-- the `ORIGIN_VERSION` field stores the version of the contact data in that external system
+- the field `ORIGINATOR_ID` stores the string identifier of that system
+- the field `ORIGIN_ID` stores the string identifier of the contact in that external system
+- the field `ORIGIN_VERSION` stores the version of the contact data in that external system
 
 #|
 || **Name**
@@ -320,7 +321,7 @@ If the contact was created by an external system, then:
 
 **Deprecated Fields**
 
-Address fields in the contact are deprecated and are only used in compatibility mode. To work with the address, use [details](../requisites/index.md).
+Address fields in the contact are deprecated and are only used for compatibility mode. To work with the address, use [requisites](../requisites/index.md).
 
 #|
 || **Name**
@@ -351,7 +352,7 @@ Fields of type `crm_multifield` (`PHONE`, `EMAIL`, `WEB`, `IM`, `LINK`) are expl
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -368,7 +369,7 @@ HTTP status: **400**
 || **Description** | **Value** ||
 || `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not a positive integer ||
 || `Access denied` | The user does not have permission for "Read" contact ||
-|| `Not found` | Contact with the provided `id` not found ||
+|| `Not found` | Contact with the provided `id` was not found ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

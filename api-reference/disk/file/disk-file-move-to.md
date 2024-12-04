@@ -1,4 +1,4 @@
-# Move File to Specified Folder disk.file.moveto
+# Move file to specified folder disk.file.moveto
 
 {% if build == 'dev' %}
 
@@ -37,25 +37,32 @@ The method `disk.file.moveto` moves a file to the specified folder.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.file.moveto",
-    {
-        id: 10,
-        targetFolderId: 226
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.file.moveto",
+        {
+            id: 10,
+            targetFolderId: 226
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Success response
 
 > 200 OK
 

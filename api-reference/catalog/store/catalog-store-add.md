@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -29,7 +29,7 @@ catalog.store.add(fields)
 ```
 
 This method adds an inventory.
-If the operation is successful, it returns the `id` of the added inventory.
+If the operation is successful, the `id` of the added inventory is returned.
 
 ## Parameters
 
@@ -39,15 +39,15 @@ If the operation is successful, it returns the `id` of the added inventory.
 [`array`](../../data-types.md)| Parameters of the inventory being added. ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
-- js
+- JS
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.store.add',
         {
@@ -58,9 +58,9 @@ If the operation is successful, it returns the `id` of the added inventory.
                 'issuingCenter': 'Y',
                 'shippingCenter': 'Y',
                 'code': 'store_1',
-                'address': 'Main St. 52',
+                'address': 'Moscow Ave. 52',
                 'phone': '+1 123 456 789',
-                'schedule': 'Mon.-Fri. from 9:00 to 20:00, Sat.-Sun. from 11:00 to 18:00',
+                'schedule': 'Mon.-Fri. from 9:00 AM to 8:00 PM, Sat.-Sun. from 11:00 AM to 6:00 PM',
                 'xmlId': 'store_1',
             }
         },
@@ -74,9 +74,9 @@ If the operation is successful, it returns the `id` of the added inventory.
     );
     ```
 
-- php
+- PHP
   
-    ```
+    ```php
     $result = CRest::call(
         'catalog.store.add',
         [
@@ -87,9 +87,9 @@ If the operation is successful, it returns the `id` of the added inventory.
                 'issuingCenter' => 'Y',
                 'shippingCenter' => 'Y',
                 'code' => 'store_1',
-                'address' => 'Main St. 52',
+                'address' => 'Moscow Ave. 52',
                 'phone' => '+1 123 456 789',
-                'schedule' => 'Mon.-Fri. from 9:00 to 20:00, Sat.-Sun. from 11:00 to 18:00',
+                'schedule' => 'Mon.-Fri. from 9:00 AM to 8:00 PM, Sat.-Sun. from 11:00 AM to 6:00 PM',
                 'xmlId' => 'store_1',
             ],
         ]
@@ -102,4 +102,4 @@ If the operation is successful, it returns the `id` of the added inventory.
 
 {% endlist %}
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

@@ -2,19 +2,19 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -36,28 +36,34 @@ The method `landing.site.add` adds a site. It returns the `ID` of the created si
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.site.add',
-    {
-        fields: {
-            TITLE: 'My first site!',
-            CODE: 'firstsite',
-            DOMAIN_ID: 'my.bitrix24.site'
-        }
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.add',
         {
-            console.error(result.error());
-        }
-        else
+            fields: {
+                TITLE: 'My first site!',
+                CODE: 'firstsite',
+                DOMAIN_ID: 'my.bitrix24.site'
+            }
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}

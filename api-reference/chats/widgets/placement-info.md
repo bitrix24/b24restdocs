@@ -8,36 +8,42 @@ Some data may be missing here — we will fill it in shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- edits are needed to meet writing standards
+- edits needed for standard writing
 
 {% endnote %}
 
 {% endif %}
 
-All embeddings follow a standard format and are registered using the method [placement.bind](../../widgets/placement-bind.md). Example:
+All embeddings are in a standard format and are registered using the method [placement.bind](../../widgets/placement-bind.md). Example:
 
-```php
-CRest::call(
-    'placement.bind',
-    [
-        'PLACEMENT' => 'IM_SIDEBAR',
-        'HANDLER' => 'https://example.com/apps/immarket/handlers/sidebar.php',
-        'LANG_ALL' => [
-            'en' => [
-                'TITLE' => 'Application in the sidebar',
+{% list tabs %}
+
+- PHP
+
+    ```php
+    CRest::call(
+        'placement.bind',
+        [
+            'PLACEMENT' => 'IM_SIDEBAR',
+            'HANDLER' => 'https://example.com/apps/immarket/handlers/sidebar.php',
+            'LANG_ALL' => [
+                'de' => [
+                    'TITLE' => 'Application in the sidebar',
+                ],
             ],
-        ],
-        'OPTIONS' => [
-            'iconName' => 'fa-bug',
-            'context' => 'USER;LINES',
-            'role' => 'ADMIN',
-            'extranet' => 'N',
+            'OPTIONS' => [
+                'iconName' => 'fa-bug',
+                'context' => 'USER;LINES',
+                'role' => 'ADMIN',
+                'extranet' => 'N',
+            ]
         ]
-    ]
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 Let's take a closer look at the `OPTIONS` section:
 
@@ -46,9 +52,9 @@ Let's take a closer look at the `OPTIONS` section:
 
 {% note info %}
 
-The `ALL` option has the highest priority over all other options, so there is no point in listing other chat types along with it. If this happens, the values for specific chat types will be ignored. However, an incorrect value for any of the provided options will still result in an error during application registration.
+The `ALL` option has the highest priority over all other options, so there is no point in listing other chat types along with it. If this happens, the values of specific chat types will be ignored. However, an incorrect value for one of the passed options will still result in an error when registering the application.
 
 {% endnote %}
 
 - `role` – the user role for which this application will be displayed (by default, `USER` – available to everyone);
-- `extranet` – whether the application is available for [extranet users](https://helpdesk.bitrix24.com/open/18070866/) (by default, it is not).
+- `extranet` – whether the application is available for [extranet users](https://helpdesk.bitrix24.com/open/7215253/) (by default, no).

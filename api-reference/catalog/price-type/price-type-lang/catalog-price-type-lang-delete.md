@@ -1,8 +1,8 @@
-# Delete Translation of Price Type catalog.priceTypeLang.delete
+# Delete translation of price type name catalog.priceTypeLang.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -32,29 +32,36 @@ This method deletes the translation of the price type name. If the operation is 
 
 ## Parameters
 
-#| 
+#|
 || **Parameter** | **Description** ||
 || **id** 
 [`integer`](../../data-types.md)| Identifier of the price type name translation. ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.priceTypeLang.delete',
-    {
-        id: 346
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.priceTypeLang.delete',
+        {
+            id: 346
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../../_includes/examples.md) %}

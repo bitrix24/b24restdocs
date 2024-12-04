@@ -23,27 +23,33 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: administrator
 
-The method without parameters returns a list of registered [engine](./ai-engine-register.md) for the current partner. The method is called without parameters.
+The method without parameters returns a list of registered [engines](./ai-engine-register.md) for the current partner. The method is called without parameters.
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'ai.engine.list',
-    {
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'ai.engine.list',
+        {
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

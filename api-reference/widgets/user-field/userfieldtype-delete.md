@@ -1,6 +1,6 @@
 # Delete Registered User Field Type userfieldtype.delete
 
-> Scope: [`depending on the integration point`](../../scopes/permissions.md)
+> Scope: [`depending on the embedding location`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -85,7 +85,7 @@ The method `userfieldtype.delete` removes a user-defined field type registered b
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -108,7 +108,7 @@ The method `userfieldtype.delete` removes a user-defined field type registered b
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -131,14 +131,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the user field type deletion ||
+[`boolean`](../../data-types.md) | Result of deleting the user field type ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

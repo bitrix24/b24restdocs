@@ -1,10 +1,10 @@
-# Get the stream tasks.flow.flow.get
+# Get Flow tasks.flow.flow.get
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: stream team; user who can assign tasks to the stream
+> Who can execute the method: flow team; user who can assign tasks to the flow
 
-The method `tasks.flow.flow.get` returns the stream data by its identifier.
+The method `tasks.flow.flow.get` returns flow data by its identifier.
 
 ## Method Parameters
 
@@ -13,9 +13,9 @@ The method `tasks.flow.flow.get` returns the stream data by its identifier.
 #|
 || **Name**
 `type` | **Description** ||
-|| **flowId*** [`integer`](../../data-types.md) | The identifier of the stream whose data needs to be retrieved.
+|| **flowId*** [`integer`](../../data-types.md) | Identifier of the flow whose data needs to be retrieved. 
 
-You can obtain the identifier using the [tasks.task.get](../tasks-task-get.md) method for a task that has already been added to the stream, or create a new stream using the [tasks.flow.flow.create](./tasks-flow-flow-create.md) method ||
+You can obtain the identifier using the method to create a new flow [tasks.flow.flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
@@ -102,25 +102,39 @@ HTTP status: **200**
         "ownerId": 1,
         "groupId": 178,
         "templateId": 0,
-        "efficiency": 100,
+        "efficiency": 0,
         "active": true,
         "plannedCompletionTime": 7200,
-        "activity": "2024-08-22T12:17:48+00:00",
-        "name": "Flow Name",
-        "description": "Flow description",
+        "activity": "2024-09-02T15:27:29+00:00",
+        "name": "Updated Flow Name",
+        "description": "Updated description",
         "distributionType": "manually",
-        "responsibleQueue": [],
+        "responsibleList": [
+            [
+                "user",
+                "3"
+            ]
+        ],
         "demo": false,
-        "manualDistributorId": 3,
         "responsibleCanChangeDeadline": true,
         "matchWorkTime": true,
         "taskControl": false,
         "notifyAtHalfTime": false,
-        "notifyOnQueueOverflow": null,
+        "notifyOnQueueOverflow": 10,
         "notifyOnTasksInProgressOverflow": 50,
         "notifyWhenEfficiencyDecreases": null,
-        "taskCreators": [{"meta-user":  "all-users"}],
-        "taskAssignees": [],
+        "taskCreators": [
+            [
+                "meta-user",
+                "all-users"
+            ]
+        ],
+        "team": [
+            [
+                "user",
+                "3"
+            ]
+        ],
         "trialFeatureEnabled": false
     }
 }
@@ -132,37 +146,35 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`object`](../../data-types.md) | Object containing stream data ||
+[`object`](../../data-types.md) | Object with flow data ||
 || **id** 
-[`integer`](../../data-types.md) | Stream identifier ||
+[`integer`](../../data-types.md) | Identifier of the flow ||
 || **creatorId** 
-[`integer`](../../data-types.md) | Identifier of the stream creator. Read-only ||
+[`integer`](../../data-types.md) | Identifier of the flow creator. Read-only ||
 || **ownerId** 
-[`integer`](../../data-types.md) | Identifier of the stream administrator ||
+[`integer`](../../data-types.md) | Identifier of the flow administrator ||
 || **groupId** 
-[`integer`](../../data-types.md) | Identifier of the group to which the stream is linked ||
+[`integer`](../../data-types.md) | Identifier of the group to which the flow is linked ||
 || **templateId** 
-[`integer`](../../data-types.md) | Identifier of the template used to create tasks in the stream ||
+[`integer`](../../data-types.md) | Identifier of the template used to create tasks in the flow ||
 || **efficiency** 
-[`integer`](../../data-types.md) | Efficiency of the stream in percentage. Read-only ||
+[`integer`](../../data-types.md) | Efficiency of the flow in percentage. Read-only ||
 || **active** 
-[`boolean`](../../data-types.md) | Status of the stream's activity ||
+[`boolean`](../../data-types.md) | Status of the flow's activity ||
 || **plannedCompletionTime** 
 [`integer`](../../data-types.md) | Planned time to complete the task in seconds ||
 || **activity** 
-[`string`](../../data-types.md) | Date and time of the last activity in the stream. Read-only ||
+[`string`](../../data-types.md) | Date and time of the last activity in the flow. Read-only ||
 || **name** 
-[`string`](../../data-types.md) | Name of the stream ||
+[`string`](../../data-types.md) | Name of the flow ||
 || **description** 
-[`string`](../../data-types.md) | Description of the stream ||
+[`string`](../../data-types.md) | Description of the flow ||
 || **distributionType** 
-[`string`](../../data-types.md) | Type of task distribution in the stream ||
-|| **responsibleQueue** 
-[`array`](../../data-types.md) | Stream team if the distribution type is queue. Empty when manually distributed ||
-|| **manualDistributorId** 
-[`integer`](../../data-types.md) | Identifier of the stream moderator when manually distributed (`null` when distributed by queue) ||
+[`string`](../../data-types.md) | Type of task distribution in the flow ||
+|| **responsibleList**
+[`array`](../../data-types.md) | List of responsible persons for tasks in the flow. For manual distribution, this is the flow moderator ||
 || **demo** 
-[`boolean`](../../data-types.md) | Indicates whether the stream is a demo. System parameter. Read-only ||
+[`boolean`](../../data-types.md) | Indicates whether the flow is a demo. System parameter. Read-only ||
 || **responsibleCanChangeDeadline** 
 [`boolean`](../../data-types.md) | Can the responsible person change the task deadline ||
 || **matchWorkTime** 
@@ -170,19 +182,25 @@ HTTP status: **200**
 || **taskControl** 
 [`boolean`](../../data-types.md) | Should the completed task be sent to the creator for review ||
 || **notifyAtHalfTime** 
-[`boolean`](../../data-types.md) | Should the performer be notified at half the task deadline ||
+[`boolean`](../../data-types.md) | Should the assignee be notified at half the task duration ||
 || **notifyOnQueueOverflow** 
-[`integer`](../../data-types.md) | Number of tasks in the queue, exceeding which a notification will be sent to the stream administrator (if `null`, notifications are disabled) ||
+[`integer`](../../data-types.md) | Number of tasks in the queue, exceeding which will trigger a notification to the flow administrator (if `null`, notifications are disabled) ||
 || **notifyOnTasksInProgressOverflow** 
-[`integer`](../../data-types.md) | Number of tasks in progress, exceeding which a notification will be sent to the stream administrator (if `null`, notifications are disabled) ||
+[`integer`](../../data-types.md) | Number of tasks in progress, exceeding which will trigger a notification to the flow administrator (if `null`, notifications are disabled) ||
 || **notifyWhenEfficiencyDecreases** 
-[`integer`](../../data-types.md) | Efficiency in percentage, below which a notification will be sent to the stream administrator (if `null`, notifications are disabled) ||
+[`integer`](../../data-types.md) | Efficiency in percentage, below which a notification will be sent to the flow administrator (if `null`, notifications are disabled) ||
 || **taskCreators** 
-[`object`](../../data-types.md) | List of users who can add tasks to the stream in the format `{"<object-type>": "<object-identifier>"}`, for example `[{"user": 3}, {"department": "17:F"}]`. The element `{"meta-user": "all-users"}` means that all users can add tasks ||
-|| **taskAssignees** 
-[`object`](../../data-types.md) | Participants of the project to which the stream is linked, if the distribution type is manual ||
+[`object`](../../data-types.md) | List of users who can add tasks to the flow in the format `{"<object-type>": "<object-identifier>"}`. For example, `[{"user": 3}, {"department": "17:F"}]`.
+
+The element `{"meta-user": "all-users"}` means that all users can add tasks ||
+|| **team**
+[`object`](../../data-types.md) | Flow team.
+
+For manual distribution, this includes all project participants linked to the flow, except for the moderator. 
+
+For queue distribution and self-distribution, the team is the same as in `responsibleList` ||
 || **trialFeatureEnabled** 
-[`boolean`](../../data-types.md) | Indicates whether the trial period is enabled for the stream. System parameter. Read-only ||
+[`boolean`](../../data-types.md) | Indicates whether the trial period is enabled for the flow. System parameter. Read-only ||
 |#
 
 ## Error Handling
@@ -202,7 +220,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or flow not found | The portal plan may not allow working with streams or the user may not have permission to retrieve stream data ||
+|| `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to retrieve flow data ||
 || `0` | `Unknown error` | Unknown error ||
 || `0` | `Flow not found` | Flow not found ||
 |#
@@ -216,3 +234,4 @@ HTTP status: **400**
 - [{#T}](./tasks-flow-flow-delete.md)
 - [{#T}](./tasks-flow-flow-is-exists.md)
 - [{#T}](./tasks-flow-flow-activate.md)
+- [{#T}](./tasks-flow-flow-pin.md)

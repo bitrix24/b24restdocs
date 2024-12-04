@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the requiredness of parameters is not specified
+- required parameter specifications are missing
 - no response in case of success
 - no response in case of error
 - no examples in other languages
@@ -43,23 +43,31 @@ This method adds a product price.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.price.add',
-    {
-        fields: {
-            catalogGroupId: 1,
-            currency: "USD",
-            price: 2000,
-            productId: 1
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.price.add',
+        {
+            fields: {
+                catalogGroupId: 1,
+                currency: "USD",
+                price: 2000,
+                productId: 1
+            }
+        },
+        function(result) {
+            if (result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
         }
-    },
-    function(result) {
-        if (result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
+
+
 {% include [Note on examples](../../../_includes/examples.md) %}

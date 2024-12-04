@@ -8,13 +8,13 @@ Some data may be missing here — we will complete it soon.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -24,9 +24,9 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `landing.landing.addByTemplate` creates a page based on a template (a list of templates that the user sees before creating the page). It returns the `ID` of the created page or an error.
+The method `landing.landing.addByTemplate` adds a page based on a template (a list of templates that the user sees before creating the page). It returns the `ID` of the created page or an error.
 
-You cannot modify the fields of the created page; for that, you can use [landing.landing.add](./landing-landing-add.md).
+You cannot influence the fields of the created page; for that, you can use [landing.landing.add](./landing-landing-add.md).
 
 ## Parameters
 
@@ -35,32 +35,38 @@ You cannot modify the fields of the created page; for that, you can use [landing
 || **siteId**
 [`unknown`](../../../data-types.md) | `ID` of the site where the page needs to be created. ||
 || **code**
-[`unknown`](../../../data-types.md) | Identifier of the template to be used for creation. You can get the list of templates using the method [landing.demos.getPageList](../../demos/landing-demos-get-page-list.md). ||
+[`unknown`](../../../data-types.md) | Template identifier for creation. You can get the list of templates using the method [landing.demos.getPageList](../../demos/landing-demos-get-page-list.md). ||
 || **fields**
 [`unknown`](../../../data-types.md) | Optional. You can pass an array of fields for the created page. Currently, only the keys TITLE and DESCRIPTION are supported. ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.landing.addByTemplate',
-    {
-        siteId: 870,
-        code: 'agency',
-        fields: {
-            TITLE: 'Page Title',
-            DESCRIPTION: 'Page Description'
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.addByTemplate',
+        {
+            siteId: 870,
+            code: 'agency',
+            fields: {
+                TITLE: 'Page Title',
+                DESCRIPTION: 'Page Description'
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
         }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

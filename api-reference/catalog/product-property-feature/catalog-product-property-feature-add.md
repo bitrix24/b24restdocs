@@ -1,4 +1,4 @@
-# Add Product or Trade Offer Property Parameters catalog.productPropertyFeature.add
+# Add product property or variation parameters catalog.productPropertyFeature.add
 
 {% note warning "We are still updating this page" %}
 
@@ -8,7 +8,7 @@ Some data may be missing here — we will fill it in shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - the requirement for parameters is not specified
 - no response in case of success
@@ -29,7 +29,7 @@ Some data may be missing here — we will fill it in shortly.
 catalog.productPropertyFeature.add(fields)
 ```
 
-This method adds property parameters for products or trade offers.
+This method adds product property or variation parameters.
 
 ## Parameters
 
@@ -39,27 +39,34 @@ This method adds property parameters for products or trade offers.
 [`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-product-property-feature-get-fields.md). ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.productPropertyFeature.add',
-    {
-        fields: {
-            propertyId: 128,
-            featureId: "IN_BASKET",
-            moduleId: "catalog",
-            isEnabled: "Y"
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.productPropertyFeature.add',
+        {
+            fields: {
+                propertyId: 128,
+                featureId: "IN_BASKET",
+                moduleId: "catalog",
+                isEnabled: "Y"
+            }
+        },
+        function(result) {
+            if (result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
         }
-    },
-    function(result) {
-        if (result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Note on examples](../../../_includes/examples.md) %}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

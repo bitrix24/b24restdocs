@@ -1,4 +1,4 @@
-# Widget in the IM_CONTEXT_MENU Message Context Menu
+# Widget as a Context Menu Item in IM_CONTEXT_MENU
 
 {% note warning "We are still updating this page" %}
 
@@ -8,11 +8,11 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- from Sergei's file: general description, scenarios where it's useful, link to the page in the widgets section
+- parameter types are not specified
+- from Sergei's file: general description, for which scenarios it is useful, link to the page in the widget section
 
 {% endnote %}
 
@@ -20,7 +20,7 @@ Some data may be missing here — we will complete it shortly.
 
 > Scope: [`im`](../../scopes/permissions.md)
 
-Embedding in the "Create content based on" item (similar to "Create task" or "Create meeting" based on a message).
+Embedding in the "Create content based on" item (analogous to "Create task" or "Create meeting" based on a message).
 
 #|
 || **Parameter** | **Description** ||
@@ -54,23 +54,30 @@ The application will open in a slider style (like tasks or calendar).
 
 ## Examples
 
-```php
-CRest::call(
-    'placement.bind',
-    [
-        'PLACEMENT' => 'IM_CONTEXT_MENU',
-        'HANDLER' => 'https://example.com/apps/immarket/handlers/context_menu.php',
-        'LANG_ALL' => [
-            'en' => [
-                'TITLE' => 'Application for opening the context menu of a message within the chat',
+{% list tabs %}
+
+- PHP
+
+    ```php
+    CRest::call(
+        'placement.bind',
+        [
+            'PLACEMENT' => 'IM_CONTEXT_MENU',
+            'HANDLER' => 'https://example.com/apps/immarket/handlers/context_menu.php',
+            'LANG_ALL' => [
+                'de' => [
+                    'TITLE' => 'Application to open the context menu of a message within the chat',
+                ],
             ],
-        ],
-        'OPTIONS' => [
-            'context' => 'USER;CHAT',
-            'role' => 'USER',
-            'extranet' => 'N',
+            'OPTIONS' => [
+                'context' => 'USER;CHAT',
+                'role' => 'USER',
+                'extranet' => 'N',
+            ]
         ]
-    ]
-);
-```
-{% include [Examples Note](../../../_includes/examples.md) %}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Examples note](../../../_includes/examples.md) %}

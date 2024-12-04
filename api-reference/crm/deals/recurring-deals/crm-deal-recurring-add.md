@@ -1,8 +1,8 @@
-# Create a New Recurring Deal crm.deal.recurring.add
+# Create a new recurring deal crm.deal.recurring.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -39,49 +39,55 @@ To find out the required format of the fields, execute the method [crm.deal.recu
 
 ## Example
 
-```js
-var current = new Date();
-var nextMonth = new Date();
-var nextYear = new Date();
-nextMonth.setMonth(current.getMonth() + 1);
-nextYear.setFullYear(current.getFullYear() + 1);
-var date2str = function(d)
-{
-    return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+02:00';
-};
-var paddatepart = function(part)
-{
-    return part >= 10 ? part.toString() : '0' + part.toString();
-};
-BX24.callMethod(
-    "crm.deal.recurring.add",
-    {
-        fields:
-        {
-            "DEAL_ID": "45",
-            "CATEGORY_ID": "1",
-            "IS_LIMIT": "D",
-            "LIMIT_DATE": date2str(nextYear),
-            "START_DATE": date2str(nextMonth),
-            "PARAMS": {
-                "MODE": "multiple",
-                "MULTIPLE_TYPE": "month",
-                "MULTIPLE_INTERVAL": 1,
-                "OFFSET_BEGINDATE_TYPE": "day",
-                "OFFSET_BEGINDATE_VALUE": 1,
-                "OFFSET_CLOSEDATE_TYPE": "month",
-                "OFFSET_CLOSEDATE_VALUE": 2,
-            }
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info("Recurring deal settings added. Record ID - " + result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var current = new Date();
+    var nextMonth = new Date();
+    var nextYear = new Date();
+    nextMonth.setMonth(current.getMonth() + 1);
+    nextYear.setFullYear(current.getFullYear() + 1);
+    var date2str = function(d)
+    {
+        return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+02:00';
+    };
+    var paddatepart = function(part)
+    {
+        return part >= 10 ? part.toString() : '0' + part.toString();
+    };
+    BX24.callMethod(
+        "crm.deal.recurring.add",
+        {
+            fields:
+            {
+                "DEAL_ID": "45",
+                "CATEGORY_ID": "1",
+                "IS_LIMIT": "D",
+                "LIMIT_DATE": date2str(nextYear),
+                "START_DATE": date2str(nextMonth),
+                "PARAMS": {
+                    "MODE": "multiple",
+                    "MULTIPLE_TYPE": "month",
+                    "MULTIPLE_INTERVAL": 1,
+                    "OFFSET_BEGINDATE_TYPE": "day",
+                    "OFFSET_BEGINDATE_VALUE": 1,
+                    "OFFSET_CLOSEDATE_TYPE": "month",
+                    "OFFSET_CLOSEDATE_VALUE": 2,
+                }
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info("Recurring deal settings added. Record ID - " + result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

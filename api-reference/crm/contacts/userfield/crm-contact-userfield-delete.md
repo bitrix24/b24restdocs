@@ -81,7 +81,7 @@ Delete the custom field with `id = 432`
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php       
     try {
@@ -149,7 +149,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `ID is not defined or invalid` | The provided `id` is either less than or equal to zero, or not provided at all ||
+|| `-` | `ID is not defined or invalid` | The provided `id` is either less than or equal to zero or not provided at all ||
 || `-` | `Access denied` | Occurs when:
 - the user does not have administrative rights
 - the user attempts to delete a custom field not associated with contacts ||

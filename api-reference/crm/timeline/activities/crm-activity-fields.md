@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `crm.activity.fields` returns a description of the activity fields.
+The method `crm.activity.fields` returns a description of activity fields.
 
 ## Parameters
 
@@ -30,25 +30,31 @@ No parameters
 
 ## Examples
 
-```js
-BX24.callMethod(
-    "crm.activity.fields",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+- JS
 
-## Returned Fields
+    ```js
+    BX24.callMethod(
+        "crm.activity.fields",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
 
-#| 
+{% endlist %}
+
+{% include [Example notes](../../../../_includes/examples.md) %}
+
+## Returned fields
+
+#|
 || **Field** | **Description** | **Note** ||
 || **ASSOCIATED_ENTITY_ID**
 [`integer`](../../../data-types.md) | Identifier of the entity associated with the deal | Read-only ||
@@ -94,11 +100,11 @@ BX24.callMethod(
 || **ORIGIN_ID**
 [`string`](../../../data-types.md) | Identifier of the element in the data source | Used only for binding to an external source. ||
 || **ORIGIN_VERSION**
-[`string`](../../../data-types.md) | Original version | Used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting. ||
+[`string`](../../../data-types.md) | Original version | Used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, such data can be edited in CRM without fear that the next export will overwrite the data. ||
 || **OWNER_ID**
 [`integer`](../../../data-types.md) | Owner | Immutable. ||
 || **OWNER_TYPE_ID**
-[`crm.enum.ownertype`](../../../data-types.md) | Type of owner | Immutable. ||
+[`crm.enum.ownertype`](../../../data-types.md) | Owner type | Immutable. ||
 || **PRIORITY**
 [`crm.enum.activitypriority`](../../../data-types.md) | Priority | ||
 || **PROVIDER_DATA**
@@ -106,13 +112,13 @@ BX24.callMethod(
 || **PROVIDER_GROUP_ID**
 [`string`](../../../data-types.md) | | ||
 || **PROVIDER_ID**
-[`string`](../../../data-types.md) | Identifier of the provider | Read-only ||
+[`string`](../../../data-types.md) | Provider identifier | Read-only ||
 || **PROVIDER_TYPE_ID**
-[`string`](../../../data-types.md) | Identifier of the provider type | Status from the directory ||
+[`string`](../../../data-types.md) | Provider type identifier | Status from the directory ||
 || **PROVIDER_PARAMS**
 [`object`](../../../data-types.md) | | ||
 || **RESPONSIBLE_ID**
-[`user`](../../../data-types.md) | Responsible person | Required. ||
+[`user`](../../../data-types.md) | Responsible | Required. ||
 || **RESULT_CURRENCY_ID**
 [`string`](../../../data-types.md) | | ||
 || **RESULT_MARK**

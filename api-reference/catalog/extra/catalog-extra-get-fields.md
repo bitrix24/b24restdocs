@@ -1,10 +1,10 @@
-# Get Fields for Markup catalog.extra.getFields
+# Get Fields of Markup catalog.extra.getFields
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns markup fields.
+The method returns markup fields.
 
 No parameters.
 
@@ -38,15 +38,15 @@ No parameters.
 
     ```js
     BX24.callMethod(
-    'catalog.extra.getFields', 
-    {},
-    function(result)
-    {
-    if(result.error())
-    console.error(result.error());
-    else
-    console.log(result.data());
-    }
+        'catalog.extra.getFields', 
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.log(result.data());
+        }
     );
     ```
 
@@ -137,7 +137,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions for reading ||
+|| `200040300010` | Insufficient permissions to read ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

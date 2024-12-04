@@ -1,8 +1,8 @@
-# Returning the Web Address of the Page
+# Get the web address of landing.landing.getpublicurl
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -20,11 +20,9 @@ Some data may be missing here — we will complete it soon.
 
 {% endif %}
 
-{% note info "landing.landing.getpublicurl" %}
-
-**Scope**: [`landing`](../../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
+> Scope: [`landing`](../../../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
 The method `landing.landing.getpublicurl` returns the web address of the page or an error.
 
@@ -38,23 +36,30 @@ The method `landing.landing.getpublicurl` returns the web address of the page or
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.landing.getpublicurl',
-    {
-        lid: 351
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.getpublicurl',
         {
-            console.error(result.error());
-        }
-        else
+            lid: 351
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
-{% include [Example Note](../../../../_includes/examples.md) %}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

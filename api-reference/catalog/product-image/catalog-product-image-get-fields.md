@@ -4,13 +4,13 @@
 >
 > Who can execute the method: administrator
 
-This method returns the available fields for a product image, main product, trade offer, or service.
+The method returns the available fields of a product image, main product, variation, or service.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -69,7 +69,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -140,12 +140,12 @@ HTTP status: **200**
 || **productImage**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_product_image](../data-types.md#catalog_product_image), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -160,7 +160,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to view the trade catalog ||
+|| `200040300010` | Insufficient permissions to view the product catalog ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

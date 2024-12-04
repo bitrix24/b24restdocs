@@ -1,22 +1,22 @@
-# Remove the command imbot.command.unregister
+# Remove the imbot.command.unregister Team
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types are not specified
-- parameter requirements are not indicated
+- required parameters are not indicated
 - not all parameters have examples in the table
 - examples are missing
-- success response is absent
-- error response is absent
+- response in case of success is missing
+- response in case of error is missing
 - links to pages that have not yet been created are not specified
 
 {% endnote %}
@@ -41,32 +41,38 @@ The method `imbot.command.unregister` removes the command handling.
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.command.unregister',
-    Array(
-        'COMMAND_ID' => 13,
-        'CLIENT_ID' => '',
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.command.unregister',
+        Array(
+            'COMMAND_ID' => 13,
+            'CLIENT_ID' => '',
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% note warning %}
 
-To handle the command, the application must process the event of adding a command [ONIMCOMMANDADD](./events/index.md).
+To handle the command, the application must have an event handler for the command addition [ONIMCOMMANDADD](./events/index.md).
 
 {% endnote %}
 
-## Success response
+## Response in case of success
 
 `true`
 
-## Error response
+## Response in case of error
 
 error
 

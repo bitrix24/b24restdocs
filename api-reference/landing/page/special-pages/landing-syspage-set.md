@@ -1,4 +1,4 @@
-# Set a Special Page for the Site landing.syspage.set
+# Set a special page for the site landing.syspage.set
 
 {% note warning "We are still updating this page" %}
 
@@ -12,10 +12,10 @@ Some data may be missing here — we will complete it shortly.
 
 - missing parameters or fields
 - parameter types not specified
-- required parameters not indicated
-- examples are missing
-- success response is absent
-- error response is absent
+- parameter requirements not specified
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -29,26 +29,32 @@ The method `landing.syspage.set` sets a special page for the site. If the **lid*
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.syspage.set',
-    {
-        id: 1390,// Site ID
-        type: 'personal',// Page type
-        lid: 8593// ID of the page that will be considered of this type within the site
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-)
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.syspage.set',
+        {
+            id: 1390,// Site ID
+            type: 'personal',// Page type
+            lid: 8593// Page ID that will be considered of this type within the site
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    )
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

@@ -1,27 +1,27 @@
 title: Product
 href: index.md
 items: 
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Add Product
+  - name: Add product
     href: catalog-product-add.md
-  - name: Update Product
+  - name: Update product
     href: catalog-product-update.md
-  - name: Get Product by ID
+  - name: Get product by id
     href: catalog-product-get.md
-  - name: Get List of Products by Filter
+  - name: Get list of products by filter
     href: catalog-product-list.md
-  - name: Download Product Files
+  - name: Download product files
     href: catalog-product-download.md
-  - name: Delete Product
+  - name: Delete product
     href: catalog-product-delete.md
-  - name: Get Product Fields by Filter
+  - name: Get product fields by filter
     href: catalog-product-get-fields-by-filter.md
-  - name: Parent Products
+  - name: Parent products
     include:
       path: sku/b24-toc.yaml
       mode: link
-  - name: Trade Offers
+  - name: Product variations
     include:
       path: offer/b24-toc.yaml
       mode: link

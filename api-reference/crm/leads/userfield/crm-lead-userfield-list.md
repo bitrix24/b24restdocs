@@ -1,8 +1,8 @@
-# Get a List of Fields crm.lead.userfield.list
+# Get a list of fields crm.lead.userfield.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -29,30 +29,36 @@ The method `crm.lead.userfield.list` returns a list of custom fields for leads b
 #|
 || **Parameter** | **Description** ||
 || **order** | Sorting fields. ||
-|| **filter** | Filtering fields. ||
+|| **filter** | Filter fields. ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    "crm.lead.userfield.list",
-    {
-        order: { "SORT": "ASC" },
-        filter: { "MANDATORY": "N" }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-        {
-            console.dir(result.data());             
-            if(result.more())
-                result.next();                        
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        "crm.lead.userfield.list",
+        {
+            order: { "SORT": "ASC" },
+            filter: { "MANDATORY": "N" }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.dir(result.data());             
+                if(result.more())
+                    result.next();                        
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

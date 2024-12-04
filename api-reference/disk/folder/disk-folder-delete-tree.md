@@ -1,8 +1,8 @@
-# Delete Folder and All Child Elements Permanently disk.folder.deletetree
+# Permanently Delete a Folder and All Its Subitems disk.folder.deletetree
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it shortly
 >
 > Who can execute the method: any user
 
-The method `disk.folder.deletetree` permanently deletes a folder and all its child elements.
+The method `disk.folder.deletetree` permanently deletes a folder and all its subitems.
 
 ## Parameters
 
@@ -35,24 +35,31 @@ The method `disk.folder.deletetree` permanently deletes a folder and all its chi
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.folder.deletetree",
-    {
-        id: 8
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.folder.deletetree",
+        {
+            id: 8
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Response on Success
+## Success Response
 
 > 200 OK
 

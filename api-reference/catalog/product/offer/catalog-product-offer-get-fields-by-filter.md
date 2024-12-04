@@ -1,10 +1,10 @@
-# Get Product Offer Fields by Filter catalog.product.offer.getFieldsByFilter
+# Get Product Variation Fields by Filter catalog.product.offer.getFieldsByFilter
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns the fields of the product offer based on the filter.
+The method returns the fields of the product variation based on the filter.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method returns the fields of the product offer based on the filter.
 || **Name**
 `type` | **Description** ||
 || **filter***
-[`object`](../../../data-types.md) | Filter to retrieve all fields of the product offer ||
+[`object`](../../../data-types.md) | Filter to retrieve all fields of the product variation ||
 |#
 
 ### Filter Parameter
@@ -27,7 +27,7 @@ This method returns the fields of the product offer based on the filter.
 || **iblockId***
 [`catalog_catalog.id`](../../data-types.md#catalog_catalog) | Identifier of the information block.
 
-To obtain existing identifiers of information blocks, use [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
+To retrieve existing identifiers of information blocks, use [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
 ||
 |#
 
@@ -130,7 +130,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Allow Purchase When Out of Stock",
+                "name": "Permission to Purchase When Out of Stock",
                 "type": "char"
             },
             "code": {
@@ -317,14 +317,14 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Purchasing Price Currency",
+                "name": "Currency of Purchase Price",
                 "type": "string"
             },
             "purchasingPrice": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Purchasing Price",
+                "name": "Purchase Price",
                 "type": "string"
             },
             "quantity": {
@@ -359,7 +359,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Allow Subscription to Product",
+                "name": "Permission to Subscribe to Product",
                 "type": "char"
             },
             "timestampX": {
@@ -418,8 +418,8 @@ HTTP Status: **200**
         "finish": 1718625285.105152,
         "duration": 0.529350996017456,
         "processing": 0.06528401374816895,
-        "date_start": "2024-06-17T14:54:44+03:00",
-        "date_finish": "2024-06-17T14:54:45+03:00"
+        "date_start": "2024-06-17T14:54:44+02:00",
+        "date_finish": "2024-06-17T14:54:45+02:00"
     }
 }
 ```
@@ -434,7 +434,7 @@ HTTP Status: **200**
 || **offer**
 [`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_product_offer](../../data-types.md#catalog_product_offer), and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -454,11 +454,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the product catalog
+|| `200040300010` | Insufficient rights to read the trade catalog
 || 
-|| `100` | The `filter` parameter is not specified or is empty
+|| `100` | Parameter `filter` is not specified or is empty
 || 
-|| `0` | The information block identifier is not specified
+|| `0` | Information block identifier is not specified
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

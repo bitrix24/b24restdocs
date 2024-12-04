@@ -1,8 +1,8 @@
-# Cancel the Inventory Document catalog.document.cancel
+# Cancel the inventory management document catalog.document.cancel
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Required parameters are not specified
-- No response in case of an error
-- No examples in other languages
+- required parameters are not specified
+- no response in case of error
+- no examples in other languages
   
 {% endnote %}
 
@@ -35,27 +35,33 @@ This method cancels the processing of the document by ID.
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`integer`](../../data-types.md)| Identifier of the inventory document. ||
+[`integer`](../../data-types.md)| Identifier of the inventory management document. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'catalog.document.cancel',
-    {
-        id: 112
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.document.cancel',
+        {
+            id: 112
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

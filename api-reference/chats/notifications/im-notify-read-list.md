@@ -1,8 +1,8 @@
-# Read Notification List (excluding CONFIRM) im.notify.read.list
+# Read the list of notifications (excluding CONFIRM) im.notify.read.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
+- edits needed for writing standards
+- parameter types are not specified
 - examples are missing
 
 {% endnote %}
@@ -29,36 +29,42 @@ The method `im.notify.read.list` "reads" the list of notifications, excluding no
 || **IDS^*^**
 [`unknown`](../../data-types.md) | `[1,2,3]` | Array of notification identifiers | 30 ||
 || **ACTION**
-[`unknown`](../../data-types.md) | `'Y'` | Mark as read/unread (`Y`\|`N`) | 30 ||
+[`unknown`](../../data-types.md) | `'Y'` | Mark as read|unread (`Y`\|`N`) | 30 ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```js
-B24.callMethod(
-    'im.notify.read.list',
-    {
-        IDS: [1,2,3],
-        ACTION: 'Y'
-    },
-    res => {
-        if (res.error())
-        {
-        console.error(result.error().ex);
-        }
-        else
-        {
-        console.log(res.data())
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+- JS
 
-## Successful Response
+    ```js
+    B24.callMethod(
+        'im.notify.read.list',
+        {
+            IDS: [1,2,3],
+            ACTION: 'Y'
+        },
+        res => {
+            if (res.error())
+            {
+            console.error(result.error().ex);
+            }
+            else
+            {
+            console.log(res.data())
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Response on success
 
 ```json
 {
@@ -66,7 +72,7 @@ B24.callMethod(
 }        
 ```
 
-## Error Response
+## Response on error
 
 ```json
 {
@@ -75,12 +81,12 @@ B24.callMethod(
 }
 ```
 
-### Key Descriptions
+### Description of keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||

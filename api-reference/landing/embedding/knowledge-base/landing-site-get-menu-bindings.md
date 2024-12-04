@@ -1,8 +1,8 @@
-# Get a List of Menu Bindings in `landing.site.getMenuBindings`
+# Get the list of bindings in landing.site.getMenuBindings
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -35,24 +35,30 @@ The method `landing.site.getMenuBindings` returns a list of bindings associated 
 
 ## Example
 
-```js
-BX24.callMethod(
-    'landing.site.getMenuBindings',
-    {
-        menuCode: 'crm_switcher:deal'
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.getMenuBindings',
+        {
+            menuCode: 'crm_switcher:deal'
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

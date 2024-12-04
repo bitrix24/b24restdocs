@@ -1,8 +1,8 @@
-# Get File Path lists.element.get.file.url
+# Get File URL with lists.element.get.file.url
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it shortly.
 > Who can execute the method: any user
 
 
-The method `lists.element.get.file.url` returns the file path. On success, an array with a list of URLs for the required field of type File or File (Disk) will be returned.
+The method `lists.element.get.file.url` returns the path to the file. On success, it will return an array with a list of URLs for the required field of type File or File (Drive).
 
 ## Parameters
 
@@ -39,34 +39,42 @@ The method `lists.element.get.file.url` returns the file path. On success, an ar
     - lists_socnet - type of group lists information block. In this case, the parameter SOCNET_GROUP_ID - `id` of the group must be passed.
 - IBLOCK_ID - `id` of the information block
 - ELEMENT_ID - `id` of the element
-- FIELD_ID - `id` of the field (property of the information block) File or File (Disk), without the prefix `"PROPERTY_"`
+- FIELD_ID - `id` of the field (property of the information block) File or File (Drive), without the prefix `"PROPERTY_"`
 - SEF_FOLDER: '/my_section/lists/' - path to the folder with which the component works. This parameter is optional. By default, the value will be selected based on one of the system information block types. | ||
 || **SOCNET_GROUP_ID**^*^
 [`unknown`](../../data-types.md) | `id` of the group (required if the list is created for a group); | ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Example
 
-```javascript
-var params = {
-    'IBLOCK_TYPE_ID': 'lists',
-    'IBLOCK_ID': '41',
-    'ELEMENT_ID': '683',
-    'FIELD_ID': '120'
-};
-BX24.callMethod(
-    'lists.element.get.file.url',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            console.log(result.data());
-    }
-)
-```
+{% list tabs %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists',
+        'IBLOCK_ID': '41',
+        'ELEMENT_ID': '683',
+        'FIELD_ID': '120'
+    };
+    BX24.callMethod(
+        'lists.element.get.file.url',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    )
+    ```
+
+{% endlist %}
+
+
+
+{% include [Note on examples](../../../_includes/examples.md) %}

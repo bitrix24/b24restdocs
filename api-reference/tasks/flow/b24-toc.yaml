@@ -3,15 +3,17 @@ href: index.md
 items:
   - name: Overview of methods
     href: index.md
-  - name: Create a flow
+  - name: Create Flow
     href: tasks-flow-flow-create.md
-  - name: Get a flow
-    href: tasks-flow-flow-get.md
-  - name: Update a flow
+  - name: Update Flow
     href: tasks-flow-flow-update.md
-  - name: Delete a flow
+  - name: Get Flow
+    href: tasks-flow-flow-get.md
+  - name: Delete Flow
     href: tasks-flow-flow-delete.md
-  - name: Check flow name for uniqueness
+  - name: Check Flow name for uniqueness
     href: tasks-flow-flow-is-exists.md
-  - name: Enable or disable a flow
+  - name: Enable or disable Flow
     href: tasks-flow-flow-activate.md
+  - name: Pin or unpin Flow
+    href: tasks-flow-flow-pin.md

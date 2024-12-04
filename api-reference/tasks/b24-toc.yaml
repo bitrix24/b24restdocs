@@ -1,63 +1,63 @@
 title: Tasks
 href: index.md
 items: 
-  - name: About Tasks in Bitrix24
+  - name: Overview of methods
     href: index.md
-  - name: Task Fields
+  - name: Task fields
     href: fields.md
-  - name: Add Task
+  - name: Add task
     href: tasks-task-add.md
-  - name: Update Task
+  - name: Update task
     href: tasks-task-update.md
-  - name: Get Task by ID
+  - name: Get task by ID
     href: tasks-task-get.md
-  - name: Get Task List
+  - name: Get list of tasks
     href: tasks-task-list.md
-  - name: Attach Files to Task
+  - name: Attach files to task
     href: tasks-task-files-attach.md
-  - name: Accept Task
+  - name: Accept task
     href: tasks-task-approve.md
-  - name: Move Task to "Completed" Status
+  - name: Move task to "completed" status
     href: tasks-task-complete.md
-  - name: Get User Counters
+  - name: Get user counters
     href: tasks-task-counters-get.md
-  - name: Move Task to "Deferred" Status
+  - name: Move task to "deferred" status
     href: tasks-task-defer.md
-  - name: Delegate Task
+  - name: Delegate task
     href: tasks-task-delegate.md
-  - name: Delete Task
+  - name: Delete task
     href: tasks-task-delete.md
-  - name: Reject Task
+  - name: Reject task
     href: tasks-task-disapprove.md
-  - name: Add Task to Favorites
+  - name: Add task to Favorites
     href: tasks-task-favorite-add.md
-  - name: Remove Task from Favorites
+  - name: Remove task from Favorites
     href: tasks-task-favorite-remove.md
-  - name: Get Field List
+  - name: Get list of fields
     href: tasks-task-get-fields.md
-  - name: Check Access to Task
+  - name: Check access to task
     href: tasks-task-get-access.md
-  - name: Task History
+  - name: Task history
     href: tasks-task-history-list.md
-  - name: Move Task to "Waiting for Execution" Status
+  - name: Move task to "waiting for execution" status
     href: tasks-task-pause.md
-  - name: Renew Task After Completion
+  - name: Resume task after completion
     href: tasks-task-renew.md
-  - name: Move Task to "In Progress" Status
+  - name: Move task to "in progress" status
     href: tasks-task-start.md
-  - name: Enable Task Watching
+  - name: Enable task watching
     href: tasks-task-start-watch.md
-  - name: Disable Task Watching
+  - name: Disable task watching
     href: tasks-task-stop-watch.md
-  - name: Enable "Silent" Mode
+  - name: Enable "Silent" mode
     href: tasks-task-mute.md
-  - name: Disable "Silent" Mode
+  - name: Disable "Silent" mode
     href: tasks-task-unmute.md
-  - name: Create Dependency Between Tasks
+  - name: Create dependency between tasks
     href: task-dependence-add.md
-  - name: Remove Dependency Between Tasks
+  - name: Remove dependency between tasks
     href: task-dependence-delete.md
-  - name: Task Result
+  - name: Task result
     include:
       path: result/b24-toc.yaml
       mode: link
@@ -73,19 +73,19 @@ items:
     include:
       path: comment-item/b24-toc.yaml
       mode: link
-  - name: Time Spent
+  - name: Time spent
     include:
       path: elapsed-item/b24-toc.yaml
       mode: link
-  - name: Custom Fields
+  - name: Custom fields
     include:
       path: user-field/b24-toc.yaml
       mode: link
-  - name: Kanban Stages and "Planner"
+  - name: Kanban stages and "Planner"
     include:
       path: stages/b24-toc.yaml
       mode: link
-  - name: Workday Plan
+  - name: Workday plan
     include:
       path: planner/b24-toc.yaml
       mode: link

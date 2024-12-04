@@ -1,4 +1,4 @@
-# Add Estimate crm.quote.add
+# Add estimate crm.quote.add
 
 {% note warning "We are still updating this page" %}
 
@@ -8,14 +8,14 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing (should include three examples - curl, js, php)
-- error response missing
-- success response missing
+- edits needed for standard writing
+- parameter types are not specified
+- parameter requirements are not specified
+- examples are missing (there should be three examples - curl, js, php)
+- response in case of error is missing
+- response in case of success is missing
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.quote.add` creates a new estimate. If you need to specify any details about the buyer/seller (since there may be multiple for a company), use the method [crm.requisite.link.register](../requisites/links/crm-requisite-link-register.md).
+The method `crm.quote.add` creates a new estimate. If you need to specify any details of the buyer/seller in the estimate (as there may be several for a company), use the method [crm.requisite.link.register](../requisites/links/crm-requisite-link-register.md).
 
 The created estimate must include the seller and buyer companies:
 - `COMPANY_ID` if the buyer is a company or `CONTACT_ID` if the buyer is a contact.
@@ -40,7 +40,7 @@ The identifiers specified in **crm.requisite.link.register** and in the created 
 
 {% note info %}
 
-To find out the required format of the fields, execute the method [crm.quote.fields](./crm-quote-fields.md) and check the format of the returned values for those fields. 
+To find out the required format of the fields, execute the method [crm.quote.fields](./crm-quote-fields.md) and check the format of the returned values for these fields. 
 
 {% endnote %}
 
@@ -49,32 +49,38 @@ To find out the required format of the fields, execute the method [crm.quote.fie
 
 ## Example
 
-```js
-BX24.callMethod(
-    "crm.quote.add",
-    {
-        fields:
-        {
-            "TITLE": "Draft",
-            "STATUS_ID": "DRAFT",
-            "OPENED": "Y",
-            "ASSIGNED_BY_ID": 1,
-            "CURRENCY_ID": "USD",
-            "OPPORTUNITY": 5000,
-            "COMPANY_ID": 1,
-            "COMMENTS": "New estimate.",
-            "BEGINDATE": "2016-03-01T12:00:00",
-            "CLOSEDATE": "2016-04-01T12:00:00"
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info("Estimate created with ID " + result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        "crm.quote.add",
+        {
+            fields:
+            {
+                "TITLE": "Draft",
+                "STATUS_ID": "DRAFT",
+                "OPENED": "Y",
+                "ASSIGNED_BY_ID": 1,
+                "CURRENCY_ID": "USD",
+                "OPPORTUNITY": 5000,
+                "COMPANY_ID": 1,
+                "COMMENTS": "New estimate.",
+                "BEGINDATE": "2016-03-01T12:00:00",
+                "CLOSEDATE": "2016-04-01T12:00:00"
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info("Estimate created with ID " + result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

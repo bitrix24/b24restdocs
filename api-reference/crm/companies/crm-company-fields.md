@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will add it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing — we will add it soon.
 - edits needed for writing standards
 - missing response in case of success
 - missing response in case of error
-- links to pages not yet created are not specified
+- links to pages that have not yet been created are not specified
 - some fields lack descriptions
 
 {% endnote %}
@@ -32,21 +32,27 @@ No parameters.
 
 ## Examples
 
-```js
-BX24.callMethod(
-    "crm.company.fields",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        "crm.company.fields",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Fields
 
@@ -55,7 +61,7 @@ BX24.callMethod(
 || **ADDRESS**
 [`string`](../../data-types.md) | Company address | ||
 || **ADDRESS_2**
-[`string`](../../data-types.md) | Second line of the address | In some countries, it is common to split the address into 2 parts ||
+[`string`](../../data-types.md) | Second line of the address | In some countries, it is customary to split the address into 2 parts ||
 || **ADDRESS_CITY**
 [`string`](../../data-types.md) | City | ||
 || **ADDRESS_COUNTRY**
@@ -77,7 +83,7 @@ BX24.callMethod(
 || **COMMENTS**
 [`string`](../../data-types.md) | Comments | ||
 || **COMPANY_TYPE**
-[`crm_status`](../../data-types.md) | Type of company | ||
+[`crm_status`](../../data-types.md) | Company type | ||
 || **CREATED_BY_ID**
 [`user`](../../data-types.md) | Created by | Read-only ||
 || **CURRENCY_ID**
@@ -87,13 +93,13 @@ BX24.callMethod(
 || **DATE_MODIFY**
 [`datetime`](../../data-types.md) | Modification date | Read-only ||
 || **EMAIL**
-[`crm_multifield`](../../data-types.md) | E-mail address | Multiple ||
+[`crm_multifield`](../../data-types.md) | Email address | Multiple ||
 || **EMPLOYEES**
 [`crm_status`](../../data-types.md) | Number of employees | ||
 || **HAS_EMAIL**
-[`char`](../../data-types.md) | Check if the email field is filled | Read-only ||
+[`char`](../../data-types.md) | Email field filled check | Read-only ||
 || **HAS_PHONE**
-[`char`](../../data-types.md) | Check if the phone field is filled | Read-only ||
+[`char`](../../data-types.md) | Phone field filled check | Read-only ||
 || **ID**
 [`integer`](../../data-types.md) | Company identifier | Read-only ||
 || **IM**
@@ -115,13 +121,13 @@ BX24.callMethod(
 || **ORIGIN_ID**
 [`string`](../../data-types.md) | Identifier of the element in the data source | Used only for linking to an external source. ||
 || **ORIGIN_VERSION**
-[`string`](../../data-types.md) | Original version | Used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting. ||
+[`string`](../../data-types.md) | Original version | Used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting. ||
 || **PHONE**
 [`crm_multifield`](../../data-types.md) | Company phone | Multiple ||
 || **REG_ADDRESS**
 [`string`](../../data-types.md) | Legal address of the company | Deprecated, used for compatibility. ||
 || **REG_ADDRESS_2**
-[`string`](../../data-types.md) | Second line of the legal address | In some countries, it is common to split the address into 2 parts. Deprecated, used for compatibility. ||
+[`string`](../../data-types.md) | Second line of the legal address | In some countries, it is customary to split the address into 2 parts. Deprecated, used for compatibility. ||
 || **REG_ADDRESS_CITY**
 [`string`](../../data-types.md) | City of the legal address | Deprecated, used for compatibility. ||
 || **REG_ADDRESS_COUNTRY**
@@ -145,11 +151,11 @@ BX24.callMethod(
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Campaign content | For example, for contextual ads. ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Type of traffic | CPC (ads), CPM (banners) ||
+[`string`](../../data-types.md) | Traffic type | CPC (ads), CPM (banners) ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system | Yandex-Direct, Google-Adwords, and others. ||
+[`string`](../../data-types.md) | Advertising system | Google AdWords and others. ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Search term of the campaign | For example, keywords for contextual advertising. ||
+[`string`](../../data-types.md) | Campaign search term | For example, keywords for contextual advertising. ||
 || **WEB**
 [`crm_multifield`](../../data-types.md) | Company resource URLs | Multiple ||
 |#

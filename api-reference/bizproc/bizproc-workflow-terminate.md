@@ -84,7 +84,7 @@ The identifier can be obtained using the [bizproc.workflow.instances](./bizproc-
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
   
     ```php       
     try {
@@ -155,7 +155,7 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Status** | **Code** | **Description** | **Value** ||
+|| **Status** |**Code** | **Description** | **Value** ||
 || `403` | `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator. ||
 || `400` | `ERROR_WRONG_WORKFLOW_ID` | Empty workflow instance ID | An empty value was passed to the `ID` parameter. ||
 |#

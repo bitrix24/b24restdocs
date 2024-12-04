@@ -36,7 +36,7 @@ The method returns a list of values for custom fields of inventory documents.
 || **select**
 [`array`](../../data-types.md)| An array of fields to display. `documentType` must be specified – [type of inventory documents](../enum/catalog-enum-get-store-document-types.md). | ||
 || **order** 
-[`object`](../../data-types.md)| A list to define the display order, where the key is the field name and the value is `ASC` or `DESC`. | ||
+[`object`](../../data-types.md)| A list to determine the display order, where the key is the field name and the value is `ASC` or `DESC`. | ||
 || **filter** 
 [`object`](../../data-types.md)| A list for filtering. `documentType` must be specified – [type of inventory documents](../enum/catalog-enum-get-store-document-types.md). | ||
 || **start** 
@@ -47,13 +47,13 @@ The method returns a list of values for custom fields of inventory documents.
 
 ## Example
 
-In the API, field names are used in the format `field[Field ID in the database]` – for example, `field288`. The field ID can be obtained using the method [`userfieldconfig.list`](.).
+In the API, field names are in the format `field[Field ID in the database]` – for example, `field288`. The field ID can be obtained using the method [`userfieldconfig.list`](.).
 
 {% list tabs %}
 
-- js
+- JS
   
-    ```
+    ```js
     BX24.callMethod(
     'catalog.userfield.document.list',
     {

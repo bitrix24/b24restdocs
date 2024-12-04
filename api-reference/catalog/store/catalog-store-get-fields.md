@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -36,21 +36,27 @@ No parameters.
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'catalog.store.getFields',
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.store.getFields',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -69,7 +75,7 @@ BX24.callMethod(
 || **description** 
 [`string`](../../data-types.md) | Description. |  ||
 || **email** 
-[`string`](../../data-types.md) | E-mail. |  ||
+[`string`](../../data-types.md) | Email. |  ||
 || **gpsN** 
 [`double`](../../data-types.md) | GPS latitude. |  ||
 || **gpsS** 
@@ -102,4 +108,4 @@ BX24.callMethod(
 [`string`](../../data-types.md) | External code. |  ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}

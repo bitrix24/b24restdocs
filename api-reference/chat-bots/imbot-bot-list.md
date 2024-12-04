@@ -12,8 +12,8 @@ Some data may be missing here — we will fill it in shortly.
 
 - edits needed for writing standards
 - examples are missing
-- success response is missing
-- error response is missing
+- response on success is missing
+- response on error is missing
 
 {% endnote %}
 
@@ -31,23 +31,29 @@ No parameters.
 
 {% include [Explanation about restCommand](./_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.bot.list',
-    Array(),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.bot.list',
+        array(),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../_includes/examples.md) %}
 
-### Success response
+### Response on success
 
 An array of arrays containing data about the chatbots:
 
-- **ID** - the bot's identifier.
-- **NAME** - the name of the chatbot.
+- **ID** - bot identifier.
+- **NAME** - chatbot name.
 - **CODE** - internal code.
-- **OPENLINE** - whether it supports Open Lines or not.
+- **OPENLINE** - whether it supports Open Channels or not.

@@ -1,8 +1,8 @@
-# Get Manifest of Block landing.block.getmanifest
+# Get the Manifest of landing.block.getmanifest
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,10 +12,10 @@ Some data may be missing here — we will complete it shortly.
 
 - edits needed for writing standards
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -41,28 +41,34 @@ The method `landing.block.getmanifest` retrieves the manifest of a specific bloc
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.block.getmanifest',
-    {
-        lid: 313,
-        block: 6102,
-        params: {
-            edit_mode: 0
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.block.getmanifest',
+        {
+            lid: 313,
+            block: 6102,
+            params: {
+                edit_mode: 0
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -14,8 +14,8 @@ Some data may be missing — we will complete it soon.
 - parameter types are not specified
 - parameter requirements are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- response on success is missing
+- response on error is missing
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `landing.template.getSiteRef` retrieves a list of included areas for the site. The keys of the returned array are the identifiers of the included areas, and the values are the page identifiers.
+The method `landing.template.getSiteRef` retrieves a list of included areas for the site. The keys of the returned array are the identifiers of the included areas, and the values are the identifiers of the pages.
 
 ## Parameters
 
@@ -37,24 +37,30 @@ The method `landing.template.getSiteRef` retrieves a list of included areas for 
 
 ## Example
 
-```js
-BX24.callMethod(
-    'landing.template.getSiteRef',
-    {
-        id: 1
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.template.getSiteRef',
         {
-            console.error(result.error());
-        }
-        else
+            id: 1
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

@@ -22,7 +22,7 @@ The method `userfieldtype.update` modifies the settings of a custom field type r
 - in the same domain as the main application address
 - must be unique ||
 || **TITLE***
-[`string`](../../data-types.md) | Text title of the type. Will be displayed in the administrative interface for custom field settings | ||
+[`string`](../../data-types.md) | Text name of the type. Will be displayed in the administrative interface for custom field settings | ||
 || **DESCRIPTION**
 [`string`](../../data-types.md) | Text description of the type. Will be displayed in the administrative interface for custom field settings | ||
 || **OPTIONS**
@@ -120,7 +120,7 @@ Default is `0`. If `0` is specified, the standard height for displaying this emb
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {

@@ -2,16 +2,16 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- type and required parameter specifications are missing
-- no response for error and success cases
+- type and required parameter are not specified
+- no response in case of error and success
 - no examples in other languages
   
 {% endnote %}
@@ -28,7 +28,7 @@ Some data may be missing here — we will complete it soon.
 crm.vat.delete(id)
 ```
 
-Deletes a VAT rate.
+Deletes the VAT rate.
 
 ## Parameters
 
@@ -37,23 +37,30 @@ Deletes a VAT rate.
 || **id** | Identifier of the VAT rate. ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.vat.delete",
-    { "id": id },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+- JS
+  
+    ```javascript
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.vat.delete",
+        { "id": id },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+
+{% include [Note on examples](../../../../_includes/examples.md) %}

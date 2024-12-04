@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method deletes a running workflow along with all its data.
+This method deletes the running workflow along with all process data.
 
 ## Method Parameters
 
@@ -78,7 +78,7 @@ This method deletes a running workflow along with all its data.
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
   
     ```php     
     try {
@@ -100,7 +100,7 @@ This method deletes a running workflow along with all its data.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -133,7 +133,7 @@ Contains `true` in case of success ||
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {

@@ -1,4 +1,4 @@
-# Get Parameters of crm.deal.details.configuration.get
+# Get parameters of crm.deal.details.configuration.get
 
 {% note warning "We are still updating this page" %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
-- parameter types not specified
-- parameter requirements not specified
-- examples missing
-- success response missing
-- error response missing
+- edits needed for standard writing
+- parameter types are not specified
+- parameter requirements are not indicated
+- examples are missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -25,12 +25,12 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.deal.details.configuration.get` retrieves the settings of deal cards. This method reads the personal settings of the specified user or the general settings defined for all users.
+The method `crm.deal.details.configuration.get` retrieves the settings of deal cards. The method reads the personal settings of the specified user or the general settings defined for all users.
 
 {% note warning %}
 
-Please note that the settings for deal cards of different directions (or Sales Funnels) may vary from each other. 
-To switch between the settings of deal cards for different directions, the parameter **dealCategoryId** is used.
+Please note that the settings of deal cards for different categories (or funnels) may differ from each other. 
+To switch between the settings of deal cards for different categories, the parameter **dealCategoryId** is used.
 
 {% endnote %}
 
@@ -43,60 +43,66 @@ To switch between the settings of deal cards for different directions, the param
 - **C** - general settings.
  ||
 || **userId**
-[`unknown`](../../../data-types.md) | User identifier. If not specified, the current user is taken. Required only when requesting personal settings. ||
+[`unknown`](../../../data-types.md) | User identifier. If not specified, the current one is used. Required only when requesting personal settings. ||
 || **extras**
 [`unknown`](../../../data-types.md) | Additional parameters. Here, the parameter `dealCategoryId` can be specified for deals. ||
 |#
 
 ## Examples
 
-```js
-//--
-//Request personal settings of the deal card for the user with identifier 1.
-BX24.callMethod(
-    "crm.deal.details.configuration.get",
-    {
-        scope: "P",
-        userId: 1
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-//Request general settings of the deal card for the general direction.
-BX24.callMethod(
-    "crm.deal.details.configuration.get",
-    {
-        scope: "C"
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-//Request general settings of the deal card for the direction with identifier 1.
-BX24.callMethod(
-    "crm.deal.details.configuration.get",
-    {
-        scope: "C",
-        extras: { dealCategoryId: 1 }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-//--
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    //-- 
+    //Request personal settings of deal cards for the user with identifier 1.
+    BX24.callMethod(
+        "crm.deal.details.configuration.get",
+        {
+            scope: "P",
+            userId: 1
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    //Request general settings of deal cards for the general category.
+    BX24.callMethod(
+        "crm.deal.details.configuration.get",
+        {
+            scope: "C"
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    //Request general settings of deal cards for the category with identifier 1.
+    BX24.callMethod(
+        "crm.deal.details.configuration.get",
+        {
+            scope: "C",
+            extras: { dealCategoryId: 1 }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    //-- 
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

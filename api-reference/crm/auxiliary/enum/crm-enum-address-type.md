@@ -1,4 +1,4 @@
-# Get Enumeration Items for "Address Type" crm.enum.addresstype
+# Get Enumeration Items "Address Type" crm.enum.addresstype
 
 {% note warning "We are still updating this page" %}
 
@@ -8,10 +8,10 @@ Some data may be missing — we will complete it soon.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- missing response in case of error
-- missing response in case of success
+- no response in case of error
+- no response in case of success
 - no examples in other languages
   
 {% endnote %}
@@ -57,8 +57,8 @@ Returns the enumeration items for "Address Type".
         "finish": 1561544164.245065,
         "duration": 0.020457029342651367,
         "processing": 0.008939027786254883,
-        "date_start": "2019-06-26T13:16:04+03:00",
-        "date_finish": "2019-06-26T13:16:04+03:00"
+        "date_start": "2019-06-26T13:16:04+02:00",
+        "date_finish": "2019-06-26T13:16:04+02:00"
     }
 }
 ```
@@ -69,18 +69,25 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    "crm.enum.addresstype",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+  
+    ```javascript
+    BX24.callMethod(
+        "crm.enum.addresstype",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 
 {% include [Examples Note](../../../../_includes/examples.md) %}

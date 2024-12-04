@@ -1,14 +1,14 @@
-# Create a New Process rpa.type.add
+# Create a new process rpa.type.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -40,47 +40,53 @@ The method `rpa.type.add` will create a new process.
 || **permissions** | An array with access permissions for this process. ||
 |#
 
-{% include [Notes on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 {% note warning %}
 
-Automatic scenarios (creating stages, automation rules, and default fields) will not be triggered when creating a process via `rest`.
+Automatic scenarios (creating stages, Automation rules, and default fields) will not be triggered when creating a process via `rest`.
 
 {% endnote %}
 
 {% note warning %}
 
-Important! The request must include access permissions for modifying the process.
+Important! The request must specify access permissions for modifying the process.
 
 {% endnote %}
 
 ## Example
 
-This request will create a new process named "My Process". All users will be able to create entities of this process. Only the user with ID 1 will be able to change the settings of this process.
+This request will create a new process named "My Process". All users will be able to create items for this process. Only the user with ID 1 will be able to change the settings of this process.
 
-```json
-{
-    "fields": {
-        "title": "My Process",
-        "image": "list",
-        "permissions": [
-            {
-                "accessCode": "UA",
-                "permission": "X",
-                "action": "ITEMS_CREATE"
-            },
-            {
-                "accessCode": "U1",
-                "permission": "X",
-                "action": "MODIFY"
-            }
-        ]
+{% list tabs %}
+
+- JS
+
+    ```json
+    {
+        "fields": {
+            "title": "My Process",
+            "image": "list",
+            "permissions": [
+                {
+                    "accessCode": "UA",
+                    "permission": "X",
+                    "action": "ITEMS_CREATE"
+                },
+                {
+                    "accessCode": "U1",
+                    "permission": "X",
+                    "action": "MODIFY"
+                }
+            ]
+        }
     }
-}
-```
+    ```
 
-{% include [Notes on examples](../../../../_includes/examples.md) %}
+{% endlist %}
 
-## Response on Success
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
- It will return data in the response similar to the response for the request [rpa.type.get](./rpa-type-get.md).
+## Response in case of success
+
+ Returns data in the response similar to the response for the request [rpa.type.get](./rpa-type-get.md).

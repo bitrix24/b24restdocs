@@ -1,19 +1,19 @@
-# Pause the Current Workday timeman.pause
+# Pause the current workday timeman.pause
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
-- examples missing
-- no response in case of error
+- edits needed for writing standards
+- parameter types are not specified
+- examples are missing
+- response in case of error is absent
 
 {% endnote %}
 
@@ -23,25 +23,31 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `timeman.pause` pauses the current workday.
+The `timeman.pause` method pauses the current workday.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **USER_ID**
-[`unknown`](../../data-types.md) | User identifier. Optional; defaults to the settings of the current user. ||
+[`unknown`](../../data-types.md) | User identifier. Optional, defaults to the settings of the current user. ||
 |#
 
 ## Example
 
-Example call:
+{% list tabs %}
 
-```http
-https://account.bitrix24.com/rest/timeman.pause?user_id=5
-```
+- cURL
 
-## Successful Response
+    ```http
+    https://account.bitrix24.com/rest/timeman.pause?user_id=5
+    ```
+
+{% endlist %}
+
+
+
+## Successful response
 
 > 200 OK
 ```json
@@ -64,7 +70,7 @@ https://account.bitrix24.com/rest/timeman.pause?user_id=5
 }
 ```
 
-### Returned Data
+### Returned data
 
 #|
 || **Field** | **Description** | **Note** ||
@@ -75,29 +81,29 @@ https://account.bitrix24.com/rest/timeman.pause?user_id=5
 - PAUSED - workday is paused
 - EXPIRED - workday has expired (was opened before the start of the current calendar day and not closed) ||
 || **TIME_START**
-[`datetime`](../../data-types.md) | Date-time when the workday started. | The time zone corresponds to the time zone of the start of the workday. ||
+[`datetime`](../../data-types.md) | Date-time when the workday started. | Time zone corresponds to the time zone of the start of the workday ||
 || **TIME_FINISH**
-[`datetime`](../../data-types.md) | Date-time when the workday ended. | Returns null for an unfinished workday. ||
+[`datetime`](../../data-types.md) | Date-time when the workday was completed | Returns null for an unfinished workday ||
 || **DURATION**
-[`HH:MM:SS`](../../data-types.md) | Duration of the workday. | Returns 00:00:00 for an unfinished workday. ||
+[`HH:MM:SS`](../../data-types.md) | Duration of the workday | Returns 00:00:00 for an unfinished workday ||
 || **TIME_LEAKS**
-[`HH:MM:SS`](../../data-types.md) | Total duration of breaks during the day. | ||
+[`HH:MM:SS`](../../data-types.md) | Total duration of breaks during the day | ||
 || **ACTIVE**
-[`true`\|`false`](../../data-types.md) | Confirmation of the workday. | A value of false means that the change to the workday is awaiting confirmation from the supervisor. ||
+[`true`\|`false`](../../data-types.md) | Confirmation of the workday | A value of false means that the change to the workday is awaiting confirmation from the supervisor. ||
 || **IP_OPEN**
-[`string`](../../data-types.md) | IP address from which the workday started. | ||
+[`string`](../../data-types.md) | IP address from which the workday started | ||
 || **IP_CLOSE**
-[`string`](../../data-types.md) | IP address from which the workday ended. | Returns null for an unfinished workday. ||
+[`string`](../../data-types.md) | IP address from which the workday was completed | Returns null for an unfinished workday ||
 || **LAT_OPEN**
-[`double`](../../data-types.md) | Geographical latitude of the workday start point. | ||
+[`double`](../../data-types.md) | Geographic latitude of the workday start point | ||
 || **LON_OPEN**
-[`double`](../../data-types.md) | Geographical longitude of the workday start point. | ||
+[`double`](../../data-types.md) | Geographic longitude of the workday start point | ||
 || **LAT_CLOSE**
-[`double`](../../data-types.md) | Geographical latitude of the workday end point. | ||
+[`double`](../../data-types.md) | Geographic latitude of the workday end point | ||
 || **LON_CLOSE**
-[`double`](../../data-types.md) | Geographical longitude of the workday end point. | ||
+[`double`](../../data-types.md) | Geographic longitude of the workday end point | ||
 || **TZ_OFFSET**
-[`int`](../../data-types.md) | Time zone offset of the employee. | Implies the time zone in which the day started. When the day ends, the end time is adjusted to the time zone of the start of the day. ||
+[`int`](../../data-types.md) | Time zone offset of the employee | Implies the time zone in which the day started. Upon completion of the day, the end time is adjusted to the time zone of the start of the day. ||
 || **TIME_FINISH_DEFAULT**
-[`datetime`](../../data-types.md) | Default end time of the day. | Displayed only for workdays in the status EXPIRED. The "recommended" end time that can be shown to the user as a default value. ||
+[`datetime`](../../data-types.md) | Default end time of the day | Displayed only for workdays in the EXPIRED status. The "recommended" end time value that can be shown to the user as a default value. ||
 |#

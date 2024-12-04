@@ -1,6 +1,6 @@
 # Flows: Overview of Methods
 
-Flows are a tool that automates the distribution and execution of tasks. Employees do not need to search for who will complete a task. They assign tasks to the department's flow, and it automatically designates an assignee.
+Flows are a tool that automates the distribution and execution of tasks. Employees do not need to search for who will complete a task. They assign tasks to the department's flow, and it automatically designates an Assignee.
 
 In the flow, you can track the effectiveness of task completion. Effectiveness is calculated using the formula: `<number of overdue tasks> / <total number of tasks in the flow> * 100%`. To improve effectiveness, change the type of task distribution or the flow team.
 
@@ -12,14 +12,15 @@ In the flow, you can track the effectiveness of task completion. Effectiveness i
 
 - **Manual distribution** `manually`. All tasks are assigned to the flow moderator. The moderator distributes tasks among employees.
 - **Queue distribution** `queue`. Tasks are assigned in turn to each team member. A member will be skipped if they are absent from work, for example, on vacation or sick leave.
+- **Self-assignment** `himself`. Tasks are assigned to the Creator. Each team member in the flow will receive a notification. A flow member becomes the Assignee if they click the Take to Work button. If a task is taken to work, the system will change the task status to In Progress.
 
-If there are no employees left in the flow team with queue distribution, the flow will automatically switch to manual distribution mode. The flow administrator will become the moderator and will receive a notification.
+If there are no employees left in the flow team with queue distribution or self-assignment, the flow will automatically switch to manual distribution mode. The flow administrator will become the moderator and receive a notification.
 
 ## Flow Connection with Other Objects
 
 **Group.** The flow is linked to a group by the identifier `groupId`. The identifier can be obtained using the [create new group](../../sonet-group/sonet-group-create.md) method or the [get list of groups](../../sonet-group/socialnetwork-api-workgroup-list.md) method. If the group identifier is not specified when creating the flow, a new group will be created.
 
-**User.** The flow is linked to a user by the flow administrator's identifier `ownerId`. You can obtain the user identifier using the [user.get](../../user/user-get.md) method. If the identifier is not specified when creating the flow, the creator will be the flow administrator.
+**User.** The flow is linked to a user by the flow administrator's identifier `ownerId`. You can obtain the user identifier using the [user.get](../../user/user-get.md) method. If the identifier is not specified when creating the flow, the flow's creator will be the administrator.
 
 **Task Template.** Flow tasks are created based on a template. The template identifier is specified in `templateId`.
 
@@ -37,7 +38,7 @@ You can add a task to the flow using the [create new task](../tasks-task-add.md)
 
 Bitrix24 will automatically fill in all the necessary fields for the flow according to the flow settings.
 
-The title and assignee are required fields when creating a task outside the flow. In the case of tasks in the flow, it is sufficient to fill in `FLOW_ID` and the title. The flow will assign the assignee.
+Title and Assignee are required fields when creating a task outside the flow. In the case of tasks in the flow, it is sufficient to fill in `FLOW_ID` and the title. The flow will assign the Assignee.
 
 {% note tip "User Documentation" %}
 
@@ -64,9 +65,10 @@ The flow name must be unique. You can check the uniqueness of the name using the
 #|
 || **Method** | **Description** ||
 || [tasks.flow.flow.create](./tasks-flow-flow-create.md) | Create a flow ||
-|| [tasks.flow.flow.get](./tasks-flow-flow-get.md) | Get a flow ||
 || [tasks.flow.flow.update](./tasks-flow-flow-update.md) | Update a flow ||
+|| [tasks.flow.flow.get](./tasks-flow-flow-get.md) | Get a flow ||
 || [tasks.flow.flow.delete](./tasks-flow-flow-delete.md) | Delete a flow ||
 || [tasks.flow.flow.isExists](./tasks-flow-flow-is-exists.md) | Check if a flow with this name exists ||
-|| [tasks.flow.flow.activate](./tasks-flow-flow-activate.md) | Enable or disable the flow ||
+|| [tasks.flow.flow.activate](./tasks-flow-flow-activate.md) | Enable or disable a flow ||
+|| [tasks.flow.flow.pin](./tasks-flow-flow-pin.md) | Pin or unpin a flow in the list ||
 |#

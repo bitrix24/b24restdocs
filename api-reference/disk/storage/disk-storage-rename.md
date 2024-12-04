@@ -1,13 +1,13 @@
-# Rename Storage disk.storage.rename
+# Rename storage disk.storage.rename
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- no error response provided
+- no error response is provided
 
 {% endnote %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -37,25 +37,32 @@ The method `disk.storage.rename` renames the storage. Only the application stora
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.storage.rename",
-    {
-        id: 2,
-        newName: 'New name for storage'
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.storage.rename",
+        {
+            id: 2,
+            newName: 'New name for storage'
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Response on success
 
 > 200 OK
 

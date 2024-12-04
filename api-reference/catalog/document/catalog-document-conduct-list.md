@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing — we will complete it shortly
 
 {% endnote %}
 
@@ -35,30 +35,36 @@ Method for bulk processing of inventory management documents.
 #|
 || **Parameter** | **Description** ||
 || **documentIds**
-[`array`](../../data-types.md)| An array of document identifiers that need to be processed. ||
+[`array`](../../data-types.md)| Array of document identifiers to be processed. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'catalog.document.conductList',
-    {
-        "documentIds": [
-            "114",
-            "112"
-        ]
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.document.conductList',
+        {
+            "documentIds": [
+                "114",
+                "112"
+            ]
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

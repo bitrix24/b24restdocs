@@ -1,21 +1,21 @@
-# Register a Template in the Site Creation Wizard landing.demos.register
+# Register a template in the site creation wizard landing.demos.register
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
+- edits needed for writing standards
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 - links to pages that have not yet been created (localization of blocks) are not specified
 
 {% endnote %}
@@ -30,7 +30,7 @@ The method `landing.demos.register` registers a template in the site and page cr
 
 {% note info %}
 
-To distribute the created site, simply export it to a file from the source account and distribute its application by calling this method during installation.
+To distribute the created site, it is sufficient to obtain an export to a file on the source account and distribute its application by calling this method during installation.
 
 {% endnote %}
 
@@ -53,67 +53,73 @@ For clarifications on template localizations, please see [here](./localization.m
 
 Note that the example uses the result of the method [landing.site.fullExport](../site/landing-site-full-export.md).
 
-```js
-BX24.callMethod(
-    'landing.site.fullExport',
-    {
-        id: 326,
-        params: {
-            edit_mode: 'Y',
-            code: 'myfirstsite',//symbolic code of site
-            name: 'Auto Repair Shop Website',// name of the site (page)
-            description: 'Website for your auto service. Everything you need under the hood.',// description of the site
-            preview_url: 'http://sample.landing.mycompany.com/',// preview URL
-            preview: 'http://site.com/preview.jpg',// main preview image for the template list (recommended 280x115)
-            preview2x: 'http://site.com/preview.jpg',// enlarged preview image (recommended 560x230)
-            preview3x: 'http://site.com/preview.jpg',// retina-sized preview image (recommended 845x345)
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            var data = result.data();
-            console.info(data);
-            BX24.callMethod(
-                'landing.demos.register',
-                {
-                    data: data,
-                    params: {
-                        site_template_id: '',// pass the template value if you are registering for your template (only on-premise!)
-                        // localization array and original language
-                        /*lang: {
-                            en: {
-                                'Phrase 1': 'Translate en 1',
-                                'Phrase 2': 'Translate en 2'
-                            },
-                            de: {
-                                'Phrase 1': 'Translate de 1',
-                                'Phrase 2': 'Translate de 2'
-                            }
-                        },
-                        lang_original: 'ru'*/
-                    }
-                },
-                function(result)
-                {
-                    if(result.error())
-                    {
-                        console.error(result.error());
-                    }
-                    else
-                    {
-                        console.info(result.data());
-                    }
-                }
-            );
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.fullExport',
+        {
+            id: 326,
+            params: {
+                edit_mode: 'Y',
+                code: 'myfirstsite', //symbolic code of site
+                name: 'Auto Repair Shop Website', // name of the site (page)
+                description: 'Website for your auto service. Everything you need under the hood.', // description of the site
+                preview_url: 'http://sample.landing.mycompany.com/', // preview URL
+                preview: 'http://site.com/preview.jpg', // main preview image for the template list (recommended 280x115)
+                preview2x: 'http://site.com/preview.jpg', // enlarged preview image (recommended 560x230)
+                preview3x: 'http://site.com/preview.jpg', // retina-sized preview image (recommended 845x345)
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                var data = result.data();
+                console.info(data);
+                BX24.callMethod(
+                    'landing.demos.register',
+                    {
+                        data: data,
+                        params: {
+                            site_template_id: '', // pass the template value if you are registering for your template (only on-premise!)
+                            // localization array and original language
+                            /*lang: {
+                                en: {
+                                    'Phrase 1': 'Translate en 1',
+                                    'Phrase 2': 'Translate en 2'
+                                },
+                                de: {
+                                    'Phrase 1': 'Translate de 1',
+                                    'Phrase 2': 'Translate de 2'
+                                }
+                            },
+                            lang_original: 'de'*/
+                        }
+                    },
+                    function(result)
+                    {
+                        if(result.error())
+                        {
+                            console.error(result.error());
+                        }
+                        else
+                        {
+                            console.info(result.data());
+                        }
+                    }
+                );
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

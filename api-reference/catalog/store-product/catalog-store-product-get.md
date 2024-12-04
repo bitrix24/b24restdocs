@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
-- no response in case of error
+- required parameter specifications are missing
+- no response in case of an error
 - no response in case of success
 - no examples in other languages
   
@@ -29,7 +29,7 @@ Some data may be missing here — we will fill it in shortly.
 catalog.storeproduct.get(id)
 ```
 
-Method to access the value of inventory balances fields.
+This method is used to access the values of inventory balances fields.
 
 ## Parameters
 
@@ -43,18 +43,25 @@ Method to access the value of inventory balances fields.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.storeproduct.get',
-    {
-        id: 1
-    },
-    function(result) {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.storeproduct.get',
+        {
+            id: 1
+        },
+        function(result) {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 {% include [Note on examples](../../../_includes/examples.md) %}

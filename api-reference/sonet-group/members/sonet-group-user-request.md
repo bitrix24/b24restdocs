@@ -2,17 +2,17 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no error response is provided
+- no response in case of an error
 - no examples in other languages
 
 {% endnote %}
@@ -25,7 +25,7 @@ Some data may be missing — we will complete it shortly
 
 ## Description
 
-This method sends a request from the current user to join a social network group, while checking the current user's access rights to the group. If the group is open for free joining, the user immediately becomes a participant.
+This method sends a request from the current user to join a social network group, while checking the current user's access rights to the group. If the group is open for free joining, the user immediately becomes a member.
 
 ## Returns `true` if the request was successful, or an error message.
 
@@ -37,18 +37,26 @@ This method sends a request from the current user to join a social network group
 || **MESSAGE** | Text of the request. ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Example
 
-```js
-// Sending a request to join the group with ID=17
-BX24.callMethod('sonet_group.user.request', {
-    'GROUP_ID': 17,
-    'MESSAGE': 'Request'
-});
-```
-{% include [Notes on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    // Sending a request to join the group with ID=17
+    BX24.callMethod('sonet_group.user.request', {
+        'GROUP_ID': 17,
+        'MESSAGE': 'Request'
+    });
+    ```
+
+{% endlist %}
+
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Request:
 

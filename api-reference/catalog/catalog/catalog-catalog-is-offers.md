@@ -1,10 +1,10 @@
-# Check if the trade catalog is an offers catalog catalog.catalog.isOffers
+# Check if the trade catalog is a variation catalog catalog.catalog.isOffers
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method checks whether the trade catalog is an offers catalog.
+The method checks if the trade catalog is a variation catalog.
 
 ## Method Parameters
 
@@ -92,8 +92,8 @@ HTTP status: **200**
         "finish": 1716543898.270557,
         "duration": 0.40636587142944336,
         "processing": 0.011233091354370117,
-        "date_start": "2024-05-24T12:44:57+03:00",
-        "date_finish": "2024-05-24T12:44:58+03:00"
+        "date_start": "2024-05-24T12:44:57+02:00",
+        "date_finish": "2024-05-24T12:44:58+02:00"
     }
 }
 ```
@@ -104,7 +104,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the check whether the trade catalog is an offers catalog ||
+[`boolean`](../../data-types.md) | Result of the check if the trade catalog is a variation catalog ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -130,9 +130,9 @@ HTTP status: **400**
 || 
 || `200040300030` | Insufficient permissions to read the trade catalog
 || 
-|| `100` | Parameter `id` is not specified
+|| `100` | The `id` parameter is missing
 || 
-|| `0` | Trade catalog with the specified identifier does not exist
+|| `0` | The trade catalog with the specified identifier does not exist
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 
@@ -142,9 +142,6 @@ HTTP status: **400**
 
 ## Continue Learning
 
-- [{#T}](./catalog-catalog-add.md)
-- [{#T}](./catalog-catalog-update.md)
 - [{#T}](./catalog-catalog-get.md)
 - [{#T}](./catalog-catalog-list.md)
-- [{#T}](./catalog-catalog-delete.md)
 - [{#T}](./catalog-catalog-get-fields.md)

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits are needed to meet the writing standard
+- edits needed for writing standards
 - parameter types are not specified
 - not all parameters have examples in the table
 - examples are missing
@@ -37,7 +37,7 @@ The method `imbot.command.update` updates data in the team.
 || **EVENT_COMMAND_ADD**
 [`unknown`](../../data-types.md) | `'http://www.hazz/chatApi/bot.php'` | Link to the command handler | ||
 || **HIDDEN**
-[`unknown`](../../data-types.md) | `'N'` | Whether the command is hidden or not | ||
+[`unknown`](../../data-types.md) | `'N'` | Is the command hidden or not | ||
 || **EXTRANET_SUPPORT**
 [`unknown`](../../data-types.md) | `'N'` | Is the command available to Extranet users | ||
 || **CLIENT_ID**
@@ -56,7 +56,7 @@ Array(
  | New translation phrases, all previous ones will be deleted | ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 {% note warning %}
 
@@ -66,7 +66,7 @@ To process the command, the application must handle the command addition event [
 
 {% note warning %}
 
-It is mandatory to specify the translation array `LANG` for at least RU and EN. If there is no phrase for BY, UA, KZ, the default RU phrases will be shown; if there is no phrase in RU, the command will be hidden. The same applies to other languages — if there are no phrases, the default EN phrases will be shown; if there is no phrase in EN, the command will be hidden in the public part.
+It is mandatory to specify the translation array `LANG` for at least RU and EN. If there is no phrase for BY, UA, KZ, the default phrases from RU will be shown; if there is no phrase in RU, the command will be hidden. The same applies to other languages — if there are no phrases, the default phrases from EN will be shown; if there is no phrase in EN, the command will be hidden in the public part.
 
 {% endnote %}
 
@@ -74,32 +74,38 @@ It is mandatory to specify the translation array `LANG` for at least RU and EN. 
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.command.update',
-    Array(
-        'COMMAND_ID' => 13,
-        'FIELDS' => Array(
-            'EVENT_COMMAND_ADD' => 'http://www.hazz/chatApi/bot.php',
-            'HIDDEN' => 'N',
-            'EXTRANET_SUPPORT' => 'N',
-            'CLIENT_ID' => '',
-            'LANG' => Array(
-                Array(
-                    'LANGUAGE_ID' => 'en',
-                    'TITLE' => 'Get echo message',
-                    'PARAMS' => 'some text'
-                ),
-            ),
-        )
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Examples Notes](../../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.command.update',
+        Array(
+            'COMMAND_ID' => 13,
+            'FIELDS' => Array(
+                'EVENT_COMMAND_ADD' => 'http://www.hazz/chatApi/bot.php',
+                'HIDDEN' => 'N',
+                'EXTRANET_SUPPORT' => 'N',
+                'CLIENT_ID' => '',
+                'LANG' => Array(
+                    Array(
+                        'LANGUAGE_ID' => 'en',
+                        'TITLE' => 'Get echo message',
+                        'PARAMS' => 'some text'
+                    ),
+                ),
+            )
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response in case of success
 

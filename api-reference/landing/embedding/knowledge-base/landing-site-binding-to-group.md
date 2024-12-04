@@ -8,13 +8,13 @@ Some data may be missing here — we will fill it in shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -29,7 +29,7 @@ The method `landing.site.bindingToGroup` binds a specific Knowledge Base to a gr
 ## Parameters
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Parameter** | **Description** | **Available since** ||
 || **id**
 [`unknown`](../../../data-types.md) | Identifier of the Knowledge Base. | ||
 || **groupId**
@@ -38,25 +38,33 @@ The method `landing.site.bindingToGroup` binds a specific Knowledge Base to a gr
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.site.bindingToGroup',
-    {
-        id: 32,
-        groupId: 174
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.bindingToGroup',
+        {
+            id: 32,
+            groupId: 174
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

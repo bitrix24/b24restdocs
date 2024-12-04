@@ -1,8 +1,8 @@
-# Update Chat Title im.chat.add
+# Change Chat Title im.chat.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
-- examples missing
+- edits needed for standard writing
+- parameter types are not specified
+- examples are missing
 
 {% endnote %}
 
@@ -36,22 +36,28 @@ The method `im.chat.add` updates the chat title.
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.chat.updateTitle',
-    Array(
-        'CHAT_ID' => 13,
-        'TITLE' => 'New name for the chat'
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'im.chat.updateTitle',
+        Array(
+            'CHAT_ID' => 13,
+            'TITLE' => 'New name for the chat'
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Response on Success
 
 ```json
 {
@@ -59,7 +65,7 @@ $result = restCommand(
 }
 ```
 
-## Error Response
+## Response on Error
 
 ```json
 {
@@ -68,7 +74,7 @@ $result = restCommand(
 }
 ```
 
-### Key Descriptions
+### Description of Keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error

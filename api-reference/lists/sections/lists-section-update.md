@@ -1,20 +1,20 @@
-# Update the lists.section.update section
+# Update the universal list section lists.section.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The `lists.section.update` method updates a list section. If the item is successfully updated, the response is `true`; otherwise, it returns *Exception*.
+The method `lists.section.update` updates a list section. On successful update, the response is `true`, otherwise *Exception*.
 
 #|
 || **Parameter** | **Description** ||
@@ -46,27 +46,33 @@ The `lists.section.update` method updates a list section. If the item is success
 
 ## Example
 
-```js
-/* lists.section.update */
-var params = {
-    'IBLOCK_TYPE_ID': 'lists',
-    'IBLOCK_CODE': 'rest_1',
-    'SECTION_CODE': 'Section_code_1',
-    'FIELDS': {
-        'NAME': 'Section_1 (Updated)'
-    }
-};
-BX24.callMethod(
-    'lists.section.update',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    /* lists.section.update */
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists',
+        'IBLOCK_CODE': 'rest_1',
+        'SECTION_CODE': 'Section_code_1',
+        'FIELDS': {
+            'NAME': 'Section_1 (Updated)'
+        }
+    };
+    BX24.callMethod(
+        'lists.section.update',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Example notes](../../../_includes/examples.md) %}

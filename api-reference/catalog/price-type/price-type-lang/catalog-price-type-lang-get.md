@@ -1,16 +1,16 @@
-# Get Values of the Translation Fields for Price Type catalog.priceTypeLang.get
+# Get Values of Price Type Name Translation Fields catalog.priceTypeLang.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
+- required parameter specifications are missing
 - no response in case of an error
 - no examples in other languages
   
@@ -28,33 +28,41 @@ Some data may be missing — we will complete it shortly.
 catalog.priceTypeLang.get(id)
 ```
 
-This method provides access to the value of the translation fields for the price type name.
+Method to access the value of the price type name translation fields.
 
 ## Parameters
 
-#| 
+#|
 || **Parameter** | **Description** ||
 || **id** 
-[`integer`](../../data-types.md)| Identifier for the translation of the price type name. ||
+[`integer`](../../data-types.md)| Identifier of the price type name translation. ||
 |#
 
 {% include [Parameter Notes](../../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.priceTypeLang.get',
-    {
-        id: 537
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.priceTypeLang.get',
+        {
+            id: 537
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+
 {% include [Example Notes](../../../../_includes/examples.md) %}

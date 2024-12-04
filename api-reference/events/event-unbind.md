@@ -2,7 +2,7 @@
 
 > Who can execute the method: administrator
 
-The method `event.unbind` cancels the registration of an event handler.
+The method `event.unbind` cancels a registered event handler.
 
 It only works when logged in as a user with administrative rights to the account.
 
@@ -22,7 +22,7 @@ It only works when logged in as a user with administrative rights to the account
 
 {% note info %}
 
-If you need to remove event handlers set with an empty `auth_type` (authorized on behalf of the user who triggered the event), but keep other handlers, specify `auth_type=0` or an empty value for the parameter.
+If you need to remove event handlers set with an empty `auth_type` (authorized on behalf of the user who triggered the event), but keep the other handlers, specify `auth_type=0` or an empty value for the parameter.
 
 {% endnote %} 
 ||
@@ -95,7 +95,7 @@ If any parameters are not specified, all event handlers that meet the other requ
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {

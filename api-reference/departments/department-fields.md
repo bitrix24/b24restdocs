@@ -1,8 +1,8 @@
-# Get a list of field names for the department.fields
+# Get the list of department field names department.fields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing here — we will add it soon.
 - no response in case of an error
 - no examples
 - request and response in xml; if removed, there will be nothing at all
-
+  
 {% endnote %}
 
 {% endif %}
@@ -22,15 +22,30 @@ Some data may be missing here — we will add it soon.
 >
 > Who can execute the method: any user
 
-Retrieving a list of field names for the department. The method has no parameters.
+Retrieving the list of department field names. The method has no parameters.
 
-## Call
+## Code Examples
 
-```js
-BX24.callMethod('department.fields');
-```
+{% list tabs %}
 
-## Request (xml for clarity of response)
+- JS
+
+    ```js
+    BX24.callMethod(
+        'department.fields',
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+## Request (xml for clarity of the response)
 
 ```
 https://my.bitrix24.com/rest/department.fields.xml?auth=7c9d8f00ea0ddd9e02cab3eb2b3bd0d1

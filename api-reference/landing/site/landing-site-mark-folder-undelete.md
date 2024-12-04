@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -31,29 +31,35 @@ The method `landing.site.markFolderUnDelete` marks a folder as not deleted (rest
 #|
 || **Parameter** | **Description** | **Version** ||
 || **id**
-[`unknown`](../../data-types.md) | Identifier of the folder. Access permissions for the folder's site must include deletion rights. | ||
+[`unknown`](../../data-types.md) | Identifier of the folder. Access permissions to delete the folder must be granted. | ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.site.markFolderUnDelete',
-    {
-        id: 737
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.markFolderUnDelete',
         {
-            console.error(result.error());
-        }
-        else
+            id: 737
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

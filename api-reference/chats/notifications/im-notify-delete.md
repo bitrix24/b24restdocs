@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,9 +11,9 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- examples missing
-- links to yet-to-be-created pages not provided
+- parameter types are not specified
+- examples are missing
+- links to pages that have not yet been created are not provided
 
 {% endnote %}
 
@@ -35,17 +35,17 @@ The method `im.notify.delete` deletes a notification.
 [`unknown`](../../data-types.md) | `SUB`\|`TEST` | Additional tag, without uniqueness check | 18 ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 {% note warning %}
 
-You must specify **one of the three** required parameters: `ID` (notification identifier), `TAG` (notification tag), or `SUB_TAG` (additional tag).
+You need to specify **one of three** required parameters: `ID` (notification identifier), `TAG` (notification tag), or `SUB_TAG` (additional tag).
 
 {% endnote %}
 
 ## Examples
 
-{% include [Explanation of restCommand](../_includes/rest-command.md) %}
+{% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
 {% list tabs %}
 
@@ -65,7 +65,7 @@ You must specify **one of the three** required parameters: `ID` (notification id
     );
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -89,9 +89,9 @@ You must specify **one of the three** required parameters: `ID` (notification id
 
 {% endlist %}
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Successful Response
 
 ```json
 {

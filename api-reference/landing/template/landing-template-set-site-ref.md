@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not specified
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.template.setSiteRef` sets the included areas for the site within a specific template (the site or page must already be linked to the template via the TPL_ID field). It will return *true* on success or an error.
+The method `landing.template.setSiteRef` sets included areas for the site within a specific template (the site or page must already be linked to the template via the TPL_ID field). It will return *true* on success or an error.
 
 ## Parameters
 
@@ -38,29 +38,35 @@ The method `landing.template.setSiteRef` sets the included areas for the site wi
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.template.setSiteRef',
-    {
-        id: 557,
-        data: {
-            1: 614,
-            2: 615,
-            3: 616
-        }
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.template.setSiteRef',
         {
-            console.error(result.error());
-        }
-        else
+            id: 557,
+            data: {
+                1: 614,
+                2: 615,
+                3: 616
+            }
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

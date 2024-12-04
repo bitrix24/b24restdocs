@@ -1,4 +1,4 @@
-# Updating a Workflow Template
+# Update Business Process Template bizproc.workflow.template.update
 
 {% note warning "We are still updating this page" %}
 
@@ -8,11 +8,11 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- revisions needed for writing standards
+- edits needed for standard writing
 - parameter types not specified
-- parameter requirements not indicated
+- parameter requirements not specified
 - examples missing
 - success response missing
 - error response missing
@@ -21,18 +21,16 @@ Some data may be missing here — we will complete it shortly.
 
 {% endif %}
 
-{% note info "bizproc.workflow.template.update" %}
+> Scope: [`bizproc`](../scopes/permissions.md)
+>
+> Who can execute the method: administrator
 
-{% include notitle [Scope bizproc admin](./_includes/scope-bizproc-admin.md) %}
-
-{% endnote %}
-
-This method updates only those templates that were created using the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md), as such templates are tied to the application and only they can be updated.
+This method only updates templates that were created using the [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) method, as such templates are tied to the application and only they can be updated.
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Parameter** | **Description** | **Available since** ||
 || **ID** | Identifier of the template to be modified. | ||
-|| **FIELDS** | Array of modifiable parameters. You can update the fields: `NAME`, `DESCRIPTION`, `AUTO_EXECUTE`, and `TEMPLATE_DATA`, which are described in more detail in the table below. Attempting to update other fields returned by [bizproc.workflow.template.list](./bizproc-workflow-template-list.md) will not cause errors, but they will not be updated either. | ||
+|| **FIELDS** | Array of modifiable parameters. The fields that can be updated are: `NAME`, `DESCRIPTION`, `AUTO_EXECUTE`, and `TEMPLATE_DATA`, described in more detail in the table below. Attempting to update other fields returned by [bizproc.workflow.template.list](./bizproc-workflow-template-list.md) will not cause errors, but they will not be updated either. | ||
 |#
 
 ## FIELDS Parameter
@@ -40,13 +38,13 @@ This method updates only those templates that were created using the method [biz
 #|
 || **Parameter** | **Description** ||
 || **NAME**
-[`string`](../data-types.md) | Name of the template ||
+[`string`](../data-types.md) | Template name ||
 || **DESCRIPTION**
-[`string`](../data-types.md) | Description of the template. ||
+[`string`](../data-types.md) | Template description. ||
 || **TEMPLATE_DATA**
 [`file`](../data-types.md) | Content of the business process template file *.bpt. See [{#T}](../how-to-call-rest-api/how-to-upload-files.md) ||
 || **AUTO_EXECUTE**
-[`integer`](../data-types.md) | Auto-execute flag, which can be:
+[`integer`](../data-types.md) | Auto-execute flag, can be:
 
 - `0` (no auto-execute),
 - `1` (execute on creation),
@@ -56,20 +54,26 @@ This method updates only those templates that were created using the method [biz
 
 ## Examples
 
-```javascript
-function renameTemplate(id, name)
-{
-	BX24.callMethod(
-		'bizproc.workflow.template.update',
-		{ID: id, FIELDS: {'NAME': name}},
-		function(result)
-		{
-			if(result.error())
-				alert("Error: " + result.error());
-			console.log(result);
-		}
-	);
-}
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+- JS
+
+	```javascript
+	function renameTemplate(id, name)
+	{
+		BX24.callMethod(
+			'bizproc.workflow.template.update',
+			{ID: id, FIELDS: {'NAME': name}},
+			function(result)
+			{
+				if(result.error())
+					alert("Error: " + result.error());
+				console.log(result);
+			}
+		);
+	}
+	```
+
+{% endlist %}
+
+{% include [Examples note](../../_includes/examples.md) %}

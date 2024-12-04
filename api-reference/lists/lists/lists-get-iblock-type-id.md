@@ -1,8 +1,8 @@
-# Get the ID of the information block type lists.get.iblock.type.id
+# Get the Information Block Type ID lists.get.iblock.type.id
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing here — we will fill it in shortly.
 
 - parameter types are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -35,21 +35,29 @@ The method `lists.get.iblock.type.id` returns the `id` of the information block 
 
 ## Example:
 
-```javascript
-var params = {
-    'IBLOCK_ID': '41'
-};
-BX24.callMethod(
-    'lists.get.iblock.type.id',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var params = {
+        'IBLOCK_ID': '41'
+    };
+    BX24.callMethod(
+        'lists.get.iblock.type.id',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

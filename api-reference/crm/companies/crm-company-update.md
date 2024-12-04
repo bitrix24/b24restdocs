@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - parameter requirements are not specified
 - examples are missing
@@ -29,7 +29,7 @@ The method `crm.company.update` updates an existing company.
 
 {% note warning %}
 
-It is strongly recommended to pass the complete set of address fields when updating the address. The specifics of updating address fields are described [here](../data-types.md).
+It is strongly recommended to pass the complete set of address fields when updating the address in the update method. The specifics of updating address fields are described [here](../data-types.md).
 
 {% endnote %}
 
@@ -40,45 +40,51 @@ It is strongly recommended to pass the complete set of address fields when updat
 || **id**
 [`unknown`](../../data-types.md) | Company identifier. ||
 || **fields**
-[`unknown`](../../data-types.md) | [Set of fields](./crm-company-add.md) - an array in the form array("field to update"=>"value"[, ...]), where "field to update" can take values returned by the method [crm.company.fields](./crm-company-fields.md). 
+[`unknown`](../../data-types.md) | [Set of fields](./crm-company-add.md) - an array of the form array("field to update"=>"value"[, ...]), where "field to update" can take values returned by the method [crm.company.fields](./crm-company-fields.md). 
 
 {% note info %}
 
-To find out the required format of the fields, execute the method [crm.company.fields](./crm-company-fields.md) and check the format of the returned values for those fields.
+To find out the required format of the fields, execute the method [crm.company.fields](./crm-company-fields.md) and check the format of the returned values for these fields.
 
 {% endnote %}
 
  ||
 || **params**
-[`unknown`](../../data-types.md) | Set of parameters. `REGISTER_SONET_EVENT` - register a change event for the company in the live feed. A notification will also be sent to the person responsible for the company. ||
+[`unknown`](../../data-types.md) | Set of parameters. `REGISTER_SONET_EVENT` - register the event of the company's change in the live feed. A notification will also be sent to the person responsible for the company. ||
 |#
 
 ## Examples
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.company.update",
-    {
-        id: id,
-        fields:
-        {
-            "CURRENCY_ID": "USD",
-            "REVENUE" : 500000,
-            "EMPLOYEES": "EMPLOYEES_3"
-        },
-        params: { "REGISTER_SONET_EVENT": "Y" }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.company.update",
+        {
+            id: id,
+            fields:
+            {
+                "CURRENCY_ID": "USD",
+                "REVENUE" : 500000,
+                "EMPLOYEES": "EMPLOYEES_3"
+            },
+            params: { "REGISTER_SONET_EVENT": "Y" }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -21,16 +21,16 @@ Some data may be missing here — we will complete it shortly.
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can execute the method: any user
 
-The method `crm.deal.userfield.delete` deletes a custom field of deals.
+The method `crm.deal.userfield.delete` removes a custom field from deals.
 
 #|
 || **Parameter** | **Description** ||
 || **id**^*^ | Identifier of the custom field. ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Example
 
@@ -55,7 +55,7 @@ The method `crm.deal.userfield.delete` deletes a custom field of deals.
     );
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -77,4 +77,4 @@ The method `crm.deal.userfield.delete` deletes a custom field of deals.
 
 {% endlist %}
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}

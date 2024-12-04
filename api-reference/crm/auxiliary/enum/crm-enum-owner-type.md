@@ -1,17 +1,17 @@
-# Get Enumeration Elements "Owner Type" crm.enum.ownertype
+# Get Enumeration Items "Owner Type" crm.enum.ownertype
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
-- missing response in case of error
-- missing response in case of success
+- no response in case of error
+- no response in case of success
 - no examples in other languages
   
 {% endnote %}
@@ -28,7 +28,7 @@ Some data may be missing here — we will add it soon.
 crm.enum.ownertype()
 ```
 
-This method returns the identifiers of CRM entity types and SPAs.
+The method returns the identifiers of CRM entity types and smart processes.
 
 ## Possible Values
 
@@ -79,7 +79,7 @@ This method returns the identifiers of CRM entity types and SPAs.
 },
 {
      "ID": 8,
-     "NAME": "Requisites",
+     "NAME": "Details",
      "SYMBOL_CODE": "REQUISITE",
      "SYMBOL_CODE_SHORT": "RQ"
 },
@@ -95,8 +95,8 @@ This method returns the identifiers of CRM entity types and SPAs.
 "finish": 1652769631.151046,
 "duration": 0.0155029296875,
 "processing": 0.0014200210571289062,
-"date_start": "2022-05-17T09:40:31+03:00",
-"date_finish": "2022-05-17T09:40:31+03:00",
+"date_start": "2022-05-17T09:40:31+02:00",
+"date_finish": "2022-05-17T09:40:31+02:00",
 "operating": 0
 }
 }
@@ -108,18 +108,24 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    "crm.enum.ownertype",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);     
-```
+{% list tabs %}
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+- JS
+  
+     ```javascript
+     BX24.callMethod(
+     "crm.enum.ownertype",
+     {},
+     function(result)
+     {
+          if(result.error())
+               console.error(result.error());
+          else
+               console.dir(result.data());
+     }
+     );     
+     ```
+
+{% endlist %}
+
+{% include [Examples Note](../../../../_includes/examples.md) %}

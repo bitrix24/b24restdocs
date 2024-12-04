@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.landing.delete` removes a page. It returns *true* on success, or an error.
+The method `landing.landing.delete` deletes a page. It returns *true* on success, or an error.
 
 ## Parameters
 
@@ -36,24 +36,30 @@ The method `landing.landing.delete` removes a page. It returns *true* on success
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.landing.delete',
-    {
-        lid: 350
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.delete',
+        {
+            lid: 350
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

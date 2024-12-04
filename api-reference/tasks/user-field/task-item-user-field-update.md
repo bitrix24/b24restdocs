@@ -1,12 +1,12 @@
-# Update Custom Field of Task task.item.userfield.update
+# Update User Field task.item.userfield.update
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
-- missing 1 example (there should be three examples - curl, js, php)
+- parameter requirements are not indicated
+- one example is missing (there should be three examples - curl, js, php)
 - no response in case of error
 - no response in case of success
 
@@ -20,11 +20,9 @@ Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
-{% note info "task.item.userfield.update" %}
-
-**Scope**: [`task`](../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
+> Scope: [`task`](../../scopes/permissions.md)
+>
+> Who can execute the method: administrator
 
 The method `task.item.userfield.update` is used to edit the properties' parameters.
 
@@ -35,7 +33,7 @@ The method `task.item.userfield.update` is used to edit the properties' paramete
 || **auth**
 [`unknown`](../../data-types.md) | Authorization token. ||
 || **ID**
-[`unknown`](../../data-types.md) | Identifier of the custom field. ||
+[`unknown`](../../data-types.md) | Identifier of the user field. ||
 || **DATA**
 [`unknown`](../../data-types.md) | Array `array('field'=>'value', ...)`. Contains the values of the parameters being edited. ||
 |#
@@ -79,4 +77,4 @@ The method `task.item.userfield.update` is used to edit the properties' paramete
 
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}

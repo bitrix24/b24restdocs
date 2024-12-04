@@ -1,8 +1,8 @@
-# Get Product or Trade Offer Property Fields catalog.productProperty.getFields
+# Get Product or Variation Property Fields catalog.productProperty.getFields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ Some data may be missing here — we will complete it soon.
 catalog.productProperty.getFields()
 ```
 
-This method returns the fields of product or trade offer properties.
+The method returns the fields of product or variation properties.
 
 ## Parameters
 
@@ -36,21 +36,29 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.productProperty.getFields',
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Example notes](../../../_includes/examples.md) %}
+{% list tabs %}
 
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.productProperty.delete',
+        {
+            id: 128
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -89,9 +97,9 @@ BX24.callMethod(
 || **searchable** 
 [`char`](../../data-types.md) | Are the property values included in the search. | ||
 || **sort** 
-[`integer`](../../data-types.md) | Sort order. | ||
+[`integer`](../../data-types.md) | Sorting order. | ||
 || **timestampX** 
-[`datetime`](../../data-types.md) | Date of the last modification of parameters. | Read-only. ||
+[`datetime`](../../data-types.md) | Date of the last change of parameters. | Read-only. ||
 || **userType** 
 [`string`](../../data-types.md) | User-defined property type. | ||
 || **withDescription** 
@@ -100,4 +108,4 @@ BX24.callMethod(
 [`string`](../../data-types.md) | External identifier. | ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}

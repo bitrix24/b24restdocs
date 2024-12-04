@@ -1,8 +1,8 @@
-# Copying a Page
+# Copy Page landing.landing.copy
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -20,46 +20,50 @@ Some data may be missing here — we will complete it shortly.
 
 {% endif %}
 
-{% note info "landing.landing.copy" %}
+> Scope: [`landing`](../../../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
-**Scope**: [`landing`](../../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
-
-The method `landing.landing.copy` duplicates the specified page. It returns the identifier of the new page.
+The method `landing.landing.copy` copies the specified page. It returns the identifier of the new page.
 
 ## Parameters
 
 #|
 || **Parameters** | **Description** | **Available since** ||
 || **lid**
-[`unknown`](../../../data-types.md) | Identifier of the page. ||
+[`unknown`](../../../data-types.md) | Page identifier. ||
 || **toSiteId**
-[`unknown`](../../../data-types.md) | Optional parameter, identifier of the site. If specified, the copy will be made to the indicated site. ||
+[`unknown`](../../../data-types.md) | Optional parameter, site identifier. If specified, the copy will occur to the indicated site. ||
 || **toFolderId**
-[`unknown`](../../../data-types.md) | Optional parameter, identifier of the folder. If specified, the copy will be made to the indicated folder (if it exists and access is granted). Otherwise, the copy will be made to the same folder where the page is located, or to the root if the source is also in the root. | 18.7.500 ||
+[`unknown`](../../../data-types.md) | Optional parameter, folder identifier. If specified, the copy will occur to the indicated folder (if it exists and access is granted). Otherwise, the copy will occur in the same folder where the page is located, or in the root if the source is also in the root. | 18.7.500 ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.landing.copy',
-    {
-        lid: 1688
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.copy',
+        {
+            lid: 1688
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

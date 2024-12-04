@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -31,22 +31,30 @@ The method returns a list of groups
 #|
 || **Parameter** | **Description** | **Available since** ||
 || **filter** | Corresponds to the arFilter parameter for the API method CSocNetGroup::getList. | ||
-|| **select** | An array specifying the fields to be selected. Contains a list of fields that should be returned by the method. If the array is empty, the fields ID, SITE_ID, NAME, DESCRIPTION, DATE_CREATE, DATE_UPDATE, DATE_ACTIVITY, ACTIVE, VISIBLE, OPENED, CLOSED, SUBJECT_ID, OWNER_ID, KEYWORDS, IMAGE_ID, NUMBER_OF_MEMBERS, INITIATE_PERMS, SPAM_PERMS, SUBJECT_NAME are selected. Any fields from the list of fields are allowed in the array. | ||
+|| **select** | An array defining the fields to be selected. Contains a list of fields that should be returned by the method. If the array is empty, the fields ID, SITE_ID, NAME, DESCRIPTION, DATE_CREATE, DATE_UPDATE, DATE_ACTIVITY, ACTIVE, VISIBLE, OPENED, CLOSED, SUBJECT_ID, OWNER_ID, KEYWORDS, IMAGE_ID, NUMBER_OF_MEMBERS, INITIATE_PERMS, SPAM_PERMS, SUBJECT_NAME will be selected. Any fields from the list are allowed in the array. | ||
 || **IS_ADMIN** | When Y is passed, it checks if the current user is an administrator of the social network, and if so, disables permission checks when retrieving groups. | ||
 |#
 
-{% include [Parameter notes](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Example
 
-```js
-BX24.callMethod('socialnetwork.api.workgroup.list', {
-    filter: {
-        ID: 157,
-    },
-    select: [ 'ID', 'NAME' ]
-}, result => {
-    console.log(result);
-});
-```
-{% include [Example notes](../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod('socialnetwork.api.workgroup.list', {
+        filter: {
+            ID: 157,
+        },
+        select: [ 'ID', 'NAME' ]
+    }, result => {
+        console.log(result);
+    });
+    ```
+
+{% endlist %}
+
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

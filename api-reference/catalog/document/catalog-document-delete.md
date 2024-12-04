@@ -1,8 +1,8 @@
-# Delete Inventory Document catalog.document.delete
+# Delete inventory management document catalog.document.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the required parameters are not specified
-- there is no response in case of an error
+- required parameters are not specified
+- no response in case of an error
   
 {% endnote %}
 
@@ -27,7 +27,7 @@ Some data may be missing here — we will complete it shortly.
 catalog.document.delete(id)
 ```
 
-Method for deleting an inventory document. If the operation is successful, `true` is returned in the response body.
+Method for deleting an inventory management document. If the operation is successful, `true` is returned in the response body.
 
 ## Parameters
 
@@ -37,7 +37,7 @@ Method for deleting an inventory document. If the operation is successful, `true
 [`integer`](../../data-types.md)| Document identifier. ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -45,7 +45,7 @@ Method for deleting an inventory document. If the operation is successful, `true
 
 - js
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.document.delete',
         {
@@ -63,7 +63,7 @@ Method for deleting an inventory document. If the operation is successful, `true
 
 - php
   
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.delete',
         [
@@ -77,4 +77,4 @@ Method for deleting an inventory document. If the operation is successful, `true
 
 {% endlist %}
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

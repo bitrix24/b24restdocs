@@ -10,7 +10,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -65,7 +65,7 @@ No parameters.
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -91,7 +91,7 @@ No parameters.
 
 ### Returned Data
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Footnote about required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -127,7 +127,7 @@ No parameters.
 || **SECTION_ID**
 [`integer`](../../../data-types.md) | Section identifier  ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting  ||
+[`integer`](../../../data-types.md) | Sort order  ||
 || **TIMESTAMP_X**
 [`datetime`](../../../data-types.md) | Product modification date  ||
 || **VAT_ID**

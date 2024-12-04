@@ -1,4 +1,4 @@
-# Create a Folder in the Root of the Storage disk.storage.addfolder
+# Create a folder in the root of the storage disk.storage.addfolder
 
 {% if build == 'dev' %}
 
@@ -8,7 +8,7 @@
 - parameter requirements are not indicated
 - detailed description of the data parameter is missing
 - examples are absent (there should be three examples - curl, js, php)
-- response in case of an error is missing
+- response in case of error is missing
 
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -33,37 +33,44 @@ The method `disk.storage.addfolder` creates a folder in the root of the storage.
 || **id**
 [`unknown`](../../data-types.md) | Identifier of the storage. ||
 || **data**
-[`unknown`](../../data-types.md) | An array describing the folder. The required field `NAME` — the name of the new folder. ||
+[`unknown`](../../data-types.md) | Array describing the folder. The required field `NAME` — the name of the new folder. ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.storage.addfolder",
-    {
-        id: 4,
-        data: {'NAME': 'New'}
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% list tabs %}
 
-## Response in Case of Success
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.storage.addfolder",
+        {
+            id: 4,
+            data: {'NAME': 'New'}
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Response in case of success
 
 > 200 OK
 
 The returned structure is similar to that provided in [disk.folder.get](../folder/disk-folder-get.md).
 
 ```json
-"result":{
+"result": {
     "ID": "13",
     "NAME": "New",
     "CODE": null,
@@ -71,8 +78,8 @@ The returned structure is similar to that provided in [disk.folder.get](../folde
     "TYPE": "folder",
     "PARENT_ID": "8",
     "DELETED_TYPE": "0",
-    "CREATE_TIME": "2015-04-24T12:39:35+03:00",
-    "UPDATE_TIME": "2015-04-24T12:39:35+03:00",
+    "CREATE_TIME": "2015-04-24T12:39:35+02:00",
+    "UPDATE_TIME": "2015-04-24T12:39:35+02:00",
     "DELETE_TIME": null,
     "CREATED_BY": "1",
     "UPDATED_BY": "1",

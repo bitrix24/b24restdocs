@@ -55,7 +55,7 @@ The method `crm.activity.delete` deletes a deal.
     );
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {

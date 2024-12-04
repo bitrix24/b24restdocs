@@ -2,7 +2,7 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: creator or administrator of the flow
+> Who can execute the method: the Creator or Administrator of the flow
 
 The method `tasks.flow.flow.delete` removes a flow by its identifier.
 
@@ -18,7 +18,7 @@ The method `tasks.flow.flow.delete` removes a flow by its identifier.
 || **flowData.id*** 
 [`integer`](../../data-types.md) | Identifier of the flow to be deleted. 
 
-You can obtain the identifier using the method [tasks.task.get](../tasks-task-get.md) for a task that has already been added to the flow, or create a new flow using the method [tasks.flow.flow.create](./tasks-flow-flow-create.md) ||
+You can obtain the identifier using the method for creating a new flow [tasks.flow.flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
@@ -141,7 +141,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or flow not found | The account's plan may not allow working with flows or the user lacks permission to delete the flow ||
+|| `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to delete the flow ||
 || `0` | `Flow not found` | The flow with the specified identifier was not found ||
 || `0` | `Unknown error` | An unknown error occurred ||
 |#
@@ -151,7 +151,8 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./tasks-flow-flow-create.md)
-- [{#T}](./tasks-flow-flow-get.md)
 - [{#T}](./tasks-flow-flow-update.md)
+- [{#T}](./tasks-flow-flow-get.md)
 - [{#T}](./tasks-flow-flow-is-exists.md)
 - [{#T}](./tasks-flow-flow-activate.md)
+- [{#T}](./tasks-flow-flow-pin.md)

@@ -1,4 +1,4 @@
-# Get the list of fields for inventory document items catalog.document.element.getFields
+# Get the list of product fields for the inventory management document catalog.document.element.getFields
 
 {% note warning "We are still updating this page" %}
 
@@ -28,7 +28,7 @@ Some data may be missing here — we will fill it in shortly.
 catalog.document.element.getFields()
 ```
 
-The method returns a list of fields for inventory document items.
+This method returns a list of product fields for the inventory management document.
 
 ## Parameters
 
@@ -36,23 +36,29 @@ No parameters.
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'catalog.document.element.getFields',
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.document.element.getFields',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../../_includes/examples.md) %}
 
-## Returned Fields
+## Returned fields
 
 #|
 || **Field** | **Description** | **Note** ||
@@ -63,13 +69,13 @@ BX24.callMethod(
 || **elementId** 
 [`integer`](../../../data-types.md) | Product identifier [catalog.product.list](../../../catalog/product/catalog-product-list.md). | Immutable field. ||
 || **id** 
-[`integer`](../../../data-types.md) | Document item identifier. | Read-only. ||
+[`integer`](../../../data-types.md) | Document product identifier. | Read-only. ||
 || **purchasingPrice** 
 [`double`](../../../data-types.md) | Purchase price. | ||
 || **storeFrom** 
-[`integer`](../../../data-types.md) | Sender inventory. | ||
+[`integer`](../../../data-types.md) | Sender warehouse. | ||
 || **storeTo** 
-[`integer`](../../../data-types.md) | Recipient inventory. | ||
+[`integer`](../../../data-types.md) | Recipient warehouse. | ||
 |#
 
 {% include [Footnote about parameters](../../../../_includes/required.md) %}

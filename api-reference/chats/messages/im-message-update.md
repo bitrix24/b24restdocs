@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits are needed for writing standards
 - parameter types are not specified
 - examples are missing
 - links to pages that have not yet been created are not provided
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.message.update` sends updates to a chatbot message.
+The `im.message.update` method sends updates to a chatbot message.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -41,32 +41,38 @@ The method `im.message.update` sends updates to a chatbot message.
 [`unknown`](../../data-types.md) | | Context menu | 18 ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Explanation about restCommand](../_includes/rest-command.md) %}
+{% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand('
-    im.message.update',
-    Array(
-        'MESSAGE_ID' => 1,
-        'MESSAGE' => 'Message text',
-        'ATTACH' => '',
-        'URL_PREVIEW' => 'Y',
-        'KEYBOARD' => '',
-        'MENU' => '',
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+- PHP
 
-## Response on Success
+    ```php
+    $result = restCommand('
+        im.message.update',
+        Array(
+            'MESSAGE_ID' => 1,
+            'MESSAGE' => 'Message text',
+            'ATTACH' => '',
+            'URL_PREVIEW' => 'Y',
+            'KEYBOARD' => '',
+            'MENU' => '',
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Example Notes](../../../_includes/examples.md) %}
+
+## Successful Response
 
 ```json
 {
@@ -76,7 +82,7 @@ $result = restCommand('
 
 **Execution result**: `true` or an error.
 
-## Response on Error
+## Error Response
 
 ```json
 {
@@ -85,7 +91,7 @@ $result = restCommand('
 }
 ```
 
-### Description of Keys
+### Key Descriptions
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
@@ -95,17 +101,17 @@ $result = restCommand('
 #|
 || **Code** | **Description** ||
 || **MESSAGE_ID_ERROR** | Message identifier not provided ||
-|| **CANT_EDIT_MESSAGE** | You do not have access to this message or the time for modification has expired (more than 3 days have passed since publication) ||
+|| **CANT_EDIT_MESSAGE** | You do not have access to this message or the time to modify it has expired (more than 3 days have passed since publication) ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | The maximum allowable size for the attachment has been exceeded (30 KB) ||
+|| **ATTACH_OVERSIZE** | The maximum allowable attachment size has been exceeded (30 KB) ||
 || **KEYBOARD_ERROR** | The entire provided keyboard object failed validation ||
-|| **KEYBOARD_OVERSIZE** | The maximum allowable size for the keyboard has been exceeded (30 KB) ||
+|| **KEYBOARD_OVERSIZE** | The maximum allowable keyboard size has been exceeded (30 KB) ||
 || **MENU_ERROR** | The entire provided menu object failed validation ||
-|| **MENU_OVERSIZE** | The maximum allowable size for the menu has been exceeded (30 KB) ||
+|| **MENU_OVERSIZE** | The maximum allowable menu size has been exceeded (30 KB) ||
 |#
 
 ## Related Links:
 
-- [How to work with input keyboards](.)
+- [How to work with keyboards](.)
 - [How to work with attachments](.)
 - [Message formatting](.)

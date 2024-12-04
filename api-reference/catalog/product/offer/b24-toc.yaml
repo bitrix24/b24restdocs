@@ -1,19 +1,19 @@
-title: Sales Estimates
+title: Product Variations
 href: index.md
 items: 
   - name: Overview of Methods
     href: index.md
-  - name: Add Sales Estimate
+  - name: Add Product Variation
     href: catalog-product-offer-add.md
-  - name: Update Sales Estimate Fields
+  - name: Update Product Variation Fields
     href: catalog-product-offer-update.md
-  - name: Get Sales Estimate Field Values
+  - name: Get Product Variation Field Values
     href: catalog-product-offer-get.md
-  - name: Get List of Sales Estimates
+  - name: Get List of Product Variations
     href: catalog-product-offer-list.md
-  - name: Download Sales Estimate Files
+  - name: Download Product Variation Files
     href: catalog-product-offer-download.md
-  - name: Delete Sales Estimate
+  - name: Delete Product Variation
     href: catalog-product-offer-delete.md
-  - name: Get Sales Estimate Fields by Filter
+  - name: Get Product Variation Fields by Filter
     href: catalog-product-offer-get-fields-by-filter.md

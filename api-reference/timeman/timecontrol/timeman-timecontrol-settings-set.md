@@ -10,7 +10,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- adjustments needed for writing standards
 - parameter types not specified
 - examples missing
 
@@ -30,15 +30,15 @@ The method `timeman.timecontrol.settings.set` is used to set the settings for th
 || **Parameter** | **Default** | **Required** | **Description** ||
 || **ACTIVE**
 [`unknown`](../../data-types.md) | false | No | Availability of the time control tool. 
-Enabled with `active: true`. Disabled with `active: false` if data is sent as *bool*. If data is sent as text *false* in text form as *true*, it can only be disabled with `active: 0`. ||
+Enabled with `active: true`. Disabled with `active: false` if the data is sent as *bool*. If the data is sent as text *false* in text form as *true*, it can only be disabled with `active: 0`. ||
 || **MINIMUM_IDLE_FOR_REPORT**
-[`unknown`](../../data-types.md) | 15 | No | Minimum amount of time for requesting a report in minutes. ||
+[`unknown`](../../data-types.md) | 15 | No | Minimum amount of time to request a report in minutes. ||
 || **REGISTER_OFFLINE**
 [`unknown`](../../data-types.md) | true | No | Record the fact that the user has gone offline. ||
 || **REGISTER_IDLE**
 [`unknown`](../../data-types.md) | true | No | Record the fact that the user has stepped away. ||
 || **REGISTER_DESKTOP**
-[`unknown`](../../data-types.md) | true | No | Record the fact of starting and stopping the desktop application. ||
+[`unknown`](../../data-types.md) | true | No | Record the fact of turning the desktop application on and off. ||
 || **REPORT_REQUEST_TYPE**
 [`unknown`](../../data-types.md) | none | No | Who to request the report from (`all` - from everyone, `user` - only from specified users, none - from no one). ||
 || **REPORT_REQUEST_USERS**
@@ -62,37 +62,45 @@ Enabled with `active: true`. Disabled with `active: false` if data is sent as *b
 - JS
 
     ```javascript
-    BX24.callMethod('timeman.timecontrol.settings.set', {
-        active: true,
-        report_request_type: 'user',
-        report_request_users: [1,2,3],
-    }, function(result){
-        if(result.error())
+    BX24.callMethod(
+        'timeman.timecontrol.settings.set',
         {
-            console.error(result.error().ex);
+            active: true,
+            report_request_type: 'user',
+            report_request_users: [1,2,3],
+        },
+        function(result){
+            if(result.error())
+            {
+                console.error(result.error().ex);
+            }
+            else
+            {
+                console.log(result.data());
+            }
         }
-        else
-        {
-            console.log(result.data());
-        }
-    });
+    );
     ```
 
 - PHP
 
     ```php
-    $result = restCommand('timeman.timecontrol.settings.set', Array(
-        active: true,
-        report_request_type: 'user',
-        report_request_users: [1,2,3],
-    ), $_REQUEST["auth"]);
+    $result = restCommand(
+        'timeman.timecontrol.settings.set',
+        Array(
+            active: true,
+            report_request_type: 'user',
+            report_request_users: [1,2,3],
+        ),
+        $_REQUEST["auth"]
+    );
     ```
 
 {% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Response on Success
 
 > 200 OK
 ```json
@@ -101,7 +109,7 @@ Enabled with `active: true`. Disabled with `active: false` if data is sent as *b
 }
 ```
 
-## Error Response
+## Response on Error
 
 > 200 Error, 50x Error
 ```json
@@ -111,7 +119,7 @@ Enabled with `active: true`. Disabled with `active: false` if data is sent as *b
 }
 ```
 
-### Key Descriptions
+### Description of Keys
 
 - **error** - code of the occurred error.
 - **error_description** - brief description of the occurred error.

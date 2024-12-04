@@ -1,8 +1,8 @@
-# Deleting Related Entities
+# Remove Related Entities landing.landing.removeEntities
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,28 +10,26 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing
-- success response missing
-- error response missing
+- corrections needed for writing standards
+- parameter types are not specified
+- parameter requirements are not indicated
+- examples are missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
 {% endif %}
 
-{% note info "landing.landing.removeEntities" %}
+> Scope: [`landing`](../../../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
-**Scope**: [`landing`](../../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
-
-The method `landing.landing.removeEntities` deletes related entities of the landing page - blocks and images of the blocks.
+The method `landing.landing.removeEntities` removes related entities of the landing page - blocks and images of the blocks.
 
 {% note warning %}
 
-When blocks are deleted, the associated images are removed as well. However, there may be situations where you need to delete images independently of the blocks to clean up clutter. Use this method in that case.
+When blocks are deleted, the associated images are removed in any case. However, there may be situations where it is necessary to delete images independently of the block to clean up junk. Use this method in such cases.
 
 {% endnote %}
 
@@ -42,44 +40,50 @@ When blocks are deleted, the associated images are removed as well. However, the
 || **lid**
 [`unknown`](../../../data-types.md) | Identifier of the landing page. ||
 || **data**
-[`unknown`](../../../data-types.md) | An associative array where the key **blocks** contains the blocks to be deleted, and the key **images** contains block-image pairs for which images need to be deleted (the blocks are not deleted in this case). ||
+[`unknown`](../../../data-types.md) | Associative array where the key **blocks** contains the blocks to be deleted, and the key **images** contains block-image pairs for which images need to be deleted (the blocks are not deleted in this case). ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    'landing.landing.removeEntities',
-    {
-        lid: 648,
-        data: {
-            blocks: [12167, 123],
-            images: [
-                {
-                    block: 12269,
-                    image: 6866
-                },
-                {
-                    block: 12268,
-                    image: 6861
-                }
-            ]
-        }
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.removeEntities',
         {
-            console.error(result.error());
-        }
-        else
+            lid: 648,
+            data: {
+                blocks: [12167, 123],
+                images: [
+                    {
+                        block: 12269,
+                        image: 6866
+                    },
+                    {
+                        block: 12268,
+                        image: 6861
+                    }
+                ]
+            }
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-// In this example, we are deleting blocks with IDs 12167, 123, as well as image 6866 (from block 12269) and image 6861 (from block 12268).
-// All entities are located in landing page 648.
-```
+    );
+    // In this example, we are deleting blocks with IDs 12167, 123, as well as image 6866 (from block 12269) and image 6861 (from block 12268).
+    // All entities are located in landing page 648.
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

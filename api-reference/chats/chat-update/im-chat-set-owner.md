@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.chat.setOwner` changes the owner of the chat.
+The `im.chat.setOwner` method changes the owner of the chat.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -32,26 +32,32 @@ The method `im.chat.setOwner` changes the owner of the chat.
 [`unknown`](../../data-types.md) | `2` | Identifier of the new chat owner | 18 ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 ## Examples
 
 {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.chat.setOwner',
-    Array(
-        'CHAT_ID' => 13,
-        'USER_ID' => '2'
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    $result = restCommand(
+        'im.chat.setOwner',
+        Array(
+            'CHAT_ID' => 13,
+            'USER_ID' => '2'
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -72,8 +78,8 @@ $result = restCommand(
 
 ### Description of Keys
 
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
+- `error` – error code
+- `error_description` – brief description of the error
 
 ### Possible Error Codes
 

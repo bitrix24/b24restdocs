@@ -1,8 +1,8 @@
-# Get deal by id crm.activity.get
+# Get activity by id crm.activity.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -15,7 +15,7 @@ Some data may be missing — we will fill it in shortly
 - examples are missing
 - success response is absent
 - error response is absent
-- from Sergey's file: mention that a special method should be used for configurable deals
+- from Sergei's file: mention that a special method should be used for configurable activities
 
 {% endnote %}
 
@@ -37,19 +37,25 @@ The method `crm.activity.get` returns the activity by its identifier.
 
 ## Examples
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.activity.get",
-    { id: id },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.activity.get",
+        { id: id },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Note on examples](../../../../_includes/examples.md) %}

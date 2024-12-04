@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -13,8 +13,8 @@ Some data may be missing — we will complete it soon.
 - adjustments needed for writing standards
 - parameter types not specified
 - parameter requirements not indicated
-- response on success is missing
-- response on error is missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -49,12 +49,12 @@ This method deletes a registered robot.
             if(result.error())
                 alert('Error: ' + result.error());
             else
-                alert("Success: " + result.data());
+                alert("Successfully: " + result.data());
         }
     );
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -76,4 +76,4 @@ This method deletes a registered robot.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}

@@ -1,0 +1,5 @@
+title: Tutorials and use-cases for REST in the Open Channels module  
+href: index.md  
+items:   
+  - name: How to create an Open Channels connector for online chat on the site  
+    href: example-connector.md  

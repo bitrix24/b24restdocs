@@ -1,8 +1,8 @@
-# Delete workflow action bizproc.activity.delete
+# Delete action bizproc.activity.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing
-- success response missing
-- error response missing
+- edits needed for writing standards
+- parameter types are not specified
+- parameter requirements are not indicated
+- examples are missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -40,21 +40,27 @@ In addition to deleting using the method `bizproc.activity.delete`, it is import
 
 ## Examples
 
-```javascript
-var params = {
-    code: 'md5'
-};
+{% list tabs %}
 
-BX24.callMethod(
-    'bizproc.activity.delete',
-    params,
-    function(result) {
-        if(result.error())
-            alert('Error: ' + result.error());
-        else
-            alert("Success: " + result.data());
-    }
-);
-```
+- JS
 
-{% include [Note about examples](../../../_includes/examples.md) %}
+    ```javascript
+    var params = {
+        code: 'md5'
+    };
+
+    BX24.callMethod(
+        'bizproc.activity.delete',
+        params,
+        function(result) {
+            if(result.error())
+                alert('Error: ' + result.error());
+            else
+                alert("Success: " + result.data());
+        }
+    );
+    ```
+    
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

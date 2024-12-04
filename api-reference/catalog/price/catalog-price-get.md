@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -38,11 +38,15 @@ Method to access the price field values by ID. If the operation is successful, a
 [`integer`](../../data-types.md)| Identifier of the product price. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
+{% list tabs %}
+
+- JS
+
+```js
 BX24.callMethod(
     'catalog.price.get',
     {
@@ -57,4 +61,7 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Examples Note](../../../_includes/examples.md) %}
+
+{% endlist %}
+
+{% include [Notes on examples](../../../_includes/examples.md) %}

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,12 +10,12 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- revisions needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing
-- success response missing
-- error response missing
+- edits needed for writing standards
+- parameter types are not specified
+- parameter requirements are not specified
+- examples are missing
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -39,32 +39,38 @@ The method `imbot.chat.user.list` retrieves the list of participants.
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.chat.user.list',
-    Array(
-        'CHAT_ID' => 13,
-        'BOT_ID' => 39,
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.chat.user.list',
+        Array(
+            'CHAT_ID' => 13,
+            'BOT_ID' => 39,
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Success response
 
 An array of participant identifiers.
 
-## Error Response
+## Error response
 
 error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
-|| **CHAT_ID_EMPTY** | Chat identifier not provided. ||
+|| **CHAT_ID_EMPTY** | The chat identifier was not provided. ||
 |#

@@ -1,8 +1,8 @@
-# Get Document Fields List (deprecated) catalog.document.fields
+# Get the list of document fields (deprecated) catalog.document.fields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ Some data may be missing — we will complete it soon.
 
 {% note info "Attention!" %}
 
-This method has been deprecated since version **22.400.0**. It is recommended to use the method [catalog.document.getFields](./catalog-document-get-fields.md).
+The method has been deprecated since version **22.400.0**. It is recommended to use the method [catalog.document.getFields](./catalog-document-get-fields.md).
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ This method has been deprecated since version **22.400.0**. It is recommended to
 catalog.document.fields()
 ```
 
-This method returns a list of document fields.
+The method returns a list of document fields.
 
 ## Parameters
 
@@ -47,7 +47,7 @@ No parameters.
 
 - js
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.document.fields',
         {},
@@ -63,7 +63,7 @@ No parameters.
 
 - php
   
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.fields'
     );
@@ -74,9 +74,9 @@ No parameters.
 
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Returned Fields
+## Returned fields
 
 #|
 || **Field** | **Description** | **Note** ||
@@ -89,7 +89,7 @@ No parameters.
 || **contractorId** 
 [`integer`](../../data-types.md) | Vendor. |  ||
 || **responsibleId^*^** 
-[`integer`](../../data-types.md) | Assignee. |  ||
+[`integer`](../../data-types.md) | Responsible person. |  ||
 || **dateModify** 
 [`datetime`](../../data-types.md) | Modification date. |  ||
 || **dateCreate** 
@@ -109,9 +109,9 @@ No parameters.
 || **statusBy** 
 [`integer`](../../data-types.md) | Status set by. |  ||
 || **total** 
-[`double`](../../data-types.md) | Total amount of goods. |  ||
+[`double`](../../data-types.md) | Total amount of products. |  ||
 || **commentary** 
 [`char`](../../data-types.md) | Commentary. |  ||
 |#
 
-{% include [Parameters Note](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}

@@ -1,8 +1,8 @@
-# Update Translation of Price Type Name catalog.priceTypeLang.update
+# Update the translation of the price type name catalog.priceTypeLang.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
-- no response in case of error
+- the requirement for parameters is not specified
+- no response in case of error 
 - no response in case of success
 - no examples in other languages
   
@@ -39,28 +39,35 @@ Method for updating the translation of the price type name.
 [`object`](../../data-types.md)|  Fields corresponding to the available list of fields [`fields`](./catalog-price-type-lang-get-fields.md). ||
 |#
 
-{% include [Notes on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.priceTypeLang.update',
-    {
-        id: 537,
-        fields: {            
-            catalogGroupId: 14,
-            lang: "de",
-            name: "Wholesale price for partners"
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.priceTypeLang.update',
+        {
+            id: 537,
+            fields: {            
+                catalogGroupId: 14,
+                lang: "de",
+                name: "Wholesale price for partners"
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
         }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Notes on examples](../../../../_includes/examples.md) %}
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../../_includes/examples.md) %}

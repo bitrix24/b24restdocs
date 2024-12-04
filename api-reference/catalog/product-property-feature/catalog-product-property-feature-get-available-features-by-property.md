@@ -1,8 +1,8 @@
-# Get Available Product or Deal Property Parameters catalog.productPropertyFeature.getAvailableFeaturesByProperty
+# Get Available Product or Variation Property Features catalog.productPropertyFeature.getAvailableFeaturesByProperty
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not deployed to prod_" %}
 
-- the requirement of parameters is not specified
+- required parameter specification is missing
 - no response in case of an error
 - no examples in other languages
   
@@ -35,26 +35,33 @@ This method removes the values of list properties. If the operation is successfu
 #|
 || **Parameter** | **Description** ||
 || **propertyId** 
-[`integer`](../../data-types.md)| The identifier of the product or deal property. ||
+[`integer`](../../data-types.md)| Identifier of the product or variation property ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.productPropertyFeature.getAvailableFeaturesByProperty',
-    {
-        propertyId: 128
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.productPropertyFeature.getAvailableFeaturesByProperty',
+        {
+            propertyId: 128
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

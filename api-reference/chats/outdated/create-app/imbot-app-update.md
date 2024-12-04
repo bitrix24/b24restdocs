@@ -20,59 +20,65 @@ The required fields are the application ID and one of the necessary fields for e
 || **Name** | **Example** | **Description** ||
 || **APP_ID*** | `13` | Chat identifier ||
 || **IFRAME** | `'https://marta.bitrix.com/iframe/echo.php'` | URL of the frame ||
-|| **IFRAME_WIDTH** | `'350'` | Desired width of the frame. Minimum value is 250px ||
-|| **IFRAME_HEIGHT** | `'150'` | Desired height of the frame. Minimum value is 50px ||
+|| **IFRAME_WIDTH** | `'350'` | Desired width of the frame. Minimum value - 250px ||
+|| **IFRAME_HEIGHT** | `'150'` | Desired height of the frame. Minimum value - 50px ||
 || **JS_METHOD** | `'SEND'` | ||
 || **JS_PARAM** | `'/help'` | ||
 || **HASH** | `'register'` | Token for accessing your frame, 32 characters ||
 || **ICON_FILE** | `'/* base64 image */'` | Icon of your application - base64 ||
 || **CONTEXT** | `'BOT'` | Application context ||
-|| **EXTRANET_SUPPORT** | `'N'` | Is the command available to extranet users, default is N ||
+|| **EXTRANET_SUPPORT** | `'N'` | Is the command available to extranet users, default N ||
 || **LIVECHAT_SUPPORT** | `'N'` | Online chat support ||
 || **IFRAME_POPUP** | `'N'` | iframe will open with the ability to move within the messenger, switching between dialogs will not close such a window ||
-|| **LANG** | `Array(...)` | Array of translations, it is advisable to specify at least for EN and RU ||
+|| **LANG** | `Array(...)` | Array of translations, it is advisable to specify at least for DE and EN ||
 || **LANGUAGE_ID (LANG)** | `'en'` | Language identifier for translation ||
 || **TITLE (LANG)** | `'Echobot IFRAME'` | Title for the button or command in the specified language ||
-|| **DESCRIPTION (LANG)** | `'Open Echobot IFRAME app'` | Description of the command in the specified language ||
+|| **DESCRIPTION (LANG)** | `'Open Echobot IFRAME app'` | Command description in the specified language ||
 || **COPYRIGHT (LANG)** | `'Bitrix24'` | Copyright ||
 |#
 
 ## Code Example
 
-{% include [Explanation of restCommand](../../_includes/rest-command.md) %}
+{% include [Explanation on restCommand](../../_includes/rest-command.md) %}
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-```php
-$result = restCommand(
-    'imbot.app.update',
-    Array(
-        'APP_ID' => 13,
-        'FIELDS' => Array(
-            'IFRAME' => 'https://marta.bitrix.com/iframe/echo.php',
-            'IFRAME_WIDTH' => '350',
-            'IFRAME_HEIGHT' => '150',
-            'JS_METHOD' => 'SEND',
-            'JS_PARAM' => '/help',
-            'HASH' => 'register',
-            'ICON_FILE' => '/* base64 image */',
-            'CONTEXT' => 'BOT',
-            'EXTRANET_SUPPORT' => 'N',
-            'LIVECHAT_SUPPORT' => 'N',
-            'IFRAME_POPUP' => 'N',
-            'LANG' => Array(
-                Array(
-                    'LANGUAGE_ID' => 'en',
-                    'TITLE' => 'Echobot IFRAME',
-                    'DESCRIPTION' => 'Open Echobot IFRAME app',
-                    'COPYRIGHT' => 'Bitrix24'
-                ),
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.app.update',
+        Array(
+            'APP_ID' => 13,
+            'FIELDS' => Array(
+                'IFRAME' => 'https://marta.bitrix.com/iframe/echo.php',
+                'IFRAME_WIDTH' => '350',
+                'IFRAME_HEIGHT' => '150',
+                'JS_METHOD' => 'SEND',
+                'JS_PARAM' => '/help',
+                'HASH' => 'register',
+                'ICON_FILE' => '/* base64 image */',
+                'CONTEXT' => 'BOT',
+                'EXTRANET_SUPPORT' => 'N',
+                'LIVECHAT_SUPPORT' => 'N',
+                'IFRAME_POPUP' => 'N',
+                'LANG' => Array(
+                    Array(
+                        'LANGUAGE_ID' => 'en',
+                        'TITLE' => 'Echobot IFRAME',
+                        'DESCRIPTION' => 'Open Echobot IFRAME app',
+                        'COPYRIGHT' => 'Bitrix24'
+                    ),
+                )
             )
-        )
-    ),
-    $_REQUEST["auth"]
-);
-```
+        ),
+        $_REQUEST["auth"]
+    );
+    ```
+
+{% endlist %}
 
 ## Successful Response
 

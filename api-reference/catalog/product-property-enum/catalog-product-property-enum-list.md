@@ -1,8 +1,8 @@
-# Get a list of values for the list properties catalog.productPropertyEnum.list
+# Get a list of values for the catalog.productPropertyEnum.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Required parameters are not specified
-- No response in case of an error
-- No examples in other languages
+- required parameters are not specified
+- no response in case of an error
+- no examples in other languages
   
 {% endnote %}
 
@@ -26,7 +26,7 @@ Some data may be missing here — we will fill it in shortly.
 catalog.productPropertyEnum.list(select, filter, order, start)
 ```
 
-This method retrieves a list of values for the list properties.
+The method retrieves a list of values for the property enums.
 
 ## Parameters
 
@@ -46,26 +46,30 @@ This method retrieves a list of values for the list properties.
 
 ## Examples
 
-For JS
+{% list tabs %}
 
-```javascript
-BX24.callMethod(
-    'catalog.productPropertyEnum.list',
-    {
-        filter: {
-            propertyId: 128
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.productPropertyEnum.list',
+        {
+            filter: {
+                propertyId: 128
+            },
         },
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-        result.next();
-    }
-);
-```
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+            result.next();
+        }
+    );
+    ```
+
+{% endlist %}
 
 Example of an HTTPS request
 

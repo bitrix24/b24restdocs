@@ -1,13 +1,13 @@
-# Get a List of Files and Folders in the Folder disk.folder.getchildren
+# Get a list of files and folders in the folder disk.folder.getchildren
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
+- response in case of error is absent
 
 {% endnote %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -44,27 +44,34 @@ See also the description of [list methods](../../how-to-call-rest-api/list-metho
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.folder.getchildren",
-    {
-        id: 8,
-        filter: {
-            CREATED_BY: 1
-        }
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% list tabs %}
 
-## Response in Case of Success
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.folder.getchildren",
+        {
+            id: 8,
+            filter: {
+                CREATED_BY: 1
+            }
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+## Response in case of success
 
 > 200 OK
 
@@ -80,8 +87,8 @@ The response is an array of objects, the structure of which is similar to [disk.
     "TYPE": "folder",
     "PARENT_ID": "8",
     "DELETED_TYPE": "0",
-    "CREATE_TIME": "2015-04-24T12:39:35+03:00",
-    "UPDATE_TIME": "2015-04-24T12:39:35+03:00",
+    "CREATE_TIME": "2015-04-24T12:39:35+02:00",
+    "UPDATE_TIME": "2015-04-24T12:39:35+02:00",
     "DELETE_TIME": null,
     "CREATED_BY": "1",
     "UPDATED_BY": "1",
@@ -96,8 +103,8 @@ The response is an array of objects, the structure of which is similar to [disk.
     "TYPE": "file",
     "PARENT_ID": "8",
     "DELETED_TYPE": "0",
-    "CREATE_TIME": "2015-04-24T10:41:51+03:00",
-    "UPDATE_TIME": "2015-04-24T15:52:43+03:00",
+    "CREATE_TIME": "2015-04-24T10:41:51+02:00",
+    "UPDATE_TIME": "2015-04-24T15:52:43+02:00",
     "DELETE_TIME": null,
     "CREATED_BY": "1",
     "UPDATED_BY": "1",
@@ -113,8 +120,8 @@ The response is an array of objects, the structure of which is similar to [disk.
     "TYPE": "file",
     "PARENT_ID": "8",
     "DELETED_TYPE": "0",
-    "CREATE_TIME": "2015-04-24T10:58:49+03:00",
-    "UPDATE_TIME": "2015-04-24T12:01:32+03:00",
+    "CREATE_TIME": "2015-04-24T10:58:49+02:00",
+    "UPDATE_TIME": "2015-04-24T12:01:32+02:00",
     "DELETE_TIME": null,
     "CREATED_BY": "1",
     "UPDATED_BY": "1",

@@ -1,8 +1,8 @@
-# Get the types of warehouse accounting documents available for REST catalog.enum.getStoreDocumentTypes
+# Get the types of inventory management documents available for REST catalog.enum.getStoreDocumentTypes
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- missing response in case of success
-- missing response in case of error
+- no response in case of success
+- no response in case of error
 - no examples in other languages
   
 {% endnote %}
@@ -28,14 +28,14 @@ Some data may be missing — we will fill it in shortly.
 catalog.enum.getStoreDocumentTypes()
 ```
 
-This method returns the types of warehouse accounting documents available for REST.
+This method returns the types of inventory management documents available for REST.
 
 Currently, the following types are available:
-- `A` – Goods arrival at the warehouse;
-- `S` – Goods receipt;
-- `M` – Transfer of goods between warehouses;
-- `R` – Goods return;
-- `D` – Goods write-off.
+- `A` – Stock receipt of goods;
+- `S` – Stock adjustment of goods;
+- `M` – Transfer of goods between inventories;
+- `R` – Return of goods;
+- `D` – Write-off of goods.
 
 ## Parameters
 
@@ -43,17 +43,24 @@ No parameters.
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'catalog.enum.getStoreDocumentTypes',
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.enum.getStoreDocumentTypes',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Examples note](../../../_includes/examples.md) %}

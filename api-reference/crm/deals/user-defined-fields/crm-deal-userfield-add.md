@@ -11,10 +11,10 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
-- examples (in other languages) are missing
-- success response is absent
-- error response is absent
+- parameter requirements are not specified
+- examples are missing (in other languages)
+- success response is missing
+- error response is missing
 - text needs adjustments to fit the overall format
 - link to the yet-to-be-created page is not specified
 
@@ -39,9 +39,9 @@ It returns an ID that can later be identified using the method [crm.deal.userfie
 || **fields** | A set of [fields](*fields) – an array of the form `array("field"=>"value"[, ...])`, containing the description of the custom field. It includes the `LIST` field, which contains a set of list values for custom fields of type List. This is specified when creating/updating the field. Each value is an array with the following fields:
 - **VALUE** - the value of the list item. This field is required when creating a new item.
 - **SORT** - sorting.
-- **DEF** - if equal to `Y`, the list item is the default value. For multiple fields, multiple `DEF=Y` are allowed. For non-multiple fields, the first one will be considered default.
-- **XML_ID** - external code of the value. This parameter is only considered when updating already existing list item values.
-- **ID** - identifier of the value. If specified, it is considered an update of an existing list item value, not the creation of a new one. It is only relevant when calling the `*.userfield.update` methods.
+- **DEF** - if equal to `Y`, the list item is the default value. For multiple fields, several `DEF=Y` are allowed. For non-multiple fields, the first will be considered default.
+- **XML_ID** - external code of the value. This parameter is considered only when updating already existing list item values.
+- **ID** - identifier of the value. If specified, it is considered an update of an existing list item value, not the creation of a new one. It only makes sense when calling the `*.userfield.update` methods.
 - **DEL** - if equal to `Y`, the existing list item will be deleted. This is applied if the ID parameter is filled. ||
 |#
 
@@ -108,7 +108,7 @@ A complete description of the fields can be obtained by calling the method [crm.
     );
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -145,7 +145,7 @@ A complete description of the fields can be obtained by calling the method [crm.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 [*fields]: Currently:
 - ENTITY_ID

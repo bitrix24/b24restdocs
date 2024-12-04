@@ -34,19 +34,25 @@ The method `crm.quote.userfield.get` returns the custom field of estimates by ID
 
 ## Example
 
-```js
-var id = prompt("Enter ID");        
-BX24.callMethod(
-    "crm.quote.userfield.get",
-    { id: id },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+  
+    ```js
+    var id = prompt("Enter ID");        
+    BX24.callMethod(
+        "crm.quote.userfield.get",
+        { id: id },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

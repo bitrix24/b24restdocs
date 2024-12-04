@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
+- required parameter specifications are missing
 - no response in case of an error
 - no examples in other languages
   
@@ -43,35 +43,39 @@ This method retrieves a list of translations for price type names based on the f
 [`string`](../../data-types.md)| Page number for output. Works for HTTPS requests. ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../../_includes/required.md) %}
 
 ## Examples
 
-For JS
+{% list tabs %}
 
-```javascript
-BX24.callMethod(
-    'catalog.priceTypeLang.list',
-    {
-        filter: {
-            catalogGroupId: 1
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.priceTypeLang.list',
+        {
+            filter: {
+                catalogGroupId: 1
+            },
         },
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-        result.next();
-    }
-);
-```
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+            result.next();
+        }
+    );
+    ```
 
-Example of HTTPS request
+{% endlist %}
+
+Example HTTPS request
 
 ```
 https://your_account/rest/catalog.priceTypeLang.list?auth=_authorization_key_&start=50
 ```
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Example Notes](../../../../_includes/examples.md) %}

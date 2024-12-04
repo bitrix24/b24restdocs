@@ -8,13 +8,13 @@ Some data may be missing here — we will complete it soon.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -33,29 +33,35 @@ The method `landing.landing.unFavoriteBlock` removes a block that was saved in "
 #|
 || **Method** | **Description** ||
 || **blockId**
-[`unknown`](../../../data-types.md) | The identifier of the block. ||
+[`unknown`](../../../data-types.md) | Block identifier. ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.landing.unFavoriteBlock',
-    {
-        blockId: 81827
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.unFavoriteBlock',
         {
-            console.error(result.error());
-        }
-        else
+            blockId: 81827
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

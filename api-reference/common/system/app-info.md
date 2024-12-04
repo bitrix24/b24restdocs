@@ -67,7 +67,7 @@ No parameters.
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -136,12 +136,12 @@ HTTP status: **200**
     - `D` (Demo) — demo version
     - `T` (Trial) — trial version (time-limited)
     - `P` (Paid) — paid application
-    - `L` (Local) — on-premise application
+    - `L` (Local) — local application
     - `S` (Subscription) — subscription application 
 - `INSTALLED` — [true\|false] status of the application's installation. If the application is not installed, it is only available to account administrators and should signal the completion of installation by calling [BX24.installFinish](../../bx24-js-sdk/system-functions/bx24-install-finish.md)
 - `PAYMENT_EXPIRED` — [Y\|N] flag indicating whether the paid period or trial period has expired
 - `DAYS` — number of days remaining until the end of the paid period or trial period
-- `LICENSE` — designation of the plan with the region indicated as a prefix. Consists of the base language of the account and the identifier of the plan. In cases where the plans have changed while retaining the public name (like CRM+, Team, and Company), it is not possible to determine which plan is currently active based on this field. Examples of possible values:
+- `LICENSE` — designation of the plan with the region indicated as a prefix. Consists of the base language of the account and the identifier of the plan. In cases where the composition of the plans has changed while retaining the public name (like CRM+, Team, and Company), it is not possible to determine which plan is currently active based on this field. Examples of possible values:
     - `de_project` — Project plan
     - `de_basic` — Basic plan
     - `de_std` — Standard plan
@@ -178,7 +178,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Access denied! Application context required | Method called outside the application context ||
+|| `ACCESS_DENIED` | Access denied! Application context required | Method called outside of application context ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

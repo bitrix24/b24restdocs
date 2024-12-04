@@ -1,8 +1,8 @@
-# Get Fields with CRM Vendor Bindings to Warehouse Documents catalog.documentcontractor.getFields
+# Get Fields with CRM Vendor Bindings to Inventory Documents catalog.documentcontractor.getFields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -36,20 +36,26 @@ No parameters.
 
 ## Examples
 
-```js
-BX.callMethod(
-    'catalog.documentcontractor.getFields',
-    {},
-    function(result) {
-        if (result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX.callMethod(
+        'catalog.documentcontractor.getFields',
+        {},
+        function(result) {
+            if (result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -65,4 +71,4 @@ BX.callMethod(
 [`integer`](../../data-types.md) | Identifier of the entity binding to the document. | Read-only. ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}

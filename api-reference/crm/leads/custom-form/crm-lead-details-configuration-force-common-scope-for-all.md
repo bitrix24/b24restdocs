@@ -1,4 +1,4 @@
-# Set a Common Detail Form for All Users crm.lead.details.configuration.forceCommonScopeForAll
+# Set a common card for all users crm.lead.details.configuration.forceCommonScopeForAll
 
 {% note warning "We are still updating this page" %}
 
@@ -24,11 +24,11 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.lead.details.configuration.forceCommonScopeForAll` forcibly sets a common lead detail form for all users.
+The method `crm.lead.details.configuration.forceCommonScopeForAll` forcibly sets a common lead card for all users.
 
 {% note warning %}
 
-Please note that the settings for repeat leads may differ from the settings for simple leads. The parameter **leadCustomerType** is used to switch between lead detail form settings.
+Please note that the settings for repeat lead cards may differ from those for simple lead cards. The parameter **leadCustomerType** is used to switch between lead card settings.
 
 {% endnote %}
 
@@ -44,21 +44,27 @@ Please note that the settings for repeat leads may differ from the settings for 
 
 ## Examples
 
-```js
-//---
-//Set a common lead detail form for all users.
-BX24.callMethod(
-    "crm.lead.details.configuration.forceCommonScopeForAll",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-//---
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    //---
+    //Set a common lead card for all users.
+    BX24.callMethod(
+        "crm.lead.details.configuration.forceCommonScopeForAll",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    //---
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

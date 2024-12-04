@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
+- parameter types are not specified
 - examples are missing
 
 {% endnote %}
@@ -32,26 +32,32 @@ The method `im.chat.user.delete` excludes participants from the chat.
 [`unknown`](../../data-types.md) | `4` | Identifier of the user to be excluded | 18 ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.chat.user.delete',
-    Array(
-        'CHAT_ID' => 13,
-        'USER_ID' => 4
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    $result = restCommand(
+        'im.chat.user.delete',
+        Array(
+            'CHAT_ID' => 13,
+            'USER_ID' => 4
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 

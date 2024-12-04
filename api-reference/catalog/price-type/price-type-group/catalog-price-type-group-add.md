@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
-- no response in case of success
-- no response in case of error
+- required parameter specifications are missing
+- no success response
+- no error response
 - no examples in other languages
   
 {% endnote %}
@@ -33,7 +33,7 @@ This method adds a price type binding to a customer group.
 
 ## Parameters
 
-#| 
+#|
 || **Parameter** | **Description** ||
 || **fields**
 [`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](./catalog-price-type-group-get-fields.md). ||
@@ -43,22 +43,30 @@ This method adds a price type binding to a customer group.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.priceTypeGroup.add',
-    {
-        fields: {
-            catalogGroupId: 14,
-            groupId: 16,
-            access: "Y"
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.priceTypeGroup.add',
+        {
+            fields: {
+                catalogGroupId: 14,
+                groupId: 16,
+                access: "Y"
+            }
+        },
+        function(result) {
+            if (result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
         }
-    },
-    function(result) {
-        if (result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
+
+
 {% include [Note on examples](../../../../_includes/examples.md) %}

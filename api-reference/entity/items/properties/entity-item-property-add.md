@@ -1,4 +1,4 @@
-# Add an Additional Property to Storage Elements `entity.item.property.add`
+# Add Additional Property to Storage Elements entity.item.property.add
 
 {% note warning "We are still updating this page" %}
 
@@ -8,11 +8,11 @@ Some data may be missing here — we will complete it soon.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - examples are missing
-- response in case of error is absent
+- no response in case of error
 
 {% endnote %}
 
@@ -38,31 +38,35 @@ The method `entity.item.property.add` adds an additional property to storage ele
 [`unknown`](../../../data-types.md) | Required. Type of the property (**S** - string, **N** - number, **F** - file). ||
 |#
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../../_includes/required.md) %}
 
-## Example
+## Examples
 
-Call
+{% list tabs %}
 
-```js
-BX24.callMethod(
-    'entity.item.property.add',
-    {
-        ENTITY: 'menu_new',
-        PROPERTY: 'new_prop',
-        NAME: 'New Property',
-        TYPE: 'S'
-    }
-);
-```
+- JS
 
-Request
+    ```js
+    BX24.callMethod(
+        'entity.item.property.add',
+        {
+            ENTITY: 'menu_new',
+            PROPERTY: 'new_prop',
+            NAME: 'New Property',
+            TYPE: 'S'
+        }
+    );
+    ```
 
-```http
-https://my.bitrix24.com/rest/entity.item.property.add.json?ENTITY=menu_new&NAME=New%20Property&PROPERTY=new_prop&TYPE=S&auth=e690b44d2b3827d2eb9d4dbe59406dbb
-```
+- HTTP
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+    ```http
+    https://my.bitrix24.com/rest/entity.item.property.add.json?ENTITY=menu_new&NAME=New%20Property&PROPERTY=new_prop&TYPE=S&auth=e690b44d2b3827d2eb9d4dbe59406dbb
+    ```
+
+{% endlist %}
+
+{% include [Notes on examples](../../../../_includes/examples.md) %}
 
 ## Response on Success
 

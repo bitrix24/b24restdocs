@@ -1,4 +1,4 @@
-# Delete item of inventory document catalog.document.element.delete
+# Delete product of inventory management document catalog.document.element.delete
 
 {% note warning "We are still updating this page" %}
 
@@ -27,7 +27,7 @@ Some data may be missing — we will complete it shortly.
 catalog.document.element.delete(id)
 ```
 
-Method for deleting an item from the inventory document.
+Method for deleting a product from the inventory management document.
 If the operation is successful, `true` is returned in the response body.
 
 ## Parameters
@@ -46,7 +46,7 @@ If the operation is successful, `true` is returned in the response body.
 
 - js
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.document.element.delete',
         {
@@ -64,7 +64,7 @@ If the operation is successful, `true` is returned in the response body.
 
 - php
   
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.element.delete',
         [

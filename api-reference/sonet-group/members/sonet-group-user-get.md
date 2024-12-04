@@ -1,8 +1,8 @@
-# Get the list of group participants sonet_group.user.get
+# Get the list of group members sonet_group.user.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will complete it shortly
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no error response is provided
+- no response in case of error
 - no examples in other languages
 
 {% endnote %}
@@ -25,9 +25,9 @@ Some data may be missing here — we will complete it shortly
 
 ## Description
 
-The method returns an array of participants in a social network group by calling `CSocNetUserToGroup::GetList()`, while checking the current user's access rights to the group. The method does not return inactive users (terminated employees).
+The method returns an array of social network group members by calling `CSocNetUserToGroup::GetList()`, while checking the current user's access rights to the group. The method does not return inactive users (terminated employees).
 
-## Participant fields:
+## Member fields:
 
 - **USER_ID** - User ID.
 - **ROLE** - User role in the group:
@@ -39,19 +39,27 @@ The method returns an array of participants in a social network group by calling
 
 #|
 || **Parameter** | **Description** ||
-|| **ID** | ID of the group whose participants need to be retrieved. ||
+|| **ID** | ID of the group whose members need to be retrieved. ||
 |#
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Example
 
-```js
-// Getting the list of participants in the social network group with ID=15
-BX24.callMethod('sonet_group.user.get', {
-    'ID': 15
-});
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    // Getting the list of social network group members with ID=15
+    BX24.callMethod('sonet_group.user.get', {
+        'ID': 15
+    });
+    ```
+
+{% endlist %}
+
+
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 ## Request:

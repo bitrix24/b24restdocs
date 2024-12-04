@@ -13,9 +13,9 @@ Some data may be missing here — we will fill it in shortly.
 - edits needed for writing standards
 - missing parameters or fields
 - parameter types not specified
-- required parameters not indicated
-- no response in case of success
-- no response in case of error
+- parameter requirements not specified
+- no success response
+- no error response
 
 {% endnote %}
 
@@ -47,7 +47,7 @@ The method returns a list of robots registered by the application.
 	);
 	```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
 	```php
 	try {
@@ -74,4 +74,4 @@ The method returns a list of robots registered by the application.
 	```
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

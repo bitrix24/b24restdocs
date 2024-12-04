@@ -2,9 +2,9 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: Creator or Administrator of the flow
+> Who can execute the method: the Creator or the Administrator of the flow
 
-The method `tasks.flow.flow.activate` turns the flow on or off based on its identifier. If the flow is off, it turns it on. If it is on, it turns it off.
+The method `tasks.flow.flow.activate` turns a flow on or off based on its identifier. If the flow is off, it turns it on. If it is on, it turns it off.
 
 ## Method Parameters
 
@@ -14,9 +14,9 @@ The method `tasks.flow.flow.activate` turns the flow on or off based on its iden
 || **Name**
 `type` | **Description** ||
 || **flowId*** 
-[`integer`](../../data-types.md) | The identifier of the flow to be activated or deactivated. 
+[`integer`](../../data-types.md) | The identifier of the flow to be turned on or off. 
 
-You can obtain the identifier using the method [tasks.task.get](../tasks-task-get.md) for a task that has already been added to the flow, or create a new flow using the method [tasks.flow.flow.create](./tasks-flow-flow-create.md) ||
+You can obtain the identifier by creating a new flow using the method [tasks.flow.flow.create](./tasks-flow-flow-create.md) or by retrieving a task using the method [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
@@ -33,7 +33,7 @@ You can obtain the identifier using the method [tasks.task.get](../tasks-task-ge
     -d '{
         "flowId": 517
     }' \
-    https://your-domain.com/rest/_USER_ID_/_CODE_/tasks.flow.flow.activate
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.flow.activate
     ```
 
 - cURL (oAuth)
@@ -45,7 +45,7 @@ You can obtain the identifier using the method [tasks.task.get](../tasks-task-ge
     -d '{
         "flowId": 517
     }' \
-    https://your-domain.com/rest/tasks.flow.flow.activate
+    https://your-domain.bitrix24.com/rest/tasks.flow.flow.activate
     ```
 
 - JS
@@ -73,7 +73,7 @@ You can obtain the identifier using the method [tasks.task.get](../tasks-task-ge
 
     $flowId = 517;
 
-    // executing request to REST API
+    // executing the request to the REST API
     $result = CRest::call(
         'tasks.flow.flow.activate',
         [
@@ -127,7 +127,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or flow not found | The account plan may not allow working with flows or the user does not have permission to perform the operation ||
+|| `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to perform the operation ||
 || `0` | `Flow not found` | The flow with the specified identifier was not found ||
 || `0` | `Unknown error` | An unknown error occurred ||
 |#
@@ -137,7 +137,8 @@ HTTP Status: **400**
 ## Continue Learning
 
 - [{#T}](./tasks-flow-flow-create.md)
-- [{#T}](./tasks-flow-flow-get.md)
 - [{#T}](./tasks-flow-flow-update.md)
+- [{#T}](./tasks-flow-flow-get.md)
 - [{#T}](./tasks-flow-flow-delete.md)
 - [{#T}](./tasks-flow-flow-is-exists.md)
+- [{#T}](./tasks-flow-flow-pin.md)

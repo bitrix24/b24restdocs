@@ -2,19 +2,19 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - required parameters are not specified
 - examples are missing
-- response on success is missing
-- response on error is missing
+- response in case of success is missing
+- response in case of error is missing
 
 {% endnote %}
 
@@ -31,47 +31,53 @@ The method `crm.company.add` creates a new company.
 #|
 || **Parameter** | **Description** ||
 || **fields**
-[`array`](../../data-types.md) | Set of fields - an array in the form array("field"=>"value"[, ...]), containing the values of the company fields. 
+[`array`](../../data-types.md) | A set of fields - an array in the form array("field"=>"value"[, ...]), containing the values of the company fields. 
 
 {% note info %}
 
-To find out the required format of the fields, execute the method [crm.company.fields](./crm-company-fields.md) and check the format of the incoming values for these fields.
+To find out the required format of the fields, execute the method [crm.company.fields](./crm-company-fields.md) and check the format of the received values for these fields.
 
 {% endnote %}
  ||
 || **params**
-[`array`](../../data-types.md) | Set of parameters. REGISTER_SONET_EVENT - register the event of adding a company in the live feed. A notification will also be sent to the person responsible for the company. ||
+[`array`](../../data-types.md) | A set of parameters. REGISTER_SONET_EVENT - register the event of adding a company in the live feed. A notification will also be sent to the person responsible for the company. ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    "crm.company.add",
-    {
-        fields:
-        {
-            "TITLE": "IP Titov",
-            "COMPANY_TYPE": "CUSTOMER",
-            "INDUSTRY": "MANUFACTURING",
-            "EMPLOYEES": "EMPLOYEES_2",
-            "CURRENCY_ID": "USD",
-            "REVENUE" : 3000000,
-            "LOGO": { "fileData": document.getElementById('logo') },
-            "OPENED": "Y",
-            "ASSIGNED_BY_ID": 1,
-            "PHONE": [ { "VALUE": "555888", "VALUE_TYPE": "WORK" } ]     
-        },
-        params: { "REGISTER_SONET_EVENT": "Y" }        
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info("Company created with ID " + result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        "crm.company.add",
+        {
+            fields:
+            {
+                "TITLE": "IP Titov",
+                "COMPANY_TYPE": "CUSTOMER",
+                "INDUSTRY": "MANUFACTURING",
+                "EMPLOYEES": "EMPLOYEES_2",
+                "CURRENCY_ID": "USD",
+                "REVENUE" : 3000000,
+                "LOGO": { "fileData": document.getElementById('logo') },
+                "OPENED": "Y",
+                "ASSIGNED_BY_ID": 1,
+                "PHONE": [ { "VALUE": "555888", "VALUE_TYPE": "WORK" } ]     
+            },
+            params: { "REGISTER_SONET_EVENT": "Y" }        
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info("Company created with ID " + result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

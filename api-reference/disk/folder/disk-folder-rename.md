@@ -2,12 +2,12 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- no error response is provided
+- no error response provided
 
 {% endnote %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -30,32 +30,39 @@ The method `disk.folder.rename` renames a folder.
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Identifier of the folder. ||
+[`unknown`](../../data-types.md) | Folder identifier. ||
 || **newName**
 [`unknown`](../../data-types.md) | New name. ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.folder.rename",
-    {
-        id: 8,
-        newName: 'New name'
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% list tabs %}
 
-## Response on Success
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.folder.rename",
+        {
+            id: 8,
+            newName: 'New name'
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Success Response
 
 > 200 OK
 

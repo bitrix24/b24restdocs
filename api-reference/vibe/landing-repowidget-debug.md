@@ -1,16 +1,10 @@
 # Enable Debug Mode landing.repowidget.debug
 
-{% note warning "We are still working on the tool" %}
-
-The functionality will be released soon.
-
-{% endnote %}
-
 > Scope: [`landing`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.debug` enables debug mode for all widgets of the current application. In this case, the Vue application will report more errors in the JS console for the developer's convenience. By default, the mode is disabled.
+The method `landing.repowidget.debug` enables debug mode for all widgets of the current application. In this case, the vue application will report more errors in the js console for developer convenience. By default, this mode is disabled.
 
 ## Method Parameters
 
@@ -67,7 +61,7 @@ The method `landing.repowidget.debug` enables debug mode for all widgets of the 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -90,14 +84,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | On success — `true`, otherwise — an error ||
+[`boolean`](../data-types.md) | On success — `true`, otherwise — error ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -112,7 +106,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `APP_NOT_FOUND` | REST application not found. Occurs when there are issues with the authorization of the REST application on the account ||
+|| `APP_NOT_FOUND` | REST application not found. Occurs when there are issues with the authorization of the rest application on the account ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

@@ -2,16 +2,16 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
-- no response in case of error
+- response in case of error is missing
 
 {% endnote %}
 
@@ -33,29 +33,33 @@ The method deletes additional properties of storage items. The user must have ma
 [`string`](../../../data-types.md) | Required. String identifier of the property. ||
 |#
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
-## Example
+## Examples
 
-Call
+{% list tabs %}
 
-```js
-BX24.callMethod(
-    'entity.item.property.delete',
-    {
-        ENTITY: 'menu_new',
-        PROPERTY: 'new_prop'
-    }
-);
-```
+- JS
 
-Request
+    ```js
+    BX24.callMethod(
+        'entity.item.property.delete',
+        {
+            ENTITY: 'menu_new',
+            PROPERTY: 'new_prop'
+        }
+    );
+    ```
 
-```http
-https://my.bitrix24.com/rest/entity.item.property.delete.json?ENTITY=menu_new&PROPERTY=new_prop&auth=d92dd12b9b9b904254776104eed2bb76
-```
+- HTTP
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+    ```http
+    https://my.bitrix24.com/rest/entity.item.property.delete.json?ENTITY=menu_new&PROPERTY=new_prop&auth=d92dd12b9b9b904254776104eed2bb76
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 ## Response on Success
 

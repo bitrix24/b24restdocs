@@ -1,4 +1,4 @@
-# Update Estimate crm.quote.update
+# Update the estimate crm.quote.update
 
 {% note warning "We are still updating this page" %}
 
@@ -10,10 +10,10 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing (should include three examples - curl, js, php)
+- edits needed for standard writing
+- parameter types are not specified
+- parameter requirements are not specified
+- examples are missing (there should be three examples - curl, js, php)
 - response in case of error is missing
 - response in case of success is missing
 
@@ -36,7 +36,7 @@ The method `crm.quote.update` updates an existing estimate.
 [`unknown`](../../data-types.md) | [Set of fields](./crm-quote-add.md) - an array in the form `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values returned by the method [crm.quote.fields](./crm-quote-fields.md). 
 {% note info %}
 
-To find out the required format of the fields, execute the method [crm.quote.fields](./crm-quote-fields.md) and check the format of the returned values for those fields. 
+To find out the required format of the fields, execute the method [crm.quote.fields](./crm-quote-fields.md) and check the format of the returned values for these fields. 
 
 {% endnote %}
 ||
@@ -46,22 +46,28 @@ To find out the required format of the fields, execute the method [crm.quote.fie
 
 ## Example
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.quote.update",
-    {
-        id: id,
-        fields: { "STATUS_ID": "SENT" }    
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.quote.update",
+        {
+            id: id,
+            fields: { "STATUS_ID": "SENT" }    
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

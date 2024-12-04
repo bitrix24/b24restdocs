@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- from Sergei's file: how it works, in what cases it will be useful, user scenario for connecting through the interface.
+- from Sergey's file: how it works, in which cases it will be useful, user scenario for connecting through the interface.
 
 {% endnote %}
 
@@ -20,7 +20,7 @@ Description of REST methods and events that work with connectors for external me
 
 {% note info "Note" %}
 
-REST methods of the **imconnector** scope in the current version do not support operation via webhooks.
+REST methods in the **imconnector** scope do not support webhook operations in the current version.
 
 {% endnote %}
 
@@ -32,11 +32,12 @@ REST methods available when working with connectors for external messengers.
 || [imconnector.activate](imconnector-activate.md) | Activate the connector. ||
 || [imconnector.deactivate](imconnector-deactivate.md) | Deactivate the connector. ||
 || [imconnector.status](imconnector-status.md) | Get the status of the connector. ||
+|| [imconnector.connector.data.set](./imconnector-connector-data-set.md) | Change connector settings. ||
 || [imconnector.list](imconnector-list.md) | Retrieve the list of connectors. ||
 || [imconnector.unregister](imconnector-unregister.md) | Unregister the connector. ||
 || [imconnector.send.messages](imconnector-send-messages.md) | Send messages to Bitrix24. ||
 || [imconnector.update.messages](imconnector-update-messages.md) | Modify sent messages. ||
 || [imconnector.delete.messages](imconnector-delete-messages.md) | Delete sent messages. ||
-|| [imconnector.send.status.delivery](imconnector-send-status-delivery.md) | Update the status to "delivered". ||
-|| [imconnector.send.status.reading](imconnector-send-status-reading.md) | Update the status to "read". ||
+|| [imconnector.send.status.delivery](imconnector-send-status-delivery.md) | Update status to “delivered”. ||
+|| [imconnector.send.status.reading](imconnector-send-status-reading.md) | Update status to “read”. ||
 |#

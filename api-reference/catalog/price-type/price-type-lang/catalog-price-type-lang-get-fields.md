@@ -10,8 +10,8 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- missing response in case of error
-- missing response in case of success
+- no response in case of error
+- no response in case of success
 - no examples in other languages
   
 {% endnote %}
@@ -28,7 +28,7 @@ Some data may be missing — we will complete it soon.
 catalog.priceTypeLang.getFields()
 ```
 
-This method returns the fields for translating the price type name.
+The method returns the fields for the translation of the price type name.
 
 ## Parameters
 
@@ -36,29 +36,36 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.priceTypeLang.getFields',
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.priceTypeLang.getFields',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 {% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 ## Returned Fields
 
-#| 
+#|
 || **Field** | **Description** | **Note** ||
 || **catalogGroupId^*^** 
 [`integer`](../../data-types.md) | ID of the price type |  ||
 || **id**
-[`integer`](../../data-types.md) | Identifier for the price type name translation | Immutable ||
+[`integer`](../../data-types.md) | Identifier for the translation of the price type name | Immutable ||
 || **lang^*^**
 [`string`](../../data-types.md) | Language of the translation |  ||
 || **name^*^**

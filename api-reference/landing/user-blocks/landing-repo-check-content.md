@@ -8,12 +8,12 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing
-- no response in case of error
+- error response is absent
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.repo.checkContent` checks the content for dangerous substrings. These include `onclick=""`, `<iframe>`, and several others. In a typical use case, the chances of triggering are minimal. The method is used solely for content control during [block registration](./landing-repo-register.md).
+The method `landing.repo.checkContent` checks the content for dangerous substrings. These include `onclick=""`, `<iframe>`, and several others. In typical use cases, the chances of triggering are minimal. The method is used solely for content control during [block registration](./landing-repo-register.md).
 
 ## Parameters
 
@@ -37,26 +37,32 @@ The method `landing.repo.checkContent` checks the content for dangerous substrin
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.repo.checkContent',
-    {
-        content: '<div style="color: red" onclick="alert(123)"><iframe src="//evil.com"></iframe></div>',
-        splitter: '#AAA#'
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- JS
 
-# Response in case of success
+    ```js
+    BX24.callMethod(
+        'landing.repo.checkContent',
+        {
+            content: '<div style="color: red" onclick="alert(123)"><iframe src="//evil.com"></iframe></div>',
+            splitter: '#AAA#'
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+# Response on Success
 
 > 200 OK
 ```json
@@ -64,4 +70,4 @@ content:"<div style="color: red" oncl#AAA#ick="alert(123)"><ifr#AAA#ame src="//e
 is_bad:true
 ```
 
-Essentially, the label `is_bad = true` indicates that there are dangerous spots in the content, along with the text marked with separators at those dangerous locations. The developer should modify such spots before registration.
+Essentially, the label `is_bad = true` indicates that there are dangerous spots in the content, along with the text marked by separators at those dangerous locations. The developer should modify such spots before registration.

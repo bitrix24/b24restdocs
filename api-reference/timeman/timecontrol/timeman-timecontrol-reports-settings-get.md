@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `timeman.timecontrol.reports.settings.get` is used to retrieve user settings for generating the report interface of the time control tool.
+The method `timeman.timecontrol.reports.settings.get` is used to retrieve user settings for building the reporting interface of the time control tool.
 
 ## Parameters
 
@@ -34,7 +34,7 @@ No parameters.
 
 - JS
 
-    ```javascript
+    ```js
     BX24.callMethod('timeman.timecontrol.reports.settings.get', {}, function(result){
         if(result.error())
         {
@@ -50,12 +50,16 @@ No parameters.
 - PHP
 
     ```php
-    $result = restCommand('timeman.timecontrol.reports.settings.get', Array(), $_REQUEST["auth"]);    
+    $result = restCommand(
+        'timeman.timecontrol.reports.settings.get',
+        Array(),
+        $_REQUEST["auth"]
+    );    
     ```
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -78,7 +82,7 @@ No parameters.
 }
 ```
 
-### Key Descriptions
+### Description of Keys
 
 - **active** - availability of the time control tool.
 - **user_id** - current user identifier.

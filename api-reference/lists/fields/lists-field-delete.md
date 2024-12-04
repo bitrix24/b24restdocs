@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types are not specified
@@ -24,14 +24,14 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `lists.field.delete` allows you to remove a field from a list. If the field is successfully deleted, it returns a response of `true`; otherwise, an *Exception* will be generated.
+The `lists.field.delete` method allows you to remove a field from a list. If the field is successfully deleted, it returns a response of `true`; otherwise, an *Exception* will be generated.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **IBLOCK_TYPE_ID**^*^
-[`unknown`](../../data-types.md) | `id` of the information block type (required):
+[`unknown`](../../data-types.md) | `id` of the information block (required):
 - **lists** - type of list information block
 - **bitrix_processes** - type of processes information block
 - **lists_socnet** - type of group lists information block ||
@@ -47,23 +47,29 @@ The method `lists.field.delete` allows you to remove a field from a list. If the
 
 ## Example
 
-```javascript
-var params = {
-    'IBLOCK_TYPE_ID': 'lists_socnet',
-    'IBLOCK_CODE': 'rest_1',
-    'FIELD_ID': 'PROPERTY_61'
-};
-BX24.callMethod(
-    'lists.field.delete',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            alert("Success: " + result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists_socnet',
+        'IBLOCK_CODE': 'rest_1',
+        'FIELD_ID': 'PROPERTY_61'
+    };
+    BX24.callMethod(
+        'lists.field.delete',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Example Note](../../../_includes/examples.md) %}

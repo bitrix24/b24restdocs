@@ -1,8 +1,8 @@
-# Main Dropdown Menu Item Near Automation Rule Settings TASK_ROBOT_DESIGNER_TOOLBAR
+# Main Dropdown Menu Item Near Robot Settings TASK_ROBOT_DESIGNER_TOOLBAR
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
-You can add your own main dropdown menu item near the Automation Rule settings in workgroups.
+You can add your own main dropdown menu item near the robot settings in workgroups.
 
 The code for the specific widget placement is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -10,15 +10,14 @@ The code for the specific widget placement is specified in the `PLACEMENT` param
 
 #|
 || **Widget Code** | **Location** ||
-|| `TASK_ROBOT_DESIGNER_TOOLBAR` | Main dropdown menu item near Automation Rule settings ||
+|| `TASK_ROBOT_DESIGNER_TOOLBAR` | Main dropdown menu item near robot settings ||
 |#
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -33,7 +32,6 @@ Array
     [PLACEMENT] => TASK_ROBOT_DESIGNER_TOOLBAR
     [PLACEMENT_OPTIONS] => {"GROUP_ID":"10"}
 )
-
 ```
 
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
@@ -48,7 +46,7 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 #|
 || **Parameter** | **Description** ||
-|| **GROUP_ID***
+|| **GROUP_ID*** 
 [`string`](../../data-types.md) | Identifier of the workgroup/project where the widget was opened.
 
 Can be used to obtain additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.

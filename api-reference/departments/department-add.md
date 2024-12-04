@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - no response in case of error
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: a user with permissions to modify the structure
 
-This method creates a department
+This method creates a department.
 
 #|
 || **Parameter** | **Description** ||
@@ -32,13 +32,33 @@ This method creates a department
 || **UF_HEAD** | identifier of the department head ||
 |#
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Notes on parameters](../../_includes/required.md) %}
 
-## Call
+## Code Examples
 
-```js
-BX24.callMethod('department.add', {"NAME": "Department", "PARENT": 155, "UF_HEAD": 1});
-```
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'department.add',
+        {
+            "NAME": "Department",
+            "PARENT": 155,
+            "UF_HEAD": 1
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
 
 ## Request
 

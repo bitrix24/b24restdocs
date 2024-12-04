@@ -2,7 +2,7 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - missing examples (there should be three examples - curl, js, php)
 - missing response in case of error
@@ -13,7 +13,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -29,22 +29,29 @@ No parameters.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.storage.getforapp",
-    {},
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% list tabs %}
 
-## Response on Success
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.storage.getforapp",
+        {},
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+## Response in case of success
 
 The returned structure is similar to that provided in [disk.storage.get](./disk-storage-get.md).
 

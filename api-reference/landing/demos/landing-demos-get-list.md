@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -66,7 +66,7 @@ which contain values from the main fields table of the entity. The table is prov
 || **MANIFEST**
 [`unknown`](../../data-types.md) | Manifest. ||
 || **SHOW_IN_LIST**
-[`unknown`](../../data-types.md) | Whether to show in the template list. ||
+[`unknown`](../../data-types.md) | Show in the list of templates. ||
 || **PREVIEW / PREVIEW2X / PREVIEW3X**
 [`unknown`](../../data-types.md) | Various sizes of previews. ||
 || **CREATED_BY_ID**
@@ -81,27 +81,33 @@ which contain values from the main fields table of the entity. The table is prov
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.demos.getList',
-    {
-        params: {
-            select: [
-                'ID', 'TITLE', 'MANIFEST'
-            ],
-            filter: {
-                '>ID': '1'
-            }
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example footnote](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.demos.getList',
+        {
+            params: {
+                select: [
+                    'ID', 'TITLE', 'MANIFEST'
+                ],
+                filter: {
+                    '>ID': '1'
+                }
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

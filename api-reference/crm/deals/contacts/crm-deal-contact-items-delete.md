@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it shortly
 
 {% endnote %}
 
@@ -55,7 +55,7 @@ The method `crm.deal.contact.items.delete` clears the set of contacts associated
     );
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {

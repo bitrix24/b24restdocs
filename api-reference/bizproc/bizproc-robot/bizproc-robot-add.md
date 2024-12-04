@@ -1,8 +1,8 @@
-# Register a New Robot bizproc.robot.add
+# Register a new Automation rule bizproc.robot.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ Some data may be missing — we will complete it shortly.
 - No note about required parameters.
 - Need to add separate tables and describe array parameters like PROPERTIES.
 - A link to the article about robots with "waiting" is needed. Also, that article is necessary :)
-- Examples are missing.
+- Examples are lacking.
 - No standard blocks.
 
 {% endnote %}
@@ -27,8 +27,8 @@ Some data may be missing — we will complete it shortly.
 
 - Edits are needed to meet the writing standard.
 - Parameter types are not specified.
-- No success response.
-- No error response.
+- No success response is provided.
+- No error response is provided.
 
 {% endnote %}
 
@@ -38,19 +38,19 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: administrator
 
-This method registers a new robot.
+The method registers a new robot.
 
 #|
 || **Parameter**         | **Description**  ||
 
 || **CODE^*^**         | Internal identifier of the robot. Allowed characters are `a-z`, `A-Z`, `0-9`, dot, dash, and underscore. Required parameter.   ||
 || **HANDLER^*^**        | Application URL to which data will be sent. Required parameter. ||
-|| **AUTH_USER_ID^*^** | ID of the user whose token will be passed to the application. ||
-|| **NAME^*^**         | Name of the robot. It can be a string or an associative array of localized strings. Required parameter. ||
-|| **USE_SUBSCRIPTION** | Use of subscription. Allowed values are `Y` or `N`. It can specify whether the robot should wait for a response from the application. If the parameter is empty or not specified, the user can configure this parameter in the action settings in the workflow designer. ||
+|| **AUTH_USER_ID^*^** | ID of the user whose token will be sent to the application. ||
+|| **NAME^*^**         | Name of the robot. Can be a string or an associative array of localized strings. Required parameter. ||
+|| **USE_SUBSCRIPTION** | Use of subscription. Allowed values are `Y` or `N`. Indicates whether the robot should wait for a response from the application. If the parameter is empty or not specified, the user can configure this parameter in the action settings in the workflow designer. ||
 || **PROPERTIES**     | Array of robot parameters. The list of values is similar to the values of the `RETURN_PROPERTIES` parameter. ||
 || **USE_PLACEMENT** | Allows opening additional robot settings in the application slider. Accepts values (`Y`/`N`). Optional parameter. ||
-|| **PLACEMENT_HANDLER** | Widget code (handler on the application side). If the `USE_PLACEMENT` parameter is used with the value "Y" but `PLACEMENT_HANDLER` is not specified, an error occurs.   ||
+|| **PLACEMENT_HANDLER** | Widget code (handler on the application side). If the `USE_PLACEMENT` parameter is set to "Y" but `PLACEMENT_HANDLER` is not specified, an error occurs.   ||
 || **RETURN_PROPERTIES** | Array of returned values from the robot. This parameter controls the ability of the robot to wait for a response from the application and work with the data that comes in the response.
 
 The system name of the parameter must start with a letter and can only contain characters `a-z`, `A-Z`, `0-9`, and underscore.
@@ -89,6 +89,8 @@ Each parameter must contain:
 ^*^ - required parameters
 
 ## Example
+
+{% include [Note about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -156,12 +158,12 @@ Each parameter must contain:
 			if(result.error())
 				alert("Error: " + result.error());
 			else
-				alert("Successfully: " + result.data());
+				alert("Success: " + result.data());
 		}
 	);
 	```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
   
 	```php
 	try {

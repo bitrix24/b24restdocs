@@ -1,14 +1,14 @@
-# Get a List of Sections entity.section.get
+# Get the list of sections entity.section.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types are not specified
@@ -25,7 +25,7 @@ Some data may be missing — we will complete it shortly.
 
 The method `entity.section.get` retrieves a list of sections from the storage (information block sections). It is a list method.
 
-The user must have at least read access (**R**) to the storage.
+The user must have at least read access permission (**R**) to the storage.
 
 ## Parameters
 
@@ -44,7 +44,7 @@ The user must have at least read access (**R**) to the storage.
 - **DEPTH_LEVEL** - depth level (starts from 1);
 - **SORT** - sorting index;
 - **CREATED** - by section creation time;
-- **CREATED_BY** - by the creator's identifier;
+- **CREATED_BY** - by the identifier of the section creator;
 - **MODIFIED_BY** - by the identifier of the user who modified the section;
 - **TIMESTAMP_X** - by the time of the last modification.
 
@@ -59,44 +59,50 @@ The default value `Array("SORT"=>"ASC")` means that the result will be sorted in
 - **CODE** - by symbolic code (by pattern [%_]);
 - **SECTION_ID** - by parent section code (if false is specified, root sections will be returned);
 - **DEPTH_LEVEL** - by depth level (starts from 1);
-- **LEFT_MARGIN**, **RIGHT_MARGIN** - by position in the tree (used when a selection of the tree of subsections is needed);
+- **LEFT_MARGIN**, **RIGHT_MARGIN** - by position in the tree (used when a selection of the subtree is needed);
 - **ID** - by section code;
 - **TIMESTAMP_X** - by the time of the last modification;
 - **DATE_CREATE** - by creation time;
 - **MODIFIED_BY** - by the code of the user who modified the section;
-- **CREATED_BY** - by the creator;
+- **CREATED_BY** - by creator;
 All filterable fields can contain a type of filter check before the name. Optional. By default, records are not filtered. ||
 || **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
-## Example
+## Examples
 
-Call
-```js
-BX24.callMethod(
-    'entity.section.get',
-    {
-        ENTITY: 'menu_new',
-        SORT: {
-            'NAME': 'ASC'
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'entity.section.get',
+        {
+            ENTITY: 'menu_new',
+            SORT: {
+                'NAME': 'ASC'
+            }
+        },
+        function(result){
+            sections = result.data();
         }
-    },
-    function(result){
-        sections = result.data();
-    }
-);
-```
+    );
+    ```
 
-Request
-```http
-https://my.bitrix24.com/rest/entity.section.get.json?ENTITY=menu_new&SORT%5BNAME%5D=ASC&auth=9affe382af74d9c5caa588e28096e872
-```
+- HTTP
 
-{% include [Example Note](../../../_includes/examples.md) %}
+    ```http
+    https://my.bitrix24.com/rest/entity.section.get.json?ENTITY=menu_new&SORT%5BNAME%5D=ASC&auth=9affe382af74d9c5caa588e28096e872
+    ```
 
-## Response in Case of Success
+{% endlist %}
+
+{% include [Examples notes](../../../_includes/examples.md) %}
+
+## Response in case of success
 
 > 200 OK
 ```json
@@ -106,12 +112,12 @@ https://my.bitrix24.com/rest/entity.section.get.json?ENTITY=menu_new&SORT%5BNAME
         {
             "ID":"219",
             "CODE":null,
-            "TIMESTAMP_X":"2013-06-23T10:11:59+03:00",
-            "DATE_CREATE":"2013-06-23T10:11:59+03:00",
+            "TIMESTAMP_X":"2013-06-23T10:11:59+02:00",
+            "DATE_CREATE":"2013-06-23T10:11:59+02:00",
             "CREATED_BY":"1","MODIFIED_BY":"1",
             "ACTIVE":"Y",
             "SORT":"500",
-            "NAME":"Second Test Section",
+            "NAME":"Second test section",
             "PICTURE":null,
             "DETAIL_PICTURE":null,
             "DESCRIPTION":null,
@@ -124,13 +130,13 @@ https://my.bitrix24.com/rest/entity.section.get.json?ENTITY=menu_new&SORT%5BNAME
         {
             "ID":"218",
             "CODE":null,
-            "TIMESTAMP_X":"2013-06-23T10:24:46+03:00",
-            "DATE_CREATE":"2013-06-23T10:08:54+03:00",
+            "TIMESTAMP_X":"2013-06-23T10:24:46+02:00",
+            "DATE_CREATE":"2013-06-23T10:08:54+02:00",
             "CREATED_BY":"1",
             "MODIFIED_BY":"1",
             "ACTIVE":"Y",
             "SORT":"500",
-            "NAME":"First Test Section",
+            "NAME":"First test section",
             "PICTURE":null,
             "DETAIL_PICTURE":null,
             "DESCRIPTION":null,

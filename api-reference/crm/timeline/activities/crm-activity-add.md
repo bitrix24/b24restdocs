@@ -1,20 +1,20 @@
-# Add System CRM Activity crm.activity.add
+# Add System Activity crm.activity.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - required parameters are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- response in case of success is missing
+- response in case of error is missing
 
 {% endnote %}
 
@@ -26,7 +26,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note warning %}
 
-Since CRM version 22.1350.0, this method is deprecated. Use the universal activity addition method [{#T}](./crm-activity-todo-add.md).
+Since CRM version 22.1350.0, the method is deprecated. Use the universal activity addition method [{#T}](./crm-activity-todo-add.md).
 
 {% endnote %}
 
@@ -59,60 +59,66 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
  ||
 |#
 
-## Usage Variants for Field Values
+## Use Cases for Field Values
 For email-type activities:
 - if the email should not be sent, set `DIRECTION=2` and `COMPLETED='N'`;
 - if it is necessary to mark emails as completed, perform an update with the completion flag set.
 
 ## Examples
 
-```js
-var paddatepart = function(part)
-{
-    return part >= 10 ? part.toString() : '0' + part.toString();
-};
+{% list tabs %}
 
-var d = new Date();
-d.setDate(d.getDate() + 7);
-d.setSeconds(0);
-var dateStr = d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+00:00';
+- JS
 
-BX24.callMethod(
-    "crm.activity.add",
+    ```js
+    var paddatepart = function(part)
     {
-        fields:
+        return part >= 10 ? part.toString() : '0' + part.toString();
+    };
+
+    var d = new Date();
+    d.setDate(d.getDate() + 7);
+    d.setSeconds(0);
+    var dateStr = d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+00:00';
+
+    BX24.callMethod(
+        "crm.activity.add",
         {
-            "OWNER_TYPE_ID": 2, //from method crm.enum.ownertype: 2 - type "deal"
-            "OWNER_ID": 102, //deal id
-            "TYPE_ID": 2, //from method crm.enum.activitytype
-            "COMMUNICATIONS": [ { VALUE:"+19832322323", ENTITY_ID:134, ENTITY_TYPE_ID:3 } ], //where 134 - contact id, 3 - type "contact"
-            "SUBJECT": "New Call",
-            "START_TIME": dateStr,
-            "END_TIME": dateStr,
-            "COMPLETED": "N",
-            "PRIORITY": 3, //from method crm.enum.activitypriority
-            "RESPONSIBLE_ID": 1,
-            "DESCRIPTION": "Important Call",
-            "DESCRIPTION_TYPE": 3, //from method crm.enum.contenttype
-            "DIRECTION": 2, // from method crm.enum.activitydirection
-            "WEBDAV_ELEMENTS":
-            [
-                { fileData: document.getElementById('file1') }
-            ],
-            "FILES":
-            [
-                { fileData: document.getElementById('file1') }
-            ] //after installing the disk module and converting data from webdav, FILES can be specified instead of WEBDAV_ELEMENTS
+            fields:
+            {
+                "OWNER_TYPE_ID": 2, //from method crm.enum.ownertype: 2 - type "deal"
+                "OWNER_ID": 102, //deal id
+                "TYPE_ID": 2, //from method crm.enum.activitytype
+                "COMMUNICATIONS": [ { VALUE:"+18005551234", ENTITY_ID:134,ENTITY_TYPE_ID:3 } ], //where 134 - contact id, 3 - type "contact"
+                "SUBJECT": "New Call",
+                "START_TIME": dateStr,
+                "END_TIME": dateStr,
+                "COMPLETED": "N",
+                "PRIORITY": 3, //from method crm.enum.activitypriority
+                "RESPONSIBLE_ID": 1,
+                "DESCRIPTION": "Important Call",
+                "DESCRIPTION_TYPE": 3, //from method crm.enum.contenttype
+                "DIRECTION": 2, // from method crm.enum.activitydirection
+                "WEBDAV_ELEMENTS":
+                [
+                    { fileData: document.getElementById('file1') }
+                ],
+                "FILES":
+                [
+                    { fileData: document.getElementById('file1') }
+                ] //after installing the disk module and converting data from webdav, you can specify FILES instead of WEBDAV_ELEMENTS
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info("A new call has been created with ID " + result.data());
         }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info("A new call has been created with ID " + result.data());
-    }
-);
-```
+    );
+    ```
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

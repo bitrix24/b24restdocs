@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
+- required parameter specifications are missing
 - no response in case of an error
 - no examples in other languages
   
@@ -48,32 +48,36 @@ If the operation is successful, a list of prices is returned in the response bod
 
 ## Examples
 
-For JS
+{% list tabs %}
 
-```javascript
-BX24.callMethod(
-    'catalog.price.list',
-    {
-        select: {
-            id
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.price.list',
+        {
+            select: {
+                id
+            },
+            filter: {
+                productId: 8
+            },
+            order: {
+                id: 'ASC'
+            }
         },
-        filter: {
-            productId: 8
-        },
-        order: {
-            id: 'ASC'
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+            result.next();
         }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-        result.next();
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 Example HTTPS request
 
@@ -81,4 +85,4 @@ Example HTTPS request
 https://your_account/rest/catalog.price.list?auth=_authorization_key_&start=50
 ```
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}

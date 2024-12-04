@@ -1,8 +1,8 @@
-# Delete Inventory catalog.store.delete
+# Delete warehouse catalog.store.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -19,7 +19,7 @@ Some data may be missing — we will complete it soon.
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can execute the method: any user
 
 ## Description
 
@@ -27,15 +27,14 @@ Some data may be missing — we will complete it soon.
 catalog.store.delete(id)
 ```
 
-Method for deleting an inventory.
-If the operation is successful, `Y` is returned in the response body.
+Method for deleting a warehouse. If the operation is successful, `Y` is returned in the response body.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **id** 
-[`integer`](../../data-types.md)| Identifier of the inventory. ||
+[`integer`](../../data-types.md)| Warehouse identifier. ||
 |#
 
 {% include [Footnote about parameters](../../../_includes/required.md) %}
@@ -44,9 +43,9 @@ If the operation is successful, `Y` is returned in the response body.
 
 {% list tabs %}
 
-- js
+- JS
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.store.delete',
         {
@@ -62,9 +61,9 @@ If the operation is successful, `Y` is returned in the response body.
     );
     ```
 
-- php
+- PHP
   
-    ```
+    ```php
     $result = CRest::call(
         'catalog.store.delete',
         [

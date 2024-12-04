@@ -1,25 +1,25 @@
-# Download Files of the Estimate catalog.product.offer.download
+# Download Product Variation Files catalog.product.offer.download
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method downloads files of the estimate based on the provided parameters.
+This method downloads product variation files based on the provided parameters.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values for downloading files of the estimate ||
+[`object`](../../../data-types.md) | Field values for downloading product variation files ||
 |#
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,26 +27,26 @@ This method downloads files of the estimate based on the provided parameters.
 || **fileId***
 [`integer`](../../../data-types.md) | Identifier of the registered file.
 
-To obtain the identifiers of the estimate files, you need to use [catalog.product.offer.get](./catalog-product-offer-get.md) or [catalog.product.offer.list](./catalog-product-offer-list.md)
+To obtain the identifiers of product variation files, you need to use [catalog.product.offer.get](./catalog-product-offer-get.md) or [catalog.product.offer.list](./catalog-product-offer-list.md)
 ||
 || **productId***
-[`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the estimate.
+[`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the product variation.
 
-To obtain the identifiers of the estimates, you need to use [catalog.product.offer.list](./catalog-product-offer-list.md)
+To obtain the identifiers of product variations, you need to use [catalog.product.offer.list](./catalog-product-offer-list.md)
 ||
 || **fieldName***
-[`string`](../../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored. Possible values:
+[`string`](../../../data-types.md) | The name of the field (property or field of the information block element) where the file is stored. Possible values:
 - `DETAIL_PICTURE` — detailed image
 - `PREVIEW_PICTURE` — preview image
-- `PROPERTY_N` — property, where `N` is the identifier or code of the property
+- `PROPERTY_N` — property, where `N` is the property identifier or property code
 
-To obtain existing identifiers or codes of properties of estimates, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
+To obtain existing identifiers or property codes of product variations, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
 ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -117,9 +117,9 @@ To obtain existing identifiers or codes of properties of estimates, you need to 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
-A file is returned based on the provided parameters.
+The response returns a file based on the provided parameters.
 
 ### Returned Data
 
@@ -127,7 +127,7 @@ A file is returned based on the provided parameters.
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {	
@@ -136,15 +136,15 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog
+|| `200040300010` | Insufficient rights to read the trade catalog
 || 
-|| `0` | The estimate with the specified identifier does not exist
+|| `0` | The product variation with the specified identifier does not exist
 || 
 || `0` | The specified property does not exist or is not a file
 || 
@@ -156,7 +156,7 @@ HTTP Status: **400**
 || 
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

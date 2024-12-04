@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -43,6 +43,10 @@ See also the description of [list methods](../../how-to-call-rest-api/list-metho
 
 ## Example
 
+{% list tabs %}
+
+- JS
+
 ```js
 //search for a group storage with a name containing "Foot"
 BX24.callMethod(
@@ -62,7 +66,10 @@ BX24.callMethod(
     }
 );
 ```
-{% include [Note on examples](../../../_includes/examples.md) %}
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Response in case of success
 

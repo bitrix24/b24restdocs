@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method adds images to a product, parent product, trade offer, or service.
+This method adds images to a product, parent product, variation, or service.
 
 ## Method Parameters
 
@@ -32,21 +32,21 @@ This method adds images to a product, parent product, trade offer, or service.
 [`catalog_product.id`](../data-types.md#catalog_product)\|
 [`catalog_product_sku.id`](../data-types.md#catalog_product_sku)\|
 [`catalog_product_offer.id`](../data-types.md#catalog_product_offer)\|
-[`catalog_product_service.id`](../data-types.md#catalog_product_service) | Identifier of the product, parent product, trade offer, or service.
+[`catalog_product_service.id`](../data-types.md#catalog_product_service) | Identifier of the product, parent product, variation, or service.
 
 To obtain existing identifiers, use the following methods:
 - for products — [catalog.product.list](../product/catalog-product-list.md)
 - for parent products — [catalog.product.sku.list](../product/sku/catalog-product-sku-list.md)
-- for trade offers — [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md)
+- for product variations — [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md)
 - for services — [catalog.product.service.list](../product/service/catalog-product-service-list.md)
 ||
 || **type**
-[`string`](../../data-types.md) | Type of image:
+[`string`](../../data-types.md) | Image type:
 - `DETAIL_PICTURE` — detailed image
 - `PREVIEW_PICTURE` — preview image
 - `MORE_PHOTO` — product images
 
-If no value is specified, the image will be saved as `MORE_PHOTO`
+If no value is specified, the image will be saved in `MORE_PHOTO`
 ||
 |#
 
@@ -128,7 +128,7 @@ If no value is specified, the image will be saved as `MORE_PHOTO`
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -169,7 +169,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -184,13 +184,13 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to modify the trade catalog
+|| `200040300020` | Insufficient rights to modify the trade catalog
 ||
-|| `200040300020` | Insufficient permissions to modify the product
+|| `200040300020` | Insufficient rights to modify the product
 ||
-|| `100` | Parameter `fields` is missing or empty
+|| `100` | Parameter `fields` is not specified or is empty
 || 
-|| `100` | Parameter `fileContent` is missing or empty
+|| `100` | Parameter `fileContent` is not specified or is empty
 || 
 || `0` | File name is not specified
 || 

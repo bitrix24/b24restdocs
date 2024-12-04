@@ -2,16 +2,16 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- revisions needed for writing standards
-- parameter types not specified
+- edits needed for writing standards
+- parameter types are not specified
 - examples are missing
 
 {% endnote %}
@@ -24,33 +24,39 @@ Some data may be missing here — we will complete it shortly.
 
 The method `im.message.delete` retrieves information about the dialog.
 
-#|
+#| 
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **MESSAGE_ID^*^**
 [`unknown`](../../data-types.md) | `1` | Message identifier | 18 ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Explanation of restCommand](../_includes/rest-command.md) %}
+{% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.message.delete',
-    Array(
-        'MESSAGE_ID' => 1,
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+- PHP
 
-## Successful Response
+    ```php
+    $result = restCommand(
+        'im.message.delete',
+        Array(
+            'MESSAGE_ID' => 1,
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+## Response on Success
 
 ```json
 {
@@ -58,9 +64,9 @@ $result = restCommand(
 }
 ```
 
-**Execution Result**: `true` or an error.
+**Execution result**: `true` or an error.
 
-## Error Response
+## Response on Error
 
 ```json
 {
@@ -76,7 +82,7 @@ $result = restCommand(
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || **MESSAGE_ID_ERROR** | Message identifier not provided ||
 || **CANT_EDIT_MESSAGE** | You do not have access to this message ||

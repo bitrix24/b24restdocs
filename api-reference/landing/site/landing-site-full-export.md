@@ -33,40 +33,46 @@ The method `landing.site.fullExport` exports the site and all its pages into a s
 || **id**
 [`unknown`](../../data-types.md) | Site identifier. | ||
 || **params**
-[`unknown`](../../data-types.md) | Optional array, the keys of which are described in the example below. | ||
+[`unknown`](../../data-types.md) | Optional array, keys described in the example below. | ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.site.fullExport',
-    {
-        id: 326,
-        params: {
-            edit_mode: 'Y',
-            //scope: 'knowledge',//pass scope if required ([more details](.))
-            hooks_disable: ['B24BUTTON_CODE'],//codes of additional fields that should not be exported
-            code: 'myfirstsite',//symbolic code of the site
-            name: 'Auto Repair Shop Website',//name of the site (page)
-            description: 'Website for your auto service. Everything you need under the hood.',//description of the site
-            preview: 'http://site.com/preview.jpg',//main preview image for the template list (recommended 280x115)
-            preview2x: 'http://site.com/preview.jpg',//enlarged preview image (recommended 560x230)
-            preview3x: 'http://site.com/preview.jpg'//retina-sized preview image (recommended 845x345)
-        }
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.fullExport',
         {
-            console.error(result.error());
-        }
-        else
+            id: 326,
+            params: {
+                edit_mode: 'Y',
+                //scope: 'knowledge',//pass scope if required ([more details](.))
+                hooks_disable: ['B24BUTTON_CODE'],//codes of additional fields that should not be exported
+                code: 'myfirstsite',//symbolic code of the site
+                name: 'Auto Repair Shop Website',//name of the site (page)
+                description: 'Website for your auto service. Everything essential under the hood.',//description of the site
+                preview: 'http://site.com/preview.jpg',//main preview image for the template list (recommended 280x115)
+                preview2x: 'http://site.com/preview.jpg',//enlarged preview image (recommended 560x230)
+                preview3x: 'http://site.com/preview.jpg'//retina-size preview image (recommended 845x345)
+            }
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}

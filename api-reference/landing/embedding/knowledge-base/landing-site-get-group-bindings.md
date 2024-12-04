@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -28,31 +28,39 @@ The method `landing.site.getGroupBindings` allows you to find out if there is a 
 ## Parameters
 
 #|
-|| **Parameter** | **Description** | **Since version** ||
+|| **Parameter** | **Description** | **Available since** ||
 || **groupId**
 [`unknown`](../../../data-types.md) | The identifier of the group for which to return the binding. Optional; by default, all bindings to any groups are returned. | ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.site.getGroupBindings',
-    {
-        groupId: 174
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.getGroupBindings',
+        {
+            groupId: 174
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

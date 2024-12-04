@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.site.unbindingFromMenu` removes the Knowledge Base binding from the menu. Read access to the Knowledge Base is required.
+The method `landing.site.unbindingFromMenu` removes the Knowledge Base binding from the menu. The Knowledge Base must have read access.
 
 ## Parameters
 
@@ -38,25 +38,31 @@ The method `landing.site.unbindingFromMenu` removes the Knowledge Base binding f
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.site.unbindingFromMenu',
-    {
-        id: 31,
-        menuCode: 'crm_switcher:deal'
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.site.unbindingFromMenu',
         {
-            console.error(result.error());
-        }
-        else
+            id: 31,
+            menuCode: 'crm_switcher:deal'
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../../_includes/examples.md) %}

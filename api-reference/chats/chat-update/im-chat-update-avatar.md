@@ -1,16 +1,16 @@
-# Update Chat Avatar im.chat.updateAvatar
+# Change Chat Avatar im.chat.updateAvatar
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for standard writing
 - parameter types are not specified
 - examples are missing
 
@@ -32,28 +32,34 @@ The method `im.chat.updateAvatar` updates the chat avatar.
 [`unknown`](../../data-types.md) | `/* base64 image */` | Image in base64 format | 18 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.chat.updateAvatar',
-    Array(
-        'CHAT_ID' => 13,
-        'AVATAR' => '/* base64 image */'
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Examples Notes](../../../_includes/examples.md) %}
+- PHP
 
-## Response on Success
+    ```php
+    $result = restCommand(
+        'im.chat.updateAvatar',
+        Array(
+            'CHAT_ID' => 13,
+            'AVATAR' => '/* base64 image */'
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
+
+## Response on success
 
 ```json
 {
@@ -61,7 +67,7 @@ $result = restCommand(
 }
 ```
 
-## Response on Error
+## Response on error
 
 ```json
 {
@@ -70,12 +76,12 @@ $result = restCommand(
 }
 ```
 
-### Description of Keys
+### Description of keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||

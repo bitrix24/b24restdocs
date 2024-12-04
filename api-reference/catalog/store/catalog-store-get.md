@@ -10,8 +10,8 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
-- no response in case of an error
+- the required parameter specification is missing
+- no response in case of error
 - no response in case of success
 - no examples in other languages
   
@@ -29,7 +29,7 @@ Some data may be missing here — we will fill it in shortly.
 catalog.store.get(id)
 ```
 
-Method to access the values of warehouse fields by ID. If the operation is successful, a [warehouse resource](resource.md) is returned in the response body.
+Method to access the warehouse field values by ID. If the operation is successful, a [warehouse resource](resource.md) is returned in the response body.
 
 ## Parameters
 
@@ -39,23 +39,30 @@ Method to access the values of warehouse fields by ID. If the operation is succe
 [`integer`](../../data-types.md)| Warehouse identifier. ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.store.get',
-    {
-        id: 7
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.store.get',
+        {
+            id: 7
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Examples Note](../../../_includes/examples.md) %}

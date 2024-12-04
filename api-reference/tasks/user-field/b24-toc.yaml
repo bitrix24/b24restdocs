@@ -3,17 +3,17 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
-  - name: Custom Fields for Tasks
-    href: task-item-user-field-get-fields.md
-  - name: Get List of Available Data Types
-    href: task-item-user-field-get-types.md
-  - name: Add Custom Field to Task
+  - name: Add Custom Field
     href: task-item-user-field-add.md
-  - name: Update Custom Field for Task
+  - name: Update Custom Field
     href: task-item-user-field-update.md
-  - name: Get Custom Field for Task by ID
+  - name: Get Custom Field by ID
     href: task-item-user-field-get.md
   - name: Get List of Custom Fields
     href: task-item-user-field-get-list.md
-  - name: Delete Custom Fields
+  - name: Delete Custom Field
     href: task-item-user-field-delete.md
+  - name: Get List of Available Data Types
+    href: task-item-user-field-get-types.md
+  - name: Get Custom Field Properties
+    href: task-item-user-field-get-fields.md

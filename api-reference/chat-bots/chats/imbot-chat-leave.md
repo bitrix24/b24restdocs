@@ -1,8 +1,8 @@
-# Chat-bot Exit from Specified Chat imbot.chat.leave
+# Chat-bot exit from the specified chat imbot.chat.leave
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
+- parameter types not specified
+- parameter requirements not specified
 - examples are missing
 - success response is missing
 - error response is missing
@@ -25,48 +25,54 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `imbot.chat.leave` allows the chat-bot to exit from the specified chat.
+The method `imbot.chat.leave` allows a chat-bot to exit the specified chat.
 
-#|
+#| 
 || **Parameter** | **Example** | **Description** | **Revision** ||
-|| **CHAT_ID**
-[`unknown`](../../data-types.md) | `13` | Identifier of the chat to exit from | ||
-|| **BOT_ID**
-[`unknown`](../../data-types.md) | `39` | Identifier of the chat-bot making the request. It can be omitted if there is only one chat-bot | ||
+|| **CHAT_ID** 
+[`unknown`](../../data-types.md) | `13` | The identifier of the chat to exit from | ||
+|| **BOT_ID** 
+[`unknown`](../../data-types.md) | `39` | The identifier of the chat-bot making the request. It can be omitted if there is only one chat-bot | ||
 |#
 
 ## Examples
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.chat.leave',
-    Array(
-        'CHAT_ID' => 13,
-        'BOT_ID' => 39,
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.chat.leave',
+        Array(
+            'CHAT_ID' => 13,
+            'BOT_ID' => 39,
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Response in case of success
 
 `true`.
 
-## Error Response
+## Response in case of error
 
 error
 
-### Possible Error Codes
+### Possible error codes
 
-#|
+#| 
 || **Code** | **Description** ||
-|| **CHAT_ID_EMPTY** | Chat identifier was not provided. ||
-|| **ACCESS_ERROR** | You do not have sufficient permissions to send the status in this chat. ||
-|| **BOT_ID_ERROR** | Chat-bot not found. ||
+|| **CHAT_ID_EMPTY** | The chat identifier was not provided. ||
+|| **ACCESS_ERROR** | You do not have sufficient permissions to send the status to this chat. ||
+|| **BOT_ID_ERROR** | The chat-bot was not found. ||
 |#

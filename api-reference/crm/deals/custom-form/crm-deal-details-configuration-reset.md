@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - parameter types are not specified
-- parameter mandatory status is not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -29,8 +29,8 @@ The method `crm.deal.details.configuration.reset` resets the settings of deal ca
 
 {% note warning %}
 
-Please note that the settings of deal cards for different directions (or funnels) may vary from each other. 
-To switch between the settings of deal cards for different directions, the parameter **dealCategoryId** is used.
+Please note that the settings of deal cards for different directions (or funnels) may differ from each other. 
+To switch between the settings of deal cards for different directions, the **dealCategoryId** parameter is used.
 
 {% endnote %}
 
@@ -43,31 +43,37 @@ To switch between the settings of deal cards for different directions, the param
 - **C** - general settings.
  ||
 || **userId**
-[`unknown`](../../../data-types.md) | User identifier. If not specified, the current user is taken. Needed only when resetting personal settings. ||
+[`unknown`](../../../data-types.md) | User identifier. If not specified, the current one is used. Required only when resetting personal settings. ||
 || **extras**
-[`unknown`](../../../data-types.md) | Additional parameters. Here, for deals, the parameter `dealCategoryId` can be specified. ||
+[`unknown`](../../../data-types.md) | Additional parameters. Here, the `dealCategoryId` parameter can be specified for deals. ||
 |#
 
 ## Examples
 
-```js
-//---
-//Reset personal settings of the general direction deal card for the user with identifier 1.
-BX24.callMethod(
-    "crm.deal.details.configuration.reset",
-    {
-        scope: "P",
-        userId: 1
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-//---
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    //---
+    //Reset personal settings of the general direction deal card for the user with identifier 1.
+    BX24.callMethod(
+        "crm.deal.details.configuration.reset",
+        {
+            scope: "P",
+            userId: 1
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    //---
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

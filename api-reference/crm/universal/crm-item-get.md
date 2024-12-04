@@ -1,4 +1,4 @@
-# Get an item by Id crm.item.get
+# Get Item by Id crm.item.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
@@ -8,7 +8,7 @@ The method returns information about an item based on the item identifier and th
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,12 +18,12 @@ The method returns information about an item based on the item identifier and th
 || **id***
 [`integer`][1] | Identifier of the item whose information we want to obtain.
 
-This can be retrieved using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
+Can be retrieved using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Get information about a lead with `id = 250`
 
@@ -89,7 +89,7 @@ Get information about a lead with `id = 250`
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
   
     ```php        
     try {
@@ -172,7 +172,7 @@ HTTP status: **200**
             "opportunity": 999.9,
             "currencyId": "USD",
             "sourceId": "TRADE_SHOW",
-            "sourceDescription": "Admin exhibition",
+            "sourceDescription": "Admin Exhibition",
             "title": "Lead #250",
             "name": "Admin",
             "lastName": "Adminov",
@@ -193,7 +193,7 @@ HTTP status: **200**
             "hasImol": "N",
             "login": null,
             "isReturnCustomer": "N",
-            "searchContent": "250 Lead #250 Adminov Admin Adminovich Administrative Company 999.90 US dollar 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In process Exhibition Admin exhibition city Admin [O]Comment about admin[/O] 321",
+            "searchContent": "250 Lead #250 Adminov Admin Adminovich Administrative Company 999.90 US Dollar 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In Process Exhibition Admin Exhibition Admin [O]Comment about admin[/O] 321",
             "isManualOpportunity": "Y",
             "movedBy": 1,
             "movedTime": "2024-07-22T17:00:08+02:00",
@@ -273,10 +273,10 @@ HTTP status: **400**, **403**
 
 #|
 || **Status** | **Code**                          | **Description**                                     | **Value**                                                    ||
-|| `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users | User is not an intranet user                 ||
-|| `400`      | `NOT_FOUND`                      | SPA not found                          | Occurs when an invalid `entityTypeId` is passed              ||
-|| `400`      | `NOT_FOUND`                      | Item not found                                | Item with the provided `id` of type `entityTypeId` does not exist     ||
-|| `400`      | `ACCESS_DENIED`                  | You do not have permission to view this item        | User does not have read access permission for items of type `entityTypeId` ||
+|| `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users            | User is not an intranet user                                 ||
+|| `400`      | `NOT_FOUND`                      | SPA not found                                      | Occurs when an invalid `entityTypeId` is passed             ||
+|| `400`      | `NOT_FOUND`                      | Item not found                                    | Item with the provided `id` of type `entityTypeId` does not exist ||
+|| `400`      | `ACCESS_DENIED`                  | You do not have permission to view this item      | User does not have read access permission for items of type `entityTypeId` ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

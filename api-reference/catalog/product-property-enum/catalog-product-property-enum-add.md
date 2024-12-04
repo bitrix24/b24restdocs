@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,10 +10,10 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- The required parameters are not specified
-- No response in case of success
-- No response in case of error
-- No examples in other languages
+- required parameters are not specified
+- no response in case of success
+- no response in case of error
+- no examples in other languages
   
 {% endnote %}
 
@@ -29,7 +29,7 @@ Some data may be missing here — we will complete it shortly.
 catalog.productPropertyEnum.add(fields)
 ```
 
-This method adds a value to list properties.
+This method adds values to list properties.
 
 ## Parameters
 
@@ -43,24 +43,31 @@ This method adds a value to list properties.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.productPropertyEnum.add',
-    {
-        fields: {
-            propertyId: 128,
-            value: "Medium",
-            def: "Y",
-            sort: 123,
-            xmlId: "M"
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.productPropertyEnum.add',
+        {
+            fields: {
+                propertyId: 128,
+                value: "Medium",
+                def: "Y",
+                sort: 123,
+                xmlId: "M"
+            }
+        },
+        function(result) {
+            if (result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
         }
-    },
-    function(result) {
-        if (result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
+
 {% include [Note on examples](../../../_includes/examples.md) %}

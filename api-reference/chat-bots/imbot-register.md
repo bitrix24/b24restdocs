@@ -2,20 +2,20 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- corrections needed for writing standards
 - parameter types are not specified
-- examples are missing for some parameters in the table
-- examples are absent
-- response on success is missing
-- response on error is missing
+- not all parameters have examples in the table
+- examples are missing
+- response in case of success is missing
+- response in case of error is missing
 - links to pages that have not yet been created are not specified
 
 {% endnote %}
@@ -33,7 +33,7 @@ The method `imbot.register` registers a chat-bot.
 || **CODE^*^**
 [`unknown`](../data-types.md) | `'newbot'` | String identifier of the bot, unique within your application (required) | ||
 || **TYPE**
-[`unknown`](../data-types.md) | `'B'` | Type, B – chat-bot, responses are immediate, O – chat-bot for Open Lines, S – chat-bot with elevated privileges (supervisor) | ||
+[`unknown`](../data-types.md) | `'B'` | Type, B – chat-bot, responses are immediate, O – chat-bot for Open lines, S – chat-bot with elevated privileges (supervisor) | ||
 || **EVENT_...^*^**
 [`unknown`](../data-types.md) | `'http://www.hazz/chatApi/event.php'` | Link to the event handler for events received from the server. Event handlers:
 - `EVENT_HANDLER` – link to the handler for the event of sending a message to the chat-bot.
@@ -42,7 +42,7 @@ or
 - `EVENT_WELCOME_MESSAGE` – link to the handler for the event of opening a dialogue with the chat-bot or inviting it to a group chat.
 - `EVENT_BOT_DELETE` – link to the handler for the event of deleting the chat-bot from the client side. | ||
 || **OPENLINE**
-[`unknown`](../data-types.md) | `'Y'` | Enable Open Lines support mode, can be omitted if TYPE = 'O' | ||
+[`unknown`](../data-types.md) | `'Y'` | Enable Open lines support mode, can be omitted if TYPE = 'O' | ||
 || **CLIENT_ID**
 [`unknown`](../data-types.md) | `''` | String identifier, used only in Webhook mode | ||
 || **PROPERTIES^*^**
@@ -56,7 +56,7 @@ or
 || **EMAIL**
 [`unknown`](../data-types.md) | `'test@test.com'` | E-mail for contact. CANNOT use an e-mail that duplicates the e-mail of real users | ||
 || **PERSONAL_BIRTHDAY**
-[`unknown`](../data-types.md) | `'2016-03-11'` | Birthday in the format YYYY-mm-dd | ||
+[`unknown`](../data-types.md) | `'2016-03-11'` | Birthday in YYYY-mm-dd format | ||
 || **WORK_POSITION**
 [`unknown`](../data-types.md) | `'Best Employee'` | Job title, used as a description of the chat-bot | ||
 || **PERSONAL_WWW**
@@ -67,10 +67,10 @@ or
 [`unknown`](../data-types.md) | `'/* base64 image */'` | Avatar - base64 | ||
 |#
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 
-**Please note**, if it is not required by your application's logic, it is recommended to respond to the bot only when the user mentions this chat-bot. This can be checked by the `TO_USER_ID` field, which will be passed in the event.
+**Please note**, if it is not required by your application's logic, it is recommended to respond to the bot's messages only when this chat-bot is mentioned. This can be checked by the `TO_USER_ID` field, which will be passed in the event.
 
 {% note info %}
 
@@ -84,44 +84,50 @@ To create it, specify the type `S` in the `TYPE` field of the **imbot.register**
 
 {% include [Explanation about restCommand](./_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.register',
-    Array(
-        'CODE' => 'newbot',
-        'TYPE' => 'B',
-        'EVENT_HANDLER' => 'http://www.hazz/chatApi/event.php',
-        'OPENLINE' => 'Y',
-        'CLIENT_ID' => '',
-        'PROPERTIES' => Array(
-            'NAME' => 'NewBot',
-            'LAST_NAME' => '',
-            'COLOR' => 'GREEN',
-            'EMAIL' => 'test@test.com',
-            'PERSONAL_BIRTHDAY' => '2016-03-11',
-            'WORK_POSITION' => 'Best Employee',
-            'PERSONAL_WWW' => 'http://test.com',
-            'PERSONAL_GENDER' => 'F',
-            'PERSONAL_PHOTO' => '/* base64 image */',
-        )
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+- PHP
 
-## Response on Success
+    ```php
+    $result = restCommand(
+        'imbot.register',
+        Array(
+            'CODE' => 'newbot',
+            'TYPE' => 'B',
+            'EVENT_HANDLER' => 'http://www.hazz/chatApi/event.php',
+            'OPENLINE' => 'Y',
+            'CLIENT_ID' => '',
+            'PROPERTIES' => Array(
+                'NAME' => 'NewBot',
+                'LAST_NAME' => '',
+                'COLOR' => 'GREEN',
+                'EMAIL' => 'test@test.com',
+                'PERSONAL_BIRTHDAY' => '2016-03-11',
+                'WORK_POSITION' => 'Best Employee',
+                'PERSONAL_WWW' => 'http://test.com',
+                'PERSONAL_GENDER' => 'F',
+                'PERSONAL_PHOTO' => '/* base64 image */',
+            )
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../_includes/examples.md) %}
+
+## Response in case of success
 
 Numeric identifier of the created bot `BOT_ID`.
 
-## Response on Error
+## Response in case of error
 
 error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
@@ -131,7 +137,7 @@ error
 || **CODE_ERROR** | String identifier is not specified. ||
 || **NAME_ERROR** | One of the required fields **NAME** or **LAST_NAME** is not specified. ||
 || **WRONG_REQUEST** | Something went wrong. ||
-|| **MAX_COUNT_ERROR** | Maximum number of registered bots for one application reached. ||
+|| **MAX_COUNT_ERROR** | Maximum number of registered bots for one application has been reached. ||
 |#
 
 ## Event Handlers
@@ -148,9 +154,9 @@ If you need to handle events with different handlers, you can specify each handl
 
 {% note warning %}
 
-If you plan to install more than one chat-bot within a single application: *Bitrix24 Rest* imposes a restriction on working with event handlers – there can only be one handler per application. Therefore, when registering a second chat-bot, the links to the handlers **EVENT_MESSAGE_ADD**, **EVENT_WELCOME_MESSAGE**, and **EVENT_BOT_DELETE** must be the same as those of the first.
+If you plan to install more than one chat-bot within one application: *Bitrix24 Rest* imposes a restriction on working with event handlers – there can only be one handler per application. Therefore, when registering a second chat-bot, the links to the handlers **EVENT_MESSAGE_ADD**, **EVENT_WELCOME_MESSAGE**, and **EVENT_BOT_DELETE** must be the same as those of the first.
 
-If it is necessary to handle multiple bots within one application, this must be accounted for within the event handler. For this, when an event occurs, an array of bots is passed to allow for correct processing.
+If it is necessary to handle multiple bots within one application, this must be accounted for within the event handler. For this, when an event occurs, an array of bots is passed so that they can be processed correctly.
 
 The maximum number of bots for one application: 5.
 
@@ -158,4 +164,4 @@ The maximum number of bots for one application: 5.
 
 ## Related Links
 
-[Rest API - Events of Installation and Update](./events/index.md)
+[Rest API - Installation and Update Events](./events/index.md)

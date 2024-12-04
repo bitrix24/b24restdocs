@@ -1,10 +1,10 @@
-# Delete Deal catalog.product.offer.delete
+# Delete Product Variation catalog.product.offer.delete
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method deletes a deal.
+This method deletes a product variation.
 
 ## Method Parameters
 
@@ -14,9 +14,9 @@ This method deletes a deal.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the deal.
+[`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the product variation.
 
-To obtain the identifiers of deals, you need to use [catalog.product.offer.list](./catalog-product-offer-list.md) ||
+To obtain the identifiers of product variations, you need to use [catalog.product.offer.list](./catalog-product-offer-list.md) ||
 |#
 
 ## Code Examples
@@ -94,8 +94,8 @@ HTTP status: **200**
         "finish": 1718623770.549073,
         "duration": 0.8443140983581543,
         "processing": 0.4027719497680664,
-        "date_start": "2024-06-17T14:29:29+03:00",
-        "date_finish": "2024-06-17T14:29:30+03:00"
+        "date_start": "2024-06-17T14:29:29+02:00",
+        "date_finish": "2024-06-17T14:29:30+02:00"
     }
 }
 ```
@@ -106,7 +106,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the deal deletion ||
+[`boolean`](../../../data-types.md) | Result of deleting the product variation ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -128,7 +128,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300040` | Insufficient permissions to delete the deal
+|| `200040300040` | Insufficient permissions to delete the product variation
 || 
 || `200040300040` | Insufficient permissions to delete the information block
 || 

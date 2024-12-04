@@ -1,11 +1,5 @@
 # Get the list of widgets landing.repowidget.getlist
 
-{% note warning "We are still working on the tool" %}
-
-The functionality will be released soon.
-
-{% endnote %}
-
 > Scope: [`landing`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
@@ -33,43 +27,43 @@ The method `landing.repowidget.getlist` returns a list of widgets for the curren
 || **select**
 [`array`](../data-types.md) | Array [with the list of fields](#anchor-field) to be selected.
 
-If not provided or an empty array is passed, all available widgets will be selected. ||
+If not provided or an empty array is passed, all available widgets will be selected ||
 || **filter**
-[`object`](../data-types.md) | Object for filtering the selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../data-types.md) | Object for filtering selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` can be found [in the table below](#anchor-field).
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for a substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"
     - "%mol" — searching for values ending with "mol"
-    - "%mol%" — searching for values where "mol" can be in any position.
+    - "%mol%" — searching for values where "mol" can be in any position
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search is conducted from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides.
 
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - "mol%" — searching for values not starting with "mol"
     - "%mol" — searching for values not ending with "mol"
-    - "%mol%" — searching for values where the substring "mol" is not present in any position.
+    - "%mol%" — searching for values where the substring "mol" is not present in any position
 
 - `!%=` — NOT LIKE (see description above)
 
-- `=` — equal, exact match (used by default)
+- `=` — equals, exact match (used by default)
 - `!=` - not equal
 - `!` — not equal ||
 || **group**
-[`array`](../data-types.md) | Array for grouping widgets. Grouping can be done [by fields](#anchor-field) of the widget. ||
+[`array`](../data-types.md) | Array for grouping widgets. Widgets can be grouped [by fields](#anchor-field) ||
 || **order**
-[`object`](../data-types.md) | Object for sorting the selected records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../data-types.md) | Object for sorting selected records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` can be found [in the table below](#anchor-field).
 
@@ -81,7 +75,7 @@ Possible values for `order`:
 
 #### Fields field {#anchor-field}
 
-Fields of the widget object. Present in both the request and response.
+Fields of the widget object. Present in the request and response.
 
 #|
 || **Name**
@@ -249,7 +243,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Array of widgets. Each element of the array is an object, with permissible fields described [above](#anchor-field). ||
+[`object`](../data-types.md) | Array of widgets. Each element of the array is an object, permissible fields are described [above](#anchor-field). ||
 || **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#

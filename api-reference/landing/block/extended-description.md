@@ -123,6 +123,6 @@ Ideologically, unlike a regular card, such repeatable contents can change. For e
 {% note info %}
 
 Please note that the content of the cards may differ, but it is better to keep the outer block consistent.
-Also, make sure to specify data-card-preset="<preset code>" in both the preset and the layout (see the example above).
+Also, make sure to specify `data-card-preset="<preset code>"` in both the preset and the layout (see the example above).
 
 {% endnote %}

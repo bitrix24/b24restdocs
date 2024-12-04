@@ -1,21 +1,21 @@
-# Change Attributes of the Node Block landing.block.updateattrs
+# Change Attributes of the Node in landing.block.updateattrs
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types are not specified
-- parameter mandatory status is not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.block.updateattrs` modifies the attributes of the node block. It returns _true_ or an error.
+The method `landing.block.updateattrs` changes the attributes of the block node. It returns _true_ or an error.
 
 ## Parameters
 
@@ -38,14 +38,14 @@ The method `landing.block.updateattrs` modifies the attributes of the node block
 || **data**
 [`unknown`](../../../data-types.md) | An array of selectors and new values for data attributes.
 For example, `data: {'.bitrix24forms': {'data-b24form': 'tratrata'}}`.
-The manifest must contain [attributes](../manifest.md#key-attrs) that you want to modify in this way. | ||
+The manifest must contain the [attributes](../manifest.md#key-attrs) you want to change in this way. | ||
 |#
 
-If the attribute pertains to a detail form (meaning it can have different content from one detail form to another), the selector must be passed with a separator @:
+If the attribute pertains to a card (meaning it can have different content from card to card), the selector must be passed with the separator @:
 
 ```http
 data: {
-    '.container-fluid@1': {//the change will affect the attribute of the second detail form (zero-based index)
+    '.container-fluid@1': {//the effect will occur on the attribute of the second card (counting from zero)
         'data-test-checkbox': [1, 2, 3]
     }
 }
@@ -53,7 +53,7 @@ data: {
 
 ## Types of Modifiable Content
 
-Each type of attribute has its own format for saving. The examples provide default values for each [type](../attributes.md#attribute-types). The new value is transmitted in a similar format. For example, saving to an attribute of type **image**:
+Each type of attribute has its own format for saving. The examples provide default values for each [type](../attributes.md#attribute-types). The new value is passed in a similar format. For example, saving to an attribute of type **image**:
 
 ```http
 data: {
@@ -63,7 +63,7 @@ data: {
 }
 ```
 
-Specific notes for the **checkbox** and **multiselect** types: to save a new value, you need to send the values of the selected items:
+Specific notes for the **checkbox** and **multiselect** types: to save a new value, you need to send the values of the selected elements:
 
 ```http
 data: {
@@ -77,30 +77,36 @@ Editing parameters of dynamic blocks is done through the method [landing.block.u
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.block.updateattrs',
-    {
-        lid: 313,
-        block: 6134,
-        data: {
-            '.bitrix24forms': {
-                'data-b24form': 'tratrata'
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.block.updateattrs',
+        {
+            lid: 313,
+            block: 6134,
+            data: {
+                '.bitrix24forms': {
+                    'data-b24form': 'tratrata'
+                }
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
             }
         }
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+    );
+    ```
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

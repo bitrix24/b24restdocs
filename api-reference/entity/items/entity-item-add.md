@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `entity.item.add` adds a storage element. The user must have at least write access (**W**) to the storage.
+The `entity.item.add` method adds a storage element. The user must have at least write access permission (**W**) in the storage.
 
 ## Parameters
 
@@ -60,31 +60,35 @@ The method `entity.item.add` adds a storage element. The user must have at least
 
 ## Example
 
-Call
+{% list tabs %}
 
-```javascript
-BX24.callMethod(
-    'entity.item.add',
-    {
-        ENTITY: 'menu_new',
-        DATE_ACTIVE_FROM: new Date(),
-        DETAIL_PICTURE: '',
-        NAME: 'Hello, world!',
-        PROPERTY_VALUES: {
-            test: 11,
-            test1: 22,
-            test_file: ''
-        },
-        SECTION: 219
-    }
-);
-```
+- JS
 
-Request
+    ```javascript
+    BX24.callMethod(
+        'entity.item.add',
+        {
+            ENTITY: 'menu_new',
+            DATE_ACTIVE_FROM: new Date(),
+            DETAIL_PICTURE: '',
+            NAME: 'Hello, world!',
+            PROPERTY_VALUES: {
+                test: 11,
+                test1: 22,
+                test_file: ''
+            },
+            SECTION: 219
+        }
+    );
+    ```
 
-```http
-https://my.bitrix24.com/rest/entity.item.add.json?DATE_ACTIVE_FROM=2013-06-26T11%3A54%3A30.421Z&DETAIL_PICTURE=&ENTITY=menu_new&NAME=Hello%2C%20world!&PROPERTY_VALUES%5Btest1%5D=22&PROPERTY_VALUES%5Btest%5D=11&PROPERTY_VALUES%5Btest_file%5D=&SECTION=219&auth=9affe382af74d9c5caa588e28096e872
-```
+- HTTP
+
+    ```http
+    https://my.bitrix24.com/rest/entity.item.add.json?DATE_ACTIVE_FROM=2013-06-26T11%3A54%3A30.421Z&DETAIL_PICTURE=&ENTITY=menu_new&NAME=Hello%2C%20world!&PROPERTY_VALUES%5Btest1%5D=22&PROPERTY_VALUES%5Btest%5D=11&PROPERTY_VALUES%5Btest_file%5D=&SECTION=219&auth=9affe382af74d9c5caa588e28096e872
+    ```
+
+{% endlist %}
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 

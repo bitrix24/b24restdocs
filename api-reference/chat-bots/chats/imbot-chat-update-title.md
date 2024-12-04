@@ -8,14 +8,14 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- revisions needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -34,26 +34,32 @@ The method `imbot.chat.updateTitle` updates the chat title.
 || **TITLE**
 [`unknown`](../../data-types.md) | `'New name for the chat'` | New title | ||
 || **BOT_ID**
-[`unknown`](../../data-types.md) | `39` | Identifier of the chatbot making the request. Can be omitted if there is only one chatbot | ||
+[`unknown`](../../data-types.md) | `39` | Identifier of the chat bot making the request. Can be omitted if there is only one chat bot | ||
 |#
 
 ## Examples
 
 {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'imbot.chat.updateTitle',
-    Array(
-        'CHAT_ID' => 13,
-        'TITLE' => 'New name for the chat',
-        'BOT_ID' => 39,
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'imbot.chat.updateTitle',
+        Array(
+            'CHAT_ID' => 13,
+            'TITLE' => 'New name for the chat',
+            'BOT_ID' => 39,
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
@@ -71,5 +77,5 @@ error
 || **Code** | **Description** ||
 || **CHAT_ID_EMPTY** | Chat identifier was not provided. ||
 || **TITLE_EMPTY** | New chat title was not provided. ||
-|| **WRONG_REQUEST** | The title is already set or the specified chat does not exist. ||
+|| **WRONG_REQUEST** | Title is already set or the specified chat does not exist. ||
 |#

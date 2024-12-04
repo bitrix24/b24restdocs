@@ -2,6 +2,20 @@
 
 ## 2024
 
+### December 3, 2024
+
+- Updated the main page of the [Comments](./api-reference/tasks/comment-item/index.md) section. Added introductory information, as well as an overview of methods and relationships.
+- Added a new method [tasks.flow.flow.pin](./api-reference/tasks/flow/tasks-flow-flow-pin.md).
+- Added a description of the new type of distribution Self-distribution to the article [{#T}](./api-reference/tasks/flow/index.md). 
+- Updated the main page of the [User Fields](./api-reference/tasks/user-field/index.md) section. Added introductory information, as well as an overview of methods and relationships.
+- Added a new tutorial [How to create a comment in a task and attach a file](./tutorials/tasks/how-to-create-comment-with-file.md).
+- Added a new method [imconnector.connector.data.set](./api-reference/imopenlines/imconnector/imconnector-connector-data-set.md).
+- Added information about methods [telephony.externalcall.finish](./api-reference/telephony/telephony-external-call-finish.md), [voximplant.sip.add](./api-reference/telephony/voximplant/sip/voximplant-sip-add.md), and [voximplant.sip.status](./api-reference/telephony/voximplant/sip/voximplant-sip-status.md).
+- Updated the main page of the [Shopping cart](./api-reference/sale/basket-item/index.md) section. Added introductory information, as well as an overview of methods and relationships.
+- Added a new article [Features of REST calls when changing the Bitrix24 address](./api-reference/how-to-call-rest-api/change-domen.md).
+- Added a new tutorial [How to create a connector for open channels for online chat on your site](./tutorials/openlines/example-connector.md).
+- Added a new article [How to test your handler for processing Bitrix24 events](./api-reference/events/test-handler.md).
+
 ### November 27, 2024
 
 - Updated the main page of the [Auxiliary Methods](./api-reference/crm/auxiliary/index.md) section in CRM. Added introductory information and an overview of methods

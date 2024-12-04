@@ -1,4 +1,4 @@
-# Get a List of Custom Activity Types crm.activity.type.list
+# Get a list of custom activity types crm.activity.type.list
 
 {% note warning "We are still updating this page" %}
 
@@ -30,21 +30,27 @@ No parameters
 
 ## Example
 
-```js
-BX24.callMethod(
-    'crm.activity.type.list',
-    {
-    },
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'crm.activity.type.list',
         {
-            console.log(result.data());
+        },
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+            {
+                console.log(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../../_includes/examples.md) %}

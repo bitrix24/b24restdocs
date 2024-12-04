@@ -1,4 +1,4 @@
-# Get Storage Description by Its Identifier disk.storage.get
+# Get storage description by its identifier disk.storage.get
 
 {% if build == 'dev' %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -30,27 +30,34 @@ The method `disk.storage.get` returns the storage by its identifier.
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Identifier of the storage. ||
+[`unknown`](../../data-types.md) | Storage identifier. ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.storage.get",
-    {id: 2},
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% list tabs %}
 
-## Response in Case of Success
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.storage.get",
+        {id: 2},
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+## Response in case of success
 
 > 200 OK
 

@@ -1,8 +1,8 @@
-# Update Inventory Document Item catalog.document.element.update
+# Update Product of Inventory Document catalog.document.element.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the mandatory parameters are not specified
-- there is no response in case of an error
+- required parameters are not specified
+- no response in case of error 
 - no examples in other languages
-- clarify the parameter type id
-
+- clarify the type of the id parameter
+  
 {% endnote %}
 
 {% endif %}
@@ -27,19 +27,20 @@ Some data may be missing here — we will complete it soon.
 catalog.document.element.update(id, fields)
 ```
 
-Method for updating an inventory document item. If the operation is successful, it returns `true`.
+Method for updating a product of the inventory document.
+If the operation is successful, it returns `true`.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`integer`](../../../data-types.md) | Identifier of the item being updated. ||
+[`integer`](../../../data-types.md) | Identifier of the product being updated. ||
 || **fields** 
-[`array`](../../../data-types.md)|  Parameters of the item being updated. ||
+[`array`](../../../data-types.md)|  Parameters of the product being updated. ||
 |#
 
-{% include [Notes on parameters](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
@@ -47,7 +48,7 @@ Method for updating an inventory document item. If the operation is successful, 
 
 - js
   
-    ```
+    ```js
     BX24.callMethod(
     'catalog.document.element.update',
     {
@@ -69,7 +70,7 @@ Method for updating an inventory document item. If the operation is successful, 
 
 - php
 
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.element.update',
         [
@@ -88,4 +89,4 @@ Method for updating an inventory document item. If the operation is successful, 
 
 {% endlist %}
 
-{% include [Notes on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

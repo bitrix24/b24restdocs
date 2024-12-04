@@ -1,8 +1,8 @@
-# Delete Values of List Properties catalog.productPropertyEnum.delete
+# Delete values of list properties catalog.productPropertyEnum.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the required parameters are not specified
-- there is no response in case of an error
+- required parameters are not specified
+- no response in case of error
 - no examples in other languages
   
 {% endnote %}
@@ -42,19 +42,31 @@ This method deletes values of list properties. If the operation is successful, i
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.productPropertyEnum.delete',
-    {
-        id: 121
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        'catalog.productPropertyEnum.add',
+        {
+            fields: {
+                propertyId: 128,
+                value: "Medium",
+                def: "Y",
+                sort: 123,
+                xmlId: "M"
+            }
+        },
+        function(result) {
+            if (result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
 {% include [Note on examples](../../../_includes/examples.md) %}

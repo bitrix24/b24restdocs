@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -23,21 +23,28 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: administrator
 
-The method returns a list of message providers registered by the current application (or the same incoming webhook).
+The method returns a list of message providers registered with the current application (or the same incoming webhook).
 
 ## Example
 
-```js
-BX24.callMethod(
-    'messageservice.sender.list',
-    {},
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            alert("Success: " + result.data().join(', '));
-    }
-);
-```
-{% include [Note on examples](../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'messageservice.sender.list',
+        {},
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data().join(', '));
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

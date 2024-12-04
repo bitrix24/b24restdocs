@@ -1,8 +1,8 @@
-# Get Parameters of an Element or List of Elements lists.element.get
+# Get parameters of an element or a list of elements lists.element.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -43,7 +43,7 @@ The method `lists.element.get` returns a list of elements or a single element. O
 || **ELEMENT_ORDER**
 [`unknown`](../../data-types.md) | Sorting. An array of fields of the information block elements. Sorting direction: **asc** (ascending) or **desc** (descending)
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 Example:
 ```js
@@ -52,48 +52,71 @@ Example:
 
 Sorting of all multiple properties is not supported, as well as properties:
 
-S:Money, PREVIEW_TEXT, DETAIL_TEXT, S:ECrm, S:map_yandex, PREVIEW_PICTURE, DETAIL_PICTURE, S:DiskFile, IBLOCK_SECTION_ID, BIZPROC, COMMENTS. ||
+S:Money, PREVIEW_TEXT, DETAIL_TEXT, S:ECrm, PREVIEW_PICTURE, DETAIL_PICTURE, S:DiskFile, IBLOCK_SECTION_ID, BIZPROC, COMMENTS. ||
 
 || **FILTER** | Filtering elements. An object with a list of fields and values.
-Almost all fields from the filter CIBlockElement::GetList are available for filtering. For example, to filter by a numeric field, you need to specify the equal sign:
+Almost all fields from the filter CIBlockElement::GetList are available for filtering. For filtering by a numeric field, you need to specify the equal sign:
 ```js
 'FILTER': {
     '=ID': [120,121],
 }
 ```
-Full-text search is also available. To do this, you need to use the SEARCHABLE_CONTENT field with the prefix "*"; ||
+There is also the possibility to use full-text search. For this, you need to use the SEARCHABLE_CONTENT field with the prefix "*"; ||
 |#
 
 ## Examples
 
-```js
-var params = {
-    'IBLOCK_TYPE_ID': 'lists_socnet',
-    'IBLOCK_CODE': 'rest_1',
-    'ELEMENT_CODE': 'element_1'
-};
-BX24.callMethod(
-    'lists.element.get',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
 
-```js
-var params = {
-    'IBLOCK_TYPE_ID': 'lists',
-    'IBLOCK_ID': '41',
-    'FILTER': {
-        '>=DATE_CREATE': '03/27/2018 00:00:00',
-        '<=DATE_CREATE': '03/27/2018 23:59:59',
-    }
-};
-```
+- JS
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+    ```js
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists_socnet',
+        'IBLOCK_CODE': 'rest_1',
+        'ELEMENT_CODE': 'element_1'
+    };
+    BX24.callMethod(
+        'lists.element.get',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists',
+        'IBLOCK_ID': '41',
+        'FILTER': {
+            '>=DATE_CREATE': '03/27/2018 00:00:00',
+            '<=DATE_CREATE': '03/27/2018 23:59:59',
+        }
+    };
+    BX24.callMethod(
+        'lists.element.get',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../_includes/examples.md) %}

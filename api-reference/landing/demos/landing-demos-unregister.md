@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ The method `landing.demos.unregister` deletes the registered partner template. I
 
 {% note warning %}
 
-Both the site template with this code and all page templates with this code will be deleted. Created sites and pages based on these templates will remain untouched.
+Both the site template with this code and all page templates with this code will be deleted. Created sites and pages based on these templates remain untouched.
 
 {% endnote %}
 
@@ -42,24 +42,30 @@ Both the site template with this code and all page templates with this code will
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.demos.unregister',
-    {
-        code: 'myfirstsite'
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.demos.unregister',
+        {
+            code: 'myfirstsite'
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

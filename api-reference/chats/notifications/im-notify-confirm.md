@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -65,7 +65,7 @@ For example, consider the notification:
     );
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -91,7 +91,7 @@ For example, consider the notification:
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Successful Response
+## Success Response
 
 ```json
 {

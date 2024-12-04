@@ -1,8 +1,8 @@
-# Get Custom Deal Field by Id crm.deal.userfield.get
+# Get Custom Field of Deals by Id crm.deal.userfield.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -23,32 +23,38 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `crm.deal.userfield.get` returns a custom deal field by its identifier.
+The method `crm.deal.userfield.get` returns the custom field of deals by identifier.
 
 #|
 || **Parameter** | **Description** ||
-|| **id**^*^ | Field identifier. ||
+|| **id**^*^ | Identifier of the field. ||
 |#
 
 {% include [Parameter Note](../../../../_includes/required.md) %}
 
 ## Example
 
-```js
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.deal.userfield.get",
-    {
-        id: id
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.deal.userfield.get",
+        {
+            id: id
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Example Note](../../../../_includes/examples.md) %}

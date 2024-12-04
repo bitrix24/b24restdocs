@@ -1,8 +1,8 @@
-# Conduct Inventory Document (deprecated) catalog.document.confirm
+# Conduct the inventory management document (confirm) catalog.document.confirm
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of error
+- no response in case of an error
 - no examples in other languages
   
 {% endnote %}
@@ -20,13 +20,13 @@ Some data may be missing here — we will complete it shortly.
 
 {% note info "Attention!" %}
 
-This method has been deprecated since version **22.400.0**. It is recommended to use the method [catalog.document.conduct](./catalog-document-conduct.md).
+The method has been deprecated since version **22.400.0**. It is recommended to use the method [catalog.document.conduct](./catalog-document-conduct.md).
 
 {% endnote %}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can subscribe: any user
+> Who can sign: any user
 
 ## Description
 
@@ -34,7 +34,7 @@ This method has been deprecated since version **22.400.0**. It is recommended to
 catalog.document.confirm(id)
 ```
 
-Method for conducting an inventory document. If the operation is successful, it returns `true` in the response body.
+Method for conducting the inventory management document. If the operation is successful, `true` is returned in the response body.
 
 
 ## Parameters
@@ -45,7 +45,7 @@ Method for conducting an inventory document. If the operation is successful, it 
 [`integer`](../../data-types.md)| Document identifier. ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -53,7 +53,7 @@ Method for conducting an inventory document. If the operation is successful, it 
 
 - js
   
-    ```
+    ```js
     BX24.callMethod(
     'catalog.document.confirm',
     {
@@ -71,7 +71,7 @@ Method for conducting an inventory document. If the operation is successful, it 
 
 - php
   
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.confirm',
         [
@@ -85,4 +85,4 @@ Method for conducting an inventory document. If the operation is successful, it 
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}

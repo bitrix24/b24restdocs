@@ -1,4 +1,4 @@
-# Get the values of the product property feature parameter or trade offers catalog.productPropertyFeature.get
+# Get the values of the product property feature parameter or variations catalog.productPropertyFeature.get
 
 {% note warning "We are still updating this page" %}
 
@@ -8,9 +8,9 @@ Some data may be missing here — we will fill it in shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- the mandatory parameters are not specified
+- the requirement of parameters is not specified
 - there is no response in case of an error
 - no examples in other languages
   
@@ -28,33 +28,40 @@ Some data may be missing here — we will fill it in shortly.
 catalog.productPropertyFeature.get(id)
 ```
 
-Method to access the value of the product property feature or trade offers by ID.
+Method to access the value of the product property feature or variations by ID.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **id** 
-[`integer`](../../data-types.md)| Identifier of the product property feature or trade offers. ||
+[`integer`](../../data-types.md)| Identifier of the product property feature or variations ||
 |#
 
-{% include [Parameter note](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.productPropertyFeature.get',
-    {
-        id: 144
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Examples note](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.productPropertyFeature.get',
+        {
+            id: 144
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

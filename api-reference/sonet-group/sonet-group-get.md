@@ -1,8 +1,8 @@
-# Get a List of Social Network Groups sonet_group.get
+# Get a list of social network groups sonet_group.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
-- no response in case of an error
+- parameter requirements are not specified
+- no response in case of error
 - no examples in other languages
 
 {% endnote %}
@@ -43,8 +43,8 @@ https://mydomain.bitrix24.com/rest/sonet_group.get.json?auth=bbc392f317df617d02c
     "SITE_ID": "s1",
     "NAME": "Sales",
     "DESCRIPTION": "Marketing group for sales",
-    "DATE_CREATE": "2013-11-06T07:45:12+04:00",
-    "DATE_UPDATE": "2013-11-06T07:45:12+04:00",
+    "DATE_CREATE": "2013-11-06T07:45:12+02:00",
+    "DATE_UPDATE": "2013-11-06T07:45:12+02:00",
     "ACTIVE": "Y",
     "VISIBLE": "Y",
     "OPENED": "N",
@@ -53,8 +53,8 @@ https://mydomain.bitrix24.com/rest/sonet_group.get.json?auth=bbc392f317df617d02c
     "OWNER_ID": "1",
     "KEYWORDS": "sales, product, marketing, market",
     "NUMBER_OF_MEMBERS": "1",
-    "DATE_ACTIVITY": "2013-11-06T07:45:12+04:00",
-    "SUBJECT_NAME": "Working Groups",
+    "DATE_ACTIVITY": "2013-11-06T07:45:12+02:00",
+    "SUBJECT_NAME": "Workgroups",
     "IMAGE": "https://cdn.bitrix24.com/b211545/socialnetwork/ba9/ba9533b38f60ade077b64f06a60d7082/2.jpg",
     "IS_EXTRANET": "Y"
     }
@@ -69,24 +69,32 @@ https://mydomain.bitrix24.com/rest/sonet_group.get.json?auth=bbc392f317df617d02c
 || **Parameter** | **Description** ||
 || **ORDER** | Corresponds to the arOrder parameter of the `CSocNetGroup::GetList()` method. ||
 || **FILTER** | Corresponds to the arFilter parameter of the `CSocNetGroup::GetList()` method. ||
-|| **IS_ADMIN** | When set to Y, it checks if the current user is an administrator of the social network, and if so, disables permission checks when retrieving groups. ||
+|| **IS_ADMIN** | When Y is passed, it checks if the current user is an administrator of the social network, and if so, disables permission checks when selecting groups. ||
 |#
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
-Returns the same fields as `CSocNetGroup::GetList()`, except for `INITIATE_PERMS`, `SPAM_PERMS`, and `IMAGE_ID` (instead, it returns the `IMAGE` field, with the file fields corresponding to `IMAGE_ID`).
+Returns the same fields as `CSocNetGroup::GetList()`, except for `INITIATE_PERMS`, `SPAM_PERMS`, and `IMAGE_ID` (instead of the last one, the `IMAGE` field is returned, containing the file fields corresponding to `IMAGE_ID`).
 
 ## Example
 
-```js
-// Get a list of all available social network groups whose names start with the substring "Sales", sorted by name in alphabetical order
-BX24.callMethod('sonet_group.get', {
-    'ORDER': {
-        'NAME': 'ASC'
-    },
-    'FILTER': {
-        '%NAME': 'Sales'
-    }
-});
-```
-{% include [Example Notes](../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    // Get a list of all available social network groups whose names start with the substring "Sales", sorted by name in alphabetical order
+    BX24.callMethod('sonet_group.get', {
+        'ORDER': {
+            'NAME': 'ASC'
+        },
+        'FILTER': {
+            '%NAME': 'Sales'
+        }
+    });
+    ```
+
+{% endlist %}
+
+
+{% include [Footnote about examples](../../_includes/examples.md) %}

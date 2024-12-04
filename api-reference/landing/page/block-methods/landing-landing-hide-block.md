@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it soon.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
@@ -40,25 +40,31 @@ The method `landing.landing.hideblock` hides a block from the page. It returns *
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.landing.hideblock',
-    {
-        lid: 351,
-        block: 6428
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.hideblock',
         {
-            console.error(result.error());
-        }
-        else
+            lid: 351,
+            block: 6428
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

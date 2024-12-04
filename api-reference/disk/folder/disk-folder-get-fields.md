@@ -1,10 +1,10 @@
-# Get Folder Field Descriptions disk.folder.getfields
+# Get Folder Fields Description disk.folder.getfields
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- missing examples (there should be three examples - curl, js, php)
+- missing examples (should include three examples - curl, js, php)
 - missing response in case of error
 
 {% endnote %}
@@ -13,7 +13,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ The method `disk.folder.getfields` returns the description of folder fields.
 
 - `TYPE` — field type;
 - `USE_IN_FILTER` — whether the field can be used for filtering the selection;
-- `USE_IN_SHOW` — whether this field is available in the response.
+- `USE_IN_SHOW` — whether this field is available when receiving a response.
 
 ## Parameters
 
@@ -33,22 +33,29 @@ No parameters.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.folder.getfields",
-    {},
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% list tabs %}
 
-## Successful Response
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.folder.getfields",
+        {},
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+## Response on Success
 
 > 200 OK
 

@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types are not specified
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `lists.field.update` allows you to update a list field. Upon successful field update, the response is `true`, otherwise *Exception*.
+The method `lists.field.update` allows you to update a list field. If the field is successfully updated, the response is `true`, otherwise *Exception*.
 
 ## Parameters
 
@@ -63,55 +63,61 @@ The method `lists.field.update` allows you to update a list field. Upon successf
 
 ## Example
 
-```js
-var params = {
-    'IBLOCK_TYPE_ID': 'lists_socnet',
-    'IBLOCK_CODE': 'rest_1',
-    'FIELD_ID': 'PROPERTY_61',
-    'FIELDS': {
-        'NAME': 'List field (Update)',
-        'IS_REQUIRED': 'N',
-        'MULTIPLE': 'N',
-        'TYPE': 'L',
-        'SORT': '20',
-        'CODE': 'fieldList',
-        'LIST': {
-            '58': {
-                'SORT': '10',
-                'VALUE': 'one'
+{% list tabs %}
+
+- JS
+
+    ```js
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists_socnet',
+        'IBLOCK_CODE': 'rest_1',
+        'FIELD_ID': 'PROPERTY_61',
+        'FIELDS': {
+            'NAME': 'List field (Update)',
+            'IS_REQUIRED': 'N',
+            'MULTIPLE': 'N',
+            'TYPE': 'L',
+            'SORT': '20',
+            'CODE': 'fieldList',
+            'LIST': {
+                '58': {
+                    'SORT': '10',
+                    'VALUE': 'one'
+                },
+                '59': {
+                    'SORT': '20',
+                    'VALUE': 'two'
+                },
+                '60': {
+                    'SORT': '30',
+                    'VALUE': 'three'
+                }
             },
-            '59': {
-                'SORT': '20',
-                'VALUE': 'two'
+            'LIST_DEF': {
+                '0': '59'
             },
-            '60': {
-                'SORT': '30',
-                'VALUE': 'three'
+            'SETTINGS': {
+                'SHOW_ADD_FORM': 'Y',
+                'SHOW_EDIT_FORM': 'Y',
+                'ADD_READ_ONLY_FIELD': 'N',
+                'EDIT_READ_ONLY_FIELD': 'Y',
+                'SHOW_FIELD_PREVIEW': 'N'
             }
-        },
-        'LIST_DEF': {
-            '0': '59'
-        },
-        'SETTINGS': {
-            'SHOW_ADD_FORM': 'Y',
-            'SHOW_EDIT_FORM': 'Y',
-            'ADD_READ_ONLY_FIELD': 'N',
-            'EDIT_READ_ONLY_FIELD': 'Y',
-            'SHOW_FIELD_PREVIEW': 'N'
         }
-    }
-};
-BX24.callMethod(
-    'lists.field.update',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            alert("Success: " + result.data());
-    }
-);
-```
+    };
+    BX24.callMethod(
+        'lists.field.update',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data());
+        }
+    );
+    ```
+
+{% endlist %}
 
 {% include [Example Notes](../../../_includes/examples.md) %}

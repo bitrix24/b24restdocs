@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can execute the method: any user
 
 The method `crm.lead.delete` removes a lead and all associated objects, such as connections to other entities, lead history, timeline records, etc.
 
@@ -73,7 +73,7 @@ The method `crm.lead.delete` removes a lead and all associated objects, such as 
     https://xxx.bitrix24.com/rest/1/5***/crm.lead.delete.json?id=123
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -108,8 +108,8 @@ The method `crm.lead.delete` removes a lead and all associated objects, such as 
         "finish": 1705764937.173995,
         "duration": 4.1753120422363281,
         "processing": 3.3076529502868652,
-        "date_start": "2024-01-20T18:35:32+02:00",
-        "date_finish": "2024-01-20T18:35:37+02:00",
+        "date_start": "2024-01-20T18:35:32+03:00",
+        "date_finish": "2024-01-20T18:35:37+03:00",
         "operating_reset_at": 1705765533,
         "operating": 3.3076241016387939
     }
@@ -135,9 +135,9 @@ The method `crm.lead.delete` removes a lead and all associated objects, such as 
 || **date_finish**
 [`double`](../../data-types.md) | String representation of the date and time of the request completion moment ||
 || **operating_reset_at**
-[`timestamp`](../../data-types.md) | Timestamp of when the REST API resource limit will be reset. Read more in the article [operation limits](../../../limits.md) ||
+[`timestamp`](../../data-types.md) | Timestamp of when the REST API resource limit will be reset. Read more in the article [operation limit](../../../limits.md) ||
 || **operating**
-[`double`](../../data-types.md) | In how many milliseconds will the REST API resource limit be reset? Read more in the article [operation limits](../../../limits.md) ||
+[`double`](../../data-types.md) | In how many milliseconds will the REST API resource limit be reset? Read more in the article [operation limit](../../../limits.md) ||
 |#
 
 ## Example response in case of error

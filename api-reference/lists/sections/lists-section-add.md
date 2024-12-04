@@ -1,20 +1,20 @@
-# Create a section in the universal list lists.section.add
+# Create a section of the universal list lists.section.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `lists.section.add` creates a list section. If the section is created successfully, the response is `true`; otherwise, it returns *Exception*.
+The method `lists.section.add` creates a list section. If the section is created successfully, the response is `true`, otherwise *Exception*.
 
 ## Parameters
 
@@ -47,31 +47,37 @@ The method `lists.section.add` creates a list section. If the section is created
 [`unknown`](../../data-types.md) | Symbolic code of the section (required). | ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Example
 
-```js
-/* lists.section.add */
-var params = {
-    'IBLOCK_TYPE_ID': 'lists',
-    'IBLOCK_CODE': 'rest_1',
-    'SECTION_CODE': 'Section_code_1',
-    'FIELDS': {
-        'NAME': 'Section_1',
-    }
-};
-BX24.callMethod(
-    'lists.section.add',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    /* lists.section.add */
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists',
+        'IBLOCK_CODE': 'rest_1',
+        'SECTION_CODE': 'Section_code_1',
+        'FIELDS': {
+            'NAME': 'Section_1',
+        }
+    };
+    BX24.callMethod(
+        'lists.section.add',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

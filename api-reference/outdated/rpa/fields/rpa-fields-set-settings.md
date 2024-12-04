@@ -1,8 +1,8 @@
-# Set Full Visibility Settings for Fields rpa.fields.setSettings
+# Set Full Visibility Settings for rpa.fields.setSettings
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -28,28 +28,35 @@ The method `rpa.fields.setSettings` sets the full visibility settings for fields
 #|
 || **Parameter** / **Type** | **Description** ||
 || **typeId**^*^ 
-[`number`](../../../data-types.md) | Identifier of the process. ||
+[`number`](../../../data-types.md) | Process identifier. ||
 || **stageId** 
-[`number`](../../../data-types.md) | Identifier of the stage. Default is 0 (general settings). ||
+[`number`](../../../data-types.md) | Stage identifier. Default is 0 (general settings). ||
 || **fields**^*^ 
-[`array`](../../../data-types.md) | Array with visibility settings for fields. If an empty fields array is passed, all settings will be cleared. ||
+[`array`](../../../data-types.md) | Array with field visibility settings. If an empty fields is passed, all settings will be cleared. ||
 |#
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../../_includes/required.md) %}
 
 ## Example
 
-```json
-{
-    "typeId": 1,
-    "fields": {
-        "kanban": [
-            "createdBy", 
-            "UF_RPA_1_NAME"
-        ]
+{% list tabs %}
+
+- JS
+
+    ```json
+    {
+        "typeId": 1,
+        "fields": {
+            "kanban": [
+                "createdBy",
+                "UF_RPA_1_NAME"
+            ]
+        }
     }
-}
-```
+    ```
+
+{% endlist %}
+
 The method will return a result similar to the request `rpa.fields.getSettings`.
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Example Notes](../../../../_includes/examples.md) %}

@@ -12,7 +12,7 @@ Some data may be missing — we will fill it in shortly.
 
 - parameter types are not specified
 - parameter requirements are not specified
-- examples (in other languages) are missing
+- examples are missing (in other languages)
 - success response is missing
 - error response is missing
 
@@ -59,7 +59,7 @@ The returned product items can be of the following types (field **TYPE**):
     );
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
   
     ```php
     try {

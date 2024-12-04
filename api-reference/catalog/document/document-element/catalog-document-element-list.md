@@ -1,8 +1,8 @@
-# Get a List of Products in Inventory Management Documents catalog.document.element.list
+# Get a list of products in inventory management documents catalog.document.element.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of an error
+- no response in case of error
 - no examples in other languages
   
 {% endnote %}
@@ -48,7 +48,7 @@ If the operation is successful, a list of documents is returned in the response 
 [`integer`](../../../data-types.md)| Page size from 1 to 500 (if 0 or a number greater than the maximum is specified, the default value of 50 is used). ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
@@ -56,7 +56,7 @@ If the operation is successful, a list of documents is returned in the response 
 
 - js
 
-    ```
+    ```js
     BX24.callMethod(
         'catalog.document.element.list',
         {
@@ -81,7 +81,7 @@ If the operation is successful, a list of documents is returned in the response 
 
 - php
 
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.element.list',
         [
@@ -103,10 +103,10 @@ If the operation is successful, a list of documents is returned in the response 
 
 - For HTTPS
   
-```
-https://your_account/rest/catalog.document.element.list?auth=_authorization_key_&start=50
-```
+    ```http
+    https://your_account/rest/catalog.document.element.list?auth=_authorization_key_&start=50
+    ```
 
 {% endlist %}
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}

@@ -1,19 +1,19 @@
-# Update Additional Property of Storage Elements `entity.item.property.update`
+# Update Additional Property of Storage Items `entity.item.property.update`
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - adjustments needed for writing standards
-- parameter types not specified
-- examples missing
-- error response not provided
+- parameter types are not specified
+- examples are missing
+- response in case of error is absent
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `entity.item.property.update` updates the additional property of storage elements. The user must have management rights (**X**) for the storage.
+The method `entity.item.property.update` updates the additional property of storage items. The user must have management rights (**X**) for the storage.
 
 ## Parameters
 
@@ -45,28 +45,32 @@ The method `entity.item.property.update` updates the additional property of stor
 
 ## Example
 
-Call
+{% list tabs %}
 
-```js
-BX24.callMethod(
-    'entity.item.property.update',
-    {
-        ENTITY: 'menu_new',
-        PROPERTY: 'new_prop',
-        NAME: 'Not a New Property Anymore'
-    }
-);
-```
+- JS
 
-Request
+    ```js
+    BX24.callMethod(
+        'entity.item.property.update',
+        {
+            ENTITY: 'menu_new',
+            PROPERTY: 'new_prop',
+            NAME: 'Not a New Property Anymore'
+        }
+    );
+    ```
 
-```http
-https://my.bitrix24.com/rest/entity.item.property.update.json?ENTITY=menu_new&NAME=Not%20a%20New%20Property%20Anymore&PROPERTY=new_prop&auth=ad5a6f34f14f644136830eb8a936f07f
-```
+- HTTP
+
+    ```http
+    https://my.bitrix24.com/rest/entity.item.property.update.json?ENTITY=menu_new&NAME=Not%20a%20New%20Property%20Anymore&PROPERTY=new_prop&auth=ad5a6f34f14f644136830eb8a936f07f
+    ```
+
+{% endlist %}
 
 {% include [Example Note](../../../../_includes/examples.md) %}
 
-## Successful Response
+## Response on Success
 
 > 200 OK
 ```json

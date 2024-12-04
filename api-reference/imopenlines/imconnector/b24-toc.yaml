@@ -3,6 +3,8 @@ href: index.md
 items: 
   - name: Custom Open Channel Connectors
     href: index.md
+  - name: Typical use-cases
+    href: tutorials.md
   - name: Register Connector
     href: imconnector-register.md
   - name: Activate Connector
@@ -11,6 +13,8 @@ items:
     href: imconnector-deactivate.md
   - name: Get Connector Status
     href: imconnector-status.md
+  - name: Change Connector Settings
+    href: imconnector-connector-data-set.md
   - name: Get List of Connectors
     href: imconnector-list.md
   - name: Unregister Connector

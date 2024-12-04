@@ -1,4 +1,4 @@
-# Copy File to Specified Folder disk.file.copyto
+# Copy file to the specified folder disk.file.copyto
 
 {% if build == 'dev' %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -32,30 +32,37 @@ The method `disk.file.copyto` copies a file to the specified folder.
 || **id**
 [`unknown`](../../data-types.md) | File identifier. ||
 || **targetFolderId**
-[`unknown`](../../data-types.md) | Identifier of the folder where the copy will be made. ||
+[`unknown`](../../data-types.md) | Identifier of the folder to which the copy is made. ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.file.copyto",
-    {
-        id: 10,
-        targetFolderId: 226
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% list tabs %}
 
-## Success Response
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.file.copyto",
+        {
+            id: 10,
+            targetFolderId: 226
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+## Success response
 
 > 200 OK
 

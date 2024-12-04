@@ -1,8 +1,8 @@
-# Get Information on Whether Inventory Management is Enabled catalog.document.mode.status
+# Get information on whether inventory management is enabled catalog.document.mode.status
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
+- required parameter specifications are missing
 - no response in case of an error
 - no examples in other languages
   
@@ -29,7 +29,7 @@ catalog.document.mode.status()
 ```
 
 Method to retrieve information on whether inventory management is enabled.
-The status of inventory management is returned:
+Returns the status of inventory management:
 
 - `Y` - inventory management is enabled;
 - `N` - inventory management is disabled.
@@ -42,9 +42,9 @@ No parameters
 
 {% list tabs %}
 
-- js
+- JS
   
-    ```
+    ```js
     BX24.callMethod(
         'catalog.document.mode.status',
         {},
@@ -58,9 +58,9 @@ No parameters
     );
     ```
 
-- php
+- PHP
   
-    ```
+    ```php
     $result = CRest::call(
         'catalog.document.mode.status'
     );

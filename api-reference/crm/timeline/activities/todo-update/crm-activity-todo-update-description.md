@@ -23,31 +23,36 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `crm.activity.todo.updateDescription` changes the text of a universal deal. The result will contain `id` – the identifier of the modified deal.
+The method `crm.activity.todo.updateDescription` changes the text of a universal activity. The result will contain `id` – the identifier of the modified activity.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **ownerTypeId**
-[`number`](../../../../data-types.md) | Identifier of the element type (reference of available types) to which the deal belongs ||
+[`number`](../../../../data-types.md) | Identifier of the element type (directory of available types) to which the activity belongs ||
 || **ownerId**
-[`number`](../../../../data-types.md) | Identifier of the element to which the deal belongs ||
+[`number`](../../../../data-types.md) | Identifier of the element to which the activity belongs ||
 || **id**
-[`number`](../../../../data-types.md) | Identifier of the deal ||
+[`number`](../../../../data-types.md) | Identifier of the activity ||
 || **value**
-[`string`](../../../../data-types.md) | New text of the deal ||
+[`string`](../../../../data-types.md) | New text of the activity ||
 |#
 
 ## Examples
 
-```http
-crm.activity.todo.updateDescription?ownerTypeId=2&ownerId=1&id=1&value=call back
-```
+{% list tabs %}
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+- HTTP
 
-## Response on Success
+    ```http
+    crm.activity.todo.updateDescription?ownerTypeId=2&ownerId=1&id=1&value=call back
+    ```
+{% endlist %}
+
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+
+## Response in case of success
 
 > 200 OK
 ```json

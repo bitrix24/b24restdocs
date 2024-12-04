@@ -1,8 +1,8 @@
-# Set Network Address Ranges timeman.networkrange.set
+# Set Network Address Range timeman.networkrange.set
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -42,10 +42,12 @@ The range can contain a block of addresses, for example `10.0.0.0-10.255.255.255
 
 - JS
 
-    ```javascript
-    BX24.callMethod('timeman.networkrange.set', {
+    ```js
+    BX24.callMethod('timeman.networkrange.set',
+    {
         ranges: '[{"ip_range":"10.0.0.0-10.255.255.255","name":"Office Network 10.x.x.x"},{"ip_range":"172.16.0.0-172.31.255.255","name":"Office Network 172.x.x.x"},{"ip_range":"192.168.0.0-192.168.255.255","name":"Office Network 192.168.x.x"}]'
-    }, function(result){
+    },
+    function(result){
         if(result.error())
         {
             console.error(result.error().ex);
@@ -83,7 +85,7 @@ The range can contain a block of addresses, for example `10.0.0.0-10.255.255.255
 
 ## Successful Response
 
-**Upon successful save**
+**On successful save**
 
 > 200 OK
 ```json
@@ -94,7 +96,7 @@ The range can contain a block of addresses, for example `10.0.0.0-10.255.255.255
 }
 ```
 
-**In case of range parsing error**
+**On parsing error of ranges**
 
 > 200 OK
 ```json
@@ -110,7 +112,7 @@ The range can contain a block of addresses, for example `10.0.0.0-10.255.255.255
 
 ### Key Descriptions
 
-- **result** - the outcome of the save operation.
+- **result** - the result of the save operation.
 - **error_range** - an array of ranges where errors were found:
     - **ip_range** - the network address range.
     - **name** - the name of the range.
@@ -127,8 +129,8 @@ The range can contain a block of addresses, for example `10.0.0.0-10.255.255.255
 
 ### Key Descriptions
 
-- Key **error** - the code of the occurred error.
-- Key **error_description** - a brief description of the occurred error.
+- The **error** key - the code of the occurred error.
+- The **error_description** key - a brief description of the occurred error.
 
 ### Possible Error Codes
 

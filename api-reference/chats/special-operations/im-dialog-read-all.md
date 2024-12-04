@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will complete it shortly.
 
 - edits needed for writing standards
 - examples are missing
-- no response in case of an error
+- no response in case of error
 
 {% endnote %}
 
@@ -28,17 +28,23 @@ No parameters are passed.
 
 ## Examples
 
-```js
-B24.callMethod(
-    'im.dialog.read.all',
-    {},
-    res => console.log(res.data())
-)
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- JS
 
-## Response on success
+    ```js
+    B24.callMethod(
+        'im.dialog.read.all',
+        {},
+        res => console.log(res.data())
+    )
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+## Response in case of success
 
 ```json
 {

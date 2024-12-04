@@ -33,30 +33,36 @@ The method `landing.landing.resolveIdByPublicUrl` returns the page ID based on t
 || **landingUrl**
 [`unknown`](../../../data-types.md) | Relative URL of the page. ||
 || **siteId**
-[`unknown`](../../../data-types.md) | Site identifier. ||
+[`unknown`](../../../data-types.md) | Site ID. ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.landing.resolveIdByPublicUrl',
-    {
-        landingUrl: '/folder/sub/folder/page/',
-        siteId: 1817
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.resolveIdByPublicUrl',
         {
-            console.error(result.error());
-        }
-        else
+            landingUrl: '/folder/sub/folder/page/',
+            siteId: 1817
+        },
+        function(result)
         {
-            console.info(result.data());
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

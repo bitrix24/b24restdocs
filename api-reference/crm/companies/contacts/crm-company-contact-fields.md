@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will add it soon.
 >
 > Who can execute the method: any user
 
-The method `crm.company.contact.fields` returns the field descriptions for the company-contact connection, used by methods in the `crm.company.contact.*` family, such as `crm.company.contact.items.get`, `crm.company.contact.items.set`, `crm.company.contact.add`, etc.
+The method `crm.company.contact.fields` returns the field descriptions used by the methods in the `crm.company.contact.*` family, such as `crm.company.contact.items.get`, `crm.company.contact.items.set`, `crm.company.contact.add`, etc.
 
 ## Parameters
 
@@ -30,18 +30,24 @@ No parameters.
 
 ## Examples
 
-```js
-BX24.callMethod(
-    "crm.company.contact.fields",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+- JS
+  
+    ```js
+    BX24.callMethod(
+        "crm.company.contact.fields",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

@@ -2,17 +2,17 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types are not specified
-- from Sergey's file: general description, useful scenarios, link to the page in the widgets section
+- from Sergei's file: general description, scenarios where it's useful, link to the page in the widget section
 
 {% endnote %}
 
@@ -20,14 +20,14 @@ Some data may be missing here — we will complete it soon.
 
 > Scope: [`im`](../../scopes/permissions.md)
 
-You can create applications that add additional scenarios for chat – for example, a separate disk for chat or a knowledge base.
+You can create applications that add additional scenarios for chat – for example, a separate Drive for chat or a knowledge base.
 
 #|
 || **Parameter** | **Description** ||
 || **iconName^*^**
-[`unknown`](../../data-types.md) | The class name of the icon in [Font Awesome](https://fontawesome.com/search) format (e.g., `fa-cloud`). ||
+[`unknown`](../../data-types.md) | The name of the icon class in [Font Awesome](https://fontawesome.com/search) format (e.g., `fa-cloud`). ||
 || **context**
-[`unknown`](../../data-types.md) | The type of chat to embed the application in (default is `ALL`). Supports multiple selections via `;` of the following values:
+[`unknown`](../../data-types.md) | The type of chat to embed the application in (default is `ALL`). Supports multiple selections through `;` of the following values:
 - **USER** – chats of all users, excluding bots;
 - **CHAT** – all group chats, except lines and crm;
 - **LINES** – lines chat type (open lines);
@@ -36,19 +36,19 @@ You can create applications that add additional scenarios for chat – for examp
  ||
 || **role**
 [`unknown`](../../data-types.md) | The user role for which this application is available (default is `USER`). Supports values:
-- **USER** – the application is available to all users;
-- **ADMIN** – the application is available only to portal administrators.
+- **USER** – application available to all users;
+- **ADMIN** – application available only to portal administrators.
  ||
 || **color**
 [`unknown`](../../data-types.md) | Color. Available values: `RED`, `GREEN`, `MINT`, `LIGHT_BLUE`, `DARK_BLUE`, `PURPLE`, `AQUA`, `PINK`, `LIME`, `BROWN`, `AZURE`, `KHAKI`, `SAND`, `ORANGE`, `MARENGO`, `GRAY`, `GRAPHITE`. ||
 || **extranet**
 [`unknown`](../../data-types.md) | Is the application available for extranet users (default is `N`). Supports values:
-- **N** – the application is not available for extranet users;
-- **Y** – the application is available for extranet users.
+- **N** – application not available for extranet users;
+- **Y** – application available for extranet users.
  ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 In this embedding, the current opening context is available, and the `dialogId` of the current chat will be passed.
 
@@ -56,30 +56,36 @@ In this embedding, the current opening context is available, and the `dialogId` 
 const context = BX24.placement.info().options;
 ```
 
-The application will mimic the sidebar workflow scenario (a slider will be opened, replicating the sidebar detail layer).
+The application will mimic the sidebar operation scenario (a slider will be opened, replicating the detail layer of the sidebar).
 
 ## Examples
 
-```php
-CRest::call(
-    'placement.bind',
-    [
-        'PLACEMENT' => 'IM_SIDEBAR',
-        'HANDLER' => 'https://example.com/apps/immarket/handlers/sidebar.php',
-        'LANG_ALL' => [
-            'en' => [
-                'TITLE' => 'Sidebar Application',
-            ],
-        ],
-        'OPTIONS' => [
-            'iconName' => 'fa-bug',
-            'context' => 'USER;LINES',
-            'role' => 'ADMIN',
-            'color' => 'AQUA',
-            'extranet' => 'N',
-        ]
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    CRest::call(
+        'placement.bind',
+        [
+            'PLACEMENT' => 'IM_SIDEBAR',
+            'HANDLER' => 'https://example.com/apps/immarket/handlers/sidebar.php',
+            'LANG_ALL' => [
+                'de' => [
+                    'TITLE' => 'Sidebar Application',
+                ],
+            ],
+            'OPTIONS' => [
+                'iconName' => 'fa-bug',
+                'context' => 'USER;LINES',
+                'role' => 'ADMIN',
+                'color' => 'AQUA',
+                'extranet' => 'N',
+            ]
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Example Notes](../../../_includes/examples.md) %}

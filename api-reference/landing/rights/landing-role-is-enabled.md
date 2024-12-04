@@ -1,14 +1,14 @@
-# Define the models of access permissions landing.role.isEnabled
+# Determine the landing.role.isEnabled permission models
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
 - success response is missing
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: administrator
 
-The method `landing.role.isEnabled` determines which model is currently enabled in the project, role-based or extended.
+The method `landing.role.isEnabled` determines which model is currently enabled in the project, either the extended or role-based model.
 
 ## Parameters
 
@@ -30,30 +30,36 @@ No parameters.
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.role.isEnabled',
-    {
-    },
-    function(result)
-    {
-        if(result.error())
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.role.isEnabled',
         {
-            console.error(result.error());
-        }
-        else
+        },
+        function(result)
         {
-            if (result.data())
+            if(result.error())
             {
-                console.log('Role-based model');
+                console.error(result.error());
             }
             else
             {
-                console.log('Extended model');
+                if (result.data())
+                {
+                    console.log('Role-based model');
+                }
+                else
+                {
+                    console.log('Extended model');
+                }
             }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}

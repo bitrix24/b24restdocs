@@ -2,17 +2,17 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
-- examples missing
+- edits needed for writing standards
+- parameter types are not specified
+- examples are missing
 - response in case of error is absent
 
 {% endnote %}
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `timeman.settings` returns the work time settings for the user.
+The method `timeman.settings` returns the work time settings of the user.
 
 
 ## Parameters
@@ -31,19 +31,24 @@ The method `timeman.settings` returns the work time settings for the user.
 #|
 || **Parameter** | **Description** ||
 || **USER_ID**
-[`unknown`](../../data-types.md) | User identifier. Optional; by default, the settings for the current user are returned. ||
+[`unknown`](../../data-types.md) | User identifier. Optional, by default returns settings for the current user. ||
 |#
 
 ## Example
 
-Example call:
+{% list tabs %}
 
-```http
-https://account.bitrix24.com/rest/timeman.settings/?auth=xxxxxx&user_id=1
-```
-{% include [Note on examples](../../../_includes/examples.md) %}
+- cURL
 
-## Successful Response
+    ```http
+    https://account.bitrix24.com/rest/timeman.settings/?auth=xxxxxx&user_id=1
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+## Response in case of success
 
 > 200 OK
 ```json
@@ -65,17 +70,17 @@ https://account.bitrix24.com/rest/timeman.settings/?auth=xxxxxx&user_id=1
 #|
 || **Field** | **Description** | **Note** ||
 || **ADMIN**
-[`true`\|`false`](../../data-types.md) | Indicates whether the user has rights to manage others' workdays | Returned only for the current user ||
+[`true`\|`false`](../../data-types.md) | Does the user have rights to manage others' workdays | Returned only for the current user ||
 || **UF_TIMEMAN**
-[`true`\|`false`](../../data-types.md) | Indicates whether work time tracking is enabled for the user | ||
+[`true`\|`false`](../../data-types.md) | Is work time tracking enabled for the user | ||
 || **UF_TM_FREE**
-[`true`\|`false`](../../data-types.md) | Indicates whether the user has a flexible work schedule | When flexible scheduling is enabled, changes to work time do not require confirmation or a reason. ||
+[`true`\|`false`](../../data-types.md) | Is a flexible work schedule enabled for the user | When a flexible schedule is enabled, changes to work time do not require confirmation or reason ||
 || **UF_TM_MAX_START**
-[`HH:MM:SS`](../../data-types.md) | The maximum start time for the workday set for the user | A workday starting later than the specified time will be considered a violation. ||
+[`HH:MM:SS`](../../data-types.md) | The maximum start time of the workday set for the user | A workday starting later than the specified time will be considered a violation ||
 || **UF_TM_MIN_FINISH**
-[`HH:MM:SS`](../../data-types.md) | The minimum finish time for the workday set for the user | A workday finishing earlier than the specified time will be considered a violation. ||
+[`HH:MM:SS`](../../data-types.md) | The minimum finish time of the workday set for the user | A workday finishing earlier than the specified time will be considered a violation ||
 || **UF_TM_MIN_DURATION**
-[`HH:MM:SS`](../../data-types.md) | The minimum duration of the workday set for the user | A workday with a duration shorter than the specified will be considered a violation. ||
+[`HH:MM:SS`](../../data-types.md) | The minimum duration of the workday set for the user | A workday with a duration shorter than specified will be considered a violation ||
 || **UF_TM_ALLOWED_DELTA**
-[`HH:MM:SS`](../../data-types.md) | The allowed time interval for changing work time set for the user | Changing the workday by an interval shorter than the specified will not require confirmation from the supervisor. ||
+[`HH:MM:SS`](../../data-types.md) | The allowed time delta for changing work time set for the user | Changing the workday by a period shorter than specified will not require confirmation from the supervisor ||
 |#

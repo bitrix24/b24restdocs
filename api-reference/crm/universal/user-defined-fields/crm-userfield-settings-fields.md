@@ -1,8 +1,8 @@
-# Get Field Settings Description for Custom Field Type crm.userfield.settings.fields
+# Get the field settings description for the custom field type crm.userfield.settings.fields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will add it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- response in case of error and success is missing
+- no response in case of error and success
 
 {% endnote %}
 
@@ -30,7 +30,7 @@ The method `crm.userfield.settings.fields` returns the description of the settin
 || **type** | The type of the custom field. Value from the list returned by the method [crm.userfield.types](crm-userfield-types.md).  ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Parameter notes](../../../../_includes/required.md) %}
 
 ## Example
 
@@ -38,7 +38,7 @@ The method `crm.userfield.settings.fields` returns the description of the settin
 
 - JS
   
-    ```
+    ```js
     var id = prompt("Enter ID");
     BX24.callMethod(
         "crm.userfield.settings.fields",
@@ -57,7 +57,7 @@ The method `crm.userfield.settings.fields` returns the description of the settin
 
 - PHP
   
-    ```
+    ```php
     require_once('crest.php');
 
     $type = 'string'; // Replace with the desired type
@@ -94,4 +94,4 @@ The method `crm.userfield.settings.fields` returns the description of the settin
 
 {% endlist %}
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Example notes](../../../../_includes/examples.md) %}

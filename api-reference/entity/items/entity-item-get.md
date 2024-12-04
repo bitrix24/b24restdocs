@@ -1,4 +1,4 @@
-# Get a List of Storage Items entity.item.get
+# Get the list of storage items entity.item.get
 
 {% note warning "We are still updating this page" %}
 
@@ -26,7 +26,7 @@ Some data may be missing — we will complete it shortly.
 
 The `entity.item.get` method retrieves a list of storage items. It is a list method.
 
-The user must have at least read access (**R**) to the storage.
+The user must have at least read access permission (**R**) to the storage.
 
 ## Parameters
 
@@ -38,64 +38,74 @@ The user must have at least read access (**R**) to the storage.
 || **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Examples
 
-Call
+{% list tabs %}
 
-```js
-BX24.callMethod(
-    'entity.item.get',
-    {
-        ENTITY: 'menu',
-        SORT: {
-            DATE_ACTIVE_FROM: 'ASC',
-            ID: 'ASC'
+- JS
+
+    ```js
+    BX24.callMethod(
+        'entity.item.get',
+        {
+            ENTITY: 'menu',
+            SORT: {
+                DATE_ACTIVE_FROM: 'ASC',
+                ID: 'ASC'
+            },
+            FILTER: {
+                '>=DATE_ACTIVE_FROM': dateStart,
+                '<DATE_ACTIVE_FROM': dateFinish
+            }
         },
-        FILTER: {
-            '>=DATE_ACTIVE_FROM': dateStart,
-            '<DATE_ACTIVE_FROM': dateFinish
-        }
-    },
-    $.proxy(
-        this.buildData,
-        this
-    )
-);
-```
+        $.proxy(
+            this.buildData,
+            this
+        )
+    );
+    ```
 
-Request
+- HTTP
 
-```http
-https://my.bitrix24.com/rest/entity.item.get.json?=&ENTITY=menu&FILTER%5B%3CDATE_ACTIVE_FROM%5D=2013-07-01T00%3A00%3A00.000Z&FILTER%5B%3E%3DDATE_ACTIVE_FROM%5D=2013-06-24T00%3A00%3A00.000Z&SORT%5BDATE_ACTIVE_FROM%5D=ASC&SORT%5BID%5D=ASC&auth=723867cdb1ada1de7870de8b0e558679
-```
+    ```http
+    https://my.bitrix24.com/rest/entity.item.get.json?=&ENTITY=menu&FILTER%5B%3CDATE_ACTIVE_FROM%5D=2013-07-01T00%3A00%3A00.000Z&FILTER%5B%3E%3DDATE_ACTIVE_FROM%5D=2013-06-24T00%3A00%3A00.000Z&SORT%5BDATE_ACTIVE_FROM%5D=ASC&SORT%5BID%5D=ASC&auth=723867cdb1ada1de7870de8b0e558679
+    ```
 
-### Example of a Call with a Complex Filter
+{% endlist %}
 
-```js
-BX24.callMethod(
-    'entity.item.get',
-    {
-        ENTITY: 'menu',
-        SORT: {
-            DATE_ACTIVE_FROM: 'ASC',
-            ID: 'ASC'
-        },
-        FILTER: {
-            '1':{
-                'LOGIC':'OR',
-                'PROPERTY_MYPROP1':'value1',
-                'PROPERTY_MYPROP2':'value2'
+### Example of a call with a complex filter
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'entity.item.get',
+        {
+            ENTITY: 'menu',
+            SORT: {
+                DATE_ACTIVE_FROM: 'ASC',
+                ID: 'ASC'
+            },
+            FILTER: {
+                '1':{
+                    'LOGIC':'OR',
+                    'PROPERTY_MYPROP1':'value1',
+                    'PROPERTY_MYPROP2':'value2'
+                }
             }
         }
-    }
-);
-```
+    );
+    ```
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% endlist %}
 
-## Successful Response
+{% include [Example notes](../../../_includes/examples.md) %}
+
+## Response in case of success
 
 > 200 OK
 ```json
@@ -104,15 +114,15 @@ BX24.callMethod(
     [
         {
             "ID":"838",
-            "TIMESTAMP_X":"2013-06-25T15:06:47+03:00",
+            "TIMESTAMP_X":"2013-06-25T15:06:47+02:00",
             "MODIFIED_BY":"1",
-            "DATE_CREATE":"2013-06-25T15:06:47+03:00",
+            "DATE_CREATE":"2013-06-25T15:06:47+02:00",
             "CREATED_BY":"1",
             "ACTIVE":"Y",
-            "DATE_ACTIVE_FROM":"2013-07-01T03:00:00+03:00",
+            "DATE_ACTIVE_FROM":"2013-07-01T03:00:00+02:00",
             "DATE_ACTIVE_TO":"",
             "SORT":"500",
-            "NAME":"Buckwheat in its Jacket",
+            "NAME":"Buckwheat in the shell",
             "PREVIEW_PICTURE":null,
             "PREVIEW_TEXT":null,
             "DETAIL_PICTURE":null,

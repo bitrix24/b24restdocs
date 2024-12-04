@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -25,43 +25,55 @@ Some data may be missing — we will complete it soon.
 
 The method `crm.deal.userfield.list` returns a list of custom fields for deals based on the filter.
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **order** | Sorting fields. ||
-|| **filter** | Filter fields. ||
+|| **filter** | Filtering fields. ||
 |#
 
 ## Example
 
-```js
-BX24.callMethod(
-    "crm.deal.userfield.list",
-    {
-        order: { "SORT": "ASC" },
-        filter: { "MANDATORY": "N" }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "crm.deal.userfield.list",
         {
-            console.dir(result.data());
-            if(result.more())
-                result.next();
+            order: { "SORT": "ASC" },
+            filter: { "MANDATORY": "N" }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.dir(result.data());
+                if(result.more())
+                    result.next();
+            }
         }
-    }
-);
-```
+    );
+    ```
+
+{% endlist %}
 
 How to get a list of fields with names:
 
-```js
-crm.deal.userfield.list
-{
-    order: { "SORT": "ASC" },
-    filter: { LANG: 'en' }
-}
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    crm.deal.userfield.list
+    {
+        order: { "SORT": "ASC" },
+        filter: { LANG: 'de' }
+    }
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

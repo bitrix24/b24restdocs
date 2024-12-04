@@ -36,20 +36,28 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.productPropertyEnum.getFields',
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.productPropertyEnum.getFields',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -57,7 +65,7 @@ BX24.callMethod(
 || **Field** 
 [`Type`](../../data-types.md) | **Description** | **Note** ||
 || **def** 
-[`char`](../../data-types.md) | Is it the default value. | ||
+[`char`](../../data-types.md) | Indicates if it is the default value. | ||
 || **id** 
 [`integer`](../../data-types.md) | Identifier of the value. | Read-only. ||
 || **propertyId^*^** 
@@ -69,4 +77,4 @@ BX24.callMethod(
 || **xmlId^*^** 
 [`string`](../../data-types.md) | External identifier. | ||
 |#
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}

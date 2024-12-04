@@ -26,27 +26,33 @@ Some data may be missing — we will complete it soon.
 
 The method `crm.quote.get` returns an estimate by its ID.
 
-#|
-||  **Parameter** / **Type**| **Description** ||
-|| **id**
-[`unknown`](../../data-types.md) | The ID of the estimate. ||
+#| 
+||  **Parameter** / **Type**| **Description** || 
+|| **id** 
+[`unknown`](../../data-types.md) | The identifier of the estimate. || 
 |#
 
 ## Example
 
-```javascript
-var id = prompt("Enter ID");
-BX24.callMethod(
-    "crm.quote.get",
-    { id: id },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+- JS
+
+    ```javascript
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.quote.get",
+        { id: id },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

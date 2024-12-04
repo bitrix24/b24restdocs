@@ -1,4 +1,4 @@
-# Get the list of templates bizproc.workflow.template.list
+# Get a list of templates bizproc.workflow.template.list
 
 {% note warning "We are still updating this page" %}
 
@@ -43,14 +43,14 @@ The method returns a list of Business Process templates added to Bitrix24.
 - `3` (execute on both creation and modification)
 ||
 || **NAME** | Template name ||
-|| **TEMPLATE** | BP template (array with action structure description). ||
-|| **PARAMETERS** | Template parameters, array with property descriptions. ||
-|| **VARIABLES** | Template variables, array with property descriptions. ||
-|| **CONSTANTS** | Template constants, array with property descriptions. ||
+|| **TEMPLATE** | BP template (array describing the structure of actions). ||
+|| **PARAMETERS** | Template parameters, array describing properties. ||
+|| **VARIABLES** | Template variables, array describing properties. ||
+|| **CONSTANTS** | Template constants, array describing properties. ||
 || **MODIFIED** | Date of last modification. ||
-|| **IS_MODIFIED** | [Y\N] Flag indicating whether it has been modified. Relevant for templates supplied "off-the-shelf" (which have a system code) ||
+|| **IS_MODIFIED** | [Y\N] Flag indicating whether it has been modified. Relevant for templates supplied "on-premise" (which have a system code) ||
 || **USER_ID** | Identifier of the user who created/modified the template. ||
-|| **SYSTEM_CODE** | System code of the template. Used for identifying standard templates, processes in the feed, automation templates, etc. ||
+|| **SYSTEM_CODE** | System code of the template. Used for identifying standard templates, Processes in the feed, automation templates, etc. ||
 || **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
@@ -98,7 +98,7 @@ The method returns a list of Business Process templates added to Bitrix24.
 	}
 	```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
 	```php
 	try {
@@ -134,4 +134,4 @@ The method returns a list of Business Process templates added to Bitrix24.
 		
 {% endlist %}
 
-{% include [Note about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}

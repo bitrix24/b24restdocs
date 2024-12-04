@@ -1,14 +1,14 @@
-# Update Existing Custom Field for Contacts crm.contact.userfield.update
+# Update Existing Custom Contact Field crm.contact.userfield.update
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `crm.contact.userfield.update` updates an existing custom field for contacts.
+The method `crm.contact.userfield.update` updates an existing custom contact field.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,7 +31,7 @@ The identifier can be obtained using the methods [`crm.contact.userfield.add`](.
 
 where:
 - `field_n` — field name
-- `value_n` — new value for the field
+- `value_n` — new field value
 
 The list of available fields is described [below](#parameter-fields).
 
@@ -121,7 +121,7 @@ For languages where no value is explicitly specified, `''` will be recorded.
 
 The field completely overwrites the previous value ||
 || **HELP_MESSAGE**
-[`string`][1]\|[`lang_map`](../../data-types.md) | Help.
+[`string`][1]\|[`lang_map`](../../data-types.md) | Help message.
 
 When passing a string, it is set for each language.
 
@@ -235,7 +235,7 @@ Each type of custom field has its own set of additional settings. This method su
     - `CHECKBOX` — checkboxes
     - `DIALOG` — entity selection dialog
     ||
-    || **LIST_HEIGHT** | Height of the list. Must be greater than 0 ||
+    || **LIST_HEIGHT** | List height. Must be greater than 0 ||
     |#
 
 - iblock_section|iblock_element
@@ -257,7 +257,7 @@ Each type of custom field has its own set of additional settings. This method su
     - `CHECKBOX` — checkboxes
     ||
     || **LIST_HEIGHT**
-    [`integer`][1] | Height of the list. Must be greater than 0
+    [`integer`][1] | List height. Must be greater than 0
     ||
     || **ACTIVE_FILTER**
     [`boolean`][1] | Should elements with the active flag be shown? Possible values:
@@ -314,12 +314,12 @@ Each type of custom field has its own set of additional settings. This method su
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`string`][1] | Identifier of the list element. When passing this parameter, the corresponding list element will be changed; otherwise, a new list element will be added.
+[`string`][1] | Identifier of the list element. When passing this parameter, the corresponding list element will be modified; otherwise, a new list element will be added.
 
 The identifier can be obtained using the method [`crm.contact.userfield.get`](./crm-contact-userfield-get.md#uf_enum_element)
 ||
 || **DEL**
-[`boolean`][1] | Flag necessary for deleting a list element. Makes sense only when passing `ID`. 
+[`boolean`][1] | Flag required to delete the list element. Makes sense only when passing `ID`. 
 
 Possible values:
 `Y` — delete
@@ -336,14 +336,14 @@ Default is `N`
 - `Y` — yes
 - `N` — no
 
-For a multiple field, several `DEF = Y` are allowed. For a non-multiple field, the first passed list element with `DEF = Y` will be considered the default value ||
+For multiple fields, several `DEF = Y` are allowed. For non-multiple fields, the first passed list element with `DEF = Y` will be considered the default value ||
 || **XML_ID**
 [`string`][1] | External code of the value. Must be unique within the elements of the custom field ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 ### Example of Updating a String Type Custom Field
 
@@ -356,7 +356,7 @@ For a multiple field, several `DEF = Y` are allowed. For a non-multiple field, t
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":536,"fields":{"MANDATORY":"N","SHOW_FILTER":"N","SETTINGS":{"DEFAULT_VALUE":"Hello, World! Default value (changed)","ROWS":10},"SORT":2000,"EDIT_IN_LIST":"N","LIST_FILTER_LABEL":"Hello, World! Filter (changed)","LIST_COLUMN_LABEL":{"en":"Hello, World! Column (changed)","de":"Hallo, Welt! Spalte (geändert)"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit (changed)","de":"Hallo, Welt! Bearbeiten (geändert)"},"ERROR_MESSAGE":{"en":"Hello, World! Error (changed)","de":"Hallo, Welt! Fehler (geändert)"},"HELP_MESSAGE":{"en":"Hello, World! Help (changed)","de":"Hallo, Welt! Hilfe (geändert)"}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.userfield.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.contact.userfield.update
     ```
 
 - cURL (OAuth)
@@ -457,7 +457,7 @@ For a multiple field, several `DEF = Y` are allowed. For a non-multiple field, t
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -537,7 +537,7 @@ Current list elements:
 
 Change it as follows:
 - remove list items with `ID = 115` and `ID = 116`
-- update the list item with `ID  = 117`:
+- modify the list item with `ID  = 117`:
     - `VALUE`: "List item #3" -> "List item #3 (changed)"
     - `SORT`: 300 -> 50
 - add a new list item "List item #5"
@@ -551,7 +551,7 @@ Change it as follows:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"ID":115,"DEL":"Y"},{"ID":116,"DEL":"Y"},{"ID":117,"VALUE":"List item #3 (changed)","SORT":50},{"VALUE":"List item #5","XML_ID":"XML_ID_5","SORT":500}],"SETTINGS":{"DISPLAY":"DIALOG","LIST_HEIGHT":3},"SORT":1000}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.userfield.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.contact.userfield.update
     ```
 
 - cURL (OAuth)

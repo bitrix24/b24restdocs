@@ -34,7 +34,7 @@ This method returns the identifiers of the entity types to which an order can be
 
 {% note info "Note" %}
 
-Currently, an [order link](../../universal/order-entity/crm-order-entity-add.md) can only be made to a **Deal**.
+Currently, an [order can only be linked](../../universal/order-entity/crm-order-entity-add.md) to a **Deal**.
 
 {% endnote %}
 
@@ -55,18 +55,25 @@ No parameters.
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    "crm.enum.getorderownertypes",
-    {},
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);    
-```
+{% list tabs %}
+
+- JS
+  
+    ```javascript
+    BX24.callMethod(
+        "crm.enum.getorderownertypes",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );    
+    ```
+
+{% endlist %}
+
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}

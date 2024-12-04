@@ -2,7 +2,7 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not uploaded to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -37,23 +37,30 @@ The method `disk.folder.moveto` copies a folder to the specified folder.
 
 ## Example
 
-```js
-BX24.callMethod(
-    "disk.folder.moveto",
-    {
-        id: 8,
-        targetFolderId: 22081990
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    }
-);
-```
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        "disk.folder.moveto",
+        {
+            id: 8,
+            targetFolderId: 22081990
+        },
+        function (result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on success
 

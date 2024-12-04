@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.landing.update` modifies the page. It returns *true* on success, or an error.
+The method `landing.landing.update` makes changes to the page. It returns *true* on success or an error.
 
 ## Parameters
 
@@ -38,27 +38,33 @@ The method `landing.landing.update` modifies the page. It returns *true* on succ
 
 ## Example
 
-```js
-BX24.callMethod(
-    'landing.landing.update',
-    {
-        lid: 349,
-        fields: {
-            TITLE: 'My second page!'
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example notes](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.landing.update',
+        {
+            lid: 349,
+            fields: {
+                TITLE: 'My second page!'
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

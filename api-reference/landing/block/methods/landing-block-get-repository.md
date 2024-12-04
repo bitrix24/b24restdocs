@@ -1,8 +1,8 @@
-# Get a List of Blocks from the Repository landing.block.getrepository
+# Get a list of blocks from the repository landing.block.getrepository
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- parameter requirements not specified
+- parameter types are not specified
+- parameter requirements are not specified
 - examples are missing
 - success response is missing
 - error response is missing
@@ -32,29 +32,35 @@ The method `landing.block.getrepository` returns a list of blocks from the repos
 #|
 || **Method** | **Description** | **Available since** ||
 || **section**
-[`unknown`](../../../data-types.md) | [Section code](#block) of the repository (list provided above) | ||
+[`unknown`](../../../data-types.md) | [Section code](#block) of the repository (the list is provided above) | ||
 |#
 
 ## Examples
 
-```js
-BX24.callMethod(
-    'landing.block.getrepository',
-    {
-        section: 'about'
-    },
-    function(result)
-    {
-        if(result.error())
-        {
-            console.error(result.error());
-        }
-        else
-        {
-            console.info(result.data());
-        }
-    }
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    BX24.callMethod(
+        'landing.block.getrepository',
+        {
+            section: 'about'
+        },
+        function(result)
+        {
+            if(result.error())
+            {
+                console.error(result.error());
+            }
+            else
+            {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

@@ -1,4 +1,4 @@
-# Get Data About List Fields `lists.field.get`
+# Get Data About List Fields lists.field.get
 
 {% note warning "We are still updating this page" %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `lists.field.get` allows you to retrieve data about a field or fields in a list. On success, a list of fields with data will be returned; otherwise, an empty array will be returned.
+The `lists.field.get` method allows you to retrieve data about a field or fields of a list. On success, a list of fields with data will be returned; otherwise, an empty array will be returned.
 
 ## Parameters
 
@@ -43,26 +43,32 @@ The method `lists.field.get` allows you to retrieve data about a field or fields
 [`unknown`](../../data-types.md) | `ID` of the field (If the field is a property of the information block, the format is: "PROPERTY_propertyId". If not specified, the response will include data for all fields of the specified list) ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Example
 
-```javascript
-var params = {
-    'IBLOCK_TYPE_ID': 'lists_socnet',
-    'IBLOCK_CODE': 'rest_1'
-};
-BX24.callMethod(
-    'lists.field.get',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            console.log(result.data());
-    }
-);
-```
+{% list tabs %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    var params = {
+        'IBLOCK_TYPE_ID': 'lists_socnet',
+        'IBLOCK_CODE': 'rest_1'
+    };
+    BX24.callMethod(
+        'lists.field.get',
+        params,
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+{% endlist %}
+
+{% include [Note on examples](../../../_includes/examples.md) %}

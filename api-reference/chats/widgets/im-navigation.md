@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
-- from Sergey's file: general description, scenarios where it's useful, link to the page in the widget section
+- from Sergey's file: general description, for which scenarios it is useful, link to the page in the widget section
 
 {% endnote %}
 
@@ -20,12 +20,12 @@ Some data may be missing here — we will complete it shortly.
 
 > Scope: [`im`](../../scopes/permissions.md)
 
-Essentially, this is an application within the chat environment without being embedded directly into the chat.
+Essentially, this is an application within the chat environment without being embedded directly in the chat.
 
 #|
 || **Parameter** | **Description** ||
 || **iconName^*^**
-[`unknown`](../../data-types.md) | The name of the icon class in [Font Awesome](https://fontawesome.com/search) format (e.g., `fa-cloud`). ||
+[`unknown`](../../data-types.md) | The class name of the icon in [Font Awesome](https://fontawesome.com/search) format (e.g., `fa-cloud`). ||
 || **role**
 [`unknown`](../../data-types.md) | The user role for which this application is available (default is `USER`). Supports the following access values:
 - **USER** – for all users;
@@ -36,7 +36,7 @@ Essentially, this is an application within the chat environment without being em
 - **Y** – available for extranet users. ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 IFRAME opens, but the context of the current chat is not passed to it (since navigation is an entity outside the chat context).
 
@@ -44,24 +44,30 @@ The application frame opens in the chat environment, mimicking the overall grid.
 
 ## Examples
 
-```php
-CRest::call(
-    'placement.bind',
-    [
-        'PLACEMENT' => 'IM_NAVIGATION',
-        'HANDLER' => 'https://example.com/apps/immarket/handlers/navigation.php',
-        'LANG_ALL' => [
-            'en' => [
-                'TITLE' => 'Application for the Left Navigation Menu',
-            ],
-        ],
-        'OPTIONS' => [
-            'iconName' => 'fa-check',
-            'role' => 'USER',
-            'extranet' => 'N',
-        ]
-    ]
-);
-```
+{% list tabs %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+- PHP
+
+    ```php
+    CRest::call(
+        'placement.bind',
+        [
+            'PLACEMENT' => 'IM_NAVIGATION',
+            'HANDLER' => 'https://example.com/apps/immarket/handlers/navigation.php',
+            'LANG_ALL' => [
+                'de' => [
+                    'TITLE' => 'Application for the left navigation menu',
+                ],
+            ],
+            'OPTIONS' => [
+                'iconName' => 'fa-check',
+                'role' => 'USER',
+                'extranet' => 'N',
+            ]
+        ]
+    );
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}

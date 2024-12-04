@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - parameter types are not specified
 - parameter requirements are not specified
 
@@ -55,7 +55,7 @@ The `ONAPPUPDATE` event for application updates.
 || **domain** 
 [`unknown`](../../data-types.md) | Domain of the Bitrix24 account where the application was installed | ||
 || **application_token** 
-[`unknown`](../../data-types.md) | Application token, helps you "filter" unnecessary requests to the event handler, this field is present in all events | ||
+[`unknown`](../../data-types.md) | Application token, helps you "filter" unnecessary requests to the event handler; this field is present in all events | ||
 || **expires_in** 
 [`unknown`](../../data-types.md) | Token expiration time, after which a new one will need to be requested | ||
 || **member_id** 
@@ -66,21 +66,27 @@ The `ONAPPUPDATE` event for application updates.
 
 ## Examples
 
-```js
-[data] => Array(
-    [LANGUAGE_ID] = en
-    [VERSION] = 2
-    [PREVIOUS_VERSION] => 1
-)
-[auth] => Array(
-    [access_token] => lh8ze36o8ulgrljbyscr36c7ay5sinva
-    [scope] => imbot
-    [domain] => b24.hazz.com
-    [application_token] => c917d38f6bdb84e9d9e0bfe9d585be73
-    [expires_in] => 3600
-    [member_id] => d41d8cd98f00b204e9800998ecf8427e
-    [refresh_token] => 5f1ih5tsnsb11sc5heg3kp4ywqnjhd09
-)
-```
+{% list tabs %}
 
-{% include [Examples note](../../../_includes/examples.md) %}
+- JS
+
+    ```js
+    [data] => Array(
+        [LANGUAGE_ID] = de
+        [VERSION] = 2
+        [PREVIOUS_VERSION] => 1
+    )
+    [auth] => Array(
+        [access_token] => lh8ze36o8ulgrljbyscr36c7ay5sinva
+        [scope] => imbot
+        [domain] => b24.hazz
+        [application_token] => c917d38f6bdb84e9d9e0bfe9d585be73
+        [expires_in] => 3600
+        [member_id] => d41d8cd98f00b204e9800998ecf8427e
+        [refresh_token] => 5f1ih5tsnsb11sc5heg3kp4ywqnjhd09
+    )
+    ```
+
+{% endlist %}
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

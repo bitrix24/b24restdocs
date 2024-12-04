@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.message.add` sends messages to a chat.
+The method `im.message.add` sends messages in a chat.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -52,23 +52,29 @@ or
 
 {% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
-```php
-$result = restCommand(
-    'im.message.add',
-    Array(
-        'DIALOG_ID' => 'chat13',
-        'MESSAGE' => 'Message text',
-        'SYSTEM' => 'N',
-        'ATTACH' => '',
-        'URL_PREVIEW' => 'Y',
-        'KEYBOARD' => '',
-        'MENU' => '',
-    ),
-    $_REQUEST[
-        "auth"
-    ]
-);
-```
+{% list tabs %}
+
+- PHP
+
+    ```php
+    $result = restCommand(
+        'im.message.add',
+        Array(
+            'DIALOG_ID' => 'chat13',
+            'MESSAGE' => 'Message text',
+            'SYSTEM' => 'N',
+            'ATTACH' => '',
+            'URL_PREVIEW' => 'Y',
+            'KEYBOARD' => '',
+            'MENU' => '',
+        ),
+        $_REQUEST[
+            "auth"
+        ]
+    );
+    ```
+
+{% endlist %}
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 
@@ -102,14 +108,14 @@ $result = restCommand(
 || **Code** | **Description** ||
 || **USER_ID_EMPTY** | Recipient identifier is not specified when sending a message in a one-on-one chat ||
 || **CHAT_ID_EMPTY** | Chat identifier of the recipient is not specified when sending a message in a chat ||
-|| **ACCESS_ERROR** | Insufficient permissions to send a message ||
+|| **ACCESS_ERROR** | Insufficient permissions to send the message ||
 || **MESSAGE_EMPTY** | Message text is not provided ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | The maximum allowed size of the attachment (30 KB) has been exceeded ||
+|| **ATTACH_OVERSIZE** | The maximum allowable size of the attachment (30 KB) has been exceeded ||
 || **KEYBOARD_ERROR** | The entire provided keyboard object failed validation ||
-|| **KEYBOARD_OVERSIZE** | The maximum allowed size of the keyboard (30 KB) has been exceeded ||
+|| **KEYBOARD_OVERSIZE** | The maximum allowable size of the keyboard (30 KB) has been exceeded ||
 || **MENU_ERROR** | The entire provided menu object failed validation ||
-|| **MENU_OVERSIZE** | The maximum allowed size of the menu (30 KB) has been exceeded ||
+|| **MENU_OVERSIZE** | The maximum allowable size of the menu (30 KB) has been exceeded ||
 || **PARAMS_ERROR** | Something went wrong ||
 |#
 

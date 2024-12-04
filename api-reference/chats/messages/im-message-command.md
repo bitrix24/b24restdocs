@@ -2,16 +2,16 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
+- edits needed for writing standards
+- parameter types are not specified
 - examples are missing
 
 {% endnote %}
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `im.message.command` utilizes bot commands.
+The method `im.message.command` uses bot commands.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -33,40 +33,46 @@ The method `im.message.command` utilizes bot commands.
 || **COMMAND^*^**
 [`unknown`](../../data-types.md) | `'KEYBOARD'` | Command that the bot should execute | 30 ||
 || **COMMAND_PARAMS^*^**
-[`unknown`](../../data-types.md) | `'stop'` | Parameters for the command | 30 ||
+[`unknown`](../../data-types.md) | `'stop'` | Command parameters | 30 ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 It is necessary to send a message that includes the selection of bot commands.
 
 ## Examples
 
-```javascript
-B24.callMethod(
-    'im.message.command',
-    {
-        MESSAGE_ID: 278,
-        BOT_ID: 1,
-        COMMAND: 'KEYBOARD',
-        COMMAND_PARAMS: 'stop'
-    },
-    res => {
-        if (res.error())
-        {
-        console.error(result.error().ex);
-        }
-        else
-        {
-        console.log(res.data())
-        }
-    }
-)
-```
+{% list tabs %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+- JS
 
-## Successful Response
+    ```javascript
+    B24.callMethod(
+        'im.message.command',
+        {
+            MESSAGE_ID: 278,
+            BOT_ID: 1,
+            COMMAND: 'KEYBOARD',
+            COMMAND_PARAMS: 'stop'
+        },
+        res => {
+            if (res.error())
+            {
+            console.error(result.error().ex);
+            }
+            else
+            {
+            console.log(res.data())
+            }
+        }
+    )
+    ```
+
+{% endlist %}
+
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+## Response on Success
 
 ```json
 {
@@ -74,7 +80,7 @@ B24.callMethod(
 }
 ```
 
-## Error Response
+## Response on Error
 
 ```json
 {

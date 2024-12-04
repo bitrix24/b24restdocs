@@ -10,9 +10,9 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
-- no response in case of success
-- no response in case of error
+- required parameter specifications are missing
+- no success response
+- no error response
 - no examples in other languages
   
 {% endnote %}
@@ -33,32 +33,40 @@ This method adds a translation for the price type name.
 
 ## Parameters
 
-#| 
+#|
 || **Parameter** | **Description** ||
 || **fields**
 [`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-type-lang-get-fields.md). ||
 |#
 
-{% include [Notes on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
-```javascript
-BX24.callMethod(
-    'catalog.priceTypeLang.add',
-    {
-        fields: {
-            catalogGroupId: 14,
-            lang: "de",
-            name: "Wholesale Price"
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.priceTypeLang.add',
+        {
+            fields: {
+                catalogGroupId: 14,
+                lang: "de",
+                name: "Wholesale Price"
+            }
+        },
+        function(result) {
+            if (result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
         }
-    },
-    function(result) {
-        if (result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
-    }
-);
-```
-{% include [Notes on examples](../../../../_includes/examples.md) %}
+    );
+    ```
+
+{% endlist %}
+
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
