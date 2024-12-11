@@ -5,7 +5,7 @@ items:
     href: index.md
   - name: Typical Use-Cases and Scenarios 
     href: use-cases.md
-  - name: Inbound and Outbound Webhooks
+  - name: Incoming and Outgoing Webhooks
     href: local-webhooks.md
   - name: Local Applications
     href: local-apps.md
@@ -17,3 +17,5 @@ items:
     href: serverside-local-app-with-no-ui.md
   - name: Overview of the Developer's Area
     href: developers-area.md
+  - name: How to Fix the "Site Does Not Allow Connection" Error When Opening the Application
+    href: site-does-not-allow-connection.md

@@ -2,7 +2,19 @@
 
 ## 2024
 
-### December 3, 2024
+### December 11, 2024
+
+- Added a new method [imconnector.chat.name.set](./api-reference/imopenlines/imconnector/imconnector-chat-name-set.md).
+- Updated the main page of the [Company structure](./api-reference/departments/index.md) section. Added introductory information and an overview of methods and relationships.
+- Added a new article [How to fix the "Site does not allow connection" error when opening the application](./local-integrations/site-does-not-allow-connection.md).
+- Updated the main page of the [Order properties](./api-reference/sale/property/index.md) section. Added introductory information and an overview of methods and relationships.
+- Updated the main page of the [Basket properties](./api-reference/sale/basket-properties/index.md) section. Added introductory information and an overview of methods and relationships.
+- Updated the main page of the [Property groups](./api-reference/sale/property-group/index.md) section. Added introductory information and an overview of methods and relationships.
+- Updated the main page of the [Company contacts](./api-reference/crm/companies/contacts/index.md) section. Added introductory information and an overview of methods and relationships.
+- Updated the main page of the [Company card management](./api-reference/crm/companies/custom-form/index.md) section. Added introductory information and an overview of methods and relationships.
+- Updated the main page of the [Data storage](./api-reference/entity/index.md) section. Added introductory information and an overview of methods.
+
+### December 4, 2024
 
 - Updated the main page of the [Comments](./api-reference/tasks/comment-item/index.md) section. Added introductory information, as well as an overview of methods and relationships.
 - Added a new method [tasks.flow.flow.pin](./api-reference/tasks/flow/tasks-flow-flow-pin.md).

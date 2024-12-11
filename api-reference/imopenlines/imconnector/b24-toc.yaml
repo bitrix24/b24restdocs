@@ -1,9 +1,9 @@
-title: Open Channel Connectors
+title: Open Line Connectors
 href: index.md
 items: 
-  - name: Custom Open Channel Connectors
+  - name: Custom Open Line Connectors
     href: index.md
-  - name: Typical use-cases
+  - name: Typical Use-Cases
     href: tutorials.md
   - name: Register Connector
     href: imconnector-register.md
@@ -29,6 +29,8 @@ items:
     href: imconnector-send-status-delivery.md
   - name: Update "Read" Status
     href: imconnector-send-status-reading.md
+  - name: Set New Chat Name
+    href: imconnector-chat-name-set.md
   - name: Events
     include:
       path: events/b24-toc.yaml

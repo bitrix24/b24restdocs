@@ -11,7 +11,7 @@ The limit on request intensity to Bitrix24 is implemented based on the Leaky Buc
 Here's how it works:
 
 1. Each incoming request from an application increases a conditional "request counter" on the Bitrix24 side.
-2. Once the "counter" value exceeds the threshold value X, each subsequent incoming request is blocked. The application receives a status `429` with the error code `QUERY_LIMIT_EXCEEDED` in response.
+2. Once the "counter" value exceeds the threshold value X, each subsequent incoming request is blocked. The application receives a status `503` with the error code `QUERY_LIMIT_EXCEEDED` in response.
 3. Simultaneously, the counter value automatically decreases by Y every second.
 
 From the logic of this mechanism, two conclusions can be drawn:
