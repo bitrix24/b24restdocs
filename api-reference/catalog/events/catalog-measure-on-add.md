@@ -1,30 +1,90 @@
-# When Adding a Unit of Measurement CATALOG.MEASURE.ON.ADD
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- field types are not specified
-- field requirements are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Event When Adding a Measurement CATALOG.MEASURE.ON.ADD
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `CATALOG.MEASURE.ON.ADD` is triggered when a unit of measurement is added. The following data is passed to the handler:
+The event occurs when a measurement unit is added.
+
+## What the Handler Receives
+
+Data is sent as a POST request {.b24-info}
+
+```
+[
+    'event' => 'CATALOG.MEASURE.ON.ADD',    
+    'event_handler_id' => 1,
+    'data' => [
+        'FIELDS' => [
+            'ID' => 1,
+        ],
+    ],
+    'ts' => 1714649632,
+    'auth' => [
+        'access_token' => 's6p6eclrvim6da22ft9ch94ekreb52lv',
+        'expires_in' => 3600,
+        'scope' => 'catalog',
+        'domain' => 'some-domain.bitrix24.com',
+        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
+        'status' => 'F',
+        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
+        'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
+        'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
+        'application_token' => '51856fefc120afa4b628cc82d3935cce',
+    ],
+]
+```
+
+## Parameters
+
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
-|| **Field** | **Description** ||
-|| **ID** | Identifier of the entity that triggered the event. || 
+|| **Name**
+`type` | **Description** ||
+|| **event***
+[`string`](../../data-types.md) | Symbolic code of the event ||
+|| **event_handler_id***
+[`integer`](../../data-types.md) | Identifier of the event handler ||
+|| **data***
+[`object`](../../data-types.md) | Object containing event data.
+
+The structure is described [below](#data) ||
+|| **ts***
+[`integer`](../../data-types.md) | Timestamp of when the event was sent from the event queue ||
+|| **auth***
+[`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
+
+### Parameter data {#data}
+
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **FIELDS***
+[`object`](../../data-types.md) | Object with properties of the measurement unit.
+
+The structure is described [below](#fields) ||
+|#
+
+### Parameter FIELDS {#fields}
+
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID***
+[`catalog_measure.id`](../data-types.md#catalog_measure) | Identifier of the measurement unit. You can retrieve all fields of the measurement unit by its identifier using the [catalog.measure.get](../measure/catalog-measure-get.md) method ||
+|#
+
+### Parameter auth {#auth}
+
+{% include notitle [Table with Keys in the auth Array](../../../_includes/auth-params-in-events.md) %}
+
+## Continue Learning
+
+- [{#T}](./catalog-measure-on-update.md)
+- [{#T}](./catalog-measure-on-delete.md)

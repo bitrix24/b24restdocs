@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -18,7 +18,6 @@ Some data may be missing here — we will fill it in shortly.
 || [calendar.event.get](./calendar-event-get.md) | Returns a list of calendar events. ||
 || [calendar.event.get.nearest](./calendar-event-get-nearest.md) | Returns a list of upcoming events for the current user. ||
 || [calendar.event.update](./calendar-event-update.md) | Edits an existing event. ||
-|| [calendar.meeting.params.set](./calendar-meeting-params-set.md) | Sets event parameters for the current user. ||
 || [calendar.meeting.status.get](./calendar-meeting-status-get.md) | Returns the participation status of the current user in the event. ||
 || [calendar.meeting.status.set](./calendar-meeting-status-set.md) | Sets the participation status in the event for the current user. ||
 || [calendar.resource.list](./calendar-resource-list.md) | Returns a list (array) of all resources. ||

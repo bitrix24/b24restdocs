@@ -2,6 +2,15 @@
 
 ## 2024
 
+### December 18, 2024
+
+- Updated documentation for [price type](./api-reference/catalog/price-type/index.md) events
+- Updated documentation for [product](./api-reference/catalog/product/index.md) events
+- Updated documentation for [unit of measure](./api-reference/catalog/measure/index.md) events
+- Updated documentation for [price](./api-reference/catalog/price/index.md) events
+- Updated the main page of the [Shipment properties](./api-reference/sale/shipment-property/index.md) section. Added introductory information and an overview of methods and relationships
+- Updated the main page of the [Payments](./api-reference/sale/payment/index.md) section. Added introductory information and an overview of methods and relationships
+
 ### December 11, 2024
 
 - Added a new method [imconnector.chat.name.set](./api-reference/imopenlines/imconnector/imconnector-chat-name-set.md).

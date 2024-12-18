@@ -11,15 +11,13 @@ items:
     href: calendar-event-delete.md
   - name: Get a list of calendar events
     href: calendar-event-get.md
-  - name: View upcoming events for the current user
+  - name: View the list of upcoming events for the current user
     href: calendar-event-get-nearest.md
   - name: View calendar events by ID
     href: calendar-event-get-by-id.md
   - name: Edit an existing event
     href: calendar-event-update.md
-  - name: Set event parameters for the current user
-    href: calendar-meeting-params-set.md
-  - name: Get the current user's participation status in an event
+  - name: Get the participation status of the current user in an event
     href: calendar-meeting-status-get.md
   - name: Set participation status in an event for the current user
     href: calendar-meeting-status-set.md
@@ -43,9 +41,9 @@ items:
     href: calendar-section-update.md
   - name: Get main calendar settings
     href: calendar-settings-get.md
-  - name: Get user-specific calendar settings
+  - name: Get user calendar settings
     href: calendar-user-settings-get.md
-  - name: Save user-specific calendar settings
+  - name: Save user calendar settings
     href: calendar-user-settings-set.md
   - name: Embed into the calendar
     href: calendar-grid-view.md

@@ -4,23 +4,23 @@ HTTP Status: **20x**, **40x**, **50x**
 
 The errors described below may occur when calling any method.
 
-#|
+#| 
 || **Status** | **Code**
 **Error Message** | **Description** ||
 || `500` | `INTERNAL_SERVER_ERROR`
 Internal server error | An internal server error has occurred. ||
 || `500` | `ERROR_UNEXPECTED_ANSWER`
 Server returned an unexpected response | An internal server error has occurred. ||
-|| `429` | `QUERY_LIMIT_EXCEEDED`
+|| `503` | `QUERY_LIMIT_EXCEEDED`
 Too many requests | The [request intensity limit](../limits.md) has been exceeded. ||
 || `200` | `ERROR_BATCH_METHOD_NOT_ALLOWED`
-Method is not allowed for batch usage | The current method is not allowed to be called using [batch](../api-reference/how-to-call-rest-api/batch.md). ||
+Method is not allowed for batch usage | The current method is not permitted for calls using [batch](../api-reference/how-to-call-rest-api/batch.md). ||
 || `200` | `ERROR_BATCH_LENGTH_EXCEEDED`
 Max batch length exceeded | The maximum length of parameters passed to the [batch](../api-reference/how-to-call-rest-api/batch.md) method has been exceeded. ||
 || `200` | `NO_AUTH_FOUND`
 Wrong authorization data | Invalid [access token](../api-reference/oauth/) or [webhook code](../local-integrations/local-webhooks.md). ||
 || `200` | `INVALID_REQUEST`
-Https required. | The REST methods must be called using the HTTPS protocol. ||
+Https required. | The REST methods require the use of the HTTPS protocol. ||
 || `200` | `OVERLOAD_LIMIT`
 REST API is blocked due to overload | The REST API is blocked due to overload. This is a manual individual block; to remove it, you need to contact Bitrix24 technical support. ||
 || `200` | `ACCESS_DENIED`

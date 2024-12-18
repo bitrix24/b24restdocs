@@ -1,14 +1,14 @@
-# Get the participation status of the current user in the event calendar.meeting.status.get
+# Get the Participation Status of the Current User in the Event calendar.meeting.status.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
 - examples are missing
@@ -24,12 +24,12 @@ Some data may be missing — we will fill it in shortly.
 
 The method `calendar.meeting.status.get` returns the participation status of the current user in the event.
 
-#|
+#| 
 || **Parameter** | **Description** ||
 || **eventId**^*^ | Event identifier. ||
 |#
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Parameter Notes](../../_includes/required.md) %}
 
 ## Example
 
@@ -47,8 +47,8 @@ The method `calendar.meeting.status.get` returns the participation status of the
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Example Notes](../../_includes/examples.md) %}
 
-## Response in case of success
+## Successful Response
 
 Returns the status ("Y", "N", "Q").
