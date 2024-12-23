@@ -92,13 +92,9 @@ The capabilities of [keyboards](*keyboard) are quite broad.
 
     Page navigation, buttons when calling the "Help" command
 
-    @[youtube](2v5MUeVSBX4)
-
 2. **Martha**
    
-    Just tell Martha "Play with me!". The keyboard is used as a game board:
-
-    @[youtube](qSDKsDwJsBI)
+    Just tell Martha "Play with me!". The keyboard is used as a game board
 
 3. **Giphy**
    
