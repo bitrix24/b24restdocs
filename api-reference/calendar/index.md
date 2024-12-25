@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it soon.
 
 > Scope: [`calendar`](../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the method: depends on the method
 
 #|
 || **Method** | **Description** ||

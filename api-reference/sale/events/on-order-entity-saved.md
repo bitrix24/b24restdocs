@@ -6,14 +6,14 @@
 
 The event `OnOrderEntitySaved` occurs immediately after the order is saved.
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request
 
 ```
 [
     'event' => 'ONORDERENTITYSAVED',
-    'eventId' => 1,
+    'event_handler_id' => 1,
     'data' => [
         'FIELDS' => [
             'ID' => 300,
@@ -42,15 +42,15 @@ Data is transmitted as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***
+|| **event***  
 [`string`](../../data-types.md) | Symbolic code of the event ||
-|| **eventId***
-[`integer`](../../data-types.md) | Identifier of the event ||
-|| **data***
+|| **event_handler_id***  
+[`integer`](../../data-types.md) | Identifier of the event handler ||
+|| **data***  
 [`object`](../../data-types.md) | Object containing event data ||
-|| **ts***
+|| **ts***  
 [`integer`](../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth***
+|| **auth***  
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -61,7 +61,7 @@ Data is transmitted as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **FIELDS***
+|| **FIELDS***  
 [`object`](../../data-types.md) | Object with the property `ID`, containing the order identifier ||
 |#
 
@@ -72,7 +72,7 @@ Data is transmitted as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **ID***
+|| **ID***  
 [`sale_order.id`](../data-types.md) | Identifier of the order. To retrieve all fields of the order by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
 |#
 

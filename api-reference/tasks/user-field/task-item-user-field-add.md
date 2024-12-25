@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -37,10 +37,10 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
 || **PARAMS**
 [`unknown`](../../data-types.md) | An array with property parameters of the form `array("parameter": 'value' [, ...])`, containing the following parameters: 
 - `USER_TYPE_ID` - data type of the custom field. Allowed values: 
-    - `string` (**String**);
-    - `double` (**Number**); 
-    - `date` (**Date**);
-    - `boolean` (**Yes/No**); 
+  - `string` — string
+  - `double` — number
+  - `date` — date
+  - `boolean` — yes/no  
 - `FIELD_NAME` - field code; 
 - `XML_ID` - external code; 
 - `EDIT_FORM_LABEL` - label in the formatting form (specified in English ('en') and German ('de') languages); 
@@ -53,7 +53,7 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
 
 - cURL
 
-    ```http
+    ```bash
     $appParams = array(
         'auth' => 'q21g8vhcqmxdrbhqlbd2wh6ev1debppa',
         'PARAMS' => array(
@@ -95,4 +95,4 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
 
 {% endlist %}
 
-{% include [Examples note](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

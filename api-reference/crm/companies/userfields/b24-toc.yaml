@@ -1,17 +1,17 @@
-title: List of methods for working with company contacts
+title: Custom Company Fields
 href: index.md
 items:
-  - name: Overview of methods 
+  - name: Overview of Methods
     href: index.md
-  - name: Create a new field
+  - name: Create a New Field
     href: crm-company-userfield-add.md
-  - name: Delete a field
+  - name: Delete a Field
     href: crm-company-userfield-delete.md
-  - name: Get a field by identifier
+  - name: Get a Field by ID
     href: crm-company-userfield-get.md
-  - name: Get a list of fields by filter
+  - name: Get a List of Fields by Filter
     href: crm-company-userfield-list.md
-  - name: Update an existing field
+  - name: Update an Existing Field
     href: crm-company-userfield-update.md
   - name: Events
     include:

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -38,7 +38,7 @@ The method will return data on the settings of the user field with the identifie
 || **moduleId^*^** | String identifier of the module.  | ||
 |#
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../_includes/required.md) %}
 
 ## Examples
 
@@ -69,27 +69,27 @@ Example response:
         },
         "languageId": {
             "en": "en",
-            "ru": "ru"
+            "de": "de"
         },
         "editFormLabel": {
             "en": "",
-            "ru": "Multiple file"
+            "de": "Multiple file"
         },
         "listColumnLabel": {
             "en": null,
-            "ru": null
+            "de": null
         },
         "listFilterLabel": {
             "en": null,
-            "ru": null
+            "de": null
         },
         "errorMessage": {
             "en": null,
-            "ru": null
+            "de": null
         },
         "helpMessage": {
             "en": null,
-            "ru": null
+            "de": null
         }
     }
 }
@@ -97,31 +97,31 @@ Example response:
 
 Where:
 - **id** - identifier
-- **entityId** - string identifier of the entity
+- **entityId** - string identifier of the object
 - **fieldName** - field code
 - **userTypeId** - string identifier of the field type
 - **xmlId** - external identifier
-- **sort** - sorting index
+- **sort** - sort index
 - **multiple** - multiplicity flag
 - **mandatory** - mandatory flag
-- **showFilter** - flag for showing the field in the filter
+- **showFilter** - flag for showing the field in the filter. For some objects, such as RPA, it returns the value Enabled `E` instead of `Y`
 - **showInList** - flag for showing the field in the list
-- **editInList** - flag for allowing field editing in the list
+- **editInList** - flag for allowing editing the field in the list
 - **isSearchable** - flag for the presence of the field value in the full-text index
 - **settings** - list of additional field settings, depending on its type
 - **languageId** - list of language identifiers for which phrases are available
-- **editFormLabel** - list of language-dependent field names, where the key is the language identifier and the value is the phrase
+- **editFormLabel** - list with language-dependent field names, where the key is the language identifier and the value is the phrase
 - **listColumnLabel**, **listFilterLabel**, **errorMessage**, **helpMessage** - similar lists of phrases for various purposes (not used)
-- **enum** - array with value options for properties of type "list" (enumeration), including option identifier, value, default flag, sorting index, and external identifier of the option.
+- **enum** - array with value options for properties of type "list" (enumeration), including option identifier, value, default flag, sort index, and external identifier of the option.
 
-{% include [Examples Note](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 
 {% if build == 'dev' %}
 
 {% note alert "Parameter `settings`" %}
 
-During the description of `crm.contact.userfield.get`, almost all `settings` for all types of user fields were incorrectly described.
+During the description of `crm.contact.userfield.get`, almost all `settings` for all types of user fields were mistakenly described.
 I am leaving them here to simplify their description later :)
 
 {% endnote %}
@@ -165,8 +165,8 @@ I am leaving them here to simplify their description later :)
   `DROPDOWN` - Dropdown list ||
   || **LABEL**
   [`string[]`][1] | Labels for values, where
-    * array element with index `0` - Label for the value "No"
-    * array element with index `1` - Label for the value "Yes"
+    * array element with index `0` - Label for value "No"
+    * array element with index `1` - Label for value "Yes"
 
   ||
   || **LABEL_CHECKBOX**
@@ -190,7 +190,7 @@ I am leaving them here to simplify their description later :)
   where `TYPE` - Type of default value:
   `NONE` - Absent
   `NOW` - Current date
-  `FIXED` - Date from the `VALUE`
+  `FIXED` - Date from `VALUE`
 
   `VALUE` is of type `date` ||
   |#
@@ -227,7 +227,7 @@ I am leaving them here to simplify their description later :)
   where `TYPE` - Type of default value:
   `NONE` - Absent
   `NOW` - Current date with time
-  `FIXED` - Date with time from the `VALUE`
+  `FIXED` - Date with time from `VALUE`
 
   `VALUE` is of type `datetime` ||
   || **USE_SECOND**
@@ -279,7 +279,7 @@ I am leaving them here to simplify their description later :)
   || **LIST_HEIGHT**
   [`integer`][1] | List height ||
   || **CAPTION_NO_VALUE**
-  [`string`][1] | Label when no value is present ||
+  [`string`][1] | Label when no value ||
   || **SHOW_NO_VALUE**
   [`boolean`][1] | Show empty value for required field
 
@@ -340,13 +340,13 @@ I am leaving them here to simplify their description later :)
   || **ORDER**
   [`boolean`][1] | Order binding enabled ||
   || **QUOTE**
-  [`boolean`][1] | Quote binding enabled ||
+  [`boolean`][1] | Estimate binding enabled ||
   || **SMART_INVOICE**
   [`boolean`][1] | New invoice binding enabled ||
   || **DYNAMIC_...**
   [`boolean`][1] | Binding to a specific SPA enabled
 
-  Each such field is of the form: `DYNAMIC_{entityTypeId}`, where `entityTypeId` is the identifier of the SPA type to which the binding is enabled. ||
+  Each such field has the form: `DYNAMIC_{entityTypeId}`, where `entityTypeId` is the identifier of the SPA type to which the binding is enabled. ||
   |#
 
 - money
@@ -414,7 +414,7 @@ I am leaving them here to simplify their description later :)
   || **COLOR**
   [`string`][1] | Color of control elements ||
   || **OVER_COLOR**
-  [`string`][1] | Color of control elements on mouse hover ||
+  [`string`][1] | Color of control elements on hover ||
   || **SCREEN_COLOR**
   [`string`][1] | Screen color ||
   || **SILVERVARS**

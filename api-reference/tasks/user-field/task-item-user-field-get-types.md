@@ -5,10 +5,10 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - one example is missing (there should be three examples - curl, js, php)
-- no success response is provided
-- no error response is provided
+- no response in case of success
+- no response in case of error
 - add a note that other types cannot be added to tasks
 
 {% endnote %}
@@ -25,7 +25,13 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `task.item.userfield.gettypes` returns all available data types.
+The method `task.item.userfield.gettypes` returns all available data types in the system.
+
+Custom fields in tasks support the following data types:
+- `string` — string
+- `double` — number
+- `date` — date
+- `boolean` — yes/no 
 
 ## Parameters
 

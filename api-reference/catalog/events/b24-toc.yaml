@@ -1,41 +1,35 @@
 title: Events
 href: index.md
 items: 
-  - name: Events
+  - name: Overview of Events
     href: index.md
-  - name: When adding a unit of measurement
+  - name: When Adding a Unit of Measurement
     href: catalog-measure-on-add.md
-  - name: When updating a unit of measurement
+  - name: When Changing a Unit of Measurement
     href: catalog-measure-on-update.md
-  - name: When deleting a unit of measurement
+  - name: When Deleting a Unit of Measurement
     href: catalog-measure-on-delete.md
-  - name: When adding a price
+  - name: When Adding a Price
     href: catalog-price-on-add.md
-  - name: When updating a price
+  - name: When Changing a Price
     href: catalog-price-on-update.md
-  - name: When deleting a price
+  - name: When Deleting a Price
     href: catalog-price-on-delete.md
-  - name: When adding a price type
+  - name: When Adding a Price Type
     href: catalog-price-type-on-add.md
-  - name: When updating a price type
+  - name: When Changing a Price Type
     href: catalog-price-type-on-update.md
-  - name: When deleting a price type
+  - name: When Deleting a Price Type
     href: catalog-price-type-on-delete.md
-  - name: When adding a product
+  - name: When Adding a Product
     href: catalog-product-on-add.md
-  - name: When updating a product
+  - name: When Changing a Product
     href: catalog-product-on-update.md
-  - name: When deleting a product
+  - name: When Deleting a Product
     href: catalog-product-on-delete.md
-  - name: When adding a price rounding rule
+  - name: When Adding a Price Rounding Rule
     href: catalog-rounding-on-add.md
-  - name: When updating a price rounding rule
+  - name: When Changing a Price Rounding Rule
     href: catalog-rounding-on-update.md
-  - name: When deleting a price rounding rule
+  - name: When Deleting a Price Rounding Rule
     href: catalog-rounding-on-delete.md
-  - name: When adding a warehouse
-    href: catalog-store-on-add.md
-  - name: When updating a warehouse
-    href: catalog-store-on-update.md
-  - name: When deleting a warehouse
-    href: catalog-store-on-delete.md

@@ -1,52 +1,52 @@
 title: Calendar
 href: index.md
 items: 
-  - name: Calendar
+  - name: Overview of methods
     href: index.md 
-  - name: View user availability from the list
-    href: calendar-accessibility-get.md
-  - name: Add a new event
+  - name: Add event
     href: calendar-event-add.md
-  - name: Delete an event
-    href: calendar-event-delete.md
-  - name: Get a list of calendar events
-    href: calendar-event-get.md
-  - name: View the list of upcoming events for the current user
-    href: calendar-event-get-nearest.md
-  - name: View calendar events by ID
-    href: calendar-event-get-by-id.md
-  - name: Edit an existing event
+  - name: Update event
     href: calendar-event-update.md
-  - name: Get the participation status of the current user in an event
+  - name: Get event by id
+    href: calendar-event-get-by-id.md
+  - name: Get list of calendar events
+    href: calendar-event-get.md
+  - name: Get list of upcoming events
+    href: calendar-event-get-nearest.md
+  - name: Delete event
+    href: calendar-event-delete.md
+  - name: Get current user's participation status in the event
     href: calendar-meeting-status-get.md
-  - name: Set participation status in an event for the current user
+  - name: Set participation status in the event for the current user
     href: calendar-meeting-status-set.md
-  - name: Add a new resource
+  - name: Get availability of users from the list
+    href: calendar-accessibility-get.md    
+  - name: Add new resource
     href: calendar-resource-add.md
-  - name: Provide the option to select resource bookings
+  - name: Provide the ability to select resource bookings
     href: calendar-resource-booking-list.md
-  - name: Delete a resource
+  - name: Delete resource
     href: calendar-resource-delete.md
-  - name: Get a list of all resources
+  - name: Get list of all resources
     href: calendar-resource-list.md
-  - name: Modify a resource
+  - name: Update resource
     href: calendar-resource-update.md
-  - name: Add a new calendar
+  - name: Add new calendar
     href: calendar-section-add.md
-  - name: Delete a calendar
+  - name: Delete calendar
     href: calendar-section-delete.md
-  - name: Get a list of calendars
+  - name: Get list of calendars
     href: calendar-section-get.md
-  - name: Update a calendar
+  - name: Update calendar
     href: calendar-section-update.md
   - name: Get main calendar settings
     href: calendar-settings-get.md
   - name: Get user calendar settings
     href: calendar-user-settings-get.md
-  - name: Save user calendar settings
+  - name: Set user calendar settings
     href: calendar-user-settings-set.md
-  - name: Embed into the calendar
-    href: calendar-grid-view.md
+  - name: Integrate into calendar
+    href: calendar-grid-veiw.md
   - name: Events
     include:
       path: events-calendar/b24-toc.yaml

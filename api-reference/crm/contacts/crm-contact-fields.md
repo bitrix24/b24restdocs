@@ -1,10 +1,10 @@
-# Get Contact Fields crm.contacts.fields
+# Get Contact Fields crm.contact.fields
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns a description of contact fields, including custom fields.
+The method returns the description of contact fields, including custom fields.
 
 No parameters.
 
@@ -191,7 +191,7 @@ HTTP Status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Address (line 2)"
+        "title": "Address (Line 2)"
         },
         "ADDRESS_CITY": {
         "type": "string",
@@ -281,7 +281,7 @@ HTTP Status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Participates in Contact Export"
+        "title": "Included in Contact Export"
         },
         "HAS_PHONE": {
         "type": "char",
@@ -308,7 +308,7 @@ HTTP Status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Open Line Set"
+        "title": "Open Channel Set"
         },
         "ASSIGNED_BY_ID": {
         "type": "user",
@@ -483,7 +483,7 @@ HTTP Status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Last Activity Author in Timeline"
+        "title": "Last Activity Author"
         },
         "PHONE": {
         "type": "crm_multifield",
@@ -549,7 +549,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 ||**ID**
-[`integer`](../../data-types.md) | Identifier of the contact. Read-only ||
+[`integer`](../../data-types.md) | Contact identifier. Read-only ||
 ||**HONORIFIC**
 [`crm_status`](../data-types.md) | Salutation.
 
@@ -585,7 +585,7 @@ You can get the values of the directory using the method [crm.status.list](../st
 
 Considered in the access permission work for roles with "All Open" access level ||
 ||**EXPORT**
-[`char`](../../data-types.md) | Participates in contact export. Possible values:
+[`char`](../../data-types.md) | Included in contact export. Possible values:
 - `Y` — yes
 - `N` — no ||
 ||**HAS_PHONE**
@@ -601,7 +601,7 @@ Read-only ||
 
 Read-only  ||
 ||**HAS_IMOL**
-[`char`](../../data-types.md) | Is open line set. Possible values:
+[`char`](../../data-types.md) | Is open channel set. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -619,7 +619,7 @@ Read-only ||
 ||**COMPANY_ID**
 [`crm_company`](../data-types.md) | Main company of the contact ||
 ||**COMPANY_IDS**
-[`crm_company`](../data-types.md) | Link of the contact to companies. Multiple. 
+[`crm_company`](../data-types.md) | Contact association with companies. Multiple. 
 
 In the methods [`crm.contact.update`](./crm-contact-update.md) and [`crm.contact.add`](./crm-contact-add.md) it is used to submit an array of companies. 
 
@@ -629,7 +629,7 @@ In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get
 ||**FACE_ID**
 [`integer`](../../data-types.md) | Link to faces from the FaceID module. Read-only ||
 ||**UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system (Google Ads, etc.) ||
+[`string`](../../data-types.md) | Advertising system (Google Ads, Facebook Ads, etc.) ||
 ||**UTM_MEDIUM**
 [`string`](../../data-types.md) | Traffic type. Possible values:
 - `CPC` — ads 
@@ -641,7 +641,7 @@ In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get
 ||**UTM_TERM**
 [`string`](../../data-types.md) | Campaign search condition. For example, keywords for contextual advertising ||
 ||**LAST_ACTIVITY_TIME**
-[`datetime`](../../data-types.md) | Date of the last activity in the timeline. Read-only ||
+[`datetime`](../../data-types.md) | Last activity date in the timeline. Read-only ||
 ||**LAST_ACTIVITY_BY**
 [`user`](../../data-types.md) | Author of the last activity in the timeline. Read-only ||
 ||**PHONE**
@@ -656,19 +656,19 @@ In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get
 [`crm_multifield`](../data-types.md) | Links. Multiple. Service. ||
 ||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`. 
 
-Depending on the account settings, contacts may have a set of custom fields of specific types. 
+Depending on the account settings, contacts may have a set of custom fields of defined types. 
 
 You can add a custom field to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md)  ||
 ||**PARENT_ID_...** | Relationship fields. 
 
-If there are SPAs associated with contacts in the account, there is a field for each such SPA that stores the relationship between that SPA and the contact. The field itself stores the identifier of the element of that SPA. 
+If there are SPAs related to contacts in the account, for each such SPA there is a field that stores the relationship between this SPA and the contact. The field itself stores the identifier of the element of that SPA. 
 
-For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the element of that SPA associated with the current contact ||
+For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the element of this SPA related to the current contact ||
 |#
 
 **Fields for External Data Sources**
 
-If the contact was created by an external system, then:
+If the contact is created by an external system, then:
 - the field `ORIGINATOR_ID` stores the string identifier of that system
 - the field `ORIGIN_ID` stores the string identifier of the contact in that external system
 - the field `ORIGIN_VERSION` stores the version of the contact data in that external system
@@ -690,7 +690,7 @@ If the data was imported and not changed in the external system, such data can b
 
 **Deprecated Fields**
 
-Address fields in the contact are deprecated and are only used for compatibility mode. To work with the address, use [requisites](../requisites/index.md).
+Address fields in the contact are deprecated and are only used for compatibility mode. For working with addresses, use [requisites](../requisites/index.md).
 
 #|
 || **Name**
@@ -706,7 +706,7 @@ Address fields in the contact are deprecated and are only used for compatibility
 ||**ADDRESS_REGION**
 [`string`](../../data-types.md) | Region ||
 ||**ADDRESS_PROVINCE**
-[`string`](../../data-types.md) | State ||
+[`string`](../../data-types.md) | Province ||
 ||**ADDRESS_COUNTRY**
 [`string`](../../data-types.md) | Country ||
 ||**ADDRESS_COUNTRY_CODE**

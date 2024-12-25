@@ -8,12 +8,12 @@ The `OnPaymentDeleted` event occurs when a payment is directly deleted from the 
 
 ## What the handler receives
 
-Data is transmitted as a POST request
+Data is sent as a POST request
 
 ```
 [
     'event' => 'ONPAYMENTDELETED',
-    'eventId' => 6,
+    'event_handler_id' => 6,
     'data' => [
         'FIELDS' => [
             'ID' => 300,
@@ -42,15 +42,15 @@ Data is transmitted as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***
+|| **event***  
 [`string`](../../data-types.md) | Symbolic code of the event ||
-|| **eventId***
-[`integer`](../../data-types.md) | Identifier of the event ||
-|| **data***
+|| **event_handler_id***  
+[`integer`](../../data-types.md) | Identifier of the event handler ||
+|| **data***  
 [`object`](../../data-types.md) | Object containing event data ||
-|| **ts***
-[`integer`](../../data-types.md) | Timestamp of when the event was sent from the event queue ||
-|| **auth***
+|| **ts***  
+[`integer`](../../data-types.md) | Timestamp of the event sent from the event queue ||
+|| **auth***  
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -61,7 +61,7 @@ Data is transmitted as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **FIELDS***
+|| **FIELDS***  
 [`object`](../../data-types.md) | Object with the property `ID`, containing the payment identifier ||
 |#
 
@@ -72,8 +72,8 @@ Data is transmitted as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **ID***
-[`sale_order_payment.id`](../data-types.md) | Identifier of the payment. To retrieve all fields of the payment by its identifier, use the method [sale.payment.get](../payment/sale-payment-get.md) ||
+|| **ID***  
+[`sale_order_payment.id`](../data-types.md) | Identifier of the payment. To retrieve all payment fields by identifier, use the method [sale.payment.get](../payment/sale-payment-get.md) ||
 |#
 
 ### Auth Parameter

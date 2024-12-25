@@ -4,16 +4,16 @@
 >
 > Who can subscribe: any user
 
-The `OnShipmentDeleted` event occurs when a shipment is directly deleted from the database.
+The `OnShipmentDeleted` event occurs when a shipment is deleted from the database.
 
 ## What the handler receives
 
-Data is sent as a POST request
+Data is transmitted as a POST request
 
 ```
 [
     'event' => 'ONSHIPMENTDELETED',
-    'eventId' => 6,
+    'event_handler_id' => 6,
     'data' => [
         'FIELDS' => [
             'ID' => 300,
@@ -42,15 +42,15 @@ Data is sent as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***
+|| **event***  
 [`string`](../../data-types.md) | Symbolic code of the event ||
-|| **eventId***
-[`integer`](../../data-types.md) | Identifier of the event ||
-|| **data***
+|| **event_handler_id***  
+[`integer`](../../data-types.md) | Identifier of the event handler ||
+|| **data***  
 [`object`](../../data-types.md) | Object containing event data ||
-|| **ts***
-[`integer`](../../data-types.md) | Timestamp of when the event was sent from the event queue ||
-|| **auth***
+|| **ts***  
+[`integer`](../../data-types.md) | Timestamp of the event sent from the event queue ||
+|| **auth***  
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -61,8 +61,8 @@ Data is sent as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **FIELDS***
-[`object`](../../data-types.md) | Object with the property `ID`, containing the identifier of the shipment ||
+|| **FIELDS***  
+[`object`](../../data-types.md) | Object with the property `ID`, containing the shipment identifier ||
 |#
 
 #### FIELDS Parameter
@@ -72,7 +72,7 @@ Data is sent as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **ID***
+|| **ID***  
 [`sale_order_shipment.id`](../data-types.md) | Identifier of the shipment. To retrieve all fields of the shipment by its identifier, use the method [sale.shipment.get](../shipment/sale-shipment-get.md) ||
 |#
 

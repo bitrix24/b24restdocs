@@ -1,31 +1,32 @@
-# Methods for Working with Mail Services
+# Email Services: Overview of Methods
 
-{% if build == 'dev' %}
+In Bitrix24, you can connect mailboxes from services like Gmail, Mail.ru, and others. This simplifies working with emails.
 
-{% note alert "TO-DO _not exported to prod_" %}
+> Quick navigation: [all methods](#all-methods)
 
-- method versions are not specified
+You can manage only email services through the REST API. Connecting mailboxes, sending, and receiving emails must be done through the Bitrix24 interface.
+
+{% note tip "User Documentation" %}
+
+- [How to connect Gmail to Bitrix24](https://helpdesk.bitrix24.com/open/18508706/)
+- [Ways to connect mailboxes in Bitrix24](https://helpdesk.bitrix24.com/open/19264454/)
+- [How to work with email in Bitrix24](https://helpdesk.bitrix24.com/open/20134658/)
+- [Questions about email operation (connection, integration with CRM)](https://helpdesk.bitrix24.com/open/8293717/)
 
 {% endnote %}
 
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly
-
-{% endnote %}
+## Overview of Methods {#all-methods}
 
 > Scope: [`mailservice`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
 #|
-|| **Method** | **Description** | **Available since** ||
-|| [mailservice.fields](./mailservice-add.md) | Returns the description of the mail service fields. | ||
-|| [mailservice.list](./mailservice-list.md) | Returns a list of all mail services. | ||
-|| [mailservice.get](./mailservice-get.md) | Returns the parameters of the specified mail service. | ||
-|| [mailservice.add](./mailservice-add.md) | Adds a mail service. | ||
-|| [mailservice.update](./mailservice-update.md) | Updates the parameters of the mail service. | ||
-|| [mailservice.delete](./mailservice-delete.md) | Deletes a mail service. | ||
+|| **Method** | **Description** ||
+|| [mailservice.fields](./mailservice-add.md) | Returns the description of the email service fields ||
+|| [mailservice.list](./mailservice-list.md) | Returns a list of all email services ||
+|| [mailservice.get](./mailservice-get.md) | Returns the parameters of the specified email service ||
+|| [mailservice.add](./mailservice-add.md) | Adds an email service ||
+|| [mailservice.update](./mailservice-update.md) | Updates the parameters of the email service ||
+|| [mailservice.delete](./mailservice-delete.md) | Deletes an email service ||
 |#

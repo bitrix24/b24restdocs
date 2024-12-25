@@ -1,12 +1,12 @@
-# Get a list of CRM items crm.item.list
+# Get a list of crm.item.list elements
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM entity items
+> Who can execute the method: any user with "read" access permission for CRM entity elements
 
-This method retrieves a list of items of a specific type from the CRM entity.
+The method retrieves a list of elements of a specific type of CRM entity.
 
-CRM entity items will not be included in the final selection if the user does not have "read" access permission for those items.  
+CRM entity elements will not be included in the final selection if the user does not have "read" access permission for these elements.  
 
 ## Method Parameters
 
@@ -16,13 +16,13 @@ CRM entity items will not be included in the final selection if the user does no
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose items need to be retrieved ||
+[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose elements need to be retrieved ||
 || **select**
-[`array`][1] | List of fields that should be populated in the selected items.
+[`array`][1] | List of fields that should be populated in the selected elements.
 
 Can contain only field names or `'*'`.
 
-The list of available fields for selection can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method
+The list of available fields for selection can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method.
 ||
 || **filter**
 [`object`][1] |
@@ -36,13 +36,13 @@ Object format:
 }
 ```
 where
-- `field_n` — the name of the field by which the selection of items will be filtered
+- `field_n` — the name of the field by which the selection of elements will be filtered
 - `value_n` — the filter value
 
 The filter can have unlimited nesting and number of conditions.
-By default, all conditions are combined using `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
+By default, all conditions are combined with `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
 
-You can add a prefix to the keys `field_n` to specify the filter operation.
+You can add a prefix to the `field_n` keys to specify the filter operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -50,14 +50,14 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` character needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` character needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -66,7 +66,8 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-The list of available fields for filtering can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method
+The list of available fields for filtering can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method. 
+The filter for deals `entityTypeId: 2` does not support the fields `contactIds` and `contacts` 
 ||
 || **order**
 [`object`][1] |
@@ -80,7 +81,7 @@ Object format:
 }
 ```
 where
-- `field_n` — the name of the field by which the selection of items will be sorted
+- `field_n` — the name of the field by which the selection of elements will be sorted
 - `value_n` — a `string` value equal to:
   - `ASC` — ascending sort
   - `DESC` — descending sort
@@ -111,7 +112,7 @@ The formula for calculating the `start` parameter value:
 6. The calculation mode for the amount is manual.
 
 **Set the following sort order for this selection:**
-* First name and last name in ascending order.
+* First name and last name in ascending order
 
 **For clarity, we will select only the fields we need:**
 * Identifier `id`
@@ -353,15 +354,15 @@ HTTP status: **200**
 || **result**
 [`object`][1] | Root element of the response. Contains a single key `items` ||
 || **items**
-[`item[]`](./crm-item-add.md#item) | Array containing information about the found items.
+[`item[]`](./crm-item-add.md#item) | An array containing information about the found elements.
 
 Fields of a single [`item`](./crm-item-add.md#item) are configured by the `select` parameter ||
 || **total**
-[`integer`][1] | Total number of found items ||
+[`integer`][1] | Total number of found elements ||
 || **next**
 [`integer`][1] | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
 
-The `next` parameter appears in the response if the number of items matching your request exceeds `50`. ||
+The `next` parameter appears in the response if the number of elements matching your request exceeds `50`. ||
 || **time**
 [`time`][1] | Information about the execution time of the request ||
 |#
@@ -383,12 +384,12 @@ HTTP status: **400**, **403**
 
 #|
 || **Status** | **Code**                          | **Description**                                             | **Value**                                          ||
-|| `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users                     | User is not an intranet user                       ||
-|| `400`      | `NOT_FOUND`                      | Smart process not found                                    | Occurs when an invalid `entityTypeId` is passed    ||
+|| `403`      | `allowed_only_intranet_user`     | Action is allowed only for intranet users                 | User is not an intranet user                      ||
+|| `400`      | `NOT_FOUND`                      | Smart process not found                                    | Occurs when an invalid `entityTypeId` is passed   ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' is not allowed in filter | The field `field` passed in `filter` is not available for filtering ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' has invalid value        | The value passed for the field `field` in `filter` is incorrect ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid order: field '`field`' is not allowed in order   | The field `field` passed in `order` is not available for sorting ||
-|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: allowed sort directions are `ASC, DESC`. But got '`orderValue`' for field '`field`' | The value `orderValue` passed for the field `field` in the `order` parameter is incorrect ||
+|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: allowed sort directions are `ASC, DESC`. But got '`orderValue`' for field '`field`' | The `orderValue` passed for the field `field` in the `order` parameter is incorrect ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

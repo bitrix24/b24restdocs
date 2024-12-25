@@ -1,6 +1,6 @@
 # After Saving the Shipment OnShipmentEntitySaved
 
-> Event Name: **OnShipmentEntitySaved**
+> Event name: **OnShipmentEntitySaved**
 >
 > Scope: [`sale`](../../scopes/permissions.md) 
 >
@@ -15,7 +15,7 @@ Data is transmitted as a POST request
 ```
 [
     'event' => 'ONSHIPMENTENTITYSAVED',
-    'eventId' => 1,
+    'event_handler_id' => 1,
     'data' => [
         'FIELDS' => [
             'ID' => 300,
@@ -39,15 +39,15 @@ Data is transmitted as a POST request
 
 ## Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **event***
 [`string`](../../data-types.md) | Symbolic code of the event ||
-|| **eventId***
-[`integer`](../../data-types.md) | Identifier of the event ||
+|| **event_handler_id***
+[`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data***
 [`object`](../../data-types.md) | Object containing event data ||
 || **ts***
@@ -56,9 +56,9 @@ Data is transmitted as a POST request
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
-### Data Parameter
+### Parameter data
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -67,9 +67,9 @@ Data is transmitted as a POST request
 [`object`](../../data-types.md) | Object with the property `ID`, containing the shipment identifier ||
 |#
 
-#### FIELDS Parameter
+#### Parameter FIELDS
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -78,6 +78,6 @@ Data is transmitted as a POST request
 [`sale_order_shipment.id`](../data-types.md) | Identifier of the shipment. To retrieve all fields of the shipment by its identifier, use the method [sale.shipment.get](../shipment/sale-shipment-get.md) ||
 |#
 
-### Auth Parameter
+### Parameter auth
 
-{% include notitle [Auth Parameter](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Parameter auth](../../../_includes/auth-params-in-events.md) %}

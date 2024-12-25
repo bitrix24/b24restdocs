@@ -1,22 +1,4 @@
-# Change resource calendar.resource.update
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
+# Update Resource calendar.resource.update
 
 > Scope: [`calendar`](../scopes/permissions.md)
 >
@@ -24,13 +6,18 @@ Some data may be missing here — we will complete it shortly.
 
 The method `calendar.resource.update` modifies a resource.
 
-#| 
-|| **Parameter** | **Description** ||
-|| **resourceId** | Resource identifier. ||
-|| **name**^*^ | Resource name. ||
-|#
+## Method Parameters
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **resourceId***
+[`integer`](../data-types.md) | Resource identifier. ||
+|| **name***
+[`string`](../data-types.md) | Resource name. ||
+|#
 
 ## Example
 
@@ -39,9 +26,10 @@ The method `calendar.resource.update` modifies a resource.
 - JS
 
     ```js
-    BX24.callMethod("calendar.resource.update",
+    BX24.callMethod(
+        'calendar.resource.update',
         {
-            resourceId: 325,
+            resourceId: 197,
             name: 'Changed Resource Name'
         }
     );
@@ -49,8 +37,55 @@ The method `calendar.resource.update` modifies a resource.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
-## Response on success
+## Response Handling
 
-Returns the ID of the modified section.
+HTTP status: **200**
+
+```json
+{
+  "result": 197,
+  "time": {
+    "start": 1733318565.183275,
+    "finish": 1733318565.695058,
+    "duration": 0.5117831230163574,
+    "processing": 0.29406094551086426,
+    "date_start": "2024-12-04T13:22:45+00:00",
+    "date_finish": "2024-12-04T13:22:45+00:00"
+  }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../data-types.md) | Identifier of the edited resource ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+  "error": "",
+  "error_description": "The required parameter \"name\" for the method \"calendar.resource.update\" is not set"
+}
+```
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Error Message** | **Description** ||
+|| Empty string | The required parameter "id" for the method "calendar.resource.update" is not set | The required parameter `resourceId` is not provided ||
+|| Empty string | The required parameter "name" for the method "calendar.resource.update" is not set | The required parameter `name` is not provided ||
+|| Empty string | Access denied | The method is called by an external user or the user is prohibited from modifying resources ||
+|| Empty string | An error occurred while modifying the resource | Another error ||
+|#
+
+{% include [system errors](../../_includes/system-errors.md) %}

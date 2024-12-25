@@ -8,12 +8,12 @@ The event `OnPropertyValueEntitySaved` occurs immediately after the order proper
 
 ## What the Handler Receives
 
-Data is transmitted as a POST request
+Data is transmitted in the form of a POST request
 
 ```
 [	
     'event' => 'ONPROPERTYVALUEENTITYSAVED',
-    'eventId' => 1,
+    'event_handler_id' => 1,
     'data' => [
         'FIELDS' => [
             'ID' => 300,
@@ -37,26 +37,26 @@ Data is transmitted as a POST request
 
 ## Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **event***
 [`string`](../../data-types.md) | Symbolic code of the event ||
-|| **eventId***
-[`integer`](../../data-types.md) | Identifier of the event ||
+|| **event_handler_id***
+[`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data***
-[`object`](../../data-types.md) | Object containing event data ||
+[`object`](../../data-types.md) | Object with event data ||
 || **ts***
 [`integer`](../../data-types.md) | Timestamp of the event sent from the event queue ||
 || **auth***
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
-### Data Parameter
+### Parameter data
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -65,9 +65,9 @@ Data is transmitted as a POST request
 [`object`](../../data-types.md) | Object with the property `ID`, containing the identifier of the order property value ||
 |#
 
-#### FIELDS Parameter
+#### Parameter FIELDS
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -76,6 +76,6 @@ Data is transmitted as a POST request
 [`sale_order_property_value.id`](../data-types.md) | Identifier of the order property value. To retrieve all fields of the order property value by identifier, use the method [sale.propertyvalue.get](../property-value/sale-property-value-get.md) ||
 |#
 
-### Auth Parameter
+### Parameter auth
 
-{% include notitle [Auth Parameter](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Parameter auth](../../../_includes/auth-params-in-events.md) %}

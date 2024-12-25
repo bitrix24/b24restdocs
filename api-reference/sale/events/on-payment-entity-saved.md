@@ -4,16 +4,16 @@
 >
 > Who can subscribe: any user
 
-The event `OnPaymentEntitySaved` occurs immediately after a payment is saved.
+The event `OnPaymentEntitySaved` occurs immediately after the payment is saved.
 
-## What the Handler Receives
+## What the handler receives
 
-Data is sent as a POST request
+Data is transmitted as a POST request
 
 ```
 [
     'event' => 'ONPAYMENTENTITYSAVED',
-    'eventId' => 1,
+    'event_handler_id' => 1,
     'data' => [
         'FIELDS' => [
             'ID' => 300,
@@ -37,17 +37,17 @@ Data is sent as a POST request
 
 ## Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic code of the event ||
-|| **eventId***
-[`integer`](../../data-types.md) | Identifier of the event ||
+[`string`](../../data-types.md) | Symbolic event code ||
+|| **event_handler_id***
+[`integer`](../../data-types.md) | Event handler identifier ||
 || **data***
-[`object`](../../data-types.md) | Object containing event data ||
+[`object`](../../data-types.md) | Object with event data ||
 || **ts***
 [`integer`](../../data-types.md) | Timestamp of the event sent from the event queue ||
 || **auth***
@@ -56,7 +56,7 @@ Data is sent as a POST request
 
 ### Parameter data
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -67,13 +67,13 @@ Data is sent as a POST request
 
 #### Parameter FIELDS
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order_payment.id`](../data-types.md) | Identifier of the payment. To retrieve all payment fields by identifier, use the method [sale.payment.get](../payment/sale-payment-get.md) ||
+[`sale_order_payment.id`](../data-types.md) | Payment identifier. To retrieve all payment fields by identifier, use the method [sale.payment.get](../payment/sale-payment-get.md) ||
 |#
 
 ### Parameter auth

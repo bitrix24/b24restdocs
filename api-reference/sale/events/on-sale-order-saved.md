@@ -1,4 +1,4 @@
-# At the End of Saving the Order OnSaleOrderSaved
+# At the End of Order Saving OnSaleOrderSaved
 
 > Scope: [`sale`](../../scopes/permissions.md) 
 >
@@ -8,12 +8,12 @@ The event `OnSaleOrderSaved` occurs at the end of saving an order, when the orde
 
 ## What the Handler Receives
 
-Data is transmitted as a POST request
+Data is transmitted in the form of a POST request
 
 ```
 [
     'event' => 'ONSALEORDERSAVED',
-    'eventId' => 1,
+    'event_handler_id' => 1,
     'data' => [
         'FIELDS' => [
             'ID' => 300,
@@ -39,46 +39,46 @@ Data is transmitted as a POST request
 
 ## Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***
-[`string`](../../data-types.md) | Symbolic code of the event ||
-|| **eventId***
-[`integer`](../../data-types.md) | Identifier of the event ||
-|| **data***
-[`object`](../../data-types.md) | Object containing event data ||
-|| **ts***
+|| **event***  
+[`string`](../../data-types.md) | Symbolic event code ||
+|| **event_handler_id***  
+[`integer`](../../data-types.md) | Event handler identifier ||
+|| **data***  
+[`object`](../../data-types.md) | Object with event data ||
+|| **ts***  
 [`integer`](../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth***
+|| **auth***  
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
 ### Parameter data
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **FIELDS***
+|| **FIELDS***  
 [`object`](../../data-types.md) | Object with order properties ||
 |#
 
 #### Parameter FIELDS
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **ID***
-[`sale_order.id`](../data-types.md) | Identifier of the order. To retrieve all fields of the order by its identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
-|| **XML_ID***
-[`string`](../data-types.md) | External identifier of the order ||
-|| **ACTION***
+|| **ID***  
+[`sale_order.id`](../data-types.md) | Order identifier. To retrieve all order fields by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
+|| **XML_ID***  
+[`string`](../data-types.md) | External order identifier ||
+|| **ACTION***  
 [`string`](../../data-types.md) | Action. For this event, it has a constant value of `save` ||
 |#
 

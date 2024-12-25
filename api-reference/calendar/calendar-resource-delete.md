@@ -1,22 +1,4 @@
-# Delete resource calendar.resource.delete
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
+# Delete Resource calendar.resource.delete
 
 > Scope: [`calendar`](../scopes/permissions.md)
 >
@@ -24,12 +6,15 @@ Some data may be missing here — we will complete it shortly.
 
 The method `calendar.resource.delete` removes a resource.
 
-#| 
-|| **Parameter** | **Description** ||
-|| **resourceId**^*^ | Resource identifier. ||
-|#
+## Method Parameters
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **resourceId*** | Resource identifier. ||
+|#
 
 ## Example
 
@@ -38,7 +23,8 @@ The method `calendar.resource.delete` removes a resource.
 - JS
 
     ```js
-    BX24.callMethod("calendar.resource.delete",
+    BX24.callMethod(
+        'calendar.resource.delete',
         {
             resourceId: 521
         }
@@ -47,8 +33,55 @@ The method `calendar.resource.delete` removes a resource.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
-## Response on success
+## Response Handling
 
-Returns true if the deletion is successful.
+HTTP status: **200**
+
+```json
+{
+  "result": true,
+  "time": {
+    "start": 1733318565.183275,
+    "finish": 1733318565.695058,
+    "duration": 0.5117831230163574,
+    "processing": 0.29406094551086426,
+    "date_start": "2024-12-04T13:22:45+00:00",
+    "date_finish": "2024-12-04T13:22:45+00:00"
+  }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../data-types.md) | Returns **true** if the deletion was successful. ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+  "error": "",
+  "error_description": "The required parameter \"resourceId\" for the method \"calendar.resource.delete\" is not set."
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Error Message** | **Description** ||
+|| Empty string | The required parameter "resourceId" for the method "calendar.resource.delete" is not set. | The required parameter `resourceId` was not provided. ||
+|| Empty string | Access denied | The method is called by an external user or the user is prohibited from modifying resources. ||
+|| Empty string | An error occurred while deleting the section | Another error occurred. ||
+|#
+
+{% include [system errors](../../_includes/system-errors.md) %}

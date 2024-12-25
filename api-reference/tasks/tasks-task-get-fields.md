@@ -46,38 +46,38 @@ Without parameters.
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note about examples](../../_includes/examples.md) %}
 
 ## List of fields
 
 #|
 || **Field** / **Type** | **Description** | Value ||
 || **ID**
-[`integer`](../data-types.md) | Task identifier. | ||
+[`integer`](../data-types.md) | Task identifier | ||
 || **PARENT_ID**
-[`integer`](../data-types.md) | Parent task ID. | Default - 0 ||
+[`integer`](../data-types.md) | Parent task ID | Default - 0 ||
 || **TITLE^*^**
-[`string`](../data-types.md) | Title. The length of the TITLE field must not exceed 460 characters. Otherwise, the task title will be truncated from the end without warning. | ||
+[`string`](../data-types.md) | Title. The length of the TITLE field must not exceed 460 characters. Otherwise, the task title will be truncated from the end without warning | ||
 || **DESCRIPTION**
-[`string`](../data-types.md) | Description. | ||
+[`string`](../data-types.md) | Description | ||
 || **MARK**
-[`enum`](../data-types.md) | Rating. | N - Negative,
+[`enum`](../data-types.md) | Rating | N - Negative,
 P - Positive.
 Default - null ||
 || **PRIORITY**
-[`enum`](../data-types.md) | Priority. | 2 - High,
+[`enum`](../data-types.md) | Priority | 2 - High,
 1 - Medium,
 0 - Low.
 Default - 1 ||
 || **STATUS**
-[`enum`](../data-types.md) | Status. | 2 - Pending,
+[`enum`](../data-types.md) | Status | 2 - Pending,
 3 - In progress,
 4 - Awaiting control,
 5 - Completed,
 6 - Deferred.
 Default - 2 ||
 || **MULTITASK**
-[`enum`](../data-types.md) | Multitask. | Y - Yes,
+[`enum`](../data-types.md) | Multitask | Y - Yes,
 N - No.
 Default - No. ||
 || **NOT_VIEWED**
@@ -85,7 +85,7 @@ Default - No. ||
 N - No.
 Default - No. ||
 || **REPLICATE**
-[`enum`](../data-types.md) | Recurring task. | Y - Yes,
+[`enum`](../data-types.md) | Repeating task | Y - Yes,
 N - No.
 Default - No. ||
 || **GROUP_ID**
@@ -93,35 +93,35 @@ Default - No. ||
 || **FLOW_ID**
 [`integer`](../data-types.md) | Flow | null ||
 || **STAGE_ID**
-[`integer`](../data-types.md) | Stage. | Default - 0 ||
+[`integer`](../data-types.md) | Stage | Default - 0 ||
 || **CREATED_BY^*^**
-[`integer`](../data-types.md) | Creator. | ||
+[`integer`](../data-types.md) | Creator | ||
 || **CREATED_DATE**
-[`datetime`](../data-types.md) | Creation date. | ||
+[`datetime`](../data-types.md) | Creation date | ||
 || **RESPONSIBLE_ID^*^**
-[`integer`](../data-types.md) | Assignee. | ||
+[`integer`](../data-types.md) | Assignee | ||
 || **ACCOMPLICES**
-[`array`](../data-types.md) | Participants. | ||
+[`array`](../data-types.md) | Participants | ||
 || **AUDITORS**
-[`array`](../data-types.md) | Auditors. | ||
+[`array`](../data-types.md) | Auditors | ||
 || **CHANGED_BY**
-[`integer`](../data-types.md) | Modified by. | ||
+[`integer`](../data-types.md) | Modified by | ||
 || **CHANGED_DATE**
-[`integer`](../data-types.md) | Modification date. | ||
+[`integer`](../data-types.md) | Modification date | ||
 || **STATUS_CHANGED_BY**
-[`integer`](../data-types.md) | Status changed by. | ||
+[`integer`](../data-types.md) | Status changed by | ||
 || **CLOSED_BY**
-[`integer`](../data-types.md) | Closed by. | ||
+[`integer`](../data-types.md) | Closed by | ||
 || **CLOSED_DATE**
-[`datetime`](../data-types.md) | Closure date. | ||
+[`datetime`](../data-types.md) | Closing date | ||
 || **DATE_START**
-[`datetime`](../data-types.md) | Start date. | null ||
+[`datetime`](../data-types.md) | Start date | null ||
 || **DEADLINE**
-[`datetime`](../data-types.md) | Deadline. | null ||
+[`datetime`](../data-types.md) | Deadline | null ||
 || **START_DATE_PLAN**
-[`datetime`](../data-types.md) | Planned start. | null ||
+[`datetime`](../data-types.md) | Planned start | null ||
 || **END_DATE_PLAN**
-[`datetime`](../data-types.md) | Planned completion. | null ||
+[`datetime`](../data-types.md) | Planned completion | null ||
 || **GUID**
 [`string`](../data-types.md) | GUID | null ||
 || **XML_ID**
@@ -129,41 +129,41 @@ Default - No. ||
 || **COMMENTS_COUNT**
 [`integer`](../data-types.md) | Number of comments | ||
 || **NEW_COMMENTS_COUNT**
-[`integer`](../data-types.md) | Number of new comments. | ||
+[`integer`](../data-types.md) | Number of new comments | ||
 || **ALLOW_CHANGE_DEADLINE**
-[`enum`](../data-types.md) | Allow changing deadlines. | Y - Yes,
+[`enum`](../data-types.md) | Allow changing deadlines | Y - Yes,
 N - No.
 Default - No. ||
 || **TASK_CONTROL**
-[`enum`](../data-types.md) | Accept work. | Y - Yes,
+[`enum`](../data-types.md) | Accept work | Y - Yes,
 N - No.
 Default - No. ||
 || **ADD_IN_REPORT**
-[`enum`](../data-types.md) | Add to report. | Y - Yes,
+[`enum`](../data-types.md) | Add to report | Y - Yes,
 N - No.
 Default - No. ||
 || **FORKED_BY_TEMPLATE_ID**
-[`enum`](../data-types.md) | Created from template. | Y - Yes,
+[`enum`](../data-types.md) | Created from template | Y - Yes,
 N - No.
 Default - No. ||
 || **TIME_ESTIMATE**
-[`integer`](../data-types.md) | Estimated time. | ||
+[`integer`](../data-types.md) | Estimated time | ||
 || **TIME_SPENT_IN_LOGS**
-[`integer`](../data-types.md) | Time spent from change history. | ||
+[`integer`](../data-types.md) | Time spent from change history | ||
 || **MATCH_WORK_TIME**
-[`integer`](../data-types.md) | Skip weekends. | ||
+[`integer`](../data-types.md) | Skip weekends | ||
 || **FORUM_TOPIC_ID**
-[`integer`](../data-types.md) | Forum topic identifier. | ||
+[`integer`](../data-types.md) | Forum topic identifier | ||
 || **FORUM_ID**
-[`integer`](../data-types.md) | Forum identifier. | ||
+[`integer`](../data-types.md) | Forum identifier | ||
 || **SITE_ID**
-[`string`](../data-types.md) | Site identifier. | ||
+[`string`](../data-types.md) | Site identifier | ||
 || **SUBORDINATE**
-[`enum`](../data-types.md) | Subordinate task. | Y - Yes,
+[`enum`](../data-types.md) | Subordinate task | Y - Yes,
 N - No.
 Default - No. ||
 || **FAVORITE**
-[`enum`](../data-types.md) | Added to Favorites. | ||
+[`enum`](../data-types.md) | Added to Favorites | ||
 || **EXCHANGE_MODIFIED**
 [`datetime`](../data-types.md) | EXCHANGE_MODIFIED | null ||
 || **EXCHANGE_ID**
@@ -171,17 +171,17 @@ Default - No. ||
 || **OUTLOOK_VERSION**
 [`integer`](../data-types.md) | OUTLOOK_VERSION | null ||
 || **VIEWED_DATE**
-[`datetime`](../data-types.md) | Last viewed date. | ||
+[`datetime`](../data-types.md) | Last viewed date | ||
 || **SORTING**
-[`double`](../data-types.md) | Sorting index. | ||
+[`double`](../data-types.md) | Sorting index | ||
 || **DURATION_PLAN**
-[`integer`](../data-types.md) | Time spent (planned). | ||
+[`integer`](../data-types.md) | Time spent (planned) | ||
 || **DURATION_FACT**
-[`integer`](../data-types.md) | Time spent (actual). | ||
+[`integer`](../data-types.md) | Time spent (actual) | ||
 || **CHECKLIST**
-[`array`](../data-types.md) | Checklist. | ||
+[`array`](../data-types.md) | Checklist | ||
 || **DURATION_TYPE**
-[`enum`](../data-types.md) | DURATION_TYPE. | \[0\] => secs
+[`enum`](../data-types.md) | DURATION_TYPE | \[0\] => secs
 \[1\] => mins
 \[2\] => hours
 \[3\] => days
@@ -190,28 +190,29 @@ Default - No. ||
 \[6\] => years.
 Default - 3 ||
 || **UF_CRM_TASK**
-[`crm`](../data-types.md) | Link to CRM entities
-L_XX - lead,
+[`crm`](../data-types.md) | Link to CRM entities. The value consists of 
+[Short symbolic code type](../crm/data-types.md#object_type) and ID of the entity | L_XX - lead,
 C_XX - contact,
-D_XX - deal | ||
+D_XX - deal, 
+TXX_XX - SPA ||
 || **UF_TASK_WEBDAV_FILES**
-[`disk_file`](../data-types.md) | File (Drive). | ||
+[`disk_file`](../data-types.md) | File (Drive) | ||
 || **UF_MAIL_MESSAGE**
-[`mail_message`](../data-types.md) | E-mail. | ||
+[`mail_message`](../data-types.md) | E-mail | ||
 || **IS_MUTED**
-[`enum`](../data-types.md) | Notifications. | Y - Yes,
+[`enum`](../data-types.md) | Notifications | Y - Yes,
 N - No.
 Default - No. ||
 || **IS_PINNED**
-[`enum`](../data-types.md) | Pinned. | Y - Yes,
+[`enum`](../data-types.md) | Pinned | Y - Yes,
 N - No.
 Default - No. ||
 || **IS_PINNED_IN_GROUP**
-[`enum`](../data-types.md) | Pinned in group. | Y - Yes,
+[`enum`](../data-types.md) | Pinned in group | Y - Yes,
 N - No.
 Default - No. ||
 || **SERVICE_COMMENTS_COUNT**
 [`integer`](../data-types.md) | SERVICE_COMMENTS_COUNT | ||
 |#
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note about parameters](../../_includes/required.md) %}

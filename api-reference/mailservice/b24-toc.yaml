@@ -1,7 +1,7 @@
 title: Mail Services
 href: index.md
 items:
-  - name: List of Methods
+  - name: Overview of Methods
     href: index.md
   - name: Create a New Mail Service
     href: mailservice-add.md
