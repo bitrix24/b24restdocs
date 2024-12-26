@@ -2,7 +2,7 @@
 
 The key difference between a mass-market solution and a custom local integration is that a mass-market application can be used across multiple Bitrix24 accounts simultaneously. Therefore, in such an application, it is no longer possible to use simple [incoming or outgoing webhooks](../local-integrations/local-webhooks.md), which we discussed earlier.
 
-For mass-market solutions, it is important to understand how the [OAuth 2.0](../api-reference/oauth/) authorization protocol works.
+For mass-market solutions, it is important to understand how the [OAuth 2.0](../api-reference/oauth/index.md) authorization protocol works.
 
 To host your solutions in the Bitrix24 Marketplace, you will need to become a [technology partner](technology-partnership.md) of Bitrix24 or already be a participant in the 1C-Bitrix partner program to gain access to the Developer's area.
 

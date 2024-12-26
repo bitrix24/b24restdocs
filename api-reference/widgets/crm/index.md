@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your item to the context menu of CRM objects such as [leads](../../crm/leads/), [contacts](../../crm/contacts/), [companies](../../crm/companies/), [deals](../../crm/deals/), [invoices](../../crm/outdated/invoice/), [estimates](../../crm/quote/), [CRM activities](../../crm/timeline/activities/) and [custom types](../../crm/universal/) of objects.
+You can add your item to the context menu of CRM objects such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [CRM activities](../../crm/timeline/activities/index.md) and [custom types](../../crm/universal/index.md) of objects.
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -10,14 +10,14 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 #|
 || **Widget Code** | **Location** ||
-|| `CRM_LEAD_LIST_MENU` | Context menu item for [lead](../../crm/leads/) ||
-|| `CRM_CONTACT_LIST_MENU` | Context menu item for [contact](../../crm/contacts/) ||
-|| `CRM_COMPANY_LIST_MENU` | Context menu item for [company](../../crm/companies/) ||
-|| `CRM_DEAL_LIST_MENU` | Context menu item for [deal](../../crm/deals/) ||
-|| `CRM_INVOICE_LIST_MENU` | Context menu item for [invoice](../../crm/outdated/invoice/) ||
-|| `CRM_QUOTE_LIST_MENU` | Context menu item for [estimate](../../crm/quote/) ||
-|| `CRM_ACTIVITY_LIST_MENU` | Context menu item for [CRM activity](../../crm/timeline/activities/) ||
-|| `CRM_DYNAMIC_XXX_LIST_MENU` | Context menu item for custom type of CRM objects. Instead of XXX, specify the numeric identifier of the specific [custom type of objects](../../crm/universal/). For example, `CRM_DYNAMIC_183_LIST_MENU` ||
+|| `CRM_LEAD_LIST_MENU` | Context menu item for [lead](../../crm/leads/index.md) ||
+|| `CRM_CONTACT_LIST_MENU` | Context menu item for [contact](../../crm/contacts/index.md) ||
+|| `CRM_COMPANY_LIST_MENU` | Context menu item for [company](../../crm/companies/index.md) ||
+|| `CRM_DEAL_LIST_MENU` | Context menu item for [deal](../../crm/deals/index.md) ||
+|| `CRM_INVOICE_LIST_MENU` | Context menu item for [invoice](../../crm/outdated/invoice/index.md) ||
+|| `CRM_QUOTE_LIST_MENU` | Context menu item for [estimate](../../crm/quote/index.md) ||
+|| `CRM_ACTIVITY_LIST_MENU` | Context menu item for [CRM activity](../../crm/timeline/activities/index.md) ||
+|| `CRM_DYNAMIC_XXX_LIST_MENU` | Context menu item for custom type of CRM objects. Instead of XXX, specify the numeric identifier of the specific [custom type of objects](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` ||
 |#
 
 ## What the Handler Receives

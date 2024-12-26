@@ -2,7 +2,7 @@
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
-You can add your dropdown menu item to the top button of the Automation rule designer for CRM objects such as [leads](../../crm/leads/) and [deals](../../crm/deals/).
+You can add your dropdown menu item to the top button of the Automation rule designer for CRM objects such as [leads](../../crm/leads/index.md) and [deals](../../crm/deals/index.md).
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -10,8 +10,8 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 #|
 || **Widget Code** | **Location** ||
-|| `CRM_LEAD_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item for the top button of the Automation rule designer in [lead](../../crm/leads/) ||
-|| `CRM_DEAL_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item for the top button of the Automation rule designer in [deal](../../crm/deals/) ||
+|| `CRM_LEAD_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item for the top button of the Automation rule designer in [lead](../../crm/leads/index.md) ||
+|| `CRM_DEAL_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item for the top button of the Automation rule designer in [deal](../../crm/deals/index.md) ||
 |#
 
 ## What the Handler Receives

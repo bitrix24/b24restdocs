@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your own dropdown menu item to the top button of CRM entities such as [leads](../../crm/leads/), [contacts](../../crm/contacts/), [companies](../../crm/companies/), [deals](../../crm/deals/), and [custom types](../../crm/universal/) of entities.
+You can add your own dropdown menu item to the top button of CRM entities such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), and [custom types](../../crm/universal/index.md) of entities.
 
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
@@ -11,11 +11,11 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 #|
 || **Widget Code** | **Location** ||
-|| `CRM_LEAD_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [lead](../../crm/leads/) detail card ||
-|| `CRM_DEAL_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [deal](../../crm/deals/) detail card ||
-|| `CRM_CONTACT_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [contact](../../crm/contacts/) detail card ||
-|| `CRM_COMPANY_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [company](../../crm/companies/) detail card ||
-|| `CRM_DYNAMIC_XXX_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the detail card of a custom type of CRM entities. Instead of XXX, you need to specify the numeric identifier of the specific [custom type of entities](../../crm/universal/). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
+|| `CRM_LEAD_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [lead](../../crm/leads/index.md) detail card ||
+|| `CRM_DEAL_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [deal](../../crm/deals/index.md) detail card ||
+|| `CRM_CONTACT_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [contact](../../crm/contacts/index.md) detail card ||
+|| `CRM_COMPANY_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [company](../../crm/companies/index.md) detail card ||
+|| `CRM_DYNAMIC_XXX_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the detail card of a custom type of CRM entities. Instead of XXX, you need to specify the numeric identifier of the specific [custom type of entities](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
 |#
 
 ## What the Handler Receives

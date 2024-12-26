@@ -4,7 +4,7 @@
 || **Name**
 `type` | **Description** ||
 || **access_token**
-[`string`](../api-reference/data-types.md) | Authorization token [OAuth 2.0](../api-reference/oauth/) ||
+[`string`](../api-reference/data-types.md) | Authorization token [OAuth 2.0](../api-reference/oauth/index.md) ||
 || **expires_in**
 [`integer`](../api-reference/data-types.md) | Time in seconds until the token expires ||
 || **scope***
@@ -17,8 +17,8 @@
 [`string`](../api-reference/data-types.md) | Status of the application that subscribed to this event:
 
 - `L` — [local](../local-integrations/local-apps.md) application
-- `F` — [free mass-market](../market/) application
-- `S` — [subscription-based mass-market](../market/monetization/) application
+- `F` — [free mass-market](../market/index.md) application
+- `S` — [subscription-based mass-market](../market/monetization/index.md) application
 
 ||
 || **client_endpoint***
@@ -26,7 +26,7 @@
 || **member_id***
 [`string`](../api-reference/data-types.md) | Bitrix24 identifier where the event occurred ||
 || **refresh_token**
-[`string`](../api-reference/data-types.md) | Token for extending authorization [OAuth 2.0](../api-reference/oauth/) ||
+[`string`](../api-reference/data-types.md) | Token for extending authorization [OAuth 2.0](../api-reference/oauth/index.md) ||
 || **application_token***
 [`string`](../api-reference/data-types.md) | Token for secure event handling ||
 |#

@@ -8,7 +8,7 @@ Some data may be missing — we will fill it in shortly.
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your own context menu item for CRM entities such as [leads](../../crm/leads/) and [deals](../../crm/deals/).
+You can add your own context menu item for CRM entities such as [leads](../../crm/leads/index.md) and [deals](../../crm/deals/index.md).
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -16,10 +16,10 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 #|
 || **Widget Code** | **Location** ||
-|| `CRM_LEAD_ACTIVITY_TIMELINE_MENU` | Context menu item for a [lead](../../crm/leads/) ||
-|| `CRM_DEAL_ACTIVITY_TIMELINE_MENU` | Context menu item for a [deal](../../crm/deals/) ||
-|| `CRM_QUOTE_ACTIVITY_TIMELINE_MENU` | Context menu item for an [estimate](../../crm/quote/) ||
-|| `CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU` | Context menu item for a [custom object type](../../crm/universal/) ||
+|| `CRM_LEAD_ACTIVITY_TIMELINE_MENU` | Context menu item for a [lead](../../crm/leads/index.md) ||
+|| `CRM_DEAL_ACTIVITY_TIMELINE_MENU` | Context menu item for a [deal](../../crm/deals/index.md) ||
+|| `CRM_QUOTE_ACTIVITY_TIMELINE_MENU` | Context menu item for an [estimate](../../crm/quote/index.md) ||
+|| `CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU` | Context menu item for a [custom object type](../../crm/universal/index.md) ||
 |#
 
 ## What the Handler Receives

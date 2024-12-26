@@ -26,7 +26,7 @@ An important distinction from a regular integration is the `Options[errorHandler
 
 ## Usage Scenario
 
-Working with telephony remains the same as it was. Call registration is performed using the method [telephony.externalcall.register](../../../telephony/). This same method "raises" the call card. Obviously, this should occur if the WebRTC client in the integration described above has started processing the call.
+Working with telephony remains the same as it was. Call registration is performed using the method [telephony.externalcall.register](../../../telephony/index.md). This same method "raises" the call card. Obviously, this should occur if the WebRTC client in the integration described above has started processing the call.
 
 Furthermore, the integration can interact with the open call card, managing buttons and button press events. For working with the call card through the **PAGE_BACKGROUND_WORKER** placement, 9 methods have been added to retrieve and modify card data and 17 events for handling user activity.
 

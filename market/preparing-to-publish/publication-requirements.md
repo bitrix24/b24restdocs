@@ -33,7 +33,7 @@
 ## 2. Adding a Solution
 
 - A solution can be added in the [Developer's area](https://vendors.bitrix24.com/).
-- Familiarize yourself with the technical [documentation on REST API](../../api-reference/) and the [video course](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&INDEX=Y).
+- Familiarize yourself with the technical [documentation on REST API](../../api-reference/index.md) and the [video course](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&INDEX=Y).
 - When developing and publishing your solution, adhere to the [“Requirements for the Design and Content of Solutions in Bitrix24 Market”](./publication-requirements.md), which you agree to when submitting for moderation.
 
 ## 3. Independent Testing of the Solution

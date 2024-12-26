@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your item to the timeline menu of CRM objects such as [leads](../../crm/leads/), [contacts](../../crm/contacts/), [companies](../../crm/companies/), [deals](../../crm/deals/) and [custom types](../../crm/universal/) of objects.
+You can add your item to the timeline menu of CRM objects such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md) and [custom types](../../crm/universal/index.md) of objects.
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -10,12 +10,12 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 #|
 || **Placement Code** | **Location** ||
-|| `CRM_LEAD_DETAIL_ACTIVITY` | Timeline menu item for [lead](../../crm/leads/) ||
-|| `CRM_CONTACT_DETAIL_ACTIVITY` | Timeline menu item for [contact](../../crm/contacts/) ||
-|| `CRM_COMPANY_DETAIL_ACTIVITY` | Timeline menu item for [company](../../crm/companies/) ||
-|| `CRM_DEAL_DETAIL_ACTIVITY` | Timeline menu item for [deal](../../crm/deals/) ||
-|| `CRM_QUOTE_DETAIL_ACTIVITY` | Timeline menu item for [estimate](../../crm/quote/) ||
-|| `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY` | Timeline menu item for custom type CRM objects. Instead of XXX, you need to specify the numeric identifier of the specific [custom type of objects](../../crm/universal/). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
+|| `CRM_LEAD_DETAIL_ACTIVITY` | Timeline menu item for [lead](../../crm/leads/index.md) ||
+|| `CRM_CONTACT_DETAIL_ACTIVITY` | Timeline menu item for [contact](../../crm/contacts/index.md) ||
+|| `CRM_COMPANY_DETAIL_ACTIVITY` | Timeline menu item for [company](../../crm/companies/index.md) ||
+|| `CRM_DEAL_DETAIL_ACTIVITY` | Timeline menu item for [deal](../../crm/deals/index.md) ||
+|| `CRM_QUOTE_DETAIL_ACTIVITY` | Timeline menu item for [estimate](../../crm/quote/index.md) ||
+|| `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY` | Timeline menu item for custom type CRM objects. Instead of XXX, you need to specify the numeric identifier of the specific [custom type of objects](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
 |#
 
 ## What the Handler Receives

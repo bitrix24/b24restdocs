@@ -2,7 +2,7 @@
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
-You can add your item to the dropdown menu of the document generator for CRM objects such as [leads](../../crm/leads/), [contacts](../../crm/contacts/), [companies](../../crm/companies/), [deals](../../crm/deals/), [invoices](../../crm/outdated/invoice/) and [estimates](../../crm/quote/).
+You can add your item to the dropdown menu of the document generator for CRM objects such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [invoices](../../crm/outdated/invoice/index.md) and [estimates](../../crm/quote/index.md).
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -10,12 +10,12 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 #|
 || **Widget Code** | **Location** ||
-|| `CRM_LEAD_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [leads](../../crm/leads/) ||
-|| `CRM_CONTACT_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [contacts](../../crm/contacts/) ||
-|| `CRM_COMPANY_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [companies](../../crm/companies/) ||
-|| `CRM_DEAL_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [deals](../../crm/deals/) ||
-|| `CRM_INVOICE_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [invoices](../../crm/outdated/invoice/) ||
-|| `CRM_QUOTE_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [estimates](../../crm/quote/) ||
+|| `CRM_LEAD_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [leads](../../crm/leads/index.md) ||
+|| `CRM_CONTACT_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [contacts](../../crm/contacts/index.md) ||
+|| `CRM_COMPANY_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [companies](../../crm/companies/index.md) ||
+|| `CRM_DEAL_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [deals](../../crm/deals/index.md) ||
+|| `CRM_INVOICE_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [invoices](../../crm/outdated/invoice/index.md) ||
+|| `CRM_QUOTE_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [estimates](../../crm/quote/index.md) ||
 |#
 
 ## What the Handler Receives

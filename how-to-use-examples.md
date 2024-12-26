@@ -6,7 +6,7 @@ The documentation includes code examples for various programming languages in th
 
 When using the Bitrix24 REST API via curl, no libraries or SDKs are required. You can form parameters for calling any REST method. You just need to be careful about the correctness of the parameters, especially when it comes to parameters that accept arrays or structures as values.
 
-Example of making a request to the Bitrix24 REST API via curl using a temporary access token [OAuth 2.0](./api-reference/oauth/):
+Example of making a request to the Bitrix24 REST API via curl using a temporary access token [OAuth 2.0](./api-reference/oauth/index.md):
 
 ```bash
 curl -X POST \
@@ -45,7 +45,7 @@ To use the examples, you need to include the corresponding library or SDK in you
 
 ### JavaScript Using bx24.js
 
-Examples using the standard [bx24.js library](./api-reference/bx24-js-sdk/index.md) are intended for use within [local](./local-integrations/local-apps.md) or [mass-market applications](./market/). Unfortunately, you cannot simply use it by including the library on an external site or local HTML page.
+Examples using the standard [bx24.js library](./api-reference/bx24-js-sdk/index.md) are intended for use within [local](./local-integrations/local-apps.md) or [mass-market applications](./market/index.md). Unfortunately, you cannot simply use it by including the library on an external site or local HTML page.
 
 However, once you understand the concept of a local or even mass-market application, using JavaScript examples from the documentation will become very straightforward. To use the JavaScript examples, you only need to include the following script:
 
@@ -79,7 +79,7 @@ BX24.callMethod(
 </script>
 ```
 
-Additional information about BX24.js can be found in the section [{#T}](./api-reference/bx24-js-sdk/index.md). Note that this library can only be used within applications that open in frames in the Bitrix24 user interface. Read more about this in the section on [widgets](./api-reference/widgets/).
+Additional information about BX24.js can be found in the section [{#T}](./api-reference/bx24-js-sdk/index.md). Note that this library can only be used within applications that open in frames in the Bitrix24 user interface. Read more about this in the section on [widgets](./api-reference/widgets/index.md).
 
 ### JavaScript Using B24JsSDK
 

@@ -25,7 +25,7 @@
 [`string`](../../data-types.md) | Type of the application that registered the handler for this widget. Accepts values:
 
 - `L` - [local](../../../local-integrations/local-apps.md) application
-- `F` - [free mass-market](../../../market/) application
+- `F` - [free mass-market](../../../market/index.md) application
 ||
 || **PLACEMENT***
 [`string`](../../data-types.md) | Code for the widget placement. You can use the same handler URL for all your widgets. The value that Bitrix24 will report in the `PLACEMENT` parameter will help determine from which specific widget placement your handler was invoked in each case. ||

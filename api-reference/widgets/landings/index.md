@@ -79,7 +79,7 @@ Data is transmitted as a POST request {.b24-info}
 [`string`](../../data-types.md) | Type of application that registered the handler for this widget. Accepts values:
 
 - `L` - [local](../../../local-integrations/local-apps.md) application
-- `F` - [free mass-market](../../../market/) application
+- `F` - [free mass-market](../../../market/index.md) application
 - `S` - [subscription mass-market](../../../market/monetization/index.md) application
 ||
 || **PLACEMENT***

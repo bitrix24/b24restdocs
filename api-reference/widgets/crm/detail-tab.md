@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your own tabs to the detail form of CRM entities such as [leads](../../crm/leads/), [contacts](../../crm/contacts/), [companies](../../crm/companies/), [deals](../../crm/deals/) and [custom types](../../crm/universal/) of entities.
+You can add your own tabs to the detail form of CRM entities such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md) and [custom types](../../crm/universal/index.md) of entities.
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -10,12 +10,12 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 #|
 || **Widget code** | **Location** ||
-|| `CRM_LEAD_DETAIL_TAB` | Tab in the [lead](../../crm/leads/) detail form ||
-|| `CRM_DEAL_DETAIL_TAB` | Tab in the [deal](../../crm/deals/) detail form ||
-|| `CRM_CONTACT_DETAIL_TAB` | Tab in the [contact](../../crm/contacts/) detail form ||
-|| `CRM_COMPANY_DETAIL_TAB` | Tab in the [company](../../crm/companies/) detail form ||
-|| `CRM_QUOTE_DETAIL_TAB` | Tab in the [estimate](../../crm/quote/) detail form ||
-|| `CRM_DYNAMIC_XXX_DETAIL_TAB` | Tab in the detail form of a custom type entity. Replace XXX with the numeric identifier of the specific [custom type entity](../../crm/universal/). For example, `CRM_DYNAMIC_183_DETAIL_TAB` ||
+|| `CRM_LEAD_DETAIL_TAB` | Tab in the [lead](../../crm/leads/index.md) detail form ||
+|| `CRM_DEAL_DETAIL_TAB` | Tab in the [deal](../../crm/deals/index.md) detail form ||
+|| `CRM_CONTACT_DETAIL_TAB` | Tab in the [contact](../../crm/contacts/index.md) detail form ||
+|| `CRM_COMPANY_DETAIL_TAB` | Tab in the [company](../../crm/companies/index.md) detail form ||
+|| `CRM_QUOTE_DETAIL_TAB` | Tab in the [estimate](../../crm/quote/index.md) detail form ||
+|| `CRM_DYNAMIC_XXX_DETAIL_TAB` | Tab in the detail form of a custom type entity. Replace XXX with the numeric identifier of the specific [custom type entity](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_TAB` ||
 |#
 
 ## What the handler receives
