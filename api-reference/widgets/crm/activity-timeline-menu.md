@@ -1,14 +1,14 @@
-# Context Menu Item for CRM Activity in CRM Entity Card_XXX_ACTIVITY_TIMELINE_MENU
+# Context Menu Item for CRM Activity in CRM_XXX_ACTIVITY_TIMELINE_MENU
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your own context menu item for CRM entities such as [leads](../../crm/leads/index.md) and [deals](../../crm/deals/index.md).
+You can add your own context menu item for activities in CRM entities such as [leads](../../crm/leads/index.md) and [deals](../../crm/deals/index.md).
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -16,15 +16,15 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 #|
 || **Widget Code** | **Location** ||
-|| `CRM_LEAD_ACTIVITY_TIMELINE_MENU` | Context menu item for a [lead](../../crm/leads/index.md) ||
-|| `CRM_DEAL_ACTIVITY_TIMELINE_MENU` | Context menu item for a [deal](../../crm/deals/index.md) ||
-|| `CRM_QUOTE_ACTIVITY_TIMELINE_MENU` | Context menu item for an [estimate](../../crm/quote/index.md) ||
-|| `CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU` | Context menu item for a [custom object type](../../crm/universal/index.md) ||
+|| `CRM_LEAD_ACTIVITY_TIMELINE_MENU` | Context menu item for an activity in a [lead](../../crm/leads/index.md) ||
+|| `CRM_DEAL_ACTIVITY_TIMELINE_MENU` | Context menu item for an activity in a [deal](../../crm/deals/index.md) ||
+|| `CRM_QUOTE_ACTIVITY_TIMELINE_MENU` | Context menu item for an activity in an [estimate](../../crm/quote/index.md) ||
+|| `CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU` | Context menu item for an activity in a [custom object type](../../crm/universal/index.md) ||
 |#
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 {% list tabs %}
 
@@ -87,7 +87,7 @@ Data is sent as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_QUOTE_ACTIVITY_TIMELINE_MENU
         [PLACEMENT_OPTIONS] => {"ENTITY_ID":"5","ASSOCIATED_ENTITY_ID":"1529","ASSOCIATED_ENTITY_TYPE_ID":"6"}
-    )
+    }
     
     ```
 
@@ -126,12 +126,12 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 #|
 || **Parameter** | **Description** ||
-|| **ENTITY_ID***
+|| **ENTITY_ID***  
 [`string`](../../data-types.md) | Identifier of the CRM entity for which the widget was opened.
 
 Can be used to retrieve additional information using the corresponding methods:
 
-- any entity type [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
+- any type of entity [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
 - deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
 - contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
@@ -141,31 +141,31 @@ Can be used to retrieve additional information using the corresponding methods:
 In the case of embedding the widget in a custom object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above, it is `183`.
 
 ||
-|| **ASSOCIATED_ENTITY_ID***
+|| **ASSOCIATED_ENTITY_ID***  
 [`string`](../../data-types.md) | Identifier of the CRM activity for which the widget was opened.
 
 Can be used to retrieve additional information using the [crm.activity.get](../../crm/timeline/activities/crm-activity-get.md) method.
 
 ||
-|| **ASSOCIATED_ENTITY_TYPE_ID***
-[`string`](../../data-types.md) | Identifier of the CRM activity type for which the widget was opened.
+|| **ASSOCIATED_ENTITY_TYPE_ID***  
+[`string`](../../data-types.md) | Identifier of the type of CRM activity for which the widget was opened.
 
 ||
-|| **TYPE_ID***
-[`string`](../../data-types.md) | _to be added later_
+|| **TYPE_ID***  
+[`string`](../../data-types.md) | _to be completed later_
 
 ||
-|| **TYPE_CATEGORY_ID***
-[`string`](../../data-types.md) | _to be added later_
+|| **TYPE_CATEGORY_ID***  
+[`string`](../../data-types.md) | _to be completed later_
 
 ||
-|| **TIMELINE_ITEM_ID***
-[`string`](../../data-types.md) | _to be added later_
+|| **TIMELINE_ITEM_ID***  
+[`string`](../../data-types.md) | _to be completed later_
 
 ||
 |#
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

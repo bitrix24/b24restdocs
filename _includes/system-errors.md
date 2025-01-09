@@ -14,7 +14,7 @@ Server returned an unexpected response | An internal server error has occurred. 
 || `503` | `QUERY_LIMIT_EXCEEDED`
 Too many requests | The [request intensity limit](../limits.md) has been exceeded. ||
 || `200` | `ERROR_BATCH_METHOD_NOT_ALLOWED`
-Method is not allowed for batch usage | The current method is not permitted for calls using [batch](../api-reference/how-to-call-rest-api/batch.md). ||
+Method is not allowed for batch usage | The current method is not allowed to be called using [batch](../api-reference/how-to-call-rest-api/batch.md). ||
 || `200` | `ERROR_BATCH_LENGTH_EXCEEDED`
 Max batch length exceeded | The maximum length of parameters passed to the [batch](../api-reference/how-to-call-rest-api/batch.md) method has been exceeded. ||
 || `200` | `NO_AUTH_FOUND`

@@ -25,7 +25,7 @@ This method adds a product item to a CRM object.
 || **ownerId**
 [`integer`](../../../data-types.md) | Identifier of the CRM object ||
 || **ownerType**
-[`string`](../../../data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#tip-obuekta-crm) ||
+[`string`](../../../data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#object_type). Pass the [Short symbolic code of the type](../../data-types.md#object_type) ||
 || **productId**
 [`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog ||
 || **productName**
@@ -149,43 +149,43 @@ If not provided and `productId` is given, the unit of measure from the product c
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-   "result":{
-      "productRow":{
-         "id":17647,
-         "ownerId":13142,
-         "ownerType":"D",
-         "productId":9621,
-         "price":80000,
-         "quantity":2,
-         "discountTypeId":2,
-         "discountRate":20,
-         "taxRate":20,
-         "taxIncluded":"Y",
-         "measureCode":796,
-         "sort":10,
-         "type":4,
-         "productName":"iphone 14",
-         "priceAccount":80000,
-         "priceExclusive":66666.67,
-         "priceNetto":83333.34,
-         "priceBrutto":100000.01,
-         "discountSum":16666.67,
-         "customized":"Y",
-         "measureName":"pcs",
-         "xmlId":""
+   "result": {
+      "productRow": {
+         "id": 17647,
+         "ownerId": 13142,
+         "ownerType": "D",
+         "productId": 9621,
+         "price": 80000,
+         "quantity": 2,
+         "discountTypeId": 2,
+         "discountRate": 20,
+         "taxRate": 20,
+         "taxIncluded": "Y",
+         "measureCode": 796,
+         "sort": 10,
+         "type": 4,
+         "productName": "iphone 14",
+         "priceAccount": 80000,
+         "priceExclusive": 66666.67,
+         "priceNetto": 83333.34,
+         "priceBrutto": 100000.01,
+         "discountSum": 16666.67,
+         "customized": "Y",
+         "measureName": "pcs",
+         "xmlId": ""
       }
    },
-   "time":{
-      "start":1716887721.77879,
-      "finish":1716887723.259695,
-      "duration":1.4809050559997559,
-      "processing":1.2986550331115723,
-      "date_start":"2024-05-28T12:15:21+03:00",
-      "date_finish":"2024-05-28T12:15:23+03:00"
+   "time": {
+      "start": 1716887721.77879,
+      "finish": 1716887723.259695,
+      "duration": 1.4809050559997559,
+      "processing": 1.2986550331115723,
+      "date_start": "2024-05-28T12:15:21+02:00",
+      "date_finish": "2024-05-28T12:15:23+02:00"
    }
 }
 ```
@@ -205,12 +205,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-   "error":"OWNER_NOT_FOUND",
-   "error_description":"Owner was not found"
+   "error": "OWNER_NOT_FOUND",
+   "error_description": "Owner was not found"
 }
 ```
 
@@ -220,7 +220,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of objects is not supported ||
+|| `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of object is not supported ||
 || `ACCESS_DENIED` | Access denied ||
 || `OWNER_NOT_FOUND` | The provided CRM object was not found ||
 || `100` | Required parameters were not provided ||

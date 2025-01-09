@@ -1,8 +1,10 @@
 title: Document Templates
 href: index.md
 items: 
-  - name: Upload Template
+  - name: Overview of Methods
     href: index.md
+  - name: Upload Template
+    href: document-generator-template-add.md
   - name: Edit Template
     href: document-generator-template-update.md
   - name: Get Template by ID

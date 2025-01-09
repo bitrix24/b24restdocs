@@ -2,6 +2,14 @@
 
 ## 2024
 
+### January 9, 2025
+
+- Updated the main page of the section [Deal Card Management](./api-reference/crm/deals/custom-form/index.md). Added introductory information and an overview of methods and relationships
+- Updated the main page of the section [Lead Custom Fields](./api-reference/crm/leads/userfield/index.md). Added introductory information and an overview of methods and errors
+- Updated the main page of the section [Deal Custom Fields](./api-reference/crm/deals/user-defined-fields/index.md). Added introductory information and an overview of methods and errors
+- Updated documentation for calendar methods [calendar.section.*](./api-reference/calendar/index.md)
+- Updated the main page of the section [Custom Contact Fields](./api-reference/crm/contacts/userfield/index.md). Added introductory information and an overview of methods and errors
+
 ### December 25, 2024
 
 - Updated documentation for calendar settings methods [calendar.settings.get](./api-reference/calendar/calendar-settings-get.md), [calendar.user.settings.get](./api-reference/calendar/calendar-user-settings-get.md), and [calendar.user.settings.set](./api-reference/calendar/calendar-user-settings-set.md)

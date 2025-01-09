@@ -1,14 +1,14 @@
-# Add a New Calendar calendar.section.add
+# Add Calendar calendar.section.add
 
 > Scope: [`calendar`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `calendar.section.add` adds a new calendar. Here and further, section will be referred to as "calendar".
+This method adds a new calendar.
 
 {% note info %}
 
-Currently, the method adds a new calendar only for the user executing the method calendar.section.add. This limitation will be lifted in the future.
+The system will add a new calendar only for the user who executes the method.
 
 {% endnote %}
 
@@ -17,13 +17,16 @@ Currently, the method adds a new calendar only for the user executing the method
 {% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **type***
-[`string`](../data-types.md) | Calendar type: 
-- user; 
-- group. ||
+[`string`](../data-types.md) | Calendar type. Possible values: 
+- `user` — user calendar 
+- `group` — group calendar ||
 || **ownerId***
-[`integer`](../data-types.md) | Identifier of the calendar owner. If not provided, it will be automatically set to the current user for type == 'user' ||
+[`integer`](../data-types.md) | Identifier of the calendar owner.
+
+For `type` with the value `user`, the identifier of the current user will be set if no value is passed in `ownerId` ||
 || **name***
 [`string`](../data-types.md) | Calendar name ||
 || **description**
@@ -33,13 +36,25 @@ Currently, the method adds a new calendar only for the user executing the method
 || **text_color**
 [`string`](../data-types.md) | Text color in the calendar ||
 || **export**
-[`object`](../data-types.md) | List of calendar export parameters: 
-- ALLOW [`boolean`](../data-types.md) - allow calendar export; 
-- SET [`string`](../data-types.md) - sets the period for export ('all', '3_9', '6_12')
-  - all - for the entire period;
-  - 3_9 - 3 months before and 9 after;
-  - 6_12 - 6 months before and 12 after.
+[`object`](../data-types.md) | Object [export parameters for the calendar](#export)
 ||
+|#
+
+### Export Parameter {#export}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ALLOW**
+[`boolean`](../data-types.md) | Allow calendar export. Possible values:
+- `true` — allow
+- `false` — disallow ||
+|| **SET**
+[`string`](../data-types.md) | Period for export. Possible values:
+- `all` — for the entire period
+- `3_9` — 3 months before and 9 after
+- `6_12` — 6 months before and 12 after
+ ||
 |#
 
 ## Code Examples
@@ -47,6 +62,26 @@ Currently, the method adds a new calendar only for the user executing the method
 {% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"type":"user","ownerId":2,"name":"New Section","description":"Description for section","color":"#9cbeee","text_color":"#283000","export":{"ALLOW":false,"SET":"3_9"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.section.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"type":"user","ownerId":2,"name":"New Section","description":"Description for section","color":"#9cbeee","text_color":"#283000","export":{"ALLOW":false,"SET":"3_9"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/calendar.section.add
+    ```
 
 - JS
 
@@ -60,14 +95,41 @@ Currently, the method adds a new calendar only for the user executing the method
             description: 'Description for section',
             color: '#9cbeee',
             text_color: '#283000',
-            export: {ALLOW: false, SET: '3_9'}
+            export: {
+                ALLOW: false,
+                SET: '3_9'
+            }
         }
     );
     ```
 
-{% endlist %}
+- PHP
 
-{% include [Note on examples](../../_includes/examples.md) %}
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'calendar.section.add',
+        [
+            'type' => 'user',
+            'ownerId' => 2,
+            'name' => 'New Section',
+            'description' => 'Description for section',
+            'color' => '#9cbeee',
+            'text_color' => '#283000',
+            'export' => [
+                'ALLOW' => false,
+                'SET' => '3_9'
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
 
 ## Response Handling
 
@@ -75,15 +137,15 @@ HTTP status: **200**
 
 ```json
 {
-  "result": 190,
-  "time": {
-    "start": 1733812564.64201,
-    "finish": 1733812565.71673,
-    "duration": 1.0747201442718506,
-    "processing": 0.05963897705078125,
-    "date_start": "2024-12-08T06:36:04+00:00",
-    "date_finish": "2024-12-08T06:36:05+00:00"
-  }
+    "result": 190,
+    "time": {
+        "start": 1733812564.64201,
+        "finish": 1733812565.71673,
+        "duration": 1.0747201442718506,
+        "processing": 0.05963897705078125,
+        "date_start": "2024-12-08T06:36:04+00:00",
+        "date_finish": "2024-12-08T06:36:05+00:00"
+    }
 }
 ```
 
@@ -102,8 +164,8 @@ HTTP status: **400**
 
 ```json
 {
-  "error": "",
-  "error_description": "The required parameter \"type\" for the method \"calendar.section.add\" is not set"
+    "error": "",
+    "error_description": "The required parameter "type" for the method "calendar.section.add" is not set."
 }
 ```
 
@@ -113,8 +175,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "type" for the method "calendar.section.add" is not set | The required parameter `type` is not provided ||
-|| Empty string | The required parameter "ownerId" for the method "calendar.section.add" is not set | The required parameter `ownerId` is not provided and the `type` parameter is not equal to 'user' ||
+|| Empty string | The required parameter "type" for the method "calendar.section.add" is not set. | The required parameter `type` is not provided ||
+|| Empty string | The required parameter "ownerId" for the method "calendar.section.add" is not set. | The required parameter `ownerId` is not provided and the `type` parameter is not equal to `user` ||
 || Empty string | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
 || Empty string | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
 || Empty string | Access denied | No permission to create a calendar with the provided `type` ||
@@ -122,3 +184,10 @@ HTTP status: **400**
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./calendar-section-update.md)
+- [{#T}](./calendar-section-get.md)
+- [{#T}](./calendar-section-delete.md)

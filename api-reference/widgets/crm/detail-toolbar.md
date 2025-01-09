@@ -1,9 +1,8 @@
-# Dropdown Menu Item of the Top Button in the CRM_XXX_DETAIL_TOOLBAR, CRM_DYNAMIC_XXX_DETAIL_TOOLBAR
+# Dropdown Menu Item for the Top Button of the CRM_XXX_DETAIL_TOOLBAR, CRM_DYNAMIC_XXX_DETAIL_TOOLBAR
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
 You can add your own dropdown menu item to the top button of CRM entities such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), and [custom types](../../crm/universal/index.md) of entities.
-
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -11,11 +10,11 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 #|
 || **Widget Code** | **Location** ||
-|| `CRM_LEAD_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [lead](../../crm/leads/index.md) detail card ||
-|| `CRM_DEAL_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [deal](../../crm/deals/index.md) detail card ||
-|| `CRM_CONTACT_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [contact](../../crm/contacts/index.md) detail card ||
-|| `CRM_COMPANY_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the [company](../../crm/companies/index.md) detail card ||
-|| `CRM_DYNAMIC_XXX_DETAIL_TOOLBAR` | Dropdown menu item of the top button in the detail card of a custom type of CRM entities. Instead of XXX, you need to specify the numeric identifier of the specific [custom type of entities](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
+|| `CRM_LEAD_DETAIL_TOOLBAR` | Dropdown menu item for the top button of the [lead](../../crm/leads/index.md) card ||
+|| `CRM_DEAL_DETAIL_TOOLBAR` | Dropdown menu item for the top button of the [deal](../../crm/deals/index.md) card ||
+|| `CRM_CONTACT_DETAIL_TOOLBAR` | Dropdown menu item for the top button of the [contact](../../crm/contacts/index.md) card ||
+|| `CRM_COMPANY_DETAIL_TOOLBAR` | Dropdown menu item for the top button of the [company](../../crm/companies/index.md) card ||
+|| `CRM_DYNAMIC_XXX_DETAIL_TOOLBAR` | Dropdown menu item for the top button of the custom type CRM entity card. Instead of XXX, you need to specify the numeric identifier of the specific [custom type entity](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
 |#
 
 ## What the Handler Receives
@@ -164,19 +163,19 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 #|
 || **Parameter** | **Description** ||
-|| **ID*** or **ENTITY_ID*** 
+|| **ID*** or **ENTITY_ID***
 [`string`](../../data-types.md) | Identifier of the CRM entity for which the widget was opened.
 
-It can be used to retrieve additional information using the corresponding methods:
+It can be used to obtain additional information using the corresponding methods:
 
-- any type of entity [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
+- any entity type [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
 - deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
 - contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
 - company [crm.company.get](../../crm/companies/crm-company-get.md)
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
 
-In the case of embedding the widget in a custom type entity, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above, it is `183`.
+In the case of embedding the widget in a custom type entity, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above, this is `183`.
 
 ||
 |#

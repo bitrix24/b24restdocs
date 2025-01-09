@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your item to the context menu of CRM objects such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [CRM activities](../../crm/timeline/activities/index.md) and [custom types](../../crm/universal/index.md) of objects.
+You can add your item to the context menu of CRM objects such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [CRM activities](../../crm/timeline/activities/index.md), and [custom types](../../crm/universal/index.md) of objects.
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -127,7 +127,7 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_QUOTE_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"5"}
-    )
+    }
     
     ```
 
@@ -148,7 +148,7 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_INVOICE_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"12"}
-    )
+    }
     
     ```
 
@@ -169,7 +169,7 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_ACTIVITY_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"1465"}
-    )
+    }
     
     ```
 
@@ -207,12 +207,12 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 #|
 || **Parameter** | **Description** ||
-|| **ID***
+|| **ID*** 
 [`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
 
 It can be used to retrieve additional information using the corresponding methods:
 
-- any type of object [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
+- any object type [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
 - deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
 - contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)

@@ -2,9 +2,9 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires permission to modify the CRM object whose product row is being set.
+> Who can execute the method: requires permission to modify the CRM object whose product row is being set
 
-This method saves the product row of a CRM object. Please note that this method will overwrite all existing product rows associated with the object. Thus, it replaces the existing product rows with those that were sent.
+This method saves the product row of a CRM object. Please note that this method will overwrite all existing product rows associated with the object. Thus, the method replaces the existing product rows with those that were sent.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ This method saves the product row of a CRM object. Please note that this method 
 || **ownerId***
 [`integer`](../../../data-types.md) | Identifier of the CRM object ||
 || **ownerType***
-[`string`](../../../data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#tip-obuekta-crm) ||
+[`string`](../../../data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#object_type). Pass the [Short symbolic code of the type](../../data-types.md#object_type) ||
 || **productRows***
 [`object[]`](../../../data-types.md) | Array of objects containing information about the product rows to be saved in the object ||
 |#
@@ -30,7 +30,7 @@ This method saves the product row of a CRM object. Please note that this method 
 [`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog ||
 || **productName**
 [`string`](../../../data-types.md) | Name of the product in the product row.
-If not provided and **productId** is given, the product name from the product catalog will be used. ||
+If not provided and **productId** is given, the product name from the product catalog will be used ||
 || **price**
 [`double`](../../../data-types.md) | Price per unit of the product row, including discounts and taxes ||
 || **quantity**
@@ -56,7 +56,7 @@ Possible values:
 Default is N ||
 || **measureCode**
 [`catalog_measure.code`](../../../catalog/data-types.md#catalog_measure) | Unit of measure code.
-If not provided and **productId** is given, the unit of measure from the product catalog will be used. ||
+If not provided and **productId** is given, the unit of measure from the product catalog will be used ||
 || **sort**
 [`integer`](../../../data-types.md) | Sorting ||
 |#
@@ -159,65 +159,65 @@ HTTP status: **200**
 
 ```json
 {
-   "result":{
-      "productRows":[
+   "result": {
+      "productRows": [
          {
-            "id":17654,
-            "ownerId":13143,
-            "ownerType":"D",
-            "productId":9621,
-            "productName":"iphone 14",
-            "price":99999.99,
-            "priceAccount":99999.99,
-            "priceExclusive":99999.99,
-            "priceNetto":99999.99,
-            "priceBrutto":99999.99,
-            "quantity":1,
-            "discountTypeId":2,
-            "discountRate":0,
-            "discountSum":0,
-            "taxRate":null,
-            "taxIncluded":"N",
-            "customized":"Y",
-            "measureCode":796,
-            "measureName":"pcs",
-            "sort":10,
-            "xmlId":"",
-            "type":4
+            "id": 17654,
+            "ownerId": 13143,
+            "ownerType": "D",
+            "productId": 9621,
+            "productName": "iphone 14",
+            "price": 99999.99,
+            "priceAccount": 99999.99,
+            "priceExclusive": 99999.99,
+            "priceNetto": 99999.99,
+            "priceBrutto": 99999.99,
+            "quantity": 1,
+            "discountTypeId": 2,
+            "discountRate": 0,
+            "discountSum": 0,
+            "taxRate": null,
+            "taxIncluded": "N",
+            "customized": "Y",
+            "measureCode": 796,
+            "measureName": "pcs",
+            "sort": 10,
+            "xmlId": "",
+            "type": 4
          },
          {
-            "id":17655,
-            "ownerId":13143,
-            "ownerType":"D",
-            "productId":9623,
-            "productName":"iphone 10xs",
-            "price":15900,
-            "priceAccount":15900,
-            "priceExclusive":15900,
-            "priceNetto":15900,
-            "priceBrutto":15900,
-            "quantity":2,
-            "discountTypeId":2,
-            "discountRate":0,
-            "discountSum":0,
-            "taxRate":null,
-            "taxIncluded":"N",
-            "customized":"Y",
-            "measureCode":796,
-            "measureName":"pcs",
-            "sort":10,
-            "xmlId":"",
-            "type":4
+            "id": 17655,
+            "ownerId": 13143,
+            "ownerType": "D",
+            "productId": 9623,
+            "productName": "iphone 10xs",
+            "price": 15900,
+            "priceAccount": 15900,
+            "priceExclusive": 15900,
+            "priceNetto": 15900,
+            "priceBrutto": 15900,
+            "quantity": 2,
+            "discountTypeId": 2,
+            "discountRate": 0,
+            "discountSum": 0,
+            "taxRate": null,
+            "taxIncluded": "N",
+            "customized": "Y",
+            "measureCode": 796,
+            "measureName": "pcs",
+            "sort": 10,
+            "xmlId": "",
+            "type": 4
          }
       ]
    },
-   "time":{
-      "start":1716895718.887229,
-      "finish":1716895719.316293,
-      "duration":0.4290640354156494,
-      "processing":0.20114707946777344,
-      "date_start":"2024-05-28T14:28:38+03:00",
-      "date_finish":"2024-05-28T14:28:39+03:00"
+   "time": {
+      "start": 1716895718.887229,
+      "finish": 1716895719.316293,
+      "duration": 0.4290640354156494,
+      "processing": 0.20114707946777344,
+      "date_start": "2024-05-28T14:28:38+02:00",
+      "date_finish": "2024-05-28T14:28:39+02:00"
    }
 }
 ```
@@ -241,8 +241,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":"OWNER_NOT_FOUND",
-   "error_description":"Owner was not found"
+   "error": "OWNER_NOT_FOUND",
+   "error_description": "Owner was not found"
 }
 ```
 

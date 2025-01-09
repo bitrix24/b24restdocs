@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -11,9 +11,9 @@ Some data may be missing here — we will fill it in shortly.
 {% note alert "TO-DO _not deployed to prod_" %}
 
 - What the handler receives (copied from Sergey's example, detail-tab.md)
-- Typical use-cases and scenarios — need to add if there’s anything
+- Typical use-cases and scenarios — need to add if there is anything
 - Continue exploring (copied from Sergey's example, detail-tab.md)
-- No screenshot available.
+- no screenshot
 
 {% endnote %}
 
@@ -23,11 +23,11 @@ Some data may be missing here — we will fill it in shortly.
 
 You can add your item to the sidebar. You can create applications that add additional scenarios for the chat. For example, a separate disk for chat or a knowledge base.
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 ## Where the widget is embedded
 
-#|
+#| 
 || **Widget Code** | **Location** ||
 || `IM_SIDEBAR` | Item in the sidebar  ||
 |#
@@ -52,7 +52,40 @@ Data is transmitted as a POST request {.b24-info}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+#| 
+|| **Parameter**
+`type` | **Description** ||
+|| **DOMAIN*** 
+[`string`](../../data-types.md) | The Bitrix24 address where the widget handler was called ||
+|| **PROTOCOL*** 
+[`string`](../../data-types.md) | Secure or non-secure HTTP protocol:
+
+- `0` - HTTP
+- `1` - HTTPS
+ ||
+|| **LANG*** 
+[`string`](../../data-types.md) | The language of the Bitrix24 user interface that called the widget. You can localize the interface language in your widget based on this value ||
+|| **APP_SID** 
+[`string`](../../data-types.md) | String identifier of the application that registered the widget handler ||
+|| **AUTH_ID** 
+[`string`](../../data-types.md) | Authorization token [OAuth 2](../../oauth/simple-way.md) issued for the user who called the widget. Can be used for REST API calls on behalf of this user ||
+|| **AUTH_EXPIRES** 
+[`integer`](../../data-types.md) | Time in seconds after which the authorization token will become invalid ||
+|| **REFRESH_ID** 
+[`string`](../../data-types.md) | Refresh token [OAuth 2](../../oauth/simple-way.md) issued for the user who called the widget. Can be used to refresh the authorization token on behalf of this user ||
+|| **member_id*** 
+[`string`](../../data-types.md) | Unique string identifier of the Bitrix24 where the widget handler was called.  ||
+|| **status** 
+[`string`](../../data-types.md) | Type of application that registered the handler for this widget. Accepts values:
+
+- `L` - [local](../../../local-integrations/local-apps.md) application
+- `F` - [free mass-market](../../../market/index.md) application
+||
+|| **PLACEMENT*** 
+[`string`](../../data-types.md) | Code for the widget placement. You can use the same handler URL for all your widgets. The value that Bitrix24 will report in the `PLACEMENT` parameter will help determine from which specific widget placement your handler was called in each case ||
+|| **PLACEMENT_OPTIONS** 
+[`string`](../../data-types.md) | Additional data in the form of a JSON string that defines the context of the widget execution. In this case, it is an array containing the numerical identifier of the CRM element in the detail form where the widget handler was called. The `PLACEMENT_OPTIONS` parameter, along with the `PLACEMENT` parameter, allows you to accurately determine for which specific CRM object the widget handler was called ||
+|#
 
 ## Continue exploring
 

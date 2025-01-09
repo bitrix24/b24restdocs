@@ -4,7 +4,7 @@
 >
 > Who can execute the method: requires read access permission for the CRM object whose product items are being selected.
 
-This method retrieves the product items of a CRM object for which the client has not yet been billed.
+The method retrieves product items of the CRM object for which the client has not yet been billed.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ This method retrieves the product items of a CRM object for which the client has
 || **ownerId***
 [`integer`](../../../data-types.md) | Identifier of the CRM object ||
 || **ownerType***
-[`string`](../../../data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#crm-object-type) ||
+[`string`](../../../data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#object_type). Pass the [Short symbolic code of the type](../../data-types.md#object_type) ||
 |#
 
 ## Code Examples
@@ -85,7 +85,7 @@ This method retrieves the product items of a CRM object for which the client has
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -146,8 +146,8 @@ HTTP Status: **200**
       "finish":1716966560.742781,
       "duration":0.42228102684020996,
       "processing":0.17676782608032227,
-      "date_start":"2024-05-29T10:09:20+03:00",
-      "date_finish":"2024-05-29T10:09:20+03:00"
+      "date_start":"2024-05-29T10:09:20+02:00",
+      "date_finish":"2024-05-29T10:09:20+02:00"
    }
 }
 ```
@@ -167,7 +167,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

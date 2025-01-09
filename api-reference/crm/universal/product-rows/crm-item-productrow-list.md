@@ -8,7 +8,7 @@ This method retrieves the product rows of a CRM object.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -23,29 +23,31 @@ Possible values for `field` correspond to the fields of the [`crm_item_product_r
 **=ownerType**
 **=ownerId**
 
-An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
+In `=ownerType`, provide the [Short symbolic code of the type](../../data-types.md#object_type).
 
-- `=` — equal (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol in the filter value should not be sent. The search looks for the substring in any position of the string.
+An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
+
+- `=` — equals (works with arrays as well)
+- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol in the filter value should not be sent. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol should be sent in the value. Examples: 
+- `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples: 
     - `"mol%"` — searching for values starting with "mol"
     - `"%mol"` — searching for values ending with "mol"
     - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol should be sent in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The % symbol needs to be passed in the value. Examples:
     - `"mol%"` — searching for values not starting with "mol"
     - `"%mol"` — searching for values not ending with "mol"
     - `"%mol%"` — searching for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (see description above)
 ||
 || **order**
-[`object`](../../../data-types.md) | Object for sorting selected items in the shipment table in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../../data-types.md) | Object for sorting selected elements of the shipment table in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [`crm_item_product_row`](../../data-types.md#crm_item_product_row) object.
 
@@ -53,23 +55,23 @@ Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
- ||
+||
 || **start**
-[`integer`](../../../data-types.md) | Parameter used for managing pagination.
- 
+[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
+
 The page size of results is always static: 50 records.
- 
+
 To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
- 
-The formula for calculating the value of the `start` parameter:
- 
+
+The formula for calculating the `start` parameter value:
+
 `start = (N-1) * 50`, where `N` — the desired page number
- ||
+||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -149,66 +151,66 @@ HTTP status: **200**
 
 ```json
 {
-   "result":{
-      "productRows":[
+   "result": {
+      "productRows": [
          {
-            "id":17649,
-            "ownerId":13142,
-            "ownerType":"D",
-            "productId":9621,
-            "productName":"iphone 14",
-            "price":90000,
-            "priceAccount":90000,
-            "priceExclusive":81818.18,
-            "priceNetto":90909.09,
-            "priceBrutto":100000,
-            "quantity":3,
-            "discountTypeId":2,
-            "discountRate":10,
-            "discountSum":9090.91,
-            "taxRate":10,
-            "taxIncluded":"Y",
-            "customized":"Y",
-            "measureCode":796,
-            "measureName":"pcs",
-            "sort":20,
-            "xmlId":"sale_basket_8147",
-            "type":4
+            "id": 17649,
+            "ownerId": 13142,
+            "ownerType": "D",
+            "productId": 9621,
+            "productName": "iphone 14",
+            "price": 90000,
+            "priceAccount": 90000,
+            "priceExclusive": 81818.18,
+            "priceNetto": 90909.09,
+            "priceBrutto": 100000,
+            "quantity": 3,
+            "discountTypeId": 2,
+            "discountRate": 10,
+            "discountSum": 9090.91,
+            "taxRate": 10,
+            "taxIncluded": "Y",
+            "customized": "Y",
+            "measureCode": 796,
+            "measureName": "pcs",
+            "sort": 20,
+            "xmlId": "sale_basket_8147",
+            "type": 4
          },
          {
-            "id":17650,
-            "ownerId":13142,
-            "ownerType":"D",
-            "productId":9623,
-            "productName":"iphone 10xs",
-            "price":5550,
-            "priceAccount":5550,
-            "priceExclusive":5550,
-            "priceNetto":5550,
-            "priceBrutto":5550,
-            "quantity":1,
-            "discountTypeId":2,
-            "discountRate":0,
-            "discountSum":0,
-            "taxRate":null,
-            "taxIncluded":"Y",
-            "customized":"Y",
-            "measureCode":6,
-            "measureName":"m",
-            "sort":10,
-            "xmlId":"sale_basket_8148",
-            "type":4
+            "id": 17650,
+            "ownerId": 13142,
+            "ownerType": "D",
+            "productId": 9623,
+            "productName": "iphone 10xs",
+            "price": 5550,
+            "priceAccount": 5550,
+            "priceExclusive": 5550,
+            "priceNetto": 5550,
+            "priceBrutto": 5550,
+            "quantity": 1,
+            "discountTypeId": 2,
+            "discountRate": 0,
+            "discountSum": 0,
+            "taxRate": null,
+            "taxIncluded": "Y",
+            "customized": "Y",
+            "measureCode": 6,
+            "measureName": "m",
+            "sort": 10,
+            "xmlId": "sale_basket_8148",
+            "type": 4
          }
       ]
    },
-   "total":2,
-   "time":{
-      "start":1716905609.186602,
-      "finish":1716905609.434087,
-      "duration":0.24748492240905762,
-      "processing":0.06894516944885254,
-      "date_start":"2024-05-28T17:13:29+03:00",
-      "date_finish":"2024-05-28T17:13:29+03:00"
+   "total": 2,
+   "time": {
+      "start": 1716905609.186602,
+      "finish": 1716905609.434087,
+      "duration": 0.24748492240905762,
+      "processing": 0.06894516944885254,
+      "date_start": "2024-05-28T17:13:29+02:00",
+      "date_finish": "2024-05-28T17:13:29+02:00"
    }
 }
 ```
@@ -221,7 +223,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **productRows**
-[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) | Array of objects containing information about the selected product rows of the CRM object  ||
+[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) | Array of objects containing information about the selected product rows of the CRM object ||
 || **total**
 [`integer`](../../../data-types.md) | Total number of records found ||
 || **time**
@@ -234,8 +236,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":"ACCESS_DENIED",
-   "error_description":"Access denied"
+   "error": "ACCESS_DENIED",
+   "error_description": "Access denied"
 }
 ```
 

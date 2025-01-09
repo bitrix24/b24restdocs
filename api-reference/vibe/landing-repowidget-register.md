@@ -1,12 +1,12 @@
-# Add Widget to Start Page: the Vibe landing.repowidget.register
+# Add Widget to the Homepage: our vibe landing.repowidget.register
 
 > Scope: [`landing`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.register` adds a widget for the Start page: the Vibe. It returns an error or the `ID` of the added widget.
+The method `landing.repowidget.register` adds a widget for the Homepage: our vibe. It returns an error or the `ID` of the added widget.
 
-When adding, a check is performed. If a widget with the code `code` has already been registered previously, its content will be updated. Widgets that are already placed on the Vibes will be automatically updated in case of content changes.
+During the addition, a check is performed. If a widget with the code `code` has already been registered previously, its content will be updated. Widgets that are already placed on the Vibes will be automatically updated in case of content changes.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ When adding, a check is performed. If a widget with the code `code` has already 
 || **Name**
 `type` | **Description** ||
 || **code***
-[`string`](../data-types.md) | Unique code for the widget. It is highly recommended to use a unique prefix for your widgets to avoid the risk of code collisions with widgets from other developers ||
+[`string`](../data-types.md) | Unique code for the widget. It is highly recommended to use a unique prefix for your widgets to avoid the risk of code conflicts with widgets from other developers ||
 || **fields***
 [`object`](../data-types.md) | Field values for creating the widget ||
 |#
@@ -35,7 +35,7 @@ When adding, a check is performed. If a widget with the code `code` has already 
 || **DESCRIPTION**
 [`string`](../data-types.md) | Widget description ||
 || **CONTENT**
-[`string`](../data-types.md) | Widget markup using Vue constructs ||
+[`string`](../data-types.md) | Widget layout using Vue constructs ||
 || **SECTIONS**
 [`string`](../data-types.md) | Code of the section where the widget will be added. List of available sections:
 
@@ -54,7 +54,7 @@ When adding, a check is performed. If a widget with the code `code` has already 
 - `widgets_image` — Images
 - `widgets_video` — Video ||
 || **WIDGET_PARAMS**
-[`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue template engine. If absent, the block will remain as regular HTML code with `{{}}` ||
+[`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue template engine. If not provided, the block will remain standard HTML code with `{{}}` ||
 || **ACTIVE**
 [`char`](../data-types.md) | Widget activity. Accepts values: 
 
@@ -72,23 +72,23 @@ When adding, a check is performed. If a widget with the code `code` has already 
 || **Name**
 `type` | **Description** ||
 || **rootNode***
-[`string`](../data-types.md) | Selector for the root element in the markup that will be turned into a Vue component. The root element must be the only element in the provided template; all other markup will be cleared ||
+[`string`](../data-types.md) | Selector for the root element in the layout that will be turned into a Vue component. The root element must be the only element in the provided template; all other markup will be cleared ||
 || **lang**
 [`string`](../data-types.md) | Array of language phrases used in constructs `{{$Bitrix.Loc.getMessage('W_EMPTY')}}` ||
 || **handler***
 [`string`](../data-types.md) | Address of the [external handler](./index.md#anchor-handler) to which requests will be sent.
 
-**Important**: The handler must be accessible from the external network! Check the handler's availability with special services.
+**Important**: The handler must be accessible from the external network! Check the handler's availability using special services
 
  ||
 || **style**
 [`string`](../data-types.md) | Address of styles for the widget. Styles can also be set inline in the markup via binding `:style="{borderBottom: '1px solid red'}"` ||
-|| **data***
-[`object`](../data-types.md) | Demo data for the widget that will be used to showcase the widget in the Vibe templates in [Bitrix24 Market](../../market/index.md).
+|| **demoData***
+[`object`](../data-types.md) | Demo data for the widget that will be used to showcase the widget in Vibe templates in [Bitrix24 Market](../../market/index.md).
 
 If you are developing a widget for a specific Bitrix24 and do not plan to publish it in the Market, you can specify any array as the parameter value; it will not be used anyway.
 
-However, if you are preparing a mass-market solution with a widget, pay maximum attention to the demo data - they will be displayed in the preview slider of the Vibe template! Obviously, the structure of the demo data should correspond to what your handler `handler` would return in normal widget usage.
+However, if you are preparing a mass-market solution with a widget, pay maximum attention to the demo data — they will be displayed in the preview slider of the Vibe template! Obviously, the structure of the demo data should match what your handler `handler` would return in normal widget usage
  ||
 |#
 

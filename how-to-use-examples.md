@@ -4,7 +4,7 @@ The documentation includes code examples for various programming languages in th
 
 ## Curl Requests
 
-When using the Bitrix24 REST API via curl, no libraries or SDKs are required. You can form parameters for calling any REST method. You just need to be careful about the correctness of the parameters, especially when it comes to parameters that accept arrays or structures as values.
+When using the Bitrix24 REST API via curl, no libraries or SDKs are required. You can create parameters for calling any REST method. You just need to be careful about the correct formation of parameters, especially when it comes to parameters that accept arrays or structures as values.
 
 Example of making a request to the Bitrix24 REST API via curl using a temporary access token [OAuth 2.0](./api-reference/oauth/index.md):
 
@@ -47,7 +47,7 @@ To use the examples, you need to include the corresponding library or SDK in you
 
 Examples using the standard [bx24.js library](./api-reference/bx24-js-sdk/index.md) are intended for use within [local](./local-integrations/local-apps.md) or [mass-market applications](./market/index.md). Unfortunately, you cannot simply use it by including the library on an external site or local HTML page.
 
-However, once you understand the concept of a local or even mass-market application, using JavaScript examples from the documentation will become very straightforward. To use the JavaScript examples, you only need to include the following script:
+However, once you understand the concept of a local or even mass-market application, using the JavaScript examples from the documentation will become very straightforward. To use the JavaScript examples, you only need to include the following script:
 
 ```html
 <script src="//api.bitrix24.com/api/v1/"></script>
@@ -152,7 +152,7 @@ declare(strict_types=1);
 // Include the base SDK class
 use Bitrix24\SDK\Services\ServiceBuilderFactory;
 
-// ensure the path to autoload.php is correct. it may be different if
+// ensure the path to autoload.php is correct. It may be different if
 // you are using your own folder structure 
 require_once 'vendor/autoload.php'; 
 
@@ -169,7 +169,7 @@ $result = $B24->getCRMScope()->deal()->add([
 
 ### PHP Using CRest SDK
 
-To use PHP examples, you need to install and include the CRest SDK. Detailed information can be found in [{#T}](./api-reference/crest-php-sdk/index.md).
+To use the PHP examples, you need to install and include the CRest SDK. Detailed information can be found in [{#T}](./api-reference/crest-php-sdk/index.md).
 
 Example of using CRest SDK:
 
@@ -188,7 +188,7 @@ $result = CRest::call(
     ]
 );
 
-// Handle the response from Bitrix24
+// Process the response from Bitrix24
 if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {

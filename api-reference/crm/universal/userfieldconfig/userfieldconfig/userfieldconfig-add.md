@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - Required parameters and types are not specified
 - No response in case of success
@@ -39,22 +39,22 @@ This method will add a new custom field.
 || **field** | List of settings for the new field:
 
 - [entityId^*^](../entity-id.md) - string identifier of the entity. 
-- fieldName^*^ - field code. Must be formed according to the template `UF_ + {entity identifier} + _ + {arbitrary string in UPPER_CASE}`. The field code cannot exceed 50 characters. 
-- userTypeId^*^ - string identifier of the [field type](https://training.bitrix24.com/api_d7/bitrix/main/userfield/settings/types.php). 
+- fieldName^*^ - field code. Must be formatted as `UF_ + {entity identifier} + _ + {arbitrary string in UPPER_CASE}`. The field code cannot exceed 50 characters. 
+- userTypeId^*^ - string identifier of the [field type](../userfieldconfig/userfieldconfig-get-types.md). 
 - xmlId - external identifier.
 - sort - sorting index.
 - multiple - multiplicity flag (N or Y), default is N. This flag can only be specified when creating the field.
-- mandatory - required flag (N or Y), default is N.
+- mandatory - mandatory flag (N or Y), default is N.
 - showFilter - flag to show the field in the filter (N or Y), default is N.
 - showInList - flag to show the field in the list (N or Y), default is Y.
 - editInList - flag to allow editing the field in the list (N or Y), default is Y.
-- isSearchable - flag indicating the presence of the field value [in the full-text index](*index_key) (N or Y), default is N.
+- isSearchable - flag indicating the presence of the field value [in the full-text index](*key_index) (N or Y), default is N.
 - settings - list of additional settings for the field.
 - editFormLabel - list of language-dependent names for the field, where the key is the language identifier and the value is the phrase.
 - enum - array of value options for properties of type "list":
-    - value^*^ - option value
-    - def - default value flag (N or Y), default is N. Only one can be the default option.
-    - sort - sorting index. If not specified, it is generated automatically based on the order of value options provided.
+    - value^*^ - value of the option
+    - def - default value flag (N or Y), default is N. Only one option can be the default
+    - sort - sorting index. If not specified, it is generated automatically based on the order of value options provided
     - xmlId - external identifier of the option | ||
 |#
 
@@ -96,4 +96,4 @@ Creating a field of type "list"
 
 {% include [Example Notes](../../../../../_includes/examples.md) %}
 
-[*index_key]: Only add necessary fields to the search. Building the index takes time when changing each field value, which can significantly slow down operations when there are many such fields.
+[*key_index]: Only add necessary fields to the search. Building the index takes time when changing each field value, which can significantly slow down operations when there are many such fields.

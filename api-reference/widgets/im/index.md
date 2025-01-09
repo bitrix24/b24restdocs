@@ -1,4 +1,4 @@
-# Left Menu Icon IM_NAVIGATION
+# Icon of the Left Menu IM_NAVIGATION
 
 {% note warning "We are still updating this page" %}
 
@@ -23,16 +23,16 @@ Some data may be missing here — we will fill it in shortly.
 
 You can add your item to the left navigation menu. Essentially, this is an application within the chat environment without embedding directly into the chat.
 
-The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The code for the specific widget placement is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-## Where the widget is embedded
+## Where the Widget is Embedded
 
-#|
+#| 
 || **Widget Code** | **Location** ||
 || `IM_NAVIGATION` | Item in the left navigation menu ||
 |#
 
-## What the handler receives
+## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -50,12 +50,44 @@ Data is transmitted as a POST request {.b24-info}
 'PLACEMENT_OPTIONS': '{"ID":"3443"}'
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+#| 
+|| **Parameter**
+`type` | **Description** ||
+|| **DOMAIN*** 
+[`string`](../../data-types.md) | The address of Bitrix24 where the widget handler was called ||
+|| **PROTOCOL*** 
+[`string`](../../data-types.md) | Secure or non-secure HTTP protocol:
 
+- `0` - HTTP
+- `1` - HTTPS
+ ||
+|| **LANG*** 
+[`string`](../../data-types.md) | The language of the Bitrix24 user interface that called the widget. You can localize the interface language in your widget based on this value ||
+|| **APP_SID** 
+[`string`](../../data-types.md) | String identifier of the application that registered the widget handler ||
+|| **AUTH_ID** 
+[`string`](../../data-types.md) | Authorization token [OAuth 2](../../oauth/simple-way.md) issued for the user who called the widget. Can be used for REST API calls on behalf of this user ||
+|| **AUTH_EXPIRES** 
+[`integer`](../../data-types.md) | Time in seconds after which the authorization token will become invalid ||
+|| **REFRESH_ID** 
+[`string`](../../data-types.md) | Refresh token [OAuth 2](../../oauth/simple-way.md) issued for the user who called the widget. Can be used to refresh the authorization token on behalf of this user ||
+|| **member_id*** 
+[`string`](../../data-types.md) | Unique string identifier of Bitrix24 where the widget handler was called. ||
+|| **status** 
+[`string`](../../data-types.md) | Type of the application that registered the handler for this widget. Accepts values:
 
-## Continue exploring
+- `L` - [local](../../../local-integrations/local-apps.md) application
+- `F` - [free mass-market](../../../market/index.md) application
+||
+|| **PLACEMENT*** 
+[`string`](../../data-types.md) | Code for the widget placement. You can use the same handler URL for all your widgets. The value that Bitrix24 will report in the `PLACEMENT` parameter will help determine from which specific widget placement your handler was called in each case ||
+|| **PLACEMENT_OPTIONS** 
+[`string`](../../data-types.md) | Additional data in the form of a JSON string defining the context of the widget execution. In this case, it is an array containing the numeric identifier of the CRM element in the detail form where the widget handler was called. The `PLACEMENT_OPTIONS` parameter, along with the `PLACEMENT` parameter, allows you to accurately determine for which specific CRM object the widget handler was called ||
+|#
+
+## Continue Exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

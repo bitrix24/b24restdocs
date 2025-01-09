@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits are needed to meet writing standards
+- edits needed to meet writing standards
 
 {% endnote %}
 
@@ -20,7 +20,7 @@ Below is the instruction on the markers that our AI module understands and can c
 
 ## Basic Markers
 
-`{original_message}` — the original message for the pre-prompt. In the text editor architecture, this is all the typed text or a manually selected part of the typed text.  
+`{original_message}` — the original message for the pre-prompt. In the text editor architecture, this is all the text typed or the manually selected part of the typed text.  
 Example of a pre-prompt:
 
 ```
@@ -28,7 +28,7 @@ Continue the text: {original_message}
 ```
 As a result, the text will be continued based on the text typed above or the manually selected part of the text.
 
-`{user_input}` — what the user entered directly.  
+`{user_input}` — what the user has directly entered.  
 Example of a pre-prompt:
 
 ```
@@ -65,17 +65,17 @@ Formulate the task result based on its description and comments: {context_messag
 
 These are all the basic markers that can be expanded by developers, but it's better not to rely on that (unless a mutually beneficial agreement is in place).
 
-`{language}` — the language of the account (not the user!). For example, Russian, English, Español — these values will be replaced by the marker.  
+`{language}` — the language of the account (not the user!). For example, German, English, Spanish — these values will replace the marker.  
 Example of a pre-prompt:
 ```
-Translate the text to {language}. Text: {original_message}
+Translate the text into {language}. Text: {original_message}
 ```
 
 ## Author Markers
 
-When we work with contextual messages, each message in the context has an author, their position, and other characteristics. Since the author is the user, we can use string fields of the user.
+When we work with contextual messages, each message from the context has an author, their position, and other characteristics. Since the author is a user, we can use the user's string fields. A list of such fields can be obtained using the [user.fields](../../user/user-fields.md) method.
 
-When writing a marker, one rule must be followed. Everything must be in lowercase: `{author.lower_case_field}`.
+When writing a marker, one rule must be followed. Everything should be in lowercase: `{author.lower_case_field}`.
 
 Let's look at an example. We will use the NAME and WORK_POSITION fields of the author in the pre-prompt:  
 ```
@@ -89,7 +89,7 @@ Author's position: {author.work_position}
 
 During the operation of CoPilot, a mini-dialog occurs. You ask a question (or work with text), and you receive a result that you can continue to work with.
 
-A set of results is formed, which you can refer to in markers. Currently, the stack size is three messages.
+A set of results is formed, which you can refer to in the markers. Currently, the stack size is three messages.
 
 This set has several features:
 1. It is filled from the bottom up, meaning the most recent result is at the bottom.

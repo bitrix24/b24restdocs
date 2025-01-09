@@ -1,4 +1,4 @@
-# Dropdown Menu Item Above the List of CRM Elements CRM_XXX_LIST_TOOLBAR, CRM_DYNAMIC_XXX_LIST_TOOLBAR
+# Dropdown Menu Item Above the CRM_XXX_LIST_TOOLBAR, CRM_DYNAMIC_XXX_LIST_TOOLBAR
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
@@ -16,12 +16,12 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 || `CRM_DEAL_LIST_TOOLBAR` | Dropdown menu item above the list of [deals](../../crm/deals/index.md) ||
 || `CRM_INVOICE_LIST_TOOLBAR` | Dropdown menu item above the list of [invoices](../../crm/outdated/invoice/index.md) ||
 || `CRM_QUOTE_LIST_TOOLBAR` | Dropdown menu item above the list of [estimates](../../crm/quote/index.md) ||
-|| `CRM_DYNAMIC_XXX_LIST_TOOLBAR` | Dropdown menu item above the list of elements for custom types of CRM objects. Instead of XXX, you need to specify the numeric identifier of the specific [custom type of objects](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_TOOLBAR` ||
+|| `CRM_DYNAMIC_XXX_LIST_TOOLBAR` | Dropdown menu item above the list of custom type elements in CRM objects. Instead of XXX, you need to specify the numeric identifier of the specific [custom type of objects](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_TOOLBAR` ||
 |#
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 {% list tabs %}
 
@@ -166,7 +166,7 @@ Data is sent as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
@@ -174,7 +174,7 @@ Data is sent as a POST request {.b24-info}
 
 In the current widget, the `PLACEMENT_OPTIONS` parameter is not passed.
 
-## Continue Your Exploration
+## Continue Your Learning
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

@@ -1,32 +1,78 @@
-# About Custom Lead Fields
+# Custom Lead Fields: Overview of Methods
 
-{% note warning "We are still updating this page" %}
+Custom fields store information about a lead in various data formats: string, number, link, address, and others.
 
-Some data may be missing here — we will complete it soon.
+> Quick navigation: [all methods](#all-methods) 
+> 
+> User documentation: [Custom fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
 
-{% endnote %}
+## Types of Custom Fields
 
-{% if build == 'dev' %}
+Use the method [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) to retrieve the available types of custom fields. The method will return the ID and name of the field types.
 
-{% note alert "TO-DO _not exported to prod_" %}
+```` 
+    (
+        [ID] => double    
+        [title] => Number
+    )
+````
 
-- An introduction corresponding to the title is needed.
+Use the method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md) to get a list of characteristics of custom fields. The method will return the codes of the characteristics along with their type and name.
 
-{% endnote %}
+```` 
+    [MANDATORY] => Array
+                (
+                    [type] => char
+                    [title] => Required
+                )
+````
 
-{% endif %}
+## Custom Field Settings
 
-{% note info "Permissions" %}
+Use the method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md) to obtain a list of available settings. The method will return the supported settings for the requested field type.
 
-**Scope**: [`crm`](../../../scopes/permissions.md) | **Who can execute the method**: `any user`
+```` 
+    [DEFAULT_VALUE] => Array
+            (
+                [type] => double
+                [title] => Default value
+            )
+    [PRECISION] => Array
+            (
+                [type] => int
+                [title] => Precision
+            )
+````
 
-{% endnote %}
+## Errors When Working with Custom Fields
 
-#|
+When creating or deleting custom fields, the request may be interrupted with an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md). This is an internal server error. The cause of the error can be found in the server logs at the time of the request:
+* In cloud Bitrix24, submit a request to technical support to obtain error details.
+* In on-premise Bitrix24, request the server error log from the server administrator or hosting administrator. Then contact technical support and attach the log for analysis.
+
+### Common Causes of Server Errors
+
+1. You can create 1016 custom fields for leads — this is a limitation of the database architecture. If there are already 1016 fields for leads in Bitrix24, attempting to create a new field will result in the method [crm.lead.userfield.add](./crm-lead-userfield-add.md) returning an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md).
+
+    You can check the number of custom fields for leads using the method [crm.lead.userfield.list](./crm-lead-userfield-list.md).
+
+2. There is a limitation on servers for the execution time of a single request — `max_execution_time`. The standard time is 60 seconds. If the request takes longer, it will be interrupted with an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md).
+
+    The time for [creating](./crm-lead-userfield-add.md) or [deleting](./crm-lead-userfield-delete.md) a custom field for leads depends on the number of leads. When a field is created, it is added to all lead detail forms. When a field is deleted, it is removed from all detail forms. The fewer leads you have in your Bitrix24, the faster fields are created and deleted.
+
+    To check the number of leads in Bitrix24, use the method [crm.lead.list](../crm-lead-list.md).
+
+## Overview of Methods {#all-methods}
+
+> Scope: [`crm`](../../../scopes/permissions.md)
+>
+> Who can execute the methods: depending on the method
+
+#| 
 || **Method** | **Description** ||
-|| [crm.lead.userfield.add](./crm-lead-userfield-add.md) | Creates a new field ||
-|| [crm.lead.userfield.update](./crm-lead-userfield-update.md) | Modifies a field ||
-|| [crm.lead.userfield.get](./crm-lead-userfield-get.md) | Returns a field by code ||
-|| [crm.lead.userfield.list](./crm-lead-userfield-list.md) | Returns a list of fields ||
-|| [crm.lead.userfield.delete](./crm-lead-userfield-delete.md) | Deletes a field ||
+|| [crm.lead.userfield.add](./crm-lead-userfield-add.md) | Creates a new custom field for leads ||
+|| [crm.lead.userfield.update](./crm-lead-userfield-update.md) | Updates an existing custom field for leads ||
+|| [crm.lead.userfield.get](./crm-lead-userfield-get.md) | Returns a custom field for leads by ID ||
+|| [crm.lead.userfield.list](./crm-lead-userfield-list.md) | Returns a list of custom fields for leads by filter ||
+|| [crm.lead.userfield.delete](./crm-lead-userfield-delete.md) | Deletes a custom field for leads || 
 |#

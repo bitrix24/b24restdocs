@@ -2,9 +2,9 @@
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
-You can add your item to the dropdown menu of the document generator for CRM objects such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [invoices](../../crm/outdated/invoice/index.md) and [estimates](../../crm/quote/index.md).
+You can add your item to the dropdown menu of the document generator for CRM entities such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [invoices](../../crm/outdated/invoice/index.md), and [estimates](../../crm/quote/index.md).
 
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 ## Where the Widget is Embedded
 
@@ -20,7 +20,7 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 {% list tabs %}
 
@@ -152,7 +152,7 @@ Data is sent as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
@@ -160,12 +160,12 @@ Data is sent as a POST request {.b24-info}
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
-|| **ENTITY_ID***
-[`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
+|| **ENTITY_ID*** 
+[`string`](../../data-types.md) | The identifier of the CRM entity for which the widget was opened.
 
 It can be used to retrieve additional information using the corresponding methods:
 
