@@ -1,6 +1,6 @@
 # Update Resource calendar.resource.update
 
-> Scope: [`calendar`](../scopes/permissions.md)
+> Scope: [`calendar`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -8,15 +8,15 @@ The method `calendar.resource.update` modifies a resource.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **resourceId***
-[`integer`](../data-types.md) | Resource identifier. ||
+[`integer`](../../data-types.md) | Resource identifier. ||
 || **name***
-[`string`](../data-types.md) | Resource name. ||
+[`string`](../../data-types.md) | Resource name. ||
 |#
 
 ## Example
@@ -37,7 +37,7 @@ The method `calendar.resource.update` modifies a resource.
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Response Handling
 
@@ -63,7 +63,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../data-types.md) | Identifier of the edited resource ||
+[`integer`](../../data-types.md) | Identifier of the modified resource ||
 |#
 
 ## Error Handling
@@ -76,16 +76,16 @@ HTTP status: **400**
   "error_description": "The required parameter \"name\" for the method \"calendar.resource.update\" is not set"
 }
 ```
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "id" for the method "calendar.resource.update" is not set | The required parameter `resourceId` is not provided ||
-|| Empty string | The required parameter "name" for the method "calendar.resource.update" is not set | The required parameter `name` is not provided ||
+|| Empty string | The required parameter "id" for the method "calendar.resource.update" is not set | The required parameter `resourceId` is missing ||
+|| Empty string | The required parameter "name" for the method "calendar.resource.update" is not set | The required parameter `name` is missing ||
 || Empty string | Access denied | The method is called by an external user or the user is prohibited from modifying resources ||
 || Empty string | An error occurred while modifying the resource | Another error ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}

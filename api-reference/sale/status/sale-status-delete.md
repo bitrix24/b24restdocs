@@ -78,7 +78,7 @@ This method deletes an order or delivery status.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -88,8 +88,8 @@ HTTP status: **200**
         "finish":1712144470.162582,
         "duration":0.26972293853759766,
         "processing":0.013709068298339844,
-        "date_start":"2024-04-03T14:41:09+03:00",
-        "date_finish":"2024-04-03T14:41:10+03:00"
+        "date_start":"2024-04-03T14:41:09+02:00",
+        "date_finish":"2024-04-03T14:41:10+02:00"
     }
 }
 ```
@@ -100,14 +100,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of status deletion ||
+[`boolean`](../../data-types.md) | Result of the status deletion ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 { 
@@ -122,15 +122,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `201340400001` | Status to be deleted not found ||
+|| `201340400001` | The status to be deleted was not found ||
 || `200040300020` | Insufficient permissions to delete the status ||
-|| `201350000002` | Error occurs when attempting to delete certain [system statuses](./default-status-table.md):
+|| `201350000002` | An error occurs when attempting to delete certain [system statuses](./index.md):
 - `N`
 - `F`
 - `DN`
 - `DF`
 ||
-|| `100` | Parameter `id` not specified ||
+|| `100` | The `id` parameter is missing ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

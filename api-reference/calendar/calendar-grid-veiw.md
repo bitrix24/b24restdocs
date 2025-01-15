@@ -2,15 +2,15 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
-- edits are needed to meet the writing standard
+- edits needed to meet writing standards
 
 {% endnote %}
 
@@ -36,7 +36,7 @@ How to bind the application to the calendar embed:
 
 {% endlist %}
 
-If you call in the application:
+If you call the following in the application:
 
 {% list tabs %}
 
@@ -65,11 +65,11 @@ you will see that certain parameters are received. In particular:
 
 {% endlist %}
 
-Additionally, when working in the embed, there is a specific interface: methods and events.
+Additionally, there is a specific interface when working with the embed: methods and events.
 
-## Methods (js methods)
+## Methods (JS methods)
 
-- **getEvents** – retrieving events.
+- **getEvents** – retrieve events.
 
 {% list tabs %}
 
@@ -95,7 +95,7 @@ Additionally, when working in the embed, there is a specific interface: methods 
 
 {% endlist %}
 
-- **viewEvent** – viewing an event (opening the view card).
+- **viewEvent** – view an event (open the view card).
 
 {% list tabs %}
 
@@ -105,7 +105,7 @@ Additionally, when working in the embed, there is a specific interface: methods 
     BX24.placement.call('viewEvent',
         {
             id: "1431170", // event id
-            dateFrom: "11.07.2018" // event date (optional, but important for recurring events)
+            dateFrom: "11.07.2018" // event date (not mandatory, but important for recurring events)
         },
         function(){}
     );
@@ -113,7 +113,7 @@ Additionally, when working in the embed, there is a specific interface: methods 
 
 {% endlist %}
 
-- **addEvent** – adding a new event (opening the card).
+- **addEvent** – add a new event (open the card).
 
 {% list tabs %}
 
@@ -125,7 +125,7 @@ Additionally, when working in the embed, there is a specific interface: methods 
 
 {% endlist %}
 
-- **editEvent** – editing an event (opening the card).
+- **editEvent** – edit an event (open the card).
 
 {% list tabs %}
 
@@ -137,7 +137,7 @@ Additionally, when working in the embed, there is a specific interface: methods 
 
 {% endlist %}
 
-- **deleteEvent** – deleting an event.
+- **deleteEvent** – delete an event.
 
 {% list tabs %}
 
@@ -156,12 +156,12 @@ Additionally, when working in the embed, there is a specific interface: methods 
 
 ## Events that can be tracked in the placement
 
-#|
+#| 
 || **Event** | **Description** ||
 || Calendar.customView:refreshEntries | Refreshing events. ||
 || Calendar.customView:decreaseViewRangeDate | Clicking the back arrow, i.e., rewinding the calendar to previous dates. ||
-|| Calendar.customView:increaseViewRangeDate | Clicking the forward arrow, i.e., rewinding the calendar to future dates. ||
-|| Calendar.customView:adjustToDate | Navigating to a specific date. ||
+|| Calendar.customView:increaseViewRangeDate | Clicking the forward arrow, i.e., rewinding the calendar to upcoming dates. ||
+|| Calendar.customView:adjustToDate | Jumping to a specific date. ||
 |#
 
 ## See also

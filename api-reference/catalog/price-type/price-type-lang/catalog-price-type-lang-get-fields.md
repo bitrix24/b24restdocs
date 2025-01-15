@@ -1,75 +1,161 @@
 # Get Fields for Price Type Translation catalog.priceTypeLang.getFields
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- no response in case of error
-- no response in case of success
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
-## Description
-
-```js
-catalog.priceTypeLang.getFields()
-```
-
-The method returns the fields for the translation of the price type name.
-
-## Parameters
+This method returns the fields for translating the price type name.
 
 No parameters.
 
-## Examples
+## Code Examples
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.priceTypeLang.getFields
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.priceTypeLang.getFields
+    ```
 
 - JS
 
     ```js
     BX24.callMethod(
-        'catalog.priceTypeLang.getFields',
-        {},
+        'catalog.priceTypeLang.getFields', 
+        {}, 
         function(result)
         {
             if(result.error())
-                console.error(result.error().ex);
+                console.error(result.error());
             else
                 console.log(result.data());
         }
     );
     ```
 
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.priceTypeLang.getFields',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+## Response Handling
 
-## Returned Fields
+HTTP status: **200**
+
+```json
+{
+    "result": {
+        "priceTypeLang": {
+            "catalogGroupId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
+            },
+            "id": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "lang": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
+            },
+            "name": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
+            }
+        }
+    },
+    "time": {
+        "start": 1733837668.28562,
+        "finish": 1733837668.54577,
+        "duration": 0.260151147842407,
+        "processing": 0.00585103034973145,
+        "date_start": "2024-12-10T15:34:28+02:00",
+        "date_finish": "2024-12-10T15:34:28+02:00",
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
 
 #|
-|| **Field** | **Description** | **Note** ||
-|| **catalogGroupId^*^** 
-[`integer`](../../data-types.md) | ID of the price type |  ||
-|| **id**
-[`integer`](../../data-types.md) | Identifier for the translation of the price type name | Immutable ||
-|| **lang^*^**
-[`string`](../../data-types.md) | Language of the translation |  ||
-|| **name^*^**
-[`string`](../../data-types.md) | Name of the price type |  ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Root element of the response ||
+|| **priceTypeLang**
+[`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang), and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
+|| **time**
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": 200040300010,
+    "error_description": "Access Denied"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `200040300010` | Insufficient permissions to read
+|| 
+|| `0` | Other errors (e.g., fatal errors)
+|| 
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./catalog-price-type-lang-add.md)
+- [{#T}](./catalog-price-type-lang-update.md)
+- [{#T}](./catalog-price-type-lang-get.md)
+- [{#T}](./catalog-price-type-lang-list.md)
+- [{#T}](./catalog-price-type-lang-delete.md)
+- [{#T}](./catalog-price-type-lang-get-languages.md)

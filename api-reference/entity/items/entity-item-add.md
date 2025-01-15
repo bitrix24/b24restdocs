@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The `entity.item.add` method adds a storage element. The user must have at least write access permission (**W**) in the storage.
+The method `entity.item.add` adds a storage element. The user must have at least write access (**W**) to the storage.
 
 ## Parameters
 
@@ -53,10 +53,10 @@ The `entity.item.add` method adds a storage element. The user must have at least
 || **SECTION**
 [`unknown`](../../data-types.md) | Identifier of the storage section. ||
 || **PROPERTY_VALUES**
-[`unknown`](../../data-types.md) | Associative list of property values of the element. Storage properties are created using [entity.item.property.add](.). ||
+[`unknown`](../../data-types.md) | Associative list of property values for the element. Storage properties are created using [entity.item.property.add](./properties/entity-item-property-add.md). ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 ## Example
 
@@ -90,7 +90,7 @@ The `entity.item.add` method adds a storage element. The user must have at least
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 ## Response on Success
 

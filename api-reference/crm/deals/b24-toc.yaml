@@ -15,7 +15,7 @@ items:
     href: crm-deal-delete.md
   - name: Get Deal Fields
     href: crm-deal-fields.md
-  - name: Add Products to a Deal
+  - name: Set Products in a Deal
     href: crm-deal-productrows-set.md
   - name: Get Deal Products
     href: crm-deal-productrows-get.md
@@ -31,17 +31,17 @@ items:
     include:
       path: user-defined-fields/b24-toc.yaml
       mode: link
-  - name: Contacts for a Deal
+  - name: Link a Deal with Contacts
     include:
       path: contacts/b24-toc.yaml
       mode: link
   - name: Deal Movement History
-    href: deal-stage-history.md     
+    href: deal-stage-history.md
   - name: Widgets
     href: widgets.md
   - name: Sales Funnels in Deals
     href: deal-categories.md
-  - name: Managing Deal Cards
+  - name: Manage Deal Cards
     include:
       path: custom-form/b24-toc.yaml
-      mode: link  
+      mode: link

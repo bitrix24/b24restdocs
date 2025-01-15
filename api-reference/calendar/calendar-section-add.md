@@ -50,7 +50,7 @@ For `type` with the value `user`, the identifier of the current user will be set
 - `true` — allow
 - `false` — disallow ||
 || **SET**
-[`string`](../data-types.md) | Period for export. Possible values:
+[`string`](../data-types.md) | Period for which to perform the export. Possible values:
 - `all` — for the entire period
 - `3_9` — 3 months before and 9 after
 - `6_12` — 6 months before and 12 after

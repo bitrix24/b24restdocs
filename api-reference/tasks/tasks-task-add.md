@@ -17,7 +17,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will supplement it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -104,3 +104,7 @@ Code values:
 3. mandatory report upon task completion
 
 {% include [Footnote on examples](../../_includes/examples.md) %}
+
+## Continue Learning
+
+- [{#T}](../../tutorials/tasks/how-to-create-task-with-file.md)

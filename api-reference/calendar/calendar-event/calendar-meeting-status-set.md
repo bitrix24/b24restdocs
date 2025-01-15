@@ -1,24 +1,24 @@
-# Set Participation Status in Event for Current User calendar.meeting.status.set
+# Set Participation Status for the Current User calendar.meeting.status.set
 
-> Scope: [`calendar`](../scopes/permissions.md)
+> Scope: [`calendar`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method sets the participation status in an event for the current user.
+This method sets the participation status for the current user's event.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **eventId***
-[`integer`](../data-types.md) | Event identifier.
+|| **eventId***  
+[`integer`](../../data-types.md) | The identifier of the event.
 
-You can obtain the identifier using the [calendar.event.get](./calendar-event-get.md) or [calendar.event.get.nearest](./calendar-event-get-nearest.md) methods ||
-|| **status***
-[`string`](../data-types.md) | Participation status in the event. Possible values: 
+You can obtain the identifier using the [calendar.event.get](./calendar-event-get.md) or [calendar.event.get.nearest](./calendar-event-get-nearest.md) methods. ||
+|| **status***  
+[`string`](../../data-types.md) | The participation status for the event. Possible values: 
 - `Y` — accepted
 - `N` — declined
 - `Q` — invited, but not yet responded ||
@@ -26,7 +26,7 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -84,7 +84,7 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -106,34 +106,34 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Success of setting the status.
+[`boolean`](../../data-types.md) | Success of setting the status.
 
-Returns `true` if the status is set successfully ||
+Returns `true` if the status is set successfully. ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "status" is not set for the method "calendar.meeting.status.set""
+    "error_description": "The required parameter "status" for the method "calendar.meeting.status.set" is not set."
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "status" is not set for the method "calendar.meeting.status.set" | The required parameter `status` was not provided ||
-|| Empty string | The required parameter "eventId" is not set for the method "calendar.meeting.status.set" | The required parameter `eventId` was not provided ||
-|| Empty string | Invalid value for parameter "status" | The `status` parameter contains a value other than `Q`, `Y`, or `N` ||
+|| Empty string | The required parameter "status" for the method "calendar.meeting.status.set" is not set. | The required parameter `status` was not provided. ||
+|| Empty string | The required parameter "eventId" for the method "calendar.meeting.status.set" is not set. | The required parameter `eventId` was not provided. ||
+|| Empty string | Invalid value for the "status" parameter | The `status` parameter contains a value other than `Q`, `Y`, or `N`. ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

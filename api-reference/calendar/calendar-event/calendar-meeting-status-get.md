@@ -1,6 +1,6 @@
 # Get the participation status of the current user in the event calendar.meeting.status.get
 
-> Scope: [`calendar`](../scopes/permissions.md)
+> Scope: [`calendar`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -8,20 +8,20 @@ This method retrieves the participation status of the current user in the event.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **eventId***
-[`integer`](../data-types.md) | Event identifier.
+[`integer`](../../data-types.md) | Identifier of the event.
 
 You can obtain the identifier using the [calendar.event.get](./calendar-event-get.md) or [calendar.event.get.nearest](./calendar-event-get-nearest.md) methods ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -99,10 +99,10 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`string`](../data-types.md) | Participation status of the current user. Possible values:
+[`string`](../../data-types.md) | Participation status of the current user. Possible values:
 - `Y` — agreed
 - `N` — declined
-- `Q` — invited but not yet responded
+- `Q` — invited, but not yet responded
  ||
 |#
 
@@ -117,7 +117,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -127,7 +127,7 @@ HTTP status: **400**
 || Empty string | An error occurred while retrieving the status | Another error ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

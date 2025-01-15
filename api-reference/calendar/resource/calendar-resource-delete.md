@@ -1,6 +1,6 @@
 # Delete Resource calendar.resource.delete
 
-> Scope: [`calendar`](../scopes/permissions.md)
+> Scope: [`calendar`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -8,7 +8,7 @@ The method `calendar.resource.delete` removes a resource.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,7 +33,7 @@ The method `calendar.resource.delete` removes a resource.
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 ## Response Handling
 
@@ -59,7 +59,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Returns **true** if the deletion was successful. ||
+[`boolean`](../../data-types.md) | Returns **true** if the deletion was successful. ||
 |#
 
 ## Error Handling
@@ -73,7 +73,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -81,7 +81,7 @@ HTTP status: **400**
 || **Code** | **Error Message** | **Description** ||
 || Empty string | The required parameter "resourceId" for the method "calendar.resource.delete" is not set. | The required parameter `resourceId` was not provided. ||
 || Empty string | Access denied | The method is called by an external user or the user is prohibited from modifying resources. ||
-|| Empty string | An error occurred while deleting the section | Another error occurred. ||
+|| Empty string | An error occurred while deleting the section | Another error. ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}

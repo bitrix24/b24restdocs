@@ -1,6 +1,6 @@
 # Provide the ability to select resource bookings calendar.resource.booking.list
 
-> Scope: [`calendar`](../scopes/permissions.md)
+> Scope: [`calendar`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -8,26 +8,26 @@ The method `calendar.resource.booking.list` allows you to select resource bookin
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **filter***
-[`object`](../data-types.md) | Filter fields. ||
+[`object`](../../data-types.md) | Filter fields. ||
 || **resourceTypeIdList***
-[`array`](../data-types.md) | A list of resource IDs that can be selected using the method `calendar.resource.list` ||
+[`array`](../../data-types.md) | A list of resource identifiers that can be selected using the method `calendar.resource.list` ||
 || **from**
-[`date`](../data-types.md) | Start date of the period. ||
+[`date`](../../data-types.md) | Start date of the period. ||
 || **to**
-[`date`](../data-types.md) | End date of the period. ||
+[`date`](../../data-types.md) | End date of the period. ||
 || **resourceIdList***
-[`array`](../data-types.md) | These IDs are taken from the UF field value of type resourcebooking in CRM entities LEAD|DEAL ||
+[`array`](../../data-types.md) | These IDs are taken from the UF field value of type resourcebooking in CRM entities LEAD|DEAL ||
 |#
 
 ## Examples
 
-**First option:** to assess the bookings (availability) of certain resources over a specific period. It can be used to create custom views of availability or for use in logic.
+**First option:** to assess the bookings (availability) of specific resources over a certain period. This can be used to create custom views of availability or for use in logic.
 
 {% list tabs %}
 
@@ -67,7 +67,7 @@ The method `calendar.resource.booking.list` allows you to select resource bookin
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 ## Response Handling
 
@@ -130,71 +130,71 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../data-types.md) | Array of booking objects ||
+[`array`](../../data-types.md) | Array of booking objects ||
 || **ID**
-[`string`](../data-types.md) | Booking identifier ||
+[`string`](../../data-types.md) | Booking identifier ||
 || **PARENT_ID**
-[`string`](../data-types.md) | For the booking object, always equal to the `ID` field ||
+[`string`](../../data-types.md) | For the booking object, always equal to the `ID` field ||
 || **DELETED**
-[`string`](../data-types.md) | Flag indicating whether the booking is deleted. Possible values:
+[`string`](../../data-types.md) | Flag indicating whether the booking is deleted. Possible values:
 - `Y` — booking deleted
 - `N` — booking not deleted  ||
 || **CAL_TYPE**
-[`string`](../data-types.md) | Type of calendar in which the booking is located ||
+[`string`](../../data-types.md) | Type of calendar in which the booking is located ||
 || **OWNER_ID**
-[`string`](../data-types.md) | For the booking object, always equal to '0' ||
+[`string`](../../data-types.md) | For the booking object, always equal to '0' ||
 || **NAME**
-[`string`](../data-types.md) | Name of the booking ||
+[`string`](../../data-types.md) | Name of the booking ||
 || **DATE_FROM**
-[`datetime`](../data-types.md) | Start date of the booking ||
+[`datetime`](../../data-types.md) | Start date of the booking ||
 || **DATE_TO**
-[`datetime`](../data-types.md) | End date of the booking ||
+[`datetime`](../../data-types.md) | End date of the booking ||
 || **TZ_FROM**
-[`string`](../data-types.md) | Timezone of the booking start date ||
+[`string`](../../data-types.md) | Timezone of the start date of the booking ||
 || **TZ_TO**
-[`string`](../data-types.md) | Timezone of the booking end date ||
+[`string`](../../data-types.md) | Timezone of the end date of the booking ||
 || **TZ_OFFSET_FROM**
-[`string`](../data-types.md) | Time offset of the booking start time from UTC in seconds ||
+[`string`](../../data-types.md) | Time offset of the start of the booking relative to UTC in seconds ||
 || **TZ_OFFSET_TO**
-[`string`](../data-types.md) | Time offset of the booking end time from UTC in seconds ||
+[`string`](../../data-types.md) | Time offset of the end of the booking relative to UTC in seconds ||
 || **DATE_FROM_TS_UTC**
-[`string`](../data-types.md) | Start date and time of the booking in UTC in timestamp format ||
+[`string`](../../data-types.md) | Start date and time of the booking in UTC in timestamp format ||
 || **DATE_TO_TS_UTC**
-[`string`](../data-types.md) | End date and time of the booking in UTC in timestamp format ||
+[`string`](../../data-types.md) | End date and time of the booking in UTC in timestamp format ||
 || **DT_SKIP_TIME**
-[`string`](../data-types.md) | Flag indicating that the booking lasts all day. Possible values:
+[`string`](../../data-types.md) | Flag indicating that the booking lasts all day. Possible values:
 - `Y` — all day
 - `N` — not all day ||
 || **DT_LENGTH**
-[`integer`](../data-types.md) | Duration of the booking in seconds ||
+[`integer`](../../data-types.md) | Duration of the booking in seconds ||
 || **EVENT_TYPE**
-[`string`](../data-types.md) | Type of booking ||
+[`string`](../../data-types.md) | Type of booking ||
 || **CREATED_BY**
-[`string`](../data-types.md) | Identifier of the user who created the booking ||
+[`string`](../../data-types.md) | Identifier of the user who created the booking ||
 || **DATE_CREATE**
-[`datetime`](../data-types.md) | Creation date of the booking ||
+[`datetime`](../../data-types.md) | Creation date of the booking ||
 || **TIMESTAMP_X**
-[`datetime`](../data-types.md) | Modification date of the booking ||
+[`datetime`](../../data-types.md) | Modification date of the booking ||
 || **DESCRIPTION**
-[`string`](../data-types.md) | Description of the booking ||
+[`string`](../../data-types.md) | Description of the booking ||
 || **IS_MEETING**
-[`boolean`](../data-types.md) | For the booking object, always false ||
+[`boolean`](../../data-types.md) | For the booking object, always false ||
 || **MEETING_STATUS**
-[`string`](../data-types.md) | For the booking object, always 'Y' ||
+[`string`](../../data-types.md) | For the booking object, always 'Y' ||
 || **MEETING_HOST**
-[`string`](../data-types.md) | For the booking object, always '0' ||
+[`string`](../../data-types.md) | For the booking object, always '0' ||
 || **VERSION**
-[`string`](../data-types.md) | Version of the booking changes ||
+[`string`](../../data-types.md) | Version of the booking changes ||
 || **SECTION_ID**
-[`string`](../data-types.md) | Identifier of the resource in which the booking is located ||
+[`string`](../../data-types.md) | Identifier of the resource in which the booking is located ||
 || **DATE_FROM_FORMATTED**
-[`string`](../data-types.md) | Formatted start date of the booking ||
+[`string`](../../data-types.md) | Formatted start date of the booking ||
 || **DATE_TO_FORMATTED**
-[`string`](../data-types.md) | Formatted end date of the booking ||
+[`string`](../../data-types.md) | Formatted end date of the booking ||
 || **SECT_ID**
-[`string`](../data-types.md) | Identifier of the resource in which the booking is located ||
+[`string`](../../data-types.md) | Identifier of the resource in which the booking is located ||
 || **RESOURCE_BOOKING_ID**
-[`integer`](../data-types.md) | Booking identifier ||
+[`integer`](../../data-types.md) | Booking identifier ||
 |#
 
 ## Error Handling
@@ -207,7 +207,7 @@ HTTP status: **400**
   "error_description": "The required parameter \"filter['resourceTypeIdList']\" is not set for the method \"calendar.resource.booking.list\""
 }
 ```
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -217,4 +217,4 @@ HTTP status: **400**
 || Empty string | The required parameter "filter['resourceTypeIdList']" is not set for the method "calendar.resource.booking.list" | None of the required parameters `resourceTypeIdList` or `resourceIdList` were provided ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}

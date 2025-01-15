@@ -8,7 +8,7 @@ This method sets user calendar settings.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Footnote on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,7 +31,7 @@ This method sets user calendar settings.
 || **crmSection**
 [`string`](../data-types.md) | Calendar for CRM ||
 || **showDeclined**
-[`boolean`](../data-types.md) | Show events that the user declined to participate in ||
+[`boolean`](../data-types.md) | Show events where the user declined to participate ||
 || **denyBusyInvitation**
 [`boolean`](../data-types.md) | Prevent inviting to an event if the time is busy ||
 || **collapseOffHours**
@@ -64,8 +64,8 @@ Default value — `false` ||
 [`object`](../data-types.md) | Settings for preset calendars.
 
 The key of the settings object can be:
-- `user[id]` — User Calendar type with user identifier. For example, `user12` corresponds to the calendar of the user with identifier `12`
-- `group[id]` — Group Calendar type with group identifier. For example, `group36` corresponds to the calendar of the group with identifier `36`
+- `user[id]` — User Calendar type with user identifier. For example, `user12` corresponds to the user calendar with identifier `12`
+- `group[id]` — Group Calendar type with group identifier. For example, `group36` corresponds to the group calendar with identifier `36`
 
 The value of the object is the calendar identifier ||
 || **syncPeriodPast**
@@ -93,7 +93,7 @@ The value of the object is the calendar identifier ||
 || **Name**
 `type` | **Description** ||
 || **type**
-[`string`](../data-types.md) | Time type of reminder. Possible values:
+[`string`](../data-types.md) | Time type of the reminder. Possible values:
 - `min` — minutes
 - `hour` — hours
 - `day` — days ||
@@ -104,7 +104,7 @@ The value of the object is the calendar identifier ||
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Footnote on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 

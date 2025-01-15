@@ -19,7 +19,7 @@ This method updates the status of an order or delivery.
 [`object`](../../data-types.md) | Field values for updating the status ||
 |#
 
-### fields Parameter
+### Parameter fields
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -127,23 +127,23 @@ HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "status":{
-            "color":"#00FF00",
-            "id":"MS",
-            "notify":"N",
-            "sort":100,
-            "type":"D",
-            "xmlId":"updatedXmlId"
+    "result": {
+        "status": {
+            "color": "#00FF00",
+            "id": "MS",
+            "notify": "N",
+            "sort": 100,
+            "type": "D",
+            "xmlId": "updatedXmlId"
         }
     },
-    "time":{
-        "start":1712142575.655577,
-        "finish":1712142575.940234,
-        "duration":0.28465700149536133,
-        "processing":0.02240896224975586,
-        "date_start":"2024-04-03T14:09:35+03:00",
-        "date_finish":"2024-04-03T14:09:35+03:00"
+    "time": {
+        "start": 1712142575.655577,
+        "finish": 1712142575.940234,
+        "duration": 0.28465700149536133,
+        "processing": 0.02240896224975586,
+        "date_start": "2024-04-03T14:09:35+02:00",
+        "date_finish": "2024-04-03T14:09:35+02:00"
     }
 }
 ```
@@ -167,8 +167,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"Required fields: type"
+    "error": 0,
+    "error_description": "Required fields: type"
 }
 ```
 
@@ -181,7 +181,7 @@ HTTP status: **400**
 || `201340400001` | Status with the provided identifier not found ||
 || `200040300020` | Insufficient permissions to update the status ||
 || `201350000003` | Status type value not provided or the provided value is incorrect ||
-|| `201350000006` | Error occurs when trying to change the type of certain [system statuses](./default-status-table.md):
+|| `201350000006` | Error occurs when trying to change the type of certain [system statuses](./index.md):
 
 - statuses `F` and `N` must always have type `O` (order)
 - statuses `DF` and `DN` must always have type `D` (delivery)

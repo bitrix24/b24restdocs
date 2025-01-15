@@ -1,16 +1,16 @@
-# Get main calendar settings calendar.settings.get
+# Get Basic Calendar Settings calendar.settings.get
 
 > Scope: [`calendar`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method retrieves the main calendar settings. Only the account administrator can modify the main settings.
+This method retrieves the basic settings of the calendar. Only an account administrator can modify the basic settings.
 
 No parameters.
 
-## Code examples
+## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -60,7 +60,7 @@ No parameters.
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
 HTTP status: **200**
 
@@ -107,7 +107,7 @@ HTTP status: **200**
 }
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
@@ -129,21 +129,21 @@ HTTP status: **200**
 || **sync_by_push**
 [`boolean`](../data-types.md) | Flag for automatic calendar synchronization via subscription. Push events from Google/Office365 ||
 || **user_show_login**
-[`boolean`](../data-types.md) | Flag for displaying user login ||
+[`boolean`](../data-types.md) | Flag for displaying the user's login ||
 || **path_to_user**
-[`string`](../data-types.md) | Template link to user profile ||
+[`string`](../data-types.md) | Template link to the user profile ||
 || **path_to_user_calendar**
-[`string`](../data-types.md) | Template link to view user calendar ||
+[`string`](../data-types.md) | Template link to view the user's calendar ||
 || **path_to_group**
-[`string`](../data-types.md) | Template link to view workgroup ||
+[`string`](../data-types.md) | Template link to view the workgroup ||
 || **path_to_group_calendar**
-[`string`](../data-types.md) | Template link to view group calendar ||
+[`string`](../data-types.md) | Template link to view the group's calendar ||
 || **path_to_vr**
-[`string`](../data-types.md) | Template link to video conference room ||
+[`string`](../data-types.md) | Template link to the video conference room ||
 || **path_to_rm**
-[`string`](../data-types.md) | Template link to meeting room ||
+[`string`](../data-types.md) | Template link to the meeting room ||
 || **rm_iblock_type**
-[`string`](../data-types.md) | Type of infoblock for booking meeting and video conference rooms ||
+[`string`](../data-types.md) | Type of the infoblock for booking meeting and video conference rooms ||
 || **rm_iblock_id**
 [`string`](../data-types.md) | Identifier of the infoblock for booking meeting rooms ||
 || **dep_manager_sub**
@@ -161,14 +161,14 @@ HTTP status: **200**
 || **path_to_type_location**
 [`string`](../data-types.md) | Template link to view meeting room bookings ||
 || **path_to_type_open_event**
-[`string`](../data-types.md) | Template link to view open event calendars ||
+[`string`](../data-types.md) | Template link to view the open events calendar ||
 |#
 
-## Error handling
+## Error Handling
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
-## Continue exploring 
+## Continue Learning 
 
 - [{#T}](./index.md)
 - [{#T}](./calendar-user-settings-get.md)

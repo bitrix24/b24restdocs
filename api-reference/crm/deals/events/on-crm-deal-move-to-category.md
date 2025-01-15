@@ -1,10 +1,10 @@
-# Event on Deal Deletion ONCRMDEALDELETE
+# Event on Change in Sales Funnel onCrmDealMoveToCategory
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALDELETE` will trigger when a deal is deleted.
+The event `ONCRMDEALMOVETOCATEGORY` will trigger when the sales funnel of a deal is changed.
 
 ## What the handler receives
 
@@ -12,14 +12,16 @@ Data is sent as a POST request {.b24-info}
 
 ```json
 {
-    "event": "ONCRMDEALDELETE",
-    "event_handler_id": "647",
+    "event": "ONCRMDEALMOVETOCATEGORY",
+    "event_handler_id": "655",
     "data": {
         "FIELDS": {
-            "ID": "1765"
+            "ID": "6675",
+            "CATEGORY_ID": "1",
+            "STAGE_ID": "C1:NEW"
         }
     },
-    "ts": "1736405294",
+    "ts": "1736424182",
     "auth": {
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "expires_in": "3600",
@@ -41,21 +43,21 @@ Data is sent as a POST request {.b24-info}
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
 
-In this case — `ONCRMDEALDELETE`||
+In this case — `ONCRMDEALMOVETOCATEGORY`||
 || **event_handler_id**
 [`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../data-types.md) | Object containing information about the deleted deal.
+[`object`](../../../data-types.md) | Object containing information about the modified deal.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../data-types.md) | Object containing information about the fields of the deleted deal.
+[`object`](../../../data-types.md) | Object containing information about the fields of the modified deal.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -66,16 +68,21 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the deleted deal ||
+[`integer`](../../../data-types.md) | Identifier of the modified deal ||
+|| **CATEGORY_ID**
+[`integer`](../../../data-types.md) | Identifier of the new sales funnel ||
+|| **STAGE_ID**
+[`string`](../../../data-types.md) | Identifier of the new stage of the deal ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your exploration
+## Continue Learning
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)
-- [{#T}](./on-crm-deal-update.md)
 - [{#T}](./on-crm-deal-add.md)
+- [{#T}](./on-crm-deal-update.md)
+- [{#T}](./on-crm-deal-delete.md)

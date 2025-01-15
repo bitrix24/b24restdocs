@@ -17,37 +17,19 @@ items:
     href: calendar-user-settings-get.md
   - name: Set User Calendar Settings
     href: calendar-user-settings-set.md
-  - name: Add Event
-    href: calendar-event-add.md
-  - name: Update Event
-    href: calendar-event-update.md
-  - name: Get Event by ID
-    href: calendar-event-get-by-id.md
-  - name: Get List of Calendar Events
-    href: calendar-event-get.md
-  - name: Get List of Upcoming Events
-    href: calendar-event-get-nearest.md
-  - name: Delete Event
-    href: calendar-event-delete.md
-  - name: Get Current User's Participation Status in Event
-    href: calendar-meeting-status-get.md
-  - name: Set Participation Status in Event for Current User
-    href: calendar-meeting-status-set.md
   - name: Get User Availability from List
     href: calendar-accessibility-get.md    
-  - name: Add New Resource
-    href: calendar-resource-add.md
-  - name: Update Resource
-    href: calendar-resource-update.md
-  - name: Get List of All Resources
-    href: calendar-resource-list.md
-  - name: Provide Option to Select Resource Bookings
-    href: calendar-resource-booking-list.md
-  - name: Delete Resource
-    href: calendar-resource-delete.md
   - name: Integrate into Calendar
-    href: calendar-grid-view.md
+    href: calendar-grid-veiw.md
+  - name: Calendar Events
+    include:
+      path: calendar-event/b24-toc.yaml
+      mode: link
+  - name: Resource Booking
+    include:
+      path: resource/b24-toc.yaml
+      mode: link
   - name: Events
     include:
-      path: events-calendar/b24-toc.yaml
+      path: events/b24-toc.yaml
       mode: link

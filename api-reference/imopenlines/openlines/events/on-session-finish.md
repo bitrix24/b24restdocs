@@ -1,4 +1,4 @@
-# OnSessionFinish Chat Creation
+# OnSessionFinish Chat Closure
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md) 
 >
@@ -8,7 +8,7 @@ The event triggers when the chat is closed.
 
 ## What the handler receives
 
-Data is sent as a POST request.
+Data is sent as a POST request
 
 ```php
 [
@@ -56,15 +56,15 @@ Data is sent as a POST request.
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***  
+|| **event***
 [`string`](../../../data-types.md) | Symbolic event code ||
-|| **eventId***  
+|| **eventId***
 [`integer`](../../../data-types.md) | Event identifier ||
-|| **data***  
+|| **data***
 [`object`](../../../data-types.md) | Object with [event data](#data) ||
-|| **ts***  
+|| **ts***
 [`integer`](../../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth***  
+|| **auth***
 [`object`](../../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -75,7 +75,7 @@ Data is sent as a POST request.
 #|
 || **Name**
 `type` | **Description** ||
-|| **DATA***  
+|| **DATA***
 [`object`](../../../data-types.md) | Object with [chat data](#chat-params) ||
 |#
 
@@ -86,19 +86,19 @@ Data is sent as a POST request.
 #|
 || **Name**
 `type` | **Description** ||
-|| **connector***  
+|| **connector***
 [`object`](../../../data-types.md) | Object with information about the connector:
 - `connector_id` — connector identifier
-- `line_id` — open line identifier
+- `line_id` — identifier of the open line
 - `chat_id` — chat identifier
 - `user_id` — user identifier in the external system
 ||
-|| **chat***  
+|| **chat***
 [`object`](../../../data-types.md) | Object with information about the chat:
 - `id` — chat identifier ||
-|| **line***  
+|| **line***
 [`object`](../../../data-types.md) | Object with information about the open line:
-- `id` — open line identifier
+- `id` — identifier of the open line
 - `name` — name of the open line ||
 |#
 

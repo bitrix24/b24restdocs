@@ -1,12 +1,12 @@
 # Get a list of all resources calendar.resource.list
 
-> Scope: [`calendar`](../scopes/permissions.md)
+> Scope: [`calendar`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
 The method `calendar.resource.list` returns a list (array) of all resources.
 
-Without parameters.
+No parameters.
 
 ## Example
 
@@ -20,7 +20,7 @@ Without parameters.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response Handling
 
@@ -56,13 +56,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../data-types.md) | Array of resources ||
+[`array`](../../data-types.md) | Array of resources ||
 || **ID**
-[`string`](../data-types.md) | Resource identifier ||
+[`string`](../../data-types.md) | Resource identifier ||
 || **NAME**
-[`string`](../data-types.md) | Resource name ||
+[`string`](../../data-types.md) | Resource name ||
 || **CREATED_BY**
-[`string`](../data-types.md) | Identifier of the resource creator ||
+[`string`](../../data-types.md) | Identifier of the resource creator ||
 |#
 
 ## Error Handling
@@ -76,7 +76,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -85,4 +85,4 @@ HTTP status: **400**
 || Empty string | Access denied | Access to the method is prohibited for external users ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}

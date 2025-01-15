@@ -1,6 +1,18 @@
 # What's New?
 
-## 2024
+## 2025
+
+### January 15, 2025
+
+- Updated the main page of the section [Deal Connection with Contacts](./api-reference/crm/deals/contacts/index.md). Added introductory information and an overview of methods
+- Updated the main page of the section [Statuses](./api-reference/sale/status/index.md). Added introductory information and an overview of methods and relationships
+- Updated the documentation for methods working with deal product items [crm.deal.productrows.get](./api-reference/crm/deals/crm-deal-productrows-get.md), [crm.deal.productrows.set](./api-reference/crm/deals/crm-deal-productrows-set.md)
+- Updated the documentation for [Calendar](./api-reference/calendar/events/index.md) events
+- Updated the main page of the section [Lead Card Management](./api-reference/crm/leads/custom-form/index.md). Added introductory information and an overview of methods and relationships
+- Updated the main page of the section [Payer Types](./api-reference/sale/person-type/index.md). Added introductory information and an overview of methods and relationships
+- Updated the documentation for deal events [onCrmDealAdd](./api-reference/crm/deals/events/on-crm-deal-add.md), [onCrmDealUpdate](./api-reference/crm/deals/events/on-crm-deal-update.md), [onCrmDealDelete](./api-reference/crm/deals/events/on-crm-deal-delete.md)
+- Updated the documentation for working with translations of price type names [catalog.priceTypeLang.*](./api-reference/catalog/price-type/price-type-lang/index.md)
+- Added documentation for the deal funnel change event [onCrmDealMoveToCategory](./api-reference/crm/deals/events/on-crm-deal-move-to-category.md)
 
 ### January 9, 2025
 
@@ -13,8 +25,8 @@
 ### December 25, 2024
 
 - Updated documentation for calendar settings methods [calendar.settings.get](./api-reference/calendar/calendar-settings-get.md), [calendar.user.settings.get](./api-reference/calendar/calendar-user-settings-get.md), and [calendar.user.settings.set](./api-reference/calendar/calendar-user-settings-set.md)
-- Updated documentation for calendar methods [calendar.meeting.status.get](./api-reference/calendar/calendar-meeting-status-get.md), [calendar.meeting.status.set](./api-reference/calendar/calendar-meeting-status-set.md), and [calendar.accessibility.get](./api-reference/calendar/calendar-accessibility-get.md)
-- Updated documentation for calendar event methods [calendar.event.*](./api-reference/calendar/calendar-event-add.md)
+- Updated documentation for calendar methods [calendar.meeting.status.get](./api-reference/calendar/calendar-event/calendar-meeting-status-get.md), [calendar.meeting.status.set](./api-reference/calendar/calendar-event/calendar-meeting-status-set.md), and [calendar.accessibility.get](./api-reference/calendar/calendar-accessibility-get.md)
+- Updated documentation for calendar event methods [calendar.event.*](./api-reference/calendar/calendar-event/index.md)
 - Updated the main pages of the contact section [Contact Relationship with Companies](./api-reference/crm/contacts/company/index.md), [Managing Contact Cards](./api-reference/crm/contacts/custom-form/index.md). Added introductory information and an overview of methods and relationships
 - Updated the main page of the section [Custom Fields for Companies](./api-reference/crm/companies/userfields/index.md). Added introductory information and an overview of methods and relationships
 - Updated documentation for events related to [price rounding rules](./api-reference/catalog/rounding-rule/index.md)

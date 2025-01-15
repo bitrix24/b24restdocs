@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -24,14 +24,14 @@ Some data may be missing here — we will fill it in shortly
 >
 > Who can execute the method: any user
 
-The method `tasks.task.files.attach` is used to attach a file uploaded to the drive to a task.
+The method `tasks.task.files.attach` is used to attach an uploaded file from the disk to a task.
 
 #|
 || **Parameter** / **Type** | **Description** ||
 || **taskId**
 [`unknown`](../data-types.md) | Task identifier. ||
 || **fileId**
-[`unknown`](../data-types.md) | Identifier of the file uploaded to the drive. ||
+[`unknown`](../data-types.md) | Identifier of the uploaded file on disk. ||
 || **params**
 [`unknown`](../data-types.md) | Array of additional parameters, empty by default. Currently not used. ||
 |#
@@ -58,3 +58,8 @@ The method `tasks.task.files.attach` is used to attach a file uploaded to the dr
 {% endlist %}
 
 {% include [Footnote on examples](../../_includes/examples.md) %}
+
+## Continue Learning
+
+- [{#T}](../../tutorials/tasks/how-to-upload-file-to-task.md)
+- [{#T}](./deprecated/task-item/task-item-get-files.md)

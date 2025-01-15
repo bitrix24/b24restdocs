@@ -85,7 +85,7 @@ This method deletes a calendar.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -114,7 +114,7 @@ Returns `true` if the calendar was successfully deleted ||
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -131,7 +131,7 @@ HTTP Status: **400**
 || **Code** | **Error Message** | **Description** ||
 || Empty string | The required parameter "type" for the method "calendar.section.delete" is not set | The required parameter `type` was not provided ||
 || Empty string | The required parameter "ownerId" for the method "calendar.section.add" is not set | The required parameter `ownerId` was not provided and the `type` parameter is not equal to `user` ||
-|| Empty string | Section id is not set | The required parameter `id` was not provided ||
+|| Empty string | Section ID is not set | The required parameter `id` was not provided ||
 || Empty string | Access denied | The calendar with the specified `id` does not exist or there are no permissions to edit the calendar ||
 || Empty string | An error occurred while deleting the section | Another error ||
 |#

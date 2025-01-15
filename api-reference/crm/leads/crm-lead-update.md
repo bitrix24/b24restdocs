@@ -2,30 +2,30 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access permission to edit CRM leads.
+> Who can execute the method: a user with permissions to edit CRM leads.
 
 The method `crm.lead.update` updates an existing lead.
 
 {% note warning %}
 
-It is strongly recommended to pass the complete set of address fields when updating the address in the update method. The specifics of updating address fields are described [here](../data-types.md).
+It is strongly recommended to pass the complete set of address fields when updating the address. The specifics of updating address fields are described [here](../data-types.md).
 
 {% endnote %}
 
 #|
 || **Parameter** | **Description** ||
 || **id**^*^
-[`integer`](../../data-types.md) | Integer identifier of the lead. The method of obtaining it is described below. ||
+[`integer`](../../data-types.md) | Integer identifier of the lead. The method to obtain it is described below. ||
 || **fields**^*^
-[`object`](../../data-types.md) | A set of fields in the form `["field to update" => "value"[, ...]]`. The method of obtaining the list of possible fields is described below. ||
+[`object`](../../data-types.md) | A set of fields in the form `["field to update" => "value"[, ...]]`. The method to obtain the list of possible fields is described below. ||
 || **options**
-[`object`](../../data-types.md) | Optional set of options. (`"optionName"=>"value"[, ...]`). The list of possible fields is described below. ||
+[`object`](../../data-types.md) | An optional set of options. (`"optionName"=>"value"[, ...]`). The list of possible fields is described below. ||
 |#
 
 ## Parameter id
@@ -39,7 +39,7 @@ To find out the complete list of available identifiers, execute the method [crm.
 || **ADDRESS**
 [`string`](../../data-types.md) | Contact address. ||
 || **ADDRESS_2**
-[`string`](../../data-types.md) | Second line of the address. In some countries, it is common to split the address into 2 parts. ||
+[`string`](../../data-types.md) | Second line of the address. In some countries, it is customary to split the address into two parts. ||
 || **ADDRESS_CITY**
 [`string`](../../data-types.md) | City. ||
 || **ADDRESS_COUNTRY**
@@ -71,11 +71,11 @@ To find out the complete list of available identifiers, execute the method [crm.
 || **EMAIL**
 [`crm_multifield`](../../data-types.md) | Email address. Multiple. ||
 || **HONORIFIC**
-[`crm_status`](../../data-types.md) | Form of address. ||
+[`crm_status`](../../data-types.md) | Salutation. ||
 || **IM**
 [`crm_multifield`](../../data-types.md) | Messenger. Multiple. ||
 || **LINK**
-[`crm_multifield`](../../data-types.md) | User ID linked through an open channel. Multiple. ||
+[`crm_multifield`](../../data-types.md) | User ID linked through an open line. Multiple. ||
 || **LAST_NAME**
 [`string`](../../data-types.md) | Last name. ||
 || **NAME**
@@ -85,13 +85,13 @@ To find out the complete list of available identifiers, execute the method [crm.
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount. ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicator of manual mode for calculating the amount. Acceptable values are Y or N. ||
+[`char`](../../data-types.md) | Indicator of manual calculation mode for the amount. Acceptable values are Y or N. ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source. ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source. ||
+[`string`](../../data-types.md) | Identifier of the element in the data source. Used only for linking to an external source. ||
 || **PHONE**
-[`crm_multifield`](../../data-types.md) | Phone. Multiple. ||
+[`crm_multifield`](../../data-types.md) | Phone number. Multiple. ||
 || **POST**
 [`string`](../../data-types.md) | Position. ||
 || **SECOND_NAME**
@@ -118,7 +118,7 @@ Default values:
 ||OTHER|Other||
 |#
 
-The list of all possible identifiers from the directory can be obtained using the method crm.status.list with the filter `filter[ENTITY_ID]=SOURCE`. ||
+The list of all possible identifiers from the directory can be obtained using the method crm.status.list with the filter `filter[ENTITY_ID]=SOURCE` ||
 || **STATUS_DESCRIPTION**
 [`string`](../../data-types.md) | Additional information about the stage. ||
 || **STATUS_ID**
@@ -133,9 +133,9 @@ The list of all possible identifiers from the directory can be obtained using th
 ||CONVERTED | High-quality lead||
 |#
 
-The list of all possible stages from the directory can be obtained using the method crm.status.list with the filter `filter[ENTITY_ID]=STATUS`. ||
+The list of all possible stages from the directory can be obtained using the method crm.status.list with the filter `filter[ENTITY_ID]=STATUS` ||
 || **TITLE**
-[`string`](../../data-types.md) | Lead title. ||
+[`string`](../../data-types.md) | Title of the lead. ||
 || **UTM_CAMPAIGN**
 [`string`](../../data-types.md) | Designation of the advertising campaign. ||
 || **UTM_CONTENT**
@@ -153,13 +153,13 @@ The list of all possible stages from the directory can be obtained using the met
 
 {% note info %}
 
-Also, to find out the required format of the fields, you can execute the method [crm.lead.fields](crm-lead-fields.md) and check the format of the received values of these fields.
+Additionally, to find out the required format of the fields, you can execute the method [crm.lead.fields](./crm-lead-fields.md) and check the format of the incoming values of these fields.
 
 {% endnote %}
 
 {% note info %}
 
-When adding a lead, you cannot explicitly set the indicator for a repeat lead (the `IS_RETURN_CUSTOMER` field); however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when adding the lead.
+When adding a lead, you cannot explicitly set the indicator for a repeat lead (the field `IS_RETURN_CUSTOMER`), however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when adding the lead.
 
 {% endnote %}
 
@@ -171,7 +171,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 [`char`](../../data-types.md) | Register the event of adding a lead in the activity stream. A notification will also be sent to the person responsible for the lead. Acceptable values are Y or N. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -297,11 +297,11 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## See also
 
-- [How to update a field with the type "resource booking"](../../calendar/calendar-resource-booking-list.md)
+- [How to update a field of type "resource booking"](../../calendar/resource/calendar-resource-booking-list.md)
 
 ## Successful response
 

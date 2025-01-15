@@ -1,4 +1,4 @@
-# Get Calendar List calendar.section.get
+# Get List of Calendars calendar.section.get
 
 > Scope: [`calendar`](../scopes/permissions.md)
 >
@@ -18,8 +18,8 @@ This method retrieves a list of calendars.
 - `user` — user calendar
 - `group` — group calendar
 - `company_calendar` — company calendar 
-- `location` — conference room calendar. Used for booking time in the conference room calendar through a third-party application
-- other types, including custom ||
+- `location` — meeting room calendar. Used for booking time in the meeting room calendar through a third-party application
+- other types, including custom ones ||
 || **ownerId***
 [`integer`](../data-types.md) | Identifier of the calendar owner.
 
@@ -194,7 +194,7 @@ For the user calendar type `user`, this field contains the user identifier. For 
 
 The object key is the access permission identifier. You can get the name of the access permission using the [access.name](../common/system/access-name.md) method. Determine access permissions for the current user using the [user.access](../common/users/user-access.md) method.
 
-The object value contains the numerical identifier of the access permission. Access permission identifiers differ across different accounts. Currently, only the portal administrator in the on-premise version of Bitrix24 can retrieve all identifiers. ||
+The object value contains a numeric identifier of the access permission. Access permission identifiers differ across different accounts. Currently, only the portal administrator in the on-premise version of Bitrix24 can retrieve all identifiers ||
 || **IS_COLLAB**
 [`boolean`](../data-types.md) | Flag indicating whether the calendar belongs to a collaboration ||
 || **PERM**
@@ -220,7 +220,7 @@ The object value contains the numerical identifier of the access permission. Acc
 || **view_title**
 [`boolean`](../data-types.md) | View calendar event titles ||
 || **view_full**
-[`boolean`](../data-types.md) | Full access to event information in the calendar ||
+[`boolean`](../data-types.md) | Full access to calendar event information ||
 || **add**
 [`boolean`](../data-types.md) | Add events to the calendar ||
 || **edit**
@@ -250,7 +250,7 @@ HTTP Status: **400**
 || **Code** | **Error Message** | **Description** ||
 || Empty string | The required parameter 'type' for the method 'calendar.section.get' is not set | The required parameter `type` was not provided ||
 || Empty string | The required parameter 'ownerId' for the method 'calendar.section.get' is not set | The required parameter `ownerId` was not provided and the `type` parameter is not equal to `user` ||
-|| Empty string | Access denied | Access to the method is prohibited for external users ||
+|| Empty string | Access denied | Access to the method is denied for external users ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

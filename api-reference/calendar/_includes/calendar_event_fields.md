@@ -10,7 +10,7 @@
 || **DELETED**
 [`string`](../../data-types.md) | Flag indicating whether the event is deleted. Possible values:
 - `Y` — event is deleted
-- `N` — event is not deleted ||
+- `N` — event is not deleted  ||
 || **CAL_TYPE**
 [`string`](../../data-types.md) | Type of calendar in which the event is located ||
 || **OWNER_ID**
@@ -26,13 +26,13 @@
 || **ORIGINAL_DATE_FROM**
 [`datetime`](../../data-types.md) | Start date of the original event for recurring events ||
 || **TZ_FROM**
-[`string`](../../data-types.md) | Time zone of the event start date ||
+[`string`](../../data-types.md) | Timezone of the event start date ||
 || **TZ_TO**
-[`string`](../../data-types.md) | Time zone of the event end date ||
+[`string`](../../data-types.md) | Timezone of the event end date ||
 || **TZ_OFFSET_FROM**
-[`string`](../../data-types.md) | Time offset of the event start time from UTC in seconds ||
+[`string`](../../data-types.md) | Time offset of the event start time relative to UTC in seconds ||
 || **TZ_OFFSET_TO**
-[`string`](../../data-types.md) | Time offset of the event end time from UTC in seconds ||
+[`string`](../../data-types.md) | Time offset of the event end time relative to UTC in seconds ||
 || **DATE_FROM_TS_UTC**
 [`string`](../../data-types.md) | Start date and time of the event in UTC in timestamp format ||
 || **DATE_TO_TS_UTC**
@@ -94,7 +94,7 @@
 || **CAL_DAV_LABEL**
 [`string`](../../data-types.md) | Synchronization identifier ||
 || **VERSION**
-[`string`](../../data-types.md) | Version of event changes ||
+[`string`](../../data-types.md) | Version of the event changes ||
 || **ATTENDEES_CODES**
 [`array`](../../data-types.md) | Identifiers of event participants ||
 || **RECURRENCE_ID**
@@ -128,9 +128,9 @@
 || **~DESCRIPTION**
 [`string`](../../data-types.md) | Description of the event ||
 || **~USER_OFFSET_FROM**
-[`integer`](../../data-types.md) | Time offset of the event start time from the current user's time zone ||
+[`integer`](../../data-types.md) | Time offset of the event start time relative to the current user's timezone ||
 || **~USER_OFFSET_TO**
-[`integer`](../../data-types.md) | Time offset of the event end time from the current user's time zone ||
+[`integer`](../../data-types.md) | Time offset of the event end time relative to the current user's timezone ||
 |#
 
 ### MEETING Object {#meeting}
@@ -162,7 +162,7 @@
 || **Name**
 `type` | **Description** ||
 || **type**
-[`string`](../../data-types.md) | Time type of the reminder
+[`string`](../../data-types.md) | Time type of reminder
 - `min` — minutes
 - `hour` – hours
 - `day` — days ||
@@ -209,7 +209,7 @@
 || **ORIGINAL_RECURSION_ID**
 [`integer`](../../data-types.md) | Identifier of the original event for recurring events created when editing ||
 || **COMMENT_XML_ID**
-[`string`](../../data-types.md) | Identifier of the original event for single events created when editing from recurring events ||
+[`string`](../../data-types.md) | Identifier of the original event for single events created when editing from recurring ones ||
 |#
 
 ### ATTENDEE_LIST Objects {#attendee_list}

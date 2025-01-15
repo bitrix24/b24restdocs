@@ -17,6 +17,7 @@ Some data may be missing — we will complete it soon.
 || [onCrmDealAdd](./on-crm-deal-add.md) | When a deal is created ||
 || [onCrmDealUpdate](./on-crm-deal-update.md) | When a deal is updated ||
 || [onCrmDealDelete](./on-crm-deal-delete.md) | When a deal is deleted ||
+|| [onCrmDealMoveToCategory](./on-crm-deal-move-to-category.md) | When the deal's Sales Funnel is changed ||
 || [onCrmDealUserFieldAdd](./on-crm-deal-user-field-add.md) | When a custom field is added ||
 || [onCrmDealUserFieldUpdate](./on-crm-deal-user-field-update.md) | When a custom field is updated ||
 || [onCrmDealUserFieldDelete](./on-crm-deal-user-field-delete.md) | When a custom field is deleted ||

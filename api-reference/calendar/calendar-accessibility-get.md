@@ -87,7 +87,7 @@ For example, `2024-12-20`  ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -168,9 +168,9 @@ The value is an array of objects, each describing an [event](#event) in which th
 - `Y` — all day
 - `N` — not all day ||
 || **TZ_FROM**
-[`integer`](../data-types.md) | Timezone of the event start date ||
+[`integer`](../data-types.md) | Timezone of the event's start date ||
 || **TZ_TO**
-[`integer`](../data-types.md) | Timezone of the event end date ||
+[`integer`](../data-types.md) | Timezone of the event's end date ||
 || **ACCESSIBILITY**
 [`integer`](../data-types.md) | Availability of event participants. Possible values:
 
@@ -187,18 +187,17 @@ The value is an array of objects, each describing an [event](#event) in which th
 || **EVENT_TYPE**
 [`string`](../data-types.md) | Some events contain information about how they were created.
 
-The event may have been created through:
+An event can be created through:
 
 - `#shared#` — calendar slots
 - `#shared_crm#` — CRM slots
 - `#collab#` — collaboration
-- `#shared_collab#` — collaboration slots
-||
+- `#shared_collab#` — collaboration slots ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -213,9 +212,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "from" for the method "calendar.accessibility.get" is not set | The required parameter `from` was not provided ||
-|| Empty string | The required parameter "to" for the method "calendar.accessibility.get" is not set | The required parameter `to` was not provided ||
-|| Empty string | The required parameter "users" for the method "calendar.accessibility.get" is not set | The required parameter `users` was not provided ||
+|| Empty string | The required parameter "from" for the method "calendar.accessibility.get" is not set | The required parameter `from` is missing ||
+|| Empty string | The required parameter "to" for the method "calendar.accessibility.get" is not set | The required parameter `to` is missing ||
+|| Empty string | The required parameter "users" for the method "calendar.accessibility.get" is not set | The required parameter `users` is missing ||
 || Empty string | Access denied | Access to the method is prohibited for external users ||
 |#
 

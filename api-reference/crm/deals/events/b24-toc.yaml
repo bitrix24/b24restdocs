@@ -3,25 +3,27 @@ href: index.md
 items: 
   - name: Overview of Events
     href: index.md
-  - name: On Deal Creation 
+  - name: On Creating a Deal 
     href: on-crm-deal-add.md
-  - name: On Deal Update 
+  - name: On Updating a Deal 
     href: on-crm-deal-update.md
-  - name: On Deal Deletion 
+  - name: On Deleting a Deal 
     href: on-crm-deal-delete.md
-  - name: On Adding Custom Field 
+  - name: On Changing the Sales Funnel
+    href: on-crm-deal-move-to-category.md
+  - name: On Adding a Custom Field 
     href: on-crm-deal-user-field-add.md
-  - name: On Updating Custom Field 
+  - name: On Updating a Custom Field 
     href: on-crm-deal-user-field-update.md
-  - name: On Deleting Custom Field 
+  - name: On Deleting a Custom Field 
     href: on-crm-deal-user-field-delete.md
-  - name: On Updating Value Set for List-Type Custom Field
+  - name: On Changing the Set of Values for a List-Type Custom Field
     href: on-crm-deal-user-field-set-enum-values.md
-  - name: On Creating New Recurring Deal
+  - name: On Creating a New Recurring Deal
     href: on-crm-deal-recurring-add.md
-  - name: On Updating Recurring Deal
+  - name: On Updating a Recurring Deal
     href: on-crm-deal-recurring-update.md
-  - name: On Deleting Recurring Deal
+  - name: On Deleting a Recurring Deal
     href: on-crm-deal-recurring-delete.md
-  - name: On Creating New Deal from Recurring Deal
+  - name: On Creating a New Deal from a Recurring Deal
     href: on-crm-deal-recurring-expose.md

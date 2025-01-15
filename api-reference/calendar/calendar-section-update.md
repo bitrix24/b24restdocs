@@ -30,7 +30,7 @@ This method updates the calendar.
 || **text_color**
 [`string`](../data-types.md) | Text color in the calendar ||
 || **export**
-[`object`](../data-types.md) | Object [export parameters for the calendar](#export)
+[`object`](../data-types.md) | Object of [calendar export parameters](#export)
 ||
 |#
 
@@ -161,7 +161,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "type" for the method "calendar.section.update" is not set"
+    "error_description": "The required parameter "type" for the method "calendar.section.update" is missing"
 }
 ```
 
@@ -171,12 +171,12 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "type" for the method "calendar.section.update" is not set | The required parameter `type` is missing ||
-|| Empty string | The required parameter "ownerId" for the method "calendar.section.update" is not set | The required parameter `ownerId` is missing and the `type` parameter is not equal to 'user' ||
-|| Empty string | Section id is not set | The required parameter `id` is missing ||
+|| Empty string | The required parameter "type" for the method "calendar.section.update" is missing | The required parameter `type` was not provided ||
+|| Empty string | The required parameter "ownerId" for the method "calendar.section.update" is missing | The required parameter `ownerId` was not provided and the `type` parameter is not equal to 'user' ||
+|| Empty string | Section id is missing | The required parameter `id` was not provided ||
 || Empty string | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
 || Empty string | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
-|| Empty string | Access denied | The calendar with the specified `id` does not exist or there are no rights to edit the calendar ||
+|| Empty string | Access denied | The calendar with the specified `id` does not exist or there are no permissions to edit the calendar ||
 || Empty string | An error occurred while updating the section | Another error ||
 |#
 

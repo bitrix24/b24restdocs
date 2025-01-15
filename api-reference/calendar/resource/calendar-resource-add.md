@@ -1,20 +1,20 @@
-# Add a new resource calendar.resource.add
+# Add New Resource calendar.resource.add
 
-> Scope: [`calendar`](../scopes/permissions.md)
+> Scope: [`calendar`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `calendar.resource.add` adds a new resource and takes an array of parameters as input.
+The method `calendar.resource.add` adds a new resource and accepts an array of parameters.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **name*** 
-[`string`](../data-types.md) | The name of the resource. ||
+[`string`](../../data-types.md) | The name of the resource. ||
 |#
 
 ## Example
@@ -34,7 +34,7 @@ The method `calendar.resource.add` adds a new resource and takes an array of par
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 ## Response Handling
 
@@ -60,7 +60,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../data-types.md) | Identifier of the created resource ||
+[`integer`](../../data-types.md) | Identifier of the created resource ||
 |#
 
 ## Error Handling
@@ -73,7 +73,7 @@ HTTP status: **400**
   "error_description": "The required parameter \"name\" for the method \"calendar.resource.add\" is not set"
 }
 ```
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -84,4 +84,4 @@ HTTP status: **400**
 || Empty string | An error occurred while creating the resource | Another error ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}

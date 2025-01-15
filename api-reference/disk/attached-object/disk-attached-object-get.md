@@ -1,4 +1,4 @@
-# Get Information About the Attached File disk.attachedObject.get
+# Get Information About Attached File disk.attachedObject.get
 
 {% if build == 'dev' %}
 
@@ -8,7 +8,7 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- no error response provided
+- no error response is provided
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `disk.attachedObject.get` returns information about the attached file through a user property by the binding ID.
+The method `disk.attachedObject.get` returns information about an attached file through a user property by the binding ID.
 
 ## Example
 
@@ -50,16 +50,16 @@ The method `disk.attachedObject.get` returns information about the attached file
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-## Response on Success
+## Successful Response
 
 > 200 OK
 
 ```json
 result: {
     ID: "318",
-    OBJECT_ID: "13215", //file identifier from Drive
+    OBJECT_ID: "13215", //file identifier from Disk
     MODULE_ID: "blog", //module that owns the user property
     ENTITY_TYPE: "blog_comment", //entity type
     ENTITY_ID: "157", //identifier of the entity to which the attachment is made
@@ -70,3 +70,9 @@ result: {
     SIZE: "3867" //file size in bytes
 }
 ```
+
+## Continue Learning
+
+- [{#T}](../../../tutorials/tasks/how-to-create-comment-with-file.md)
+- [{#T}](../../../tutorials/tasks/how-to-create-task-with-file.md)
+- [{#T}](../../../tutorials/tasks/how-to-upload-file-to-task.md)

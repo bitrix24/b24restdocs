@@ -1,0 +1,15 @@
+title: Resource
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md 
+  - name: Add New Resource
+    href: calendar-resource-add.md
+  - name: Update Resource
+    href: calendar-resource-update.md
+  - name: Get List of All Resources
+    href: calendar-resource-list.md
+  - name: Provide Option to Select Resource Bookings
+    href: calendar-resource-booking-list.md
+  - name: Delete Resource
+    href: calendar-resource-delete.md

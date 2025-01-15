@@ -10,7 +10,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,7 +62,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -134,7 +134,7 @@ HTTP status: **200**
 || **crmSection**
 [`string`](../data-types.md) | Calendar for CRM ||
 || **showDeclined**
-[`boolean`](../data-types.md) | Show events that the user declined to participate in ||
+[`boolean`](../data-types.md) | Show events where the user declined to participate ||
 || **denyBusyInvitation**
 [`boolean`](../data-types.md) | Prevent inviting to an event if the time is busy ||
 || **collapseOffHours**
@@ -160,7 +160,7 @@ HTTP status: **200**
 || **lastUsedSection**
 [`string`](../data-types.md) | Identifier of the calendar used when creating events if the calendar identifier is not provided in the parameters. 
 
-Default value is `false` ||
+Default value — `false` ||
 || **sendFromEmail**
 [`string`](../data-types.md) | E-mail for sending mail invitations ||
 || **defaultSections**
@@ -182,7 +182,7 @@ The value of the object is the calendar identifier ||
 || **timezoneOffsetUTC**
 [`integer`](../data-types.md) | Timezone offset relative to UTC in seconds ||
 || **timezoneDefaultName**
-[`string`](../data-types.md) | If the `timezoneName` parameter is not set, the timezone from the `timezoneOffsetUTC` parameter will be specified here ||
+[`string`](../data-types.md) | If the `timezoneName` parameter is not set, the timezone from the `timezoneOffsetUTC` parameter will be indicated here ||
 || **work_time_start**
 [`string`](../data-types.md) | Start time of the workday ||
 || **work_time_end**

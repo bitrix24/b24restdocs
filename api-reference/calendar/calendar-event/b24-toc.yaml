@@ -1,0 +1,21 @@
+title: Calendar Events
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Event
+    href: calendar-event-add.md
+  - name: Update Event
+    href: calendar-event-update.md
+  - name: Get Event by ID
+    href: calendar-event-get-by-id.md
+  - name: Get List of Calendar Events
+    href: calendar-event-get.md
+  - name: Get List of Upcoming Events
+    href: calendar-event-get-nearest.md
+  - name: Delete Event
+    href: calendar-event-delete.md
+  - name: Get Current User's Participation Status in Event
+    href: calendar-meeting-status-get.md
+  - name: Set Participation Status in Event for Current User
+    href: calendar-meeting-status-set.md
