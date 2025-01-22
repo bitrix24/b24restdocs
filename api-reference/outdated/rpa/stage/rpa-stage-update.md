@@ -2,19 +2,19 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -24,17 +24,18 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `rpa.stage.update` will update the stage with the given id and return data in the response similar to the response from the `rpa.stage.get` request.
+The method `rpa.stage.update` will update the stage with the specified id and return data in the response similar to the response from the `rpa.stage.get` request.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **id** 
 [`number`](../../../data-types.md) | Identifier of the stage. ||
 || **fields** 
 [`array`](../../../data-types.md) | List of stage fields. ||
 |#
 
-## fields Parameters
+## Parameters fields
 
 #|
 || **Parameter** | **Description** ||

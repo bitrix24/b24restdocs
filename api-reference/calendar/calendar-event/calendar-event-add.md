@@ -81,7 +81,7 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 - `N` — not private
 ||
 || **rrule**
-[`object`](../../data-types.md) | Recurrence of the event in the form of an object in terms of the iCalendar standard. Structure described [below](#rrule)
+[`object`](../../data-types.md) | Recurrence of the event in the form of an object in terms of the iCalendar standard. The structure is described [below](#rrule)
 ||
 || **is_meeting**
 [`string`](../../data-types.md) | Indicator of a meeting with event participants. Possible values:
@@ -94,22 +94,22 @@ For a meeting with participants, specify the list of participants in `attendees`
 || **location**
 [`string`](../../data-types.md) | Venue ||
 || **remind**
-[`array`](../../data-types.md) | Array of objects describing reminders for the event. Structure described [below](#remind) ||
+[`array`](../../data-types.md) | Array of objects describing reminders for the event. The structure is described [below](#remind) ||
 || **attendees**
 [`array`](../../data-types.md) | List of participant identifiers for the event. If `is_meeting` = `Y` ||
 || **host**
 [`integer`](../../data-types.md) | Identifier of the event organizer. If `is_meeting` = `Y` ||
 || **meeting**
-[`object`](../../data-types.md) | Object with meeting parameters. Structure described [below](#meeting) ||
+[`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting) ||
 || **crm_fields**
-[`array`](../../data-types.md) | Array of CRM entity identifiers to link to the event. Prefixes:
+[`array`](../../data-types.md) | Array of CRM object identifiers to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
 - `CO_` — company
 - `C_` — contact 
 - `L_` — lead
 - `D_` — deal ||
 |#
 
-### rrule Parameter {#rrule}
+### Parameter rrule {#rrule}
 
 #|
 || **Name**
@@ -138,7 +138,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 [`date`](../../data-types.md) | End date of recurrences ||
 |#
 
-### remind Parameter {#remind}
+### Parameter remind {#remind}
 
 #|
 || **Name**
@@ -152,7 +152,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 [`integer`](../../data-types.md) | Numerical value of the time interval ||
 |#
 
-### meeting Parameter {#meeting}
+### Parameter meeting {#meeting}
 
 #|
 || **Name**
@@ -162,7 +162,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 || **reinvite**
 [`boolean`](../../data-types.md) | Flag for requesting re-confirmation of participation when editing the event ||
 || **allow_invite**
-[`boolean`](../../data-types.md) | Flag for allowing participants to invite others to the event ||
+[`boolean`](../../data-types.md) | Flag allowing participants to invite others to the event ||
 || **hide_guests**
 [`boolean`](../../data-types.md) | Flag for hiding the list of participants ||
 |#
@@ -296,7 +296,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -323,7 +323,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -337,16 +337,16 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "type" for the method "calendar.event.add" is not set | The required parameter `type` was not provided ||
-|| Empty string | The required parameter "ownerId" for the method "calendar.event.add" is not set | The required parameter `ownerId` was not provided ||
-|| Empty string | The required parameter "name" for the method "calendar.event.add" is not set | The required parameter `name` was not provided ||
-|| Empty string | The required parameter "from" for the method "calendar.event.add" is not set | The required parameter `from` or `from_ts` was not provided ||
-|| Empty string | The required parameter "to" for the method "calendar.event.add" is not set | The required parameter `to` or `to_ts` was not provided ||
+|| Empty string | The required parameter "type" for the method "calendar.event.add" is not set | The required parameter `type` is not provided ||
+|| Empty string | The required parameter "ownerId" for the method "calendar.event.add" is not set | The required parameter `ownerId` is not provided ||
+|| Empty string | The required parameter "name" for the method "calendar.event.add" is not set | The required parameter `name` is not provided ||
+|| Empty string | The required parameter "from" for the method "calendar.event.add" is not set | The required parameter `from` or `from_ts` is not provided ||
+|| Empty string | The required parameter "to" for the method "calendar.event.add" is not set | The required parameter `to` or `to_ts` is not provided ||
 || Empty string | Invalid value for the parameter "name" | Incorrect data format in the `name` field ||
 || Empty string | Invalid value for the parameter "description" | Incorrect data format in the `description` field ||
 || Empty string | Access denied | Creating events in the specified calendar is prohibited ||
-|| Empty string | You specified an invalid calendar section ID or the user does not have access to it | An identifier of an inaccessible or non-existent calendar was provided ||
-|| Empty string | The list of event links to CRM must be an array | Incorrect data format in the `crm_fields` field ||
+|| Empty string | You specified an invalid calendar section ID or the user does not have access to it | An identifier of an inaccessible or non-existent calendar is provided ||
+|| Empty string | The event's CRM link list must be an array | Incorrect data format in the `crm_fields` field ||
 || Empty string | An error occurred while creating the event | Another error ||
 |#
 

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,13 +10,13 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed to meet writing standards
 - parameter types are not specified
 - parameter requirements are not indicated
 - not all parameters have examples in the table
 - examples are missing
-- success response is missing
-- error response is missing
+- no response in case of success
+- no response in case of error
 - links to pages that have not yet been created are not specified
 
 {% endnote %}
@@ -46,16 +46,16 @@ The method `imbot.command.answer` publishes a response to the command.
 || **MENU**
 [`unknown`](../../data-types.md) | `''` | Context menu, optional field | ||
 || **SYSTEM**
-[`unknown`](../../data-types.md) | `'N'` | Display messages as a system message, optional field, default is 'N' | ||
+[`unknown`](../../data-types.md) | `'N'` | Display messages as system messages, optional field, default is 'N' | ||
 || **URL_PREVIEW**
 [`unknown`](../../data-types.md) | `'Y'` | Convert links to rich links, optional field, default is 'Y' | ||
 || **CLIENT_ID**
-[`unknown`](../../data-types.md) | `''` | String identifier of the chat bot, used only in Webhook mode | ||
+[`unknown`](../../data-types.md) | `''` | String identifier of the chatbot, used only in Webhook mode | ||
 |#
 
 {% note warning %}
 
-To process the command, the application must handle the event of adding a command [ONIMCOMMANDADD](./events/index.md).
+To process the command, the application must handle the event of adding a command [ONIMCOMMANDADD](./events/on-im-command-add.md).
 
 {% endnote %}
 
@@ -105,19 +105,19 @@ error
 #|
 || **Code** | **Description** ||
 || **COMMAND_ID_ERROR** | Command not found. ||
-|| **APP_ID_ERROR** | The chat bot does not belong to this application. You can only work with chat bots installed within the application. ||
+|| **APP_ID_ERROR** | The chatbot does not belong to this application. You can only work with chatbots installed within the application. ||
 || **MESSAGE_EMPTY** | No message text provided. ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation. ||
-|| **ATTACH_OVERSIZE** | The maximum allowable size of the attachment (30 KB) has been exceeded. ||
+|| **ATTACH_OVERSIZE** | The maximum allowable size for the attachment has been exceeded (30 KB). ||
 || **KEYBOARD_ERROR** | The entire provided keyboard object failed validation. ||
-|| **KEYBOARD_OVERSIZE** | The maximum allowable size of the keyboard (30 KB) has been exceeded. ||
+|| **KEYBOARD_OVERSIZE** | The maximum allowable size for the keyboard has been exceeded (30 KB). ||
 || **MENU_ERROR** | The entire provided menu object failed validation. ||
-|| **MENU_OVERSIZE** | The maximum allowable size of the menu (30 KB) has been exceeded. ||
+|| **MENU_OVERSIZE** | The maximum allowable size for the menu has been exceeded (30 KB). ||
 || **WRONG_REQUEST** | Something went wrong. ||
 |#
 
 ## Related Links
 
-- [How to work with virtual keyboards](../../chats/messages/keyboards.md)
+- [How to work with input keyboards](../../chats/messages/keyboards.md)
 - [How to work with attachments](../../chats/messages/attachments/index.md)
 - [Message formatting](../../chats/messages/index.md)

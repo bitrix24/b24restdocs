@@ -1,8 +1,8 @@
-# Create a new comment in the timeline rpa.comment.add
+# Create a New Comment in the Timeline rpa.comment.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -22,14 +22,15 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `rpa.comment.add` will create a new comment in the timeline of the item with the identifier itemId of the process with the identifier typeId.
+The method `rpa.comment.add` will create a new comment in the timeline of the element with the identifier itemId of the process with the identifier typeId.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId** 
 [`number`](../../../data-types.md) | Identifier of the process. ||
 || **itemId** 
-[`number`](../../../data-types.md) | Identifier of the item. ||
+[`number`](../../../data-types.md) | Identifier of the element. ||
 || **fields** 
 [`array`](../../../data-types.md) | Comment fields. ||
 |#
@@ -37,9 +38,10 @@ The method `rpa.comment.add` will create a new comment in the timeline of the it
 ## Parameter fields
 
 #|
-|| **Parameter** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **description** | Description of the entry (HTML and BB-code can be used). ||
-|| **files** | Array of attached files, where each element is an array containing the name and base64 encoded content. ||
+|| **files** | Array of attached files, where each element is an array with the name and base64 encoded content. ||
 |#
 
 ## Example
@@ -65,7 +67,7 @@ The method `rpa.comment.add` will create a new comment in the timeline of the it
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 ## Response in case of success
 
@@ -89,7 +91,7 @@ The method `rpa.comment.add` will create a new comment in the timeline of the it
             ]
         },
         "createdTimestamp": 1585317659000,
-        "htmlDescription": "Mention of user with id 1 <a class=\"blog-p-user-name\" id=\"bp_K6r6vvp7\" href=\"/company/personal/user/1/\" bx-tooltip-user-id=\"1\">Anton Gorbylev</a> ",
+        "htmlDescription": "Mention of user with id 1 <a class=\"blog-p-user-name\" id=\"bp_K6r6vvp7\" href=\"/company/personal/user/1/\" bx-tooltip-user-id=\"1\">Anton</a> ",
         "textDescription": "Mention of user with id 1 Anton",
         "users": {
             "1": {

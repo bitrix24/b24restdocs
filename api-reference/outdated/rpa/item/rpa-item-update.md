@@ -10,8 +10,8 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameter specifications are missing
-- examples are absent
+- required parameters are not specified
+- examples are missing
 - success response is missing
 - error response is missing
 
@@ -25,31 +25,32 @@ Some data may be missing — we will complete it shortly.
 
 The method `rpa.item.update` updates the element with the identifier id of the process with the identifier typeId.
 
-#| 
-|| **Parameter** / **Type** | **Description** || 
+#|
+|| **Name**
+`type` | **Description** ||
 || **typeId** 
-[`number`](../../../data-types.md) | Process identifier. || 
+[`number`](../../../data-types.md) | Identifier of the process. ||
 || **id** 
-[`number`](../../../data-types.md) | Element identifier. || 
+[`number`](../../../data-types.md) | Identifier of the element. ||
 || **fields**^*^ 
-[`array`](../../../data-types.md) | Values of the element's custom fields. || 
+[`array`](../../../data-types.md) | Values of the custom fields of the element. ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
-## fields Parameters
+## Parameters fields
 
-#| 
-|| **Parameter** | **Description** || 
-|| **stageId** | Stage identifier. || 
-|| **UF_RPA_...** | Values of custom fields. || 
+#|
+|| **Parameter** | **Description** ||
+|| **stageId** | Identifier of the stage. ||
+|| **UF_RPA_...** | Values of custom fields. ||
 |#
 
 ## Examples
 
 **Upload a new file instead of the old one (non-multiple field)**
 
-To replace a file in a non-multiple field, simply upload a new file. The old one will be automatically deleted.
+To replace a file in a non-multiple field, simply upload the new file. The old one will be automatically deleted.
 
 {% list tabs %}
 
@@ -67,13 +68,13 @@ To replace a file in a non-multiple field, simply upload a new file. The old one
 
 {% endlist %}
 
-**Remove the value of a file-type custom field**
+**Remove the value of a custom file field**
 
 To do this, simply pass an empty string (`''`) instead of the value.
 
-**Leave the value of a non-multiple file-type field unchanged**
+**Leave the value of a non-multiple file field unchanged**
 
-The simplest option is to not add the key for this field in `fields`. However, if you need to pass it without changing it, you should pass a list where the `id` key contains the file identifier.
+The simplest option is not to add a key for this field in `fields`. However, if you need to pass it without changing, you should pass a list where the key `id` will be the identifier of the file.
 
 {% list tabs %}
 
@@ -97,13 +98,13 @@ If a value different from the current one is passed in `id`, the field value wil
 
 {% endnote %}
 
-**Working with a multiple file-type field**
+**Working with a multiple file field**
 
 The value of a multiple field is an array. Each element of the array follows the same rules as for non-multiple values.
 
-**Partial overwrite of a multiple file-type field value**
+**Partial overwrite of a multiple file field value**
 
-For example, currently, the multiple file-type field contains the value `[12, 255, 44]`.
+For example, currently, the multiple file field contains the values `[12, 255, 44]`.
 
 You need to keep files `12` and `44`, and upload a new one instead of `255`.
 
@@ -134,4 +135,4 @@ The request should look as follows:
 
 {% endlist %}
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}

@@ -6,7 +6,7 @@
 
 The method `landing.repowidget.register` adds a widget for the Homepage: our vibe. It returns an error or the `ID` of the added widget.
 
-During the addition, a check is performed. If a widget with the code `code` has already been registered previously, its content will be updated. Widgets that are already placed on the Vibes will be automatically updated in case of content changes.
+During the addition, a check is performed. If a widget with the code `code` has already been registered previously, its content will be updated. Widgets that are already placed on the vibes will be automatically updated in case of content changes.
 
 ## Method Parameters
 
@@ -29,13 +29,13 @@ During the addition, a check is performed. If a widget with the code `code` has 
 || **Name**
 `type` | **Description** ||
 || **NAME**
-[`string`](../data-types.md) | Widget name ||
+[`string`](../data-types.md) | Name of the widget ||
 || **PREVIEW**
 [`string`](../data-types.md) | URL of the widget cover image for the widget selection slider ||
 || **DESCRIPTION**
-[`string`](../data-types.md) | Widget description ||
+[`string`](../data-types.md) | Description of the widget ||
 || **CONTENT**
-[`string`](../data-types.md) | Widget layout using Vue constructs ||
+[`string`](../data-types.md) | Widget markup using Vue constructs ||
 || **SECTIONS**
 [`string`](../data-types.md) | Code of the section where the widget will be added. List of available sections:
 
@@ -54,9 +54,9 @@ During the addition, a check is performed. If a widget with the code `code` has 
 - `widgets_image` — Images
 - `widgets_video` — Video ||
 || **WIDGET_PARAMS**
-[`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue template engine. If not provided, the block will remain standard HTML code with `{{}}` ||
+[`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue templater. If absent, the block will remain as regular HTML code with `{{}}` ||
 || **ACTIVE**
-[`char`](../data-types.md) | Widget activity. Accepts values: 
+[`char`](../data-types.md) | Activity status of the widget. Accepts values: 
 
 - `Y` - widget is active and available
 - `N` - widget is inactive and unavailable ||
@@ -72,23 +72,23 @@ During the addition, a check is performed. If a widget with the code `code` has 
 || **Name**
 `type` | **Description** ||
 || **rootNode***
-[`string`](../data-types.md) | Selector for the root element in the layout that will be turned into a Vue component. The root element must be the only element in the provided template; all other markup will be cleared ||
+[`string`](../data-types.md) | Selector for the root element in the markup that will be turned into a Vue component. The root element must be the only element in the provided template; all other markup will be cleared ||
 || **lang**
 [`string`](../data-types.md) | Array of language phrases used in constructs `{{$Bitrix.Loc.getMessage('W_EMPTY')}}` ||
 || **handler***
 [`string`](../data-types.md) | Address of the [external handler](./index.md#anchor-handler) to which requests will be sent.
 
-**Important**: The handler must be accessible from the external network! Check the handler's availability using special services
+**Important**: The handler must be accessible from the external network! Check the handler's availability with special services
 
  ||
 || **style**
 [`string`](../data-types.md) | Address of styles for the widget. Styles can also be set inline in the markup via binding `:style="{borderBottom: '1px solid red'}"` ||
 || **demoData***
-[`object`](../data-types.md) | Demo data for the widget that will be used to showcase the widget in Vibe templates in [Bitrix24 Market](../../market/index.md).
+[`object`](../data-types.md) | Demo data for the widget that will be used to showcase the widget in the vibes templates in [Bitrix24 Marketplace](../../market/index.md).
 
-If you are developing a widget for a specific Bitrix24 and do not plan to publish it in the Market, you can specify any array as the parameter value; it will not be used anyway.
+If you are developing a widget for a specific Bitrix24 and do not plan to publish it in the Marketplace, you can specify any array as the value of the parameter; it will not be used anyway.
 
-However, if you are preparing a mass-market solution with a widget, pay maximum attention to the demo data — they will be displayed in the preview slider of the Vibe template! Obviously, the structure of the demo data should match what your handler `handler` would return in normal widget usage
+However, if you are preparing a mass-market solution with a widget, pay maximum attention to the demo data — they will be displayed in the preview slider of the vibe template! Obviously, the structure of the demo data should match what your handler `handler` would return in normal widget usage
  ||
 |#
 
@@ -127,7 +127,7 @@ However, if you are preparing a mass-market solution with a widget, pay maximum 
                 <button @click="fetch({param: 'a'})">Data for parameter 'a'</button>
                 <button @click="fetch({param: 'b'})">Data for parameter 'b'</button>
                 <button @click="openApplication({param1: '1', param2: 'false'})">Open application</button>
-                <button @click="openPath('/crm')">Open local address in slider</button>
+                <button @click="openPath('/crm')">Open local address in the slider</button>
             </div>
         </div>
     `;
@@ -214,7 +214,7 @@ However, if you are preparing a mass-market solution with a widget, pay maximum 
                 <button @click="fetch({param: 'a'})">Data for parameter 'a'</button>
                 <button @click="fetch({param: 'b'})">Data for parameter 'b'</button>
                 <button @click="openApplication({param1: '1', param2: 'false'})">Open application</button>
-                <button @click="openPath('/crm')">Open local address in slider</button>
+                <button @click="openPath('/crm')">Open local address in the slider</button>
             </div>
         </div>
     HTML;
@@ -224,7 +224,7 @@ However, if you are preparing a mass-market solution with a widget, pay maximum 
         'fields' => [
             'NAME' => 'My widget', 
             'PREVIEW' => 'https://my-app.com/vibe_preview.jpg', 
-            'CONTENT' => $content,  // Vue markup extracted into a separate variable for convenience
+            'CONTENT' => $content,  // Vue markup extracted to a separate variable for convenience
             'SECTIONS' => 'widgets_company_life', 
             'WIDGET_PARAMS' => [
                 'rootNode' => '.my-app-w-container',

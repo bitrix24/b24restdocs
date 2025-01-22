@@ -2,8 +2,8 @@ title: Events
 href: index.md
 items:
   - name: On new message
-    href: index.md
+    href: on-imbot-message-add.md
   - name: On message update
     href: on-imbot-message-update.md
-  - name: On message delete
+  - name: On message deletion
     href: on-imbot-message-delete.md

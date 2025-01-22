@@ -14,7 +14,7 @@ Some data may be missing — we will complete it soon.
 - parameter types are not specified
 - examples are missing
 - response in case of error is absent
-- links to pages that are not yet created are not provided
+- links to pages that have not yet been created are not provided
 - from Sergei's file: it's unclear in what context the method is applicable, needs clarification
 
 {% endnote %}
@@ -31,21 +31,21 @@ The method `im.chat.get` retrieves the chat identifier.
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **ENTITY_TYPE^*^**
 [`unknown`](../data-types.md) | `CRM` | Identifier of the entity. Can be used to find the chat and to easily determine the context in event handlers:
-- [ONIMBOTMESSAGEADD](.),
-- [ONIMBOTMESSAGEUPDATE](.),
-- [ONIMBOTMESSAGEDELETE](.) | 18 ||
+- [ONIMBOTMESSAGEADD](../chat-bots/messages/events/on-imbot-message-add.md),
+- [ONIMBOTMESSAGEUPDATE](../chat-bots/messages/events/on-imbot-message-update.md),
+- [ONIMBOTMESSAGEDELETE](../chat-bots/messages/events/on-imbot-message-delete.md) | 18 ||
 || **ENTITY_ID^*^**
 [`unknown`](../data-types.md) | `LEAD`\|`13` | Numeric identifier of the entity. Can be used to find the chat and to easily determine the context in event handlers:
-- [ONIMBOTMESSAGEADD](.),
-- [ONIMBOTMESSAGEUPDATE](.),
-- [ONIMBOTMESSAGEDELETE](.) | 18 ||
+- [ONIMBOTMESSAGEADD](../chat-bots/messages/events/on-imbot-message-add.md),
+- [ONIMBOTMESSAGEUPDATE](../chat-bots/messages/events/on-imbot-message-update.md),
+- [ONIMBOTMESSAGEDELETE](../chat-bots/messages/events/on-imbot-message-delete.md) | 18 ||
 |#
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Parameter Note](../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Explanation about restCommand](./_includes/rest-command.md) %}
+{% include [Explanation of restCommand](./_includes/rest-command.md) %}
 
 {% list tabs %}
 
@@ -66,7 +66,7 @@ The method `im.chat.get` retrieves the chat identifier.
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Examples Note](../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -76,4 +76,4 @@ The method `im.chat.get` retrieves the chat identifier.
 }
 ```
 
-**Execution result**: returns the chat identifier `CHAT_ID` or `null`.
+**Execution Result**: returns the chat identifier `CHAT_ID` or `null`.

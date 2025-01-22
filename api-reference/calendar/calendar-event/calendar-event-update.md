@@ -29,11 +29,11 @@ For a company calendar, the `ownerId` parameter has an empty value `""` ||
 || **from**
 [`datetime`\|`date`](../../data-types.md) | Start date and time of the event.
 
-You can specify a date without a time. To do this, pass the value `Y` in the `skip_time` parameter. ||
+You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter. ||
 || **to**
 [`datetime`\|`date`](../../data-types.md) | End date of the event.
 
-You can specify a date without a time. To do this, pass the value `Y` in the `skip_time` parameter. ||
+You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter. ||
 || **from_ts**
 [`integer`](../../data-types.md) | Date and time in timestamp format. Can be used instead of the `from` parameter. ||
 || **to_ts**
@@ -43,7 +43,7 @@ You can specify a date without a time. To do this, pass the value `Y` in the `sk
 || **name***
 [`string`](../../data-types.md) | Event name. ||
 || **skip_time**
-[`string`](../../data-types.md) | Pass a date value without time in the `from` and `to` parameters. Possible values:
+[`string`](../../data-types.md) | Pass the date value without time in the `from` and `to` parameters. Possible values:
 - `Y` — use only the date
 - `N` — use date and time
 
@@ -83,8 +83,8 @@ The `#` symbol in the color must be passed in unicode format — `%23`. ||
 - `N` — not private. ||
 || **recurrence_mode**
 [`string`](../../data-types.md) | Parameter for partial editing of a recurring event. Possible values:
-- `this` — changes apply only to the current event. `current_date_from` must be specified. 
-- `next` — changes apply to the current and all following events. `current_date_from` must be specified. 
+- `this` — changes apply only to the current event. `current_date_from` must be specified.
+- `next` — changes apply to the current and all following events. `current_date_from` must be specified.
 - `all` — changes apply to all events in the recurrence chain. ||
 || **current_date_from**
 [`date`](../../data-types.md) | Date of the current event for partial editing of a recurring event. ||
@@ -96,7 +96,7 @@ The `#` symbol in the color must be passed in unicode format — `%23`. ||
 - `Y` — meeting with participants
 - `N` — meeting without participants
 
-For a meeting with participants, specify the list of participants in `attendees` and the event organizer in `host`. ||
+For a meeting with participants, specify the list of attendees `attendees` and the event organizer `host`. ||
 || **location**
 [`string`](../../data-types.md) | Venue. ||
 || **remind**
@@ -108,7 +108,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 || **meeting**
 [`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting). ||
 || **crm_fields**
-[`array`](../../data-types.md) | Array of CRM entity identifiers to link to the event. Prefixes:
+[`array`](../../data-types.md) | Array of CRM object identifiers to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
 - `CO_` — company
 - `C_` — contact 
 - `L_` — lead
@@ -163,11 +163,11 @@ For a meeting with participants, specify the list of participants in `attendees`
 || **Name**
 `type` | **Description** ||
 || **notify**
-[`boolean`](../../data-types.md) | Flag for notifying about confirmation or refusal of participants. ||
+[`boolean`](../../data-types.md) | Flag for notification of confirmation or refusal by participants. ||
 || **reinvite**
 [`boolean`](../../data-types.md) | Flag for requesting re-confirmation of participation when editing the event. ||
 || **allow_invite**
-[`boolean`](../../data-types.md) | Flag for allowing participants to invite others to the event. ||
+[`boolean`](../../data-types.md) | Flag allowing participants to invite others to the event. ||
 || **hide_guests**
 [`boolean`](../../data-types.md) | Flag for hiding the list of participants. ||
 |#
@@ -404,12 +404,12 @@ HTTP status: **400**
 || Empty string | The required parameter "id" for the method "calendar.event.update" is not set. | The required parameter `id` is not provided. ||
 || Empty string | The required parameter "ownerId" for the method "calendar.event.update" is not set. | The required parameter `ownerId` is not provided. ||
 || Empty string | The required parameter "type" for the method "calendar.event.update" is not set. | The required parameter `type` is not provided. ||
-|| Empty string | Invalid value for the "name" parameter. | Incorrect data format in the `name` field. ||
-|| Empty string | Invalid value for the "description" parameter. | Incorrect data format in the `description` field. ||
-|| Empty string | Access denied. | Creation of events in the specified calendar is prohibited. ||
+|| Empty string | Invalid value for the "name" parameter. | An incorrect data format is provided in the `name` field. ||
+|| Empty string | Invalid value for the "description" parameter. | An incorrect data format is provided in the `description` field. ||
+|| Empty string | Access denied. | Creating events in the specified calendar is prohibited. ||
 || Empty string | You have specified an invalid calendar section ID or the user does not have access to it. | An identifier of an inaccessible or non-existent calendar is provided. ||
-|| Empty string | An invalid type of editing for the recurring event is specified. | An incorrect value for the `recurrence_mode` field is provided. ||
-|| Empty string | The event's CRM links list must be an array. | Incorrect data format in the `crm_fields` field. ||
+|| Empty string | An invalid type of editing for the recurring event is specified. | An incorrect value is provided in the `recurrence_mode` field. ||
+|| Empty string | The event's CRM links list must be an array. | An incorrect data format is provided in the `crm_fields` field. ||
 || Empty string | An error occurred while modifying the event. | Another error. ||
 |#
 

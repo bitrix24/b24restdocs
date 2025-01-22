@@ -1,51 +1,42 @@
-# Update Timeline Entry rpa.timeline.update
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Update Timeline Record rpa.timeline.update
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.timeline.update` will update the timeline entry with the identifier id.
+This method updates the timeline record with the identifier `id`.
 
-This method allows you to change only the fields title and description.
+The method only updates the `title` and `description` fields.
+
+## Method Parameters
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **id** 
-[`number`](../../../data-types.md) | Identifier of the entry. ||
+[`number`](../../../data-types.md) | Identifier of the record ||
 || **fields** 
-[`array`](../../../data-types.md) | Entry fields. ||
+[`array`](../../../data-types.md) | Fields of the record ||
 |#
 
-## Fields Parameters
+### Fields Parameter
 
 #|
 || **Parameter** | **Description** ||
-|| **title** | Title of the entry. ||
-|| **description** | Description of the entry (HTML can be used). ||
+|| **title** | Title of the record ||
+|| **description** | Description of the record. HTML tags can be used ||
 |#
 
 {% note warning %}
 
-This method allows you to modify only those entries that were created by the same user and through the application.
+The method only updates records that were created by the same user and through the application.
 
 {% endnote %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-timeline-add.md)
+- [{#T}](./rpa-timeline-update-is-fixed.md)
+- [{#T}](./rpa-timeline-list-for-item.md)
+- [{#T}](./rpa-timeline-delete.md)

@@ -1,4 +1,4 @@
-# Change Visibility Settings for rpa.fields.setVisibilitySettings
+# Change Field Visibility Settings rpa.fields.setVisibilitySettings
 
 {% note warning "We are still updating this page" %}
 
@@ -8,7 +8,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - missing fields table
 - missing examples
@@ -23,12 +23,13 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `rpa.fields.setVisibilitySettings` changes the visibility settings of fields for the process with the identifier typeId at the stage with the identifier stageId. Other settings remain unchanged.
+The method `rpa.fields.setVisibilitySettings` modifies the visibility settings of fields for the process with the identifier typeId at the stage with the identifier stageId. Other settings remain unchanged.
 
 This method should be used when you need to change the visibility settings for only one type.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId**^*^ 
 [`number`](../../../data-types.md) | Identifier of the process. ||
 || **visibility**^*^ 
@@ -39,7 +40,7 @@ This method should be used when you need to change the visibility settings for o
 [`array`](../../../data-types.md) | Array of fields for which the setting needs to be changed. ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 ## Example
 
@@ -62,4 +63,4 @@ This method should be used when you need to change the visibility settings for o
 
 The method will return a result similar to the request `rpa.fields.getSettings`.
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}

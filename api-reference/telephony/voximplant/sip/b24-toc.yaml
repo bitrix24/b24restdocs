@@ -1,13 +1,15 @@
 title: Managing SIP Connections
 href: voximplant-sip-connector-status.md
 items: 
+  - name: Overview of Methods
+    href: index.md
   - name: Get SIP Connector Status
     href: voximplant-sip-connector-status.md
   - name: Add SIP Connection
     href: voximplant-sip-add.md
   - name: Get List of SIP Connections
     href: voximplant-sip-get.md
-  - name: Update SIP Connection
+  - name: Modify SIP Connection
     href: voximplant-sip-update.md
   - name: Get SIP Connection Status
     href: voximplant-sip-status.md

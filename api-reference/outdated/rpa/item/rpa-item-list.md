@@ -1,4 +1,4 @@
-# Get an array of process elements rpa.item.list
+# Get an Array of Process Elements rpa.item.list
 
 {% note warning "We are still updating this page" %}
 
@@ -25,15 +25,16 @@ Some data may be missing — we will complete it shortly.
 The method `rpa.item.list` will return an array of process elements with the identifier typeId.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId** 
-[`number`](../../../data-types.md) | Process identifier. ||
-|| **order**  |  List for sorting, where the key is the field and the value is ASC or DESC. ||
-|| **filter**  | List for filtering. Keys for filtering by custom fields must be in UPPER_CASE, others in camelCase. Examples of filters are below. ||
+[`number`](../../../data-types.md) | Identifier of the process. ||
+|| **order**  |  List for sorting, where the key is the field, and the value is ASC or DESC. ||
+|| **filter**  | List for filtering. Keys for filtering by custom fields should be in UPPER_CASE, others in camelCase. Examples of filters are below. ||
 || **start**  | Offset for pagination. ||
 |#
 
-## Response in case of success
+## Response on Success
 
 > 200 OK
 
@@ -60,7 +61,7 @@ The response will contain only the main fields of the elements, without data abo
     }
     ```
 
-    To find elements that do not have tasks for the user, you need to pass the value `no_tasks`.
+    To find elements that have no tasks for the user, you need to pass the value `no_tasks`.
 
 2. **Find elements updated by the user with identifier 4**
 
@@ -135,4 +136,4 @@ The response will contain only the main fields of the elements, without data abo
     }
     ```
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}

@@ -1,39 +1,30 @@
 # Delete Timeline Entry rpa.timeline.delete
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.timeline.delete` will delete a timeline entry with the identifier id.
+This method deletes a timeline entry with the identifier `id`.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **id**^*^ 
-[`number`](../../../data-types.md) | Identifier of the entry. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`number`](../../../data-types.md) | Identifier of the entry ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 {% note warning %}
 
-This method allows deleting only those entries that were created by the same user and through the application.
+The method only deletes entries that were created by the same user and through the application.
 
 {% endnote %}
+
+## Continue Exploring 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-timeline-add.md)
+- [{#T}](./rpa-timeline-update.md)
+- [{#T}](./rpa-timeline-update-is-fixed.md)
+- [{#T}](./rpa-timeline-list-for-item.md)

@@ -23,10 +23,11 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `rpa.item.delete` removes an element.
+The method `rpa.item.delete` deletes an element.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId** 
 [`number`](../../../data-types.md) | Process identifier. ||
 || **id** 

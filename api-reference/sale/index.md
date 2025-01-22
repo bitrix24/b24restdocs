@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -27,7 +27,7 @@ Some data may be missing here — we will complete it soon.
 
 Namespaces for methods related to the Online Store:
 
-#|
+#| 
 || **Namespace** | **Description** ||
 || [Basket](./basket-item/index.md) | Methods for working with the Basket ||
 || [Basket Properties](./basket-properties/index.md) | Methods for working with basket properties ||
@@ -39,7 +39,7 @@ Namespaces for methods related to the Online Store:
 || [Trading Platforms](./trade-platform/index.md) | Methods for working with Trading Platforms ||
 || [Payments](./payment/index.md) | Methods for working with Payments ||
 || [Payer Types](./person-type/index.md) | Methods for working with Payer Types ||
-|| [Matching Individuals and Legal Entities](./business-value-person-domain/index.md) | Methods for working with elements matching individuals and legal entities ||
+|| [Payer Type Statuses](./business-value-person-domain/index.md) | Methods for configuring the correspondence of payer types to individuals or legal entities ||
 || [Shipments](./shipment/index.md) | Methods for working with Shipments ||
 || [Shipment Line Items](./shipment-item/index.md) | Methods for working with shipment line items ||
 || [Shipment Properties](./shipment-property/index.md) | Methods for working with shipment properties ||
@@ -48,7 +48,7 @@ Namespaces for methods related to the Online Store:
 || [Status Localization](./status-lang/index.md) | Methods for working with status localization ||
 || [Linking Basket Item to Payment](./payment-item-basket/index.md) | Methods for linking basket items to payments ||
 || [Linking Payments to Shipments](./payment-item-shipment/index.md) | Methods for linking payments to shipments ||
-|| [Linking Property](./property-relation/index.md) | Methods for linking properties ||
+|| [Linking Property](./property-relation/index.md) | Methods for working with property links ||
 || [Property Values](./property-value/index.md) | Methods for working with property values ||
 || [Cash Registers](./cashbox/index.md) | Methods for working with cash registers and receipts ||
 || [Delivery Services](./delivery/delivery/index.md) | Methods and webhooks for working with delivery services ||

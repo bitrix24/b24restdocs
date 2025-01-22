@@ -1,5 +1,5 @@
 title: Events
 href: index.md
 items:
-  - name: On receiving the command
-    href: index.md
+  - name: On receiving a command
+    href: on-im-command-add.md

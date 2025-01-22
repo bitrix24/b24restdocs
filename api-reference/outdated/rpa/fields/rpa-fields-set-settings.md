@@ -1,8 +1,8 @@
-# Set Full Visibility Settings for rpa.fields.setSettings
+# Set the Complete Set of Field Visibility Settings rpa.fields.setSettings
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -23,19 +23,20 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `rpa.fields.setSettings` sets the full visibility settings for fields at the stage with the identifier stageId of the process with the identifier typeId.
+The method `rpa.fields.setSettings` sets the complete set of field visibility settings for the stage with the identifier stageId of the process with the identifier typeId.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId**^*^ 
 [`number`](../../../data-types.md) | Process identifier. ||
 || **stageId** 
 [`number`](../../../data-types.md) | Stage identifier. Default is 0 (general settings). ||
 || **fields**^*^ 
-[`array`](../../../data-types.md) | Array with field visibility settings. If an empty fields is passed, all settings will be cleared. ||
+[`array`](../../../data-types.md) | Array with field visibility settings. If an empty fields is passed, all settings will be erased. ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 ## Example
 
@@ -59,4 +60,4 @@ The method `rpa.fields.setSettings` sets the full visibility settings for fields
 
 The method will return a result similar to the request `rpa.fields.getSettings`.
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

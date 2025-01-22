@@ -1,8 +1,8 @@
-# Change the imbot.command.update Team
+# Update the imbot.command.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -14,8 +14,8 @@ Some data may be missing here — we will fill it in shortly.
 - parameter types are not specified
 - not all parameters have examples in the table
 - examples are missing
-- response in case of success is missing
-- response in case of error is missing
+- no response in case of success
+- no response in case of error
 - links to pages that have not yet been created are not specified
 
 {% endnote %}
@@ -56,17 +56,17 @@ Array(
  | New translation phrases, all previous ones will be deleted | ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 {% note warning %}
 
-To process the command, the application must handle the command addition event [ONIMCOMMANDADD](./events/index.md).
+To process the command, the application must handle the command addition event [ONIMCOMMANDADD](./events/on-im-command-add.md).
 
 {% endnote %}
 
 {% note warning %}
 
-It is mandatory to specify the translation array `LANG` for at least RU and EN. If there is no phrase for BY, UA, KZ, the default phrases from RU will be shown; if there is no phrase in RU, the command will be hidden. The same applies to other languages — if there are no phrases, the default phrases from EN will be shown; if there is no phrase in EN, the command will be hidden in the public part.
+It is mandatory to specify the translation array `LANG` for at least EN and DE. If there is no phrase for BY, UA, KZ, the default phrases from EN will be shown; if there is no phrase in EN, the command will be hidden. The same applies to other languages — if there are no phrases, the default phrases from EN will be shown; if there is no phrase in EN, the command will be hidden in the public part.
 
 {% endnote %}
 
@@ -105,7 +105,7 @@ It is mandatory to specify the translation array `LANG` for at least RU and EN. 
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Examples notes](../../../_includes/examples.md) %}
 
 ## Response in case of success
 
@@ -120,7 +120,7 @@ error
 #|
 || **Code** | **Description** ||
 || **COMMAND_ID_ERROR** | Command not found. ||
-|| **APP_ID_ERROR** | The chatbot does not belong to this application. You can only work with chatbots installed within the application. ||
+|| **APP_ID_ERROR** | The chatbot does not belong to this application. It can only work with chatbots installed within the application. ||
 || **EVENT_COMMAND_ADD** | The event handler link is invalid or not specified. ||
 || **WRONG_REQUEST** | Something went wrong. ||
 |#

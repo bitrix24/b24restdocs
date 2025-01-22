@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will add it soon
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -17,23 +17,25 @@ Some data may be missing — we will add it soon
 
 {% endif %}
 
+
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.fields.getSettings` will return the complete set of field visibility settings at the stage with the identifier stageId of the process with the identifier typeId.
+The method `rpa.fields.getSettings` will return the complete set of field visibility settings for the stage with the identifier stageId of the process with the identifier typeId.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId**^*^ 
 [`number`](../../../data-types.md) | Identifier of the process. ||
 || **stageId** 
 [`number`](../../../data-types.md) | Identifier of the stage. Default is 0 (general settings). ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
-## Response on success
+## Response in case of success
 
 ```json
 {

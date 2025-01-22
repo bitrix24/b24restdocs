@@ -12,9 +12,15 @@ Some data may be missing here — we will complete it soon.
 
 An introductory article is needed about what this is and how to work with it. Key points:
 
-- where tasks in workflows come from, what types they are
-- in what scenarios developers can use them
+- where workflow tasks come from, what types exist
+- in what scenarios developers can use this
 
 {% endnote %}
 
 {% endif %}
+
+#|
+|| **Method** | **Description** ||
+|| [bizproc.task.complete](./bizproc-task-complete.md) | Completes the specified workflow task ||
+|| [bizproc.task.list](./bizproc-task-list.md) | Returns a list of workflow tasks ||
+|#

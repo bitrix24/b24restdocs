@@ -1,13 +1,15 @@
 title: Working with Messages
 href: imbot-message-add.md
 items:
+  - name: Overview of Methods
+    href: index.md
   - name: Send Message
     href: imbot-message-add.md
   - name: Edit Sent Message
     href: imbot-message-update.md
   - name: Delete Message
     href: imbot-message-delete.md
-  - name: Send "Chat-bot is typing a message..." Indicator
+  - name: Send "Chatbot is typing a message..." Indicator
     href: imbot-chat-send-typing.md
   - name: Set "Like" for Message
     href: imbot-message-like.md

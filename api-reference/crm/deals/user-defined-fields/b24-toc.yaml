@@ -1,17 +1,21 @@
 title: Custom Fields
 href: index.md
 items:
-  - name: Overview of Methods
+  - name: Overview of Methods 
     href: index.md
   - name: Add Custom Field
     href: crm-deal-userfield-add.md
-  - name: Custom Types
+  - name: Custom Types 
     href: crm-deal-user-defined-field-types.md
-  - name: Modify Existing Custom Deal Field
+  - name: Update Existing Custom Deal Field
     href: crm-deal-userfield-update.md
-  - name: Get Custom Deal Field by Id
+  - name: Get Deal Custom Field by Id
     href: crm-deal-userfield-get.md
-  - name: Get List of Custom Deal Fields
+  - name: Get List of Deal Custom Fields
     href: crm-deal-userfield-list.md
-  - name: Delete Custom Deal Field
+  - name: Delete Deal Custom Field
     href: crm-deal-userfield-delete.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

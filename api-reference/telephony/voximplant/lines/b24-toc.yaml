@@ -1,6 +1,8 @@
 title: Managing Lines
 href: voximplant-line-get.md
 items: 
+  - name: Overview of Methods
+    href: index.md
   - name: Get List of Lines
     href: voximplant-line-get.md
   - name: Get Current Line for Outgoing Calls

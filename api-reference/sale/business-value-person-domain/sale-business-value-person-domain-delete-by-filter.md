@@ -1,10 +1,10 @@
-# Delete the correspondence element for individuals and legal entities sale.businessValuePersonDomain.deleteByFilter
+# Delete the correspondence with a natural or legal person sale.businessValuePersonDomain.deleteByFilter
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `sale.businessValuePersonDomain.deleteByFilter` removes the correspondence element for individuals and legal entities.
+The method `sale.businessValuePersonDomain.deleteByFilter` removes the correspondence with a natural or legal person.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ The method `sale.businessValuePersonDomain.deleteByFilter` removes the correspon
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for deleting the correspondence element for individuals and legal entities ||
+[`object`](../../data-types.md) | Field values for deleting the correspondence with a natural or legal person ||
 |#
 
 ### Parameter fields
@@ -29,8 +29,8 @@ The method `sale.businessValuePersonDomain.deleteByFilter` removes the correspon
 
 You can obtain the identifiers of payer types using the method [sale.persontype.list](../person-type/sale-person-type-list.md) ||
 || **domain***
-[`string`](../../data-types.md) | Value corresponding to the payer type: individual or legal entity.
-- `I` — individual
+[`string`](../../data-types.md) | Value corresponding to the payer type: natural person or legal entity.
+- `I` — natural person
 - `E` — legal entity ||
 |#
 
@@ -116,8 +116,8 @@ HTTP status: **200**
         "finish":1712571752.329445,
         "duration":0.8424267768859863,
         "processing":0.6462001800537109,
-        "date_start":"2024-04-08T13:22:31+03:00",
-        "date_finish":"2024-04-08T13:22:32+03:00"
+        "date_start":"2024-04-08T13:22:31+02:00",
+        "date_finish":"2024-04-08T13:22:32+02:00"
     }
 }
 ```
@@ -128,7 +128,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of deleting the correspondence element for individuals and legal entities ||
+[`boolean`](../../data-types.md) | Result of deleting the correspondence with a natural or legal person ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -161,7 +161,7 @@ HTTP status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./sale-business-value-person-domain-add.md)
 - [{#T}](./sale-business-value-person-domain-list.md)

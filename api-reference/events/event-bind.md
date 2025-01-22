@@ -35,11 +35,11 @@ When deleting and updating the application, its actions will be removed. Therefo
 || **handler***
 [`string`](../data-types.md) | Link to the event handler ||
 || **auth_type**
-[`integer`](../data-types.md) | Identifier of the user under whom the event handler is authorized. By default, the authorization of the user whose actions triggered the event will be used ||
+[`integer`](../data-types.md) | User ID under which the event handler is authorized. By default, the authorization of the user whose actions triggered the event will be used ||
 || **event_type**
-[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior does not change. If `event_type=offline` is called, the method works with [offline events](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=99&CHAPTER_ID=04462&LESSON_PATH=8771.5380.2461.4462) ||
+[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior does not change. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
 || **auth_connector**
-[`string`](../data-types.md) | Source key. This parameter is intended for [offline events](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=99&CHAPTER_ID=04462&LESSON_PATH=8771.5380.2461.4462). It allows excluding false event triggers ||
+[`string`](../data-types.md) | Source key. This parameter is intended for [offline events](./offline-events.md). It allows excluding false event triggers ||
 || **options**
 [`string`](../data-types.md) | Additional settings for the registered event, if any ||
 |#
@@ -156,7 +156,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ERROR_EVENT_NOT_FOUND` | Event not found | The event is incorrectly specified ||
+|| `ERROR_EVENT_NOT_FOUND` | Event not found | Incorrect event specified ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

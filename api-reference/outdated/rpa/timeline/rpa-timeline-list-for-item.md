@@ -1,41 +1,26 @@
-# Get an array of timeline records for the item rpa.timeline.listForItem
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- required parameters are not specified
-- examples are missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
+# Get the timeline record array for the item rpa.timeline.listForItem
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.timeline.listForItem` returns an array of timeline records for the item with the identifier itemId of the process with the identifier itemId, sorted in descending order by creation date (newest at the top).
+The method retrieves a list of timeline records for the `itemId` of the `typeId` process.
+
+Records are sorted in descending order by creation date, meaning the newest ones are at the top of the list.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId** 
-[`number`](../../../data-types.md) | Process identifier. ||
+[`number`](../../../data-types.md) | Identifier of the process. ||
 || **itemId** 
-[`number`](../../../data-types.md) | Item identifier. ||
+[`number`](../../../data-types.md) | Identifier of the item. ||
 || **start** | Offset for pagination. ||
 |#
 
-## Response on success
+## Response Handling
 
-> 200 OK
+HTTP status: **200**
 
 ```json
 {
@@ -46,7 +31,7 @@ The method `rpa.timeline.listForItem` returns an array of timeline records for t
             "itemId": 10,
             "createdTime": "2020-03-26T20:28:57+02:00",
             "userId": 1,
-            "title": "Task completed",
+            "title": "Task Completed",
             "description": "",
             "action": "task_complete",
             "isFixed": false,
@@ -57,7 +42,7 @@ The method `rpa.timeline.listForItem` returns an array of timeline records for t
                 "scope": "task",
                 "stageFrom": {
                     "id": 30,
-                    "name": "Approved by accountant"
+                    "name": "Approved by Accountant"
                 },
                 "stageTo": {
                     "id": 31,
@@ -125,29 +110,48 @@ The method `rpa.timeline.listForItem` returns an array of timeline records for t
 }
 ```
 
-- `id` - record identifier
-- `typeId` - process identifier
-- `itemId` - item identifier
-- `createdTime` - record creation time
-- `userId` - identifier of the user who initiated the action
-- `title` - record title
-- `description` - text content of the record
-- `action` - action type code
-- `isFixed` - record attachment flag
-- `data` - serialized data about the completed action and related entities at the time of record creation. Depending on the action type, it may contain a different set of data. The main parameters are:
-- `item` - data about the item
-    - `item[name]` - name of the item at the time of action execution
-- `scope` - action source code, can take one of the following values:
-    - `manual` - manually
-    - `task` - when performing a task
-    - `automation` - by Automation rule
-    - `rest` - by application
-- `stageFrom` - data about the original stage at the time of action execution
-    - `id` - identifier
-    - `name` - name
-- `stageTo` - data about the new stage (if it was changed during action execution)
-- `fields` - array of data about fields whose values were changed during action execution
-    - `name` - field code
-    - `title` - field title
-- `task` - data about the task (if the action was performed while executing a task)
-- `users` - data about users who were involved in the action
+### Returned Data
+
+#|
+|| **Name** | **Description** ||
+|| **id** | Identifier of the record ||
+|| **typeId** | Identifier of the process ||
+|| **itemId** | Identifier of the item ||
+|| **createdTime** | Time of record creation ||
+|| **userId** | Identifier of the user who initiated the action ||
+|| **title** | Title of the record ||
+|| **description** | Text content of the record ||
+|| **action** | Action type code ||
+|| **isFixed** | Flag indicating if the record is attached ||
+|| **data** | Serialized data about the completed action and related entities at the time of record creation. Depending on the action type, it may contain a different [set of data](#data) ||
+|#
+
+#### Data Object {#data}
+
+#|
+|| **Name** | **Description** ||
+|| **item** | Data about the item:
+- `item[name]` — name of the item at the time of action execution ||
+|| **scope** | Action source code. Can take the value:
+- `manual` — manually
+- `task` — when performing a task
+- `automation` — by an Automation rule
+- `rest` — by an application ||
+|| **stageFrom** | Data about the original stage at the time of action execution
+- `id` — identifier
+- `name` — name ||
+|| **stageTo** | Data about the new stage, if it was changed during action execution ||
+|| **fields** | Array of data about fields whose values were changed during action execution
+- `name` — field code
+- `title` — field title ||
+|| **task** | Data about the task, if the action was performed while executing a task ||
+|| **users** | Data about users who were involved in the action ||
+|#
+
+## Continue Exploring 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-timeline-add.md)
+- [{#T}](./rpa-timeline-update.md)
+- [{#T}](./rpa-timeline-update-is-fixed.md)
+- [{#T}](./rpa-timeline-delete.md)

@@ -1,8 +1,8 @@
-# Get the list of stages for the process rpa.stage.listForType
+# Get the list of process stages rpa.stage.listForType
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -24,26 +24,27 @@ Some data may be missing here — we will complete it soon.
 The method `rpa.stage.listForType` will return a list of process stages sorted in order, with final stages at the end.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId**^*^ 
 [`number`](../../../data-types.md) | Process identifier. ||
 || **start** | Offset for pagination. ||
 |#
 
-{% include [Notes on parameters](../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 ## Response on success
 
 > 200 OK
 
-The information for each stage will only include basic data, without `tasks`, `robotsCount`, `possibleNextStages`, `permissions`:
+The information for each stage will include only basic data, without `tasks`, `robotsCount`, `possibleNextStages`, `permissions`:
 
 ```json
 {
     "stages": [
         {
             "id": 1,
-            "name": "Start",
+            "name": "Launch",
             "code": "",
             "color": "22B9FF",
             "sort": 1000,

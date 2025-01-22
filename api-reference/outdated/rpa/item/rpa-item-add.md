@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -27,7 +27,8 @@ The method `rpa.item.add` creates a new workflow element with the identifier typ
 To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId**^*^
 [`number`](../../../data-types.md) | Identifier of the workflow.||
 || **fields**
@@ -38,7 +39,7 @@ To upload a file, the value of the custom field must be an array where the first
 
 {% note warning %}
 
-After creating the element, automation rules will be triggered automatically.
+After creating the element, Automation rules will be triggered automatically.
 
 {% endnote %}
 

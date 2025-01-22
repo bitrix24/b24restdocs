@@ -1,42 +1,42 @@
-# Add Business Value Person Domain Element sale.businessValuePersonDomain.add
+# Add Correspondence to a Natural or Legal Person sale.businessValuePersonDomain.add
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `sale.businessValuePersonDomain.add` adds a correspondence for the selected payer type to a physical or legal entity. This is necessary for the operation of the business meanings mechanism.
+The method `sale.businessValuePersonDomain.add` adds correspondence for the selected payer type to a natural or legal person. This is necessary for the operation of the business meanings mechanism.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating a correspondence element for physical and legal entities ||
+[`object`](../../data-types.md) | Field values for creating correspondence to a natural or legal person ||
 |#
 
 ### Parameter fields
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **personTypeId***
-[`sale_person_type.id`](../data-types.md) | Identifier for the payer type.
+[`sale_person_type.id`](../data-types.md) | Identifier for the payer type. 
 
 You can obtain the identifiers for payer types using the method [sale.persontype.list](../person-type/sale-person-type-list.md) ||
 || **domain***
-[`string`](../../data-types.md) | Value corresponding to the payer type: physical or legal entity.
-- `I` — individual
-- `E` — legal entity ||
+[`string`](../../data-types.md) | Value corresponding to the payer type: natural or legal person.
+- `I` — natural person
+- `E` — legal person ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -106,7 +106,7 @@ You can obtain the identifiers for payer types using the method [sale.persontype
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -134,14 +134,14 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **businessValuePersonDomain**
-[`sale_business_value_person_domain`](../data-types.md) | Object containing information about the added correspondence for the payer type ||
+[`sale_business_value_person_domain`](../data-types.md) | Object containing information about the added correspondence of the payer type to a natural or legal person ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -159,8 +159,8 @@ HTTP status: **400**
 || `201250000001` | Correspondence for the specified payer type identifier already exists ||
 || `201240400002` | Payer type with the specified identifier does not exist ||
 || `200040300020` | Access error to the record ||
-|| `100` | Parameter `fields` is missing or empty ||
-|| `0` | Required fields not provided ||
+|| `100` | Parameter `fields` is not specified or is empty ||
+|| `0` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

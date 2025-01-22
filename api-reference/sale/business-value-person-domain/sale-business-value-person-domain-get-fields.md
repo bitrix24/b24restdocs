@@ -1,10 +1,10 @@
-# Get Fields of the Business Value Person Domain sale.businessValuePersonDomain.getFields
+# Get Fields for Individual or Legal Entity sale.businessValuePersonDomain.getFields
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `sale.businessValuePersonDomain.getFields` returns the fields of the business value person domain.
+The method `sale.businessValuePersonDomain.getFields` returns the fields corresponding to an individual or legal entity.
 
 No parameters.
 
@@ -111,7 +111,7 @@ HTTP Status: **200**
 || **businessValuePersonDomain**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_business_value_person_domain`](../data-types.md), and `value` is an object of type [`rest_field_description`](../data-types.md) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

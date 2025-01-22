@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing — we will complete it soon.
 
 - Required parameters are not specified
 - Examples are missing
-- Response in case of an error is absent
+- Response in case of error is absent
 
 {% endnote %}
 
@@ -25,14 +25,15 @@ Some data may be missing — we will complete it soon.
 The method `rpa.item.getTasks` will return data on the current tasks of the element with the identifier id of the process with the identifier typeId.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId** 
 [`number`](../../../data-types.md) | Identifier of the process. ||
 || **id** 
 [`number`](../../../data-types.md) | Identifier of the element. ||
 |#
 
-## Response in Case of Success
+## Response on Success
 
 > 200 OK
 
@@ -63,7 +64,7 @@ The method `rpa.item.getTasks` will return data on the current tasks of the elem
                 "url": "/rpa/task/id/93/",
                 "fieldsToShow": null,
                 "fieldsToSet": [
-                    "Title"
+                    "Name"
                 ],
                 "users": [
                     {

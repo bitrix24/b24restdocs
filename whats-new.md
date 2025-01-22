@@ -2,6 +2,15 @@
 
 ## 2025
 
+### January 22, 2025
+
+- Updated the main page of the [Calendar Events](./api-reference/calendar/calendar-event/index.md) section. Added introductory information and an overview of methods and connections
+- Updated the main page of the [Delivery Services](./api-reference/sale/delivery/index.md) section. Added introductory information and an overview of methods and connections
+- Updated the main page of the [Payer Type Statuses](./api-reference/sale/business-value-person-domain/index.md) section. Added introductory information and an overview of methods
+- Updated the main page of the [Shipments](./api-reference/sale/shipment/index.md) section. Added introductory information and an overview of methods
+- Updated the documentation for [Resource Booking](./api-reference/calendar/resource/index.md) in the Calendar section
+- Updated the documentation for [Custom Field Events for Deals](./api-reference/crm/deals/user-defined-fields/events/index.md)
+
 ### January 15, 2025
 
 - Updated the main page of the section [Deal Connection with Contacts](./api-reference/crm/deals/contacts/index.md). Added introductory information and an overview of methods

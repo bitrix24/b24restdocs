@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
 - success response is missing
@@ -24,16 +24,17 @@ Some data may be missing here — we will complete it soon.
 
 The method `rpa.stage.delete` removes a stage.
 
-#|
-|| **Parameter** / **Type** | **Description** ||
+#| 
+|| **Name** 
+`type` | **Description** || 
 || **id**^*^ 
-[`number`](../../../data-types.md) | Identifier of the stage. ||
+[`number`](../../../data-types.md) | Identifier of the stage. || 
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 {% note warning %}
 
-There must always be one successful stage in the process. A successful stage cannot be deleted.
+A process must always have one successful stage. A successful stage cannot be deleted.
 
 {% endnote %}

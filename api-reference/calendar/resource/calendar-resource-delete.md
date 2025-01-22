@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `calendar.resource.delete` removes a resource.
+This method deletes a resource.
 
 ## Method Parameters
 
@@ -13,12 +13,34 @@ The method `calendar.resource.delete` removes a resource.
 #|
 || **Name**
 `type` | **Description** ||
-|| **resourceId*** | Resource identifier. ||
+|| **resourceId*** | Resource identifier.
+
+You can obtain the identifier using the resource creation method [calendar.resource.add](./calendar-resource-add.md) or the resource listing method [calendar.resource.list](./calendar-resource-list.md) ||
 |#
 
-## Example
+## Code Examples
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"resourceId":521}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.resource.delete
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"resourceId":521,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/calendar.resource.delete
+    ```
 
 - JS
 
@@ -31,6 +53,23 @@ The method `calendar.resource.delete` removes a resource.
     );
     ```
 
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'calendar.resource.delete',
+        [
+            'resourceId' => 521
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
 {% include [Note on examples](../../../_includes/examples.md) %}
@@ -41,15 +80,15 @@ HTTP status: **200**
 
 ```json
 {
-  "result": true,
-  "time": {
-    "start": 1733318565.183275,
-    "finish": 1733318565.695058,
-    "duration": 0.5117831230163574,
-    "processing": 0.29406094551086426,
-    "date_start": "2024-12-04T13:22:45+00:00",
-    "date_finish": "2024-12-04T13:22:45+00:00"
-  }
+    "result": true,
+    "time": {
+        "start": 1733318565.183275,
+        "finish": 1733318565.695058,
+        "duration": 0.5117831230163574,
+        "processing": 0.29406094551086426,
+        "date_start": "2024-12-04T13:22:45+00:00",
+        "date_finish": "2024-12-04T13:22:45+00:00"
+    }
 }
 ```
 
@@ -59,7 +98,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns **true** if the deletion was successful. ||
+[`boolean`](../../data-types.md) | Returns `true` if the deletion is successful ||
 |#
 
 ## Error Handling
@@ -68,8 +107,8 @@ HTTP status: **400**
 
 ```json
 {
-  "error": "",
-  "error_description": "The required parameter \"resourceId\" for the method \"calendar.resource.delete\" is not set."
+    "error": "",
+    "error_description": "The required parameter 'resourceId' for the method 'calendar.resource.delete' is not set"
 }
 ```
 
@@ -79,9 +118,17 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "resourceId" for the method "calendar.resource.delete" is not set. | The required parameter `resourceId` was not provided. ||
-|| Empty string | Access denied | The method is called by an external user or the user is prohibited from modifying resources. ||
-|| Empty string | An error occurred while deleting the section | Another error. ||
+|| Empty string | The required parameter 'resourceId' for the method 'calendar.resource.delete' is not set | The required parameter `resourceId` was not provided ||
+|| Empty string | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
+|| Empty string | An error occurred while deleting the section | Another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./calendar-resource-add.md)
+- [{#T}](./calendar-resource-update.md)
+- [{#T}](./calendar-resource-booking-list.md)
+- [{#T}](./calendar-resource-list.md)

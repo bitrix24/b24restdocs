@@ -1,39 +1,23 @@
 # Get Process Information by ID rpa.type.get
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- examples are missing
-- response in case of error is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.type.get` returns information about a process by its ID.
+This method retrieves information about a process by its `id`.
+
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **id**^*^ 
-[`number`](../../../data-types.md) | Process ID. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`number`](../../../data-types.md) | Process identifier ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+## Response Handling
 
-## Successful Response
-
-> 200 OK
+HTTP status: **200**
 
 ```json
 {
@@ -57,8 +41,21 @@ The method `rpa.type.get` returns information about a process by its ID.
 }
 ```
 
-- `title` - name of the process
-- `image` - this is the icon identifier from the list
-- `createdBy` - ID of the user who created the process
-- `settings` - set of process settings
-- `permissions` - set of access permissions for this process
+### Returned Data
+
+#|
+|| **Name** | **Description** ||
+|| **title** | Process name ||
+|| **image** | Icon identifier from the list ||
+|| **createdBy** | Identifier of the user who created the process ||
+|| **settings** | Set of process settings ||
+|| **permissions** | Set of access permissions for this process ||
+|#
+
+## Continue Exploring 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-type-add.md)
+- [{#T}](./rpa-type-update.md)
+- [{#T}](./rpa-type-list.md)
+- [{#T}](./rpa-type-delete.md)

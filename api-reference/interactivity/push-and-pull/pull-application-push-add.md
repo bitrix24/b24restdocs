@@ -1,8 +1,8 @@
-# Send push notifications to mobile devices within the Bitrix24 application pull.application.push.add
+# Send push notifications to a mobile device using the method pull.application.push.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -21,14 +21,14 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: administrator
 
-The method `pull.application.push.add` is used to send push notifications to mobile devices within the Bitrix24 application.
+The method `pull.application.push.add` is used to send a push notification to a mobile device within the Bitrix24 application.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
-|| **USER_ID**^*^ | Identifiers of users receiving the push notifications. ||
-|| **TEXT** | Arbitrary text. ||
+|| **USER_ID**^*^ | Identifiers of the users receiving the push notifications. ||
+|| **TEXT** | Custom text. ||
 || **AVATAR** | Link to an image. ||
 |#
 
@@ -44,7 +44,7 @@ The method `pull.application.push.add` is used to send push notifications to mob
     BX24.callMethod('pull.application.push.add', {
         'USER_ID': [1,2,3],
         'TEXT': 'Hello, world!',
-        'AVATAR': 'https://files.shelenkov.com/images/avatar-smith.jpg',
+        'AVATAR': 'https://files.shelenkov.com/images/avatar-johnson.jpg',
     }, function(result){
         if(result.error())
         {
@@ -60,9 +60,9 @@ The method `pull.application.push.add` is used to send push notifications to mob
   
     ```php
     $result = restCommand('pull.application.push.add', [
-        'USER_ID': [1,2,3],
-        'TEXT': 'Hello, world!',
-        'AVATAR': 'https://files.shelenkov.com/images/avatar-smith.jpg',
+        'USER_ID' => [1,2,3],
+        'TEXT' => 'Hello, world!',
+        'AVATAR' => 'https://files.shelenkov.com/images/avatar-johnson.jpg',
     ], $_REQUEST["auth"]);
     ```
 
@@ -101,12 +101,12 @@ Keys:
 
 #|
 || **Code** | **Description** ||
-|| TEXT_ERROR     | Message text not provided. ||
-|| EMPTY_APP_NAME | Error occurs if your application does not have a name. ||
+|| TEXT_ERROR     | Message text was not provided. ||
+|| EMPTY_APP_NAME | Error occurs if your application does not have a name assigned. ||
 || ACCESS_ERROR    | The method can only be used by a user with administrator rights. ||
-|| WRONG_AUTH_TYPE | The method can only be used within [OAuth 2.0](https://training.bitrix24.com/support/training/course/index.php?COURSE_ID=169&LESSON_ID=20110&LESSON_PATH=13643.20052.20096.20110). ||
+|| WRONG_AUTH_TYPE | The method can only be used within [OAuth 2.0](../../oauth/index.md). ||
 |#
 
 ## See also
 
-- [Interactivity in applications](https://training.bitrix24.com/support/training/course/index.php?COURSE_ID=169&CHAPTER_ID=020088&LESSON_PATH=13643.20052.20088)
+- [Interactivity in applications](../../interactivity/index.md)

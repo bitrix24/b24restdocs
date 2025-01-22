@@ -1,68 +1,54 @@
-# Create a new process rpa.type.add
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
+# Create Process rpa.type.add
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.type.add` will create a new process.
+This method will create a new process.
+
+## Method Parameters
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **fields**
-[`array`](../../../data-types.md) | A list of process fields. The list of possible fields is described below.||
+[`array`](../../../data-types.md) | A list of process fields. The list of possible fields is described below ||
 |#
 
-## Parameters fields
+### Parameter fields
+
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **title**^*^ | The name of the process. ||
-|| **image** | The image of the process from the list. ||
-|| **settings** | A list with an arbitrary set of process settings. ||
-|| **permissions** | An array with access permissions for this process. ||
+|| **Name**
+`type` | **Description** ||
+|| **title*** 
+[`string`](../../../data-types.md) | The name of the process ||
+|| **image** | The image of the process from the list ||
+|| **settings**
+[`array`](../../../data-types.md) | A list of arbitrary settings for the process ||
+|| **permissions**
+[`array`](../../../data-types.md) | A list of objects. Each object describes the access permissions for this process ||
 |#
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
-
 {% note warning %}
 
-Automatic scenarios (creating stages, Automation rules, and default fields) will not be triggered when creating a process via `rest`.
+- Automated scenarios, such as creating stages, Automation rules, and default fields, will not be triggered when creating a process via `rest`.
+- The request must specify the access permissions for modifying the process.
 
 {% endnote %}
 
-{% note warning %}
+## Code Examples
 
-Important! The request must specify access permissions for modifying the process.
+Create a new process named "My Process". All users can create items for this process. Only the user with `id = 1` can change the settings of this process.
 
-{% endnote %}
-
-## Example
-
-This request will create a new process named "My Process". All users will be able to create items for this process. Only the user with ID 1 will be able to change the settings of this process.
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
-    ```json
+    ```js
     {
         "fields": {
             "title": "My Process",
@@ -77,7 +63,7 @@ This request will create a new process named "My Process". All users will be abl
                     "accessCode": "U1",
                     "permission": "X",
                     "action": "MODIFY"
-                }
+                },
             ]
         }
     }
@@ -85,8 +71,14 @@ This request will create a new process named "My Process". All users will be abl
 
 {% endlist %}
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+## Response Handling
 
-## Response in case of success
+The method will return data in the response similar to the response of the method [rpa.type.get](./rpa-type-get.md).
 
- Returns data in the response similar to the response for the request [rpa.type.get](./rpa-type-get.md).
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-type-update.md)
+- [{#T}](./rpa-type-get.md)
+- [{#T}](./rpa-type-list.md)
+- [{#T}](./rpa-type-delete.md)

@@ -1,8 +1,8 @@
-# Remove Automation Rule from Workflow rpa.task.delete
+# Remove Automation Rule from Process rpa.task.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing — we will complete it soon.
 
 - required parameters are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -23,12 +23,13 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `rpa.task.delete` will remove the Automation rule named robotName from the workflow with the identifier typeId at the stage with the identifier stageId.
+The method `rpa.task.delete` will remove the Automation rule with the name robotName from the process with the identifier typeId at the stage with the identifier stageId.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId** 
-[`number`](../../../data-types.md) | Identifier of the workflow. ||
+[`number`](../../../data-types.md) | Identifier of the process. ||
 || **stageId** 
 [`number`](../../../data-types.md) | Identifier of the stage. ||
 || **robotName** 

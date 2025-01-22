@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 Introductory article about Automation rules with key points:
 
@@ -19,3 +19,12 @@ Introductory article about Automation rules with key points:
 {% endnote %}
 
 {% endif %}
+
+#| 
+|| **Method** | **Description** ||
+|| [bizproc.robot.add](./bizproc-robot-add.md) | Registers a new Automation rule ||
+|| [bizproc.robot.update](./bizproc-robot-update.md) | Updates the fields of an already added Automation rule ||
+|| [bizproc.robot.list](./bizproc-robot-list.md) | Returns a list of Automation rules registered by the application ||
+|| [bizproc.robot.delete](./bizproc-robot-delete.md) | Deletes a registered Automation rule ||
+|| [bizproc.event.send](./bizproc-event-send.md) | Returns the output parameters of the action specified in the action description || 
+|#

@@ -13,12 +13,12 @@ It only works when logged in as a user with administrative rights to the account
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***
-[`string`](../data-types.md) | Event name ||
-|| **handler***
+|| **event***  
+[`string`](../data-types.md) | Name of the event ||
+|| **handler***  
 [`string`](../data-types.md) | Link to the event handler ||
-|| **auth_type**
-[`integer`](../data-types.md) | User identifier under which the event handler is authorized.
+|| **auth_type**  
+[`integer`](../data-types.md) | Identifier of the user under which the event handler is authorized.
 
 {% note info %}
 
@@ -26,8 +26,8 @@ If you need to remove event handlers set with an empty `auth_type` (authorized o
 
 {% endnote %} 
 ||
-|| **event_type**
-[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=99&CHAPTER_ID=04462&LESSON_PATH=8771.5380.2461.4462) ||
+|| **event_type**  
+[`string`](../data-types.md) | Values: `online|offline`. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
 |#
 
 If any parameters are not specified, all event handlers that meet the other requirements will be removed.
@@ -142,9 +142,9 @@ The method returns the number of event handlers removed upon invocation.
 #|
 || **Name**
 `type` | **Description** ||
-|| **result**
+|| **result**  
 [`object`](../data-types.md) | Root element of the response ||
-|| **time**
+|| **time**  
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 

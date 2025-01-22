@@ -1,10 +1,10 @@
-# Get a List of Correspondence Elements for Individuals and Legal Entities sale.businessValuePersonDomain.list
+# Get a List of Matches for a Natural or Legal Person sale.businessValuePersonDomain.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `sale.businessValuePersonDomain.list` retrieves a list of correspondence elements for individuals and legal entities.
+The method `sale.businessValuePersonDomain.list` retrieves a list of matches for a natural or legal person.
 
 ## Method Parameters
 
@@ -14,21 +14,21 @@ The method `sale.businessValuePersonDomain.list` retrieves a list of corresponde
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | The array contains a list of fields to be selected.
+[`array`](../../data-types.md) | An array containing the list of fields to select.
 
-If not provided or an empty array is passed, all available fields of the correspondence elements for individuals and legal entities will be selected.
+If not provided or an empty array is passed, all available fields for matching a natural or legal person will be selected.
 
-Possible values for the array elements:
+Possible values for array elements:
 - `personTypeId`
 - `domain` ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected correspondence elements for individuals and legal entities in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering the selected matches for a natural or legal person in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field`:
 - `personTypeId`
 - `domain` 
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -36,9 +36,9 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `@` — IN (an array is passed as the value)
 - `!@`— NOT IN (an array is passed as the value)
 - `=` — equals, exact match (used by default)
-- `!=` - not equal ||
+- `!=` - does not equal ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting the selected correspondence elements for individuals and legal entities in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting the selected matches for a natural or legal person in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field`:
 - `personTypeId`
@@ -50,9 +50,9 @@ Possible values for `order`:
 || **start**
 [`integer`](../../data-types.md) | This parameter is used for managing pagination.
 
-The page size of the results is always static: 50 records.
+The page size of results is always static: 50 records.
 
-To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
+To select the second page of results, the value `50` must be passed. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
@@ -163,7 +163,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
 || **businessValuePersonDomains**
-[`sale_business_value_person_domain[]`](../data-types.md) | An array of objects containing information about the selected correspondence elements for individuals and legal entities ||
+[`sale_business_value_person_domain[]`](../data-types.md) | An array of objects with information about the selected matches ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**

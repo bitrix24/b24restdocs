@@ -1,8 +1,8 @@
-# Get Information About the Element rpa.item.get
+# Get Information About the rpa.item.get Element
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameter specifications are missing
-- examples are absent
-- response in case of error is missing
+- Required parameters are not specified
+- Examples are missing
+- Response in case of error is absent
 
 {% endnote %}
 
@@ -25,7 +25,8 @@ Some data may be missing here — we will complete it shortly.
 The method `rpa.item.get` returns information about the element with the identifier id of the process with the identifier typeId.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId** 
 [`number`](../../../data-types.md) | Identifier of the process. ||
 || **id** 
@@ -91,7 +92,7 @@ Here:
 - `updatedTime` - time the element was modified
 - `movedTime` - time the stage of the element was changed
 - `detailUrl` - link to the detail form of the element
-- `tasksCounter` - number of tasks assigned to the element for the user
+- `tasksCounter` - number of tasks on the element for the user
 - `tasksFaces` - information for rendering the sequence of responsible parties during approval
 - `completed` - who completed the task
 - `running` - who is currently working on the task
@@ -107,7 +108,7 @@ Here:
 - `link` - link to the profile
 - `UF_RPA_...` - values of custom fields
 - values of multiple fields are returned as an array
-- values of file-type fields are returned as a list
+- value of a "file" type field is returned as a list
     - `id` - identifier
     - `url` - link to the file on the account
     - `urlMachine` - link to the file for the application

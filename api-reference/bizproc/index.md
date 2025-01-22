@@ -1,6 +1,8 @@
 # Workflows and Automation Rules
 
-Workflows in Bitrix24 are a low-code tool that allows you to automate everyday tasks without requiring deep programming knowledge. Users can easily configure various operations using pre-built actions.
+> Quick navigation: [all methods and events](#all-methods) 
+
+Workflows in Bitrix24 are a low-code tool that allows you to automate everyday tasks without the need for deep programming knowledge. Users can easily configure various operations using ready-to-use actions.
 
 ![Workflow Designer](_images/sequence_templ3_sm.png "Workflow Designer")
 

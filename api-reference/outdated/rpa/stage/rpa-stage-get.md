@@ -24,14 +24,15 @@ Some data may be missing — we will complete it soon.
 The method `rpa.stage.get` returns information about a stage by its ID.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **id**^*^ 
 [`number`](../../../data-types.md) | Stage ID. ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
-## Successful Response
+## Response on Success
 
 > 200 OK
 
@@ -57,7 +58,7 @@ The method `rpa.stage.get` returns information about a stage by its ID.
                 {
                     "id": "U1",
                     "entityId": 1,
-                    "name": "Anton",
+                    "name": "Anthony",
                     "photoSrc": "",
                     "url": "\/company\/personal\/user\/1\/",
                     "entityType": "users"

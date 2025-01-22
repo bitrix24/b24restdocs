@@ -6,7 +6,7 @@
 
 The method `user.option.set` binds data to the application and user.
 
-Depending on the type of application, it can be bound to the user who installed it or to the user with whom it interacts (applications of [the second type](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=88&LESSON_ID=7381)).
+The application can be bound to the installing user if it is a [no UI application](../../../local-integrations/serverside-local-app-with-no-ui.md) or to the user it interacts with if it is a [UI application](../../../local-integrations/serverside-local-app-with-ui.md).
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ Depending on the type of application, it can be bound to the user who installed 
 || **Name**
 `type` | **Description** ||
 || **options***
-[`array`](../../data-types.md) | An array where the key is the name of the property to be saved, and the value is the property value. If a value with a new key is passed, the method will write it; if an existing one, it will update it ||
+[`array`](../../data-types.md) | An array where the key is the name of the property to be saved, and the value is the property value. If a value with a new key is passed, the method will write it, and if an existing one, it will update it. ||
 |#
 
 ## Code Examples

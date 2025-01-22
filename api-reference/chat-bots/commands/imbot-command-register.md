@@ -1,20 +1,20 @@
-# Add the imbot.command.register Command
+# Add the command imbot.command.register
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- corrections needed for writing standards
-- parameter types not specified
-- required parameters not indicated
-- examples missing for some parameters in the table
-- examples are absent
+- edits needed for writing standards
+- parameter types are not specified
+- parameter requirements are not indicated
+- not all parameters have examples in the table
+- examples are missing
 - success response is missing
 - error response is missing
 - links to pages that have not yet been created are not specified
@@ -27,24 +27,24 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `imbot.command.register` registers a command for processing by the chatbot.
+The method `imbot.command.register` registers a command for processing by the chat bot.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **BOT_ID**
-[`unknown`](../../data-types.md) | `62` | Identifier of the chatbot that owns the command | ||
+[`unknown`](../../data-types.md) | `62` | Identifier of the chat bot that owns the command | ||
 || **COMMAND**
 [`unknown`](../../data-types.md) | `'echo'` | The text of the command that the user will enter in chats.
 
 Only Latin letters and numbers can be used. Spaces and special characters are not accepted | ||
 || **COMMON**
-[`unknown`](../../data-types.md) | `'Y'` | If Y is specified, the command is available in all chats; if N, it is only available in those where the chatbot is present | ||
+[`unknown`](../../data-types.md) | `'Y'` | If Y is specified, the command is available in all chats; if N, it is only available in those where the chat bot is present | ||
 || **HIDDEN**
 [`unknown`](../../data-types.md) | `'N'` | Whether the command is hidden or not - defaults to N | ||
 || **EXTRANET_SUPPORT**
 [`unknown`](../../data-types.md) | `'N'` | Whether the command is available to Extranet users, defaults to N | ||
 || **CLIENT_ID**
-[`unknown`](../../data-types.md) | `''` | String identifier of the chatbot, used only in Webhook mode | ||
+[`unknown`](../../data-types.md) | `''` | String identifier of the chat bot, used only in Webhook mode | ||
 || **LANG^*^**
 [`unknown`](../../data-types.md) | 
 ```php
@@ -61,19 +61,19 @@ Array(
 [`unknown`](../../data-types.md) | `'http://www.hazz/chatApi/bot.php'` | Link to the handler for commands | ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 {% note warning %}
 
-To process the command, the application must handle the event of adding a command [ONIMCOMMANDADD](./events/index.md).
+To process the command, the application must handle the event of adding a command [ONIMCOMMANDADD](./events/on-im-command-add.md).
 
 {% endnote %}
 
 {% note warning %}
 
-Attention! If you plan to install more than one command for the chatbot: Bitrix24 Rest imposes a restriction on working with event handlers - there can only be one handler per application. Therefore, when registering a second command, the links to the handlers `EVENT_COMMAND_ADD` must be the same as for the first command.
+Attention! If you plan to install more than one command for the chat bot: Bitrix24 Rest imposes a restriction on working with event handlers - there can only be one handler per application. Therefore, when registering a second command, the links to the handlers `EVENT_COMMAND_ADD` must be the same as for the first command.
 
-If it is necessary to process multiple commands within one application, this must be accounted for within the event handler. For this, an array of commands is passed when the event occurs, so they can be processed correctly.
+If it is necessary to handle multiple commands within one application, this must be accounted for within the event handler. When the event occurs, an array of commands is passed to allow for correct processing.
 
 {% endnote %}
 
@@ -118,28 +118,28 @@ It is mandatory to specify the array of translations `LANG` for at least DE and 
 
 {% endlist %}
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}
 
-## Success Response
+## Success response
 
 The command identifier `COMMAND_ID`.
 
-## Error Response
+## Error response
 
 error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
 || **EVENT_COMMAND_ADD** | The event handler link is invalid or not specified. ||
-|| **COMMAND_ERROR** | The text of the command that the chatbot should respond to is not specified. ||
-|| **BOT_ID_ERROR** | The chatbot was not found. ||
-|| **APP_ID_ERROR** | The chatbot does not belong to this application. Only chatbots installed within the application can be used. ||
+|| **COMMAND_ERROR** | The text of the command that the chat bot should respond to is not specified. ||
+|| **BOT_ID_ERROR** | The chat bot was not found. ||
+|| **APP_ID_ERROR** | The chat bot does not belong to this application. Only chat bots installed within the application can be used. ||
 || **LANG_ERROR** | Language phrases for the visible command were not provided. ||
 || **WRONG_REQUEST** | Something went wrong. ||
 |#
 
-## Related Links
+## Related links
 
-- [Event for receiving a command by the chatbot ONIMCOMMANDADD](./events/index.md)
+- [Event for the chat bot to receive the command ONIMCOMMANDADD](./events/on-im-command-add.md)

@@ -4,10 +4,10 @@
 >
 > Who can execute the method: any user
 
-Methods available when working with Automation rules:
+Methods for working with Automation rules:
 
 #|
-|| **Space** | **Description** ||
+|| **Section** | **Description** ||
 || [rpa.type.*](./type/index.md) | Methods for working with processes ||
 || [rpa.stage.*](./stage/index.md) | Methods for working with stages ||
 || [rpa.item.*](./item/index.md) | Methods for working with entities ||
@@ -17,6 +17,6 @@ Methods available when working with Automation rules:
 || [rpa.comment.*](./comment/index.md) | Methods for managing comments in the timeline of entities ||
 |#
 
-## See also
+## See Also
 
 - [User Field Settings](../../crm/universal/userfieldconfig/index.md)

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -26,11 +26,12 @@ Some data may be missing — we will complete it soon.
 The method `rpa.task.addUser` will add a user to an existing task.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **typeId** 
-[`number`](../../../data-types.md) | Process identifier. ||
+[`number`](../../../data-types.md) | Identifier of the process. ||
 || **stageId** 
-[`number`](../../../data-types.md) | Stage identifier. ||
+[`number`](../../../data-types.md) | Identifier of the stage. ||
 || **automationRuleName** 
 [`string`](../../../data-types.md) | Name of the Automation rule. ||
 || **userValue** 

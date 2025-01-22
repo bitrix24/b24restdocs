@@ -1,0 +1,13 @@
+title: Events
+href: index.md
+items: 
+  - name: Overview of Events
+    href: index.md
+  - name: On Adding a Custom Field 
+    href: on-crm-deal-user-field-add.md
+  - name: On Updating a Custom Field 
+    href: on-crm-deal-user-field-update.md
+  - name: On Deleting a Custom Field 
+    href: on-crm-deal-user-field-delete.md
+  - name: On Changing the Set of Values for a Custom List Field
+    href: on-crm-deal-user-field-set-enum-values.md

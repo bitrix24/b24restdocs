@@ -1,13 +1,13 @@
-title: Compliance with Individuals and Legal Entities
+title: Statuses of Payer Types
 href: index.md
 items: 
   - name: Overview of Methods
     href: index.md 
-  - name: Add Compliance Element for Individuals and Legal Entities
+  - name: Add Correspondence to Individual or Legal Entity
     href: sale-business-value-person-domain-add.md
-  - name: Get List of Compliance Elements for Individuals and Legal Entities
+  - name: Get List of Correspondences to Individual or Legal Entity
     href: sale-business-value-person-domain-list.md
-  - name: Delete Compliance Element for Individuals and Legal Entities
+  - name: Remove Correspondence to Individual or Legal Entity
     href: sale-business-value-person-domain-delete-by-filter.md 
-  - name: Get Fields of Compliance Element for Individuals and Legal Entities
+  - name: Get Fields of Correspondence to Individual or Legal Entity
     href: sale-business-value-person-domain-get-fields.md

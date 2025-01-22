@@ -45,7 +45,7 @@ items:
     include:
       path: person-type/b24-toc.yaml
       mode: link
-  - name: Correspondence of Individuals and Legal Entities
+  - name: Payer Type Statuses
     include:
       path: business-value-person-domain/b24-toc.yaml
       mode: link
@@ -81,7 +81,7 @@ items:
     include:
       path: payment-item-shipment/b24-toc.yaml
       mode: link
-  - name: Property Binding
+  - name: Linking Property
     include:
       path: property-relation/b24-toc.yaml
       mode: link

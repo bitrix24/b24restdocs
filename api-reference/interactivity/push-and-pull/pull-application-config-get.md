@@ -8,10 +8,10 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
 
 {% endnote %}
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: administrator
 
-The method `pull.application.config.get` is used to retrieve information about the connection to real-time servers and to organize instant communications within applications.
+The method `pull.application.config.get` is used to retrieve information about connecting to real-time servers and organizing instant communications within applications.
 
 By connecting to RT servers, you can:
 - create a truly interactive application,
@@ -31,7 +31,7 @@ By connecting to RT servers, you can:
 
 {% note warning %}
 
-The method will return data about the connection to channels specifically created for your REST application. Within these channels, you will receive only your events.
+The method will return data about connections to channels specifically created for your REST application. Within these channels, you will receive only your events.
 
 {% endnote %}
 
@@ -73,7 +73,7 @@ The method will return data about the connection to channels specifically create
 
 {% include [Examples Note](../../../_includes/examples.md) %}
 
-## Successful Response
+## Response on Success
 
 > 200 OK
 
@@ -118,24 +118,24 @@ The **server** object describes the server configuration and paths for connectin
 - **websocket_enabled** - whether websocket functionality is available,
 - **long_polling** and **websocket** - connection paths,
 - **long_polling_secure** and **websocket_secure** - connection paths when using the HTTPS protocol,
-- **publish_enabled** - whether the [message publishing capability](*key_capability) is available from the client side. 
-- **publish** and **publish_secure** - paths for publishing messages from the client side,
+- **publish_enabled** - whether [message publishing capability](*capability_key) is available from the client side. 
+- **publish** and **publish_secure** - paths for publishing messages from the client,
 - **clientId** - unique identifier of the account on the cloud push server. Returned if the account uses a cloud push server.
 
 The **channels** object describes the data for connecting the user to the channels. The keys:
 
-- **shared** - the shared channel of the account. Commands for all users of the account (including extranet users) are published on this channel.
-- **private** - the user's private channel. Commands are published only for the current user on this channel.
+- **shared** - the shared channel of the account. Commands are published on this channel for all users of the account (including extranet users).
+- **private** - the user's private channel. Commands are published on this channel only for the current user.
 
 The channel array contains:
 
 - **id** - channel identifier;
-- **public_id** - public [channel identifier](*key_identifier);
+- **public_id** - public [channel identifier](*identifier_key);
 - **start** - time of channel creation (in ATOM format);
-- **end** - time of channel operation (in ATOM format);
+- **end** - time of channel expiration (in ATOM format);
 - **type** - type of channel.
   
-## Error Response
+## Response on Error
 
 > 200 Error, 50x Error
 
@@ -155,14 +155,14 @@ Keys:
 
 #|
 || **Code** | **Description** ||
-|| SERVER_ERROR | The **Push & Pull** module is not configured to work with the queue server on the account. ||
-|| WRONG_AUTH_TYPE | The method can only be used within [OAuth 2.0](https://training.bitrix24.com/support/training/course/index.php?COURSE_ID=169&LESSON_ID=20110&LESSON_PATH=13643.20052.20096.20110) or via [webhooks](https://training.bitrix24.com/support/training/course/index.php?COURSE_ID=169&LESSON_ID=20176&LESSON_PATH=13643.20142.20176). ||
+|| SERVER_ERROR | The **Push & Pull** module is not configured on the account to work with the queue server. ||
+|| WRONG_AUTH_TYPE | The method can only be used within [OAuth 2.0](../../oauth/index.md) or through [webhooks](../../../local-integrations/local-webhooks.md). ||
 |#
 
 ## See Also
 
-- [Interactivity in Applications](https://training.bitrix24.com/support/training/course/index.php?COURSE_ID=169&CHAPTER_ID=020088&LESSON_PATH=13643.20052.20088)
+- [Interactivity in Applications](../../interactivity/index.md)
 
-[*key_capability]: Available starting from version 4 of the queue server.
+[*capability_key]: Available starting from version 4 of the queue server.
 
-[*key_identifier]: Available only for version 4 of the queue server and only for private channels.
+[*identifier_key]: Available only for version 4 of the queue server and only for private channels.

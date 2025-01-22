@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,10 +10,10 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Required parameters are not specified
-- Examples are missing
-- Success response is absent
-- Error response is absent
+- the required parameters are not specified
+- examples are missing
+- response on success is missing
+- response on error is missing
 
 {% endnote %}
 
@@ -26,7 +26,8 @@ Some data may be missing here — we will complete it soon.
 The method `rpa.comment.delete` will delete the comment with the identifier id.
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **id** 
 [`number`](../../../data-types.md) | Identifier of the record. ||
 |#

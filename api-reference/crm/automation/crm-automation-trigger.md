@@ -1,10 +1,20 @@
-# Activate the trigger crm.automation.trigger
+# Activate the crm.automation.trigger
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to modify the target object `target` 
+> Who can execute the method: a user with access to modify the target object `target`
 
-Activates the Webhook trigger configured in the CRM automation.
+Bitrix24 allows users to create a special custom trigger "Track Incoming Webhook". The user is provided with a ready-made URL in the format 
+
+```bash
+https://mydomain.bitrix24.com/rest/1/not_var{{PASSWORD}}/crm.automation.trigger/?target=DEAL_not_var{{ID}}&code=nwly5
+```
+
+A request to this URL from an external source will trigger the automation rule and transition the CRM entity to another stage in the Sales Funnel.
+
+As you can see from the format of this URL, a [local incoming webhook](../../../local-integrations/local-webhooks.md) is effectively created within Bitrix24, which calls the method `crm.automation.trigger` specifying the particular CRM object and the unique symbolic code of the trigger that was created by Bitrix24 itself (in the example above, this is `nwly5`).
+
+You can use the method not only through the incoming webhook but also in the context of [local](../../../local-integrations/local-apps.md) and [mass-market](../../../market/index.md) applications. However, to invoke your own triggers created by your application, you need to use the method [crm.automation.trigger.execute](./triggers/crm-automation-trigger-execute.md).
 
 ## Method Parameters
 
@@ -14,20 +24,21 @@ Activates the Webhook trigger configured in the CRM automation.
 || **Name**
 `type` | **Description** ||
 || **target***
-[`string`](../../data-types.md) | The target object for automation, specified in the format [`TYPENAME_ID`](../../data-types.md#object_type) (for example, `LEAD_25`)
+[`string`](../../data-types.md) | Target object for automation, specified in the form of [`TYPENAME_ID`](../../data-types.md#object_type) (for example, `LEAD_25`)
 ||
 || **code**
-[`string`](../../data-types.md) | A unique symbolic code for the trigger configured in Automation for a specific status/stage of the document. The `code` parameter can be obtained from the trigger settings ||
+[`string`](../../data-types.md) | Unique symbolic code of the trigger configured in Automation for a specific status/stage of the document. The `code` parameter can be obtained from the trigger settings ||
 |#
 
 {% note info %}
 
 In rare cases, multiple triggers may be found for the specified `target` object. This occurs if:
-- the `code` is not provided in the request and there are old triggers on the account that do not have a `code`
-- a `code` is provided that is the same for multiple triggers
-In such cases, the first trigger that sets an earlier status for the CRM object will be executed.
 
-It is also important to consider that triggers have "Conditions" and the option "Allow reverting to the previous status," which affect whether the trigger will execute or not.
+- the `code` is not passed in the request and there are old triggers on the account that do not have a `code`
+- a `code` is passed that turns out to be the same for multiple triggers
+In this case, the first trigger that sets an earlier status for the CRM object will be activated.
+
+It is also worth noting that triggers have "Conditions" and the option "Allow transitioning to the previous status," which affect whether the trigger will work or not.
 
 {% endnote %}
 
@@ -120,7 +131,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | The result of activating the trigger ||
+[`boolean`](../../data-types.md) | Result of activating the trigger ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -145,8 +156,8 @@ HTTP Status: **400**
 || Empty string | Target is not set. | The required parameter `target` was not provided ||
 || Empty string | Incorrect target format. | The `target` parameter was not provided in the required format (Required format `TYPENAME_ID`) ||
 || Empty string | Target is not found. | An incorrect `TYPENAME` was provided in the `target` parameter ||
-|| `ACCESS_DENIED` | Access denied! There are no permissions to update the entity. | The user did not pass the permission check to trigger the automation.  ||
-|| Empty string | Access denied. | The user did not pass the preliminary permission check for CRM access ||
+|| `ACCESS_DENIED` | Access denied! There are no permissions to update the entity. | The user did not pass the permission check to trigger the automation rule.  ||
+|| Empty string | Access denied. | The user did not pass the preliminary access permission check for CRM ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

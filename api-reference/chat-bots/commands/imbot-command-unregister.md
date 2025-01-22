@@ -1,8 +1,8 @@
-# Remove the imbot.command.unregister Team
+# Remove the imbot.command.unregister command
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -15,8 +15,8 @@ Some data may be missing here — we will fill it in shortly.
 - required parameters are not indicated
 - not all parameters have examples in the table
 - examples are missing
-- response in case of success is missing
-- response in case of error is missing
+- response on success is missing
+- response on error is missing
 - links to pages that have not yet been created are not specified
 
 {% endnote %}
@@ -64,15 +64,15 @@ The method `imbot.command.unregister` removes the command handling.
 
 {% note warning %}
 
-To handle the command, the application must have an event handler for the command addition [ONIMCOMMANDADD](./events/index.md).
+To process the command, the application must handle the command addition event [ONIMCOMMANDADD](./events/on-im-command-add.md).
 
 {% endnote %}
 
-## Response in case of success
+## Response on success
 
 `true`
 
-## Response in case of error
+## Response on error
 
 error
 
@@ -81,6 +81,6 @@ error
 #|
 || **Code** | **Description** ||
 || **COMMAND_ID_ERROR** | Command not found. ||
-|| **APP_ID_ERROR** | The chatbot does not belong to this application. Only chatbots installed within the application can be used. ||
+|| **APP_ID_ERROR** | The chatbot does not belong to this application. You can only work with chatbots installed within the application. ||
 || **WRONG_REQUEST** | Something went wrong. ||
 |#
