@@ -4,11 +4,11 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- An additional example with an explanation of linking the task to CRM is needed
+- An additional example with an explanation for linking the task to CRM is needed
 - Parameter types are not specified
 - Required parameters are not indicated
 - Examples are missing (there should be three examples - curl, js, php)
-- Response in case of an error is missing
+- Response in case of error is missing
 - Response in case of success is missing
  
 {% endnote %}
@@ -68,7 +68,7 @@ To attach a file to the task, the file identifier must be preceded by the charac
 
 {% endlist %}
 
-**Starting from version 22.1300.0**, you can pass the parameter `SE_PARAMETER` to the method — a list of objects with additional task parameters.
+**Starting from version 22.1300.0**, the method can accept the parameter `SE_PARAMETER` — a list of objects with additional task parameters.
 
 {% list tabs %}
 
@@ -108,3 +108,4 @@ Code values:
 ## Continue Learning
 
 - [{#T}](../../tutorials/tasks/how-to-create-task-with-file.md)
+- [{#T}](../../tutorials/tasks/how-to-connect-task-to-spa.md)

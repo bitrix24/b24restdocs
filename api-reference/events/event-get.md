@@ -1,26 +1,16 @@
-# Get a list of registered event handlers event.get
+# Get a List of Registered Event Handlers event.get
 
 > Who can execute the method: any user
 
-The method `event.get` allows you to retrieve a list of registered event handlers.
+The `event.get` method allows you to retrieve a list of registered event handlers.
 
 Without parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../_includes/examples.md) %}
+{% include [Example Notes](../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/event.get
-    ```
 
 - cURL (OAuth)
 
@@ -86,7 +76,7 @@ Without parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -124,7 +114,7 @@ HTTP status: **200**
 || **result**
 [`object`](../data-types.md) | Root element of the response ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

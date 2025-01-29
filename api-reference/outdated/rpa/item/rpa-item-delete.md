@@ -1,35 +1,29 @@
 # Delete Element rpa.item.delete
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- Required parameters are not specified
-- Examples are missing
-- Success response is absent
-- Error response is absent
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.item.delete` deletes an element.
+This method deletes an element.
+
+## Method Parameters
+
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **typeId** 
-[`number`](../../../data-types.md) | Process identifier. ||
-|| **id** 
-[`number`](../../../data-types.md) | Element identifier. ||
+|| **typeId***
+[`integer`](../../../data-types.md) | Process identifier ||
+|| **id***
+[`integer`](../../../data-types.md) | Element identifier ||
 |#
+
+## Continue Exploring 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-item-add.md)
+- [{#T}](./rpa-item-update.md)
+- [{#T}](./rpa-item-get.md)
+- [{#T}](./rpa-item-get-tasks.md)
+- [{#T}](./rpa-item-list.md)

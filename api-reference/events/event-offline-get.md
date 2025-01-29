@@ -2,35 +2,35 @@
 
 > Who can execute the method: any user
 
-The method `event.offline.get` returns the first queued offline events to the application according to the filter settings. The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.
+The method `event.offline.get` returns the application's first queued offline events according to the filter settings. The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #| 
-|| **Name** 
+|| **Name**
 `type` | **Description** ||
-|| **filter** 
+|| **filter**
 [`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by the fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID` with standard operations like `=`, `>`, `<`, `<=`, and so on.
 
-Important: the type of operation is placed before the name of the filtering field ||
-|| **order** 
-[`array`](../data-types.md) | Sorting of records. Sorting is supported by the same fields as in the filter, and an array of the form `[field=>ASC|DESC]` is accepted. By default — [TIMESTAMP_X:ASC] ||
-|| **limit** 
+Important: the operation type is placed before the filter field name ||
+|| **order**
+[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter, and an array of the form `[field=>ASC|DESC]` is accepted. By default — [TIMESTAMP_X:ASC] ||
+|| **limit**
 [`integer`](../data-types.md) | Number of records to select. By default 50 ||
 |#
 
 ### Additional Parameters
 
 #| 
-|| **Name** 
+|| **Name**
 `type` | **Description** ||
-|| **clear** 
+|| **clear**
 [`integer`](../data-types.md) | Values: `0|1` — whether to delete the selected records. By default `1` ||
-|| **process_id** 
+|| **process_id**
 [`string`](../data-types.md) | Process identifier. Used if you need to re-select any unprocessed records from the current process ||
-|| **error** 
+|| **error**
 [`integer`](../data-types.md) | Values: `0|1` — whether to return erroneous records. By default `0` ||
 |#
 
@@ -42,25 +42,9 @@ The method supports multithreaded parsing. This means that multiple parallel req
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "filter": {
-            "=MESSAGE_ID": 1,
-            "=EVENT_NAME": "ONCRMLEADADD",
-            ">=ID": 1
-        }
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/event.offline.get
-    ```
 
 - cURL (OAuth)
 
@@ -158,12 +142,12 @@ HTTP Status: **200**
 ### Returned Data
 
 #| 
-|| **Name** 
+|| **Name**
 `type` | **Description** ||
-|| **result** 
+|| **result**
 [`object`](../data-types.md) | Root element of the response ||
-|| **time** 
-[`time`](../data-types.md) | Information about the execution time of the request ||
+|| **time**
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

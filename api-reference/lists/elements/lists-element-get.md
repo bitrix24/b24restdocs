@@ -1,8 +1,8 @@
-# Get parameters of an element or a list of elements lists.element.get
+# Get Parameters of an Element or List of Elements lists.element.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -43,7 +43,7 @@ The method `lists.element.get` returns a list of elements or a single element. O
 || **ELEMENT_ORDER**
 [`unknown`](../../data-types.md) | Sorting. An array of fields of the information block elements. Sorting direction: **asc** (ascending) or **desc** (descending)
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 Example:
 ```js
@@ -52,16 +52,22 @@ Example:
 
 Sorting of all multiple properties is not supported, as well as properties:
 
-S:Money, PREVIEW_TEXT, DETAIL_TEXT, S:ECrm, PREVIEW_PICTURE, DETAIL_PICTURE, S:DiskFile, IBLOCK_SECTION_ID, BIZPROC, COMMENTS. ||
+S:Money, PREVIEW_TEXT, DETAIL_TEXT, S:ECrm, S:map_yandex, PREVIEW_PICTURE, DETAIL_PICTURE, S:DiskFile, IBLOCK_SECTION_ID, BIZPROC, COMMENTS. ||
 
 || **FILTER** | Filtering elements. An object with a list of fields and values.
-Almost all fields from the filter CIBlockElement::GetList are available for filtering. For filtering by a numeric field, you need to specify the equal sign:
+Almost all fields from the CIBlockElement::GetList filter are available for filtering. For filtering by a numeric field, you need to specify the equal sign:
 ```js
 'FILTER': {
     '=ID': [120,121],
 }
 ```
-There is also the possibility to use full-text search. For this, you need to use the SEARCHABLE_CONTENT field with the prefix "*"; ||
+Full-text search is also available. To do this, you need to use the SEARCHABLE_CONTENT field with the prefix "*"; ||
+|| **SELECT**
+[`array`](../../data-types.md) | An array containing a list of [fields](../fields/lists-field-get.md) to select.
+
+You can specify only the fields that are needed.
+
+Default value: `['ID']`||
 |#
 
 ## Examples
@@ -119,4 +125,4 @@ There is also the possibility to use full-text search. For this, you need to use
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}

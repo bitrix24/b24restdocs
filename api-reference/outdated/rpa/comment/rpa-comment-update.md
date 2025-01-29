@@ -1,83 +1,79 @@
 # Update Timeline Entry rpa.comment.update
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- the mandatory parameters are not specified
-- examples are missing
-- response on success is missing
-- response on error is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.comment.update` will update the timeline entry with the identifier id.
+This method updates the timeline entry with the identifier `id`. It only updates the `title` and `description` fields.
 
-This method allows you to modify only the fields title and description.
+The method allows changes only to those comments that were added by the same user.
+
+## Method Parameters
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`number`](../../../data-types.md) | Identifier of the comment. ||
+[`integer`](../../../data-types.md) | Identifier of the comment ||
 || **fields** 
-[`array`](../../../data-types.md) | Entry fields. ||
+[`object`](../../../data-types.md) | Object describing the [fields](#fields) of the comment ||
 |#
 
-## Parameter fields
+## Fields Parameter {#fields}
 
 #|
-|| **Parameter** | **Description** ||
-|| **description** | Description of the entry (HTML and BB-code can be used). ||
-|| **files** | Array of attached files, where each element is an array containing the name and base64 encoded content. ||
+|| **Name**
+`type` | **Description** ||
+|| **description** 
+[`integer`](../../../data-types.md) | Description of the entry. HTML and BB-code formatting can be used ||
+|| **files** 
+[`integer`](../../../data-types.md) | Array of attached files. Each element is an array containing the name and content encoded in base64
+
+To add a new file, you must provide a list as a record of the old file, where the key `id` will be the identifier of the file attached to this comment.
+
+To upload new files, you must also provide an array with the name and content of the file in base64. ||
 |#
 
-{% note warning %}
+## Code Examples
 
-This method allows you to change only those comments that were added by the same user.
-
-{% endnote %}
-
-To add a new file, you need to pass a list as the entry for the old file, where the key id will be the identifier of the file attached to this comment.
-
-To upload new files, you also need to pass an array with the name and content of the file in base64.
-
-## Example
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
-    ```json
-    {
-        "typeId": 24,
-        "itemId": 10,
-        "fields": {
-            "description": "Mention of user with id 1 ",
-            "files": [
-                {
-                    "id": 15
-                },
-                [
-                    "another_document.pdf", "...base64_decoded_content..."
+    ```js
+    BX24.callMethod(
+        'rpa.comment.add',
+        {
+            "typeId": 24,
+            "itemId": 10,
+            "fields": {
+                "description": "Mention of user with id 1 ",
+                "files": [
+                    {
+                        "id": 15 // identifier of the old file
+                    },
+                    [
+                        "another_document.pdf", "...base64_decoded_content..."
+                    ]
                 ]
-            ]
+            }
+        },
+        function(result) {
+            console.log('response', result.answer);
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+            console.log(result.data());
         }
-    }
+    )
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-comment-add.md)
+- [{#T}](./rpa-comment-delete.md)

@@ -9,6 +9,8 @@ items:
     href: crm-type-update.md
   - name: Get Custom Type by ID
     href: crm-type-get.md
+  - name: Get Smart Process Type by entityTypeId
+    href: crm-type-get-by-entity-type-id.md
   - name: Get List of Custom Types
     href: crm-type-list.md
   - name: Delete Custom Type

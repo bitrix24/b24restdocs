@@ -1,53 +1,46 @@
 # Update Stage rpa.stage.update
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.stage.update` will update the stage with the specified id and return data in the response similar to the response from the `rpa.stage.get` request.
+This method updates the stage by `id`.
+
+## Method Parameters
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`number`](../../../data-types.md) | Identifier of the stage. ||
+[`number`](../../../data-types.md) | Identifier of the stage ||
 || **fields** 
-[`array`](../../../data-types.md) | List of stage fields. ||
+[`array`](../../../data-types.md) | Object with [fields](#fields) of the stage ||
 |#
 
-## Parameters fields
+## Fields Parameters
 
 #|
-|| **Parameter** | **Description** ||
-|| **name** | Name of the stage. ||
-|| **code** | Symbolic code. ||
-|| **color** | Color of the stage in HEX format (6 characters). ||
-|| **sort** | Sort identifier. ||
-|| **semantic** | Semantic code of the stage. It can be either SUCCESS or FAIL. ||
+|| **Name**
+`type` | **Description** ||
+|| **name** | Name of the stage ||
+|| **code** | Symbolic code ||
+|| **color** | Color of the stage in HE 6 characters ||
+|| **sort** | Sorting identifier ||
+|| **semantic** | Semantic code of the stage. It can be either `SUCCESS` or `FAIL`
+
+There must always be one successful stage in the process. The semantic of the successful stage cannot be changed. ||
 |#
 
-{% note warning %}
+## Response Handling
 
-There must always be one successful stage in the process. The semantics of the successful stage cannot be changed.
+HTTP status: **200**
 
-{% endnote %}
+Returns data in the response similar to the response from the [rpa.stage.get](./rpa-stage-get.md) request.
+
+## Continue Exploring 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-stage-add.md)
+- [{#T}](./rpa-stage-get.md)
+- [{#T}](./rpa-stage-list-for-type.md)
+- [{#T}](./rpa-stage-delete.md)

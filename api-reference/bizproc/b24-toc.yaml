@@ -1,4 +1,4 @@
-title: Business Processes and Automation Rules
+title: Workflows and Automation Rules
 href: index.md
 items:
   - name: Overview
@@ -11,14 +11,10 @@ items:
     href: bizproc-workflow-terminate.md
   - name: Delete Active Process
     href: bizproc-workflow-kill.md
-  - name: Add Template
-    href: bizproc-workflow-template-add.md
-  - name: Modify Template
-    href: bizproc-workflow-template-update.md
-  - name: Get List of Templates
-    href: bizproc-workflow-template-list.md
-  - name: Delete Template
-    href: bizproc-workflow-template-delete.md
+  - name: Templates
+    include:
+      path: template/b24-toc.yaml
+      mode: link
   - name: Tasks
     include:
       path: bizproc-task/b24-toc.yaml

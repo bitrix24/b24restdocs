@@ -6,18 +6,32 @@
 
 The method will return an array of processes with their fields.
 
+## Method Parameters
+
 #|
 || **Name**
 `type` | **Description** ||
-|| **select** | Array of fields to output. By default, all fields are outputted ||
-|| **order** | List for sorting, where the key is the field and the value is `ASC` or `DESC` ||
-|| **filter** | List for filtering ||
-|| **start** | Offset for pagination ||
+|| **select**
+[`array`](../../../data-types.md) | Array of fields to output. By default, all fields are outputted. ||
+|| **order**
+[`object`](../../../data-types.md) | List for sorting, where the key is the field and the value is `ASC` or `DESC` ||
+|| **filter**
+[`object`](../../../data-types.md) | List for filtering ||
+|| **start**
+[`integer`](../../../data-types.md) | This parameter is used for pagination.
+
+The page size of results is always static — 50 records.
+
+To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
+
+The formula for calculating the `start` parameter value:
+
+`start = (N - 1) * 50`, where `N` is the desired page number    ||
 |#
 
-## Handling the Response
+## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -28,7 +42,7 @@ HTTP status: **200**
 }
 ```
 
-## Continue Your Exploration 
+## Continue Exploring 
 
 - [{#T}](./index.md)
 - [{#T}](./rpa-type-add.md)

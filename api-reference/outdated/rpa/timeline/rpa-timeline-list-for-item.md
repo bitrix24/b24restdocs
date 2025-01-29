@@ -1,4 +1,4 @@
-# Get the timeline record array for the item rpa.timeline.listForItem
+# Get the list of timeline records for the item rpa.timeline.listForItem
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
@@ -6,21 +6,32 @@
 
 The method retrieves a list of timeline records for the `itemId` of the `typeId` process.
 
-Records are sorted in descending order by creation date, meaning the newest ones are at the top of the list.
+Records are sorted in descending order by creation date, meaning the most recent ones appear at the top of the list.
+
+## Method Parameters
 
 #|
 || **Name**
 `type` | **Description** ||
 || **typeId** 
-[`number`](../../../data-types.md) | Identifier of the process. ||
+[`integer`](../../../data-types.md) | Identifier of the process ||
 || **itemId** 
-[`number`](../../../data-types.md) | Identifier of the item. ||
-|| **start** | Offset for pagination. ||
+[`integer`](../../../data-types.md) | Identifier of the item ||
+|| **start** 
+[`integer`](../../../data-types.md) | This parameter is used to control pagination.
+
+The page size for results is always static — 50 records.
+
+To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
+
+The formula for calculating the `start` parameter value:
+
+`start = (N - 1) * 50`, where `N` is the desired page number   ||
 |#
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -31,7 +42,7 @@ HTTP status: **200**
             "itemId": 10,
             "createdTime": "2020-03-26T20:28:57+02:00",
             "userId": 1,
-            "title": "Task Completed",
+            "title": "Task completed",
             "description": "",
             "action": "task_complete",
             "isFixed": false,
@@ -42,7 +53,7 @@ HTTP status: **200**
                 "scope": "task",
                 "stageFrom": {
                     "id": 30,
-                    "name": "Approved by Accountant"
+                    "name": "Approved by accountant"
                 },
                 "stageTo": {
                     "id": 31,
@@ -117,12 +128,12 @@ HTTP status: **200**
 || **id** | Identifier of the record ||
 || **typeId** | Identifier of the process ||
 || **itemId** | Identifier of the item ||
-|| **createdTime** | Time of record creation ||
+|| **createdTime** | Creation time of the record ||
 || **userId** | Identifier of the user who initiated the action ||
 || **title** | Title of the record ||
 || **description** | Text content of the record ||
 || **action** | Action type code ||
-|| **isFixed** | Flag indicating if the record is attached ||
+|| **isFixed** | Flag indicating if the record is fixed ||
 || **data** | Serialized data about the completed action and related entities at the time of record creation. Depending on the action type, it may contain a different [set of data](#data) ||
 |#
 
@@ -132,7 +143,7 @@ HTTP status: **200**
 || **Name** | **Description** ||
 || **item** | Data about the item:
 - `item[name]` — name of the item at the time of action execution ||
-|| **scope** | Action source code. Can take the value:
+|| **scope** | Code of the action source. Can take the value:
 - `manual` — manually
 - `task` — when performing a task
 - `automation` — by an Automation rule
@@ -140,12 +151,12 @@ HTTP status: **200**
 || **stageFrom** | Data about the original stage at the time of action execution
 - `id` — identifier
 - `name` — name ||
-|| **stageTo** | Data about the new stage, if it was changed during action execution ||
-|| **fields** | Array of data about fields whose values were changed during action execution
+|| **stageTo** | Data about the new stage, if it was changed during the action execution ||
+|| **fields** | Array of data about the fields whose values were changed during the action execution
 - `name` — field code
 - `title` — field title ||
 || **task** | Data about the task, if the action was performed while executing a task ||
-|| **users** | Data about users who were involved in the action ||
+|| **users** | Data about the users involved in the action ||
 |#
 
 ## Continue Exploring 

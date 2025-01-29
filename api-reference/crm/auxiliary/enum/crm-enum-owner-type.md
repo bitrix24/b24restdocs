@@ -1,8 +1,8 @@
-# Get Enumeration Items "Owner Type" crm.enum.ownertype
+# Get Enumeration Items for "Owner Type" crm.enum.ownertype
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing — we will fill it in shortly.
 
 {% note alert "TO-DO _not deployed to prod_" %}
 
-- no response in case of error
-- no response in case of success
+- missing response in case of error
+- missing response in case of success
 - no examples in other languages
   
 {% endnote %}
@@ -28,7 +28,7 @@ Some data may be missing — we will fill it in shortly.
 crm.enum.ownertype()
 ```
 
-The method returns the identifiers of CRM entity types and smart processes.
+This method returns the identifiers of CRM entity types and SPAs.
 
 ## Possible Values
 
@@ -79,7 +79,7 @@ The method returns the identifiers of CRM entity types and smart processes.
 },
 {
      "ID": 8,
-     "NAME": "Details",
+     "NAME": "Requisites",
      "SYMBOL_CODE": "REQUISITE",
      "SYMBOL_CODE_SHORT": "RQ"
 },
@@ -129,3 +129,7 @@ No parameters.
 {% endlist %}
 
 {% include [Examples Note](../../../../_includes/examples.md) %}
+
+## Continue Learning
+
+- [{#T}](../../../../tutorials/tasks/how-to-connect-task-to-spa.md)

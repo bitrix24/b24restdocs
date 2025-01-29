@@ -4,22 +4,11 @@
 >
 > Who can execute the method: administrator
 
-The method `user.add` invites a user. This can only be done on behalf of a user with the permission to invite users, typically an administrator. Upon success, a standard invitation will be sent to the account. The `result` returns the identifier of the new user.
+The method `user.add` invites a user. This can only be done on behalf of a user with the rights to invite users, typically an administrator. Upon success, a standard invitation will be sent to the account. The `result` returns the identifier of the new user.
 
 If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` and `SONET_GROUP_ID: [...]`. If you need to add an intranet user, it is **mandatory** to provide: `UF_DEPARTMENT: [...]`.
 
 ## Method Parameters
-
-{% include [Note on required parameters](../../_includes/required.md) %}
-
-#|
-|| **Name**
-`type` | **Description** ||
-|| **fields***
-[`array`](../data-types.md) | Field values for creating a user ||
-|#
-
-### Parameter fields
 
 {% include [Note on required parameters](../../_includes/required.md) %}
 
@@ -59,7 +48,7 @@ If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` 
 || **PERSONAL_CITY**
 [`string`](../data-types.md) | City of residence ||
 || **PERSONAL_STATE**
-[`string`](../data-types.md) | State/Region ||
+[`string`](../data-types.md) | State ||
 || **PERSONAL_ZIP**
 [`string`](../data-types.md) | Zip code ||
 || **PERSONAL_COUNTRY**
@@ -130,7 +119,7 @@ If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` 
 
 {% note info "" %}
 
-**The social network is recognized as extremist and is banned in the territory of the United States.**
+**The social network is recognized as extremist and is banned in the United States.**
 
 {% endnote %}
 
@@ -208,7 +197,7 @@ If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` 
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
     {
@@ -233,12 +222,12 @@ HTTP status: **200**
 || **result**
 [`integer`](../data-types.md) | Identifier of the new user ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -259,14 +248,14 @@ HTTP status: **400**
 || `ERROR_CORE` | access_denied | The user does not have permission to call the method ||
 || `ERROR_ARGUMENT` | user_count_exceeded | The number of users has been exceeded ||
 || `ERROR_GROUPID` | Group code not specified | Group code not specified when adding a user to the extranet ||
-|| `ERROR_NO_GROUP` | Group specified incorrectly | Incorrect group specified when adding a user ||
+|| `ERROR_NO_GROUP` | Group specified incorrectly | The group specified is incorrect when adding a user ||
 || `ERROR_ARGUMENT` | no_extranet_field | The method call does not specify which group the user should belong to ||
 || `ERROR_CORE` |  | Error updating user fields ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Learning 
 
 - [{#T}](./user-update.md)
 - [{#T}](./user-get.md)

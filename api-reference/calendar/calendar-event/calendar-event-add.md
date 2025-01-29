@@ -101,15 +101,9 @@ For a meeting with participants, specify the list of participants in `attendees`
 [`integer`](../../data-types.md) | Identifier of the event organizer. If `is_meeting` = `Y` ||
 || **meeting**
 [`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting) ||
-|| **crm_fields**
-[`array`](../../data-types.md) | Array of CRM object identifiers to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
-- `CO_` — company
-- `C_` — contact 
-- `L_` — lead
-- `D_` — deal ||
 |#
 
-### Parameter rrule {#rrule}
+### rrule Parameter {#rrule}
 
 #|
 || **Name**
@@ -122,9 +116,9 @@ For a meeting with participants, specify the list of participants in `attendees`
 - `YEARLY` — yearly
 ||
 || **COUNT**
-[`integer`](../../data-types.md) | Number of recurrences ||
+[`integer`](../../data-types.md) | Number of occurrences ||
 || **INTERVAL**
-[`integer`](../../data-types.md) | Interval between recurrences ||
+[`integer`](../../data-types.md) | Interval between occurrences ||
 ||**BYDAY**
 [`array`](../../data-types.md) | Days of the week
 - `SU` — Sunday
@@ -138,7 +132,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 [`date`](../../data-types.md) | End date of recurrences ||
 |#
 
-### Parameter remind {#remind}
+### remind Parameter {#remind}
 
 #|
 || **Name**
@@ -152,7 +146,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 [`integer`](../../data-types.md) | Numerical value of the time interval ||
 |#
 
-### Parameter meeting {#meeting}
+### meeting Parameter {#meeting}
 
 #|
 || **Name**
@@ -346,7 +340,7 @@ HTTP status: **400**
 || Empty string | Invalid value for the parameter "description" | Incorrect data format in the `description` field ||
 || Empty string | Access denied | Creating events in the specified calendar is prohibited ||
 || Empty string | You specified an invalid calendar section ID or the user does not have access to it | An identifier of an inaccessible or non-existent calendar is provided ||
-|| Empty string | The event's CRM link list must be an array | Incorrect data format in the `crm_fields` field ||
+|| Empty string | The list of event connections to CRM must be an array | Incorrect data format in the `crm_fields` field ||
 || Empty string | An error occurred while creating the event | Another error ||
 |#
 

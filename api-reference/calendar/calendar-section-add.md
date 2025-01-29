@@ -6,11 +6,7 @@
 
 This method adds a new calendar.
 
-{% note info %}
-
-The system will add a new calendar only for the user who executes the method.
-
-{% endnote %}
+The system will add a new calendar only for the user who executes the method. An administrator can create calendars for other users.
 
 ## Method Parameters
 
@@ -36,7 +32,7 @@ For `type` with the value `user`, the identifier of the current user will be set
 || **text_color**
 [`string`](../data-types.md) | Text color in the calendar ||
 || **export**
-[`object`](../data-types.md) | Object [export parameters for the calendar](#export)
+[`object`](../data-types.md) | Object of [calendar export parameters](#export)
 ||
 |#
 
@@ -50,7 +46,7 @@ For `type` with the value `user`, the identifier of the current user will be set
 - `true` — allow
 - `false` — disallow ||
 || **SET**
-[`string`](../data-types.md) | Period for which to perform the export. Possible values:
+[`string`](../data-types.md) | Period for export. Possible values:
 - `all` — for the entire period
 - `3_9` — 3 months before and 9 after
 - `6_12` — 6 months before and 12 after

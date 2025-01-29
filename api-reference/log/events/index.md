@@ -1,33 +1,17 @@
-# On Adding a Message to the News Feed
+# Events Feed
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon
 
 {% endnote %}
 
-{% if build == 'dev' %}
+> Scope: [`sonet`](../../scopes/permissions.md)
+>
+> Who can subscribe: any user
 
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- what data is passed in the event
-- links to pages that have not yet been created are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
-
-{% note info "OnLiveFeedPostAdd" %}
-
-{% include notitle [Scope log all](../_includes/scope-log-all.md) %}
-
-{% endnote %}
-
-The event `OnLiveFeedPostAdd` is triggered after a new post is added to the News Feed. It is a proxy to the event [OnAfterSocNetLogAdd](.).
-
-#|
-|| **Field** | **Description** ||
-|| **ID** | Identifier of the new message ||
+#| 
+|| [OnLiveFeedPostAdd](./on-live-feed-post-add.md) | On adding a message to the News Feed ||
+|| [OnLiveFeedPostDelete](./on-live-feed-post-delete.md) | On deleting a message from the News Feed ||
+|| [OnLiveFeedPostUpdate](./on-live-feed-post-update.md) | On editing a message in the News Feed ||
 |#
-{% include [Footnote on parameters](../../_includes/required.md) %}

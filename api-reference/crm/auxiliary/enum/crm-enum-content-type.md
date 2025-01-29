@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -56,5 +56,49 @@ No parameters.
 
 {% endlist %}
 
-
 {% include [Footnote on examples](../../../../_includes/examples.md) %}
+
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": [
+        {
+            "ID": 0,
+            "NAME": "",
+            "SYMBOL_CODE": "",
+            "SYMBOL_CODE_SHORT": ""
+        },
+        {
+            "ID": 1,
+            "NAME": "Plain text",
+            "SYMBOL_CODE": "",
+            "SYMBOL_CODE_SHORT": ""
+        },
+        {
+            "ID": 2,
+            "NAME": "bbCode",
+            "SYMBOL_CODE": "",
+            "SYMBOL_CODE_SHORT": ""
+        },
+        {
+            "ID": 3,
+            "NAME": "HTML",
+            "SYMBOL_CODE": "",
+            "SYMBOL_CODE_SHORT": ""
+        }
+    ],
+    "time": {
+        "start": 1737527499.922,
+        "finish": 1737527499.9578,
+        "duration": 0.035794973373413,
+        "processing": 0.0021491050720215,
+        "date_start": "2025-01-22T09:31:39+01:00",
+        "date_finish": "2025-01-22T09:31:39+01:00",
+        "operating_reset_at": 1737528099,
+        "operating": 0
+    }
+}
+```

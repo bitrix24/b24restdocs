@@ -1,4 +1,4 @@
-# Data Types and Object Structure in the REST API CRM
+# Data Types and Object Structure in REST API CRM
 
 {% if build == 'dev' %}
 
@@ -18,14 +18,14 @@ In this article, we will discuss the data types and object structure specific to
 
 #|
 || **Type** | **Descriptions and Values** ||
-|| `crm_status` | String identifier of a CRM directory element (e.g., `NEW`). Possible values for a specific directory can be obtained using the method [crm.status.list](./status/crm-status-list.md) with a filter by `ENTITY_ID`. ||
+|| `crm_status` | String identifier of a CRM reference item (e.g., `NEW`). Possible values for a specific reference can be obtained using the method [crm.status.list](./status/crm-status-list.md) with a filter by `ENTITY_ID`. ||
 || `crm_lead` | Integer identifier of a CRM lead. Information about the lead can be obtained using the method [crm.lead.get](./leads/crm-lead-get.md). ||
 || `crm_deal` | Integer identifier of a CRM deal. Information about the deal can be obtained using the method [crm.deal.get](./deals/crm-deal-get.md). ||
 || `crm_contact` | Integer identifier of a CRM contact. Information about the contact can be obtained using the method [crm.contact.get](./contacts/crm-contact-get.md). ||
 || `crm_company` | Integer identifier of a CRM company. Information about the company can be obtained using the method [crm.company.get](./companies/crm-company-get.md). ||
 || `crm_quote` | Integer identifier of a CRM estimate. Information about the estimate can be obtained using the method [crm.quote.get](./quote/crm-quote-get.md). ||
-|| `crm_category` | Integer identifier of a CRM funnel (direction). Information about the funnel (direction) can be obtained using the method [crm.category.get](./universal/category/crm-category-get.md) ||
-|| `crm_entity`| Integer identifier of an element of a certain CRM object. Fields of this type explicitly contain information about which CRM object they belong to. For example, fields like `parentId{entityTypeId}` contain the identifier of the CRM entity type within their name. Information about the element can be obtained using the method [`crm.item.get`](universal/crm-item-get.md) by passing `entityTypeId` from the field name and `id` from its value ||
+|| `crm_category` | Integer identifier of a CRM Sales Funnel. Information about the Sales Funnel can be obtained using the method [crm.category.get](./universal/category/crm-category-get.md) ||
+|| `crm_entity`| Integer identifier of an element of some CRM object. Fields of this type explicitly contain information about which CRM object they belong to. For example, fields like `parentId{entityTypeId}` contain within their name the identifier of the CRM entity type. Information about the element can be obtained using the method [`crm.item.get`](universal/crm-item-get.md) by passing `entityTypeId` from the field name and `id` from its value ||
 || `lang_map`  | Object format:
 ```
 {
@@ -46,7 +46,7 @@ where
 || [`crm_currency_localization`](#crm_currency_localization) | Object describing currency localization ||
 || [`crm_orderentity`](#crm_orderentity) | Object describing the connection between CRM and online store orders ||
 || [`type`](#type) | Object describing a custom type of CRM object (SPA) ||
-|| [`type.relations`](#typerelations) | Object containing links to other CRM entities ||
+|| [`type.relations`](#typerelations) | Object containing relationships to other CRM entities ||
 || [`relation`](#relation) | Object describing a linked CRM element  ||
 || [`type.linkedUserFields`](#typelinkeduserfields) | Object describing a set of fields in which the SPA should be displayed ||
 |#
@@ -61,17 +61,15 @@ where
 || **ID**
 [`integer`](../data-types.md) | Identifier of the multifield value ||
 || **TYPE_ID**
-[`string`](../data-types.md) | Type of the multifield. Can take values `PHONE`, `EMAIL`, `WEB`, `IM`, `LINK`. ||
+[`string`](../data-types.md) | Type of the multifield. Can take values `PHONE`, `EMAIL`, `WEB`, `IM`, `LINK` ||
 || **VALUE**
-[`string`](../data-types.md) | String value of the multifield. ||
-|| **VALUE**
-[`string`](../data-types.md) | String value of the multifield. ||
+[`string`](../data-types.md) | String value of the multifield ||
 || **VALUE_TYPE**
 [`string`](../data-types.md) | Type of the multifield value.
 Can take values `WORK`, `MOBILE`, `FAX`, `HOME`, `PAGER`, `MAILING`, `OTHER` for phone,
 `WORK`, `HOME`, `MAILING`, `OTHER` for email,
-`WORK`, `HOME`, `FACEBOOK`, `TWITTER`, `OTHER` for website,
-`FACEBOOK`, `TELEGRAM`, `SKYPE`, `VIBER`, `INSTAGRAM`, `OTHER` for messenger.
+`WORK`, `HOME`, `FACEBOOK`, `VK`, `LIVEJOURNAL`, `TWITTER`, `OTHER` for website,
+`FACEBOOK`, `TELEGRAM`, `VK`, `SKYPE`, `VIBER`, `INSTAGRAM`, `BITRIX24`, `OPENLINE`, `IMOL`, `ICQ`, `MSN`, `JABBER`, `OTHER` for messenger
 ||
 |#
 
@@ -85,7 +83,7 @@ Can take values `WORK`, `MOBILE`, `FAX`, `HOME`, `PAGER`, `MAILING`, `OTHER` for
 || **ownerId**
 [`integer`](../data-types.md) | Identifier of the CRM object ||
 || **ownerType**
-[`string`](../data-types.md) | Identifier of the [`CRM object type`](#object_type) ||
+[`string`](../data-types.md) | Identifier of the [`CRM object type`](#tip-obuekta-crm) ||
 || **productId**
 `catalog_product.id` | Identifier of the product from the catalog ||
 || **productName**
@@ -103,7 +101,7 @@ Can take values `WORK`, `MOBILE`, `FAX`, `HOME`, `PAGER`, `MAILING`, `OTHER` for
 || **quantity**
 [`double`](../data-types.md) | Quantity of the product ||
 || **discountTypeId**
-[`integer`](../data-types.md) | Discount type
+[`integer`](../data-types.md) | Type of discount
 Possible values:
 - `1` — absolute value
 - `2` — percentage value ||
@@ -136,7 +134,7 @@ Possible values:
 - `3` - Product with trade offers
 - `4` - Trade offer
 - `5` - Trade offer that has no product (not specified or deleted)
-- `6` - Specific type, indicates an invalid product with trade offers
+- `6` - Specific type, means invalid product with trade offers
 - `7` — Service ||
 |#
 
@@ -162,11 +160,11 @@ For the base currency, it is always equal to `1`
 || **SORT**
 [`integer`](../data-types.md) | Sorting ||
 || **LID**
-[`string`](../data-types.md) | Language code for which [localization parameters](#crm_currency_localization) are returned ||
+[`string`](../data-types.md) | Language code for which the [localization parameters](#crm_currency_localization) are returned ||
 || **DECIMALS**
 [`integer`](../data-types.md) | Number of decimal places in the fractional part (localization parameter) ||
 || **DEC_POINT**
-[`string`](../data-types.md) | Decimal point for output (localization parameter) ||
+[`string`](../data-types.md) | Decimal point in output (localization parameter) ||
 || **FORMAT_STRING**
 [`string`](../data-types.md) | Format template (localization parameter) ||
 || **FULL_NAME**
@@ -176,7 +174,7 @@ For the base currency, it is always equal to `1`
 || **LANG**
 [`object`](../data-types.md) | Currency localizations.
 Object with a list of available localizations in the format `{"lang_1": "value_1", ... "lang_N": "value_N"}`, where `lang_N` — language identifier, and `value` — object of type [crm_currency_localization](#crm_currency_localization).
-Language identifier is a string of two Latin letters. Possible values are listed in the [language identifiers table](#lang-ids)
+Language identifier is a string of two Latin letters. Possible values can be found in the [language identifiers table](#lang-ids)
  ||
 |#
 
@@ -190,11 +188,11 @@ Language identifier is a string of two Latin letters. Possible values are listed
 
 Default value — `2` ||
 || **DEC_POINT**
-[`string`](../data-types.md) | Decimal point for output.
+[`string`](../data-types.md) | Decimal point in output.
 
 Default value — `.` (dot symbol) ||
 || **FORMAT_STRING**
-[`string`](../data-types.md) | Format template. Must contain the symbol # — the value of the price will be substituted in its place.
+[`string`](../data-types.md) | Format template. Must contain the symbol # — instead it, the price value will be substituted.
 
 Default value — `#`.
 
@@ -208,7 +206,7 @@ Examples of templates for the amount 1000:
 
 Default value — [`crm_currency.CURRENCY`](#crm_currency)  ||
 || **HIDE_ZERO**
-[`string`](../data-types.md) | Indicator of whether to hide insignificant zeros (`Y`/`N`).
+[`string`](../data-types.md) | Indicator of whether to hide insignificant zeros or not (`Y`/`N`).
 
 Default value — `N` ||
 || **THOUSANDS_SEP**
@@ -220,7 +218,7 @@ Default value — ` ` (space) ||
 
 Default value — `S`.
 
-When creating or modifying localization, if a value is specified for the `THOUSANDS_VARIANT` field, the value in `THOUSANDS_SEP` will be ignored and replaced according to the list:
+When creating or modifying localization, if a value is specified for the field `THOUSANDS_VARIANT`, then the value in `THOUSANDS_SEP` will be ignored and replaced according to the list:
 - `N` — empty, no thousands separator. Example: 12345678
 - `C` — comma. Example: 12,345,678
 - `D` — dot. Example: 12.345.678
@@ -228,7 +226,7 @@ When creating or modifying localization, if a value is specified for the `THOUSA
 - `B` — non-breaking space. Example: 12 345 678
     Differs from the previous option in that when line breaks occur, the result is not split into parts
 
-If a thousands separator is not needed, the `THOUSANDS_VARIANT` field must be explicitly passed with the value `N`. An empty string in the `THOUSANDS_SEP` field is not allowed.
+If a thousands separator is not needed, the field `THOUSANDS_VARIANT` must be explicitly passed with the value `N`. An empty string in the field `THOUSANDS_SEP` is not allowed.
  ||
 |#
 
@@ -262,7 +260,7 @@ If a thousands separator is not needed, the `THOUSANDS_VARIANT` field must be ex
 || **entityTypeId**
 [`integer`][2]  | Identifier of the entity type ||
 || **isCategoriesEnabled**
-[`boolean`][2]  | Are custom funnels and sales tunnels enabled ||
+[`boolean`][2]  | Are custom Sales Funnels and sales tunnels enabled ||
 || **isStagesEnabled**    
 [`boolean`][2]  | Is the use of custom stages and kanban enabled ||
 || **isBeginCloseDatesEnabled**
@@ -278,7 +276,7 @@ If a thousands separator is not needed, the `THOUSANDS_VARIANT` field must be ex
 || **isDocumentsEnabled** 
 [`boolean`][2]  | Is document printing enabled ||
 || **isSourceEnabled**    
-[`boolean`][2]  | Are the **Source** and **Additional Information about Source** fields enabled ||
+[`boolean`][2]  | Are the **Source** and **Additional Source Information** fields enabled ||
 || **isObserversEnabled** 
 [`boolean`][2]  | Is the **Observers** field enabled ||
 || **isRecyclebinEnabled**
@@ -288,7 +286,7 @@ If a thousands separator is not needed, the `THOUSANDS_VARIANT` field must be ex
 || **isBizProcEnabled**   
 [`boolean`][2]  | Is the use of the business process designer enabled ||
 || **isSetOpenPermissions**    
-[`boolean`][2]  | Should new funnels be available to everyone ||
+[`boolean`][2]  | Should new Sales Funnels be available to everyone ||
 || **isPaymentsEnabled**  
 [`boolean`][2]  | System field indicating whether payment capability is enabled ||
 || **isCountersEnabled**  
@@ -300,7 +298,7 @@ If a thousands separator is not needed, the `THOUSANDS_VARIANT` field must be ex
 || **updatedBy**
 [`integer`][2]  | Identifier of the user who modified this SPA ||
 || **relations**
-[`object`][2]   | Object containing links to other CRM entities ||
+[`object`][2]   | Object containing relationships to other CRM entities ||
 || **linkedUserFields**   
 [`object`][2]   | Set of fields in which this SPA should be displayed ||
 || **customSections**
@@ -332,9 +330,9 @@ This parameter is deprecated. To work with digital workplaces, use the methods [
 || **entityTypeId**     
 [`integer`][2]  | Identifier of the [system](./universal/index.md) or [user-defined type](./universal/user-defined-object-types/index.md) of CRM entity ||
 || **isChildrenListEnabled**
-[`boolean`][2]  | Should the linked element be added to the card ||
+[`boolean`][2]  | Whether to add the linked element to the detail form ||
 || **isPredefined**        
-[`boolean`][2]  | Is this link predefined (system) ||
+[`boolean`][2]  | Whether this relationship is predefined (system) ||
 |#
 
 ### type.linkedUserFields
@@ -366,7 +364,7 @@ This parameter is deprecated. To work with digital workplaces, use the methods [
 || `la` | Spanish ||
 || `ms` | Malay ||
 || `pl` | Polish ||
-|| `ru` | Russian ||
+|| `de` | German ||
 || `sc` | Chinese ||
 || `tc` | Chinese (Taiwan) ||
 || `th` | Thai ||

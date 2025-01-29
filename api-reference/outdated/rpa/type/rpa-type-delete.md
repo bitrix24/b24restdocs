@@ -6,7 +6,9 @@
 
 The method deletes a process.
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+## Method Parameters
+
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -1,40 +1,28 @@
 # Delete Stage rpa.stage.delete
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.stage.delete` removes a stage.
-
-#| 
-|| **Name** 
-`type` | **Description** || 
-|| **id**^*^ 
-[`number`](../../../data-types.md) | Identifier of the stage. || 
-|#
-
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
-
-{% note warning %}
+The method deletes a stage.
 
 A process must always have one successful stage. A successful stage cannot be deleted.
 
-{% endnote %}
+## Method Parameters
+
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`number`](../../../data-types.md) | Identifier of the stage ||
+|#
+
+## Continue Exploring
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-stage-add.md)
+- [{#T}](./rpa-stage-update.md)
+- [{#T}](./rpa-stage-get.md)
+- [{#T}](./rpa-stage-list-for-type.md)

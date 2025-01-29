@@ -1,73 +1,57 @@
-# Get a list of leads crm.lead.list
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- mention search by phone numbers and email with a link to a special method.
-
-{% endnote %}
-
-{% endif %}
+# Get a List of Leads crm.lead.list
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with read access to leads.
+> Who can execute the method: user with read access to leads
 
 The method `crm.lead.list` returns a list of leads based on a filter. It is an implementation of the list method for leads.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see lead fields [crm-lead-fields](./crm-lead-fields.md)).
+[`array`](../../data-types.md) | An array containing the list of fields to be selected (see lead fields [crm-lead-fields](./crm-lead-fields.md)).
 
 When selecting, use masks:
 - "*" - to select all fields (excluding custom and multiple fields)
 - "UF_*" - to select all custom fields (excluding multiple fields)
 
-There are no masks for selecting multiple fields. To select multiple fields, specify the desired ones in the selection list ("PHONE", "EMAIL", etc.).
-There is no option to add a logical OR condition to the filter if you need to select by several different fields.||
+There are no masks for selecting multiple fields. To select multiple fields, specify the required ones in the selection list ("PHONE", "EMAIL", etc.).
+There is no option to add a logical OR condition to the filter if you need to select by several different fields. ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering selected leads in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering the selected leads in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to lead fields [crm-lead-fields](./crm-lead-fields.md).
 
-An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@` — NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` character in the filter value should not be passed. The search looks for a substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` character should be passed in the value. Examples:
+- `%` — LIKE, substring search. The "%" symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The "%" symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values starting with "mol"
   - "%mol" — searching for values ending with "mol"
-  - "%mol%" — searching for values where "mol" can be in any position.
+  - "%mol%" — searching for values where "mol" can be in any position
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` character in the filter value should not be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The "%" symbol in the filter value does not need to be passed. The search goes from both sides.
 
-- `=%` — NOT LIKE, substring search. The `%` character should be passed in the value. Examples:
+- `=%` — NOT LIKE, substring search. The "%" symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values not starting with "mol"
   - "%mol" — searching for values not ending with "mol"
-  - "%mol%" — searching for values where the substring "mol" is not present in any position.
+  - "%mol%" — searching for values where the substring "mol" is not present in any position
 
 - `!%=` — NOT LIKE (see description above)
 
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` - not equal
 - `!` — not equal
   ||
@@ -87,19 +71,33 @@ The formula for calculating the `start` parameter value:
 `start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
-## Examples
+Also, see the description of [list methods](../../how-to-call-rest-api/list-methods-pecularities.md).
+
+## Code Examples
+
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- cURL
+- cURL (Webhook)
 
-    ```http
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"select":["*", "UF_*"], "start":"50", "filter":{"=OPPORTUNITY": "15000.00"},"order":{"STATUS_ID": "ASC"},"auth":"**put_access_token_here**"}' \
-    https://xxx.bitrix24.com/rest/crm.lead.list.json
-    ```
+  ```bash
+  curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"select":["*","UF_*"],"start":50,"filter":{"=OPPORTUNITY":15000},"order":{"STATUS_ID":"ASC"}}' \
+  https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.lead.list
+  ```
+
+- cURL (OAuth)
+
+  ```bash
+  curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"select":["*","UF_*"],"start":50,"filter":{"=OPPORTUNITY":15000},"order":{"STATUS_ID":"ASC"},"auth":"**put_access_token_here**"}' \
+  https://**put_your_bitrix24_address**/rest/crm.lead.list
+  ```
 
 - JS
 
@@ -131,24 +129,27 @@ The formula for calculating the `start` parameter value:
 
 - PHP
 
-    ```php
-    $result = CRest::call('crm.lead.list', [
-        'SELECT' => ['*', 'UF_*'],
-        'START' => 50,
-        'FILTER' => [
-            '=OPPORTUNITY' => 15000,
-        ],
-        'ORDER' => [
-            'STATUS_ID' => 'ASC',
-        ],     
-    ]);
-    ```
+  ```php
+  require_once('crest.php');
 
-- HTTPS
+  $result = CRest::call(
+      'crm.lead.list',
+      [
+          'select' => ['*', 'UF_*'],
+          'start' => 50,
+          'filter' => [
+              '=OPPORTUNITY' => 15000,
+          ],
+          'order' => [
+              'STATUS_ID' => 'ASC',
+          ],
+      ]
+  );
 
-    ```http
-    https://xxx.bitrix24.com/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.lead.list.json?select[]=*&select=UF_*&start=50&filter[=OPPORTUNITY]=15000.00&order[STATUS_ID]=ASC
-    ```
+  echo '<PRE>';
+  print_r($result);
+  echo '</PRE>';
+  ```
 
 - PHP (B24PhpSdk)
 
@@ -186,10 +187,11 @@ The formula for calculating the `start` parameter value:
 
 {% endlist %}
 
-## Some practical examples
+## Some Practical Examples
+
 {% list tabs %}
 
-- Search for unconverted leads with an amount greater than zero
+- Searching for Unconverted Leads with Amount Greater than Zero
 
   ```js
   BX24.callMethod(
@@ -216,7 +218,7 @@ The formula for calculating the `start` parameter value:
   );
   ```
 
-- Search for a lead by phone
+- Searching for a Lead by Phone
 
   ```js
   BX24.callMethod(
@@ -242,7 +244,7 @@ The formula for calculating the `start` parameter value:
   );
   ```
 
-- Selecting leads for the month
+- Selecting Leads for the Month
 
   ```php
   $result = CRest::call(
@@ -261,11 +263,9 @@ The formula for calculating the `start` parameter value:
   ```
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Successful response
-
-> 200 OK
+HTTP Status: **200**
 
 ```json
 {
@@ -403,34 +403,27 @@ The formula for calculating the `start` parameter value:
 ### Returned Data
 
 #|
-|| **Value** / **Type** | **Description** ||
+|| **Name**
+`type`  | **Description** ||
 || **result**
-[`array`](../../data-types.md) | The result of the request. An array of leads. For information on the lead structure, see the method [`crm.lead.get`](./crm-lead-get.md) ||
-|| **next**
-[`integer`](../../data-types.md) | The value to send to get the next page of data from the list method. Shown if such elements exist. ||
+[`array`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the deal fields. 
+
+Keep in mind that the structure of the fields may change due to the `select` parameter.
+
+ For information on the lead structure, see the method [`crm.lead.get`](./crm-lead-get.md) ||
 || **total**
-[`integer`](../../data-types.md) | The total number of leads that meet the request ||
+[`integer`](../../data-types.md) | The total number of found items ||
+|| **next**
+[`integer`](../../data-types.md) | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
+
+The `next` parameter appears in the response if the number of items matching your request exceeds `50` ||
 || **time**
-[`array`](../../data-types.md) | Information about the execution time of the request ||
-|| **start**
-[`double`](../../data-types.md) | Timestamp of the moment the request was initialized ||
-|| **finish**
-[`double`](../../data-types.md) | Timestamp of the moment the request execution was completed ||
-|| **duration**
-[`double`](../../data-types.md) | How long in milliseconds the request took (finish - start) ||
-|| **date_start**
-[`string`](../../data-types.md) | String representation of the date and time of the moment the request was initialized ||
-|| **date_finish**
-[`double`](../../data-types.md) | String representation of the date and time of the moment the request execution was completed ||
-|| **operating_reset_at**
-[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limit](../../../limits.md) ||
-|| **operating**
-[`double`](../../data-types.md) | In how many milliseconds will the limit on REST API resources be reset? Read more in the article [operation limit](../../../limits.md) ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-## Error Response
+## Error Handling
 
-> HTTP status: 40x, 50x Error
+> HTTP Status: 40x, 50x Error
 
 ```json
 {
@@ -439,11 +432,13 @@ The formula for calculating the `start` parameter value:
 }
 ```
 
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
 ### Possible Errors
 
 #|  
 || **Error Text** | **Description** ||
-|| Access denied. | The user does not have permission to read leads. ||
+|| `Access denied` | The user does not have permission to read leads ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

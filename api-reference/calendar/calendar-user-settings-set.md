@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method sets user calendar settings.
+This method sets the user calendar settings for the current user.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method sets user calendar settings.
 || **Name**
 `type` | **Description** ||
 || **settings***
-[`object`](../data-types.md) | An object containing user [calendar settings](#settings) ||
+[`object`](../data-types.md) | An object containing the values of user [calendar settings](#settings) ||
 |#
 
 ### Parameter settings {#settings}
@@ -31,7 +31,7 @@ This method sets user calendar settings.
 || **crmSection**
 [`string`](../data-types.md) | Calendar for CRM ||
 || **showDeclined**
-[`boolean`](../data-types.md) | Show events where the user declined to participate ||
+[`boolean`](../data-types.md) | Show events that the user declined to participate in ||
 || **denyBusyInvitation**
 [`boolean`](../data-types.md) | Prevent inviting to an event if the time is busy ||
 || **collapseOffHours**
@@ -64,8 +64,8 @@ Default value — `false` ||
 [`object`](../data-types.md) | Settings for preset calendars.
 
 The key of the settings object can be:
-- `user[id]` — User Calendar type with user identifier. For example, `user12` corresponds to the user calendar with identifier `12`
-- `group[id]` — Group Calendar type with group identifier. For example, `group36` corresponds to the group calendar with identifier `36`
+- `user[id]` — User Calendar type with user identifier. For example, `user12` corresponds to the calendar of the user with identifier `12`
+- `group[id]` — Group Calendar type with group identifier. For example, `group36` corresponds to the calendar of the group with identifier `36`
 
 The value of the object is the calendar identifier ||
 || **syncPeriodPast**
@@ -204,13 +204,13 @@ The value of the object is the calendar identifier ||
                         [
                             'type' => 'min',
                             'count' => 15
-                        }
+                        ]
                     ],
                     'withTime' => [
                         [
                             'type' => 'min',
                             'count' => 50
-                        }
+                        ]
                     ]
                 ]
             ]
@@ -257,7 +257,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "settings" for the method "calendar.user.settings.set" is not set"
+    "error_description": "The required parameter 'settings' for the method 'calendar.user.settings.set' is not set"
 }
 ```
 {% include notitle [error handling](../../_includes/error-info.md) %}
@@ -266,7 +266,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "settings" for the method "calendar.user.settings.set" is not set | The required parameter `settings` is not provided ||
+|| Empty string | The required parameter 'settings' for the method 'calendar.user.settings.set' is not set | The required parameter `settings` is not provided ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

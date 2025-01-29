@@ -2,6 +2,21 @@
 
 ## 2025
 
+### January 29, 2025
+
+- Added descriptions for application embedding methods: [BX24.placement.info](./api-reference/widgets/ui-interaction/bx24-placement-info.md), [BX24.placement.getInterface](./api-reference/widgets/ui-interaction/bx24-placement-get-interface.md), [BX24.placement.call](./api-reference/widgets/ui-interaction/bx24-placement-call.md), and [BX24.placement.bindEvent](./api-reference/widgets/ui-interaction/bx24-placement-bind-event.md)
+- Updated the main page of the [Status Localization](./api-reference/sale/status-lang/index.md) section. Added introductory information as well as an overview of methods and relationships
+- Updated the main page of the [Calendar](./api-reference/calendar/index.md) section. Added introductory information as well as an overview of methods and relationships
+- Updated the main page of the [Cash Registers](./api-reference/sale/cashbox/index.md) section. Added introductory information as well as an overview of methods and relationships
+- Added a new tutorial [How to Attach a Task to a SPA](./tutorials/tasks/how-to-connect-task-to-spa.md)
+- Added descriptions for methods in the [Company Structure](./api-reference/departments/index.md) section
+- Updated documentation for [Business Process Templates](./api-reference/bizproc/template/index.md) in the Business Processes section
+- Updated the main page of the [Resource Booking](./api-reference/calendar/resource/index.md) section. Added introductory information as well as an overview of methods and relationships
+- Updated the main page of the [Shipment Property Values](./api-reference/sale/shipment-property-value/index.md) section. Added introductory information as well as an overview of methods and relationships
+- Updated the main page of the [Site Object](./api-reference/landing/site/index.md) section. Added introductory information as well as an overview of methods and relationships
+- Added a new method to get a custom CRM object type [crm.type.getByEntityTypeId](./api-reference/crm/universal/user-defined-object-types/crm-type-get-by-entity-type-id.md)
+- Added the ability to work with multiple fields in the [crm.item.add](./api-reference/crm/universal/crm-item-add.md) and [crm.item.update](./api-reference/crm/universal/crm-item-update.md) methods
+
 ### January 22, 2025
 
 - Updated the main page of the [Calendar Events](./api-reference/calendar/calendar-event/index.md) section. Added introductory information and an overview of methods and connections
@@ -36,7 +51,7 @@
 ### December 25, 2024
 
 - Updated documentation for calendar settings methods [calendar.settings.get](./api-reference/calendar/calendar-settings-get.md), [calendar.user.settings.get](./api-reference/calendar/calendar-user-settings-get.md), and [calendar.user.settings.set](./api-reference/calendar/calendar-user-settings-set.md)
-- Updated documentation for calendar methods [calendar.meeting.status.get](./api-reference/calendar/calendar-event/calendar-meeting-status-get.md), [calendar.meeting.status.set](./api-reference/calendar/calendar-event/calendar-meeting-status-set.md), and [calendar.accessibility.get](./api-reference/calendar/calendar-accessibility-get.md)
+- Updated documentation for calendar methods [calendar.meeting.status.get](./api-reference/calendar/calendar-event/calendar-meeting-status-get.md), [calendar.meeting.status.set](./api-reference/calendar/calendar-event/calendar-meeting-status-set.md), and [calendar.accessibility.get](./api-reference/calendar/calendar-event/calendar-accessibility-get.md)
 - Updated documentation for calendar event methods [calendar.event.*](./api-reference/calendar/calendar-event/index.md)
 - Updated the main pages of the contact section [Contact Relationship with Companies](./api-reference/crm/contacts/company/index.md), [Managing Contact Cards](./api-reference/crm/contacts/custom-form/index.md). Added introductory information and an overview of methods and relationships
 - Updated the main page of the section [Custom Fields for Companies](./api-reference/crm/companies/userfields/index.md). Added introductory information and an overview of methods and relationships

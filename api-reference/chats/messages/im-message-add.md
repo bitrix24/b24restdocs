@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -86,7 +86,7 @@ or
 }
 ```
 
-**Execution result**: message identifier `MESSAGE_ID` or error.
+**Execution result**: message identifier `MESSAGE_ID` or an error.
 
 ## Response on Error
 
@@ -107,15 +107,15 @@ or
 #|
 || **Code** | **Description** ||
 || **USER_ID_EMPTY** | Recipient identifier is not specified when sending a message in a one-on-one chat ||
-|| **CHAT_ID_EMPTY** | Chat identifier of the recipient is not specified when sending a message in a chat ||
-|| **ACCESS_ERROR** | Insufficient permissions to send the message ||
+|| **CHAT_ID_EMPTY** | Recipient chat identifier is not specified when sending a message in a chat ||
+|| **ACCESS_ERROR** | Insufficient permissions to send a message ||
 || **MESSAGE_EMPTY** | Message text is not provided ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | The maximum allowable size of the attachment (30 KB) has been exceeded ||
+|| **ATTACH_OVERSIZE** | The maximum allowed size of the attachment (30 KB) has been exceeded ||
 || **KEYBOARD_ERROR** | The entire provided keyboard object failed validation ||
-|| **KEYBOARD_OVERSIZE** | The maximum allowable size of the keyboard (30 KB) has been exceeded ||
+|| **KEYBOARD_OVERSIZE** | The maximum allowed size of the keyboard (30 KB) has been exceeded ||
 || **MENU_ERROR** | The entire provided menu object failed validation ||
-|| **MENU_OVERSIZE** | The maximum allowable size of the menu (30 KB) has been exceeded ||
+|| **MENU_OVERSIZE** | The maximum allowed size of the menu (30 KB) has been exceeded ||
 || **PARAMS_ERROR** | Something went wrong ||
 |#
 

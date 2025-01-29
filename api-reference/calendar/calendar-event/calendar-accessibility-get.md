@@ -1,6 +1,6 @@
 # Get User Availability from calendar.accessibility.get
 
-> Scope: [`calendar`](../scopes/permissions.md)
+> Scope: [`calendar`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -8,26 +8,26 @@ This method retrieves the availability of users from the list.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **users***
-[`array`](../data-types.md) | Array of user IDs ||
+[`array`](../../data-types.md) | Array of user IDs ||
 || **from***
-[`date`](../data-types.md) | Start date of the period for determining availability in the format `YYYY-MM-DD`.
+[`date`](../../data-types.md) | Start date of the period for determining availability in the format `YYYY-MM-DD`.
 
 For example, `2024-06-20` ||
 || **to***
-[`date`](../data-types.md) | End date of the period for determining availability in the format `YYYY-MM-DD`.
+[`date`](../../data-types.md) | End date of the period for determining availability in the format `YYYY-MM-DD`.
 
 For example, `2024-12-20`  ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -135,7 +135,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The result contains an object.
+[`object`](../../data-types.md) | The result contains an object.
 
 The key of the object is the user ID from the request.
 
@@ -148,44 +148,44 @@ The value is an array of objects, each describing an [event](#event) in which th
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`string`](../data-types.md) | Event ID ||
+[`string`](../../data-types.md) | Event ID ||
 || **NAME**
-[`string`](../data-types.md) | Event name ||
+[`string`](../../data-types.md) | Event name ||
 || **DATE_FROM**
-[`datetime`](../data-types.md) | Start date and time of the event ||
+[`datetime`](../../data-types.md) | Start date and time of the event ||
 || **DATE_TO**
-[`datetime`](../data-types.md) | End date and time of the event ||
+[`datetime`](../../data-types.md) | End date and time of the event ||
 || **DATE_FROM_TS_UTC**
-[`string`](../data-types.md) | Start date and time of the event in UTC in timestamp format ||
+[`string`](../../data-types.md) | Start date and time of the event in UTC in timestamp format ||
 || **DATE_TO_TS_UTC**
-[`string`](../data-types.md) | End date and time of the event in UTC in timestamp format ||
+[`string`](../../data-types.md) | End date and time of the event in UTC in timestamp format ||
 || **~USER_OFFSET_FROM**
-[`integer`](../data-types.md) | Time offset of the start of the event relative to UTC in seconds ||
+[`integer`](../../data-types.md) | Time offset of the start of the event relative to UTC in seconds ||
 || **~USER_OFFSET_TO**
-[`integer`](../data-types.md) | Time offset of the end of the event relative to UTC in seconds ||
+[`integer`](../../data-types.md) | Time offset of the end of the event relative to UTC in seconds ||
 || **DT_SKIP_TIME**
-[`integer`](../data-types.md) | Flag indicating that the event lasts all day. Possible values:
+[`integer`](../../data-types.md) | Flag indicating that the event lasts all day. Possible values:
 - `Y` — all day
 - `N` — not all day ||
 || **TZ_FROM**
-[`integer`](../data-types.md) | Timezone of the event's start date ||
+[`integer`](../../data-types.md) | Timezone of the event's start date ||
 || **TZ_TO**
-[`integer`](../data-types.md) | Timezone of the event's end date ||
+[`integer`](../../data-types.md) | Timezone of the event's end date ||
 || **ACCESSIBILITY**
-[`integer`](../data-types.md) | Availability of event participants. Possible values:
+[`integer`](../../data-types.md) | Availability of event participants. Possible values:
 
 - `busy` — busy
 - `absent` — absent
 - `quest` — tentative
 - `free` — free ||
 || **IMPORTANCE**
-[`string`](../data-types.md) | Importance of the event. Possible values:
+[`string`](../../data-types.md) | Importance of the event. Possible values:
 
 - `high` — high
 - `normal` — medium
 - `low` — low ||
 || **EVENT_TYPE**
-[`string`](../data-types.md) | Some events contain information about how they were created.
+[`string`](../../data-types.md) | Some events contain information about how they were created.
 
 An event can be created through:
 
@@ -206,7 +206,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -218,8 +218,10 @@ HTTP Status: **400**
 || Empty string | Access denied | Access to the method is prohibited for external users ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 
 - [{#T}](./index.md)
+- [{#T}](./calendar-meeting-status-get.md)
+- [{#T}](./calendar-meeting-status-set.md)

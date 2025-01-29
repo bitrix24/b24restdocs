@@ -15,3 +15,11 @@ Some data may be missing here — we will complete it soon.
 {% endnote %}
 
 {% endif %}
+
+#|
+|| [messageservice.message.status.update](./messageservice-message-status-update.md) | Updates the message delivery status ||
+|| [messageservice.sender.add](./messageservice-sender-add.md) | Registers an SMS provider or message provider ||
+|| [messageservice.sender.delete](./messageservice-sender-delete.md) | Deletes an SMS provider or message provider ||
+|| [messageservice.sender.list](./messageservice-sender-list.md) | Retrieves a list of SMS providers or message providers ||
+|| [messageservice.sender.update](./messageservice-sender-update.md) | Updates an SMS provider ||
+|#

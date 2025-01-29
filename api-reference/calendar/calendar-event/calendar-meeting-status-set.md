@@ -1,10 +1,10 @@
-# Set Participation Status for the Current User calendar.meeting.status.set
+# Set Participation Status in Event for Current User calendar.meeting.status.set
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method sets the participation status for the current user's event.
+This method sets the participation status in an event for the current user.
 
 ## Method Parameters
 
@@ -14,11 +14,11 @@ This method sets the participation status for the current user's event.
 || **Name**
 `type` | **Description** ||
 || **eventId***  
-[`integer`](../../data-types.md) | The identifier of the event.
+[`integer`](../../data-types.md) | Identifier of the event.
 
 You can obtain the identifier using the [calendar.event.get](./calendar-event-get.md) or [calendar.event.get.nearest](./calendar-event-get-nearest.md) methods. ||
 || **status***  
-[`string`](../../data-types.md) | The participation status for the event. Possible values: 
+[`string`](../../data-types.md) | Participation status in the event. Possible values: 
 - `Y` — accepted
 - `N` — declined
 - `Q` — invited, but not yet responded ||
@@ -84,7 +84,7 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -113,12 +113,12 @@ Returns `true` if the status is set successfully. ||
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "status" for the method "calendar.meeting.status.set" is not set."
+    "error_description": "The required parameter "status" for method "calendar.meeting.status.set" is not set."
 }
 ```
 
@@ -128,9 +128,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "status" for the method "calendar.meeting.status.set" is not set. | The required parameter `status` was not provided. ||
-|| Empty string | The required parameter "eventId" for the method "calendar.meeting.status.set" is not set. | The required parameter `eventId` was not provided. ||
-|| Empty string | Invalid value for the "status" parameter | The `status` parameter contains a value other than `Q`, `Y`, or `N`. ||
+|| Empty string | The required parameter "status" for method "calendar.meeting.status.set" is not set. | The required parameter `status` was not provided. ||
+|| Empty string | The required parameter "eventId" for method "calendar.meeting.status.set" is not set. | The required parameter `eventId` was not provided. ||
+|| Empty string | Invalid value for parameter "status" | The `status` parameter contains a value other than `Q`, `Y`, or `N`. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -139,3 +139,4 @@ HTTP Status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./calendar-meeting-status-get.md)
+- [{#T}](./calendar-accessibility-get.md)

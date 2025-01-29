@@ -1,25 +1,23 @@
-# Delete Timeline Entry rpa.timeline.delete
+# Delete Timeline Record rpa.timeline.delete
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method deletes a timeline entry with the identifier `id`.
+This method deletes a timeline record with the identifier `id`.
+
+The method only deletes records that were created by the same user and through the application.
+
+## Method Parameters
+
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`number`](../../../data-types.md) | Identifier of the entry ||
+[`integer`](../../../data-types.md) | Identifier of the record ||
 |#
-
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
-
-{% note warning %}
-
-The method only deletes entries that were created by the same user and through the application.
-
-{% endnote %}
 
 ## Continue Exploring 
 

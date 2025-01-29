@@ -5,19 +5,19 @@ items:
     href: index.md
   - name: Working with Site Types and Scopes
     href: types.md
-  - name: Site Entity
+  - name: Site Object
     include:
       path: site/b24-toc.yaml
       mode: link
-  - name: Page Entity
+  - name: Page Object
     include:
       path: page/b24-toc.yaml
       mode: link
-  - name: Block Entity
+  - name: Blocks Object
     include:
       path: block/b24-toc.yaml
       mode: link
-  - name: View Template Entity
+  - name: View Template Object
     include:
       path: template/b24-toc.yaml
       mode: link

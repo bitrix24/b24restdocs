@@ -75,7 +75,7 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -102,7 +102,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -117,7 +117,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || Empty string | Event id not specified | Required parameter `id` not provided ||
-|| Empty string | An error occurred while deleting the event | Another error ||
+|| Empty string | An error occurred while deleting the event | The user does not have access permission to the calendar, the calendar does not exist, or another error occurred ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

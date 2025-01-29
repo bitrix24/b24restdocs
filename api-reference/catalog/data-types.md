@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon
+Some data may be missing — we will complete it shortly
 
 {% endnote %}
 
@@ -55,7 +55,7 @@ In this article, we will discuss the data types and object structure specific to
 || **iblockTypeId**
 [`string`](../data-types.md) | Type of the information block of the trade catalog. For CRM trade catalogs, it has a constant value of `CRM_PRODUCT_CATALOG` ||
 || **lid**
-[`string`](../data-types.md) | Identifier of the site. Has a constant value of `s1` ||
+[`string`](../data-types.md) | Site identifier. Has a constant value of `s1` ||
 || **name**
 [`string`](../data-types.md) | Name of the trade catalog ||
 || **productIblockId**
@@ -187,7 +187,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **width**
 [`float`](../data-types.md) | Width of the product ||
 || **quantityTrace**
-[`string`](../data-types.md) | Quantity tracking mode. Possible values:
+[`string`](../data-types.md) | Quantity accounting mode. Possible values:
 - `Y` — enabled
 - `N` — disabled
 - `D` — default
@@ -199,7 +199,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **purchasingCurrency**
 [`string`](../data-types.md) | Currency of the purchasing price.
 
-The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
+You can obtain the list of currencies using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
 Not editable when inventory accounting is enabled
 ||
@@ -250,7 +250,7 @@ Used only in the on-premise version for content sales
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
 
 `valueId` of all product properties can be obtained using the methods [catalog.product.get](./product/catalog-product-get.md) and [catalog.product.list](./product/catalog-product-list.md)
 ||
@@ -381,7 +381,7 @@ For parent products, the ability to edit this field is available only in the on-
 || **purchasingCurrency**
 [`string`](../data-types.md) | Currency of the purchasing price.
 
-The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
+You can obtain the list of currencies using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
 Not editable when inventory accounting is enabled.
 
@@ -406,7 +406,7 @@ For parent products, the ability to edit this field is available only in the on-
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
 
 `valueId` of all parent product properties can be obtained using the methods [catalog.product.sku.get](./product/sku/catalog-product-sku-get.md) and [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md)
 ||
@@ -517,7 +517,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **width**
 [`float`](../data-types.md) | Width of the product ||
 || **quantityTrace**
-[`string`](../data-types.md) | Quantity tracking mode. Possible values:
+[`string`](../data-types.md) | Quantity accounting mode. Possible values:
 - `Y` — enabled
 - `N` — disabled
 - `D` — default
@@ -530,7 +530,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **purchasingCurrency**
 [`string`](../data-types.md) | Currency of the purchasing price.
 
-The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
+You can obtain the list of currencies using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
 Not editable when inventory accounting is enabled
 ||
@@ -581,7 +581,7 @@ Used only in the on-premise version for content sales
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
 
 `valueId` of all product offer properties can be obtained using the methods [catalog.product.offer.get](./product/offer/catalog-product-offer-get.md) and [catalog.product.offer.list](./product/offer/catalog-product-offer-list.md)
 ||
@@ -634,6 +634,8 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 [`datetime`](../data-types.md) | Modification date. Read-only ||
 || **iblockSectionId**
 [`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
+|| **measure**
+[`catalog_measure.id`](#catalog_measure) | Unit of measurement ||
 || **previewText**
 [`string`](../data-types.md) | Description for the announcement ||
 || **detailText**
@@ -674,7 +676,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
 
 `valueId` of all service properties can be obtained using the methods [catalog.product.service.get](./product/service/catalog-product-service-get.md) and [catalog.product.service.list](./product/service/catalog-product-service-list.md)
 ||

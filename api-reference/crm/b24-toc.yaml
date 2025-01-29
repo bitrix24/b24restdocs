@@ -3,11 +3,13 @@ href: index.md
 items:
   - name: CRM Objects and Methods
     href: index.md
-  - name: Data Types and Structure of Objects in the CRM REST API
+  - name: Data Types and Object Structure in CRM REST API
     href: data-types.md 
+  - name: Fields of Main CRM Objects
+    href: main-entities-fields.md
   - name: Typical Use-Cases and Tutorials
     href: tutorials.md
-  - name: Determine the Current CRM Operating Mode
+  - name: Determine Current CRM Operating Mode
     href: crm-settings-mode-get.md
   - name: Universal CRM Methods
     include:
@@ -33,11 +35,11 @@ items:
     include:
       path: quote/b24-toc.yaml
       mode: link
-  - name: Details
+  - name: Requisites
     include:
       path: requisites/b24-toc.yaml
       mode: link
-  - name: Timeline and Activities
+  - name: Timeline and Deals
     include:
       path: timeline/b24-toc.yaml
       mode: link
@@ -45,7 +47,7 @@ items:
     include:
       path: duplicates/b24-toc.yaml
       mode: link
-  - name: Statuses and dropdowns
+  - name: Reference Books
     include:
       path: status/b24-toc.yaml
       mode: link
@@ -69,11 +71,9 @@ items:
     include:
       path: auxiliary/b24-toc.yaml
       mode: link
-  - name: Outdated CRM Methods
+  - name: Deprecated CRM Methods
     include:
       path: outdated/b24-toc.yaml
       mode: link
   - name: Get Stage Movement History
     href: crm-stage-history-list.md
-  - name: Fields of Main CRM Objects
-    href: main-entities-fields.md

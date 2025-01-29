@@ -1,40 +1,33 @@
-# Get Information About the BX24.placement.info Call Context
+# Get Information About the Call Context of BX24.placement.info
 
-{% note warning "We are still updating this page" %}
+> Scope: [`placement`](../../scopes/permissions.md)
 
-Some data may be missing here — we will complete it soon.
+The method `BX24.placement.info` retrieves information about the context of the embedding handler call.
 
-{% endnote %}
+No parameters.
 
-{% if build == 'dev' %}
+## Code Example
 
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- missing parameters or fields
-- parameter types not specified
-- parameter requirements not indicated
-- examples missing
-- success response missing
-- error response missing
-- links to pages not yet created are not specified.
-
-{% endnote %}
-
-{% endif %}
-
-Retrieving information about the call context.
-
-Example call
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ```js
-BX24.placement.info();
+BX24.ready(function () {
+    BX24.init(function () {
+        var placementInfo = BX24.placement.info();
+        console.info("placement = " + placementInfo["placement"]
+    + ", options = " + placementInfo["options"]);
+    });
+});
 ```
 
-Result:
+## Result
 
 ```json
 {"placement":"CRM_LEAD_LIST_MENU","options":{"ID":"1348"}}
 ```
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Continue Your Learning
+
+- [{#T}](bx24-placement-get-interface.md)
+- [{#T}](bx24-placement-call.md)
+- [{#T}](bx24-placement-bind-event.md)

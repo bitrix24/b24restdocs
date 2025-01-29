@@ -1,28 +1,44 @@
 # Call the Registered Interface Command BX24.placement.call
 
-{% note warning "We are still updating this page" %}
+> Scope: [`placement`](../../scopes/permissions.md)
 
-Some data may be missing here — we will complete it soon.
+The method `BX24.placement.call` invokes a registered interface command.
 
-{% endnote %}
+## Parameters
 
-{% if build == 'dev' %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+#|
+|| **Name**
+`type` | **Description** ||
+|| **command***  
+[`string`](../../data-types.md) | The command to be invoked ||
+|| **parameters**  
+[`object`](../../data-types.md) | Parameters to be passed ||
+|| **callback***  
+[`callable`](../../data-types.md) | Callback function ||
+|#
 
-- edits needed for writing standards
-- missing parameters or fields
-- parameter types not specified
-- required parameters not indicated
-- examples missing
-- success response not provided
-- error response not provided
-- links to pages not yet created are not specified.
+## Code Example
 
-{% endnote %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
-{% endif %}
+```js
+BX24.ready(function () {
+    BX24.init(function () {
+        BX24.placement.call('getStatus', {}, function (result) {
+            console.log(result);
+        });
 
-`BX24.placement.call(command, parameters, callback)`
+        BX24.placement.call('CallCardSetCardTitle', {title: 'hello world!'}, function (result) {
+            console.log(result);
+        });
+    });
+});
+```
 
-Call the registered interface command.
+## Continue Learning 
+
+- [{#T}](bx24-placement-info.md)
+- [{#T}](bx24-placement-get-interface.md)
+- [{#T}](bx24-placement-bind-event.md)

@@ -1,41 +1,29 @@
-# Get the complete set of field visibility settings rpa.fields.getSettings
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing
-- response in case of error is missing
-
-{% endnote %}
-
-{% endif %}
-
+# Get the Complete Set of Field Visibility Settings rpa.fields.getSettings
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.fields.getSettings` will return the complete set of field visibility settings for the stage with the identifier stageId of the process with the identifier typeId.
+The method retrieves the complete set of field visibility settings for the stage with the identifier `stageId` of the process with the identifier `typeId`.
+
+## Method Parameters
+
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **typeId**^*^ 
-[`number`](../../../data-types.md) | Identifier of the process. ||
-|| **stageId** 
-[`number`](../../../data-types.md) | Identifier of the stage. Default is 0 (general settings). ||
+|| **typeId***  
+[`integer`](../../../data-types.md) | Identifier of the process ||
+|| **stageId**  
+[`integer`](../../../data-types.md) | Identifier of the stage.
+
+Defaults to `0`, which means — general settings ||
 |#
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+## Response Handling
 
-## Response in case of success
+HTTP status: **200**
 
 ```json
 {
@@ -50,3 +38,9 @@ The method `rpa.fields.getSettings` will return the complete set of field visibi
     }
 }
 ```
+
+## Continue Exploring 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-fields-set-settings.md)
+- [{#T}](./rpa-fields-set-visibility-settings.md)

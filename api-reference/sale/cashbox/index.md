@@ -1,31 +1,48 @@
-# Overview of Methods
+# Cash Registers in Online Stores: Overview of Methods
 
-{% if build == 'dev' %}
+When you sell something through CRM, the purchase information goes to the cash register. The cash register generates a receipt and sends it to:
+- the fiscal data operator for reporting to the tax authorities,
+- the customer via SMS or e-mail.
 
-{% note alert "TO-DO _not exported to prod_" %}
+To add a new cash register, first create a cash register handler. It will connect Bitrix24 with your cash register equipment or online service. Then add and configure the cash register: specify the name, select the handler, and set up fiscalization.
 
-- where cash registers are used in Bitrix24
-- how the exchange of receipts occurs
-- where receipts are used
-- what the interaction logic is between cash register handlers, cash registers, and receipts in the REST API
+> Quick navigation: [all methods](#all-methods)
+
+{% note tip "Typical use-cases and scenarios" %}
+
+- [Implement a simple cash register using REST API](../../../tutorials/sale/cashbox-add-example.md)
 
 {% endnote %}
 
-{% endif %}
+## Overview of Methods {#all-methods}
 
 > Scope: [`sale, cashbox`](../../scopes/permissions.md)
 >
-> Who can execute the methods: CRM administrator (permission "Allow changing settings")
+> Who can perform the methods: CRM administrator with the permission "Allow to change settings"
 
-#|
+### Cash Register Handlers
+
+#| 
 || **Method** | **Description** ||
-|| [sale.cashbox.handler.add](./sale-cashbox-handler-add.md) | Adds a REST handler for the cash register ||
-|| [sale.cashbox.handler.update](./sale-cashbox-handler-update.md) | Updates the data of the REST handler for the cash register ||
-|| [sale.cashbox.handler.list](./sale-cashbox-handler-list.md) | Returns a list of available REST handlers for cash registers ||
-|| [sale.cashbox.handler.delete](./sale-cashbox-handler-delete.md) | Deletes a REST handler for the cash register ||
+|| [sale.cashbox.handler.add](./sale-cashbox-handler-add.md) | Adds a cash register handler ||
+|| [sale.cashbox.handler.update](./sale-cashbox-handler-update.md) | Updates the cash register handler data ||
+|| [sale.cashbox.handler.list](./sale-cashbox-handler-list.md) | Returns a list of available cash register handlers ||
+|| [sale.cashbox.handler.delete](./sale-cashbox-handler-delete.md) | Deletes a cash register handler ||
+|#
+
+### Cash Registers
+
+#| 
+|| **Method** | **Description** ||
 || [sale.cashbox.add](./sale-cashbox-add.md) | Adds a cash register ||
 || [sale.cashbox.update](./sale-cashbox-update.md) | Updates an existing cash register ||
 || [sale.cashbox.list](./sale-cashbox-list.md) | Returns a list of configured cash registers ||
 || [sale.cashbox.delete](./sale-cashbox-delete.md) | Deletes a cash register ||
-|| [sale.cashbox.check.apply](./sale-cashbox-check-apply.md) | Saves the result of printing a receipt printed on a REST cash register ||
+|#
+
+### Receipts
+
+#| 
+|| **Method** | **Description** ||
+|| [sale.cashbox.check.apply](./sale-cashbox-check-apply.md) | Saves the result of receipt printing ||
 |#

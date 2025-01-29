@@ -1,53 +1,49 @@
 # Create a New Stage rpa.stage.add
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.stage.add` will create a new stage and return data in the response similar to the response from the `rpa.stage.get` request.
+This method adds a new stage.
+
+## Method Parameters
+
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **fields**
-[`array`](../../../data-types.md) | A list of stage fields. The list of possible fields is described below.||
+|| **fields*** 
+[`object`](../../../data-types.md) | An object with [fields](#fields) of the stage ||
 |#
 
-## Parameters fields
+## Fields Parameters {#fields}
+
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **name**^*^ | The name of the stage. ||
-|| **typeId**^*^ | The identifier of the process. ||
-|| **code** | Symbolic code. ||
-|| **color** | The color of the stage in HEX (6 characters). ||
-|| **sort** | The sorting identifier. ||
-|| **semantic** | The semantic code of the stage. It can be either SUCCESS or FAIL. ||
+|| **name*** | Name of the stage ||
+|| **typeId*** | Process identifier ||
+|| **code** | Symbolic code ||
+|| **color** | Stage color in HEX format with 6 characters ||
+|| **sort** | Sort identifier ||
+|| **semantic** | Semantic code of the stage. It can be either `SUCCESS` or `FAIL`.
+
+A process can have only one successful stage ||
 |#
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+## Response Handling
 
-{% note warning %}
+HTTP status: **200**
 
-A process can only have one successful stage.
+Returns data in the response similar to the response for the request [rpa.stage.get](./rpa-stage-get.md)
 
-{% endnote %}
+## Continue Exploring
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-stage-update.md)
+- [{#T}](./rpa-stage-get.md)
+- [{#T}](./rpa-stage-list-for-type.md)
+- [{#T}](./rpa-stage-delete.md)

@@ -1,25 +1,19 @@
-# Elements
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
+# Elements: Overview of Methods
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-Since the elements of each process are stored in a separate table, the identifiers of elements from different processes will match.
+Since the elements of each workflow are stored in a separate table, the identifiers of elements from different workflows will match.
 
-Therefore, it is necessary to pass the process identifier `typeId` to all methods.
+Therefore, it is necessary to pass the workflow identifier `typeId` to all methods.
 
-#|
+#| 
 || **Method** | **Description** ||
-|| [rpa.item.get](./rpa-item-get.md) | Returns information about the element with identifier id of the process with identifier typeId. ||
-|| [rpa.item.list](./rpa-item-list.md) | The method will return an array of elements for the process with identifier typeId. ||
-|| [rpa.item.add](./rpa-item-add.md) | The method creates a new element for the process with identifier typeId. ||
-|| [rpa.item.update](./rpa-item-update.md) | The method updates the element with identifier id of the process with identifier typeId. ||
-|| [rpa.item.delete](./rpa-item-delete.md) | The method will delete the element. ||
-|| [rpa.item.getTasks](./rpa-item-get-tasks.md) | The method will return data about the current tasks of the element with identifier id of the process with identifier typeId. ||
+|| [rpa.item.add](./rpa-item-add.md) | Adds a new element to the workflow with the identifier `typeId` ||
+|| [rpa.item.update](./rpa-item-update.md) | Updates the element with the identifier `id` in the workflow with the identifier `typeId` ||
+|| [rpa.item.get](./rpa-item-get.md) | Retrieves information about the element with the identifier `id` in the workflow with the identifier `typeId` ||
+|| [rpa.item.getTasks](./rpa-item-get-tasks.md) | Retrieves data about the current tasks of the element with the identifier `id` in the workflow with the identifier `typeId` ||
+|| [rpa.item.list](./rpa-item-list.md) | Retrieves a list of elements in the workflow with the identifier `typeId` ||
+|| [rpa.item.delete](./rpa-item-delete.md) | Deletes the element || 
 |#

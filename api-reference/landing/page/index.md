@@ -1,8 +1,8 @@
-# Entity Fields Page
+# Object Fields Page
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will fill it in shortly.
 
 - edits needed for writing standards
 - parameter types are not specified
-- links to pages that have not yet been created are not provided (view template)
+- links to pages that have not yet been created are not documented (view template)
 
 {% endnote %}
 
@@ -22,13 +22,13 @@ Some data may be missing here — we will fill it in shortly.
 
 || **Fields** | **Description** | **Read** | **Write** ||
 || **ID**
-[`unknown`](../../data-types.md) | Identifier of the page. Automatically created and unique within the database. | Yes | No ||
+[`unknown`](../../data-types.md) | Page identifier. Automatically generated and unique within the database. | Yes | No ||
 || **CODE^*^**
-[`unknown`](../../data-types.md) | Unique symbolic code of the page. Added to the website address if it is not the main page. | Yes | Yes ||
+[`unknown`](../../data-types.md) | Unique symbolic code for the page. Added to the website address if it is not the main page. | Yes | Yes ||
 || **RULE**
-[`unknown`](../../data-types.md) | Regular expression for displaying the page by mask. For example, the rule `section/([\d]+)` for a page at the root of the site will match all pages of the form `/section/n/`, where n is any number. | Yes | No ||
+[`unknown`](../../data-types.md) | Regular expression for displaying the page by mask. For example, the rule `section/([\d]+)` for a page at the root of the site will match all pages of the form `/section/<n>/`, where <n> is any number. | Yes | No ||
 || **ACTIVE**
-[`unknown`](../../data-types.md) | Activity of the page: Y / N. | Yes | No ||
+[`unknown`](../../data-types.md) | Page activity: Y / N. | Yes | No ||
 || **DELETED**
 [`unknown`](../../data-types.md) | Flag [deleted page](*deleted_page): Y / N.  | Yes | Yes ||
 || **TITLE^*^**
@@ -59,4 +59,4 @@ Some data may be missing here — we will fill it in shortly.
 
 {% include [Footnote on parameters](../../../_includes/required.md) %}
 
-[*deleted_page]: Entities marked as deleted do not appear in any requests. The system does not see them. Through REST, you can access such entities only by explicitly specifying DELETED=Y in the filter.
+[*deleted_page]: Marked as deleted entities do not appear in any requests. The system does not see them. Through REST, you can access such entities only by explicitly specifying in the filter DELETED=Y.

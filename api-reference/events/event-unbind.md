@@ -2,9 +2,9 @@
 
 > Who can execute the method: administrator
 
-The method `event.unbind` cancels a registered event handler.
+The method `event.unbind` cancels the registered event handler.
 
-It only works when logged in as a user with administrative rights to the account.
+It only works when logged in as a user with portal administration rights.
 
 ## Method Parameters
 
@@ -27,7 +27,7 @@ If you need to remove event handlers set with an empty `auth_type` (authorized o
 {% endnote %} 
 ||
 || **event_type**  
-[`string`](../data-types.md) | Values: `online|offline`. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
+[`string`](../data-types.md) | Values: `online|offline`. By default, `event_type=online`, and the method's behavior does not change. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
 |#
 
 If any parameters are not specified, all event handlers that meet the other requirements will be removed.
@@ -37,19 +37,6 @@ If any parameters are not specified, all event handlers that meet the other requ
 {% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "event": "ONCRMLEADADD",
-        "handler": "https://www.my-domain.com/handler/"
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/event.unbind
-    ```
 
 - cURL (OAuth)
 

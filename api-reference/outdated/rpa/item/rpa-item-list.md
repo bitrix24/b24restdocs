@@ -1,44 +1,33 @@
-# Get an Array of Process Elements rpa.item.list
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- required parameters are not specified
-- examples are missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
+# Get an Array of Process Items rpa.item.list
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.item.list` will return an array of process elements with the identifier typeId.
+The method retrieves a list of process items with the identifier `typeId`.
+
+## Method Parameters
 
 #|
 || **Name**
 `type` | **Description** ||
 || **typeId** 
-[`number`](../../../data-types.md) | Identifier of the process. ||
-|| **order**  |  List for sorting, where the key is the field, and the value is ASC or DESC. ||
-|| **filter**  | List for filtering. Keys for filtering by custom fields should be in UPPER_CASE, others in camelCase. Examples of filters are below. ||
-|| **start**  | Offset for pagination. ||
+[`integer`](../../../data-types.md) | Identifier of the process ||
+|| **order** 
+[`number`](../../../data-types.md)  | List for sorting, where the key is the field and the value is `ASC` or `DESC` ||
+|| **filter** 
+[`number`](../../../data-types.md)  | List for filtering.
+
+Keys for filtering by custom fields should be in `UPPER_CASE`, while others should be in `camelCase`. Examples of filters [below](#filters) ||
+|| **start** 
+[`number`](../../../data-types.md)  | Offset for pagination. ||
 |#
 
-## Response on Success
+## Response Handling
 
-> 200 OK
+HTTP Status: **200**
 
-The response will contain only the main fields of the elements, without data about tasks and users of the elements:
+The response will only include the main fields of the items, without data about tasks and users of the items:
 
 ```json
 {
@@ -49,9 +38,9 @@ The response will contain only the main fields of the elements, without data abo
 }
 ```
 
-## Filter Examples
+## Filter Examples {#filters}
 
-1. **Find elements that have uncompleted tasks for the current user**
+1. Find items that have incomplete tasks for the current user
 
     ```json
     {
@@ -61,9 +50,9 @@ The response will contain only the main fields of the elements, without data abo
     }
     ```
 
-    To find elements that have no tasks for the user, you need to pass the value `no_tasks`.
+    To find items that do not have any tasks for the user, you need to pass the value `no_tasks`.
 
-2. **Find elements updated by the user with identifier 4**
+2. Find items updated by the user with identifier `4`
 
     ```json
     {
@@ -73,7 +62,7 @@ The response will contain only the main fields of the elements, without data abo
     }
     ```
 
-3. **Find elements updated or moved by the user with identifier 4**
+3. Find items updated or moved by the user with identifier `4`
 
     ```json
     {
@@ -89,7 +78,7 @@ The response will contain only the main fields of the elements, without data abo
     }
     ```
 
-4. **Find elements that have a filled custom field with code `UF_RPA_1_STRING`**
+4. Find items that have a filled custom field with code `UF_RPA_1_STRING`
 
     ```json
     {
@@ -99,7 +88,7 @@ The response will contain only the main fields of the elements, without data abo
     }
     ```
 
-5. **Find elements that were created, modified, and moved between March 19 and March 22**
+5. Find items that were created, modified, and moved between March 19 and March 22
 
     ```json
     {
@@ -114,7 +103,7 @@ The response will contain only the main fields of the elements, without data abo
     }
     ```
 
-6. **Find elements that were either created, modified, or moved between March 19 and March 22**
+6. Find items that were either created, modified, or moved between March 19 and March 22
 
     ```json
     {
@@ -136,4 +125,11 @@ The response will contain only the main fields of the elements, without data abo
     }
     ```
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-item-add.md)
+- [{#T}](./rpa-item-update.md)
+- [{#T}](./rpa-item-get.md)
+- [{#T}](./rpa-item-get-tasks.md)
+- [{#T}](./rpa-item-delete.md)

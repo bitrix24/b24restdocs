@@ -1,17 +1,17 @@
 title: Elements
 href: index.md
 items: 
-  - name: Elements
+  - name: Overview of methods
     href: index.md
-  - name: Get information about the element
+  - name: Create a new process element
+    href: rpa-item-add.md
+  - name: Update process element
+    href: rpa-item-update.md
+  - name: Retrieve information about the element
     href: rpa-item-get.md
   - name: Get an array of process elements
     href: rpa-item-list.md
-  - name: Create a new process element
-    href: rpa-item-add.md
-  - name: Modify the process element
-    href: rpa-item-update.md
-  - name: Delete the element
-    href: rpa-item-delete.md
   - name: Get data on current tasks of the element
     href: rpa-item-get-tasks.md
+  - name: Delete element
+    href: rpa-item-delete.md

@@ -1,0 +1,302 @@
+# Get a List of Templates bizproc.workflow.template.list
+
+> Scope: [`bizproc`](../../scopes/permissions.md)
+>
+> Who can execute the method: any user
+
+This method retrieves a list of workflow templates.
+
+## Method Parameters
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **SELECT**
+[`array`](../../data-types.md) | An array containing the list of [fields](#fields) to be selected.
+
+You can specify only the fields that are necessary.
+
+Default value — `['ID']` ||
+|| **FILTER**
+[`object`](../../data-types.md) | An object for filtering the list of workflow templates in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
+- `field_N` — [field](#fields) of the template for filtering
+- `value_N` — field value
+
+You can specify the type of filtering before the name of the filtered field:
+- `!` — not equal
+- `<` — less than
+- `<=` — less than or equal to
+- `>` — greater than
+- `>=` — greater than or equal to | ||
+|| **ORDER**
+[`object`](../../data-types.md) | An object for sorting the list of running workflows in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
+- `field_N` — [field](#fields) of the template for sorting
+- `value_N` — sorting direction
+
+Sorting direction can take the values:
+- `asc` — ascending
+- `desc` — descending
+  
+You can specify multiple fields for sorting, for example, `{NAME: 'ASC', ID: 'DESC'}`.
+
+Default value — `{ID: 'ASC'}` ||
+|| **start**
+[`integer`](../../data-types.md) | This parameter is used for pagination control.
+
+The page size of results is always static — 50 records.
+
+To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
+
+The formula for calculating the `start` parameter value:
+
+`start = (N - 1) * 50`, where `N` — the desired page number ||
+|#
+
+### Template Fields {#fields}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../data-types.md) | Identifier of the workflow template ||
+|| **MODULE_ID**
+[`string`](../../data-types.md) | Identifier of the module by document. Possible values:
+- `crm` — CRM
+- `lists` — universal lists
+- `disk` — disk ||
+|| **ENTITY**
+[`string`](../../data-types.md) | Identifier of the object by document. Possible values:
+
+CRM
+- `CCrmDocumentLead` — leads
+- `CCrmDocumentContact` — contacts
+- `CCrmDocumentCompany` — companies
+- `CCrmDocumentDeal` — deals
+- `Bitrix\Crm\Integration\BizProc\Document\Quote` — estimates
+- `Bitrix\Crm\Integration\BizProc\Document\SmartInvoice` — invoices
+- `Bitrix\Crm\Integration\BizProc\Document\Dynamic` — SPAs
+
+Lists
+- `BizprocDocument` — processes in the news feed
+- `Bitrix\Lists\BizprocDocumentLists` — lists in groups
+
+Disk
+- `Bitrix\Disk\BizProcDocument` ||
+|| **DOCUMENT_TYPE**
+[`integer`](../../data-types.md) | Document type. Possible values:
+crm:
+- `LEAD` — leads
+- `CONTACT` — contacts
+- `COMPANY` — companies
+- `DEAL` — deals
+- `QUOTE` — estimates
+- `SMART_INVOICE` — invoices
+- `DYNAMIC_XXX` — SPAs, where XXX — identifier of the SPA
+
+Lists:
+- `iblock_XXX` — information block, where XXX — identifier of the information block
+
+Disk:
+- `STORAGE_XXX` — disk storage, where XXX — identifier of the storage
+ ||
+|| **AUTO_EXECUTE**
+[`integer`](../../data-types.md) | Auto-execute flag. Can take values:
+
+- `0` — no auto-execute
+- `1` — execute on creation
+- `2` — execute on modification
+- `3` — execute on creation and modification
+||
+|| **NAME**
+[`string`](../../data-types.md) | Name of the template ||
+|| **TEMPLATE**
+[`array`](../../data-types.md) | An array describing the structure of the template actions ||
+|| **PARAMETERS**
+[`array`](../../data-types.md) | Template parameters ||
+|| **VARIABLES**
+[`array`](../../data-types.md) | Template variables ||
+|| **CONSTANTS**
+[`array`](../../data-types.md) | Template constants ||
+|| **MODIFIED**
+[`datetime`](../../data-types.md) | Date of last modification ||
+|| **IS_MODIFIED**
+[`boolean`](../../data-types.md) | Whether the template has been modified. Possible values:
+- `Y` — yes, it has been modified
+- `N` — no
+
+This option is needed for typical templates of workflows ||
+|| **USER_ID**
+[`integer`](../../data-types.md) | Identifier of the user who created or modified the template ||
+|| **SYSTEM_CODE**
+[`string`](../../data-types.md) | System code of the template.
+
+Needed for identifying typical workflow templates or templates created by the application ||
+|#
+
+## Code Examples
+
+{% include [Example Note](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"select":["ID","NAME","USER_ID","SYSTEM_CODE"],"filter":{"MODULE_ID":"lists","AUTO_EXECUTE":0},"order":{"ID":"DESC"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/bizproc.workflow.template.list
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"select":["ID","NAME","USER_ID","SYSTEM_CODE"],"filter":{"MODULE_ID":"lists","AUTO_EXECUTE":0},"order":{"ID":"DESC"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/bizproc.workflow.template.list
+    ```
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'bizproc.workflow.template.list',
+        {
+            select: [
+                'ID',
+                'NAME',
+                'USER_ID',
+                'SYSTEM_CODE'
+            ],
+            filter: {
+                MODULE_ID: 'lists',
+                AUTO_EXECUTE: 0
+            },
+            order: {
+                ID: 'DESC'
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'bizproc.workflow.template.list',
+        [
+            'select' => [
+                'ID',
+                'NAME',
+                'USER_ID',
+                'SYSTEM_CODE'
+            ],
+            'filter' => [
+                'MODULE_ID' => 'lists',
+                'AUTO_EXECUTE' => 0
+            ],
+            'order' => [
+                'ID' => 'DESC'
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+
+
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": [
+        {
+            "ID": "525",
+            "NAME": "Display Time",
+            "USER_ID": "503",
+            "SYSTEM_CODE": "rest_app_5"
+        },
+        {
+           "ID": "379",
+           ... 
+        }
+        ...
+    ],
+    "total": 34,
+    "time": {
+        "start": 1737535822.539526,
+        "finish": 1737535822.564579,
+        "duration": 0.025053024291992188,
+        "processing": 0.0019738674163818359,
+        "date_start": "2025-01-22T11:50:22+02:00",
+        "date_finish": "2025-01-22T11:50:22+02:00",
+        "operating_reset_at": 1737536422,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | The root element of the response. 
+
+Contains an array of objects with information about workflow templates.
+
+Each object contains [fields](#fields) of the template specified in the `SELECT` parameter ||
+|| **total**
+[`integer`](../../data-types.md) | Total number of records found ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied!",
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Error Message** | **Description** ||
+|| `ACCESS_DENIED` | Access denied! | The method was executed by a non-administrator ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./bizproc-workflow-template-add.md)
+- [{#T}](./bizproc-workflow-template-update.md)
+- [{#T}](./bizproc-workflow-template-delete.md)

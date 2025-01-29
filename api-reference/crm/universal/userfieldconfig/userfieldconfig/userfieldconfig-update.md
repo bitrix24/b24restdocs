@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- The requirement for parameters is not specified
+- Required parameters are not specified
 - No response in case of an error
 - No examples in other languages
   
@@ -40,7 +40,7 @@ This method changes the value of a field.
 - **entityId** - cannot be changed
 - **editInList** - cannot be changed
 - **multiple** - cannot be changed
-- **isSearchable** - changing this flag will not trigger an automatic rebuild of the search index. Rebuilding occurs when the entities to which the fields are linked are changed
+- **isSearchable** - changing this flag will not trigger automatic rebuilding of the search index. Rebuilding occurs when entities to which the fields are linked are changed
 - **enum** - complete list of all value options for the "list" type property. For this field to be considered, **userTypeId** must be present in fields 
   - id - identifier of the option. Must be present if the option needs to be updated| ||
 |#
@@ -68,7 +68,7 @@ Updating flags and language phrases, without changing value options
     "field": {
         "mandatory": "Y",
         "editFormLabel": {
-            "en": "New Field Name"
+            "de": "Neuer Feldname"
         }    
     }
 }
@@ -100,13 +100,14 @@ Example of partially updating value options.
         "enum": [
             {
                 "id": 29,
+                "value": "Old value"
             },
             {
                 "id": 30,
-                "value": "Updated Value"
+                "value": "Updated value"
             },
             {
-                "value": "New Value"
+                "value": "New value"
             }
         ]    
     }
@@ -114,9 +115,9 @@ Example of partially updating value options.
 ```
 
 In this example:
-- The value option with id=29 will remain unchanged,
-- The value of the option with id=30 will change,
-- A new option "New Value" will be added,
-- All other options will be removed.
-  
+- The value option with id=29 will remain unchanged
+- The value of the option with id=30 will change
+- A new option "New value" will be added
+- All other options will be removed. If only the id of the option is passed in the request without the value, the option will be deleted.
+
 {% include [Example Note](../../../../../_includes/examples.md) %}

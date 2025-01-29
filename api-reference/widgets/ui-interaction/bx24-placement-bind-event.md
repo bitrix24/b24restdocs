@@ -1,27 +1,44 @@
-# Set Up the Interface Event Handler BX24.placement.bindEvent
+# Set Up an Event Handler for the Interface BX24.placement.bindEvent
 
-{% note warning "We are still updating this page" %}
+> Scope: [`placement`](../../scopes/permissions.md)
 
-Some data may be missing here — we will complete it soon.
+The method `BX24.placement.bindEvent` sets an event handler for the interface. The event must be registered on the calling side; otherwise, nothing will happen.
 
-{% endnote %}
+## Parameters
 
-{% if build == 'dev' %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+#|
+|| **Name**
+`type` | **Description** ||
+|| **event***  
+[`string`](../../data-types.md) | The name of the event to which the handler subscribes ||
+|| **callback***  
+[`callable`](../../data-types.md) | The callback function.
 
-- edits needed for writing standards
-- missing parameters or fields
-- parameter types not specified
-- required parameters not indicated
-- examples missing
-- success response missing
-- error response missing
+The `callback` handler may or may not receive data depending on the event it subscribes to. ||
+|#
 
-{% endnote %}
+## Code Example
 
-{% endif %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-`BX24.placement.bindEvent(event, callback)`
+```js
+BX24.ready(function () {
+    BX24.init(function () {
+        BX24.placement.bindEvent('BackgroundCallCard::initialized', event => {
+            // some code
+        });
 
-Setting up the event handler for the interface
+        BX24.placement.bindEvent('CallCard::CallStateChanged', (callState) => {
+            console.log(callState);
+        });
+    });
+});
+```
+
+## Continue Learning
+
+- [{#T}](bx24-placement-info.md)
+- [{#T}](bx24-placement-get-interface.md)
+- [{#T}](bx24-placement-call.md)

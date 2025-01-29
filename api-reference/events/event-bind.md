@@ -25,7 +25,7 @@ When deleting and updating the application, its actions will be removed. Therefo
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -46,22 +46,9 @@ When deleting and updating the application, its actions will be removed. Therefo
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "event": "ONCRMLEADADD",
-        "handler": "https://www.my-domain.com/handler/"
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/event.bind
-    ```
 
 - cURL (OAuth)
 
@@ -150,16 +137,16 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ERROR_EVENT_NOT_FOUND` | Event not found | Incorrect event specified ||
+|| `ERROR_EVENT_NOT_FOUND` | Event not found | The event specified is incorrect ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+{% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

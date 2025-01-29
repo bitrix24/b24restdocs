@@ -1,77 +1,72 @@
 # Create a New Comment in the Timeline rpa.comment.add
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- required parameters are not specified
-- examples are missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.comment.add` will create a new comment in the timeline of the element with the identifier itemId of the process with the identifier typeId.
+This method creates a new comment in the timeline of the element with the identifier `itemId` of the process with the identifier `typeId`.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **typeId** 
-[`number`](../../../data-types.md) | Identifier of the process. ||
+[`integer`](../../../data-types.md) | Identifier of the process ||
 || **itemId** 
-[`number`](../../../data-types.md) | Identifier of the element. ||
+[`integer`](../../../data-types.md) | Identifier of the element ||
 || **fields** 
-[`array`](../../../data-types.md) | Comment fields. ||
+[`object`](../../../data-types.md) | Object describing the [fields](#fields) of the comment ||
 |#
 
-## Parameter fields
+## Parameter fields {#fields}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **description** | Description of the entry (HTML and BB-code can be used). ||
-|| **files** | Array of attached files, where each element is an array with the name and base64 encoded content. ||
+|| **description** 
+[`string`](../../../data-types.md) | Description of the entry. HTML and BB-code formatting can be used ||
+|| **files** 
+[`array`](../../../data-types.md) | Array of attached files. Each element is an array with the name and content encoded in base64 ||
 |#
 
-## Example
+## Code Examples
+
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
-    ```json
-    {
-        "typeId": 24,
-        "itemId": 10,
-        "fields": {
-            "description": "Mention of user with id 1 ",
-            "files": [
-                [
-                    "document.pdf", "...base64_decoded_content..."
-                ]
-            ]    
+    ```js
+    BX24.callMethod(
+        'rpa.comment.add',
+        {
+            "typeId": 24,
+            "itemId": 10,
+            "fields": {
+                "description": "Mention of user with id 1 ",
+                "files": [
+                    [
+                        "document.pdf", "...base64_decoded_content..."
+                    ]
+                ]    
+            }
+        },
+        function(result) {
+            console.log('response', result.answer);
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+            console.log(result.data());
         }
-    }
+    )
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
-## Response in case of success
+## Response Handling
 
-> 200 OK
+HTTP status: **200**
 
 ```json
 {
@@ -108,3 +103,9 @@ The method `rpa.comment.add` will create a new comment in the timeline of the el
     }
 }
 ```
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-comment-update.md)
+- [{#T}](./rpa-comment-delete.md)

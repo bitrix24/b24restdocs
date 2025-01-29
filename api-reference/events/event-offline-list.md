@@ -12,19 +12,19 @@ The method `event.offline.list` is used to read the current queue without making
 || **Name**
 `type` | **Description** ||
 || **filter**
-[`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported on the fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID`, `PROCESS_ID`, `ERROR` with standard operations like `=`, `>`, `<`, `<=`, and so on. ||
+[`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by the fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID`, `PROCESS_ID`, `ERROR` with standard operations like `=`, `>`, `<`, `<=`, and so on ||
 || **order**
-[`array`](../data-types.md) | Record sorting. Sorting is supported on the same fields as in the filter, and an array of the form `[field=>ASC|DESC]` is accepted. By default — `[ID:ASC]` ||
+[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter, and an array of the form `[field=>ASC|DESC]` is accepted. By default — `[ID:ASC]` ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../data-types.md) | This parameter is used for pagination.
 
-The page size for results is always static: 50 records.
+The page size is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number. ||
+`start = (N-1) * 50`, where `N` is the desired page number ||
 |#
 
 ## Code Examples
@@ -32,23 +32,6 @@ The formula for calculating the `start` parameter value:
 {% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "filter": {
-            "ERROR": 0
-        },
-        "order": {
-            "ID": "DESC"
-        }
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/event.offline.list
-    ```
 
 - cURL (OAuth)
 
@@ -166,7 +149,7 @@ HTTP Status: **200**
 || **total**
 [`integer`](../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

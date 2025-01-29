@@ -1,39 +1,26 @@
 # Delete Comment rpa.comment.delete
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- the required parameters are not specified
-- examples are missing
-- response on success is missing
-- response on error is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.comment.delete` will delete the comment with the identifier id.
+This method deletes the comment with the identifier `id`.
+
+It only allows the deletion of comments that were added by the same user.
+
+## Method Parameters
+
+{% include [Footnote on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **id** 
-[`number`](../../../data-types.md) | Identifier of the record. ||
+|| **id*** 
+[`integer`](../../../data-types.md) | Record identifier ||
 |#
 
-{% note warning %}
+## Continue Exploring 
 
-This method allows deleting only those comments that were added by the same user.
-
-{% endnote %}
+- [{#T}](./index.md)
+- [{#T}](./rpa-comment-add.md)
+- [{#T}](./rpa-comment-update.md)

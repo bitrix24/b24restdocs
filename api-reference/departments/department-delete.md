@@ -1,51 +1,56 @@
-# Delete department department.delete
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter type is not specified
-- no response in case of error
-- no examples
-  
-{% endnote %}
-
-{% endif %}
+# Delete Department department.delete
 
 > Scope: [`department`](../scopes/permissions.md)
 >
-> Who can execute the method: a user with permissions to modify the structure
+> Who can execute the method: user with rights to modify the structure
 
-Deletes the specified department
+The method `department.delete` removes a department from the company structure.
+
+## Method Parameters
+
+{% include [Footnote about required parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **ID^*^** | department identifier ||
+|| **Name**
+`type` | **Description** ||
+|| **ID***
+[`int`](../data-types.md) | Identifier of the department ||
 |#
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+## Code Examples
 
-## Code examples
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```curl
+    -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ID":18}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/department.delete
+    ```
+
+- cURL (OAuth)
+
+    ```curl
+    -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ID":18,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/department.delete
+    ```
 
 - JS
 
     ```js
     BX24.callMethod(
-        'department.delete',
-        {
-            "ID": 222
+        "department.delete", {
+            "ID": 18
         },
         function(result) {
-            if (result.error()) {
-                console.error(result.error());
             } else {
                 console.info(result.data());
             }
@@ -53,18 +58,81 @@ Deletes the specified department
     );
     ```
 
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'department.delete',
+        [
+            'ID' => 18
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-## Request
+## Response Handling
 
-```
-https://my.bitrix24.com/rest/department.delete.json?ID=222&auth=70a32986f1bf204dec4567147ca6a2af
-```
-
-## Response
-
-> 200 OK
+HTTP status: **200**
 
 ```json
-{"result":true}
+{
+  "result": true,
+  "time": {
+    "start": 1736929002.119324,
+    "finish": 1736929002.469626,
+    "duration": 0.35030198097229004,
+    "processing": 0.13488411903381348,
+    "date_start": "2025-01-15T08:16:42+00:00",
+    "date_finish": "2025-01-15T08:16:42+00:00",
+    "operating": 0.13484978675842285
+  }
+}
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../data-types.md) | Result of the department removal from the company structure ||
+|| **time**
+[`time`](../data-types.md) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error":"ERROR_CORE",
+    "error_description":"Department not found"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Error Message** | **Description** ||
+|| `ERROR_CORE` | Department not found | The department to be deleted was not found ||
+|| `ERROR_CORE` | Access denied | Insufficient rights to delete the department ||
+|#
+
+{% include [system errors](../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./department-add.md)
+- [{#T}](./department-update.md)
+- [{#T}](./department-get.md)
+- [{#T}](./department-fields.md)

@@ -1,0 +1,13 @@
+title: Workflow Templates
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Template
+    href: bizproc-workflow-template-add.md
+  - name: Update Template
+    href: bizproc-workflow-template-update.md
+  - name: Get List of Templates
+    href: bizproc-workflow-template-list.md
+  - name: Delete Template
+    href: bizproc-workflow-template-delete.md

@@ -1,10 +1,10 @@
-# Get the participation status of the current user in the event calendar.meeting.status.get
+# Get the Participation Status of the Current User in the Event calendar.meeting.status.get
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method retrieves the participation status of the current user in the event.
+This method retrieves the participation status of the current user in an event.
 
 ## Method Parameters
 
@@ -77,7 +77,7 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -100,7 +100,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`string`](../../data-types.md) | Participation status of the current user. Possible values:
-- `Y` — agreed
+- `Y` — accepted
 - `N` — declined
 - `Q` — invited, but not yet responded
  ||
@@ -108,7 +108,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -133,3 +133,4 @@ HTTP status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./calendar-meeting-status-set.md)
+- [{#T}](./calendar-accessibility-get.md)

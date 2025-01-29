@@ -6,7 +6,7 @@
 
 This method updates the timeline record with the identifier `id`.
 
-The method only updates the `title` and `description` fields.
+The method only updates the `title` and `description` fields, and only those records that were created by the same user and through the application.
 
 ## Method Parameters
 
@@ -14,26 +14,23 @@ The method only updates the `title` and `description` fields.
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`number`](../../../data-types.md) | Identifier of the record ||
+[`integer`](../../../data-types.md) | Identifier of the record ||
 || **fields** 
-[`array`](../../../data-types.md) | Fields of the record ||
+[`object`](../../../data-types.md) | Object with [fields](#fields) of the record ||
 |#
 
-### Fields Parameter
+### Fields Parameter {#fields}
 
 #|
-|| **Parameter** | **Description** ||
-|| **title** | Title of the record ||
-|| **description** | Description of the record. HTML tags can be used ||
+|| **Name**
+`type` | **Description** ||
+|| **title** 
+[`string`](../../../data-types.md) | Title of the record ||
+|| **description** 
+[`string`](../../../data-types.md) | Description of the record. HTML tags can be used ||
 |#
 
-{% note warning %}
-
-The method only updates records that were created by the same user and through the application.
-
-{% endnote %}
-
-## Continue Learning 
+## Continue Exploring 
 
 - [{#T}](./index.md)
 - [{#T}](./rpa-timeline-add.md)

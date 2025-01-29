@@ -1,21 +1,19 @@
-# List of Methods for Working with the Page Entity
+# List of Methods for Working with the Page Object
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
-{% note info "landing.landing.*" %}
+> Scope: [`landing`](../../../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
-**Scope**: [`landing`](../../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
-
-#|
-|| **Method** | **Description** | **Available from version** ||
+#| 
+|| **Method** | **Description** | **Available from** ||
 || [landing.landing.add](./landing-landing-add.md) | Method for adding a page. | ||
-|| [landing.landing.addByTemplate](./landing-landing-add-by-template.md) | Method for adding a Page from a template. | ||
+|| [landing.landing.addByTemplate](./landing-landing-add-by-template.md) | Method for adding a Page by template. | ||
 || [landing.landing.copy](./landing-landing-copy.md) | Method copies the specified page. | ||
 || [landing.landing.delete](./landing-landing-delete.md) | Method for deleting a page. | ||
 || [landing.landing.getadditionalfields](./landing-landing-get-additional-fields.md) | Method for retrieving additional fields of the page. | ||
@@ -29,5 +27,5 @@ Some data may be missing here — we will complete it shortly.
 || [landing.landing.removeEntities](./landing-landing-remove-entities.md) | Method removes related landing entities. | ||
 || [landing.landing.resolveIdByPublicUrl](./landing-landing-resolve-id-by-public-url.md) | Method returns the page identifier by the provided relative URL of the page. | 21.800.0 ||
 || [landing.landing.unpublic](./landing-landing-unpublic.md) | Method for unpublishing a page. | ||
-|| [landing.landing.update](./landing-landing-update.md) | Method for modifying a page. | ||
+|| [landing.landing.update](./landing-landing-update.md) | Method for modifying a page. | || 
 |#

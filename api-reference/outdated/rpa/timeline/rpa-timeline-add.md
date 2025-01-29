@@ -1,10 +1,10 @@
-# Create a New Timeline Entry rpa.timeline.add
+# Add a New Timeline Entry rpa.timeline.add
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method will create a new timeline entry for the `itemId` of the `typeId` process.
+This method creates a new timeline entry for the `itemId` of the `typeId` process.
 
 This method allows modifying only the `title` and `description` fields.
 
@@ -14,22 +14,22 @@ This method allows modifying only the `title` and `description` fields.
 || **Name**
 `type` | **Description** ||
 || **typeId** 
-[`number`](../../../data-types.md) | Process identifier ||
+[`integer`](../../../data-types.md) | Process identifier ||
 || **itemId** 
-[`number`](../../../data-types.md) | Entity identifier ||
+[`integer`](../../../data-types.md) | Entity identifier ||
 || **fields** 
-[`array`](../../../data-types.md) | Entry fields ||
+[`object`](../../../data-types.md) | Object with [fields](#fields) of the entry ||
 |#
 
-### Fields Parameter
+### Fields Parameter {#fields}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **title** 
-[`string`](../../../data-types.md) | Entry title ||
+[`string`](../../../data-types.md) | Title of the entry ||
 || **description** 
-[`string`](../../../data-types.md) | Entry description. HTML tags can be used ||
+[`string`](../../../data-types.md) | Description of the entry. HTML tags can be used ||
 |#
 
 ## Response Handling

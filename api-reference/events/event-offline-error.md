@@ -2,7 +2,7 @@
 
 > Who can execute the method: any user
 
-The method `event.offline.error` saves a record in the database with an error flag when using offline events. The availability of offline events can be checked through the method [feature.get](../common/system/feature-get.md).
+The method `event.offline.error` saves a record in the database with an error mark when using offline events. The availability of offline events can be checked through the method [feature.get](../common/system/feature-get.md).
 
 ## Method Parameters
 
@@ -12,7 +12,7 @@ The method `event.offline.error` saves a record in the database with an error fl
 || **Name**
 `type` | **Description** ||
 || **process_id***
-[`string`](../data-types.md) | Identifier of the process that is handling the records ||
+[`string`](../data-types.md) | Identifier of the process handling the records ||
 || **message_id**
 [`array`](../data-types.md) | Array of values for the `MESSAGE_ID` field of the records to be marked as erroneous ||
 |#
@@ -22,19 +22,6 @@ The method `event.offline.error` saves a record in the database with an error fl
 {% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "process_id": "yh3gu929sf0d32lsfysqas2y1hlpp09q",
-        "message_id": [2]
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/event.offline.error
-    ```
 
 - cURL (OAuth)
 

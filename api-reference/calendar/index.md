@@ -1,23 +1,131 @@
-# Overview of Methods
+# Calendar: Overview of Methods
 
-{% note warning "We are still updating this page" %}
+The calendar helps users plan meetings, tasks, and events. Calendars can be managed using a group of methods [calendar.section.*](#base).
 
-Some data may be missing here — we will complete it shortly.
+Calendar events are scheduled deals or meetings. A group of methods [calendar.event.*](./calendar-event/index.md) is used to create, modify, retrieve, or delete events.
+
+> Quick navigation: [all methods and events](#all-methods) 
+> 
+> User documentation: [FAQ: Calendar](https://helpdesk.bitrix24.com/open/15144548/)
+
+## Calendar Connection with Other Objects
+
+**User.** The calendar is linked to a user by the calendar owner's identifier `ownerId` for the calendar type `user`. The user identifier can be obtained using the method [user.get](../user/user-get.md).
+
+**Group.** The calendar is linked to a group by the calendar owner's identifier `ownerId` for the calendar type `group`. The identifier can be obtained through the [create new group](../sonet-group/sonet-group-create.md) method or the [get group list](../sonet-group/socialnetwork-api-workgroup-list.md) method.
+
+{% note tip "User Documentation" %}
+
+- [How to create a group and project](https://helpdesk.bitrix24.com/open/22796428/)
 
 {% endnote %}
 
+## Calendar Settings
+
+The main calendar settings specify the company's working hours, weekends, and holidays. The settings can be retrieved using the method [calendar.settings.get](./calendar-settings-get.md).
+
+In user settings, an employee can specify personal preferences, such as time zone or week number display. User settings can be retrieved using the method [calendar.user.settings.get](./calendar-user-settings-get.md) and set using the method [calendar.user.settings.set](./calendar-user-settings-set.md).
+
+{% note tip "User Documentation" %}
+
+- [Calendar Settings](https://helpdesk.bitrix24.com/open/13981546/)
+
+{% endnote %}
+
+## Resource Booking
+
+In Bitrix24, resource booking is done through a CRM custom field of type `resourcebooking`. Such a field can be created in the [lead](../crm/leads/userfield/index.md) and [deal](../crm/deals/user-defined-fields/index.md) forms.
+
+Resource availability can be tracked in the CRM Calendar. Technically, a resource is a section of the calendar, and booking is a calendar event.
+
+The group of methods [calendar.resource.*](./resource/index.md) manages resources.
+
+{% note tip "User Documentation" %}
+
+- [How to use resource booking option](https://helpdesk.bitrix24.com/open/15375256/)
+
+{% endnote %}
+
+## **Widgets**
+
+An application can be embedded into the calendar. There is a space for embedding in the calendar view types called `CALENDAR_GRIDVIEW`, where you can add [your item](../widgets/calendar.md).
+
+{% note tip "Typical Use-Cases and Scenarios" %}
+
+- [{#T}](../widgets/index.md)
+
+{% endnote %}
+
+## Overview of Methods and Events {#all-methods}
+
 > Scope: [`calendar`](../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the method: any user
+
+## Main {#base}
+
+{% list tabs %}
+
+- Methods
+
+    #| 
+    || **Method** | **Description** ||
+    || [calendar.section.add](./calendar-section-add.md) | Add a new calendar ||
+    || [calendar.section.update](./calendar-section-update.md) | Update the calendar ||
+    || [calendar.section.get](./calendar-section-get.md) | Get a list of calendars ||
+    || [calendar.section.delete](./calendar-section-delete.md) | Delete the calendar ||
+    || [calendar.settings.get](./calendar-settings-get.md) | Get main calendar settings ||
+    || [calendar.user.settings.get](./calendar-user-settings-get.md) | Get user calendar settings ||
+    || [calendar.user.settings.set](./calendar-user-settings-set.md) | Set user calendar settings ||
+    |#
+
+- Events
+
+    #| 
+    || **Event** | **Triggered** ||
+    || [OnCalendarSectionAdd](./events/on-calendar-section-add.md) | When a calendar or resource section is added ||
+    || [OnCalendarSectionUpdate](./events/on-calendar-section-update.md) | When a calendar or resource section is modified ||
+    || [OnCalendarSectionDelete](./events/on-calendar-section-delete.md) | When a calendar or resource section is deleted ||
+    |#
+
+{% endlist %}
+
+## Calendar Events
+
+{% list tabs %}
+
+- Methods
+
+    #| 
+    || **Method** | **Description** ||
+    || [calendar.event.add](./calendar-event/calendar-event-add.md) | Add an event ||
+    || [calendar.event.update](./calendar-event/calendar-event-update.md) | Update an event ||
+    || [calendar.event.getById](./calendar-event/calendar-event-get-by-id.md) | Get an event by `id` ||
+    || [calendar.event.get](./calendar-event/calendar-event-get.md) | Get a list of calendar events ||
+    || [calendar.event.getNearest](./calendar-event/calendar-event-get-nearest.md) | Get a list of upcoming events ||
+    || [calendar.event.delete](./calendar-event/calendar-event-delete.md) | Delete an event ||
+    || [calendar.meeting.status.get](./calendar-event/calendar-meeting-status-get.md) | Get the current user's participation status in an event ||
+    || [calendar.meeting.status.set](./calendar-event/calendar-meeting-status-set.md) | Set the participation status in an event for the current user ||
+    |#
+
+- Events
+
+    #| 
+    || **Event** | **Triggered** ||
+    || [OnCalendarEntryAdd](./events/on-calendar-entry-add.md) | When an event is added ||
+    || [OnCalendarEntryUpdate](./events/on-calendar-entry-update.md) | When an event is modified ||
+    || [OnCalendarEntryDelete](./events/on-calendar-entry-delete.md) | When an event is deleted ||
+    |#
+
+{% endlist %}
+
+## Resource Booking
 
 #| 
 || **Method** | **Description** ||
-|| [calendar.section.add](./calendar-section-add.md) | Add a new calendar ||
-|| [calendar.section.update](./calendar-section-update.md) | Update a calendar ||
-|| [calendar.section.get](./calendar-section-get.md) | Retrieve a list of calendars ||
-|| [calendar.section.delete](./calendar-section-delete.md) | Delete a calendar ||
-|| [calendar.settings.get](./calendar-settings-get.md) | Get main calendar settings ||
-|| [calendar.user.settings.get](./calendar-user-settings-get.md) | Get user calendar settings ||
-|| [calendar.user.settings.set](./calendar-user-settings-set.md) | Set user calendar settings ||
-|| [calendar.accessibility.get](./calendar-accessibility-get.md) | Get user availability from the list ||
+|| [calendar.resource.add](./resource/calendar-resource-add.md) | Add a resource ||
+|| [calendar.resource.update](./resource/calendar-resource-update.md) | Update a resource ||
+|| [calendar.resource.list](./resource/calendar-resource-list.md) | Get a list of resources ||
+|| [calendar.resource.booking.list](./resource/calendar-resource-booking-list.md) | Get resource bookings by filter ||
+|| [calendar.resource.delete](./resource/calendar-resource-delete.md) | Delete a resource ||
 |#

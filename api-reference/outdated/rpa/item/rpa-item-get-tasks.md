@@ -1,41 +1,25 @@
 # Get Data on Current Tasks of the rpa.item.getTasks Element
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- Required parameters are not specified
-- Examples are missing
-- Response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.item.getTasks` will return data on the current tasks of the element with the identifier id of the process with the identifier typeId.
+The method retrieves data on the current tasks of the element with the identifier `id` of the process with the identifier `typeId`.
+
+## Method Parameters
 
 #|
 || **Name**
 `type` | **Description** ||
 || **typeId** 
-[`number`](../../../data-types.md) | Identifier of the process. ||
+[`integer`](../../../data-types.md) | Identifier of the process ||
 || **id** 
-[`number`](../../../data-types.md) | Identifier of the element. ||
+[`integer`](../../../data-types.md) | Identifier of the element ||
 |#
 
-## Response on Success
+## Response Handling
 
-> 200 OK
+HTTP Status: **200**
 
 ```json
 {
@@ -64,7 +48,7 @@ The method `rpa.item.getTasks` will return data on the current tasks of the elem
                 "url": "/rpa/task/id/93/",
                 "fieldsToShow": null,
                 "fieldsToSet": [
-                    "Name"
+                    "Title"
                 ],
                 "users": [
                     {
@@ -90,3 +74,12 @@ The method `rpa.item.getTasks` will return data on the current tasks of the elem
     ]
 }
 ```
+
+## Continue Exploring 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-item-add.md)
+- [{#T}](./rpa-item-update.md)
+- [{#T}](./rpa-item-get.md)
+- [{#T}](./rpa-item-list.md)
+- [{#T}](./rpa-item-delete.md)

@@ -13,17 +13,6 @@ The method `user.update` updates user data. It can only be executed on behalf of
 #|
 || **Name**
 `type` | **Description** ||
-|| **fields***
-[`array`](../data-types.md) | Field values for updating user data ||
-|#
-
-### Parameter fields
-
-{% include [Note on required parameters](../../_includes/required.md) %}
-
-#|
-|| **Name**
-`type` | **Description** ||
 || **ID***
 [`integer`](../data-types.md) | User identifier ||
 || **EMAIL**
@@ -43,7 +32,7 @@ The method `user.update` updates user data. It can only be executed on behalf of
 || **PERSONAL_BIRTHDAY**
 [`string`](../data-types.md) | Date of birth ||
 || **PERSONAL_PHOTO**
-[`array`](../data-types.md) | Photo ||
+[`array`](../data-types.md) | Photograph ||
 || **PERSONAL_ICQ**
 [`string`](../data-types.md) | ICQ ||
 || **PERSONAL_PHONE**
@@ -59,9 +48,9 @@ The method `user.update` updates user data. It can only be executed on behalf of
 || **PERSONAL_CITY**
 [`string`](../data-types.md) | City of residence ||
 || **PERSONAL_STATE**
-[`string`](../data-types.md) | State/Region ||
+[`string`](../data-types.md) | State ||
 || **PERSONAL_ZIP**
-[`string`](../data-types.md) | Postal code ||
+[`string`](../data-types.md) | Zip code ||
 || **PERSONAL_COUNTRY**
 [`string`](../data-types.md) | Country ||
 || **PERSONAL_MAILBOX**
@@ -212,7 +201,7 @@ The method `user.update` updates user data. It can only be executed on behalf of
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
     {
@@ -237,12 +226,12 @@ HTTP status: **200**
 || **result**
 [`boolean`](../data-types.md) | Success of execution ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

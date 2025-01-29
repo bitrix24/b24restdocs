@@ -1,40 +1,25 @@
 # Get Information About Stage rpa.stage.get
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing
-- response in case of error is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.stage.get` returns information about a stage by its ID.
+The method retrieves information about a stage by `id`.
+
+## Stage Parameters
+
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **id**^*^ 
-[`number`](../../../data-types.md) | Stage ID. ||
+|| **id*** 
+[`number`](../../../data-types.md) | Identifier of the stage ||
 |#
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+## Response Handling
 
-## Response on Success
-
-> 200 OK
+HTTP status: **200**
 
 ```json
 {
@@ -83,26 +68,39 @@ The method `rpa.stage.get` returns information about a stage by its ID.
 }
 ```
 
-- `name` - name of the stage
-- `code` - symbolic code. Can be used as an external identifier
-- `color` - HEX color code of the stage, 6 characters
-- `sort` - sorting index
-- `semantic` - semantic code of the stage. Can be either `SUCCESS` or `FAIL`
-- `typeId` - process identifier
-- `isFirst` - computed field. `true` if this is the first stage of the process
-- `isSuccess` - computed field. `true` if this stage is successful
-- `isFail` - computed field. `true` if this stage is a failure
-- `tasks` - array of tasks for the stage. Each entry has the following structure:
-- `title` - title of the task
-- `robotType` - type of the task. Can take one of the following values:
-    - `RpaApproveActivity` - approve or reject
-    - `RpaMoveActivity` - simply move
-    - `RpaRequestActivity` - request information
-    - `RpaReviewActivity` - review information
-- `robotName` - name of the activity
-- `users` - array of participants in the task (for rendering in the kanban at the stage)
-- `robotsCount` - computed field. Number of robots at the stage
-- `possibleNextStages` - array of stage identifiers to which the item can be moved. Not used
-- `permissions` - set of permissions (for kanban).
-- `droppable` - items can be moved to this stage
-- `canMoveFrom` - items can be moved from this stage
+### Returned Data
+
+#|
+|| **Name** | **Description** ||
+|| **name** | Name of the stage ||
+|| **code** | Symbolic code. Can be used as an external identifier ||
+|| **color** | HEX color code of the stage, 6 characters ||
+|| **sort** | Sorting index ||
+|| **semantic** | Semantic code of the stage. Can be either `SUCCESS` or `FAIL` ||
+|| **typeId** | Identifier of the process ||
+|| **isFirst** | Calculated field. Returns `true` if this is the first stage of the process ||
+|| **isSuccess** | Calculated field. Returns `true` if this stage is successful ||
+|| **isFail** | Calculated field. Returns `true` if this stage is a failure ||
+|| **tasks** | Array of tasks for the stage. Each entry has the following structure:
+- `title` — title of the task
+- `robotType` — type of the task. Can take one of the following values:
+  - `RpaApproveActivity` — approve or reject
+  - `RpaMoveActivity` — simply move
+  - `RpaRequestActivity` — request information
+  - `RpaReviewActivity` — review information
+- `robotName` — name of the activity
+- `users` — array of participants in the task for rendering in the kanban at the stage ||
+|| **robotsCount** | Calculated field. Number of robots at the stage ||
+|| **possibleNextStages** | Array of identifiers of stages to which the item can be moved. Not used ||
+|| **permissions** | Set of permissions for the kanban:
+- `droppable` — items can be moved to this stage
+- `canMoveFrom` — items can be moved from this stage ||
+|#
+
+## Continue Exploring 
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-stage-add.md)
+- [{#T}](./rpa-stage-update.md)
+- [{#T}](./rpa-stage-list-for-type.md)
+- [{#T}](./rpa-stage-delete.md)

@@ -1,27 +1,49 @@
-# Get Information About the JS Interface of the Current Embedding Location BX24.placement.getInterface
+# Get Information About the JS Interface of the Current Placement BX24.placement.getInterface
 
-{% note warning "We are still updating this page" %}
+> Scope: [`placement`](../../scopes/permissions.md)
 
-Some data may be missing here — we will complete it shortly.
+The method `BX24.placement.getInterface` allows you to retrieve information about the JS interface of the current placement: a list of available commands and events.
 
-{% endnote %}
+## Parameters
 
-{% if build == 'dev' %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+#| 
+|| **Name** 
+`type` | **Description** ||
+|| **callback*** 
+[`callable`](../../data-types.md) | Callback function. 
 
-- edits needed for writing standards
-- missing parameters or fields
-- parameter types not specified
-- required parameters not indicated
-- examples missing
-- success response missing
-- error response missing
+The `callback` handler will receive an object of the form `{command: array, event: array}`, where: 
+- `command` — list of available commands
+- `event` — list of available events
 
-{% endnote %}
+For example: the placement `CALL_CARD` is intended for working with the call card in the CRM
+ ||
+|#
 
-{% endif %}
+## Code Example
 
-Getting information about the JS interface of the current embedding location: a list of possible commands and events
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-`BX24.placement.getInterface(Function callback)`
+```js
+BX24.ready(function () {
+    BX24.init(function () {
+        BX24.placement.getInterface((result) => {
+            console.info(result);
+        });
+    });
+});
+```
+
+## Result
+
+```json
+{"command":["getStatus", "disableAutoClose", "enableAutoClose" …],"event":[{"CallCard::EntityChanged", "CallCard::CallStateChanged", "CallCard::BeforeClose" …}]}
+```
+
+## Continue Your Learning
+
+- [{#T}](bx24-placement-info.md)
+- [{#T}](bx24-placement-call.md)
+- [{#T}](bx24-placement-bind-event.md)

@@ -1,8 +1,8 @@
-# Entity View Template
+# View Template Object
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,19 +10,19 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits are needed to meet the writing standard
+- edits needed to meet writing standards
 
 {% endnote %}
 
 {% endif %}
 
-The entity describes the page view templates (with a header, footer, and sidebar).
+The object describes the page view templates (with header, footer, sidebar).
 
 View templates describe the views of a specific site or page regarding how their layout appears:
 
-- With a header and footer
-- With a left sidebar
-- With a right sidebar
+- With header and footer
+- With left sidebar
+- With right sidebar
 - Their variations
 
 The binding to the page is stronger than the binding to the site (if both the site and the page of that site are bound to different templates, the output will occur according to the page template grid). Each area of such a template is a separate page (with a set of blocks and other similar characteristics).
@@ -41,4 +41,4 @@ Here is the list:
 || **without_right** | Without right sidebar ||
 |#
 
-Please note that template identifiers are not specified here; however, when passing to the [site](../site/base-fields.md) or [page](../page/index.md), you need to specify the identifier. To obtain the identifier directly, use the method [landing.template.getlist](./landing-template-get-list.md). You will receive a list of identifiers specific to your account.
+Please note that template identifiers are not specified here; however, when passing to the [site](../site/base-fields.md) or [page](../page/index.md), you need to specify the identifier. To obtain the identifier directly, use the [landing.template.getlist](./landing-template-get-list.md) method. You will receive a list of identifiers specific to your account.

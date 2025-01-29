@@ -1,66 +1,69 @@
 # Change Field Visibility Settings rpa.fields.setVisibilitySettings
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- missing fields table
-- missing examples
-- missing success response
-- missing error response
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `rpa.fields.setVisibilitySettings` modifies the visibility settings of fields for the process with the identifier typeId at the stage with the identifier stageId. Other settings remain unchanged.
+This method updates the `visibility` settings of `fields` for the process with the identifier `typeId` at the stage with the identifier `stageId`. Other settings remain unchanged.
 
-This method should be used when you need to change the visibility settings for only one type.
+The method should be used when you need to change the visibility settings for only one type.
+
+## Method Parameters
+
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **typeId**^*^ 
-[`number`](../../../data-types.md) | Identifier of the process. ||
-|| **visibility**^*^ 
-[`string`](../../../data-types.md) | Identifier of the visibility for which the settings are being changed. ||
-|| **stageId** 
-[`number`](../../../data-types.md) | Identifier of the stage. Default is 0 (general settings). ||
-|| **fields**^*^ 
-[`array`](../../../data-types.md) | Array of fields for which the setting needs to be changed. ||
+|| **typeId***  
+[`integer`](../../../data-types.md) | Identifier of the process ||
+|| **visibility***  
+[`string`](../../../data-types.md) | Identifier of the visibility for which the settings are being changed ||
+|| **stageId**  
+[`integer`](../../../data-types.md) | Identifier of the stage.
+
+Defaults to `0`, meaning — general settings ||
+|| **fields***  
+[`array`](../../../data-types.md) | Array of fields for which the setting needs to be changed ||
 |#
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+## Code Examples
 
-## Example
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
-    ```json
-    {
-        "typeId": 1,
-        "visibility": "kanban",
-        "fields": [
-            "createdBy", 
-            "UF_RPA_1_NAME"
-        ]
-    }
+    ```js
+    BX24.callMethod(
+        'rpa.comment.add',
+        {
+            "typeId": 1,
+            "visibility": "kanban",
+            "fields": [
+                "createdBy", 
+                "UF_RPA_1_NAME"
+            ]
+        },
+        function(result) {
+            console.log('response', result.answer);
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+            console.log(result.data());
+        }
+    )
     ```
 
 {% endlist %}
 
-The method will return a result similar to the request `rpa.fields.getSettings`.
+## Response Handling
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+The method will return a result similar to the request [rpa.fields.getSettings](./rpa-fields-get-settings.md).
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./rpa-fields-get-settings.md)
+- [{#T}](./rpa-fields-set-settings.md)

@@ -11,7 +11,7 @@ items:
     href: faq.md
   - name: General Requirements for Solutions
     href: common-requirements.md
-  - name: Telephony Requirements
+  - name: Requirements for Telephony
     href: requirements-telephony.md
   - name: Requirements for Ready-Made Websites
     href: requirements-sites.md
@@ -21,5 +21,5 @@ items:
     href: requirements-superset.md
   - name: Requirements for Industry-Specific CRMs
     href: requirements-vertical-crm.md
-  - name: Pre-Moderation Checklist
+  - name: Checklist Before Moderation
     href: checklist.md

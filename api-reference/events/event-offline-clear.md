@@ -2,7 +2,7 @@
 
 > Who can execute the method: any user
 
-The method `event.offline.clear` clears records in the offline events queue. The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.
+The method `event.offline.clear` clears records in the offline events queue. The availability of offline events can be checked through the method [feature.get](../common/system/feature-get.md).
 
 ## Method Parameters
 
@@ -11,11 +11,11 @@ The method `event.offline.clear` clears records in the offline events queue. The
 #|
 || **Name**
 `type` | **Description** ||
-|| **process_id***
+|| **process_id***  
 [`string`](../data-types.md) | Identifier of the process that handles the records ||
-|| **id**
+|| **id**  
 [`array`](../data-types.md) | Array of record identifiers to be cleared. By default, all records marked with the provided `process_id` will be cleared ||
-|| **message_id**
+|| **message_id**  
 [`array`](../data-types.md) | Array of values for the `MESSAGE_ID` field of the records to be cleared. Ignored if the `id` parameter is specified. By default, all records marked with the provided `process_id` will be cleared ||
 |#
 
@@ -24,19 +24,6 @@ The method `event.offline.clear` clears records in the offline events queue. The
 {% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "process_id": "yh3gu929sf0d32lsfysqas2y1hlpp09q",
-        "id": [2]
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/event.offline.clear
-    ```
 
 - cURL (OAuth)
 
@@ -115,9 +102,9 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **result**
+|| **result**  
 [`boolean`](../data-types.md) | Success of the execution ||
-|| **time**
+|| **time**  
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 

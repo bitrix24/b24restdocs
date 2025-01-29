@@ -1,37 +1,50 @@
-# Delete lead crm.lead.delete
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
+# Delete Lead crm.lead.delete
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with permission to delete leads
 
-The method `crm.lead.delete` removes a lead and all associated objects, such as connections to other entities, lead history, timeline records, etc.
+The method `crm.lead.delete` removes a lead and all associated objects: tasks, history, timeline records, and others.
+
+Objects are deleted if they are not linked to other objects or entities. If the objects are linked to other entities, only the link to the deleted lead will be removed.
+
+## Method Parameters
+
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **id**^*^
-[`integer`](../../data-types.md) | Integer identifier of the lead. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../data-types.md) | Identifier of the lead.
+
+The identifier can be obtained using the methods [crm.lead.list](./crm-lead-list.md) or [crm.lead.add](./crm-lead-add.md) ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- cURL
+- cURL (Webhook)
 
-    ```http
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{ "id": "123" }' \
-    https://xxx.bitrix24.com/rest/crm.lead.delete
+    -d '{"id":"123"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.lead.delete
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":"123","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.lead.delete
     ```
 
 - JS
@@ -57,20 +70,20 @@ The method `crm.lead.delete` removes a lead and all associated objects, such as 
 - PHP
 
     ```php
-    $id = 123;
-        
+    require_once('crest.php');
+
+    $id = readline("Enter ID: ");
+
     $result = CRest::call(
         'crm.lead.delete',
         [
-            'id' => $id,
+            'id' => $id
         ]
     );
-    ```
 
-- HTTPS
-
-    ```http
-    https://xxx.bitrix24.com/rest/1/5***/crm.lead.delete.json?id=123
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 - PHP (B24PhpSdk)
@@ -94,11 +107,9 @@ The method `crm.lead.delete` removes a lead and all associated objects, such as 
 
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+## Response Handling
 
-## Successful response
-
-> 200 OK
+HTTP Status: **200**
 
 ```json
 {
@@ -116,37 +127,37 @@ The method `crm.lead.delete` removes a lead and all associated objects, such as 
 }
 ```
 
-### Returned data
+### Returned Data
 
 #|
-|| **Value** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **result**
-`boolean`| Result of the request ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`array`](../../data-types.md) | Information about the execution time of the request ||
-|| **start**
-[`double`](../../data-types.md) | Timestamp of the request initialization moment ||
-|| **finish**
-[`double`](../../data-types.md) | Timestamp of the request completion moment ||
-|| **duration**
-[`double`](../../data-types.md) | How long in milliseconds the request took (finish - start) ||
-|| **date_start**
-[`string`](../../data-types.md) | String representation of the date and time of the request initialization moment ||
-|| **date_finish**
-[`double`](../../data-types.md) | String representation of the date and time of the request completion moment ||
-|| **operating_reset_at**
-[`timestamp`](../../data-types.md) | Timestamp of when the REST API resource limit will be reset. Read more in the article [operation limit](../../../limits.md) ||
-|| **operating**
-[`double`](../../data-types.md) | In how many milliseconds will the REST API resource limit be reset? Read more in the article [operation limit](../../../limits.md) ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-## Example response in case of error
+## Error Handling
 
 > 40x, 50x Error
 
 ```json
 {
   "error": "",
-  "error_description": "Lead #123: insufficient permissions to delete"
+  "error_description": "ID is not defined or invalid."
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Description** | **Value** ||
+|| `ID is not defined or invalid` | The `id` parameter either has no value or is not a positive integer ||
+|| `Access denied` | The user does not have permission to delete leads ||
+|| `Not found` | The lead with the provided `id` does not exist ||
+|#
+
+{% include [system errors](./../../../_includes/system-errors.md) %}

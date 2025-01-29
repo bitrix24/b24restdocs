@@ -20,11 +20,11 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
 || **FILTER**
 [`object`](../../data-types.md) | An object for filtering the result (detailed description provided below) ||
 || **SELECT**
-[`array`](../../data-types.md) | An array of fields from the records that will be returned by the method. You can specify only the fields that are necessary. If the array contains the value `"*"`, all available fields will be returned.
+[`array`](../../data-types.md) | An array of fields from the records that will be returned by the method. You can specify only the fields you need. If the array contains the value `"*"`, all available fields will be returned.
 
 By default, all fields from the main query table will be returned ||
 || **PARAMS**
-[`object`](../../data-types.md) | An object for call options. The element is an object `NAV_PARAMS` of the form `{'call option': 'value' [, ...]}` (detailed description provided below) in structure ||
+[`object`](../../data-types.md) | An object for call options. The element is an object `NAV_PARAMS` of the form `{'call option': 'value' [, ...]}` (detailed description provided below) in the form of a structure ||
 |#
 
 {% note warning %}
@@ -118,7 +118,7 @@ Before the name of the filtered field, you can specify the type of filtering:
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -128,7 +128,7 @@ Before the name of the filtered field, you can specify the type of filtering:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{[{"ID": "desc"},{">=CREATED_DATE": "2024-02-16"}]}' \
+    -d '[{"ID": "desc"},{">=CREATED_DATE": "2024-02-16"}]' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.elapseditem.getlist
     ```
 
@@ -146,7 +146,7 @@ Before the name of the filtered field, you can specify the type of filtering:
 
     ```js
     // Get all time spent records sorted by ID in descending order.
-    // Only records with ID less than 50 will be filtered.
+    // Only records with ID values less than 50 will be filtered.
     BX24.callMethod(
         'task.elapseditem.getlist',
         [
@@ -169,8 +169,8 @@ Before the name of the filtered field, you can specify the type of filtering:
             {'ID': 'desc'}, 
             {'>=CREATED_DATE': '2024-02-16'},
             ['ID', 'TASK_ID'],
-            {"NAV_PARAMS":{
-                    "nPageSize":2
+            {"NAV_PARAMS": {
+                    "nPageSize": 2
                 }
             },
         ],
@@ -231,13 +231,13 @@ HTTP Status: **200**
         }
     ],
     "total": 1,
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -261,8 +261,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":"ERROR_CORE",
-    "error_description":"ACTION_NOT_ALLOWED"
+    "error": "ERROR_CORE",
+    "error_description": "ACTION_NOT_ALLOWED"
 }
 ```
 

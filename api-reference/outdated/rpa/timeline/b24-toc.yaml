@@ -1,15 +1,15 @@
 title: Timeline Records
 href: index.md
 items: 
-  - name: Timeline Records
+  - name: Overview of Methods
     href: index.md
-  - name: Get an array of timeline records for an item
-    href: rpa-timeline-list-for-item.md
-  - name: Update the attachment flag of a record
-    href: rpa-timeline-update-is-fixed.md
-  - name: Create a new timeline record
+  - name: Add Timeline Record
     href: rpa-timeline-add.md
-  - name: Update a timeline record
+  - name: Update Timeline Record
     href: rpa-timeline-update.md
-  - name: Delete a timeline record
+  - name: Update Record Attachment Flag
+    href: rpa-timeline-update-is-fixed.md
+  - name: Get Array of Timeline Records
+    href: rpa-timeline-list-for-item.md
+  - name: Delete Timeline Record
     href: rpa-timeline-delete.md
