@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,8 +10,16 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- from Sergei's file: individual, group, chat owner. where they appear, what scenarios are available for the REST API.
+- from Sergey's file: individual, group, chat owner. where they appear, what scenarios for the rest exist.
 
 {% endnote %}
 
 {% endif %}
+
+#| 
+|| **Method** | **Description** ||
+|| [im.disk.file.commit](./im-disk-file-commit.md) | Adds a file to the chat ||
+|| [im.disk.file.delete](./im-disk-file-delete.md) | Deletes a file from the chat folder ||
+|| [im.disk.file.save](./im-disk-file-save.md) | Saves a file to your disk ||
+|| [im.disk.folder.get](./im-disk-folder-get.md) | Retrieves the file storage folder of the specified chat ||
+|#

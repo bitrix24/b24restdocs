@@ -2,6 +2,16 @@
 
 ## 2025
 
+### February 5, 2025
+
+- Updated documentation on methods for binding CRM activities in the timeline [crm.activity.binding.*](./api-reference/crm/timeline/activities/binding/index.md)
+- Updated the main page of the [Open Lines Connectors](./api-reference/imopenlines/imconnector/index.md) section. Added introductory information as well as an overview of methods and connections.
+- Updated documentation on [application actions](./api-reference/bizproc/bizproc-activity/index.md) in the Business Processes and Automation rules section.
+- Updated documentation on [application automation rules](./api-reference/bizproc/bizproc-robot/index.md) in the Business Processes and Automation rules section.
+- Added a new tutorial [How to Create a Custom Field in a SPA](./tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md).
+- Updated information on methods for custom activity types in CRM [crm.activity.type.*](./api-reference/crm/timeline/activities/types/index.md).
+- Updated information on activity events in CRM [onCrmActivity*](./api-reference/crm/timeline/activities/events/index.md).
+
 ### January 29, 2025
 
 - Added descriptions for application embedding methods: [BX24.placement.info](./api-reference/widgets/ui-interaction/bx24-placement-info.md), [BX24.placement.getInterface](./api-reference/widgets/ui-interaction/bx24-placement-get-interface.md), [BX24.placement.call](./api-reference/widgets/ui-interaction/bx24-placement-call.md), and [BX24.placement.bindEvent](./api-reference/widgets/ui-interaction/bx24-placement-bind-event.md)

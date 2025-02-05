@@ -16,13 +16,13 @@ This method retrieves a list of workflow templates.
 
 You can specify only the fields that are necessary.
 
-Default value — `['ID']` ||
+The default value is `['ID']` ||
 || **FILTER**
 [`object`](../../data-types.md) | An object for filtering the list of workflow templates in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#fields) of the template for filtering
-- `value_N` — field value
+- `value_N` — value of the field
 
-You can specify the type of filtering before the name of the filtered field:
+You can specify the type of filtering before the field name:
 - `!` — not equal
 - `<` — less than
 - `<=` — less than or equal to
@@ -33,17 +33,17 @@ You can specify the type of filtering before the name of the filtered field:
 - `field_N` — [field](#fields) of the template for sorting
 - `value_N` — sorting direction
 
-Sorting direction can take the values:
+The sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
   
 You can specify multiple fields for sorting, for example, `{NAME: 'ASC', ID: 'DESC'}`.
 
-Default value — `{ID: 'ASC'}` ||
+The default value is `{ID: 'ASC'}` ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used for pagination control.
+[`integer`](../../data-types.md) | This parameter is used for managing pagination.
 
-The page size of results is always static — 50 records.
+The page size for results is always static — 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
@@ -56,7 +56,7 @@ The formula for calculating the `start` parameter value:
 
 #|
 || **Name**
-`type` | **Description** ||
+`type` | **Description**||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the workflow template ||
 || **MODULE_ID**
@@ -118,7 +118,7 @@ Disk:
 || **CONSTANTS**
 [`array`](../../data-types.md) | Template constants ||
 || **MODIFIED**
-[`datetime`](../../data-types.md) | Date of last modification ||
+[`datetime`](../../data-types.md) | Date of the last modification ||
 || **IS_MODIFIED**
 [`boolean`](../../data-types.md) | Whether the template has been modified. Possible values:
 - `Y` — yes, it has been modified
@@ -135,7 +135,7 @@ Needed for identifying typical workflow templates or templates created by the ap
 
 ## Code Examples
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -218,9 +218,40 @@ Needed for identifying typical workflow templates or templates created by the ap
     echo '</PRE>';
     ```
 
+- PHP (B24PhpSdk)
+
+	```php
+	try {
+		$result = $serviceBuilder
+			->getBizProcScope()
+			->template()
+			->list(
+				['ID', 'MODULE_ID', 'ENTITY', 'DOCUMENT_TYPE', 'AUTO_EXECUTE', 'NAME', 'TEMPLATE', 'PARAMETERS', 'VARIABLES', 'CONSTANTS', 'MODIFIED', 'IS_MODIFIED', 'USER_ID', 'SYSTEM_CODE'],
+				[]
+			);
+		foreach ($result->getTemplates() as $template) {
+			print("ID: " . $template->ID . "\n");
+			print("MODULE_ID: " . $template->MODULE_ID . "\n");
+			print("ENTITY: " . $template->ENTITY . "\n");
+			print("DOCUMENT_TYPE: " . json_encode($template->DOCUMENT_TYPE) . "\n");
+			print("AUTO_EXECUTE: " . ($template->AUTO_EXECUTE ? $template->AUTO_EXECUTE->value : 'null') . "\n");
+			print("NAME: " . $template->NAME . "\n");
+			print("TEMPLATE: " . json_encode($template->TEMPLATE) . "\n");
+			print("PARAMETERS: " . json_encode($template->PARAMETERS) . "\n");
+			print("VARIABLES: " . json_encode($template->VARIABLES) . "\n");
+			print("CONSTANTS: " . json_encode($template->CONSTANTS) . "\n");
+			print("MODIFIED: " . ($template->MODIFIED ? $template->MODIFIED->format(DATE_ATOM) : 'null') . "\n");
+			print("IS_MODIFIED: " . ($template->IS_MODIFIED ? 'true' : 'false') . "\n");
+			print("USER_ID: " . $template->USER_ID . "\n");
+			print("SYSTEM_CODE: " . $template->SYSTEM_CODE . "\n");
+			print("\n");
+		}
+	} catch (Throwable $e) {
+		print("Error: " . $e->getMessage() . "\n");
+	}
+	```
+
 {% endlist %}
-
-
 
 ## Response Handling
 
@@ -247,8 +278,8 @@ HTTP Status: **200**
         "finish": 1737535822.564579,
         "duration": 0.025053024291992188,
         "processing": 0.0019738674163818359,
-        "date_start": "2025-01-22T11:50:22+02:00",
-        "date_finish": "2025-01-22T11:50:22+02:00",
+        "date_start": "2025-01-22T11:50:22+01:00",
+        "date_finish": "2025-01-22T11:50:22+01:00",
         "operating_reset_at": 1737536422,
         "operating": 0
     }
@@ -289,7 +320,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Access denied! | The method was executed by a non-administrator ||
+|| `ACCESS_DENIED` | Access denied! | The method was invoked by a non-administrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

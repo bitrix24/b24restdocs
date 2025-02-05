@@ -1,28 +1,20 @@
-# About Custom Deal Types
+# Overview of Methods
 
-{% note warning "We are still updating this page" %}
+> Quick navigation: [all methods](#all-methods) 
+> 
+> User documentation: [Timeline in CRM item form](https://helpdesk.bitrix24.com/open/16767378)
 
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-From Sergey’s file: About custom deal types, their purpose, and where they are used.
-
-{% endnote %}
-
-{% endif %}
+Applications can register custom types of deals: upload a custom icon and specify the type name. For example, you can create your own type of deal with an icon and name for your application.
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: `any user`
 
-#|
+## Overview of Methods {#all-methods}
+
+#| 
 || **Method** | **Description** ||
-|| [crm.activity.type.add](./crm-activity-type-add.md) | Method for registering your own subtype of deals with a specified name and icon. ||
-|| [crm.activity.type.list](./crm-activity-type-list.md) | Method for retrieving a list of deal subtypes. ||
-|| [crm.activity.type.delete](./crm-activity-type-delete.md) | Method for deleting a deal subtype. ||
+|| [crm.activity.type.add](./crm-activity-type-add.md) | Registers a custom type of deal with a specified name and icon ||
+|| [crm.activity.type.list](./crm-activity-type-list.md) | Retrieves a list of deals ||
+|| [crm.activity.type.delete](./crm-activity-type-delete.md) | Deletes a custom type of deal ||
 |#

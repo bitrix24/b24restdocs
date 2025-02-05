@@ -1,9 +1,11 @@
 title: Events
 href: index.md
 items: 
-  - name: On document generation
+  - name: Overview of Events
     href: index.md
-  - name: On document modification
+  - name: On Document Generation
+    href: on-crm-document-generator-add.md
+  - name: On Document Update
     href: on-crm-document-generator-document-update.md
-  - name: On document deletion
+  - name: On Document Deletion
     href: on-crm-document-generator-document-delete.md

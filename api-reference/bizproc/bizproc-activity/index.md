@@ -1,14 +1,8 @@
-# Application Actions
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
+# Application Actions: Overview of Methods
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 An introductory article with key points is needed:
 
@@ -23,8 +17,8 @@ An introductory article with key points is needed:
 #|
 || **Method** | **Description** ||
 || [bizproc.activity.add](./bizproc-activity-add.md) | Adds a new action for use in workflows ||
-|| [bizproc.activity.update](./bizproc-activity-update.md) | Updates fields of an already added action ||
-|| [bizproc.activity.list](./bizproc-activity-list.md) | Returns a list of actions installed by the application ||
-|| [bizproc.activity.log](./bizproc-activity-log.md) | Records information in the workflow log ||
+|| [bizproc.activity.update](./bizproc-activity-update.md) | Updates an action ||
+|| [bizproc.activity.list](./bizproc-activity-list.md) | Retrieves a list of actions installed by the application ||
 || [bizproc.activity.delete](./bizproc-activity-delete.md) | Deletes an action installed by the application ||
+|| [bizproc.activity.log](./bizproc-activity-log.md) | Records information in the workflow log ||
 |#

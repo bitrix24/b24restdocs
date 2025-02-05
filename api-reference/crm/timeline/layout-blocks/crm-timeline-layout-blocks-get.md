@@ -94,7 +94,7 @@ Retrieve the set of additional content blocks for the timeline record with `id =
 
 HTTP Status: **200**
 
-Returns an `object` with the key `layout`, containing [RestAppLayoutDto](../activities/structure/rest-app-layout-dto.md).
+Returns an `object` with the key `layout`, containing [RestAppLayoutDto](../activities/configurable/structure/rest-app-layout-dto.md).
 
 ```json
 {

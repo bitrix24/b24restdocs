@@ -11,12 +11,12 @@ items:
     href: crm-activity-add.md
   - name: Add universal activity
     href: crm-activity-todo-add.md
-  - name: Add configurable activity
-    href: crm-activity-configurable-add.md
   - name: Update system activity
     href: crm-activity-update.md
-  - name: Update configurable activity
-    href: crm-activity-configurable-update.md
+  - name: Configurable Deal
+    include:
+      path: configurable/b24-toc.yaml
+      mode: link
   - name: Update universal activity
     include:
       path: todo-update/b24-toc.yaml
@@ -25,8 +25,6 @@ items:
     href: crm-activity-list.md
   - name: Get activity by ID
     href: crm-activity-get.md
-  - name: Get configurable activity by ID
-    href: crm-activity-configurable-get.md
   - name: Get communication description
     href: crm-activity-communication-fields.md
   - name: Delete activity
@@ -38,14 +36,6 @@ items:
   - name: Custom activity types
     include:
       path: types/b24-toc.yaml
-      mode: link
-  - name: Badges for configurable activities
-    include:
-      path: badges/b24-toc.yaml
-      mode: link
-  - name: Structure of configurable activity
-    include:
-      path: structure/b24-toc.yaml
       mode: link
   - name: Additional content blocks
     include:

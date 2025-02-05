@@ -94,7 +94,7 @@ Retrieve a set of additional content blocks in the deal with `id = 8`, linked to
 
 HTTP Status: **200**
 
-Returns an `object` with the key `layout`, containing [RestAppLayoutDto](../structure/rest-app-layout-dto.md).
+Returns an `object` with the key `layout`, containing [RestAppLayoutDto](../configurable/structure/rest-app-layout-dto.md).
 
 ```json
 {

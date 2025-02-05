@@ -1,15 +1,17 @@
 title: Search
 href: index.md
 items:
-  - name: Find chats by titles
+  - name: Overview of Methods
     href: index.md
-  - name: Find users
+  - name: Find Chats by Titles
+    href: im-search-chat-list.md
+  - name: Find Users
     href: im-search-user-list.md
-  - name: Find departments
+  - name: Find Departments
     href: im-search-department-list.md
-  - name: Add search to history
+  - name: Add Search to History
     href: im-search-last-add.md
-  - name: Retrieve search history
+  - name: Retrieve Search History
     href: im-search-last-get.md
-  - name: Remove search from history
+  - name: Remove Search from History
     href: im-search-last-delete.md

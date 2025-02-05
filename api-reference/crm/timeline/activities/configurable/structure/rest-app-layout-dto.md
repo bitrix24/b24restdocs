@@ -1,23 +1,23 @@
 # Set of Additional Content Blocks
 
-The structure **RestAppLayoutDto** describes a set of additional content blocks.
+The structure `RestAppLayoutDto` describes a set of additional content blocks.
 
-## Parameters
+## Parameters of the `RestAppLayoutDto` Object
 
-{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **blocks***
-[`ContentBlockDto[]`](./body.md#contentblockdto) | An array of additional content blocks ||
+[`ContentBlockDto[]`](./content-block.md) | Array of additional content blocks ||
 |#
 
-There are also quantitative limits on `blocks`:
+There are also quantitative restrictions on `blocks`:
 - Minimum quantity — `1`
 - Maximum quantity — `20`
 
-## Code Example
+## Example of the Object
 
 ```js
 {
@@ -110,7 +110,7 @@ There are also quantitative limits on `blocks`:
         "block_7": {
             "type": "withTitle",
             "properties": {
-                "title": "Title with deadline",
+                "title": "Title with Deadline",
                 "block": {
                     "type": "deadline",
                     "properties": {
@@ -123,3 +123,15 @@ There are also quantitative limits on `blocks`:
 }
 ```
 
+## Continue Learning
+
+- [{#T}](./layout.md)
+- [{#T}](./icon.md)
+- [{#T}](./header.md)
+- [{#T}](./body.md)
+- [{#T}](./content-block.md)
+- [{#T}](./footer.md)
+- [{#T}](./menu-item.md)
+- [{#T}](./action.md)
+- [{#T}](./field-types.md)
+- [{#T}](./examples.md)

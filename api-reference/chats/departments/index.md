@@ -22,6 +22,14 @@ Some data may be missing here — we will complete it soon.
 
 The methods `im.department.*` are available only for [intranet users](*intranet_users).
 
+#|
+|| **Method** | **Description** ||
+|| [im.department.colleagues.list](./im-department-colleagues-list.md) | Retrieves a list of users in your department ||
+|| [im.department.employees.get](./im-department-employees-get.md) | Retrieves a list of department employees ||
+|| [im.department.get](./im-department-get.md) | Retrieves information about the department ||
+|| [im.department.managers.get](./im-department-managers-get.md) | Retrieves a list of department managers ||
+|#
+
 [*intranet_users]: In Bitrix24, there are two types of users:
 - intranet users – internal users (employees of your company);
 - extranet users – external users (vendors, distributors, etc.).

@@ -58,10 +58,10 @@ To create a universal activity, use the [crm.activity.todo.add](./crm-activity-t
 
 Configurable activities are a type of activity that can only be created from an application. For this type, you can customize the appearance of the activity card and its functionality:
 
-* [Structure of Configurable Activity](./structure/layout.md)
-* [Badges of Configurable Activity](./badges/index.md)
+* [Structure of Configurable Activity](./configurable/structure/layout.md)
+* [Badges of Configurable Activity](./configurable/badges/index.md)
 
-To create or modify a configurable activity, use the methods from the [crm.activity.configurable.*](./crm-activity-configurable-add.md) group.
+To create or modify a configurable activity, use the methods from the [crm.activity.configurable.*](./configurable/crm-activity-configurable-add.md) group.
 
 ## Widgets
 
@@ -82,7 +82,7 @@ Thanks to the embedding, you can use the application without leaving the entity 
 
 **Content blocks** can be added to activities and removed. Use the methods from the [crm.activity.layout.blocks.*](./layout-blocks/index.md) group.
 
-* [Available content blocks](./structure/body.md#contentblockdto)
+* [Available content blocks](./configurable/structure/body.md#contentblockdto)
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -149,19 +149,19 @@ Thanks to the embedding, you can use the application without leaving the entity 
 
 #|
 || **Method** | **Description** ||
-|| [crm.activity.configurable.add](./crm-activity-configurable-add.md) | Creates a configurable activity ||
-|| [crm.activity.configurable.update](./crm-activity-configurable-update.md) | Modifies a configurable activity ||
-|| [crm.activity.configurable.get](./crm-activity-configurable-get.md) | Returns information about an activity by ID ||
+|| [crm.activity.configurable.add](./configurable/crm-activity-configurable-add.md) | Creates a configurable activity ||
+|| [crm.activity.configurable.update](./configurable/crm-activity-configurable-update.md) | Modifies a configurable activity ||
+|| [crm.activity.configurable.get](./configurable/crm-activity-configurable-get.md) | Returns information about an activity by ID ||
 |#
 
 ### Badges of Configurable Activity
 
 #|
 || **Method** | **Description** ||
-|| [crm.activity.badge.add](./badges/crm-activity-badge-add.md) | Creates a badge ||
-|| [crm.activity.badge.get](./badges/crm-activity-badge-get.md) | Returns information about a badge ||
-|| [crm.activity.badge.list](./badges/crm-activity-badge-list.md) | Returns a list of all registered badges ||
-|| [crm.activity.badge.delete](./badges/crm-activity-badge-delete.md) | Deletes a badge ||
+|| [crm.activity.badge.add](./configurable/badges/crm-activity-badge-add.md) | Creates a badge ||
+|| [crm.activity.badge.get](./configurable/badges/crm-activity-badge-get.md) | Returns information about a badge ||
+|| [crm.activity.badge.list](./configurable/badges/crm-activity-badge-list.md) | Returns a list of all registered badges ||
+|| [crm.activity.badge.delete](./configurable/badges/crm-activity-badge-delete.md) | Deletes a badge ||
 |#
 
 ### Additional Content Blocks

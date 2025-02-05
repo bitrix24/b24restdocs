@@ -1,58 +1,152 @@
-# Add Binding for CRM Activity
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- required parameters not specified
-- examples missing
-- response in case of error not provided
-- links to yet-to-be-created pages (directory of available types) not included
-
-{% endnote %}
-
-{% endif %}
+# Add a deal binding to a CRM entity crm.activity.binding.add
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: `any user`
 
-The method `crm.activity.binding.add` adds a binding for a deal. On success, the method will return `true`.
+The method `crm.activity.binding.add` creates a binding between a deal and a CRM entity. A deal can only be bound to an entity that the current user has edit access to.
 
-Binding a deal is only possible to an entity that the current user has edit access to.
+## Method Parameters
 
-## Parameters
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **activityId**
-[`number`](../../../../data-types.md) | identifier of the deal ||
-|| **entityTypeId**
-[`number`](../../../../data-types.md) | identifier of the entity type ([Directory of available types](.)) ||
-|| **entityId**
-[`number`](../../../../data-types.md) | identifier of the entity ||
+|| **Name**
+`type` | **Description** ||
+|| **activityId***
+[`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
+|| **entityTypeId***
+[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the deal should be bound, for example `2` for a deal ||
+|| **entityId***
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the deal should be bound, for example `1`  ||
 |#
 
-## Examples
+## Code Examples
 
-```http
-crm.activity.binding.add?activityId=1&entityTypeId=4&entityId=1000
-```
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% list tabs %}
 
-## Response on Success
+- cURL (Webhook)
 
-> 200 OK
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"activityId":999, "entityTypeId":2, "entityId": 1}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.binding.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"activityId":999, "entityTypeId":2, "entityId": 1, "auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.activity.binding.add
+    ```
+
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        'crm.activity.binding.add',
+        {
+            activityId: 999, // Deal ID
+            entityTypeId: 2, // CRM object type ID
+            entityId: 1 // CRM entity ID
+        },
+        function(result) {
+            if (result.error()) {
+                console.error('Error:', result.error()); 
+            } else {
+                console.log('Result:', result.data()); 
+            }
+        }
+    );
+    ```
+
+- PHP
+  
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.activity.binding.add',
+        [
+            'activityId' => 999, // Deal ID
+            'entityTypeId' => 2, // CRM object type ID
+            'entityId' => 1 // CRM entity ID
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP status: **200**
+
 ```json
 {
-    "result": true
+    "result": true,
+    "time": {
+        "start": 1712132792.910734,
+        "finish": 1712132793.530359,
+        "duration": 0.6196250915527344,
+        "processing": 0.032338857650756836,
+        "date_start": "2024-04-03T10:26:32+02:00",
+        "date_finish": "2024-04-03T10:26:33+02:00",
+        "operating_reset_at": 1705765533,
+        "operating": 3.3076241016387939
+    }
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../../data-types.md) | Operation result. Returns `true` if the binding was successfully created, otherwise returns `false` ||
+|| **time**
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "NOT_FOUND",
+    "error_description": "Entity not found"
+}
+```
+
+{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `100` | Required fields are missing ||
+|| `NOT_FOUND` | Entity not found ||
+|| `OWNER_NOT_FOUND` | Entity owner not found ||
+|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
+|| `ACTIVITY_IS_ALREADY_BOUND` | The deal is already bound to this entity ||
+|#
+
+{% include [system errors](../../../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./crm-activity-binding-list.md)
+- [{#T}](./crm-activity-binding-delete.md)
+- [{#T}](./crm-activity-binding-move.md)

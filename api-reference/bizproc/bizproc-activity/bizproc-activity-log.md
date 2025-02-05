@@ -1,37 +1,11 @@
 # Write Information to the Business Process Log bizproc.activity.log
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- The description needs to include what this log is, where it is located, and what it looks like.
-- Parameter types and a link to the types page are missing.
-- It needs to clarify what the unique identifier is and why it is needed.
-- There is no note about required parameters.
-- Examples are lacking.
-- The example is unclear; it would be better to provide a description and explain what is happening, or add a link to a tutorial where this method is used in a real task.
-- Standard blocks are missing.
-
-{% endnote %}
-
-{% endif %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- Edits are needed to meet the writing standard.
-- Parameter types are not specified.
-- The requirement for parameters is not indicated.
-- Examples are absent.
-- There is no response in case of success.
-- There is no response in case of error.
+- It needs to be clarified what the unique identifier is and why it is needed.
+- The example is unclear. A description should be provided, explaining how it works, or a link to a tutorial where this method is used in a real task should be added.
 
 {% endnote %}
 
@@ -41,31 +15,66 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: administrator
 
-The method logs information in the business process.
+This method logs information into the business process log. Event logging must be enabled in the business process template.
 
-## Parameters
+{% note tip "User Documentation" %}
+
+- [Workflow test log](https://helpdesk.bitrix24.com/open/22095380/)
+
+{% endnote %}
+
+## Method Parameters
+
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter**    | **Description**  ||
-|| **EVENT_TOKEN**^*^ | A unique key that must be used when sending an event to the business process.    ||
-|| **LOG_MESSAGE**^*^ | Messages to be recorded in the log. ||
+|| **Name**
+`type` | **Description**||
+|| **EVENT_TOKEN***
+[`string`](../../data-types.md) | A unique key required to send an event to the business process.
+
+The token is sent to the application action handler when the business process reaches this action.
+
+Logging is possible if the application action is subscribed with `'USE_SUBSCRIPTION': 'Y'` during the execution of the business process. ||
+|| **LOG_MESSAGE***
+[`string`](../../data-types.md) | Message to be logged ||
 |#
 
-## Example
+## Code Examples
+
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"event_token":"55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90","log_message":"Please wait for answer!"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/bizproc.activity.log
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"event_token":"55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90","log_message":"Please wait for answer!","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/bizproc.activity.log
+    ```
+
 - JS
 
-    ```javascript
-    var params = {
-        event_token: '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
-        log_message: 'Please wait for answer!'
-    };
-
+    ```js
     BX24.callMethod(
         'bizproc.activity.log',
-        params,
+        {
+            event_token: '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
+            log_message: 'Please wait for answer!'
+        },
         function(result) {
             if(result.error())
                 alert("Error: " + result.error());
@@ -73,6 +82,24 @@ The method logs information in the business process.
                 alert("Success: " + result.data());
         }
     );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'bizproc.activity.log',
+        [
+            'event_token' => '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
+            'log_message' => 'Please wait for answer!'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 - PHP (B24PhpSdk)
@@ -99,4 +126,34 @@ The method logs information in the business process.
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ERROR_EMPTY_LOG_MESSAGE",
+    "error_description": "Empty log message!"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Error Message** | **Description** ||
+|| `ERROR_EMPTY_LOG_MESSAGE` | Empty log message! | No text provided for the log entry ||
+|#
+
+The method may also return errors from the business process.
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./bizproc-activity-add.md)
+- [{#T}](./bizproc-activity-update.md)
+- [{#T}](./bizproc-activity-list.md)
+- [{#T}](./bizproc-activity-delete.md)

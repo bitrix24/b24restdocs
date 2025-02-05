@@ -1,32 +1,72 @@
-# When Creating a CRM Activity onCrmActivityAdd
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- Required parameters are not specified
-- Examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Event for Creating a New CRM Activity onCrmActivityAdd
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can subscribe: any user
+> Who can subscribe: `any user`
 
-The event `onCrmActivityAdd` is triggered when a CRM activity is created.
+The event `onCrmActivityAdd` is triggered when a new CRM activity is added to the timeline.
 
-## Parameters
+## What the Handler Receives
+
+Data is sent as a POST request {.b24-info}
+
+```json
+{
+    "event": "onCrmActivityAdd",
+    "data": {
+        "FIELDS": {
+            "ID": "999"
+        }
+    },
+    "ts": "1466439714",
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": "3600",
+        "scope": "crm",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "L",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
+```
 
 #|
-|| **Parameter** | **Description** ||
-|| **FIELDS**
-[`array`](../../../../data-types.md) | The array contains the field `ID` with the value of the created activity's identifier. || 
+|| **Parameter**
+`type` | **Description** ||
+|| **event**
+[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityAdd`||
+|| **data**
+`array` | An object containing information about the created activity.
+
+Contains a single key `FIELDS` ||
+|| **ts**
+[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+|| **auth**
+[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred.
+
+The structure is described [below](#auth) ||
 |#
+
+### Parameter FIELDS {#fields}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../../data-types.md) | `ID` with the identifier of the added activity ||
+|#
+
+### Parameter auth {#auth}
+
+{% include notitle [Table with Keys in the auth Array](../../../../../_includes/auth-params-in-events.md) %}
+
+## Continue Learning 
+
+- [{#T}](../../../../events/index.md)
+- [{#T}](../../../../events/event-bind.md)
+- [{#T}](./on-crm-activity-update.md)
+- [{#T}](./on-crm-activity-delete.md)

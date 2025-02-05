@@ -1,17 +1,17 @@
-# Unpin All Your Dialogs imopenlines.session.mode.unpinAll
+# Unpin All Dialogs from Operator imopenlines.session.mode.unpinAll
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - examples are missing
-- response in case of error is missing
+- no response in case of an error
 
 {% endnote %}
 
@@ -21,11 +21,11 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-Unpinning all dialogs from the current operator. Returns an array of identifiers for the unpinned sessions.
+Unpinning all dialogs from the current operator. Returns an array of identifiers of unpinned sessions.
 
 ## Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

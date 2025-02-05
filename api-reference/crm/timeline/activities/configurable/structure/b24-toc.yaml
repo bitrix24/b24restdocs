@@ -1,18 +1,22 @@
 title: Structure of Configurable Deal
 href: layout.md
 items:
-  - name: General Overview of the Deal
+  - name: Structure of Configurable Deal
     href: layout.md
-  - name: Record Title
+  - name: Icon
+    href: icon.md
+  - name: Record Header
     href: header.md
-  - name: Click Reaction
-    href: action.md
   - name: Main Content Area
     href: body.md
-  - name: Bottom of the Record
+  - name: Content Block of Configurable Deal
+    href: content-block.md    
+  - name: Bottom Part of Record
     href: footer.md
-  - name: Bottom Dropdown Menu
+  - name: Dropdown Menu of Bottom Part
     href: menu-item.md
+  - name: Click Reaction
+    href: action.md
   - name: Field Types
     href: field-types.md
   - name: Set of Additional Content Blocks

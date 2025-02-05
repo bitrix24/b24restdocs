@@ -26,7 +26,7 @@ The set of additional content blocks cannot be applied to:
 || **activityId***
 [`integer`](../../../../data-types.md) | Identifier of the activity ||
 || **layout***
-[`RestAppLayoutDto`](../structure/rest-app-layout-dto.md) | Object describing the set of additional content blocks ||
+[`RestAppLayoutDto`](../configurable/structure/rest-app-layout-dto.md) | Object describing the set of additional content blocks ||
 |#
 
 ## Code Examples

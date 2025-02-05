@@ -27,7 +27,7 @@ The set of additional content blocks cannot be applied to timeline records relat
 || **activityId***
 [`integer`](../../../data-types.md) | Identifier of the timeline record ||
 || **layout***
-[`RestAppLayoutDto`](../activities/structure/rest-app-layout-dto.md) | Object describing the set of additional content blocks ||
+[`RestAppLayoutDto`](../activities/configurable/structure/rest-app-layout-dto.md) | Object describing the set of additional content blocks ||
 |#
 
 ## Code Examples

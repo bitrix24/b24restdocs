@@ -6,7 +6,7 @@
 
 This method deletes a workflow template.
 
-It allows you to remove templates that were created using the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md). These templates are tied to the application and can only be deleted in the context of the same application in which they were created.
+It allows you to remove templates that were created using the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md). These templates are tied to the application and can only be deleted in the context of the same [application](../../app-installation/index.md) that created them.
 
 ## Method Parameters
 
@@ -70,6 +70,25 @@ It allows you to remove templates that were created using the method [bizproc.wo
     echo '</PRE>';
     ```
 
+- PHP (B24PhpSdk)
+
+    ```php
+    try {
+        $templateId = 123; // Replace with the actual template ID you want to delete
+        $result = $serviceBuilder
+            ->getBizProcScope()
+            ->template()
+            ->delete($templateId);
+        if ($result->isSuccess()) {
+            print("Template with ID {$templateId} deleted successfully.\n");
+        } else {
+            print("Failed to delete template with ID {$templateId}.\n");
+        }
+    } catch (\Throwable $e) {
+        print("An error occurred: " . $e->getMessage() . "\n");
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -84,8 +103,8 @@ HTTP status: **200**
         "finish": 1737536737.3437879,
         "duration": 0.21924281120300293,
         "processing": 0.18391799926757812,
-        "date_start": "2025-01-22T12:05:37+02:00",
-        "date_finish": "2025-01-22T12:05:37+02:00",
+        "date_start": "2025-01-22T12:05:37+01:00",
+        "date_finish": "2025-01-22T12:05:37+01:00",
         "operating_reset_at": 1737537337,
         "operating": 0.18389892578125
     }

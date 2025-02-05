@@ -1,6 +1,8 @@
 title: Working with Users
-href: im-user-get.md
+href: index.md
 items:
+  - name: Overview of Methods
+    href: index.md
   - name: Get User Data
     href: im-user-get.md
   - name: Get Users Data

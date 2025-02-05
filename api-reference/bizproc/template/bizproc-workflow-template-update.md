@@ -1,4 +1,4 @@
-# Update Business Process Template bizproc.workflow.template.update
+# Update the business process template bizproc.workflow.template.update
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 This method updates a business process template.
 
-It allows you to update templates that were created using the [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) method. These templates are tied to the application and can only be updated within the context of the same application they were created in.
+It allows you to update templates that were created using the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md). These templates are tied to the application and can only be updated in the context of the same [application](../../app-installation/index.md) that created them.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ It allows you to update templates that were created using the [bizproc.workflow.
 || **ID***
 [`string`](../../data-types.md) | Identifier of the template to be updated ||
 || **FIELDS***
-[`object`](../../data-types.md) | Object with [fields](#parametr-fields) of the business process template. 
+[`object`](../../data-types.md) | Object with [fields](#parametr-fields) of the business process template.
 
 You can update the fields: `NAME`, `DESCRIPTION`, `TEMPLATE_DATA`, `AUTO_EXECUTE`. Attempting to update [other fields](./bizproc-workflow-template-list.md#fields) of the template will not result in errors, but those fields will not be updated ||
 |#
@@ -35,9 +35,9 @@ You can update the fields: `NAME`, `DESCRIPTION`, `TEMPLATE_DATA`, `AUTO_EXECUTE
 || **TEMPLATE_DATA**
 [`file`](../../data-types.md) | Content of the file with the business process template in `.bpt` format.
 
-More details on file transfer methods can be found in the article [{#T}](../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
+More about file transfer methods can be found in the article [{#T}](../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
 || **AUTO_EXECUTE**
-[`integer`](../../data-types.md) | Auto-execution settings for the template. Can have the following values:
+[`integer`](../../data-types.md) | Auto-execution settings of the template. Can have the value:
 
 - `0` — no auto-execution
 - `1` — execute on creation
@@ -163,14 +163,14 @@ HTTP Status: **400**
 || `ERROR_TEMPLATE_VALIDATION_FAILURE` | No fields to update. | No fields specified for update ||
 || `ERROR_TEMPLATE_NOT_FOUND` | Workflow template not found. | Template with the specified `ID` not found ||
 || `ERROR_TEMPLATE_NOT_OWNER` | You can update ONLY templates created by current application | This template cannot be edited through this application ||
-|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Empty template name! | Empty template name specified ||
-|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Incorrect field AUTO_EXECUTE! | Invalid auto-execution code specified ||
-|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Incorrect field TEMPLATE_DATA! | Invalid template data specified ||
+|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Empty template name! | An empty template name was specified ||
+|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Incorrect field AUTO_EXECUTE! | An incorrect auto-execution code was specified ||
+|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Incorrect field TEMPLATE_DATA! | Incorrect template data was specified ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./bizproc-workflow-template-add.md)

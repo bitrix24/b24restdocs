@@ -1,11 +1,5 @@
 # Examples
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
 ## Text
 
 ```json
@@ -14,7 +8,7 @@ Some data may be missing — we will fill it in shortly.
         "code": "info"
     },
     "header": {
-        "title": "Info message"
+        "title": "Information Message"
     },
     "body": {
         "logo": {
@@ -44,7 +38,7 @@ Long text hidden under "Show more".
         "code": "info"
     },
     "header": {
-        "title": "Info message"
+        "title": "Information Message"
     },
     "body": {
         "logo": {
@@ -66,7 +60,7 @@ Long text hidden under "Show more".
 
 ## Fields
 
-Field name-value pairs, deadline change.
+Fields name-value, changing the deadline.
 
 ```json
 {
@@ -74,7 +68,7 @@ Field name-value pairs, deadline change.
         "code": "info"
     },
     "header": {
-        "title": "Info message"
+        "title": "Information Message"
     },
     "body": {
         "logo": {
@@ -94,12 +88,12 @@ Field name-value pairs, deadline change.
             "client": {
                 "type": "withTitle",
                 "properties": {
-                    "title": "Customer",
+                    "title": "Client",
                     "inline": true,
                     "block": {
                         "type": "text",
                         "properties": {
-                            "value": "LLC Open Doors"
+                            "value": "LLC Horns and Hooves"
                         }
                     }
                 }
@@ -112,7 +106,7 @@ Field name-value pairs, deadline change.
                     "block": {
                         "type": "link",
                         "properties": {
-                            "text": "John Smith",
+                            "text": "Sergey Vostrikov",
                             "bold": true,
                             "action": {
                                 "type": "redirect",
@@ -125,13 +119,13 @@ Field name-value pairs, deadline change.
             "description": {
                 "type": "withTitle",
                 "properties": {
-                    "title": "Additional info",
+                    "title": "Additional information in large quantity",
                     "inline": false,
                     "block": {
                         "type": "text",
                         "properties": {
                             "multiline": true,
-                            "value": "The noon will start at 12:00."
+                            "value": "Arrive no earlier than noon. Entrance from the yard, the gate password is 555. Go up to the 5th floor, ask for Ivan Nikolaevich. Payment in cash, change from $5000."
                         }
                     }
                 }
@@ -167,7 +161,7 @@ Various types of actions.
             },
             "tag2": {
                 "type": "primary",
-                "title": "open app",
+                "title": "Open Application",
                 "action": {
                     "type": "openRestApp",
                     "actionParams": {
@@ -247,12 +241,13 @@ Support for multilingualism.
         "code": "info"
     },
     "header": {
-        "title": {"en": "Información"},
+        "title": {"de": "Information", "en": "Information"},
         "tags": {
             "tag": {
                 "type": "warning",
                 "title": {
-                    "es": "Atención"
+                    "de": "Achtung",
+                    "en": "Warning"
                 }
             }
         }
@@ -265,7 +260,7 @@ Support for multilingualism.
             "text": {
                 "type": "text",
                 "properties": {
-                    "value": {"es": "This text will be display in Spanish, "es": "Texto"}
+                    "value": {"de": "Dieser Text wird in verschiedenen Sprachen unterschiedlich angezeigt", "en": "A text"}
                 }
             }
         }
@@ -273,7 +268,7 @@ Support for multilingualism.
     "footer": {
         "buttons": {
             "button1": {
-                "title": {"es": "Hacer clic"},
+                "title": {"de": "Drück mich", "en": "Push me"},
                 "type": "primary",
                 "action": {
                     "type": "redirect",
@@ -285,6 +280,6 @@ Support for multilingualism.
 }
 ```
 
-Result in Spanish:
+Result in English:
 
 ![Multilingual EN](./_images/ContentBlockDto_14.png)

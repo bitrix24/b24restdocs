@@ -1,17 +1,17 @@
-# Retrieve All Available Dialogs imopenlines.session.mode.pinAll
+# Pin All Available Dialogs to the Operator imopenlines.session.mode.pinAll
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - examples are missing
-- no response in case of error
+- no response in case of an error
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Pinning all dialogs to the current operator. Returns an array of IDs of pinned s
 
 ## Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -61,7 +61,7 @@ Pinning all dialogs to the current operator. Returns an array of IDs of pinned s
 
 {% endlist %}
 
-## Response in case of success
+## Response on Success
 
 ```json
 {

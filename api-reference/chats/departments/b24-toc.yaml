@@ -1,6 +1,8 @@
 title: Working with Departments
-href: im-department-get.md
+href: index.md
 items:
+  - name: Overview of Methods
+    href: index.md
   - name: Get Information About a Department
     href: im-department-get.md
   - name: Get a List of Users in Your Department

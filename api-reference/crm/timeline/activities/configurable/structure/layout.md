@@ -1,43 +1,30 @@
-# Top-Level Object and Icon
+# Structure of Configurable Deal
 
-{% note warning "We are still updating this page" %}
+The object that describes the appearance of a timeline entry is a hierarchical structure of nested objects of various types.
 
-Some data may be missing — we will complete it soon.
+Each of the nested objects has its own set of fields and is described below in the form of a DTO (Data Transfer Object).
 
-{% endnote %}
+The top-level object of the timeline entry is `LayoutDto`.
 
-{% if build == 'dev' %}
+![Top-level object of the timeline entry](./_images/LayoutDto.png)
 
-{% note alert "TO-DO _not exported to prod_" %}
+## Parameters of the `LayoutDto` Object
 
-- edits needed for writing standards
-- are the types other than standard specified correctly?
-
-{% endnote %}
-
-{% endif %}
-
-## Top-Level Object
-
-The top-level object `LayoutDto` of the timeline entry.
-
-![Top-Level Object of the Timeline Entry](./_images/LayoutDto.png)
+{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
 || **icon^*^**
-[`IconDto`](#icon) |  | Icon to the left of the entry ||
+[`IconDto`](./icon.md) | Icon to the left of the entry ||
 || **header^*^**
-[HeaderDto](./header.md) |  | Title of the entry ||
+[`HeaderDto`](./header.md) | Title of the entry ||
 || **body^*^**
-[BodyDto](./body.md) |  | Main content area of the entry ||
+[`BodyDto`](./body.md) | Main content area of the entry ||
 || **footer**
-[FooterDto](./footer.md) |  | Bottom part of the entry with action block | ||
+[`FooterDto`](./footer.md) | Bottom part of the entry with action block ||
 |#
 
-{% include [Footnote on Parameters](../../../../../_includes/required.md) %}
-
-### Example
+## Example Object
 
 ```json
 {
@@ -70,7 +57,7 @@ The top-level object `LayoutDto` of the timeline entry.
                     "block": {
                         "type": "text",
                         "properties": {
-                            "value": "LLC Hoofs and Horns"
+                            "value": "LLC Horns and Hooves"
                         }
                     }
                 }
@@ -139,14 +126,15 @@ The top-level object `LayoutDto` of the timeline entry.
 }
 ```
 
-## Icon
+## Continue Learning
 
-The icon `IconDto` of the timeline entry.
-
-#|
-|| **Field** | **Description** | **Additional** ||
-|| **code^*^**
-[`string`](../../../../data-types.md) | Icon code | A list of available codes can be obtained using the method [crm.timeline.icon.list](.) ||
-|#
-
-{% include [Footnote on Parameters](../../../../../_includes/required.md) %}
+- [{#T}](./icon.md)
+- [{#T}](./header.md)
+- [{#T}](./body.md)
+- [{#T}](./content-block.md)
+- [{#T}](./footer.md)
+- [{#T}](./menu-item.md)
+- [{#T}](./action.md)
+- [{#T}](./field-types.md)
+- [{#T}](./rest-app-layout-dto.md)
+- [{#T}](./examples.md)

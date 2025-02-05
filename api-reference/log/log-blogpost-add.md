@@ -8,10 +8,10 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - no response in case of error
 - No examples in other languages
 
@@ -52,7 +52,7 @@ https://my.bitrix24.com/rest/log.blogpost.add.json?POST_MESSAGE=Hello%2C%20world
 
 Default value is `['UA']` ||
 || **SPERM** | List of recipients who will have the right to view the message (deprecated). Similar to `DEST` ||
-|| **FILES** | Files, an array of values described by the rules provided here. ||
+|| **FILES** | Files, an array of values described by the rules provided [here](../bx24-js-sdk/how-to-call-rest-methods/files.md).||
 || **IMPORTANT** | Defaults to N. The feed message is published as "important." ||
 || **IMPORTANT_DATE_END** | Specifies the date/time value until which the message will be considered important. ||
 |#
@@ -101,3 +101,7 @@ Default value is `['UA']` ||
 ```json
 {"result": true}
 ```
+
+## See also
+
+[Using the REST API method log.blogpost.add](http://dev.1c-bitrix.com/community/blogs/wladart/rest_logblogpostadd.php) (developer blog)

@@ -1,37 +1,13 @@
-# On Document Generation onCrmDocumentGeneratorDocumentAdd
+# Event Overview
 
-{% if build == 'dev' %}
+{% note warning "We are still updating this page" %}
 
-{% note alert "TO-DO _not exported to prod_" %}
-
-- field types are not specified
-- field requirements are not specified
-- examples are missing
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
-{% endif %}
-
-> Scope: [`documentgenerator`](../../scopes/permissions.md)
->
-> Who can subscribe: any user
-
-The event `onCrmDocumentGeneratorDocumentAdd` – creation of a new document.
-
-The event handler will receive data in the following format:
-
-```php
-[
-    'FIELDS' => [
-        'ID' => $documentId,
-        'ENTITY_TYPE_ID' => $entityTypeId,
-        'ENTITY_ID' => $entityId,
-    ],
-]
-```
 #|
-|| **Field** | **Description** ||
-|| **$documentId** | Document identifier. ||
-|| **$entityTypeId** | CRM type identifier. ||
-|| **$entityId** | Entity identifier. ||
+|| [onCrmDocumentGeneratorDocumentAdd](./on-crm-document-generator-add.md) | On document generation ||
+|| [onCrmDocumentGeneratorDocumentDelete](./on-crm-document-generator-document-delete.md) | On document deletion ||
+|| [onCrmDocumentGeneratorDocumentUpdate](./on-crm-document-generator-document-update.md) | On document modification ||
 |#

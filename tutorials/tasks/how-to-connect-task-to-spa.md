@@ -8,17 +8,17 @@ The key parameter for attaching a task to a CRM entity is the [object type ident
 
 To create a task and attach it to a SPA, we will sequentially execute three methods:
 
-1. [crm.enum.ownertype](../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) — retrieve the `entityTypeId` and `SYMBOL_CODE_SHORT` of the SPA
+1. [crm.enum.ownertype](../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) — retrieve the `entityTypeId` and `SYMBOL_CODE_SHORT` of the SPA.
 
-2. [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) — retrieve the SPA element using the `entityTypeId` parameter
+2. [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) — retrieve the SPA element using the `entityTypeId` parameter.
 
-3. [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) — create a task and link it to the SPA element using `SYMBOL_CODE_SHORT`
-   
-## 1. Retrieve SPA Identifiers {#SPA-ids}
+3. [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) — create a task and link it to the SPA element using `SYMBOL_CODE_SHORT`.
 
-To get the SPA identifier, we use the method [crm.enum.ownertype](../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). The method is called without parameters and returns an enumeration of all CRM object types.
+## 1. Retrieving SPA Identifiers {#SPA-ids}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+To obtain the SPA identifier, we use the method [crm.enum.ownertype](../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md). The method is called without parameters and returns an enumeration of all CRM object types.
+
+{% include [Example Notes](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -27,7 +27,8 @@ To get the SPA identifier, we use the method [crm.enum.ownertype](../../api-refe
     ```JavaScript
     BX24.callMethod(
     "crm.enum.ownertype",
-    {});     
+    {} 
+    );     
     ```
 
 - PHP
@@ -130,20 +131,20 @@ The method returns four different identifiers:
             "NAME": "Purchase",
             "SYMBOL_CODE": "DYNAMIC_156",
             "SYMBOL_CODE_SHORT": "T9c"
-        },
-    ],
+        }
+    ]
 }
 ```
 
 As a result, we obtained a list of all CRM object types in Bitrix24 with their identifiers. For the next requests, we will use `ID`: `177` and `SYMBOL_CODE_SHORT`: `Tb1` for the SPA "Equipment Purchase".
 
-## 2. Retrieve the ID of the SPA Element {#element-id}
+## 2. Retrieving the SPA Element ID {#element-id}
 
-To obtain the ID of the SPA element, we use the method [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) with the following parameters:
+To obtain the SPA element ID, we use the method [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) with the following parameters:
 
--  `entityTypeId` — `177`, the value is equal to the `ID` from the result of the previous method
+-  `entityTypeId` — `177`, the value is equal to the `ID` from the previous method's result.
 
--  `filter[title]` — specify the name of the element to search  
+-  `filter[title]` — specify the name of the element to search for.  
 
 {% list tabs %}
 
@@ -156,12 +157,12 @@ To obtain the ID of the SPA element, we use the method [crm.item.list](../../api
             entityTypeId: 177, // ID from the result of crm.enum.ownertype
             select: [
                 "id", // selected fields
-                "title",
+                "title"
             ],
             filter: {
                 "title": "Washing Machine", // name of the element
-            },
-        },
+            }
+        }
     );
     ```
 
@@ -176,18 +177,18 @@ To obtain the ID of the SPA element, we use the method [crm.item.list](../../api
             'entityTypeId' => 177, // ID from the result of crm.enum.ownertype
             'select' => [
                 'id', // selected fields
-                'title',
+                'title'
             ],
             'filter' => [
                 'title' => 'Washing Machine', // name of the element
-            ],
+            ]
         ]
     );
     ```
 
 {% endlist %}
 
-As a result, we obtained the ID of the SPA element — a parameter necessary for the next request.
+As a result, we obtained the SPA element ID — a parameter necessary for the next request.
 
 ```JSON
 {
@@ -199,23 +200,22 @@ As a result, we obtained the ID of the SPA element — a parameter necessary for
             }
         ]
     },
-    "total": 1,
+    "total": 1
 }
 ```
 
-## 3. Create a Task Linked to the SPA Element
+## 3. Creating a Task Linked to the SPA Element
 
 To create a task, we use the method [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) with the following parameters:
 
--  `UF_CRM_TASK` — specify the value `Tb1_29`. This is the short symbolic code type `SYMBOL_CODE_SHORT`: `Tb1` from the results of [crm.enum.ownertype](./how-to-connect-task-to-spa.md#SPA-ids) and the ID of the SPA element `id`: `29` from the results of [crm.item.list](./how-to-connect-task-to-spa.md#element-id)
+-  `UF_CRM_TASK` — specify the value `Tb1_29`. This is the short symbolic code type `SYMBOL_CODE_SHORT`: `Tb1` from the results of [crm.enum.ownertype](./how-to-connect-task-to-spa.md#SPA-ids) and the SPA element `id`: `29` from the results of [crm.item.list](./how-to-connect-task-to-spa.md#element-id).
 
--  `TITLE` — the title of the task, a required field. Without a title, the task will not be created
+-  `TITLE` — the task title, a required field. Without a title, the task will not be created.
 
--  `CREATED_BY` — the ID of the task creator, a required field. This parameter can be omitted, in which case the creator will automatically be the employee from whose account the request is made
+-  `CREATED_BY` — the ID of the task creator, this field cannot be empty. If not filled, the creator will automatically be the one sending the request.
 
--  `RESPONSIBLE_ID` — the ID of the task performer, a required field. Without a performer, the task will not be created
+-  `RESPONSIBLE_ID` — the ID of the task performer, a required field. Without a performer, the task will not be created.
   
-
 {% list tabs %}
 
 - JS
@@ -391,17 +391,17 @@ As a result, we created a task with ID `3731`.
             },
             "checkListCanAdd": true
         }
-    },
+    }
 }
 ```
 
-## Verify the Created Task
+## Verifying the Created Task
 
-The obtained result does not contain information about the linked CRM elements. To check whether the SPA element has been successfully attached to the task, we will execute the method [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) with the following parameters:
+The obtained result does not contain information about the linked CRM elements. To check if the SPA element has been successfully attached to the task, we will execute the method [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) with the following parameters:
 
--  `taskId` — `3731`, the ID of the created task from the result of the previous method
+-  `taskId` — `3731`, the ID of the created task from the result of the previous method.
 
--  `select` — `UF_CRM_TASK`, the field "Link to CRM elements". The method [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) will not return the link field without `UF_CRM_TASK` in `select`
+-  `select` — `UF_CRM_TASK`, the field "Link to CRM elements". The method [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) will not return the link field without `UF_CRM_TASK` in `select`.
   
 {% list tabs %}
 
@@ -413,7 +413,7 @@ The obtained result does not contain information about the linked CRM elements. 
         {
             taskId: 3731, // task ID
             select: ['ID', 'UF_CRM_TASK'] // selected fields
-        },
+        }
     );
     ```
 
@@ -480,7 +480,7 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA e
                 "favorite.delete": false
             }
         }
-    },
+    }
 }
 ```
 
@@ -499,7 +499,7 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA e
 
     // Function to create a task linked to the SPA element
     function createTaskWithSmartProcess() {
-        // Retrieve entity type and SPA identifiers
+        // Retrieving entity type and SPA identifiers
         BX24.callMethod(
             'crm.enum.ownertype',
             {},
@@ -509,7 +509,7 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA e
                     return;
                 }
 
-                // Find the required SPA
+                // Finding the required SPA
                 var smartProcess = result.data().find(function(process) {
                     return process.NAME === smartProcessName;
                 });
@@ -521,7 +521,7 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA e
 
                 var symbolCodeShort = smartProcess.SYMBOL_CODE_SHORT;
 
-                // Search for the SPA element using a title filter
+                // Searching for the SPA element using a title filter
                 BX24.callMethod(
                     'crm.item.list',
                     {
@@ -542,13 +542,13 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA e
 
                         var itemId = itemResult.data().items[0].id;
 
-                        // Create the task
+                        // Creating the task
                         BX24.callMethod(
                             'tasks.task.add',
                             {
                                 fields: {
-                                    TITLE: taskTitle, // Use the entered task title
-                                    RESPONSIBLE_ID: responsibleId, // Add the ID of the responsible person
+                                    TITLE: taskTitle, // Using the entered task title
+                                    RESPONSIBLE_ID: responsibleId, // Adding the responsible ID
                                     UF_CRM_TASK: [symbolCodeShort + '_' + itemId]
                                 }
                             },
@@ -566,7 +566,7 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA e
         );
     }
 
-    // Call the function to create the task
+    // Calling the function to create the task
     createTaskWithSmartProcess();
     ```
 
@@ -583,7 +583,7 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA e
 
     // Function to create a task linked to the SPA element
     function createTaskWithSmartProcess($smartProcessName, $itemName, $responsibleId, $taskTitle) {
-        // Retrieve entity type and SPA identifiers
+        // Retrieving entity type and SPA identifiers
         $result = CRest::call('crm.enum.ownertype', []);
 
         if (isset($result['error'])) {
@@ -591,7 +591,7 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA e
             return;
         }
 
-        // Find the required SPA
+        // Finding the required SPA
         $smartProcess = null;
         foreach ($result['result'] as $process) {
             if ($process['NAME'] === $smartProcessName) {
@@ -607,7 +607,7 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA e
 
         $symbolCodeShort = $smartProcess['SYMBOL_CODE_SHORT'];
 
-        // Search for the SPA element using a title filter
+        // Searching for the SPA element using a title filter
         $itemResult = CRest::call('crm.item.list', [
             'entityTypeId' => $smartProcess['ID'],
             'select' => ['id', 'title'],
@@ -626,11 +626,11 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA e
 
         $itemId = $itemResult['result']['items'][0]['id'];
 
-        // Create the task
+        // Creating the task
         $taskResult = CRest::call('tasks.task.add', [
             'fields' => [
-                'TITLE' => $taskTitle, // Use the entered task title
-                'RESPONSIBLE_ID' => $responsibleId, // Add the ID of the responsible person
+                'TITLE' => $taskTitle, // Using the entered task title
+                'RESPONSIBLE_ID' => $responsibleId, // Adding the responsible ID
                 'UF_CRM_TASK' => [$symbolCodeShort . '_' . $itemId]
             ]
         ]);
@@ -643,7 +643,7 @@ As a result, we obtained the value of the `ufCrmTask` field: `Tb1_29`. The SPA e
         }
     }
 
-    // Call the function to create the task
+    // Calling the function to create the task
     createTaskWithSmartProcess($smartProcessName, $itemName, $responsibleId, $taskTitle);
     ```
 

@@ -130,7 +130,7 @@ Some data may be missing here — we will fill it in shortly.
 || **responsibleId**
 [`user`](../../../data-types.md) | Responsible person. ||
 || **badgeCode**
-[`string`](../../../data-types.md) | Badge code on the kanban corresponding to the activity (see [crm.activity.badge.list](./badges/crm-activity-badge-list.md)). ||
+[`string`](../../../data-types.md) | Badge code on the kanban corresponding to the activity (see [crm.activity.badge.list](./configurable/badges/crm-activity-badge-list.md)). ||
 || **originatorId**
 [`string`](../../../data-types.md) | Identifier of the data source. ||
 || **originId**

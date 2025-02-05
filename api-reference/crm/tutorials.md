@@ -1,6 +1,6 @@
 # Typical Use-Cases for REST API in CRM and Tutorials
 
-How can you quickly link a form on your website to the CRM? How can you automatically create deals with product items? How can you pass information for Sales Intelligence into Bitrix when creating a lead from your source?
+How can you quickly link a form on your website to your CRM? How can you automatically create deals with product items? How can you pass information for Sales Intelligence into Bitrix when creating a lead from your source?
 
 In this section, you will find ready-made examples for solving typical tasks related to CRM.
 
@@ -18,11 +18,12 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [How to Add a Calendar Event for a Client](../../tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)
 - [How to Create a Deal (Lead, Invoice, Compred) with Products, Applying Discounts and Taxes](../../tutorials/crm/how-to-add-crm-objects/how-to-product-binding.md)
 - [How to Add a Product to the Catalog with Custom Field Values](../../tutorials/crm/how-to-add-crm-objects/how-to-add-product-with-custom-props.md)
-- [How to Create a New Printed Document Using the Document Generator](../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md)
+- [How to Create a New Printed Document Using the Document Generator](../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md) 
+- [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
 
 ## How to Replace an Outdated Phone Number for an Existing Client; How to Update Product Information and Other Examples
 
-- [How to Attach an Image to a Lead Field](../../tutorials/crm/how-to-edit-crm-objects/how-to-upload-images-to-lead.md)
+- [How to Attach an Image in a Lead Field](../../tutorials/crm/how-to-edit-crm-objects/how-to-upload-images-to-lead.md)
 - [How to Change Phone Numbers and E-mail Using a Contact Example](../../tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
 - [How to Change Dates in a Deal-Event](../../tutorials/crm/how-to-edit-crm-objects/how-to-change-date-in-activity.md)
 - [How to Change Values of Custom Fields for a Product](../../tutorials/crm/how-to-edit-crm-objects/how-to-change-product-custom-field-values.md)
@@ -31,7 +32,7 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [How to Create Your Own Company Editing Form](../../tutorials/crm/how-to-edit-crm-objects/how-to-generate-edit-form-for-company.md)
 - [How to Create Your Own Deal Editing Form](../../tutorials/crm/how-to-edit-crm-objects/how-to-generate-edit-form-for-deal.md)
 
-## How to Find Clients by Phone; How to Get All Deals for a Client and Other Examples of Working with Lists of Entities
+## How to Find Clients by Phone; How to Get All Deals for a Client and Other Examples of Working with Lists of Elements
 
 - [How to Properly Search for Clients in CRM by Phone and E-mail](../../tutorials/crm/how-to-get-lists/search-by-phone-and-email.md)
 - [How to Get a List of Deals Using a Contact Example](../../tutorials/crm/how-to-get-lists/get-activity-list-by-contact.md)
@@ -42,8 +43,8 @@ In this section, you will find ready-made examples for solving typical tasks rel
 ## How to Use Bitrix24 Sales Intelligence Tools
 
 - [How to Pass Information to Sales Intelligence](../../tutorials/crm/how-to-use-analitycs/info-to-analitics.md)
-- [How to Use Data from the Bitrix24 CRM Widget on Your Website to Create a New Lead](../../tutorials/crm/how-to-use-analitycs/use-analitics-for-add-lead.md)
-- [How to Use Data from the Bitrix24 CRM Widget on Your Website to Create a New Deal with a Contact](../../tutorials/crm/how-to-use-analitycs/use-analitics-for-add-contact.md)
+- [How to Use CRM Widget Data from Bitrix24 on Your Website to Create a New Lead](../../tutorials/crm/how-to-use-analitycs/use-analitics-for-add-lead.md)
+- [How to Use CRM Widget Data from Bitrix24 on Your Website to Create a New Deal with a Contact](../../tutorials/crm/how-to-use-analitycs/use-analitics-for-add-contact.md)
 
 ## How to Add Your Own Tab to the Deal Card; How to Add Your Own Buttons to the Lead Card and Other Examples of CRM Widgets
 

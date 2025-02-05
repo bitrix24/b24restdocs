@@ -1,8 +1,10 @@
 title: Chat Participants
 href: index.md
 items:
-  - name: Invite Participants to Chat
+  - name: Overview of Methods
     href: index.md
+  - name: Invite Participants to Chat
+    href: im-chat-user-add.md
   - name: Get Chat Participant Identifiers
     href: im-chat-user-list.md
   - name: Get List of Participants

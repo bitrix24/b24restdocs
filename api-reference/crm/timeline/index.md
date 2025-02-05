@@ -47,7 +47,7 @@ You can embed an application into activities and timeline entries. Thanks to the
 
 **Content blocks** can be added to timeline comments and deleted. Use the group of methods [crm.timeline.layout.blocks.*](./layout-blocks/index.md). 
 
-* [Available content blocks](./activities/structure/body.md#contentblockdto)
+* [Available content blocks](./activities/configurable/structure/body.md#contentblockdto)
 
 
 ## Overview of Methods and Events {#all-methods}

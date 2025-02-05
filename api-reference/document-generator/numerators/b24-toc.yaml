@@ -1,8 +1,10 @@
 title: Numbering Rules
 href: index.md
 items: 
-  - name: Add Numbering Rule
+  - name: Overview of Methods
     href: index.md
+  - name: Add Numbering Rule
+    href: document-generator-numerator-add.md
   - name: Update Numbering Rule
     href: document-generator-numerator-update.md
   - name: Get Numbering Rule by ID

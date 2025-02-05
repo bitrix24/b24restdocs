@@ -1,7 +1,7 @@
 title: Dialogs
 href: imopenlines-session-open.md
 items: 
-  - name: Get chat by symbolic code
+  - name: Get chat by character code
     href: imopenlines-session-open.md
   - name: Start a new dialog
     href: imopenlines-session-start.md
@@ -9,13 +9,13 @@ items:
     href: imopenlines-session-join.md
   - name: Get chat and dialog messages
     href: imopenlines-session-history-get.md
-  - name: Take the dialog from the current operator
+  - name: Take over the dialog from the current operator
     href: imopenlines-session-intercept.md
-  - name: Take or give the dialog by Id
+  - name: Pin or unpin the dialog from the operator
     href: imopenlines-session-mode-pin.md
-  - name: Take all available dialogs
+  - name: Pin all available dialogs to the operator
     href: imopenlines-session-mode-pin-all.md
-  - name: Give up all your dialogs
+  - name: Unpin all dialogs from the operator
     href: imopenlines-session-mode-unpin-all.md
   - name: Switch the dialog to "silent" mode
     href: imopenlines-session-mode-silent.md

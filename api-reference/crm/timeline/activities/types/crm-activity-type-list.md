@@ -1,56 +1,124 @@
-# Get a list of custom activity types crm.activity.type.list
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
+# Get a List of Custom Activity Types crm.activity.type.list
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: `any user`
 
-The method `crm.activity.type.list` retrieves a list of activity subtypes.
+The method `crm.activity.type.list` retrieves a list of custom activity types registered by the application.
 
-## Parameters
+## Method Parameters
 
 No parameters
 
-## Example
+## Code Examples
+
+{% include [Example Notes](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.activity.type.list
+    ```
 
 - JS
 
     ```js
     BX24.callMethod(
-        'crm.activity.type.list',
+        "crm.activity.type.list",
         {
-        },
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
+        }, result => {
+            if (result.error())
+                console.error(result.error());
             else
-            {
-                console.log(result.data());
-            }
+                console.dir(result.data());
         }
     );
     ```
 
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.activity.type.list',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": [
+        {
+            "TYPE_ID": "1C",
+            "NAME": "Activity 1C",
+            "IS_CONFIGURABLE_TYPE": "Y",
+            "ICON_ID": "0"
+        }
+    ],
+    "time": {
+        "start": 1724068028.331234,
+        "finish": 1724068028.726591,
+        "duration": 0.3953571319580078,
+        "processing": 0.13033390045166016,
+        "date_start": "2025-01-21T13:47:08+02:00",
+        "date_finish": "2025-01-21T13:47:08+02:00",
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../../../data-types.md) | Root element of the response containing an array of objects with information about custom activity types registered by the application ||
+|| **time**
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "NOT_FOUND",
+    "error_description": "Not found."
+}
+```
+
+{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
+|| `Access denied! Application context required` | The method works only in the context of applications ||
+|#
+
+{% include [system errors](../../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./crm-activity-type-add.md)
+- [{#T}](./crm-activity-type-delete.md)

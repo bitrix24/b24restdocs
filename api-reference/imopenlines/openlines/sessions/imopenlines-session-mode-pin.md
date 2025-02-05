@@ -1,4 +1,4 @@
-# Retrieve or Release a Dialogue by Id imopenlines.session.mode.pin
+# Pin or Unpin Dialog imopenlines.session.mode.pin
 
 {% note warning "We are still updating this page" %}
 
@@ -8,12 +8,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -23,24 +23,24 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method pins or unpins a dialogue to the current operator.
+This method pins or unpins a dialog to the current operator.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../../_includes/required.md) %}
 
-#|
-|| **Name**
+#| 
+|| **Name** 
 `Type` | **Example** | **Default** | **Description** ||
-|| **CHAT_ID***  
+|| **CHAT_ID*** 
 [`unknown`](../../../data-types.md) | `2020` | | Identifier of the chat ||
-|| **ACTIVATE**  
+|| **ACTIVATE** 
 [`unknown`](../../../data-types.md) | `Y` | N | Activation flag ||
 |#
 
 ## Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Example Notes](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -87,10 +87,10 @@ true
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || **ACCESS_DENIED** | The current user does not have access to the specified chat ||
 || **CHAT_TYPE** | The specified chat is not an open line ||
-|| **CHAT_ID** | An incorrect chat identifier was provided ||
+|| **CHAT_ID** | An incorrect chat identifier has been provided ||
 || **ERROR_USER_NOT_OPERATOR** | Attempt to pin/unpin the chat by a user who is not an operator ||
 |#

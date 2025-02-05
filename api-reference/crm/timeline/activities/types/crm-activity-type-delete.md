@@ -1,63 +1,131 @@
 # Delete Custom Activity Type crm.activity.type.delete
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: `any user`
 
-The method `crm.activity.type.delete` removes a subtype of activities.
+The method `crm.activity.type.delete` removes a custom activity type.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** | **Available since** ||
-|| **TYPE_ID**
-[`unknown`](../../../../data-types.md) | Identifier of the provider's activity type. | ||
+|| **Name**
+`type` | **Description** ||
+|| **TYPE_ID***
+[`string`](../../../../data-types.md) | String value of the activity type, for example `1C` ||
 |#
 
-## Example
+## Code Examples
+
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"TYPE_ID":"1C","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.activity.type.delete
+    ```
 
 - JS
 
     ```js
     BX24.callMethod(
-        'crm.activity.type.delete',
+        "crm.activity.type.delete",
         {
-            TYPE_ID: id
-        },
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
+            "TYPE_ID": '1C',
+        }, result => {
+            if (result.error())
+                console.error(result.error());
             else
-            {
-                alert("Success: " + result.data());
-            }
+                console.dir(result.data());
         }
     );
     ```
 
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.activity.type.delete',
+        [
+            'TYPE_ID' => '1C'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1724068028.331234,
+        "finish": 1724068028.726591,
+        "duration": 0.3953571319580078,
+        "processing": 0.13033390045166016,
+        "date_start": "2025-01-21T13:47:08+02:00",
+        "date_finish": "2025-01-21T13:47:08+02:00",
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../../data-types.md) | Root element of the response. Contains:
+- `true` — on success
+- `false` — on failure
+||
+|| **time**
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "NOT_FOUND",
+    "error_description": "Not found."
+}
+```
+
+{% include notitle [error handling](../../../../../_includes/error-info.md) %}
+
+### Possible Error Codes 
+
+#|
+|| **Code** | **Description** ||
+|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
+|| `Access denied! Application context required` | The method works only in the context of applications ||
+|| `INVALID_ARG_VALUE` | The custom activity type with the specified `TYPE_ID` does not exist ||
+|#
+
+{% include [system errors](../../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./crm-activity-type-list.md)
+- [{#T}](./crm-activity-type-add.md)

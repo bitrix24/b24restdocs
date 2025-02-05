@@ -1,11 +1,13 @@
-title: Linking Activities to CRM Entities
+title: Managing CRM Activity Relationships in the Timeline
 href: index.md
 items:
   - name: Overview of Methods
     href: index.md
-  - name: Add Activity Link
+  - name: Add CRM Activity Relationship with CRM Entity
     href: crm-activity-binding-add.md
-  - name: Get List of Activity Links
+  - name: Update CRM Activity Relationship with CRM Entity
+    href: crm-activity-binding-move.md
+  - name: Retrieve List of CRM Activity Relationships
     href: crm-activity-binding-list.md
-  - name: Delete Activity Link
+  - name: Delete CRM Activity Relationship with CRM Entity
     href: crm-activity-binding-delete.md

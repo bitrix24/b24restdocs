@@ -25,25 +25,27 @@ Possible values for `field` correspond to the fields of the [type](../../data-ty
 * `field_n`: the name of the field by which the smart processes will be filtered
 * `value_n`: the filter value
 
-Possible values for `field` correspond to the fields of the [type](../../data-types.md#type) object.
+Possible values for `field` correspond to the fields of the [type](../../data-types.md#type) object
 
-The filter can have unlimited nesting and number of conditions. By default, all conditions are combined using `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
+The filter can have unlimited nesting and number of conditions.
+By default, all conditions are combined using `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
 
-You can add a prefix to the `field_n` keys to clarify the filter's operation. Possible prefix values:
+You can add a prefix to the `field_n` keys to specify the filter operation.
+Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -56,7 +58,7 @@ You can add a prefix to the `field_n` keys to clarify the filter's operation. Po
 || **start**
 [`integer`][1] | This parameter is used for pagination control.
 
-The page size of the results is always static — 50 records.
+The page size of results is always static — 50 records.
 
 To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
 
@@ -65,11 +67,11 @@ The formula for calculating the `start` parameter value:
 `start = (N-1) * 50`, where `N` — the desired page number ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Examples Notes](../../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../../_includes/examples.md) %}
 
 1. Get a list of all smart processes where `title` contains either `5` or `0`. Sort the resulting list in descending order by `id`.
 
@@ -165,7 +167,7 @@ The formula for calculating the `start` parameter value:
    - Automation rules and triggers are enabled (`isAutomationEnabled`)
    - Business process designer is enabled (`isBizProcEnabled`)
    - Custom sales funnels and tunnels are enabled (`isCategoriesEnabled`)
-   - Custom stages and Kanban are enabled (`isClientEnabled`)
+   - Custom stages and kanban are enabled (`isClientEnabled`)
 
     {% list tabs %}
 
@@ -396,7 +398,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 #|
@@ -404,12 +406,12 @@ HTTP Status: **400**
 || `403` | `allowed_only_intranet_user` | Action allowed only for intranet users | Occurs if the user is not an intranet user ||
 || `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have administrative rights in CRM ||
 || `400` | `INVALID_ARG_VALUE` | Invalid filter: field `'field_n'` is not allowed in filter | Occurs when a non-existent field `field_n` is passed in the `filter` parameter ||
-|| `400` | `INVALID_ARG_VALUE` | Invalid filter: field `'field_n'` has invalid value | Occurs when an incorrect `value_n` for field `field_n` is passed in the `filter` parameter ||
+|| `400` | `INVALID_ARG_VALUE` | Invalid filter: field `'field_n'` has invalid value | Occurs when an incorrect `value_n` is passed for the field `field_n` in the `filter` parameter ||
 || `400` | `INVALID_ARG_VALUE` | Invalid order: field `'field_n'` is not allowed in order | Occurs when a non-existent field `field_n` is passed in the `order` parameter ||
-|| `400` | `INVALID_ARG_VALUE` | Invalid order: allowed sort directions are `ASC, DESC`. But got `'invalid_value'` for field `'field_n'` | Occurs when an incorrect `value_n` for field `field_n` is passed in the `order` parameter ||
+|| `400` | `INVALID_ARG_VALUE` | Invalid order: allowed sort directions are `ASC, DESC`. But got `'invalid_value'` for field `'field_n'` | Occurs when an incorrect `value_n` is passed for the field `field_n` in the `order` parameter ||
 |#
 
-{% include [System Errors](./../../../../_includes/system-errors.md) %}
+{% include [system errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
@@ -420,5 +422,6 @@ HTTP Status: **400**
 - [{#T}](./crm-type-get-by-entity-type-id.md)
 - [{#T}](./crm-type-delete.md)
 - [{#T}](./crm-type-fields.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
 
 [1]: ../../../data-types.md

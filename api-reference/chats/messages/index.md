@@ -10,13 +10,15 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
+- edits are needed to meet the writing standard
 
 {% endnote %}
 
 {% endif %}
 
-Messages can be formatted, with options for bold text, strikethrough, and quotes. The lesson includes user commands, appearance, and REST API for formatting chat messages.
+Messages can be formatted, with options for bold text, strikethrough, and quotes. The lesson provides user commands, appearance, and REST API for formatting chat messages.
+
+> Quick navigation: [all methods](#all-methods)
 
 ## Formatting Codes
 
@@ -24,12 +26,12 @@ If you send the following message in chat:
 
 ```markdown
 [B]bold[/B] text
-[U]underline[/U] text
-[I]oblique[/I] text
+[U]underlined[/U] text
+[I]italic[/I] text
 [S]strikethrough[/S] text
 ```
 
-It will be displayed like this:
+It will be displayed as follows:
 
 ![Formatting Result](./_images/bbcode1.png)
 
@@ -53,7 +55,7 @@ restCommand(
 
 ## Line Breaks
 
-Line breaks are created by adding the following characters to the text:
+Line breaks can be added to the text using the following characters:
 
 ```markdown
 [BR]
@@ -84,16 +86,15 @@ restCommand(
 You can quote text in two ways:
 
 ```markdown
->>first quote line
->>second quote line
-
+>>first line of the quote
+>>second line of the quote
 ------------------------------------------------------
-John Doe [08.04.2016 13:06:49]
-Hello everyone!
+Dmitry Vlasov08.04.2016 13:06:49
+Hello everyone
 ------------------------------------------------------
 ```
 
-The appearance of the quote will differ slightly - in the second case, the author and time of the quote will be indicated:
+The appearance of the quote will differ slightly - in the second case, the author and the time of the quote will be indicated:
 
 ![Quote Result](./_images/quote1.png)
 
@@ -104,12 +105,11 @@ restCommand(
     'imbot.message.add',
     Array(
         "DIALOG_ID" => $_REQUEST['data']['PARAMS']['DIALOG_ID'],
-        "MESSAGE" => ">>first quote line
-            >>second quote line
-
+        "MESSAGE" => ">>first line of the quote
+            >>second line of the quote
             ------------------------------------------------------
-            John Doe [08.04.2016 13:06:49]
-            Hello everyone!
+            Dmitry Vlasov08.04.2016 13:06:49
+            Hello everyone
             ------------------------------------------------------",
     ),
     $_REQUEST["auth"]
@@ -118,7 +118,7 @@ restCommand(
 
 ## Links
 
-Any link in the text will automatically become clickable. If the link address has "rich formatting," the link will automatically adopt it:
+Any link in the text will automatically become clickable. If the link address has "rich formatting," the link will automatically pick it up:
 
 ![Link Result](./_images/link1.png)
 
@@ -152,11 +152,11 @@ restCommand(
 
 {% endnote %}
 
-If you send a link to an image `https://files.shelenkov.com/bitrix/images/mantis.jpg` (the link must end with .png, .jpg, .gif), it will automatically be converted into an image:
+If you send a link to an image `https://files.shelenkov.com/bitrix/images/mantis.jpg` (the link must end with .png, .jpg, .gif), it will automatically convert to an image:
 
 ![Link Result](./_images/link2.png)
 
-You can create a link manually using the **URL** code - `[URL=http://bitrix24.com]Link to Bitrix24[/URL]`:
+You can create a link manually through the **URL** code - `[URL=http://bitrix24.com]Link to Bitrix24[/URL]`:
 
 ![Link Result](./_images/link3.png)
 
@@ -174,9 +174,9 @@ restCommand(
 
 Similarly to the **URL** code, there are special codes for links within the messenger.
 
-- `[USER=5]Alexandra[/USER]` - link to a user.
-- `[CALL=18012334455]call[/CALL]` - button to make a call via *Bitrix24*.
-- `[CHAT=12]link[/CHAT]` - link to a chat.
+- `[USER=5]Martha[/USER]` - link to a user.
+- `[CALL=84012334455]call[/CALL]` - button to make a call through *Bitrix24*.
+- `[CHAT=12]link to chat[/CHAT]` - link to a chat.
 
 ![Link Result](./_images/link4.png)
 
@@ -187,9 +187,9 @@ restCommand(
     'imbot.message.add',
     Array(
         "DIALOG_ID" => $_REQUEST['data']['PARAMS']['DIALOG_ID'],
-        "MESSAGE" => "[USER=5]Alexandra[/USER]
-            [CALL=18012334455]call[/CALL]
-            [CHAT=12]link[/CHAT]",
+        "MESSAGE" => "[USER=5]Martha[/USER]
+            [CALL=84012334455]call[/CALL]
+            [CHAT=12]link to chat[/CHAT]",
     ),
     $_REQUEST["auth"]
 );
@@ -202,7 +202,6 @@ To create indents in a message, use the tab character:
 [send=text]button name[/send] - instant sending of text to the bot.
 
 Indents using the REST API:
-
 ```php
 restCommand(
     'imbot.message.add',
@@ -221,10 +220,10 @@ restCommand(
 
 If you want the user to send some text by clicking on a link, use the **SEND** tag:
 ```markdown
-[send=text]button caption[/send] - sends text to the bot.
+[send=text]button name[/send] - instant sending of text to the bot.
 ```
 
-With this tag, you can prompt the user to send a command to your bot, but there is a more preferred method - [Keyboards](./keyboards.md)
+With this tag, you can prompt the user to send a command to your bot, but there is a more preferred way - [Keyboards](.)
 
 ![Link Result](./_images/command1.png)
 
@@ -235,7 +234,7 @@ restCommand(
     'imbot.message.add',
     Array(
         "DIALOG_ID" => $_REQUEST['data']['PARAMS']['DIALOG_ID'],
-        "MESSAGE" => "[send=text]button caption[/send] - sends text to the bot",
+        "MESSAGE" => "[send=text]button name[/send] - instant sending of text to the bot",
     ),
     $_REQUEST["auth"]
 );
@@ -244,17 +243,17 @@ restCommand(
 If you need the user to add something to the command, use the **PUT** code:
 
 ```markdown
-[put=/search]Enter search text[/put]
+[put=/search]Enter search string[/put]
 ```
 
-Sending a bot command using the REST API:
+Sending the bot command using the REST API:
 
 ```php
 restCommand(
     'imbot.message.add',
     Array(
         "DIALOG_ID" => $_REQUEST['data']['PARAMS']['DIALOG_ID'],
-        "MESSAGE" => "[put=/search]Enter search text[/put]",
+        "MESSAGE" => "Enter search string",
     ),
     $_REQUEST["auth"]
 );
@@ -262,15 +261,18 @@ restCommand(
 
 ## Icons
 
-To add your own icon to a message, send the code:
+Adding your own icon to a message is done by sending the code:
 
 ```markdown
 [icon=http://files.shelenkov.com/images/unicorn.png size=30 title=Unicorn]
 ```
 
-Additionally, the icon will be added to the Business Chat emoji set. You can remove the icon from the set by right-clicking on the icon in the set and selecting **Delete**.
+The icon will be displayed as follows.
 
-A required property is specifying the path to the image (without spaces).
+
+After this, the icon will also be added to the Business Chat emoji set. You can remove the icon from the set by right-clicking on the icon in the set and selecting **Delete**.
+
+A required property is to specify the path to the image (without spaces).
 
 Additional attributes are available:
 - **title** - title;
@@ -298,3 +300,19 @@ restCommand(
 For more details on how to use advanced format attachments within messages, read [here](./attachments/index.md).
 
 {% endnote %}
+
+## Overview of Methods {#all-methods}
+
+#| 
+|| **Method** | **Description** ||
+|| [im.dialog.messages.get](./im-dialog-messages-get.md) | Retrieves a list of recent messages ||
+|| [im.dialog.read](./im-dialog-read.md) | Marks messages as "read" ||
+|| [im.dialog.unread](./im-dialog-unread.md) | Marks messages as "unread" ||
+|| [im.dialog.writing](./im-dialog-writing.md) | Sends the "someone is typing..." indicator ||
+|| [im.message.add](./im-message-add.md) | Adds a message ||
+|| [im.message.command](./im-message-command.md) | Uses a bot command ||
+|| [im.message.delete](./im-message-delete.md) | Deletes a chatbot message ||
+|| [im.message.like](./im-message-like.md) | Changes the "like" status of a message ||
+|| [im.message.share](./im-message-share.md) | Creates an object based on a message ||
+|| [im.message.update](./im-message-update.md) | Modifies a sent message ||
+|#

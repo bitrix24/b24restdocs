@@ -2,15 +2,15 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
-- no response in case of error
+- no response in case of an error
 
 {% endnote %}
 
@@ -29,16 +29,16 @@ This method retrieves chats for a CRM object.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CRM_ENTITY_TYPE***  
+|| **CRM_ENTITY_TYPE*** 
 [`string`](../../../data-types.md) | Type of CRM object: 
 - `lead` — lead
 - `deal` — deal
 - `company` — company
 - `contact` — contact
  ||
-|| **CRM_ENTITY_ID***  
+|| **CRM_ENTITY*** 
 [`integer`](../../../data-types.md) | Identifier of the CRM object ||
-|| **ACTIVE_ONLY**  
+|| **ACTIVE_ONLY**
 [`boolean`](../../../data-types.md) | Return only active chats.
 
 Possible values:
@@ -139,14 +139,14 @@ HTTP status: **200**
 #|
 || **Name**
 `Type` | **Description** ||
-|| **result**  
-[`object`](../../data-types.md) | Array of objects. Each object contains a chat description ||
-|| **CHAT_ID**  
+|| **result**
+[`object`](../../data-types.md) | Array of objects. Each object contains chat description ||
+|| **CHAT_ID**
 [`string`](../../data-types.md) | Identifier of the chat ||
-|| **CONNECTOR_ID**  
+|| **CONNECTOR_ID**
 [`string`](../../data-types.md) | Identifier of the connector ||
-|| **CONNECTOR_TITLE**  
-[`string`](../../data-types.md) | Name of the connector ||
+|| **CONNECTOR_TITLE**
+[`string`](../../data-types.md) | Title of the connector ||
 |#
 
 ## Error Handling
