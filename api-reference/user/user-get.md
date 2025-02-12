@@ -1,14 +1,14 @@
-# Get User List by Filter user.get
+# Get a List of Users by Filter user.get
 
 > Scope: [`user`](../scopes/permissions.md), [`user_brief`](../scopes/permissions.md), [`user_basic`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except: bots, email users, users for Open Lines, and Replica users.
+The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except: bots, users for e-mail, users for Open Lines, and Replica users.
 
 {% note info "" %}
 
-The method does not return integrators. The list of fields for Bitrix24 users that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about user data access can be found in the [article](index.md).
+The method does not return integrators. The list of fields for Bitrix24 users that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
 
 {% endnote %}
 
@@ -26,7 +26,7 @@ The method does not return integrators. The list of fields for Bitrix24 users th
 - `ASC` — ascending
 - `DESC` — descending ||
 || **FILTER**
-[`string`](../data-types.md) | You can additionally specify any parameters from [user.add](./user-add.md) to filter by their values. In addition to the main fields, the following additional fields are available:
+[`string`](../data-types.md) | You can additionally specify any parameters from [user.add](./user-add.md) for filtering by their values. In addition to the main fields, additional ones are available:
 - `UF_DEPARTMENT` — department affiliation;
 - `UF_PHONE_INNER` — internal phone number;
 - `IS_ONLINE` — [Y\|N] allows you to show only authorized users or not.
@@ -35,9 +35,39 @@ The method does not return integrators. The list of fields for Bitrix24 users th
     - `employee` — employee, 
     - `extranet` — extranet user, 
     - `email` — email user
-- `ACTIVE` — when set to *true*, excludes terminated users from the request.
+- `ACTIVE` — when set to *true*, excludes dismissed users from the request.
   
-Filtering parameters can accept array values ||
+Filtering parameters can accept array values.
+An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
+
+- `>=` — greater than or equal to
+- `>` — greater than
+- `<=` — less than or equal to
+- `<` — less than
+- `@` — IN (an array is passed as a value)
+- `!@`— NOT IN (an array is passed as a value)
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+    - "mol%" — searching for values starting with "mol"
+    - "%mol" — searching for values ending with "mol"
+    - "%mol%" — searching for values where "mol" can be in any position
+
+- `%=` — LIKE (see description above)
+
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+    - "mol%" — searching for values not starting with "mol"
+    - "%mol" — searching for values not ending with "mol"
+    - "%mol%" — searching for values where the substring "mol" is not in any position
+
+- `!%=` — NOT LIKE (see description above)
+
+- `=` — equals, exact match (used by default)
+- `!=` - not equal
+- `!` — not equal
+
+ ||
 || **ADMIN_MODE**
 [`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to obtain data about any users ||
 || **start**
@@ -132,7 +162,202 @@ The formula for calculating the `start` parameter value:
 
 {% endlist %}
 
-## Response Handling
+### Filtering by Name Starting with "Iva"
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"filter":{"NAME":"Iva%"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/user.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"filter":{"NAME":"Iva%"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/user.get
+    ```
+
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        "user.get",
+        {
+            filter: {
+                "NAME": "Iva%"
+            }
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'user.get',
+        [
+            'filter' => [
+                'NAME' => 'Iva%'
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+### Filtering by Last Name Not Containing "ov"
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"filter":{"!%LAST_NAME":"ov"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/user.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"filter":{"!%LAST_NAME":"ov"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/user.get
+    ```
+
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        "user.get",
+        {
+            filter: {
+                "!%LAST_NAME": "ov"
+            }
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'user.get',
+        [
+            'filter' => [
+                '!%LAST_NAME' => 'ov'
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+### Filtering by Multiple Cities of Residence
+
+{% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"filter":{"@PERSONAL_CITY":["New York","Los Angeles"]}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/user.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"filter":{"@PERSONAL_CITY":["New York","Los Angeles"]},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/user.get
+    ```
+
+- JS
+  
+    ```javascript
+    BX24.callMethod(
+        "user.get",
+        {
+            filter: {
+                "@PERSONAL_CITY": ["New York", "Los Angeles"]
+            }
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'user.get',
+        [
+            'filter' => [
+                '@PERSONAL_CITY' => ['New York', 'Los Angeles']
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Processing the Response
 
 HTTP Status: **200**
 

@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -46,11 +46,11 @@ Without parameters.
 
 {% endlist %}
 
-{% include [Note about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 ## List of fields
 
-#|
+#| 
 || **Field** / **Type** | **Description** | Value ||
 || **ID**
 [`integer`](../data-types.md) | Task identifier | ||
@@ -70,7 +70,7 @@ Default - null ||
 0 - Low.
 Default - 1 ||
 || **STATUS**
-[`enum`](../data-types.md) | Status | 2 - Pending,
+[`enum`](../data-types.md) | Status | 2 - Waiting for execution,
 3 - In progress,
 4 - Awaiting control,
 5 - Completed,
@@ -99,7 +99,7 @@ Default - No. ||
 || **CREATED_DATE**
 [`datetime`](../data-types.md) | Creation date | ||
 || **RESPONSIBLE_ID^*^**
-[`integer`](../data-types.md) | Assignee | ||
+[`integer`](../data-types.md) | Executor | ||
 || **ACCOMPLICES**
 [`array`](../data-types.md) | Participants | ||
 || **AUDITORS**
@@ -109,7 +109,7 @@ Default - No. ||
 || **CHANGED_DATE**
 [`integer`](../data-types.md) | Modification date | ||
 || **STATUS_CHANGED_BY**
-[`integer`](../data-types.md) | Status changed by | ||
+[`integer`](../data-types.md) | Status modified by | ||
 || **CLOSED_BY**
 [`integer`](../data-types.md) | Closed by | ||
 || **CLOSED_DATE**
@@ -147,7 +147,7 @@ Default - No. ||
 N - No.
 Default - No. ||
 || **TIME_ESTIMATE**
-[`integer`](../data-types.md) | Estimated time | ||
+[`integer`](../data-types.md) | Time allocated for the task. | ||
 || **TIME_SPENT_IN_LOGS**
 [`integer`](../data-types.md) | Time spent from change history | ||
 || **MATCH_WORK_TIME**
@@ -196,7 +196,7 @@ C_XX - contact,
 D_XX - deal, 
 TXX_XX - SPA ||
 || **UF_TASK_WEBDAV_FILES**
-[`disk_file`](../data-types.md) | File (Drive) | ||
+[`disk_file`](../data-types.md) | File (Disk) | ||
 || **UF_MAIL_MESSAGE**
 [`mail_message`](../data-types.md) | E-mail | ||
 || **IS_MUTED**
@@ -215,4 +215,4 @@ Default - No. ||
 [`integer`](../data-types.md) | SERVICE_COMMENTS_COUNT | ||
 |#
 
-{% include [Note about parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}

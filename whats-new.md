@@ -2,6 +2,15 @@
 
 ## 2025
 
+### February 12, 2025
+
+- Updated information on universal deal methods in CRM [crm.activity.todo.*](./api-reference/crm/timeline/activities/todo/index.md)
+- Updated the main page of the [Business Process Templates](./api-reference/bizproc/template/index.md) section. Added introductory information and an overview of methods and connections.
+- Added a section on working with files with the article [How to Upload Files](./api-reference/files/how-to-upload-files.md)
+- Updated documentation on methods for working with [tasks](./api-reference/bizproc/bizproc-task/index.md) in the Business Processes and Automation Rules section.
+- Updated the main page of the [Units of Measurement](./api-reference/catalog/measure/index.md) section. Added introductory information and an overview of methods and connections.
+- Updated documentation on methods, structure, and badges for configurable deals in CRM [crm.activity.configurable.*](./api-reference/crm/timeline/activities/configurable/index.md)
+
 ### February 5, 2025
 
 - Updated documentation on methods for binding CRM activities in the timeline [crm.activity.binding.*](./api-reference/crm/timeline/activities/binding/index.md)

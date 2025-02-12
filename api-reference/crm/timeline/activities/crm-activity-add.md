@@ -26,7 +26,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note warning %}
 
-Since CRM version 22.1350.0, the method is deprecated. Use the universal activity addition method [{#T}](./crm-activity-todo-add.md).
+Since CRM version 22.1350.0, the method is deprecated. Use the universal activity addition method [{#T}](./todo/crm-activity-todo-add.md).
 
 {% endnote %}
 

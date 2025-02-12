@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-Write an article that outlines which fields can be modified and which can only be read. Mention that system fields can only be modified with admin rights and explain why. Additionally, specify how the connection with CRM is implemented.
+Write an article that describes which fields can be modified and which can only be read. Mention that system fields can only be modified with admin rights and explain why. Additionally, specify how the connection with the CRM is implemented.
 
 {% endnote %}
 
@@ -18,7 +18,7 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note info "" %}
 
-The recording and modification of fields are carried out according to business logic and the user's existing permissions. That is, it depends on the user's role, group permission settings, hierarchy, certain flags in the task (for example, `ALLOW_CHANGE_DEADLINE`), and the task's status.
+The recording and modification of fields are carried out according to business logic and the user's existing rights. That is, it depends on the user's role, group permission settings, hierarchy, certain flags in the task (for example, `ALLOW_CHANGE_DEADLINE`), and the task status.
 
 {% endnote %}
 
@@ -49,7 +49,7 @@ Default - 1 ||
 6 - Deferred.
 Default - 2 ||
 || **MULTITASK**
-[`enum`](../data-types.md) | Multiple task. | Y - Yes,
+[`enum`](../data-types.md) | Multitask. | Y - Yes,
 N - No.
 Default - No. ||
 || **NOT_VIEWED**
@@ -71,7 +71,7 @@ Default - No. ||
 || **CREATED_DATE**
 [`datetime`](../data-types.md) | Creation date. | ||
 || **RESPONSIBLE_ID^*^**
-[`integer`](../data-types.md) | Assignee. | ||
+[`integer`](../data-types.md) | Executor. | ||
 || **ACCOMPLICES**
 [`array`](../data-types.md) | Participants. | ||
 || **AUDITORS**
@@ -85,7 +85,7 @@ Default - No. ||
 || **CLOSED_BY**
 [`integer`](../data-types.md) | Closed by. | ||
 || **CLOSED_DATE**
-[`datetime`](../data-types.md) | Closing date. | ||
+[`datetime`](../data-types.md) | Closure date. | ||
 || **DATE_START**
 [`datetime`](../data-types.md) | Start date. | null ||
 || **DEADLINE**
@@ -119,7 +119,7 @@ Default - No. ||
 N - No.
 Default - No. ||
 || **TIME_ESTIMATE**
-[`integer`](../data-types.md) | Estimated time. | ||
+[`integer`](../data-types.md) | Time allocated for the task. | ||
 || **TIME_SPENT_IN_LOGS**
 [`integer`](../data-types.md) | Time spent from change history. | ||
 || **MATCH_WORK_TIME**
@@ -167,7 +167,7 @@ L_XX - lead,
 C_XX - contact,
 D_XX - deal | ||
 || **UF_TASK_WEBDAV_FILES**
-[`disk_file`](../data-types.md) | File (Drive). | ||
+[`disk_file`](../data-types.md) | File (Disk). | ||
 || **UF_MAIL_MESSAGE**
 [`mail_message`](../data-types.md) | E-mail. | ||
 || **IS_MUTED**

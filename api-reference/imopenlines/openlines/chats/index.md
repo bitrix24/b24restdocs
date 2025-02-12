@@ -1,8 +1,8 @@
-# About Open Channel Chats
+# About Open Line Chats
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -15,3 +15,11 @@ Some data may be missing here — we will fill it in shortly.
 {% endnote %}
 
 {% endif %}
+
+#| 
+|| **Method** | **Description** ||
+|| [imopenlines.crm.chat.getLastId](./imopenlines-crm-chat-get-last-id.md) | Retrieves the Id of the last chat ||
+|| [imopenlines.crm.chat.get](./imopenlines-crm-chat-get.md) | Retrieves a chat for a CRM object ||
+|| [imopenlines.crm.chat.user.add](./imopenlines-crm-chat-user-add.md) | Adds a user to an existing chat ||
+|| [imopenlines.crm.chat.user.delete](./imopenlines-crm-chat-user-delete.md) | Removes a user from the chat ||
+|#

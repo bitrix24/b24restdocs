@@ -1,39 +1,41 @@
-# Main Content Area
+# Main Content Area of Configurable Deal
 
-The main content area of the timeline entry `BodyDto`.
+`BodyDto` is the main content area of the [timeline entry](../index.md).
 
 ## Parameters of the `BodyDto` Object
 
-{% include [Parameters Note](../../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
 || **logo^*^**
-[`LogoDto`](#object) | An object that describes the logo of the timeline entry ||
+[`LogoDto`](#object) | An object describing the logo of the timeline entry ||
 || **blocks**
-[`ContentBlockDto`](./content-block.md) | An associative array of objects that describe content blocks 
+[`ContentBlockDto`](./content-block.md) | An associative array of objects describing content blocks 
+
 {% note warning %}
 
 The array must contain at least one element and no more than 20 elements.
 
 {% endnote %}
+
 ||
 |#
 
 ## `LogoDto` Object
 
-The logo of the timeline entry.
+Logo of the timeline entry.
 
 ### Parameters of the `LogoDto` Object
 
-{% include [Parameters Note](../../../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
 || **code^*^**
-[`string`](../../../../data-types.md) | The logo code, for example `call`. A list of available codes can be obtained using the method [crm.timeline.logo.list](../../../logmessage/logo/crm-timeline-logo-list.md) ||
+[`string`](../../../../data-types.md) | Logo code, for example `call`. A list of available codes can be obtained using the [crm.timeline.logo.list](../../../logmessage/logo/crm-timeline-logo-list.md) method ||
 || **action**
-[`ActionDto`](./action.md) | The action to be taken when the logo is clicked ||
+[`ActionDto`](./action.md) | Action to be taken when the logo is clicked ||
 |#
 
 ## Example Object (without content blocks)

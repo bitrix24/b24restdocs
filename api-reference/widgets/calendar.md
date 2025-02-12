@@ -49,21 +49,22 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 #|
 || **Parameter** | **Description** ||
 || **viewRangeFrom*** 
-[`date`](../data-types.md) | Start of the date range currently displayed in the calendar.
+[`date`](../data-types.md) | The start of the date range currently displayed in the calendar.
 
-Can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method.
+This can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method.
 
 ||
 || **viewRangeTo*** 
-[`date`](../data-types.md) | End of the date range currently displayed in the calendar.
+[`date`](../data-types.md) | The end of the date range currently displayed in the calendar.
 
-Can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event//calendar-event-get.md) method.
+This can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event//calendar-event-get.md) method.
 
 ||
 |#
 
 ## Continue your exploration
 
+- [{#T}](../calendar/calendar-grid-veiw.md)
 - [{#T}](./placement-bind.md)
 - [{#T}](./ui-interaction/index.md)
 - [{#T}](./ui-interaction/crm-card.md)

@@ -1,0 +1,17 @@
+title: Universal Activity
+href: index.md
+items:
+  - name: Overview of methods
+    href: index.md
+  - name: Add Universal CRM Activity
+    href: crm-activity-todo-add.md
+  - name: Update Universal Deal
+    href: crm-activity-todo-update.md
+  - name: Update Color of Universal CRM Activity
+    href: crm-activity-todo-update-color.md   
+  - name: Update Deadline for Universal CRM Activity
+    href: crm-activity-todo-update-deadline.md
+  - name: Update Description of Universal Deal
+    href: crm-activity-todo-update-description.md
+  - name: Update Responsible User for Universal CRM Activity
+    href: crm-activity-todo-update-responsible-user.md

@@ -1,4 +1,6 @@
-# Examples
+# Examples of Deal Configurations
+
+Code examples for configuring [your deal types](../../types/index.md) and how they will look.
 
 ## Text
 
@@ -60,7 +62,7 @@ Long text hidden under "Show more".
 
 ## Fields
 
-Fields name-value, changing the deadline.
+Field name-value pairs, changing the deadline.
 
 ```json
 {
@@ -119,7 +121,7 @@ Fields name-value, changing the deadline.
             "description": {
                 "type": "withTitle",
                 "properties": {
-                    "title": "Additional information in large quantity",
+                    "title": "Additional Information in Large Volume",
                     "inline": false,
                     "block": {
                         "type": "text",

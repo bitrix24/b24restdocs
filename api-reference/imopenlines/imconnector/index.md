@@ -34,7 +34,9 @@ Open line connectors are a tool for integrating external messengers and social n
 
 4. Check the connector status using the method [imconnector.status](imconnector-status.md) and ensure it is ready for operation.
 
-## How to Work with Sent Messages
+## How to Work with Messages
+
+You can send a message using the method [imconnector.send.messages](./imconnector-send-messages.md).
 
 Sent messages can be modified using the method [imconnector.update.messages](imconnector-update-messages.md). This method changes the parameters of the user, message, and chat.
 
@@ -42,7 +44,7 @@ Messages from open lines can be deleted using the method [imconnector.delete.mes
 
 ## How to Add a Widget to the Contact Center
 
-To add a connector widget to the Contact Center, use the widget code [CONTACT_CENTER](../../widgets/contact-center.md). This code must be specified in the `PLACEMENT` parameter of the method [placement.bind](../../widgets/placement-bind.md).
+To add the connector widget to the Contact Center, use the widget code [CONTACT_CENTER](../../widgets/contact-center.md). This code must be specified in the `PLACEMENT` parameter of the method [placement.bind](../../widgets/placement-bind.md).
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -52,7 +54,7 @@ To add a connector widget to the Contact Center, use the widget code [CONTACT_CE
 
 {% note info "" %}
 
-The REST methods `imconnector.*` in the current version do not support operation through webhooks.
+The methods `imconnector.*` in the current version do not support operation via webhooks.
 
 {% endnote %}
 
@@ -65,12 +67,12 @@ The REST methods `imconnector.*` in the current version do not support operation
     #| 
     || **Method** | **Description** ||
     || [imconnector.register](imconnector-register.md) | Register a connector ||
-    || [imconnector.activate](imconnector-activate.md) | Activate the connector ||
-    || [imconnector.deactivate](imconnector-deactivate.md) | Deactivate the connector ||
+    || [imconnector.activate](imconnector-activate.md) | Activate a connector ||
+    || [imconnector.deactivate](imconnector-deactivate.md) | Deactivate a connector ||
     || [imconnector.status](imconnector-status.md) | Get the connector status ||
     || [imconnector.connector.data.set](imconnector-connector-data-set.md) | Change connector settings ||
     || [imconnector.list](imconnector-list.md) | Get a list of connectors ||
-    || [imconnector.unregister](imconnector-unregister.md) | Unregister the connector ||
+    || [imconnector.unregister](imconnector-unregister.md) | Unregister a connector ||
     |#
 
 - Events

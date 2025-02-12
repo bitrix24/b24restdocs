@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
 The method `crm.activity.configurable.add` adds a configurable activity to the timeline.
 
@@ -22,9 +22,9 @@ The method can only be called in the context of an [application](https://helpdes
 || **ownerTypeId***
 [`integer`](../../../../data-types.md) | Integer identifier of the [CRM entity type](../../../data-types.md#object_type) in which the activity is created, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM element in which the activity is created, for example `1` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity in which the activity is created, for example `1` ||
 || **fields***
-[`array`](../../../../data-types.md) | Associative array of values for [activity fields](#parametr-fields) in the following structure:
+[`array`](../../../../data-types.md) | Associative array of values for the [activity fields](#parametr-fields) in the following structure:
 ```json
 fields:
 {
@@ -83,7 +83,7 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ownerTypeId":1,"ownerId":999,"fields":{"typeId":"CONFIGURABLE","completed":true,"deadline":"**put_current_date_time_here**","pingOffsets":[60,300],"isIncomingChannel":"N","responsibleId":1,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Doe","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About the Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"ownerTypeId":1,"ownerId":999,"fields":{"typeId":"CONFIGURABLE","completed":true,"deadline":"**put_current_date_time_here**","pingOffsets":[60,300],"isIncomingChannel":"N","responsibleId":1,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Doe","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.configurable.add
     ```
 
@@ -147,7 +147,7 @@ fields:
                 "footer": {
                     "buttons": {
                         "startCall": {
-                            "title": "About the Client",
+                            "title": "About Client",
                             "action": {
                                 "type": "openRestApp",
                                 "actionParams": {
@@ -228,7 +228,7 @@ fields:
                 'footer' => [
                     'buttons' => [
                         'startCall' => [
-                            'title' => 'About the Client',
+                            'title' => 'About Client',
                             'action' => [
                                 'type' => 'openRestApp',
                                 'actionParams' => [
@@ -309,7 +309,7 @@ HTTP Status: **400**
 || `100` | Required fields are not filled ||
 || `ERROR_WRONG_CONTEXT` | The method can only be called in the context of an application ||
 || `ERROR_WRONG_APPLICATION` | The activity can only be updated by the application that created it ||
-|| `WRONG_FIELD_VALUE` | Invalid field value ||
+|| `WRONG_FIELD_VALUE` | Incorrect field value ||
 || `INCOMING_ACTIVITY_CAN_NOT_BE_WITH_DEADLINE` | Incoming activity cannot have a deadline ||
 || `ERROR_EMPTY_LAYOUT` | The layout field must be filled ||
 |#

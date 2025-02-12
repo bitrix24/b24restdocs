@@ -1,23 +1,23 @@
 # Set of Additional Content Blocks
 
-The structure `RestAppLayoutDto` describes a set of additional content blocks.
+The structure `RestAppLayoutDto` describes a set of additional content blocks for the [timeline entry](../index.md).
 
 ## Parameters of the `RestAppLayoutDto` Object
 
-{% include [Note on Required Parameters](../../../../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **blocks***
-[`ContentBlockDto[]`](./content-block.md) | Array of additional content blocks ||
+[`ContentBlockDto`](./content-block.md) | Array of additional content blocks ||
 |#
 
-There are also quantitative restrictions on `blocks`:
+There are quantitative restrictions on `blocks`:
 - Minimum quantity — `1`
 - Maximum quantity — `20`
 
-## Example of the Object
+## Example Object
 
 ```js
 {
@@ -110,7 +110,7 @@ There are also quantitative restrictions on `blocks`:
         "block_7": {
             "type": "withTitle",
             "properties": {
-                "title": "Title with Deadline",
+                "title": "Title with deadline",
                 "block": {
                     "type": "deadline",
                     "properties": {

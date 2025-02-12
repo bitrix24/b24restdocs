@@ -9,18 +9,8 @@ items:
     href: crm-activity-fields.md
   - name: Add system activity
     href: crm-activity-add.md
-  - name: Add universal activity
-    href: crm-activity-todo-add.md
   - name: Update system activity
     href: crm-activity-update.md
-  - name: Configurable Deal
-    include:
-      path: configurable/b24-toc.yaml
-      mode: link
-  - name: Update universal activity
-    include:
-      path: todo-update/b24-toc.yaml
-      mode: link
   - name: Get list of activities
     href: crm-activity-list.md
   - name: Get activity by ID
@@ -29,6 +19,14 @@ items:
     href: crm-activity-communication-fields.md
   - name: Delete activity
     href: crm-activity-delete.md 
+  - name: Configurable Deal
+    include:
+      path: configurable/b24-toc.yaml
+      mode: link
+  - name: Universal Activity
+    include:
+      path: todo/b24-toc.yaml
+      mode: link 
   - name: Binding activities to CRM objects
     include:
       path: binding/b24-toc.yaml

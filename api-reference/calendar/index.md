@@ -6,7 +6,7 @@ Calendar events are scheduled deals or meetings. A group of methods [calendar.ev
 
 > Quick navigation: [all methods and events](#all-methods) 
 > 
-> User documentation: [FAQ: Calendar](https://helpdesk.bitrix24.com/open/15144548/)
+> User documentation: [Bitrix24 calendar](https://helpdesk.bitrix24.com/section/47483/)
 
 ## Calendar Connection with Other Objects
 
@@ -22,7 +22,7 @@ Calendar events are scheduled deals or meetings. A group of methods [calendar.ev
 
 ## Calendar Settings
 
-The main calendar settings specify the company's working hours, weekends, and holidays. The settings can be retrieved using the method [calendar.settings.get](./calendar-settings-get.md).
+In the main calendar settings, the company's working hours, weekends, and holidays are specified. The settings can be retrieved using the method [calendar.settings.get](./calendar-settings-get.md).
 
 In user settings, an employee can specify personal preferences, such as time zone or week number display. User settings can be retrieved using the method [calendar.user.settings.get](./calendar-user-settings-get.md) and set using the method [calendar.user.settings.set](./calendar-user-settings-set.md).
 
@@ -42,17 +42,18 @@ The group of methods [calendar.resource.*](./resource/index.md) manages resource
 
 {% note tip "User Documentation" %}
 
-- [How to use resource booking option](https://helpdesk.bitrix24.com/open/15375256/)
+- [Configuring Resource Booking in CRM](https://helpdesk.bitrix24.com/open/15375256/)
 
 {% endnote %}
 
 ## **Widgets**
 
-An application can be embedded into the calendar. There is a space for embedding in the calendar view types called `CALENDAR_GRIDVIEW`, where you can add [your item](../widgets/calendar.md).
+An application can be embedded into the calendar. In the calendar view types list, there is a place for embedding `CALENDAR_GRIDVIEW`, where you can add [your item](../widgets/calendar.md).
 
 {% note tip "Typical Use-Cases and Scenarios" %}
 
-- [{#T}](../widgets/index.md)
+-  [{#T}](../widgets/index.md)
+-  [{#T}](./calendar-grid-veiw.md)
 
 {% endnote %}
 
@@ -71,9 +72,9 @@ An application can be embedded into the calendar. There is a space for embedding
     #| 
     || **Method** | **Description** ||
     || [calendar.section.add](./calendar-section-add.md) | Add a new calendar ||
-    || [calendar.section.update](./calendar-section-update.md) | Update the calendar ||
+    || [calendar.section.update](./calendar-section-update.md) | Update a calendar ||
     || [calendar.section.get](./calendar-section-get.md) | Get a list of calendars ||
-    || [calendar.section.delete](./calendar-section-delete.md) | Delete the calendar ||
+    || [calendar.section.delete](./calendar-section-delete.md) | Delete a calendar ||
     || [calendar.settings.get](./calendar-settings-get.md) | Get main calendar settings ||
     || [calendar.user.settings.get](./calendar-user-settings-get.md) | Get user calendar settings ||
     || [calendar.user.settings.set](./calendar-user-settings-set.md) | Set user calendar settings ||
@@ -106,6 +107,7 @@ An application can be embedded into the calendar. There is a space for embedding
     || [calendar.event.delete](./calendar-event/calendar-event-delete.md) | Delete an event ||
     || [calendar.meeting.status.get](./calendar-event/calendar-meeting-status-get.md) | Get the current user's participation status in an event ||
     || [calendar.meeting.status.set](./calendar-event/calendar-meeting-status-set.md) | Set the participation status in an event for the current user ||
+    || [calendar.accessibility.get](./calendar-event/calendar-accessibility-get.md) | Get the availability of users from the list ||
     |#
 
 - Events

@@ -14,7 +14,7 @@ The `method.get` method returns two parameters `isExisting` and `isAvailable`, w
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../data-types.md) | The name of the method to check ||
+[`string`](../../data-types.md) | The name of the method to check in lowercase, for example `user.get` ||
 |#
 
 > If the method is called without parameters, it will return a list of all methods available to the current application.
@@ -27,7 +27,7 @@ The `method.get` method returns two parameters `isExisting` and `isAvailable`, w
 
 - cURL (Webhook)
 
-    ```curl
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
@@ -39,7 +39,7 @@ The `method.get` method returns two parameters `isExisting` and `isAvailable`, w
 
 - cURL (OAuth)
 
-    ```curl
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \

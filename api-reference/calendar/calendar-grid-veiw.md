@@ -1,42 +1,32 @@
-# Embed in CALENDAR_GRIDVIEW
+# How to Embed an Application in the CALENDAR_GRIDVIEW
 
-{% note warning "We are still updating this page" %}
+You can embed an application in the calendar. At the top of the calendar, in the view types list, there is a place for embedding `CALENDAR_GRIDVIEW`, where you can add your item.
 
-Some data may be missing — we will complete it soon.
+For more details about the widget, see the article [Widget in the Calendar](../widgets/calendar.md).
 
-{% endnote %}
+## How to Bind an Application to the Calendar
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- edits needed to meet writing standards
-
-{% endnote %}
-
-{% endif %}
-
-The **CALENDAR_GRIDVIEW** placement allows you to embed into the calendar view (at the top - where day/week/month/list options are located).
-
-## Example
-
-How to bind the application to the calendar embed:
+Use the method [placement.bind](../widgets/placement-bind.md) to link the application to the calendar. The parameters `PLACEMENT`, `HANDLER`, and `TITLE` determine where and how your application will be displayed.
 
 {% list tabs %}
 
 - JS
 
-    ```javascript
-    BX24.callMethod('placement.bind', {
-        PLACEMENT:'CALENDAR_GRIDVIEW',
-        HANDLER: 'http://svd.com/svdapp.php',
-        TITLE: 'Custom tab'
-    }, (result) => {console.log(result)});
+    ```js
+    BX24.callMethod(
+        'placement.bind',
+        {
+            PLACEMENT:'CALENDAR_GRIDVIEW',
+            HANDLER: 'http://your_site/handler.php',
+            TITLE: 'Custom tab'
+        },
+        (result) => {console.log(result)}
+    );
     ```
 
 {% endlist %}
 
-If you call the following in the application:
+If you output all the parameters that are passed in the request to the application:
 
 {% list tabs %}
 
@@ -50,7 +40,7 @@ If you call the following in the application:
 
 {% endlist %}
 
-you will see that certain parameters are received. In particular:
+You can see that certain parameters are passed, such as the date range displayed in the calendar:
 
 {% list tabs %}
 
@@ -65,23 +55,26 @@ you will see that certain parameters are received. In particular:
 
 {% endlist %}
 
-Additionally, there is a specific interface when working with the embed: methods and events.
+These parameters can be used to customize the display of your application.
 
-## Methods (JS methods)
+## JS Methods
 
-- **getEvents** – retrieve events.
+### Get Events
+
+The `getEvents` method retrieves calendar events.
 
 {% list tabs %}
 
 - JS
 
-    ```javascript
+    ```js
     var dateFrom = new Date();
     var dateTo = new Date(dateFrom.getTime() + 86400 * 30 * 1000); // Multiply by 1000 to convert seconds to milliseconds
     dateFrom.setHours(0, 0, 0, 0);
     dateTo.setHours(0, 0, 0, 0);
 
-    BX24.placement.call('getEvents',
+    BX24.placement.call(
+        'getEvents',
         {
             dateFrom: dateFrom,
             dateTo: dateTo
@@ -95,17 +88,20 @@ Additionally, there is a specific interface when working with the embed: methods
 
 {% endlist %}
 
-- **viewEvent** – view an event (open the view card).
+### Open Card and View Event
+
+The `viewEvent` method opens a card to view the event.
 
 {% list tabs %}
 
 - JS
 
-    ```javascript
-    BX24.placement.call('viewEvent',
+    ```js
+    BX24.placement.call(
+        'viewEvent',
         {
-            id: "1431170", // event id
-            dateFrom: "11.07.2018" // event date (not mandatory, but important for recurring events)
+            id: "1431170", // event identifier
+            dateFrom: "11.07.2018" // event date. Not required, but important for recurring events
         },
         function(){}
     );
@@ -113,38 +109,54 @@ Additionally, there is a specific interface when working with the embed: methods
 
 {% endlist %}
 
-- **addEvent** – add a new event (open the card).
+### Add a New Event
+
+The `addEvent` method opens a card to add a new event.
 
 {% list tabs %}
 
 - JS
 
-    ```javascript
-    BX24.placement.call('addEvent', function(){});
+    ```js
+    BX24.placement.call(
+        'addEvent',
+        function(){}
+    );
     ```
 
 {% endlist %}
 
-- **editEvent** – edit an event (open the card).
+### Update Event
+
+The `editEvent` method opens a card to edit the event.
 
 {% list tabs %}
 
 - JS
 
-    ```javascript
-    BX24.placement.call('editEvent', {uid: "1431171|19.07.2018"}, function(){});
+    ```js
+    BX24.placement.call(
+        'editEvent',
+        {
+            uid: "1431171|19.07.2018"
+        },
+        function(){}
+    );
     ```
 
 {% endlist %}
 
-- **deleteEvent** – delete an event.
+### Delete Event
+
+The `deleteEvent` method deletes the event.
 
 {% list tabs %}
 
 - JS
 
-    ```javascript
-    BX24.placement.call('deleteEvent',
+    ```js
+    BX24.placement.call(
+        'deleteEvent',
         {
             id: "1431169"
         },
@@ -154,18 +166,22 @@ Additionally, there is a specific interface when working with the embed: methods
 
 {% endlist %}
 
-## Events that can be tracked in the placement
+## Events
 
-#| 
+Events that can be tracked in the embedding location:
+
+#|
 || **Event** | **Description** ||
-|| Calendar.customView:refreshEntries | Refreshing events. ||
-|| Calendar.customView:decreaseViewRangeDate | Clicking the back arrow, i.e., rewinding the calendar to previous dates. ||
-|| Calendar.customView:increaseViewRangeDate | Clicking the forward arrow, i.e., rewinding the calendar to upcoming dates. ||
-|| Calendar.customView:adjustToDate | Jumping to a specific date. ||
+|| `Calendar.customView:refreshEntries` | Refreshing events ||
+|| `Calendar.customView:decreaseViewRangeDate` | Clicking the back arrow, i.e., opening the calendar for previous dates ||
+|| `Calendar.customView:increaseViewRangeDate` | Clicking the forward arrow, i.e., opening the calendar for upcoming dates ||
+|| `Calendar.customView:adjustToDate` | Navigating to a specific date ||
 |#
 
-## See also
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](../widgets/index.md)
-- [{#T}](../../local-integrations/local-apps.md)
+- [{#T}](../widgets/calendar.md)
 - [{#T}](../widgets/user-field/index.md)
+- [{#T}](../../local-integrations/local-apps.md)

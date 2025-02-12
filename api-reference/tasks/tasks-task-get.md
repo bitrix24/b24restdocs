@@ -7,8 +7,8 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - **curl, js, php)
-- no error response is provided
-- no success response is provided
+- no error response
+- no success response
 
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -76,13 +76,13 @@ The field can take the following values:
 - **TASK_CONTROL** — take into work; 
 - **ADD_IN_REPORT** — add to report; 
 - **FORKED_BY_TEMPLATE_ID** — created automatically from a template; 
-- **TIME_ESTIMATE** — estimated time; 
+- **TIME_ESTIMATE** — time allocated for the task; 
 - **TIME_SPENT_IN_LOGS** — time spent from change history; 
 - **MATCH_WORK_TIME** — skip weekends; 
 - **FORUM_TOPIC_ID** — forum topic identifier; 
 - **FORUM_ID** — forum identifier; 
 - **SITE_ID** — site identifier; 
-- **SUBORDINATE** — subordinate's task; 
+- **SUBORDINATE** — subordinate task; 
 - **FAVORITE** — Favorites; 
 - **VIEWED_DATE** — date of last view; 
 - **SORTING** — sorting index; 
@@ -100,7 +100,7 @@ The field can take the following values:
 
 By default, all non-computed fields of the main query table will be returned.
 
-To obtain custom fields and the field binding to CRM entities (`UF_CRM_TASK`), they must be specified directly in `SELECT`. The list of fields can be clarified by sending a request [tasks.task.getFields](./tasks-task-get-fields.md). ||
+To obtain custom fields and the binding field to CRM entities (`UF_CRM_TASK`), they must be specified directly in `SELECT`. The list of fields can be clarified by sending a request [tasks.task.getFields](./tasks-task-get-fields.md). ||
 |#
 
 ## Examples
@@ -135,7 +135,7 @@ To get the tags of a specific task:
 
 {% endlist %}
 
-Syntax for retrieving all fields:
+Syntax for selecting all fields:
 
 {% list tabs %}
 

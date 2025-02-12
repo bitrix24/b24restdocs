@@ -28,8 +28,8 @@ Some data may be missing — we will complete it shortly.
 {% note warning %}
 
 Since CRM version 22.1350.0, this method is deprecated. Use the universal activity methods:
-- [{#T}](./todo-update/crm-activity-todo-update-deadline.md)
-- [{#T}](./todo-update/crm-activity-todo-update-description.md).
+- [{#T}](./todo/crm-activity-todo-update-deadline.md)
+- [{#T}](./todo/crm-activity-todo-update-description.md).
 
 {% endnote %}
 

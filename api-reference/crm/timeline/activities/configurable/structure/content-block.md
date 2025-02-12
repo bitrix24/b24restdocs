@@ -1,8 +1,8 @@
 # Content Block of Configurable Deal
 
-Content blocks `ContentBlockDto` are the main content area of the timeline record. By combining these blocks, various interfaces can be flexibly assembled.
+Content blocks `ContentBlockDto` are the foundation of the content area of the timeline entry. By combining these blocks, various interfaces can be flexibly assembled.
 
-This data structure is used both when creating configurable deals and when enriching timeline records with content blocks (see REST methods for [deals](../../layout-blocks/index.md) | [timeline records](../../../layout-blocks/index.md))
+This structure is used when creating [configurable deals](../../layout-blocks/index.md) and when enriching timeline entries with [content blocks](../../../layout-blocks/index.md).
 
 ## General Structure of the Block:
 
@@ -15,7 +15,7 @@ This data structure is used both when creating configurable deals and when enric
 }
 ```
 
-## There are several different types of content blocks:
+## Types of Content Blocks:
 
 ### Text
 
@@ -28,13 +28,13 @@ The simplest block `type = text`, which displays some formatted text.
 #|
 || **Field** | **Description** ||
 || **value^*^**
-[`textWithTranslation`](./field-types.md) | The text that will be displayed ||
+[`textWithTranslation`](./field-types.md) | Text to be displayed ||
 || **multiline**
-[`boolean`](../../../../data-types.md) | Should line breaks be processed? If true, `\n` characters will be replaced with `<br>`. Default is `false` ||
+[`boolean`](../../../../data-types.md) | Line break handling. If true, `\n` characters will be replaced with `<br>`. Default is `false` ||
 || **title**
 [`textWithTranslation`](./field-types.md#textwithtranslation) | Title attribute ||
 || **bold**
-[`boolean`](../../../../data-types.md) | Should the text be bold? Default is `false` ||
+[`boolean`](../../../../data-types.md) | Bold text. Default is `false` ||
 || **size**
 [`string`](../../../../data-types.md) | Text size. Can take values `xs`, `sm`, `md` (default is `md`) ||
 || **color**
@@ -73,7 +73,7 @@ The simplest block `type = text`, which displays some formatted text.
 
 ### Long Multiline Text
 
-The block `type = largeText`, which allows displaying long multiline texts that will automatically collapse to a preview.
+The block `type = largeText` allows displaying long multiline texts that will automatically collapse to a preview.
 
 #### Parameters
 
@@ -82,14 +82,14 @@ The block `type = largeText`, which allows displaying long multiline texts that 
 #|
 || **Field** | **Description** ||
 || **value^*^**
-[`textWithTranslation`](./field-types.md#textwithtranslation) | The text that will be displayed ||
+[`textWithTranslation`](./field-types.md#textwithtranslation) | Text to be displayed ||
 || **scope**
 [`string`](../../../../data-types.md) | [Visibility](./field-types.md#scope), for example `web` ||
 |#
 
 #### Example
 
-Long text collapsed under "Show More".
+Long text collapsed under "Show more".
 
 ```json
 {
@@ -119,7 +119,7 @@ Long text collapsed under "Show More".
 
 ### Link
 
-The block `type = link`, which displays a link.
+The block `type = link` displays a link.
 
 #### Parameters
 
@@ -128,11 +128,11 @@ The block `type = link`, which displays a link.
 #|
 || **Field** | **Description** ||
 || **text^*^**
-[`textWithTranslation`](./field-types.md#textwithtranslation) | The text that will be displayed. HTML tags are not supported ||
+[`textWithTranslation`](./field-types.md#textwithtranslation) | Text to be displayed. HTML tags are not supported ||
 || **action^*^**
 [`ActionDto`](./action.md) | Action upon clicking the link ||
 || **bold**
-[`boolean`](../../../../data-types.md) | Should the text be bold? Default is `false` ||
+[`boolean`](../../../../data-types.md) | Bold text. Default is `false` ||
 || **scope**
 [`string`](../../../../data-types.md) | [Visibility](./field-types.md#scope), for example `web` ||
 |#
@@ -155,7 +155,7 @@ The block `type = link`, which displays a link.
 
 ### Block with Title
 
-The block `type = withTitle` allows displaying a pair of title-value. Another content block can be used as the value.
+The block `type = withTitle` displays a pair of title-value. Another content block can be used as the value.
 
 #### Parameters
 
@@ -168,7 +168,7 @@ The block `type = withTitle` allows displaying a pair of title-value. Another co
 || **block^*^**
 [`ContentBlockDto`](content-block.md) | Content block that serves as the value. Blocks of types `text`, `link`, `deadline` are supported ||
 || **inline**
-[`boolean`](../../../../data-types.md) | Should the title and value be displayed in one line? Default is `false` ||
+[`boolean`](../../../../data-types.md) | Display title and value in one line. Default is `false` ||
 || **scope**
 [`string`](../../../../data-types.md) | [Visibility](./field-types.md#scope), for example `web` ||
 |#
@@ -183,7 +183,7 @@ The block `type = withTitle` allows displaying a pair of title-value. Another co
         "block": {
             "type": "text",
             "properties": {
-                "value": "Some Value"
+                "value": "Some value"
             }
         }
     }
@@ -212,7 +212,7 @@ The block `type = withTitle` allows displaying a pair of title-value. Another co
 
 ### Multiple Content Blocks in One Line
 
-The block `type = lineOfBlocks` allows displaying multiple content blocks of type text or link in one line. This enables displaying text with different formatting mixed with links in a single line.
+The block `type = lineOfBlocks` displays multiple content blocks of type text or link in one line. This allows displaying text with different formatting mixed with links in a single line.
 
 #### Parameters
 
@@ -236,7 +236,7 @@ The block `type = lineOfBlocks` allows displaying multiple content blocks of typ
             "text": {
                 "type": "text",
                 "properties": {
-                    "value": "Some Text"
+                    "value": "Some text"
                 }
             },
             "link": {
@@ -272,7 +272,7 @@ The block `type = deadline` displays the current deadline value with the ability
 #|
 || **Field** | **Description** ||
 || **readonly**
-[`boolean`](../../../../data-types.md) | Allow changing the deadline? Default is `false`. If the user does not have permission to modify the entity to which the deal relates, or if the deal is completed, then `readonly = true` regardless of the settings passed ||
+[`boolean`](../../../../data-types.md) | Permission to change the deadline. Default is `false`. If the user does not have access to modify the entity to which the deal relates, or if the deal is completed, then `readonly = true` regardless of the provided settings ||
 || **scope**
 [`string`](../../../../data-types.md) | [Visibility](./field-types.md#scope), for example `web` ||
 |#

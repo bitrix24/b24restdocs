@@ -13,7 +13,7 @@
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
 Configurable deals are a type of deal that can only be created from the application. For this type, you can customize the appearance of the deal card and its functionality. Methods for working with custom deal types in the [timeline](../../index.md)
 
@@ -21,7 +21,7 @@ Configurable deals are a type of deal that can only be created from the applicat
 || **Method** | **Description** ||
 || [crm.activity.configurable.add](./crm-activity-configurable-add.md) | Adds a new configurable deal to the timeline ||
 || [crm.activity.configurable.update](./crm-activity-configurable-update.md) | Updates a configurable deal ||
-|| [crm.activity.configurable.get](./crm-activity-configurable-get.md) | Retrieves information about a deal ||
+|| [crm.activity.configurable.get](./crm-activity-configurable-get.md) | Retrieves information about the deal ||
 || [crm.activity.delete](../crm-activity-delete.md) | Deletes a configurable deal by its identifier ||
 || [crm.activity.list](../crm-activity-list.md) | Retrieves a list of all configurable deals for a CRM entity filtered by `PROVIDER_ID` = `CONFIGURABLE_REST_APP` ||
 |#

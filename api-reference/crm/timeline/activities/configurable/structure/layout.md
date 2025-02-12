@@ -1,8 +1,8 @@
 # Structure of Configurable Deal
 
-The object that describes the appearance of a timeline entry is a hierarchical structure of nested objects of various types.
+The object that describes the appearance of the [timeline entry](../index.md) is a hierarchical structure of nested objects of various types.
 
-Each of the nested objects has its own set of fields and is described below in the form of a DTO (Data Transfer Object).
+Each of the nested objects has its own set of fields and is described below as a DTO (Data Transfer Object).
 
 The top-level object of the timeline entry is `LayoutDto`.
 
@@ -10,7 +10,7 @@ The top-level object of the timeline entry is `LayoutDto`.
 
 ## Parameters of the `LayoutDto` Object
 
-{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||

@@ -1,6 +1,6 @@
 # Icon
 
-The icon of the timeline entry `IconDto`.
+Icon of the [timeline entry](../index.md) `IconDto`.
 
 ## Parameters of the `IconDto` Object
 
@@ -12,7 +12,7 @@ The icon of the timeline entry `IconDto`.
 [`string`](../../../../data-types.md) | Icon code | A list of available codes can be obtained using the method [crm.timeline.icon.list](../../../logmessage/icons/crm-timeline-icon-list.md) ||
 |#
 
-## Example of the Object
+## Example Object
 
 ```json
 {

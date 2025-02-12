@@ -46,7 +46,7 @@ The methods [crm.activity.delete](./crm-activity-delete.md) (deletes an activity
 
 Universal activities are a type of activity with extended settings. In the card of a universal activity, you can synchronize the activity with the calendar, choose a meeting location with the client, add colleagues, select a client from a CRM entity, categorize activities by color, and choose a meeting room. Extended settings are available to employees on the Bitrix24 side.
 
-To create a universal activity, use the [crm.activity.todo.add](./crm-activity-todo-add.md) method. To change the deadline of an activity — use the [crm.activity.todo.updateDeadline](./todo-update/crm-activity-todo-update-deadline.md) method, and to change the description of an activity — [crm.activity.todo.updateDescription](./todo-update/crm-activity-todo-update-description.md). 
+To create a universal activity, use the [crm.activity.todo.add](./todo/crm-activity-todo-add.md) method. To change the deadline of an activity — use the [crm.activity.todo.updateDeadline](./todo/crm-activity-todo-update-deadline.md) method, and to change the description of an activity — [crm.activity.todo.updateDescription](./todo/crm-activity-todo-update-description.md). 
 
 {% note tip "User Documentation" %}
 
@@ -140,9 +140,9 @@ Thanks to the embedding, you can use the application without leaving the entity 
 
 #|
 || **Method** | **Description** ||
-|| [crm.activity.todo.add](./crm-activity-todo-add.md) | Creates a universal activity ||
-|| [crm.activity.todo.updateDeadline](./todo-update/crm-activity-todo-update-deadline.md) | Changes the deadline ||
-|| [crm.activity.todo.updateDescription](./todo-update/crm-activity-todo-update-description.md) | Changes the description ||
+|| [crm.activity.todo.add](./todo/crm-activity-todo-add.md) | Creates a universal activity ||
+|| [crm.activity.todo.updateDeadline](./todo/crm-activity-todo-update-deadline.md) | Changes the deadline ||
+|| [crm.activity.todo.updateDescription](./todo/crm-activity-todo-update-description.md) | Changes the description ||
 |#
 
 ### Configurable Activity

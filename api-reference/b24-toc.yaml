@@ -15,11 +15,11 @@ items:
     include:
       path: oauth/b24-toc.yaml
       mode: link
-  - name: Installing Applications
+  - name: Application Installation
     include:
       path: app-installation/b24-toc.yaml
       mode: link
-  - name: Uninstalling Applications
+  - name: Application Uninstallation
     href: app-uninstallation.md 
   - name: Method Scopes
     include:
@@ -85,7 +85,7 @@ items:
     include:
       path: document-generator/b24-toc.yaml
       mode: link
-  - name: Drive
+  - name: Disk
     include:
       path: disk/b24-toc.yaml
       mode: link
@@ -105,7 +105,7 @@ items:
     include:
       path: log/b24-toc.yaml
       mode: link
-  - name: Open Channels
+  - name: Open Lines
     include:
       path: imopenlines/b24-toc.yaml
       mode: link
@@ -125,11 +125,11 @@ items:
     include:
       path: mailservice/b24-toc.yaml
       mode: link
-  - name: Messaging Providers, SMS Providers
+  - name: Message Providers, SMS Providers
     include:
       path: messageservice/b24-toc.yaml
       mode: link
-  - name: Workgroups and Projects
+  - name: Working Groups and Projects
     include:
       path: sonet-group/b24-toc.yaml
       mode: link
@@ -145,7 +145,7 @@ items:
     include:
       path: telephony/b24-toc.yaml
       mode: link
-  - name: Product Catalog
+  - name: Trade Catalog
     include:
       path: catalog/b24-toc.yaml
       mode: link
@@ -172,4 +172,8 @@ items:
   - name: Deprecated Methods
     include:
       path: outdated/b24-toc.yaml
+      mode: link
+  - name: How to Work with Files
+    include:
+      path: files/b24-toc.yaml
       mode: link
