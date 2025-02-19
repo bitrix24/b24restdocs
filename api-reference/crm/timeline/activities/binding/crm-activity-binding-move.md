@@ -1,4 +1,4 @@
-# Update the deal's connection with the CRM entity crm.activity.binding.move
+# Update the deal connection with the CRM entity crm.activity.binding.move
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -14,15 +14,15 @@ The method `crm.activity.binding.move` updates the connection of a deal with a C
 || **Name**
 `type` | **Description** ||
 || **activityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | Identifier of the deal in the timeline, for example `999` ||
 || **sourceEntityTypeId***
-[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the deal is linked, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal is linked, for example `2` for a deal ||
 || **sourceEntityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the deal is linked, for example `1`  ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the deal is linked, for example `1`  ||
 || **targetEntityTypeId***
-[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the deal needs to be linked, for example `1` for a lead ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal should be linked, for example `2` for a deal ||
 || **targetEntityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the deal needs to be linked, for example `100`  ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the deal should be linked, for example `100`  ||
 |#
 
 ## Code Examples
@@ -37,7 +37,7 @@ The method `crm.activity.binding.move` updates the connection of a deal with a C
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"activityId":999, "sourceEntityTypeId":2, "sourceEntityId": 1, "targetEntityTypeId":1, "targetEntityId": 100}' \
+    -d '{"activityId":999, "sourceEntityTypeId":2, "sourceEntityId": 1, "targetEntityTypeId":2, "targetEntityId": 100}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.binding.move
     ```
 
@@ -47,7 +47,7 @@ The method `crm.activity.binding.move` updates the connection of a deal with a C
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"activityId":999,"sourceEntityTypeId":2,"sourceEntityId":1,"targetEntityTypeId":1,"targetEntityId":100,"auth":"**put_access_token_here**"}' \
+    -d '{"activityId":999,"sourceEntityTypeId":2,"sourceEntityId":1,"targetEntityTypeId":2,"targetEntityId":100,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.binding.move
     ```
 
@@ -57,10 +57,10 @@ The method `crm.activity.binding.move` updates the connection of a deal with a C
     BX24.callMethod(
         'crm.activity.binding.move',
         {
-            activityId: 999, // Deal ID
-            sourceEntityTypeId: 2, // Type of object to which the deal is linked
+            activityId: 999, // ID of the deal
+            sourceEntityTypeId: 2, // Type of the object to which the deal is linked
             sourceEntityId: 1, // ID of the entity to which the deal is linked
-            targetEntityTypeId: 1, // Type of object to which the deal will be linked
+            targetEntityTypeId: 2, // Type of the object to which the deal will be linked
             targetEntityId: 100 // ID of the entity to which the deal will be linked
         },
         function(result) {
@@ -81,10 +81,10 @@ The method `crm.activity.binding.move` updates the connection of a deal with a C
     $result = CRest::call(
         'crm.activity.binding.move',
         [
-            'activityId' => 999, // Deal ID
-            'sourceEntityTypeId' => 2, // Type of object to which the deal is linked
+            'activityId' => 999, // ID of the deal
+            'sourceEntityTypeId' => 2, // Type of the object to which the deal is linked
             'sourceEntityId' => 1, // ID of the entity to which the deal is linked
-            'targetEntityTypeId' => 1, // Type of object to which the deal will be linked
+            'targetEntityTypeId' => 2, // Type of the object to which the deal will be linked
             'targetEntityId' => 100 // ID of the entity to which the deal will be linked
         ]
     );
@@ -122,9 +122,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the connection was successfully changed, otherwise `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the connection was successfully changed, otherwise — `false` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -134,7 +134,7 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Element not found"
+    "error_description": "Entity not found"
 }
 ```
 
@@ -144,9 +144,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields not provided ||
-|| `NOT_FOUND` | Element not found ||
-|| `OWNER_NOT_FOUND` | Owner of the element not found ||
+|| `100` | Required fields are missing ||
+|| `NOT_FOUND` | Entity not found ||
+|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
+|| `SOURCE_AND_TARGET_ENTITY_TYPES_ARE_NOT_EQUAL` | Cannot move the deal from one CRM object type to another ||
+|| `SOURCE_AND_TARGET_ENTITY_ID_ARE_EQUAL_ERROR` | Cannot move the deal to the same deal ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `ACTIVITY_IS_ALREADY_BOUND` | The deal is already linked to this entity ||
 || `BINDING_NOT_FOUND` | The deal is not linked to the specified entity ||

@@ -1,8 +1,8 @@
-# Add Inventory Management Document catalog.document.add
+# Add Inventory Document catalog.document.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ Some data may be missing — we will complete it soon.
 catalog.document.add(fields)
 ```
 
-This method adds an [`inventory management document`](../enum/catalog-enum-get-store-document-types.md).
+This method adds an [`inventory document`](../enum/catalog-enum-get-store-document-types.md).
 If the operation is successful, it returns the `id` of the added document.
 
 ## Parameters
@@ -41,20 +41,54 @@ If the operation is successful, it returns the `id` of the added document.
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
-## Examples
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- js
-  
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"docType":"S","contractorId":"1","responsibleId":"1","dateModify":"2000-01-01T00:00:00+01:00","dateCreate":"2000-01-01T00:00:00+01:00","createdBy":"1","modifiedBy":"1","currency":"USD","status":"S","dateStatus":"2000-01-01T00:00:00+01:00","dateDocument":"2000-01-01T00:00:00+01:00","statusBy":"1","total":"100","commentary":"first document.","title":"New Document"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"docType":"S","contractorId":"1","responsibleId":"1","dateModify":"2000-01-01T00:00:00+01:00","dateCreate":"2000-01-01T00:00:00+01:00","createdBy":"1","modifiedBy":"1","currency":"USD","status":"S","dateStatus":"2000-01-01T00:00:00+01:00","dateDocument":"2000-01-01T00:00:00+01:00","statusBy":"1","total":"100","commentary":"first document.","title":"New Document"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.document.add
+    ```
+
+- JS
+
     ```js
     BX24.callMethod(
-        'catalog.document.element.update',
+        'catalog.document.add',
         {
-            'id': 42,
             'fields': {
-                'amount': 10,
-                'purchasingPrice': 25,
+                'docType': 'S',
+                'contractorId': '1',
+                'responsibleId': '1',
+                'dateModify': '2000-01-01T00:00:00+01:00',
+                'dateCreate': '2000-01-01T00:00:00+01:00',
+                'createdBy': '1',
+                'modifiedBy': '1',
+                'currency': 'USD',
+                'status': 'S',
+                'dateStatus': '2000-01-01T00:00:00+01:00',
+                'dateDocument': '2000-01-01T00:00:00+01:00',
+                'statusBy': '1',
+                'total': '100',
+                'commentary': 'first document.',
+                'title': 'New Document',
             }
         },
         function(result)
@@ -67,25 +101,37 @@ If the operation is successful, it returns the `id` of the added document.
     );
     ```
 
-- php
-  
+- PHP
+
     ```php
+    require_once('crest.php');
+
     $result = CRest::call(
-        'catalog.document.element.update',
+        'catalog.document.add',
         [
-            'id' => 11,
             'fields' => [
-                'amount' => 10,
-                'purchasingPrice' => 25,
-            ],
+                'docType' => 'S',
+                'contractorId' => '1',
+                'responsibleId' => '1',
+                'dateModify' => '2000-01-01T00:00:00+01:00',
+                'dateCreate' => '2000-01-01T00:00:00+01:00',
+                'createdBy' => '1',
+                'modifiedBy' => '1',
+                'currency' => 'USD',
+                'status' => 'S',
+                'dateStatus' => '2000-01-01T00:00:00+01:00',
+                'dateDocument' => '2000-01-01T00:00:00+01:00',
+                'statusBy' => '1',
+                'total' => '100',
+                'commentary' => 'first document.',
+                'title' => 'New Document',
+            ]
         ]
     );
 
-    echo '<pre>';
+    echo '<PRE>';
     print_r($result);
-    echo '</pre>';
+    echo '</PRE>';
     ```
 
 {% endlist %}
-
-{% include [Note on examples](../../../_includes/examples.md) %}

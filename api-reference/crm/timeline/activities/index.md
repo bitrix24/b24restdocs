@@ -26,7 +26,7 @@ System activities in CRM are created automatically:
 
 * An email activity is created by the email service. When an email from a client arrives at the connected Bitrix24 address, CRM checks if a client with the email from the message exists in the database. Based on the results, an activity will be created in the card of the found entity or a new client will be created, in whose card the activity will appear.
 
-To create, modify, or delete a system activity, use the methods from the [crm.activity.*](./crm-activity-add.md) group. When creating a system activity, specify `TYPE_ID`, for example, for an email activity `TYPE_ID` = `2`. To get values for other types of activities, use the [crm.enum.activitytype](../../auxiliary/enum/crm-enum-activity-type.md) method.
+To create, modify, or delete a system activity, use the methods from the [crm.activity.*](./activity-base/index.md) group. When creating a system activity, specify `TYPE_ID`, for example, for an email activity `TYPE_ID` = `2`. To get values for other types of activities, use the [crm.enum.activitytype](../../auxiliary/enum/crm-enum-activity-type.md) method.
 
 ### Custom Activity Types
 
@@ -34,11 +34,11 @@ Applications can register custom activity types: upload their own icon and speci
 
 * To register an activity type — use the methods from the [crm.activity.type.*](./types/index.md) group. When creating a type, you need to specify its code designation in the `TYPE_ID` parameter.
   
-* To create an activity with the application type — use the group of system activity methods [crm.activity.*](./crm-activity-add.md). When creating an activity, specify the code designation of the custom type `TYPE_ID`, registered for the activity type, in the `PROVIDER_TYPE_ID` parameter.
+* To create an activity with the application type — use the group of system activity methods [crm.activity.*](./activity-base/index.md). When creating an activity, specify the code designation of the custom type `TYPE_ID`, registered for the activity type, in the `PROVIDER_TYPE_ID` parameter.
 
 {% note tip "" %}
 
-The methods [crm.activity.delete](./crm-activity-delete.md) (deletes an activity) and [crm.activity.list](./crm-activity-list.md) (retrieves a list of activities) are common for all types of CRM activities.
+The methods [crm.activity.delete](./activity-base/crm-activity-delete.md) (deletes an activity) and [crm.activity.list](./activity-base/crm-activity-list.md) (retrieves a list of activities) are common for all types of CRM activities.
 
 {% endnote %}
 
@@ -98,13 +98,13 @@ Thanks to the embedding, you can use the application without leaving the entity 
 
     #|
     || **Method** | **Description** ||
-    || [crm.activity.add](./crm-activity-add.md) | Creates a new activity ||
-    || [crm.activity.update](./crm-activity-update.md) | Updates an activity ||
-    || [crm.activity.get](./crm-activity-get.md) | Returns an activity by ID ||
-    || [crm.activity.list](./crm-activity-list.md) | Returns a list of activities of all types by filter ||
-    || [crm.activity.delete](./crm-activity-delete.md) | Deletes any type of activity ||
-    || [crm.activity.fields](./crm-activity-fields.md) | Returns the description of activity fields ||
-    || [crm.activity.communication.fields](./crm-activity-communication-fields.md) | Returns the description of communication fields ||
+    || [crm.activity.add](./activity-base/crm-activity-add.md) | Creates a new activity ||
+    || [crm.activity.update](./activity-base/crm-activity-update.md) | Updates an activity ||
+    || [crm.activity.get](./activity-base/crm-activity-get.md) | Returns an activity by ID ||
+    || [crm.activity.list](./activity-base/crm-activity-list.md) | Returns a list of activities of all types by filter ||
+    || [crm.activity.delete](./activity-base/crm-activity-delete.md) | Deletes any type of activity ||
+    || [crm.activity.fields](./activity-base/crm-activity-fields.md) | Returns the description of activity fields ||
+    || [crm.activity.communication.fields](./activity-base/crm-activity-communication-fields.md) | Returns the description of communication fields ||
     |#
 
 - Events

@@ -3,7 +3,7 @@ href: index.md
 items: 
   - name: List of Methods
     href: index.md
-  - name: Data Types and Object Structure in the Catalog REST API
+  - name: Data Types and Object Structure in the REST API Catalog
     href: data-types.md
   - name: Trade Catalog
     include:
@@ -13,7 +13,7 @@ items:
     include:
       path: enum/b24-toc.yaml
       mode: link
-  - name: Margin
+  - name: Markup
     include:
       path: extra/b24-toc.yaml
       mode: link
@@ -65,19 +65,19 @@ items:
     include:
       path: section/b24-toc.yaml
       mode: link
-  - name: Inventory
+  - name: Warehouses
     include:
       path: store/b24-toc.yaml
       mode: link
-  - name: Inventory Balances
+  - name: Warehouse Stock
     include:
       path: store-product/b24-toc.yaml
       mode: link
-  - name: Inventory Management
+  - name: Inventory Accounting
     include:
       path: document/b24-toc.yaml
       mode: link
-  - name: Custom Fields for Inventory Documents
+  - name: Custom Fields for Inventory Accounting Documents
     include:
       path: userfield-document/b24-toc.yaml
       mode: link

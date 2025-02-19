@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "edit" access permission for deals
+> Who can execute the method: any user with "modify" access permission for deals
 
 The method `crm.deal.update` updates an existing deal.
 
@@ -18,7 +18,7 @@ The method `crm.deal.update` updates an existing deal.
 
 The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list.md) or [crm.deal.add](./crm-deal-add.md) ||
 || **fields**
-[`object`](../../data-types.md) | Object in the format:
+[`object`](../../data-types.md) | Object format:
 
 ```
 {
@@ -53,24 +53,26 @@ Only those fields that need to be changed should be passed in `fields`
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | String identifier of the deal type.
 
-The list of available deal types can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: 'DEAL_TYPE' }` ||
+The list of available deal types can be found using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: 'DEAL_TYPE' }` ||
 || **STAGE_ID**
 [`crm_status`](../data-types.md) | Stage of the deal.
 
-The list of available stages can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter:
-- `{ ENTITY_ID: "DEAL_STAGE" }` — if the deal is in the general Sales Funnel
-- `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }` — if the deal is not in the general Sales Funnel, where `categoryId` is the identifier of the [funnel](../universal/category/index.md) and equals `CATEGORY_ID` of the deal
+The list of available stages can be found using the method [crm.status.list](../status/crm-status-list.md) with the filter:
+- `{ ENTITY_ID: "DEAL_STAGE" }` — if the deal is in the general Sales Funnel (direction)
+- `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }` — if the deal is not in the general Sales Funnel, where `categoryId` is the identifier of the [funnel](../universal/category/index.md) and equals `CATEGORY_ID` of the deal.
+  
+If it is necessary to change the deal's funnel, use the method [crm.item.update](../universal/crm-item-update.md), `entityTypeId` of the deal — `2`
 ||
 || **IS_RECURRING**
-[`char`](../../data-types.md) | Is the deal a template for a recurring deal? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a template for a recurring deal. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Is the deal a repeat deal? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a repeat. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_REPEATED_APPROACH**
-[`char`](../../data-types.md) | Is the deal a repeated approach? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a repeated approach. Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -79,12 +81,12 @@ The list of available stages can be obtained using the method [crm.status.list](
 || **CURRENCY_ID**
 [`crm_currency`](../data-types.md#crm_currency) | Currency.
 
-The list of available currencies can be obtained using the method [crm.currency.list](../currency/crm-currency-list.md)
+The list of available currencies can be found using the method [crm.currency.list](../currency/crm-currency-list.md)
 ||
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Is manual calculation mode enabled? Possible values:
+[`char`](../../data-types.md) | Indicates whether manual calculation mode is enabled. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **TAX_VALUE**
@@ -92,25 +94,25 @@ The list of available currencies can be obtained using the method [crm.currency.
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the company associated with the deal.
 
-The list of companies can be obtained using the method [crm.item.list](../universal/crm-item-list.md) with `entityTypeId = 4`
+The list of companies can be found using the method [crm.item.list](../universal/crm-item-list.md), passing `entityTypeId = 4`
 ||
 || **CONTACT_ID**
 [`crm_contact`](../data-types.md) | Contact. Deprecated ||
 || **CONTACT_IDS**
 [`crm_contact[]`](../data-types.md) | List of contacts associated with the deal.
 
-The list of contacts can be obtained using the method [crm.item.list](../universal/crm-item-list.md) with `entityTypeId = 3`
+The list of contacts can be found using the method [crm.item.list](../universal/crm-item-list.md), passing `entityTypeId = 3`
 ||
 || **BEGINDATE**
 [`date`](../../data-types.md) | Start date ||
 || **CLOSEDATE**
 [`date`](../../data-types.md) | End date ||
 || **OPENED**
-[`char`](../../data-types.md) | Is the deal available to everyone? Possible values:
+[`char`](../../data-types.md) | Is the deal available to everyone. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **CLOSED**
-[`char`](../../data-types.md) | Is the deal closed? Possible values:
+[`char`](../../data-types.md) | Is the deal closed. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **COMMENTS**
@@ -120,7 +122,7 @@ The list of contacts can be obtained using the method [crm.item.list](../univers
 || **SOURCE_ID**
 [`crm_status`](../data-types.md) | String identifier of the source type.
 
-The list of available sources can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }` ||
+The list of available sources can be found using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }` ||
 || **SOURCE_DESCRIPTION**
 [`string`](../../data-types.md) | Additional information about the source ||
 || **ADDITIONAL_INFO**
@@ -145,11 +147,11 @@ Used only for linking to an external source
 - `CPM` — banners
 ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Identifier of the advertising campaign ||
+[`string`](../../data-types.md) | Designation of the advertising campaign ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Search term of the campaign. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **UF_CRM_...** | Custom fields. For example, `UF_CRM_25534736`. 
 
 Depending on the account settings, deals may have a set of custom fields of specific types. 
@@ -169,11 +171,11 @@ For example, the field `PARENT_ID_153` — relationship with the SPA `entityType
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`](../../data-types.md) | Should the deal change event be registered in the activity stream? Possible values:
+[`boolean`](../../data-types.md) | Whether to register the deal change event in the activity stream. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **REGISTER_HISTORY_EVENT**
-[`boolean`](../../data-types.md) | Should a history record be created? Possible values:
+[`boolean`](../../data-types.md) | Whether to create a record in history. Possible values:
 - `Y` — yes
 - `N` — no ||
 |#
@@ -288,7 +290,7 @@ Example:
 BX24.callMethod("crm.deal.update", { id: 1, fields: { "CONTACT_IDS": [ 1, 2, 3 ] } });
 ```
 
-As a result, the deal will be associated with the three specified contacts.
+As a result, the deal will be linked to the three specified contacts.
 
 The field `CONTACT_ID` is deprecated and is supported for backward compatibility.
 
@@ -298,11 +300,11 @@ Example:
 BX24.callMethod("crm.deal.update", { id: 1, fields: { "CONTACT_ID": 4 } });
 ```
 
-As a result of this call, a relationship with the specified contact will be added to the deal. 
+As a result of this call, a link to the specified contact will be added to the deal. 
 
 {% note warning %}
 
-Existing relationships with contacts will not be removed. If the deal was previously associated with contacts 1, 2, and 3, it will now be associated with contacts 1, 2, 3, and 4.
+Existing links to contacts will not be removed. If the deal was previously linked to contacts 1, 2, and 3, it will now be linked to contacts 1, 2, 3, and 4.
 
 {% endnote %}
 
@@ -353,11 +355,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `ID is not defined or invalid` | The parameter `id` is not a positive integer ||
+|| `-`     | `ID is not defined or invalid` | The parameter `id` is not an integer greater than zero ||
 || `-`     | `Not found` | The deal with the provided `id` does not exist ||
 || `-`     | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
 || `-`     | `Parameter 'params' must be array` | The parameter `params` is not an object ||
-|| `-`     | `Access denied` | The user does not have permission to "edit" deals ||
+|| `-`     | `Access denied` | The user does not have permission to "modify" deals ||
 || `-`     | Disk resource exhausted |> ||
 || `-`     | Invalid value for the "Currency" field |> ||
 |#
@@ -371,3 +373,4 @@ HTTP status: **400**
 - [{#T}](./crm-deal-list.md)
 - [{#T}](./crm-deal-delete.md)
 - [{#T}](./crm-deal-fields.md)
+- [{#T}](../universal/crm-item-update.md)

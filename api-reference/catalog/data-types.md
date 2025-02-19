@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -30,6 +30,7 @@ In this article, we will discuss the data types and object structure specific to
 || [`catalog_product_offer.id`](#catalog_product_offer) | Integer identifier of the product variation (e.g., `1`). You can obtain the identifiers of product variations using the method [catalog.product.offer.list](./product/offer/catalog-product-offer-list.md) ||
 || [`catalog_product_service.id`](#catalog_product_service) | Integer identifier of the service (e.g., `1`). You can obtain the identifiers of services using the method [catalog.product.service.list](./product/service/catalog-product-service-list.md) ||
 || [`catalog_product_image.id`](#catalog_product_image) | Integer identifier of the product image (e.g., `1`). You can obtain the identifiers of product images using the method [catalog.productImage.list](./product-image/catalog-product-image-list.md) ||
+|| [`catalog_store.id`](#catalog_store) | Integer identifier of the warehouse (e.g., `1`). You can obtain the identifiers of warehouses using the method [catalog.store.list](./store/catalog-store-list.md) ||
 || [`catalog_measure.id`](#catalog_measure) | Integer identifier of the unit of measurement (e.g., `1`). You can obtain the identifiers of units of measurement using the method [catalog.measure.list](./measure/catalog-measure-list.md) ||
 || [`catalog_ratio.id`](#catalog_ratio) | Integer identifier of the unit of measurement ratio (e.g., `1`). You can obtain the identifiers of unit ratios using the method [catalog.ratio.list](./ratio/catalog-ratio-list.md) ||
 || [`catalog_price_type.id`](#catalog_price_type) | Integer identifier of the price type (e.g., `1`). You can obtain the identifiers of price types using the method [catalog.priceType.list](./price-type/catalog-price-type-list.md) ||
@@ -130,13 +131,13 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Start date of activity ||
+[`datetime`](../data-types.md) | Date of activation start ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | End date of activity ||
+[`datetime`](../data-types.md) | Date of activation end ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Creation date ||
+[`datetime`](../data-types.md) | Date of creation ||
 || **timestampX**
-[`datetime`](../data-types.md) | Modification date. Read-only ||
+[`datetime`](../data-types.md) | Date of modification. Read-only ||
 || **iblockSectionId**
 [`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
 || **measure**
@@ -199,7 +200,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **purchasingCurrency**
 [`string`](../data-types.md) | Currency of the purchasing price.
 
-You can obtain the list of currencies using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
+The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
 Not editable when inventory accounting is enabled
 ||
@@ -250,7 +251,7 @@ Used only in the on-premise version for content sales
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
 
 `valueId` of all product properties can be obtained using the methods [catalog.product.get](./product/catalog-product-get.md) and [catalog.product.list](./product/catalog-product-list.md)
 ||
@@ -301,13 +302,13 @@ For parent products, the ability to edit this field is available only in the on-
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Start date of activity ||
+[`datetime`](../data-types.md) | Date of activation start ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | End date of activity ||
+[`datetime`](../data-types.md) | Date of activation end ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Creation date ||
+[`datetime`](../data-types.md) | Date of creation ||
 || **timestampX**
-[`datetime`](../data-types.md) | Modification date. Read-only ||
+[`datetime`](../data-types.md) | Date of modification. Read-only ||
 || **iblockSectionId**
 [`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
 || **measure**
@@ -381,7 +382,7 @@ For parent products, the ability to edit this field is available only in the on-
 || **purchasingCurrency**
 [`string`](../data-types.md) | Currency of the purchasing price.
 
-You can obtain the list of currencies using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
+The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
 Not editable when inventory accounting is enabled.
 
@@ -406,7 +407,7 @@ For parent products, the ability to edit this field is available only in the on-
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
 
 `valueId` of all parent product properties can be obtained using the methods [catalog.product.sku.get](./product/sku/catalog-product-sku-get.md) and [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md)
 ||
@@ -460,13 +461,13 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Start date of activity ||
+[`datetime`](../data-types.md) | Date of activation start ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | End date of activity ||
+[`datetime`](../data-types.md) | Date of activation end ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Creation date ||
+[`datetime`](../data-types.md) | Date of creation ||
 || **timestampX**
-[`datetime`](../data-types.md) | Modification date. Read-only ||
+[`datetime`](../data-types.md) | Date of modification. Read-only ||
 || **iblockSectionId**
 [`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
 || **measure**
@@ -530,7 +531,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **purchasingCurrency**
 [`string`](../data-types.md) | Currency of the purchasing price.
 
-You can obtain the list of currencies using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
+The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
 Not editable when inventory accounting is enabled
 ||
@@ -581,7 +582,7 @@ Used only in the on-premise version for content sales
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
 
 `valueId` of all product offer properties can be obtained using the methods [catalog.product.offer.get](./product/offer/catalog-product-offer-get.md) and [catalog.product.offer.list](./product/offer/catalog-product-offer-list.md)
 ||
@@ -625,13 +626,13 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Start date of activity ||
+[`datetime`](../data-types.md) | Date of activation start ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | End date of activity ||
+[`datetime`](../data-types.md) | Date of activation end ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Creation date ||
+[`datetime`](../data-types.md) | Date of creation ||
 || **timestampX**
-[`datetime`](../data-types.md) | Modification date. Read-only ||
+[`datetime`](../data-types.md) | Date of modification. Read-only ||
 || **iblockSectionId**
 [`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
 || **measure**
@@ -676,7 +677,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
 
 `valueId` of all service properties can be obtained using the methods [catalog.product.service.get](./product/service/catalog-product-service-get.md) and [catalog.product.service.list](./product/service/catalog-product-service-list.md)
 ||
@@ -700,11 +701,66 @@ If `valueId` is not specified, the existing value will be removed from the datab
 - `MORE_PHOTO` — product pictures
 ||
 || **createTime**
-[`datetime`](../data-types.md) | Creation date of the image ||
+[`datetime`](../data-types.md) | Date of image creation ||
 || **downloadUrl**
-[`string`](../data-types.md) | Download link, signed with the current access token ||
+[`string`](../data-types.md) | Link for downloading, signed with the current access token ||
 || **detailUrl**
 [`string`](../data-types.md) | Link to the image ||
+|#
+
+### catalog_store
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../data-types.md) | Identifier of the warehouse ||
+|| **address**
+[`string`](../data-types.md) | Address of the warehouse ||
+|| **title**
+[`string`](../data-types.md) | Name of the warehouse ||
+|| **active**
+[`string`](../data-types.md) | Activity status. Possible values:
+- `Y` — yes
+- `N` — no ||
+|| **description**
+[`string`](../data-types.md) | Description ||
+|| **gpsN**
+[`double`](../data-types.md) | GPS latitude ||
+|| **gpsS**
+[`double`](../data-types.md) | GPS longitude ||
+|| **imageId**
+[`object`](../data-types.md) | Image. Object in the format `{fileData: [value1, value2]}`, where:
+- `value1` – name of the picture file with extension
+- `value2` – picture in base64 format
+
+To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+|| **dateModify**
+[`datetime`](../data-types.md) | Date of modification ||
+|| **dateCreate**
+[`datetime`](../data-types.md) | Date of creation ||
+|| **userId**
+[`user.id`](../data-types.md) | Created by ||
+|| **modifiedBy**
+[`user.id`](../data-types.md) | Modified by ||
+|| **phone**
+[`string`](../data-types.md) | Phone ||
+|| **schedule**
+[`string`](../data-types.md) | Working hours ||
+|| **xmlId**
+[`string`](../data-types.md) | External code.
+
+Can be used to synchronize the current warehouse with a similar position in an external system ||
+|| **sort**
+[`integer`](../data-types.md) | Sorting ||
+|| **email**
+[`string`](../data-types.md) | E-mail ||
+|| **issuingCenter**
+[`string`](../data-types.md) | Is it a pickup point? Possible values:
+- `Y` – yes
+- `N` – no ||
+|| **code**
+[`string`](../data-types.md) | Symbolic code ||
 |#
 
 ### catalog_measure
@@ -743,7 +799,7 @@ Only one unit of measurement from the entire directory can take the value `Y`
 || **productId**
 [`integer`](../data-types.md) | Identifier of the product ||
 || **ratio**
-[`double`](../data-types.md) | Ratio of the unit of measurement ||
+[`double`](../data-types.md) | Unit of measurement ratio ||
 || **isDefault**
 [`string`](../data-types.md) | Is this unit of measurement ratio the default ratio? Possible values:
 - `Y` — yes
@@ -761,7 +817,7 @@ Only one unit of measurement from the entire directory can take the value `Y`
 || **name**
 [`string`](../data-types.md) | Code of the price type ||
 || **base**
-[`string`](../data-types.md) | Is the price type a base type? Possible values:
+[`string`](../data-types.md) | Is the price type basic? Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -772,13 +828,13 @@ Only one unit of measurement from the entire directory can take the value `Y`
 
 Can be used to synchronize the current price type with a similar position in an external system ||
 || **timestampX**
-[`datetime`](../data-types.md) | Modification date ||
+[`datetime`](../data-types.md) | Date of modification ||
 || **createdBy**
 [`user.id`](../data-types.md) | Created by ||
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Creation date ||
+[`datetime`](../data-types.md) | Date of creation ||
 |#
 
 ### catalog_price_type_lang
@@ -836,9 +892,9 @@ Can be used to synchronize the current price type with a similar position in an 
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Creation date ||
+[`datetime`](../data-types.md) | Date of creation ||
 || **dateModify**
-[`datetime`](../data-types.md) | Modification date ||
+[`datetime`](../data-types.md) | Date of modification ||
 |#
 
 ### catalog_extra

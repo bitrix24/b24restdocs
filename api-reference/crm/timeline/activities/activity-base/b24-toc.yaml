@@ -1,0 +1,19 @@
+title: Systems Deal
+href: index.md
+items:
+  - name: Overview of methods
+    href: index.md
+  - name: Add System Deal
+    href: crm-activity-add.md
+  - name: Update System Deal
+    href: crm-activity-update.md
+  - name: Get Information About a Deal by ID
+    href: crm-activity-get.md
+  - name: Get the list of deals
+    href: crm-activity-list.md
+  - name: Delete CRM Activity
+    href: crm-activity-delete.md
+  - name: Get a List of CRM Activity Fields
+    href: crm-activity-fields.md
+  - name: Get Description of Communication
+    href: crm-activity-communication-fields.md

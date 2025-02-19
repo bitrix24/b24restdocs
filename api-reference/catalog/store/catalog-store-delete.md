@@ -1,81 +1,146 @@
-# Delete warehouse catalog.store.delete
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- required parameters are not specified
-- no response in case of error
-  
-{% endnote %}
-
-{% endif %}
+# Delete Warehouse catalog.store.delete
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
-## Description
+This method deletes a warehouse.
 
-```http
-catalog.store.delete(id)
-```
+## Method Parameters
 
-Method for deleting a warehouse. If the operation is successful, `Y` is returned in the response body.
-
-## Parameters
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **id** 
-[`integer`](../../data-types.md)| Warehouse identifier. ||
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`catalog_store.id`](../data-types.md#catalog_store) | Identifier of the warehouse.
+
+You can obtain warehouse identifiers using the [catalog.store.list](./catalog-store-list.md) method ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":1}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.store.delete
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":1,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.store.delete
+    ```
+
 - JS
-  
+
     ```js
     BX24.callMethod(
         'catalog.store.delete',
         {
-            id: 42,
+            id: 1,
         },
-        function(result)
-        {
-            if(result.error())
+        function(result) {
+            if (result.error()) {
                 console.error(result.error());
-            else
-                console.log(result.data());
+            } else {
+                console.info(result.data());
+            }
         }
     );
     ```
 
 - PHP
-  
+
     ```php
+    require_once('crest.php');
+
     $result = CRest::call(
         'catalog.store.delete',
         [
-            'id' => 42,
+            'id' => 1
         ]
     );
 
-    echo '<pre>';
+    echo '<PRE>';
     print_r($result);
-    echo '</pre>';
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1729516191.298727,
+        "finish": 1729516191.799495,
+        "duration": 0.5007679462432861,
+        "processing": 0.16301894187927246,
+        "date_start": "2024-10-21T16:09:51+02:00",
+        "date_finish": "2024-10-21T16:09:51+02:00"
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Result of the warehouse deletion ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{	
+    "error":200040300020,
+    "error_description":"Access Denied"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `200040300020` | Insufficient permissions to delete the warehouse ||
+|| `201100000000` | Warehouse with the specified identifier not found ||
+|| `100` | Parameter `id` is missing or empty ||
+|| `0` | Documents are issued for this warehouse || 
+|| `0` | Other errors (e.g., fatal errors) || 
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./catalog-store-add.md)
+- [{#T}](./catalog-store-update.md)
+- [{#T}](./catalog-store-get.md)
+- [{#T}](./catalog-store-list.md)
+- [{#T}](./catalog-store-get-fields.md)

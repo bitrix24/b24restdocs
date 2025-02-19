@@ -1,15 +1,15 @@
-title: Basic Methods
-href: index.md
-items:
-  - name: Overview of Methods
-    href: index.md
-  - name: End Current Work Day
-    href: timeman-close.md
-  - name: Start New Work Day
-    href: timeman-open.md
-  - name: Pause Current Work Day
-    href: timeman-pause.md
-  - name: Get Work Time Settings
-    href: timeman-settings.md
-  - name: Get Information About Current Work Day
-    href: timeman-status.md
+title: Workday  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Start a New Workday  
+    href: timeman-open.md  
+  - name: Pause the Current Workday  
+    href: timeman-pause.md  
+  - name: End the Current Day  
+    href: timeman-close.md  
+  - name: Get Information About the Current Workday  
+    href: timeman-status.md  
+  - name: Get Work Time Settings  
+    href: timeman-settings.md  

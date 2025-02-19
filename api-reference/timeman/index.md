@@ -1,8 +1,8 @@
-# REST Methods for the Time Tracking Module
+# Time Tracking: Overview of Methods
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,22 +12,22 @@ Some data may be missing — we will complete it soon.
 
 ## List of Methods
 
-#|
+#| 
 || **Method** | **Description** | **Version** ||
-|| **Basic Methods** | | ||
-|| [timeman.settings](./base/timeman-settings.md) | Retrieve user time tracking settings | 17.0.2 ||
+|| **Workday** | | ||
+|| [timeman.settings](./base/timeman-settings.md) | Retrieve user work time settings | 17.0.2 ||
 || [timeman.status](./base/timeman-status.md) | Get information about the user's current workday | 17.0.2 ||
 || [timeman.open](./base/timeman-open.md) | Start a new workday or resume a closed or paused one | 17.0.2 ||
 || [timeman.close](./base/timeman-close.md) | Close the workday | 17.0.2 ||
 || [timeman.pause](./base/timeman-pause.md) | Pause the workday | 17.0.2 ||
 || **Office Networks** | | ||
-|| [timeman.networkrange.check](./networkrange/timeman-networkrange-check.md) | Method to check if an IP address falls within the office network address ranges. | 18.5.0 ||
-|| [timeman.networkrange.get](./networkrange/timeman-networkrange-get.md) | Method to retrieve the address ranges that belong to the office network. | 18.5.0 ||
-|| [timeman.networkrange.set](./networkrange/timeman-networkrange-set.md) | Method to set the address ranges that belong to the office network. | 18.5.0 ||
+|| [timeman.networkrange.check](./networkrange/timeman-networkrange-check.md) | Method to check if an IP address falls within office network address ranges. | 18.5.0 ||
+|| [timeman.networkrange.get](./networkrange/timeman-networkrange-get.md) | Method to retrieve address ranges that belong to the office network. | 18.5.0 ||
+|| [timeman.networkrange.set](./networkrange/timeman-networkrange-set.md) | Method to set address ranges that belong to the office network. | 18.5.0 ||
 || **Time Control** | | ||
-|| [timeman.timecontrol.report.add](./timecontrol/timeman-timecontrol-report-add.md) | Method to submit a report of identified absences. | 18.5.0 ||
-|| [timeman.timecontrol.reports.get](./timecontrol/timeman-timecontrol-reports-get.md) | Method to retrieve a report of identified absences. | 18.5.0 ||
-|| [timeman.timecontrol.reports.settings.get](./timecontrol/timeman-timecontrol-reports-settings-get.md) | Method to get user settings for building the time control report interface. | 18.5.0 ||
+|| [timeman.timecontrol.report.add](./timecontrol/timeman-timecontrol-report-add.md) | Method to submit a report on identified absences. | 18.5.0 ||
+|| [timeman.timecontrol.reports.get](./timecontrol/timeman-timecontrol-reports-get.md) | Method to retrieve reports on identified absences. | 18.5.0 ||
+|| [timeman.timecontrol.reports.settings.get](./timecontrol/timeman-timecontrol-reports-settings-get.md) | Method to get user settings for building the time control tool's report interface. | 18.5.0 ||
 || [timeman.timecontrol.reports.users.get](./timecontrol/timeman-timecontrol-reports-users-get.md) | Method to get a list of users belonging to the specified department. | 18.5.0 ||
 || [timeman.timecontrol.settings.get](./timecontrol/timeman-timecontrol-settings-get.md) | Method to retrieve settings for the time control tool. | 18.5.0 ||
 || [timeman.timecontrol.settings.set](./timecontrol/timeman-timecontrol-settings-set.md) | Method to set settings for the time control tool. | 18.5.0 ||
@@ -46,7 +46,7 @@ CModule::IncludeModule('timeman');
 
 $ID = 8;
 $arFields = array(
-    "MARK" => "G", // "G" - positive, "B" - negative, "N" - no rating, "X" - without confirmation
+    "MARK" => "G", // "G" - positive, "B" - negative, "N" - no rating, "X" - no confirmation
 );
 
 if ($arFields["MARK"] != "X")
@@ -74,8 +74,8 @@ $USER_ID = 1;
 $report = "";
 $obUser = new CTimeManUser($USER_ID);
 
-$obUser->OpenDay($timestamp, $report); // open the workday
-$obUser->CloseDay($timestamp, $report); // close the workday
+$obUser->OpenDay($timestamp, $report); // open workday
+$obUser->CloseDay($timestamp, $report); // close workday
 $state = $oTimeManUser->State(); // get the status of the workday for employee $USER_ID
 $arInfo = $oTimeManUser->GetCurrentInfo(); // information about the workday for employee $USER_ID
 

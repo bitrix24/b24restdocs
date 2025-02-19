@@ -3,8 +3,6 @@ href: index.md
 items: 
   - name: Overview of Methods
     href: index.md
-  - name: Get Lead Fields
-    href: crm-lead-fields.md
   - name: Create New Lead
     href: crm-lead-add.md
   - name: Update Lead
@@ -15,6 +13,8 @@ items:
     href: crm-lead-list.md
   - name: Delete Lead
     href: crm-lead-delete.md
+  - name: Get Lead Fields
+    href: crm-lead-fields.md
   - name: Add Products to Lead
     href: crm-lead-productrows-set.md
   - name: Get Lead Products
@@ -31,7 +31,7 @@ items:
     include:
       path: events/b24-toc.yaml
       mode: link
-  - name: Lead Card Management
+  - name: Managing Lead Cards
     include:
       path: custom-form/b24-toc.yaml
       mode: link

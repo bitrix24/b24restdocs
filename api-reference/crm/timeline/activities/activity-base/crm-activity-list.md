@@ -1,6 +1,6 @@
-# Get a list of deals crm.activity.list
+# Get the list of deals crm.activity.list
 
-> Scope: [`crm`](../../../scopes/permissions.md)
+> Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -8,21 +8,20 @@ The method `crm.activity.list` returns a list of activities based on the filter,
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array of fields to select (see the fields of the deal [crm.activity.fields](./crm-activity-fields.md)).
-To obtain `COMMUNICATIONS` and `FILES` (`STORAGE_ELEMENT_IDS`), they must be explicitly specified in select.
+[`array`](../../../data-types.md) | An array of fields of the deal [crm.activity.fields](./crm-activity-fields.md) that need to be selected. To get the fields `COMMUNICATIONS` and `FILES`, specify them in select.
 ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected items in key-value format.
+[`object`](../../../data-types.md) | An object for filtering the selected items in key-value format.
 
 Possible values for `field` correspond to the fields of the deal [crm.activity.fields](./crm-activity-fields.md).
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
 
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -30,35 +29,34 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring at any position in the string.
-- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values starting with "mol"
   - "%mol" — searching for values ending with "mol"
-  - "%mol%" — searching for values where "mol" can be at any position
+  - "%mol%" — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
 - `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
-- `=%` — NOT LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values not starting with "mol"
   - "%mol" — searching for values not ending with "mol"
-  - "%mol%" — searching for values where the substring "mol" is not present at any position
+  - "%mol%" — searching for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (see description above)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` - not equal
 - `!` — not equal
 ||
 || **order**
-[`object`](../../data-types.md) | A set of key-value pairs for sorting the output results.
-Keys can be used from the fields of the deal [crm.activity.fields](./crm-activity-fields.md).
+[`object`](../../../data-types.md) | A set of key-value pairs for sorting the output results. The keys can be the fields of the deal [crm.activity.fields](./crm-activity-fields.md).
 
 Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
 
-By default, it is sorted in ascending order by the Start Date field (`START_TIME`)
+By default, it is sorted by increasing the Start Date field (`START_TIME`)
 ||
 || **start**
-  [`integer`](../../data-types.md) | This parameter is used for managing pagination.
+  [`integer`](../../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 
@@ -69,15 +67,15 @@ The formula for calculating the value of the `start` parameter:
 `start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
-See the description of [list methods](../../../how-to-call-rest-api/list-methods-pecularities.md).
+See the description of [list methods](../../../../how-to-call-rest-api/list-methods-pecularities.md).
 
 {% note info "" %}
 
-Note the peculiarity of the `filter[BINDINGS]` parameter.
+Pay attention to the peculiarity of the `filter[BINDINGS]` parameter.
 
-A deal can be linked to multiple CRM entities. For example, a call can be linked to both a lead and a deal, so to retrieve these entities in the parameters of the method `crm.activity.list`, there is a special filter key - `BINDINGS`. 
+A deal can be linked to multiple CRM entities. For example, a call can be linked to both a lead and a deal, so to retrieve these entities in the parameters of the method `crm.activity.list`, there is a special filter key - `BINDINGS`.
 
-You need to specify an array of [system](../../index.md) or [custom](../../universal/user-defined-object-types/index.md) types of CRM objects for which you need to find the binding.
+In it, you need to specify an array of [system](../../../index.md) or [custom](../../../universal/user-defined-object-types/index.md) types of CRM objects for which you need to find the binding.
 
 Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and `OWNER_ID` (entity identifier), either one or a combination of both. For example:
 
@@ -92,7 +90,7 @@ Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -118,7 +116,7 @@ Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and
 
 - JS
 
-    In this example, we retrieve a list of deals for the contact with `ID` = 102.
+    In this example, we retrieve the list of deals for the contact with `ID` = 102.
 
     ```js
     BX24.callMethod(
@@ -246,29 +244,12 @@ HTTP status: **200**
 ### Returned Data
 
 #|
-|| **Value** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | The result of the request. An array of leads. For information on the structure of a lead, see the method [crm.activity.fields](./crm-activity-fields.md) ||
-|| **next**
-[`integer`](../../data-types.md) | The value to send to get the next page of data from the list method. Shown if such elements exist. ||
-|| **total**
-[`integer`](../../data-types.md) | The total number of leads that meet the request ||
+[`boolean`](../../../../data-types.md) | The result of the operation. An array of deals. For information on the structure of the deal, see the method [crm.activity.fields](./crm-activity-fields.md) ||
 || **time**
-[`array`](../../data-types.md) | Information about the execution time of the request ||
-|| **start**
-[`double`](../../data-types.md) | Timestamp of the moment the request was initialized ||
-|| **finish**
-[`double`](../../data-types.md) | Timestamp of the moment the request execution was completed ||
-|| **duration**
-[`double`](../../data-types.md) | How long in milliseconds the request took (finish - start) ||
-|| **date_start**
-[`string`](../../data-types.md) | String representation of the date and time of the moment the request was initialized ||
-|| **date_finish**
-[`double`](../../data-types.md) | String representation of the date and time of the moment the request was completed ||
-|| **operating_reset_at**
-[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limits](../../../../limits.md) ||
-|| **operating**
-[`double`](../../data-types.md) | In how many milliseconds will the limit on REST API resources be reset? Read more in the article [operation limits](../../../../limits.md) ||
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -282,23 +263,23 @@ HTTP status: **400**, **403**
 }
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../../_includes/error-info.md) %}
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Specific Examples
+## Private Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 ### Using BINDINGS {#example-bindings}
 
-Retrieve fields: ID, Name, Owner Type (Entity Type ID), Owner (Entity ID)
+Retrieve fields: Identifier, Name, Owner Type (Entity Type Identifier), Owner (Entity Identifier)
 
 Selection condition: the deal is linked to both a deal and a contact
 
 {% note info %}
 
-When using multiple pairs in `BINDINGS`, duplication may occur in the results. For example, as a result of executing the code example below, a deal linked to both entities will be output twice.
+When using multiple pairs in `BINDINGS`, duplication in the results may occur. For example, in the result of executing the code example below, the deal linked to both entities will be output twice.
 
 {% endnote %}
 

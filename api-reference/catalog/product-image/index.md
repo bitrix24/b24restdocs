@@ -1,4 +1,41 @@
-# Overview of Methods
+# Product and Variation Images in the Catalog: Overview of Methods
+
+Different types of images can be added to products and variations:
+- `DETAIL_PICTURE` — detailed image,
+- `PREVIEW_PICTURE` — preview image,
+- `MORE_PHOTO` — additional images.
+
+## How to Add an Image to an Existing Product
+
+To add or replace an image for an existing product, use the methods [catalog.productImage.*](#all-methods). Specify the image type and pass an array with two elements in the `fileContent` parameter:
+- the name of the image file with its extension,
+- the file in base64 encoding.
+
+If the image type is not specified, it will be saved as an additional image `MORE_PHOTO`.
+
+> Quick link: [all methods](#all-methods)
+
+## How to Add an Image When Creating a Product
+
+Use the method [catalog.product.add](../product/catalog-product-add.md) and pass an object in the format `{fileData: [value1, value2]}` to the `previewPicture` or `detailPicture` parameters:
+- `value1` — the name of the image file with its extension,
+- `value2` — the file in base64 encoding.
+
+{% note tip "Typical use-cases and scenarios" %}
+
+- [How to upload files](../../files/how-to-upload-files.md)
+
+{% endnote %}
+
+## Linking Product and Variation Images to Other Objects
+
+**Products.** Specify the product ID for which you want to add an image. You can obtain the list of IDs using the methods:
+- [catalog.product.list](../product/catalog-product-list.md) — for simple products
+- [catalog.product.service.list](../product/service/catalog-product-service-list.md) — for services
+- [catalog.product.sku.list](../product/sku/catalog-product-sku-list.md) — for parent products of products with variations
+- [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md) — for product variations
+
+## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
@@ -6,9 +43,9 @@
 
 #|
 || **Method** | **Description** ||
-|| [catalog.productImage.add](./catalog-product-image-add.md) | Adds images to a product, parent product, variation, or service ||
-|| [catalog.productImage.get](./catalog-product-image-get.md) | Returns information about a specific image of a product, parent product, variation, or service ||
-|| [catalog.productImage.list](./catalog-product-image-list.md) | Returns a list of images for a product, parent product, variation, or service ||
-|| [catalog.productImage.delete](./catalog-product-image-delete.md) | Deletes an image from a product, parent product, variation, or service ||
-|| [catalog.productImage.getFields](./catalog-product-image-get-fields.md) | Returns the available fields for the image of a product, parent product, variation, or service ||
+|| [catalog.productImage.add](./catalog-product-image-add.md) | Adds an image to a product or variation ||
+|| [catalog.productImage.get](./catalog-product-image-get.md) | Returns information about a specific product or variation image ||
+|| [catalog.productImage.list](./catalog-product-image-list.md) | Returns a list of images for a product or variation ||
+|| [catalog.productImage.delete](./catalog-product-image-delete.md) | Deletes an image from a product or variation ||
+|| [catalog.productImage.getFields](./catalog-product-image-get-fields.md) | Returns available fields for a product or variation image ||
 |#

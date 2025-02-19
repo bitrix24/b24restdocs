@@ -29,7 +29,7 @@ items:
     include:
       path: property-group/b24-toc.yaml
       mode: link
-  - name: Property Variants
+  - name: Order Property Variants of Type ENUM
     include:
       path: property-variant/b24-toc.yaml
       mode: link    
@@ -81,7 +81,7 @@ items:
     include:
       path: payment-item-shipment/b24-toc.yaml
       mode: link
-  - name: Linking Property
+  - name: Property Linking
     include:
       path: property-relation/b24-toc.yaml
       mode: link

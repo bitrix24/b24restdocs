@@ -22,9 +22,9 @@ This method adds a product item to a CRM object.
 #|
 || **Name**
 `type` | **Description** ||
-|| **ownerId**
+|| **ownerId***
 [`integer`](../../../data-types.md) | Identifier of the CRM object ||
-|| **ownerType**
+|| **ownerType***
 [`string`](../../../data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#object_type). Pass the [Short symbolic code of the type](../../data-types.md#object_type) ||
 || **productId**
 [`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog ||
@@ -35,13 +35,13 @@ If not provided, but `productId` is given, the product name from the product cat
 [`double`](../../../data-types.md) | Price per unit of the product item, including discounts and taxes ||
 || **quantity**
 [`double`](../../../data-types.md) | Quantity of the product. 
-Defaults to 1 ||
+Default is 1 ||
 || **discountTypeId**
 [`integer`](../../../data-types.md) | Type of discount.
 Possible values:
 - `1` — absolute value
 - `2` — percentage value
-Defaults to 2 ||
+Default is 2 ||
 || **discountRate**
 [`double`](../../../data-types.md) | Discount value in percentage (if using the percentage discount type) ||
 || **discountSum**
@@ -53,9 +53,9 @@ Defaults to 2 ||
 Possible values:
 - `Y` – tax included
 - `N` – tax not included
-Defaults to N ||
+Default is N ||
 || **measureCode**
-[`catalog_measure.code`](../../../catalog/data-types.md#catalog_measure) | Unit of measure code
+[`catalog_measure.code`](../../../data-types.md#catalog_measure) | Unit of measure code
 If not provided and `productId` is given, the unit of measure from the product catalog is used ||
 || **sort**
 [`integer`](../../../data-types.md) | Sorting ||
@@ -153,39 +153,39 @@ HTTP status: **200**
 
 ```json
 {
-   "result": {
-      "productRow": {
-         "id": 17647,
-         "ownerId": 13142,
-         "ownerType": "D",
-         "productId": 9621,
-         "price": 80000,
-         "quantity": 2,
-         "discountTypeId": 2,
-         "discountRate": 20,
-         "taxRate": 20,
-         "taxIncluded": "Y",
-         "measureCode": 796,
-         "sort": 10,
-         "type": 4,
-         "productName": "iphone 14",
-         "priceAccount": 80000,
-         "priceExclusive": 66666.67,
-         "priceNetto": 83333.34,
-         "priceBrutto": 100000.01,
-         "discountSum": 16666.67,
-         "customized": "Y",
-         "measureName": "pcs",
-         "xmlId": ""
+   "result":{
+      "productRow":{
+         "id":17647,
+         "ownerId":13142,
+         "ownerType":"D",
+         "productId":9621,
+         "price":80000,
+         "quantity":2,
+         "discountTypeId":2,
+         "discountRate":20,
+         "taxRate":20,
+         "taxIncluded":"Y",
+         "measureCode":796,
+         "sort":10,
+         "type":4,
+         "productName":"iphone 14",
+         "priceAccount":80000,
+         "priceExclusive":66666.67,
+         "priceNetto":83333.34,
+         "priceBrutto":100000.01,
+         "discountSum":16666.67,
+         "customized":"Y",
+         "measureName":"pcs",
+         "xmlId":""
       }
    },
-   "time": {
-      "start": 1716887721.77879,
-      "finish": 1716887723.259695,
-      "duration": 1.4809050559997559,
-      "processing": 1.2986550331115723,
-      "date_start": "2024-05-28T12:15:21+02:00",
-      "date_finish": "2024-05-28T12:15:23+02:00"
+   "time":{
+      "start":1716887721.77879,
+      "finish":1716887723.259695,
+      "duration":1.4809050559997559,
+      "processing":1.2986550331115723,
+      "date_start":"2024-05-28T12:15:21+02:00",
+      "date_finish":"2024-05-28T12:15:23+02:00"
    }
 }
 ```
@@ -209,8 +209,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error": "OWNER_NOT_FOUND",
-   "error_description": "Owner was not found"
+   "error":"OWNER_NOT_FOUND",
+   "error_description":"Owner was not found"
 }
 ```
 
@@ -220,7 +220,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of object is not supported ||
+|| `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of objects is not supported ||
 || `ACCESS_DENIED` | Access denied ||
 || `OWNER_NOT_FOUND` | The provided CRM object was not found ||
 || `100` | Required parameters were not provided ||

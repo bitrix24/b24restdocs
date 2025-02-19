@@ -1,15 +1,15 @@
-# Complete the business process task bizproc.task.complete
+# Complete the workflow task bizproc.task.complete
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method completes a business process task:
+This method completes a workflow task:
 - Document approval
 - Document acknowledgment
 - Request for additional information
 - Request for additional information with rejection
-  
+
 You can only complete your own task.
 
 {% note tip "User Documentation" %}
@@ -20,24 +20,24 @@ You can only complete your own task.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **TASK_ID***
-[`integer`](../../data-types.md) | Task identifier.
+[`integer`](../../data-types.md) | Identifier of the task.
 
-You can obtain the identifier using the [bizproc.task.list](./bizproc-task-list.md) method ||
+You can obtain the identifier using the [bizproc.task.list](./bizproc-task-list.md) method. ||
 || **STATUS***
-[`integer` \| `string`](../../data-types.md) | Target status of the task. Possible values: 
+[`integer` \| `string`](../../data-types.md) | Target status of the task. Possible values:
 
 - `1` or `yes` — yes, approved
 - `2` or `no` — no, rejected
 - `3` or `ok` — ok, acknowledged
 - `4` or `cancel` — cancellation
 
-The set of acceptable values varies depending on the type of task:
+The set of permissible values changes depending on the type of task:
 - Document approval — `1` or `2`
 - Document acknowledgment — `3`
 - Request for additional information — `3`
@@ -46,13 +46,13 @@ The set of acceptable values varies depending on the type of task:
 || **COMMENT**
 [`string`](../../data-types.md) | User comment.
 
-The requirement for this parameter depends on the task settings ||
+The requirement for this parameter depends on the task settings. ||
 || **FIELDS**
-[`object`](../../data-types.md) | An object describing fields for completing tasks with a request for additional information in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
+[`object`](../../data-types.md) | An object describing the fields for completing tasks with a request for additional information in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — symbolic identifier of the task field
-- `value_N` — value of the field
+- `value_N` — field value
 
-You can obtain field descriptions in the task using the [bizproc.task.list](./bizproc-task-list.md) method in the object `"PARAMETERS": "Fields"` of the response. The structure of the field object description:
+You can obtain descriptions of the fields in the task using the [bizproc.task.list](./bizproc-task-list.md) method in the object `"PARAMETERS": "Fields"` of the response. The structure of the field object description:
 
 ```json
 "PARAMETERS": {
@@ -73,18 +73,18 @@ You can obtain field descriptions in the task using the [bizproc.task.list](./bi
 
 `Id` — symbolic identifier of the task field.
 
-The `Default` field contains default values that can be passed for task completion. These values are converted to an external representation:
+The `Default` contains default values that can be passed for task completion. These values are converted to an external representation:
 - for dates — in the rest ATOM ISO-8601 format
 - for files — as a link to the file 
 
 Values are passed in this format to the `bizproc.task.complete` method. They are then converted to an internal representation:
 - dates from the rest format are converted to internal format
-- files are saved and attached to the business process ||
+- files are saved and attached to the workflow. ||
 |#
 
 ## Code Example
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -158,7 +158,7 @@ Values are passed in this format to the `bizproc.task.complete` method. They are
 {% endlist %}
 
 ## Response Handling
- 
+
 HTTP status: **200**
 
 ```json
@@ -183,9 +183,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the task was completed successfully ||
+[`boolean`](../../data-types.md) | Returns `true` if the task was completed successfully. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the time taken for the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
@@ -202,20 +202,20 @@ HTTP status: **400**
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
- 
+
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ERROR_TASK_VALIDATION` | empty TASK_ID | `ID` of the task not specified ||
-|| `ERROR_TASK_VALIDATION` | incorrect STATUS | Incorrect task status specified ||
-|| `ERROR_TASK_NOT_FOUND` | Task not found | No task found with the specified `ID` ||
-|| `ERROR_TASK_COMPLETED` | Task already completed | The task has already been completed previously ||
-|| `ERROR_TASK_TYPE` | Incorrect task type | Incorrect task type. This task cannot be completed via REST ||
-|| `ERROR_TASK_EXECUTION` | error text from the task | The specified error occurred during task execution ||
+|| `ERROR_TASK_VALIDATION` | empty TASK_ID | `ID` of the task is not specified. ||
+|| `ERROR_TASK_VALIDATION` | incorrect STATUS | An incorrect task status is specified. ||
+|| `ERROR_TASK_NOT_FOUND` | Task not found | No task found with the specified `ID`. ||
+|| `ERROR_TASK_COMPLETED` | Task already completed | The task has already been completed. ||
+|| `ERROR_TASK_TYPE` | Incorrect task type | Incorrect task type. This task cannot be completed via REST. ||
+|| `ERROR_TASK_EXECUTION` | error text from the task | An error occurred during the execution of the task. ||
 |#
- 
+
  {% include [system errors](../../../_includes/system-errors.md) %}
 
- ## Continue Learning 
- 
+## Continue Learning
+
  - [{#T}](./index.md)
  - [{#T}](./bizproc-task-list.md)

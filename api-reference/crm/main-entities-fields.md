@@ -938,7 +938,7 @@
 
 - Activities
 
-    The field description is returned by the method [crm.activity.fields](./timeline/activities/crm-activity-fields.md)
+    The field description is returned by the method [crm.activity.fields](./timeline/activities/activity-base/crm-activity-fields.md)
 
     #| 
     || **Name** | **Description** | **Read** | **Write** ||

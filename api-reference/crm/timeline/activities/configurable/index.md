@@ -22,8 +22,8 @@ Configurable deals are a type of deal that can only be created from the applicat
 || [crm.activity.configurable.add](./crm-activity-configurable-add.md) | Adds a new configurable deal to the timeline ||
 || [crm.activity.configurable.update](./crm-activity-configurable-update.md) | Updates a configurable deal ||
 || [crm.activity.configurable.get](./crm-activity-configurable-get.md) | Retrieves information about the deal ||
-|| [crm.activity.delete](../crm-activity-delete.md) | Deletes a configurable deal by its identifier ||
-|| [crm.activity.list](../crm-activity-list.md) | Retrieves a list of all configurable deals for a CRM entity filtered by `PROVIDER_ID` = `CONFIGURABLE_REST_APP` ||
+|| [crm.activity.delete](../activity-base/crm-activity-delete.md) | Deletes a configurable deal by its identifier ||
+|| [crm.activity.list](../activity-base/crm-activity-list.md) | Retrieves a list of all configurable deals for a CRM entity filtered by `PROVIDER_ID` = `CONFIGURABLE_REST_APP` ||
 |#
 
 {% note warning %}

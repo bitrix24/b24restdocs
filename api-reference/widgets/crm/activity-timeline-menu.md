@@ -144,7 +144,7 @@ In the case of embedding the widget in a custom object, the type identifier can 
 || **ASSOCIATED_ENTITY_ID***  
 [`string`](../../data-types.md) | Identifier of the CRM activity for which the widget was opened.
 
-Can be used to retrieve additional information using the [crm.activity.get](../../crm/timeline/activities/crm-activity-get.md) method.
+Can be used to retrieve additional information using the [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md) method.
 
 ||
 || **ASSOCIATED_ENTITY_TYPE_ID***  

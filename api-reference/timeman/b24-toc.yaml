@@ -1,21 +1,21 @@
-title: Time Tracking
-href: index.md
-items:
-  - name: Overview of Methods
-    href: index.md
-  - name: Basic Methods
-    include:
-      path: base/b24-toc.yaml
-      mode: link
-  - name: Office Networks
-    include:
-      path: networkrange/b24-toc.yaml
-      mode: link
-  - name: Time Control
-    include:
-      path: timecontrol/b24-toc.yaml
-      mode: link
-  - name: Work Schedule
-    include:
-      path: schedule/b24-toc.yaml
-      mode: link
+title: Time Tracking  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Workday  
+    include:  
+      path: base/b24-toc.yaml  
+      mode: link  
+  - name: Office Networks  
+    include:  
+      path: networkrange/b24-toc.yaml  
+      mode: link  
+  - name: Time Control  
+    include:  
+      path: timecontrol/b24-toc.yaml  
+      mode: link  
+  - name: Work Schedule  
+    include:  
+      path: schedule/b24-toc.yaml  
+      mode: link  

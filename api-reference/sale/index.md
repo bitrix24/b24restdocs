@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ Namespaces for methods related to the Online Store:
 || [Orders from External Sources](./trade-binding/index.md) | Methods for working with Orders from external sources ||
 || [Order Properties](./property/index.md) | Methods for working with order properties ||
 || [Property Groups](./property-group/index.md) | Methods for working with property groups ||
-|| [Property Variants](./property-variant/index.md) | Methods for working with property variants ||
+|| [Order Property Variants of Type ENUM](./property-variant/index.md) | Methods for working with order property variants of type ENUM ||
 || [Trading Platforms](./trade-platform/index.md) | Methods for working with Trading Platforms ||
 || [Payments](./payment/index.md) | Methods for working with Payments ||
 || [Payer Types](./person-type/index.md) | Methods for working with Payer Types ||
@@ -48,7 +48,7 @@ Namespaces for methods related to the Online Store:
 || [Status Localization](./status-lang/index.md) | Methods for working with status localization ||
 || [Linking Basket Item to Payment](./payment-item-basket/index.md) | Methods for linking basket items to payments ||
 || [Linking Payments to Shipments](./payment-item-shipment/index.md) | Methods for linking payments to shipments ||
-|| [Linking Property](./property-relation/index.md) | Methods for working with property links ||
+|| [Linking Properties](./property-relation/index.md) | Methods for linking properties ||
 || [Property Values](./property-value/index.md) | Methods for working with property values ||
 || [Cash Registers](./cashbox/index.md) | Methods for working with cash registers and receipts ||
 || [Delivery Services](./delivery/delivery/index.md) | Methods and webhooks for working with delivery services ||

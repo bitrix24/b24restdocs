@@ -1,12 +1,12 @@
 # Log Message Journal
 
-The log message journal is a special type of timeline record created in the context of a specific [Rest application](https://helpdesk.bitrix24.com/examples/app.zip). It contains less important data than other records and is distinguished by a muted gray background, attracting less attention.
+The log message journal is a special type of timeline record. It contains less important data than other timeline entries and is distinguished by a muted gray background, drawing less attention.
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: `depends on the method`
 
-A list of methods for managing the log message journal.
+List of methods for managing the log message journal.
 
 {% note info "" %}
 

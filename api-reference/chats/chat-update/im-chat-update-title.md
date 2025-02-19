@@ -1,4 +1,4 @@
-# Change Chat Title im.chat.add
+# Change Chat Title im.chat.updateTitle
 
 {% note warning "We are still updating this page" %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for standard writing
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.chat.add` updates the chat title.
+The method `im.chat.updateTitle` updates the chat title.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -85,5 +85,5 @@ The method `im.chat.add` updates the chat title.
 || **Code** | **Description** ||
 || **CHAT_ID_EMPTY** | Chat identifier not provided ||
 || **TITLE_EMPTY** | New chat title not provided ||
-|| **WRONG_REQUEST** | Title already set or specified chat does not exist ||
+|| **WRONG_REQUEST** | Title is already set or the specified chat does not exist ||
 |#

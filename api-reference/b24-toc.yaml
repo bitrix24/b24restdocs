@@ -113,6 +113,10 @@ items:
     include:
       path: pay-system/b24-toc.yaml
       mode: link
+  - name: Signature
+    include:
+      path: sign/b24-toc.yaml
+      mode: link
   - name: Users
     include:
       path: user/b24-toc.yaml
@@ -129,7 +133,7 @@ items:
     include:
       path: messageservice/b24-toc.yaml
       mode: link
-  - name: Working Groups and Projects
+  - name: Workgroups and Projects
     include:
       path: sonet-group/b24-toc.yaml
       mode: link

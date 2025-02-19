@@ -1,17 +1,17 @@
-title: Property Variants
-href: index.md
-items: 
-  - name: Overview of Methods
-    href: index.md
-  - name: Add Property Variant
-    href: sale-property-variant-add.md
-  - name: Update Property Variant Fields
-    href: sale-property-variant-update.md
-  - name: Get Property Variant Value by ID
-    href: sale-property-variant-get.md
-  - name: Get List of Property Variants
-    href: sale-property-variant-list.md
-  - name: Delete Property Variant
-    href: sale-property-variant-delete.md
-  - name: Get Available Fields of Property Variant
-    href: sale-property-variant-get-fields.md
+title: Order Property ENUM Options  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Add Property Option  
+    href: sale-property-variant-add.md  
+  - name: Update Property Option Fields  
+    href: sale-property-variant-update.md  
+  - name: Get Property Option by ID  
+    href: sale-property-variant-get.md  
+  - name: Get List of Property Options  
+    href: sale-property-variant-list.md  
+  - name: Delete Property Option  
+    href: sale-property-variant-delete.md  
+  - name: Get Available Property Option Fields  
+    href: sale-property-variant-get-fields.md  

@@ -3,22 +3,10 @@ href: index.md
 items:
   - name: Overview of methods
     href: index.md
-  - name: CRM activity fields
-    href: fields.md
-  - name: Get list of activity fields
-    href: crm-activity-fields.md
-  - name: Add system activity
-    href: crm-activity-add.md
-  - name: Update system activity
-    href: crm-activity-update.md
-  - name: Get list of activities
-    href: crm-activity-list.md
-  - name: Get activity by ID
-    href: crm-activity-get.md
-  - name: Get communication description
-    href: crm-activity-communication-fields.md
-  - name: Delete activity
-    href: crm-activity-delete.md 
+  - name: Systems Deal
+    include:
+      path: activity-base/b24-toc.yaml
+      mode: link
   - name: Configurable Deal
     include:
       path: configurable/b24-toc.yaml

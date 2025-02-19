@@ -4,7 +4,7 @@
 > 
 > Who can execute the method: any user
 
-The method `crm.deal.fields` returns the description of deal fields, including custom fields.
+The method `crm.deal.fields` returns the description of deal fields, including custom ones. A table with the description of standard fields can be found in the article [Fields of Main CRM Objects](../main-entities-fields.md).
 
 ## Method Parameters
 
@@ -12,7 +12,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -334,7 +334,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Assignee"
+            "title": "Responsible"
         },
         "CREATED_BY_ID": {
             "type": "user",
@@ -455,7 +455,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Identifier of the item in the external source"
+            "title": "Identifier in External Source"
         },
         "UTM_SOURCE": {
             "type": "string",
@@ -482,7 +482,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Campaign Designation"
+            "title": "Campaign Identifier"
         },
         "UTM_CONTENT": {
             "type": "string",
@@ -555,6 +555,7 @@ where:
 - `value_n` — information about the field in the format [crm_rest_field_description](../data-types.md#crm_rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+
 |#
 
 ## Error Handling

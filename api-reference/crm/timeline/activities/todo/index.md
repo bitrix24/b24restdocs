@@ -4,7 +4,7 @@
 > 
 > User documentation: [Universal deal in CRM](https://helpdesk.bitrix24.com/open/21458972/)
 
-Universal deals are a type of deal with advanced settings. In the universal deal detail form, you can sync the deal with the calendar, select a meeting location with the client, add colleagues, choose a client from the CRM entity, categorize deals by color, and select a conference room. Some advanced settings are available to the employee on the Bitrix24 side.
+Universal deals are a type of deal with advanced settings. In the universal deal detail form, you can synchronize the deal with the calendar, select a meeting location with the client, add colleagues, choose a client from the CRM entity, categorize deals by color, and select a conference room. Some advanced settings are available to employees on the Bitrix24 side.
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -20,9 +20,9 @@ Universal deals are a type of deal with advanced settings. In the universal deal
 || [crm.activity.todo.updateDeadline](./crm-activity-todo-update-deadline.md) | Updates the deadline of a universal deal ||
 || [crm.activity.todo.updateDescription](./crm-activity-todo-update-description.md) | Updates the description of a universal deal ||
 || [crm.activity.todo.updateResponsibleUser](./crm-activity-todo-update-responsible-user.md) | Updates the responsible user for the universal deal ||
-|| [crm.activity.get](../crm-activity-get.md) | Retrieves information about a universal deal by its identifier ||
-|| [crm.activity.list](../crm-activity-list.md) | Retrieves a list of all universal deals for a CRM entity with the filter `PROVIDER_ID` = `"CRM_TODO"` ||
-|| [crm.activity.delete](../crm-activity-delete.md) | Deletes a universal deal by its identifier ||
+|| [crm.activity.get](../activity-base/crm-activity-get.md) | Retrieves information about a universal deal by its ID ||
+|| [crm.activity.list](../activity-base/crm-activity-list.md) | Retrieves a list of all universal deals for a CRM entity with the filter `PROVIDER_ID` = `"CRM_TODO"` ||
+|| [crm.activity.delete](../activity-base/crm-activity-delete.md) | Deletes a universal deal by its ID ||
 |#
 
 ## Additional Information

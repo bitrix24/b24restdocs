@@ -2,6 +2,20 @@
 
 ## 2025
 
+### February 19, 2025
+
+- Updated documentation on methods for working with [stores](./api-reference/catalog/store/index.md) in the Sales Catalog section.
+- Added a section with methods for the [Signature](./api-reference/sign/index.md) module. New methods [sign.b2e.personal.tail](./api-reference/sign/sign-b2e-personal-tail.md) and [sign.b2e.mysafe.tail](./api-reference/sign/sign-b2e-mysafe-tail.md) were added.
+- Updated the main page of the [Stores](./api-reference/catalog/store/index.md) section. Added introductory information, as well as an overview of methods and connections.
+- Updated the main page of the [Time Control](./api-reference/timeman/timecontrol/index.md) section. Added introductory information, as well as an overview of methods and connections.
+- Updated the main page of the [VAT Rates](./api-reference/catalog/vat/index.md) section. Added introductory information, as well as an overview of methods and connections.
+- Updated the main page of the [Order Property Variants of ENUM Type](./api-reference/sale/property-variant/index.md) section. Added introductory information, as well as an overview of methods and connections.
+- Updated the main page of the [Shipment Item Table](./api-reference/sale/shipment-item/index.md) section. Added introductory information, as well as an overview of methods and connections.
+- Updated the main page of the [Business Process Tasks](./api-reference/bizproc/bizproc-task/index.md) section. Added introductory information, as well as an overview of methods and connections.
+- Updated the main page of the [Working Day](./api-reference/timeman/base/index.md) section. Added introductory information, as well as an overview of methods and connections.
+- Updated information on methods for CRM activities [crm.activity.*](./api-reference/crm/timeline/activities/activity-base/index.md).
+- Updated the main page of the [Product and Variation Images](./api-reference/catalog/product-image/index.md) section. Added introductory information, as well as an overview of methods and connections.
+
 ### February 12, 2025
 
 - Updated information on universal deal methods in CRM [crm.activity.todo.*](./api-reference/crm/timeline/activities/todo/index.md)
@@ -230,7 +244,7 @@
 
 ### August 27, 2024
 
-- Thanks to [Andrey Nikolaev](https://github.com/gromdron)! Updated article [Getting a List of Activities](./api-reference/crm/timeline/activities/crm-activity-list.md), added important nuances regarding the relationships of activities with CRM objects, as well as three additional specific examples.
+- Thanks to [Andrey Nikolaev](https://github.com/gromdron)! Updated article [Getting a List of Activities](./api-reference/crm/timeline/activities/activity-base/crm-activity-list.md), added important nuances regarding the relationships of activities with CRM objects, as well as three additional specific examples.
   
 ### August 21, 2024
 

@@ -20,7 +20,7 @@ Some data may be missing — we will complete it soon.
 
 Applications can create activities with a special type provider. Such an activity will have a corresponding [icon](*icon), it will be displayed in the timeline, and clicking on the activity will open the application in a slider with options in PLACEMENT_OPTIONS.
 
-Activities of this subtype can only be modified/deleted in the context of the application that created them. Therefore, when updating such an activity using the [crm.activity.update](../crm-activity-update.md) method via webhook, an error will occur: `Access denied! Application context required`.
+Activities of this subtype can only be modified/deleted in the context of the application that created them. Therefore, when updating such an activity using the [crm.activity.update](../activity-base/crm-activity-update.md) method via webhook, an error will occur: `Access denied! Application context required`.
 
 ## Parameters
 

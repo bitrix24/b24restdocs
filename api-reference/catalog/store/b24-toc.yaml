@@ -1,19 +1,17 @@
-title: Inventory
+title: Warehouses
 href: index.md
 items: 
   - name: Overview of Methods
     href: index.md
-  - name: Inventory Resource
-    href: resource.md
-  - name: Add Inventory
+  - name: Add Warehouse
     href: catalog-store-add.md
-  - name: Delete Inventory
-    href: catalog-store-delete.md
-  - name: Get Inventory Field Values
-    href: catalog-store-get.md
-  - name: Get Inventory Fields
-    href: catalog-store-get-fields.md
-  - name: Get List of Inventories
-    href: catalog-store-list.md
-  - name: Update Inventory Fields
+  - name: Update Warehouse
     href: catalog-store-update.md
+  - name: Get Warehouse Field Values
+    href: catalog-store-get.md
+  - name: Get List of Warehouses
+    href: catalog-store-list.md   
+  - name: Delete Warehouse
+    href: catalog-store-delete.md
+  - name: Get Warehouse Fields
+    href: catalog-store-get-fields.md
