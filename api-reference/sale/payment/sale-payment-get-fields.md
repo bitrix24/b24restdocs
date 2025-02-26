@@ -10,7 +10,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -253,7 +253,7 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "type": "string"
+                "type": "double"
             },
             "psCurrency": {
                 "isImmutable": false,
@@ -265,7 +265,7 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "type": "integer"
+                "type": "string"
             },
             "psResponseDate": {
                 "isImmutable": false,
@@ -346,8 +346,8 @@ HTTP status: **200**
         "finish": 1713446682.788821,
         "duration": 0.40181493759155273,
         "processing": 0.01438593864440918,
-        "date_start": "2024-04-18T16:24:42+03:00",
-        "date_finish": "2024-04-18T16:24:42+03:00"
+        "date_start": "2024-04-18T16:24:42+02:00",
+        "date_finish": "2024-04-18T16:24:42+02:00"
     }
 }
 ```
@@ -360,7 +360,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **payment**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the [sale_order_payment](../data-types.md) object, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [sale_order_payment](../data-types.md), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#

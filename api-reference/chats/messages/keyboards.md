@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed to meet writing standards
 
@@ -37,9 +37,9 @@ And in the mobile version, it looks like this:
 
 ![keyboard example](./_images/keyboard_mob.jpg)
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
-{% include [Explanation about restCommand](../_includes/rest-command.md) %}
+{% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
 {% list tabs %}
 
@@ -103,24 +103,24 @@ And in the mobile version, it looks like this:
 
 {% endlist %}
 
-A keyboard is a set of buttons, and each button can consist of the following keys:
+A keyboard is a set of buttons, each button can consist of the following keys:
 
 - **TEXT** — button text
 - **LINK** — link
 - **COMMAND** — command that will be sent to the bot
 - **COMMAND_PARAMS** — parameters for the command
-- **BG_COLOR_TOKEN** — token for the button color in the chat. It can take one of the following values:
+- **BG_COLOR_TOKEN** — token for the button color in the chat. Can take one of the following values:
   - `primary`
   - `secondary`
   - `alert`
   - `base`
     Defaults to `base`
 - **BG_COLOR** — button color in HEX code format. Used for backward compatibility in buttons of open line chats
-- **BLOCK** — if set to Y, the keyboard will be blocked after clicking one button. Only buttons that send ajax to the bot block the keyboard (note that links to external resources **LINK** and instant actions **ACTION** do not block the keyboard). Blocking is necessary to limit the execution of ajax commands due to their asynchronous nature and waiting time: after pressing a button, the keyboard is blocked and waits for a response from the Bitrix24 backend, so the user does not press a second button, etc. The backend processes commands and decides whether to unblock the keyboard by creating a new one or hiding it.
+- **BLOCK** — if set to Y, the keyboard will be blocked after clicking one button. Only buttons that send ajax to the bot block the keyboard (note that links to external resources **LINK** and instant actions **ACTION** do not block the keyboard). Blocking is needed to limit the execution of ajax commands due to their asynchronous nature and waiting time: after pressing a button, the keyboard is blocked and waits for a response from the Bitrix24 backend, so the user does not press a second button, etc. The backend processes commands and decides whether to unblock the keyboard by creating a new one or hiding it
 - **DISABLED** — if set to Y, this button will not be clickable
 - **TEXT_COLOR** — button text color in HEX code format. Used for backward compatibility in buttons of open line chats
-- **DISPLAY** — button type. If the type **BLOCK** is specified, only this button can be on one line. If the type **LINE** is specified, the buttons will be arranged one after another.
-- **WIDTH** — button width. **Note**, for maximum convenience, it is not recommended to make a set of buttons in one line wider than 225 pixels; this is the maximum width on a mobile device.
+- **DISPLAY** — button type. If the type **BLOCK** is specified, only this button can be on one line. If the type **LINE** is specified, the buttons will be arranged one after another
+- **WIDTH** — button width. **Note**, for maximum convenience, it is not recommended to make a set of buttons in one line wider than 225 pixels, this is the maximum width on a mobile device
 - **APP_ID** — identifier of the installed application for the chat
 - **APP_PARAMS** — parameters for launching the application for the chat
 - **ACTION** — action, can be one of the following types ([REST revision 28](../../chat-bots/im-revision-get.md)):
@@ -129,12 +129,12 @@ A keyboard is a set of buttons, and each button can consist of the following key
   - **COPY** — copy text to clipboard
   - **CALL** — call
   - **DIALOG** — open the specified
-- **ACTION_VALUE** — value, which means different things for each type ([REST revision 28](../../chat-bots/im-revision-get.md)):
+- **ACTION_VALUE** — value, which means its own for each type ([REST revision 28](../../chat-bots/im-revision-get.md)):
   - **PUT** — text that will be inserted into the input field
   - **SEND** — text that will be sent
   - **COPY** — text that will be copied to the clipboard
   - **CALL** — phone number in international format
-  - **DIALOG** — dialog ID, which can be a user ID or chat ID in the format chatXXX
+  - **DIALOG** — dialog ID, this can be the user ID or chat ID in the format chatXXX
 
 The required fields are **TEXT** and either the **LINK** field or the **COMMAND** field.
 
@@ -144,13 +144,13 @@ If the **APP_ID** and **APP_PARAMS** fields are specified, the button will open 
 
 If you need to create two rows of buttons in a row, you need to add a button with the following content to separate them: `"TYPE" => "NEWLINE"`.
 
-## Processing Commands by the Chatbot
+## Handling Commands by the Chatbot
 
 To handle button presses on the keyboard, **commands** are used.
 
-1. To ensure that the command works on the keyboard (and not only), it must first be registered through the method [imbot.command.register](../../chat-bots/commands/imbot-command-register.md) (to make the command available only for the keyboard, it must be created with the key `"HIDDEN" => "Y"`).
+1. To ensure that the command works on the keyboard (and not only), it must be registered in advance using the method [imbot.command.register](../../chat-bots/commands/imbot-command-register.md) (to make the command available only for the keyboard, it must be created with the key `"HIDDEN" => "Y"`).
 
-    The button specifies the following keys:
+    In the button, the following keys are specified:
 
     ```php
     "COMMAND" => "page", // command that will be sent to the chatbot
@@ -161,30 +161,26 @@ To handle button presses on the keyboard, **commands** are used.
 
 3. Inside this event, you need to either create a new message or edit an old one (thus creating the effect of pagination).
 
-4. Inside the event, the array **[data][COMMAND]** will contain data about the triggered event. It has the value **COMMAND_CONTEXT** - a special key that describes in what context the command was called:
+4. Inside the event, the array **[data][COMMAND]** will contain data about the triggered event. It has the value **COMMAND_CONTEXT** - this is a special key that describes the context in which the command was called:
    - if the command was written by the user themselves, it will be **TEXTAREA**;
    - if the command came from the keyboard, it will be **KEYBOARD**;
    - if the command came from the context menu, it will be **MENU**.
 
 You can see a complete example in the updated version of the [EchoBot](https://github.com/bitrix24com/bots) (**bot.php**).
 
-## Processing the Opening of the Chat Application
+## Handling Opening the Chat Application
 
 Chat applications launched from the context menu operate on the principles of [Contextual Applications](../outdated/chat-apps.md).
 
 ## Examples of Using the Keyboard
 
 1. **EchoBot**
-    Pagination, buttons when the command "Help" is called.
-
-    @[youtube](2v5MUeVSBX4)
+    Pagination, buttons when the command "Help" is called
 
 2. **Martha**
     Just write to Martha "Play with me!". The keyboard is used as a game board:
 
-    @[youtube](qSDKsDwJsBI)
-
 3. **Giphy**
-    The **More** button allows you to view other images on the same topic without re-entering the search word:
+    The **More** button allows you to view other images on the same topic without re-entering the search term:
 
     ![Giphy Keyboard](./_images/keyboard2.png)

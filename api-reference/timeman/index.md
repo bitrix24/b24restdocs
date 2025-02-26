@@ -6,33 +6,49 @@ Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
+## Overview of Methods 
+
 > Scope: [`timeman`](../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can perform the method: depending on the method
 
-## List of Methods
+### Workday {#all-methods}
 
 #| 
-|| **Method** | **Description** | **Version** ||
-|| **Workday** | | ||
-|| [timeman.settings](./base/timeman-settings.md) | Retrieve user work time settings | 17.0.2 ||
-|| [timeman.status](./base/timeman-status.md) | Get information about the user's current workday | 17.0.2 ||
-|| [timeman.open](./base/timeman-open.md) | Start a new workday or resume a closed or paused one | 17.0.2 ||
-|| [timeman.close](./base/timeman-close.md) | Close the workday | 17.0.2 ||
-|| [timeman.pause](./base/timeman-pause.md) | Pause the workday | 17.0.2 ||
-|| **Office Networks** | | ||
-|| [timeman.networkrange.check](./networkrange/timeman-networkrange-check.md) | Method to check if an IP address falls within office network address ranges. | 18.5.0 ||
-|| [timeman.networkrange.get](./networkrange/timeman-networkrange-get.md) | Method to retrieve address ranges that belong to the office network. | 18.5.0 ||
-|| [timeman.networkrange.set](./networkrange/timeman-networkrange-set.md) | Method to set address ranges that belong to the office network. | 18.5.0 ||
-|| **Time Control** | | ||
-|| [timeman.timecontrol.report.add](./timecontrol/timeman-timecontrol-report-add.md) | Method to submit a report on identified absences. | 18.5.0 ||
-|| [timeman.timecontrol.reports.get](./timecontrol/timeman-timecontrol-reports-get.md) | Method to retrieve reports on identified absences. | 18.5.0 ||
-|| [timeman.timecontrol.reports.settings.get](./timecontrol/timeman-timecontrol-reports-settings-get.md) | Method to get user settings for building the time control tool's report interface. | 18.5.0 ||
-|| [timeman.timecontrol.reports.users.get](./timecontrol/timeman-timecontrol-reports-users-get.md) | Method to get a list of users belonging to the specified department. | 18.5.0 ||
-|| [timeman.timecontrol.settings.get](./timecontrol/timeman-timecontrol-settings-get.md) | Method to retrieve settings for the time control tool. | 18.5.0 ||
-|| [timeman.timecontrol.settings.set](./timecontrol/timeman-timecontrol-settings-set.md) | Method to set settings for the time control tool. | 18.5.0 ||
-|| **Work Schedule** | | ||
-|| [timeman.schedule.get](./schedule/timeman-schedule-get.md) | Method to retrieve the work schedule by its identifier. | ||
+|| **Method** | **Description** ||
+|| [timeman.open](./base/timeman-open.md) | Start a new workday or resume a closed one ||
+|| [timeman.pause](./base/timeman-pause.md) | Pause the workday ||
+|| [timeman.close](./base/timeman-close.md) | Close the workday ||
+|| [timeman.status](./base/timeman-status.md) | Get information about the user's current workday ||
+|| [timeman.settings](./base/timeman-settings.md) | Get the user's work time settings ||
+|#
+
+### Office Networks
+
+#| 
+|| **Method** | **Description** ||
+|| [timeman.networkrange.get](./networkrange/timeman-networkrange-get.md) | Retrieves the ranges of network addresses that are part of the office network ||
+|| [timeman.networkrange.set](./networkrange/timeman-networkrange-set.md) | Sets the ranges of network addresses that are part of the office network ||
+|| [timeman.networkrange.check](./networkrange/timeman-networkrange-check.md) | Checks if an IP address is within the ranges of the office network ||
+|#
+
+### Time Control
+
+#| 
+|| **Method** | **Description** ||
+|| [timeman.timecontrol.report.add](./timecontrol/timeman-timecontrol-report-add.md) | Sends a report of identified absences ||
+|| [timeman.timecontrol.reports.get](./timecontrol/timeman-timecontrol-reports-get.md) | Retrieves a report of identified absences ||
+|| [timeman.timecontrol.settings.get](./timecontrol/timeman-timecontrol-settings-get.md) | Gets the settings for the time control tool ||
+|| [timeman.timecontrol.settings.set](./timecontrol/timeman-timecontrol-settings-set.md) | Sets the settings for the time control tool ||
+|| [timeman.timecontrol.reports.settings.get](./timecontrol/timeman-timecontrol-reports-settings-get.md) | Gets user settings for building the interface of the time control tool's reports ||
+|| [timeman.timecontrol.reports.users.get](./timecontrol/timeman-timecontrol-reports-users-get.md) | Retrieves a list of users in the specified department ||
+|#
+
+### Work Schedule
+
+#| 
+|| **Method** | **Description** ||
+|| [timeman.schedule.get](./schedule/timeman-schedule-get.md) | Retrieves the work schedule by ID ||
 |#
 
 ## Several Examples

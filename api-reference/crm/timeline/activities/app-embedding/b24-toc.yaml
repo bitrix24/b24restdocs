@@ -1,7 +1,7 @@
-title: Embedding Applications
-href: index.md
-items:
-  - name: List of Embedding Locations
-    href: index.md
-  - name: Create CRM Activities from Applications
-    href: activity-app.md
+title: Embedding Applications  
+href: index.md  
+items:  
+  - name: Embedding Applications  
+    href: index.md  
+  - name: How to Create a CRM Activity from an Application  
+    href: activity-app.md  

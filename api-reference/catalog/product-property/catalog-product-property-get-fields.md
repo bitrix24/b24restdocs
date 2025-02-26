@@ -1,8 +1,8 @@
-# Get Product or Variation Property Fields catalog.productProperty.getFields
+# Get Product Property or Variation Fields catalog.productProperty.getFields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ Some data may be missing — we will complete it soon.
 catalog.productProperty.getFields()
 ```
 
-The method returns the fields of product or variation properties.
+The method returns the fields of product properties or variations.
 
 ## Parameters
 
@@ -36,16 +36,36 @@ No parameters.
 
 ## Examples
 
+{% include [Examples Note](../../../_includes/examples.md) %}
+
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.productProperty.getFields
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.productProperty.getFields
+    ```
 
 - JS
 
     ```js
     BX24.callMethod(
-        'catalog.productProperty.delete',
-        {
-            id: 128
-        },
+        'catalog.productProperty.getFields',
+        {},
         function(result)
         {
             if(result.error())
@@ -56,13 +76,26 @@ No parameters.
     );
     ```
 
-{% endlist %}
+- PHP
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.productProperty.getFields',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
 
 ## Returned Fields
 
-#|
+#| 
 || **Field** | **Description** | **Note** ||
 || **active** 
 [`char`](../../data-types.md) | Is the property active. | ||
@@ -97,9 +130,9 @@ No parameters.
 || **searchable** 
 [`char`](../../data-types.md) | Are the property values included in the search. | ||
 || **sort** 
-[`integer`](../../data-types.md) | Sorting order. | ||
+[`integer`](../../data-types.md) | Sort order. | ||
 || **timestampX** 
-[`datetime`](../../data-types.md) | Date of the last change of parameters. | Read-only. ||
+[`datetime`](../../data-types.md) | Date of the last modification of parameters. | Read-only. ||
 || **userType** 
 [`string`](../../data-types.md) | User-defined property type. | ||
 || **withDescription** 
@@ -108,4 +141,4 @@ No parameters.
 [`string`](../../data-types.md) | External identifier. | ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Parameters Note](../../../_includes/required.md) %}

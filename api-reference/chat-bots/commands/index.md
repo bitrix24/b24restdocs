@@ -8,10 +8,10 @@ Some data may be missing — we will complete it soon.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- links to pages not yet created are not specified
+- links to pages that have not been created yet are not specified
 - from Sergei's file: how they look, how to apply
 
 {% endnote %}
@@ -28,7 +28,7 @@ Commands can be **global** or **local**.
 
 {% note warning %}
 
-Please note! To process the command, the application must handle the event of adding a command [ONIMCOMMANDADD](./events/on-im-command-add.md).
+Attention! To process a command, the application must handle the command addition event [ONIMCOMMANDADD](./events/on-im-command-add.md).
 
 {% endnote %}
 

@@ -1,4 +1,4 @@
-# Get Enumeration Items "Address Type" crm.enum.addresstype
+# Get Address Type Enumeration Elements crm.enum.addresstype
 
 {% note warning "We are still updating this page" %}
 
@@ -28,7 +28,7 @@ Some data may be missing — we will complete it soon.
 crm.enum.addresstype()
 ```
 
-Returns the enumeration items for "Address Type".
+Returns the enumeration elements for "Address Type".
 
 ## Possible Values
 
@@ -48,8 +48,16 @@ Returns the enumeration items for "Address Type".
             "NAME": "Legal Address"
         },
         {
+            "ID": 8,
+            "NAME": "Correspondence Address"
+        },
+        {
             "ID": 9,
             "NAME": "Beneficiary Address"
+        },
+        {
+            "ID": 11,
+            "NAME": "Delivery Address"
         }
     ],
     "time": {

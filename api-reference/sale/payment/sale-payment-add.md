@@ -15,7 +15,6 @@ This method adds a new payment.
 `type` | **Description** ||
 || **fields***
 [`object`](../../data-types.md)| Field values (detailed description provided [below](#parametr-fields)) for creating a payment in the form of a structure:
-[`object`](../../data-types.md)| Field values (detailed description provided [below](#parametr-fields)) for creating a payment in the form of a structure:
 
 ```js
 fields: {
@@ -83,8 +82,7 @@ Defaults to `N` ||
 || **empPaidId**
 [`user.id`](../../data-types.md) | Identifier of the user who made the payment ||
 || **psStatus**
-[`string`](../../data-types.md) | Payment system status flag — whether the payment was successfully made. Options:
-[`string`](../../data-types.md) | Payment system status flag — whether the payment was successfully made. Options:
+[`string`](../../data-types.md) | Payment system status flag — whether the payment was successful. Options:
 
 - `Y` — yes
 - `N` — no
@@ -93,7 +91,7 @@ Defaults to `null` ||
 || **psStatusCode**
 [`string`](../../data-types.md) | Payment system status code ||
 || **psStatusDescription**
-[`string`](../../data-types.md) | Description of the payment system's operation result ||
+[`string`](../../data-types.md) | Description of the payment system's result ||
 || **psStatusMessage**
 [`string`](../../data-types.md) | Message from the payment system ||
 || **psSum**
@@ -130,7 +128,6 @@ Cost of payment upon delivery. Used for cash on delivery ||
 [`user.id`](../../data-types.md) | Identifier of the user who processed the return ||
 || **payReturnComment**
 [`string`](../../data-types.md) | Return comment ||
-[`string`](../../data-types.md) | Return comment ||
 || **responsibleId**
 [`user.id`](../../data-types.md) | Identifier of the user responsible for the payment ||
 || **empResponsibleId**
@@ -141,23 +138,23 @@ Cost of payment upon delivery. Used for cash on delivery ||
 - `Y` — yes
 - `N` — no
 
-Defaults to `N` ||
+Defaults to N ||
 || **comments**
 [`string`](../../data-types.md) | Payment comments ||
 || **updated1c**
-[`string`](../../data-types.md) | Payment updated via QuickBooks and other similar platforms:
+[`string`](../../data-types.md) | Payment updated via 1C:
 
 - `Y` — yes
 - `N` — no
 
 Defaults to `N` ||
 || **id1c**
-[`string`](../../data-types.md) | Identifier in QuickBooks and other similar platforms ||
+[`string`](../../data-types.md) | Identifier in 1C ||
 || **version1c**
-[`string`](../../data-types.md) | Payment document version from QuickBooks and other similar platforms ||
+[`string`](../../data-types.md) | Payment document version from 1C ||
 || **externalPayment**
 [`string`](../../data-types.md) | Relevant only for on-premise version
-External payment or not. Used for import from QuickBooks and other similar platforms via XML
+External payment or not. Used for import from 1C via XML
 
 - `Y` — yes
 - `F` — yes, loaded with the order
@@ -165,8 +162,7 @@ External payment or not. Used for import from QuickBooks and other similar platf
 
 Defaults to `N` ||
 || **psInvoiceId**
-[`integer`](../../data-types.md) | Payment identifier in the payment system ||
-[`integer`](../../data-types.md) | Payment identifier in the payment system ||
+[`string`](../../data-types.md) | Payment identifier in the payment system ||
 || **marked**
 [`string`](../../data-types.md) | Marking flag. Indicates whether the payment is marked as problematic:
 
@@ -335,11 +331,6 @@ HTTP Status: **200**
             "datePaid": "2024-04-10T09:00:00+02:00",
             "datePayBefore": "2024-04-10T09:00:00+02:00",
             "dateResponsibleId": "2024-04-16T16:32:49+02:00",
-            "dateBill": "2024-04-10T09:00:00+02:00",
-            "dateMarked": "2024-04-16T16:32:49+02:00",
-            "datePaid": "2024-04-10T09:00:00+02:00",
-            "datePayBefore": "2024-04-10T09:00:00+02:00",
-            "dateResponsibleId": "2024-04-16T16:32:49+02:00",
             "empMarkedId": 1,
             "empPaidId": 1,
             "empResponsibleId": 1,
@@ -353,20 +344,16 @@ HTTP Status: **200**
             "paid": "Y",
             "payReturnComment": "",
             "payReturnDate": "2024-04-10T09:00:00+02:00",
-            "payReturnDate": "2024-04-10T09:00:00+02:00",
             "payReturnNum": "",
             "paySystemId": 1,
             "paySystemIsCash": "N",
             "paySystemName": "Bank Transfer (Company)",
-            "paySystemName": "Bank Transfer (Company)",
             "paySystemXmlId": "",
-            "payVoucherDate": "2024-04-10T09:00:00+02:00",
             "payVoucherDate": "2024-04-10T09:00:00+02:00",
             "payVoucherNum": "",
             "priceCod": "100",
             "psCurrency": "USD",
             "psInvoiceId": 1,
-            "psResponseDate": "2024-04-10T09:00:00+02:00",
             "psResponseDate": "2024-04-10T09:00:00+02:00",
             "psStatus": "Y",
             "psStatusCode": "",
@@ -388,8 +375,6 @@ HTTP Status: **200**
         "processing": 3.3574018478393555,
         "date_start": "2024-04-16T17:32:48+02:00",
         "date_finish": "2024-04-16T17:32:52+02:00"
-        "date_start": "2024-04-16T17:32:48+02:00",
-        "date_finish": "2024-04-16T17:32:52+02:00"
     }
 }
 ```
@@ -404,7 +389,7 @@ HTTP Status: **200**
 || **payment**
 [`sale_order_payment`](../data-types.md) | Object with information about the added payment ||
 || **time**
-[`time`](../../data-types.md) | Information about the request processing time ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -425,8 +410,8 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `200040300020` | Insufficient permissions to add payment ||
-|| `100` | Parameter `fields` is missing or empty ||
-|| `0` | Required fields are not provided ||
+|| `100` | Parameter `fields` not specified or empty ||
+|| `0` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

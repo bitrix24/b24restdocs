@@ -2,6 +2,11 @@
 
 ## 2025
 
+### February 26, 2025
+
+- Updated the main page of the [Office Networks](./api-reference/timeman/networkrange/index.md) section. Added introductory information, as well as an overview of methods and connections
+- Added a new section on [Timeline Record Actions](./api-reference/crm/timeline/actions/index.md). Introduced new methods [crm.timeline.item.pin](./api-reference/crm/timeline/actions/crm-timeline-item-pin.md) and [crm.timeline.item.unpin](./api-reference/crm/timeline/actions/crm-timeline-item-unpin.md)
+
 ### February 19, 2025
 
 - Updated documentation on methods for working with [stores](./api-reference/catalog/store/index.md) in the Sales Catalog section.

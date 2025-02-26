@@ -1,0 +1,9 @@
+title: Actions with Records
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Pin a Record in the Timeline
+    href: crm-timeline-item-pin.md
+  - name: Unpin Timeline Record
+    href: crm-timeline-item-unpin.md
