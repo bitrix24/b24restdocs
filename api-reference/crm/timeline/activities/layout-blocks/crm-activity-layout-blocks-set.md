@@ -1,28 +1,28 @@
-# Set a Set of Additional Content Blocks in CRM Activity Layout
+# Set a set of additional content blocks in the activity crm.activity.layout.blocks.set
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: REST Application
 
-This method allows REST applications to set a set of additional content blocks in a CRM activity.
+This method allows REST applications to set a set of additional content blocks in an activity.
 
-Setting a new set of additional content blocks in an activity will overwrite any previously added set within the same application.
+Setting a new set of additional content blocks in an activity will overwrite the previously added set within the same application.
 
-The set of additional content blocks cannot be applied to:
+Setting a set of additional content blocks cannot be applied to:
 - Configurable activity
-- An activity whose type is deprecated
+- Activity whose type is deprecated
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM entity type to which the activity is linked ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM object type to which the activity is linked ||
 || **entityId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the activity is linked ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM object to which the activity is linked ||
 || **activityId***
 [`integer`](../../../../data-types.md) | Identifier of the activity ||
 || **layout***
@@ -38,7 +38,7 @@ For the activity with `id = 8`, linked to the deal with `id = 4`, we will set th
 3. Link
 4. Block with a title
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,7 +48,7 @@ For the activity with `id = 8`, linked to the deal with `id = 4`, we will set th
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":2,"entityId":4,"activityId":8,"layout":{"blocks":{"block_1":{"type":"text","properties":{"value":"Hello!\nWe are starting.","multiline":true,"bold":true,"color":"base_90"}},"block_2":{"type":"largeText","properties":{"value":"Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to a result.\nGoodbye."}},"block_3":{"type":"link","properties":{"text":"Open deal","bold":true,"action":{"type":"redirect","uri":"/crm/deal/details/123/"}}},"block_4":{"type":"withTitle","properties":{"title":"Title","block":{"type":"text","properties":{"value":"Some value"}}}}}}' \
+    -d '{"entityTypeId":2,"entityId":4,"activityId":8,"layout":{"blocks":{"block_1":{"type":"text","properties":{"value":"Hello!\nWe are starting.","multiline":true,"bold":true,"color":"base_90"}},"block_2":{"type":"largeText","properties":{"value":"Hello!\nWe are starting.\nWe continue.\nWe are still working on this.\nWe continue.\nWe are close to the result.\nGoodbye."}},"block_3":{"type":"link","properties":{"text":"Open deal","bold":true,"action":{"type":"redirect","uri":"/crm/deal/details/123/"}}},"block_4":{"type":"withTitle","properties":{"title":"Title","block":{"type":"text","properties":{"value":"Some value"}}}}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.layout.blocks.set
     ```
 
@@ -58,7 +58,7 @@ For the activity with `id = 8`, linked to the deal with `id = 4`, we will set th
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":2,"entityId":4,"activityId":8,"layout":{"blocks":{"block_1":{"type":"text","properties":{"value":"Hello!\nWe are starting.","multiline":true,"bold":true,"color":"base_90"}},"block_2":{"type":"largeText","properties":{"value":"Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to a result.\nGoodbye."}},"block_3":{"type":"link","properties":{"text":"Open deal","bold":true,"action":{"type":"redirect","uri":"/crm/deal/details/123/"}}},"block_4":{"type":"withTitle","properties":{"title":"Title","block":{"type":"text","properties":{"value":"Some value"}}}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"entityTypeId":2,"entityId":4,"activityId":8,"layout":{"blocks":{"block_1":{"type":"text","properties":{"value":"Hello!\nWe are starting.","multiline":true,"bold":true,"color":"base_90"}},"block_2":{"type":"largeText","properties":{"value":"Hello!\nWe are starting.\nWe continue.\nWe are still working on this.\nWe continue.\nWe are close to the result.\nGoodbye."}},"block_3":{"type":"link","properties":{"text":"Open deal","bold":true,"action":{"type":"redirect","uri":"/crm/deal/details/123/"}}},"block_4":{"type":"withTitle","properties":{"title":"Title","block":{"type":"text","properties":{"value":"Some value"}}}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.layout.blocks.set
     ```
 
@@ -79,7 +79,7 @@ For the activity with `id = 8`, linked to the deal with `id = 4`, we will set th
             'block_2': {
                 type: "largeText",
                 properties: {
-                    value: "Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to a result.\nGoodbye."
+                    value: "Hello!\nWe are starting.\nWe continue.\nWe are still working on this.\nWe continue.\nWe are close to the result.\nGoodbye."
                 }
             },
             'block_3': {
@@ -149,7 +149,7 @@ For the activity with `id = 8`, linked to the deal with `id = 4`, we will set th
                     'block_2' => [
                         'type' => "largeText",
                         'properties' => [
-                            'value' => "Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to a result.\nGoodbye."
+                            'value' => "Hello!\nWe are starting.\nWe continue.\nWe are still working on this.\nWe continue.\nWe are close to the result.\nGoodbye."
                         ]
                     ],
                     'block_3' => [
@@ -190,13 +190,13 @@ For the activity with `id = 8`, linked to the deal with `id = 4`, we will set th
 
 If the activity contains more than one set of additional content blocks, they will be displayed in the order they were added.
 
-In the HTML markup, it is explicitly indicated through data attributes which REST application added the set of additional content blocks:
+In the HTML layout, it is explicitly indicated through data attributes which REST application added the set of additional content blocks:
 - `data-app-name`: name of the REST application
 - `data-rest-client-id`: identifier of the REST application
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 Returns `{ success: true }` in case of successful writing of the set of additional content blocks, otherwise `null`.
 
@@ -208,7 +208,7 @@ Returns `{ success: true }` in case of successful writing of the set of addition
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

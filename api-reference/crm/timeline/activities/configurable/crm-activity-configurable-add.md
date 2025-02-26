@@ -1,4 +1,4 @@
-# Add Configurable CRM Activity crm.activity.configurable.add
+# Add Configurable Activity crm.activity.configurable.add
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -20,11 +20,11 @@ The method can only be called in the context of an [application](https://helpdes
 || **Name**
 `type` | **Description** ||
 || **ownerTypeId***
-[`integer`](../../../../data-types.md) | Integer identifier of the [CRM entity type](../../../data-types.md#object_type) in which the activity is created, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | Integer identifier of the [CRM entity type](../../../data-types.md#object_type) where the activity is created, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity in which the activity is created, for example `1` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM element where the activity is created, for example `1` ||
 || **fields***
-[`array`](../../../../data-types.md) | Associative array of values for the [activity fields](#parametr-fields) in the following structure:
+[`array`](../../../../data-types.md) | Associative array of values for [activity fields](#parametr-fields) in the following structure:
 ```json
 fields:
 {
@@ -83,7 +83,7 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ownerTypeId":1,"ownerId":999,"fields":{"typeId":"CONFIGURABLE","completed":true,"deadline":"**put_current_date_time_here**","pingOffsets":[60,300],"isIncomingChannel":"N","responsibleId":1,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Doe","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"ownerTypeId":1,"ownerId":999,"fields":{"typeId":"CONFIGURABLE","completed":true,"deadline":"**put_current_date_time_here**","pingOffsets":[60,300],"isIncomingChannel":"N","responsibleId":1,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Doe","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About the Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.configurable.add
     ```
 
@@ -147,7 +147,7 @@ fields:
                 "footer": {
                     "buttons": {
                         "startCall": {
-                            "title": "About Client",
+                            "title": "About the Client",
                             "action": {
                                 "type": "openRestApp",
                                 "actionParams": {
@@ -220,21 +220,21 @@ fields:
                                             'value' => '+1 999 888 7777'
                                         ]
                                     ]
-                                }
+                                ]
                             ]
-                        }
+                        ]
                     ]
                 ],
                 'footer' => [
                     'buttons' => [
                         'startCall' => [
-                            'title' => 'About Client',
+                            'title' => 'About the Client',
                             'action' => [
                                 'type' => 'openRestApp',
                                 'actionParams' => [
                                     'clientId' => 456
                                 ]
-                            ],
+                            },
                             'type' => 'primary'
                         ]
                     ]
@@ -256,7 +256,7 @@ fields:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -290,7 +290,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -309,7 +309,7 @@ HTTP Status: **400**
 || `100` | Required fields are not filled ||
 || `ERROR_WRONG_CONTEXT` | The method can only be called in the context of an application ||
 || `ERROR_WRONG_APPLICATION` | The activity can only be updated by the application that created it ||
-|| `WRONG_FIELD_VALUE` | Incorrect field value ||
+|| `WRONG_FIELD_VALUE` | Invalid field value ||
 || `INCOMING_ACTIVITY_CAN_NOT_BE_WITH_DEADLINE` | Incoming activity cannot have a deadline ||
 || `ERROR_EMPTY_LAYOUT` | The layout field must be filled ||
 |#

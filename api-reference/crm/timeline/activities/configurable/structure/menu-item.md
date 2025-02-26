@@ -1,17 +1,17 @@
 # Bottom Dropdown Menu
 
-Items of the bottom dropdown menu [timeline entry](../index.md) `MenuItemDto`.
+Items in the bottom dropdown menu of the [timeline entry](../index.md) `MenuItemDto`.
 
 ## Parameters of the `MenuItemDto` Object
 
-{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
+{% include [Parameters Note](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
 || **title^*^**
 [`textWithTranslation`](./field-types.md#textwithtranslation) | Button text ||
 || **action^*^**
-[`ActionDto`](./action.md) | Action to be performed when the button is clicked ||
+[`ActionDto`](./action.md) | Action to be performed when the button is pressed ||
 || **scope**
 [`string`](../../../../data-types.md) | [Scope](./field-types.md#scope), for example `web` ||
 || **hideIfReadonly**
@@ -33,7 +33,7 @@ Items of the bottom dropdown menu [timeline entry](../index.md) `MenuItemDto`.
 }
 ```
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](./layout.md)
 - [{#T}](./icon.md)

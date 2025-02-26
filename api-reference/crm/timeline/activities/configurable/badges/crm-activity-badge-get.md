@@ -2,9 +2,9 @@
 
 > Scope: [`crm`](../../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-The method will return an array containing [badge fields](./index.md#badge-record-fields), which means information about the badge.
+The method `crm.activity.badge.get` will return an array containing [badge fields](./index.md#badge-record-fields).
 
 ## Method Parameters
 
@@ -21,11 +21,19 @@ The method will return an array containing [badge fields](./index.md#badge-recor
 {% include [Note on examples](../../../../../../_includes/examples.md) %}
 
 {% list tabs %}
-- cURL (Webhook)
 
 - cURL (OAuth)
 
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"code":"missedCall","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.activity.badge.get
+    ```
+
 - JS
+  
     ```js
     BX24.callMethod(
         "crm.activity.badge.get",
@@ -37,9 +45,25 @@ The method will return an array containing [badge fields](./index.md#badge-recor
             else
                 console.dir(result.data());
         }    
-);
+    );
     ```
+
 - PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.activity.badge.get',
+        [
+            'code' => 'missedCall'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
 
 {% endlist %}
 
@@ -75,9 +99,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response containing information about the badge in case of success. In case of failure, it will return `null` ||
+[`object`](../../../../data-types.md) | Root element of the response containing badge information in case of success. In case of failure, it will return `null` ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

@@ -1,19 +1,19 @@
-title: Configurable Deal
+title: Configurable Activity
 href: index.md
 items:
   - name: Overview of Methods
     href: index.md
-  - name: Structure of Configurable Deal
+  - name: Structure of Configurable Activity
     include:
       path: structure/b24-toc.yaml
       mode: link
-  - name: Badges for Configurable Deals
+  - name: Badges for Configurable Activities
     include:
       path: badges/b24-toc.yaml
       mode: link
-  - name: Add Configurable Deal
+  - name: Add Configurable Activity
     href: crm-activity-configurable-add.md
-  - name: Update Configurable Deal
+  - name: Update Configurable Activity
     href: crm-activity-configurable-update.md    
-  - name: Get Information about Configurable Deal
+  - name: Get Information about Configurable Activity
     href: crm-activity-configurable-get.md

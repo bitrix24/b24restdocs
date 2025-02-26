@@ -4,7 +4,7 @@ The structure `RestAppLayoutDto` describes a set of additional content blocks fo
 
 ## Parameters of the `RestAppLayoutDto` Object
 
-{% include [Footnote on required parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -13,7 +13,7 @@ The structure `RestAppLayoutDto` describes a set of additional content blocks fo
 [`ContentBlockDto`](./content-block.md) | Array of additional content blocks ||
 |#
 
-There are quantitative restrictions on `blocks`:
+The `blocks` have quantity limitations:
 - Minimum quantity — `1`
 - Maximum quantity — `20`
 
@@ -123,7 +123,8 @@ There are quantitative restrictions on `blocks`:
 }
 ```
 
-## Continue Learning
+
+## Continue Exploring
 
 - [{#T}](./layout.md)
 - [{#T}](./icon.md)

@@ -1,19 +1,19 @@
-title: Structure of Configurable Deal
+title: Structure of a Configurable Activity
 href: layout.md
 items:
-  - name: Structure of Configurable Deal
+  - name: Structure of a Configurable Activity
     href: layout.md
   - name: Icon
     href: icon.md
-  - name: Record Header
+  - name: Record Title
     href: header.md
   - name: Main Content Area
     href: body.md
-  - name: Content Block of Configurable Deal
+  - name: Content Block of the Configurable Activity
     href: content-block.md    
-  - name: Bottom Part of Record
+  - name: Bottom Part of the Record
     href: footer.md
-  - name: Dropdown Menu of Bottom Part
+  - name: Dropdown Menu of the Bottom Part
     href: menu-item.md
   - name: Click Reaction
     href: action.md
@@ -21,5 +21,5 @@ items:
     href: field-types.md
   - name: Set of Additional Content Blocks
     href: rest-app-layout-dto.md
-  - name: Examples of Deal Configurations
+  - name: Examples of Activity Configurations
     href: examples.md

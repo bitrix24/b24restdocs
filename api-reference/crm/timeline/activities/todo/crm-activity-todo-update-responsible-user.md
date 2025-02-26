@@ -1,10 +1,10 @@
-# Update Responsible User for Universal CRM Activity crm.activity.todo.updateResponsibleUser
+# Update the responsible user for the universal activity crm.activity.todo.updateResponsibleUser
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with edit access permission for the CRM entity associated with the activity being updated.
+> Who can execute the method: a user with permission to edit the CRM entity for which the activity is being updated.
 
-The method `crm.activity.todo.updateResponsibleUser` updates the responsible user for a universal activity.
+The method `crm.activity.todo.updateResponsibleUser` updates the responsible user for the universal activity.
 
 ## Method Parameters
 
@@ -93,7 +93,7 @@ The method `crm.activity.todo.updateResponsibleUser` updates the responsible use
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -125,7 +125,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -140,11 +140,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields are missing ||
+|| `100` | Required fields not provided ||
 || `NOT_FOUND` | CRM entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
-|| `CAN_NOT_UPDATE_RESPONSIBLE_USER_COMPLETED_TODO` | Cannot change the responsible user for a completed activity ||
+|| `CAN_NOT_UPDATE_RESPONSIBLE_USER_COMPLETED_TODO` | Cannot change the responsible user in a closed activity ||
 || `INVALID_ARG_VALUE` | Parameter "responsibleId" must be greater than 0 ||
 |#
 

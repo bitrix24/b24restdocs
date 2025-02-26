@@ -14,7 +14,7 @@ The method `crm.activity.type.delete` removes a custom activity type.
 || **Name**
 `type` | **Description** ||
 || **TYPE_ID***
-[`string`](../../../../data-types.md) | String value of the activity type, for example `1C` ||
+[`string`](../../../../data-types.md) | String value of the activity type, for example `QuickBooks and other similar platforms` ||
 |#
 
 ## Code Examples
@@ -29,7 +29,7 @@ The method `crm.activity.type.delete` removes a custom activity type.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TYPE_ID":"1C","auth":"**put_access_token_here**"}' \
+    -d '{"TYPE_ID":"QuickBooks and other similar platforms","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.type.delete
     ```
 
@@ -39,7 +39,7 @@ The method `crm.activity.type.delete` removes a custom activity type.
     BX24.callMethod(
         "crm.activity.type.delete",
         {
-            "TYPE_ID": '1C',
+            "TYPE_ID": 'QuickBooks and other similar platforms',
         }, result => {
             if (result.error())
                 console.error(result.error());
@@ -57,7 +57,7 @@ The method `crm.activity.type.delete` removes a custom activity type.
     $result = CRest::call(
         'crm.activity.type.delete',
         [
-            'TYPE_ID' => '1C'
+            'TYPE_ID' => 'QuickBooks and other similar platforms'
         ]
     );
 
@@ -70,7 +70,7 @@ The method `crm.activity.type.delete` removes a custom activity type.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -103,7 +103,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

@@ -37,11 +37,11 @@ A detailed description is provided [below](#parametr-fields)
 || **Name**
 `type` | **Description** ||
 || **TYPE_ID***
-[`string`](../../../../data-types.md) | String value of the activity type, for example `1C`. When creating an activity, this field is `PROVIDER_TYPE_ID` ||
+[`string`](../../../../data-types.md) | String value of the activity type, for example `QuickBooks and other similar platforms`. When creating an activity, this field is `PROVIDER_TYPE_ID` ||
 || **NAME**
-[`string`](../../../../data-types.md) | Name of the activity type, for example `Activity 1C` for a deal. Default is an empty string ||
+[`string`](../../../../data-types.md) | Name of the activity type, for example `Activity for QuickBooks` for a deal. Default is an empty string ||
 || **ICON_FILE**
-[`attached_diskfile`](../../../../data-types.md) | Icon file of the activity type, described according to [rules](../../../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
+[`attached_diskfile`](../../../../data-types.md) | Icon file for the activity type, described according to [rules](../../../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
 || **IS_CONFIGURABLE_TYPE**
 [`string`](../../../../data-types.md) | Default value is `N`. Value `Y` indicates that the type will be used for [configurable activities](../configurable/crm-activity-configurable-add.md) ||
 |#
@@ -58,7 +58,7 @@ A detailed description is provided [below](#parametr-fields)
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":"1C","NAME":"Activity 1C","ICON_FILE":"@type-icon","IS_CONFIGURABLE_TYPE":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TYPE_ID":"QuickBooks and other similar platforms","NAME":"Activity for QuickBooks","ICON_FILE":"@type-icon","IS_CONFIGURABLE_TYPE":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.type.add
     ```
 
@@ -68,7 +68,7 @@ A detailed description is provided [below](#parametr-fields)
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"OWNER_TYPE_ID":1,"OWNER_ID":selectedEntityId,"PROVIDER_ID":"REST_APP","PROVIDER_TYPE_ID":"1C","SUBJECT":"New Activity","COMPLETED":"N","RESPONSIBLE_ID":1,"DESCRIPTION":"Description of the new activity"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"OWNER_TYPE_ID":1,"OWNER_ID":selectedEntityId,"PROVIDER_ID":"REST_APP","PROVIDER_TYPE_ID":"QuickBooks and other similar platforms","SUBJECT":"New Activity","COMPLETED":"N","RESPONSIBLE_ID":1,"DESCRIPTION":"Description of the new activity"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.add
     ```
 
@@ -80,8 +80,8 @@ A detailed description is provided [below](#parametr-fields)
         {
             fields:
             {
-                "TYPE_ID": '1C',
-                "NAME": "Activity 1C",
+                "TYPE_ID": 'QuickBooks and other similar platforms',
+                "NAME": "Activity for QuickBooks",
                 'ICON_FILE': document.getElementById('type-icon'), // file input node
                 "IS_CONFIGURABLE_TYPE": "N"
             }
@@ -105,7 +105,7 @@ A detailed description is provided [below](#parametr-fields)
                 "OWNER_TYPE_ID": 1,
                 "OWNER_ID": selectedEntityId,
                 "PROVIDER_ID": 'REST_APP',
-                "PROVIDER_TYPE_ID": '1C',
+                "PROVIDER_TYPE_ID": 'QuickBooks and other similar platforms',
                 "SUBJECT": "New Activity",
                 "COMPLETED": "N",
                 "RESPONSIBLE_ID": 1,
@@ -129,8 +129,8 @@ A detailed description is provided [below](#parametr-fields)
         'crm.activity.type.add',
         [
             'fields' => [
-                'TYPE_ID' => '1C',
-                'NAME' => 'Activity 1C',
+                'TYPE_ID' => 'QuickBooks and other similar platforms',
+                'NAME' => 'Activity for QuickBooks',
                 'ICON_FILE' => $_FILES['type-icon'], // Assuming file input is handled
                 'IS_CONFIGURABLE_TYPE' => 'N'
             ]
@@ -154,7 +154,7 @@ A detailed description is provided [below](#parametr-fields)
                 'OWNER_TYPE_ID' => 1,
                 'OWNER_ID' => $selectedEntityId, // Assuming this variable is defined
                 'PROVIDER_ID' => 'REST_APP',
-                'PROVIDER_TYPE_ID' => '1C',
+                'PROVIDER_TYPE_ID' => 'QuickBooks and other similar platforms',
                 'SUBJECT' => 'New Activity',
                 'COMPLETED' => 'N',
                 'RESPONSIBLE_ID' => 1,
@@ -174,7 +174,7 @@ A detailed description is provided [below](#parametr-fields)
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -207,7 +207,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -222,7 +222,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient rights to perform the operation ||
+|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `Access denied! Application context required` | The method works only in the context of applications ||
 || `INVALID_ARG_VALUE` | The required field `TYPE_ID` is not filled ||
 || `INVALID_ARG_VALUE` | A custom activity type with the specified `TYPE_ID` already exists ||

@@ -1,14 +1,14 @@
-# Delete Badge by Code crm.activity.badge.delete
+# Delete badge by code crm.activity.badge.delete
 
 > Scope: [`crm`](../../../../../scopes/permissions.md)
 >
-> Who can execute the method: `users with administrative access to the crm section`
+> Who can execute the method: users with administrative access to the crm section
 
-This method deletes a badge.
+The method `crm.activity.badge.delete` removes a badge.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -18,14 +18,22 @@ This method deletes a badge.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../../_includes/examples.md) %}
 
 {% list tabs %}
-- cURL (Webhook)
 
 - cURL (OAuth)
+  
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"code":"missedCall","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.activity.badge.delete
+    ```
 
 - JS
+  
     ```js
     BX24.callMethod(
         "crm.activity.badge.delete",
@@ -37,15 +45,31 @@ This method deletes a badge.
             else
                 console.dir(result.data());
         }    
-);
+    );
     ```
+
 - PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.activity.badge.delete',
+        [
+            'code' => 'missedCall'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
 
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -73,12 +97,12 @@ HTTP Status: **200**
 - `null` — on failure (an error occurred)
 ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

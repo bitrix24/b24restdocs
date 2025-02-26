@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `crm.activity.fields` returns the description of the fields of the system activity.
+The method `crm.activity.fields` returns a description of the fields of the system activity.
 
 ## Method Parameters
 
@@ -12,7 +12,7 @@ No parameters
 
 ## Code Examples
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -145,7 +145,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "ID of the associated entity"
+            "title": "ID of the entity associated with the activity"
         },
         "SUBJECT": {
             "type": "string",
@@ -181,7 +181,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Execution Deadline"
+            "title": "Due Date"
         },
         "COMPLETED": {
             "type": "char",
@@ -492,15 +492,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response. Values for the `result` field correspond to [object fields](#all-fields). ||
+[`object`](../../../../data-types.md) | Root element of the response. Values for the `result` field correspond to [fields of the object](#all-fields). ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the request execution time ||
-
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Overview of System Activity Fields {#all-fields}
 
-{% include [Notes on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Field** `type` | **Description** | **Note** ||
@@ -511,9 +510,9 @@ HTTP status: **200**
 || **OWNER_TYPE_ID***
 [`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) | Immutable ||
 || **TYPE_ID***
-[`crm_enum_activitytype`](../../../data-types.md) | Activity type | Required, immutable ||
+[`crm_enum_activitytype`](../../../data-types.md) | Type of activity | Required, immutable ||
 || **ASSOCIATED_ENTITY_ID**
-[`integer`](../../../../data-types.md) | Integer identifier of the associated entity | Read-only ||
+[`integer`](../../../../data-types.md) | Integer identifier of the entity associated with the activity | Read-only ||
 || **AUTHOR_ID***
 [`integer`](../../../../data-types.md) | Integer identifier of the user who created the activity | ||
 || **AUTOCOMPLETE_RULE**
@@ -523,21 +522,21 @@ HTTP status: **200**
 || **COMMUNICATIONS***
 [`crm_activity_communication`](../../../data-types.md) | [Description of communication](./crm-activity-communication-fields.md) | Multiple, required ||
 || **COMPLETED***
-[`char`](../../../data-types.md) | Flag indicating whether the activity is completed or not (`Y`|`N`) | ||
+[`char`](../../../data-types.md) | Flag indicating whether the activity is completed (`Y`|`N`) | ||
 || **CREATED***
-[`datetime`](../../../data-types.md) | Date and time of activity creation | ||
+[`datetime`](../../../data-types.md) | Date and time the activity was created | ||
 || **DEADLINE**
-[`datetime`](../../../data-types.md) | Date and time of the activity execution deadline | The field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
+[`datetime`](../../../data-types.md) | Date and time of the activity's due date | This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
 || **DESCRIPTION**
 [`string`](../../../data-types.md) | Text description of the activity | ||
 || **DESCRIPTION_TYPE**
 [`crm.enum.contenttype`](../../../data-types.md) | Description type | ||
 || **DIRECTION**
-[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. | Relevant for calls and e-mails, not used for meetings ||
+[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. | Relevant for calls and emails; not used for meetings ||
 || **EDITOR_ID**
-[`user`](../../../data-types.md) | Integer identifier of the user who modified the activity | Read-only ||
+[`user`](../../../data-types.md) | Integer identifier of the user who edited the activity | Read-only ||
 || **END_TIME**
-[`datetime`](../../../data-types.md) | Time of activity completion | ||
+[`datetime`](../../../data-types.md) | End time of the activity | ||
 || **FILES**
 [`diskfile`](../../../data-types.md) | Files added to the activity | Multiple ||
 || **LAST_UPDATED**
@@ -553,7 +552,7 @@ HTTP status: **200**
 || **ORIGIN_ID**
 [`string`](../../../data-types.md) | Identifier of the element in the data source | Used only for binding to an external source ||
 || **ORIGIN_VERSION**
-[`string`](../../../data-types.md) | Original version | Used to protect data from accidental overwriting by an external system. If data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
+[`string`](../../../data-types.md) | Original version | Used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 || **PRIORITY**
 [`crm.enum.activitypriority`](../../../data-types.md) | Priority | ||
 || **PROVIDER_DATA**
@@ -585,15 +584,15 @@ HTTP status: **200**
 || **SETTINGS**
 [`object`](../../../data-types.md) | Additional settings | ||
 || **START_TIME**
-[`datetime`](../../../data-types.md) | Time of activity start | ||
+[`datetime`](../../../data-types.md) | Start time of the activity | ||
 || **STATUS**
-[`crm_enum_activitystatus`](../../../data-types.md) | Activity status | ||
+[`crm_enum_activitystatus`](../../../data-types.md) | Status of the activity | ||
 || **SUBJECT**
 [`string`](../../../data-types.md) | Additional description of the activity | Required ||
 || **WEBDAV_ELEMENTS**
 [`diskfile`](../../../data-types.md) | Added files | Multiple. Deprecated, kept for compatibility ||
 || **IS_INCOMING_CHANNEL**
-[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel or not (`Y`/`N`) |  ||
+[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) |  ||
 |#
 
 ## Error Handling
@@ -607,11 +606,11 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
-{% include [System Errors](../../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

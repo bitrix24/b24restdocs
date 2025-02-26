@@ -1,13 +1,13 @@
-title: Configurable Deal Badges
-href: index.md
-items:
-  - name: About Badges
-    href: index.md
-  - name: Add Badge
-    href: crm-activity-badge-add.md
-  - name: Get Badge List
-    href: crm-activity-badge-list.md
-  - name: Get Badge Information by Code
-    href: crm-activity-badge-get.md
-  - name: Delete Badge
-    href: crm-activity-badge-delete.md
+title: Configurable Activity Badges  
+href: index.md  
+items:  
+  - name: About Badges  
+    href: index.md  
+  - name: Add Badge  
+    href: crm-activity-badge-add.md  
+  - name: Get Badge List  
+    href: crm-activity-badge-list.md  
+  - name: Get Badge Information by Code  
+    href: crm-activity-badge-get.md  
+  - name: Delete Badge  
+    href: crm-activity-badge-delete.md  

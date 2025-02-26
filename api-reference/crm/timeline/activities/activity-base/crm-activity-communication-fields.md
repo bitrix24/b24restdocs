@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `crm.activity.communication.fields` returns the description of communication for a deal. Communications store phone numbers in calls, email addresses in e-mails, and names in meetings.
+The method `crm.activity.communication.fields` returns the description of communication for an activity. Communications store phone numbers in calls, email addresses in e-mails, and names in meetings.
 
 ## Method Parameters
 
@@ -12,7 +12,7 @@ No parameters
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -91,7 +91,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Deal"
+            "title": "Activity"
         },
         "ENTITY_ID": {
             "type": "integer",
@@ -154,16 +154,16 @@ HTTP status: **200**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-#### Overview of Deal Communication Fields {#all-fields}
+#### Overview of Activity Communication Fields {#all-fields}
 
-{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Field** `type` | **Description** ||
 || **ID***
 [`integer`](../../../data-types.md) | Identifier of the communication ||
 || **ACTIVITY_ID***
-[`integer`](../../../data-types.md) | Identifier of the deal ||
+[`integer`](../../../data-types.md) | Identifier of the activity ||
 || **ENTITY_ID***
 [`integer`](../../../data-types.md) | Identifier of the CRM entity ||
 || **ENTITY_TYPE_ID***

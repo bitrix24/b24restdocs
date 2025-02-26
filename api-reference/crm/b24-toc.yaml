@@ -39,7 +39,7 @@ items:
     include:
       path: requisites/b24-toc.yaml
       mode: link
-  - name: Timeline and Deals
+  - name: Timeline and Activities
     include:
       path: timeline/b24-toc.yaml
       mode: link

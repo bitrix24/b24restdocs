@@ -1,4 +1,4 @@
-# Main Content Area of Configurable Deal
+# Main Content Area of Configurable Activity
 
 `BodyDto` is the main content area of the [timeline entry](../index.md).
 
@@ -57,7 +57,7 @@ Logo of the timeline entry.
 }
 ```
 
-## Continue Your Exploration
+## Continue Exploring
 
 - [{#T}](./layout.md)
 - [{#T}](./header.md)

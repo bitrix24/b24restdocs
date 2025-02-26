@@ -1,10 +1,10 @@
-# How to Create a Deal from an Application
+# How to create an activity from an application
 
-Applications can create deals with a special type provider. Such a deal will have a corresponding [icon](*icon) in the timeline. Clicking on the deal will open the application in a slider with options in [PLACEMENT_OPTIONS](../../../../widgets/crm/detail-activity.md#placement_options)
+Applications can create activities with a special type provider. Such an activity will have a corresponding [icon](*icon) in the timeline. Clicking on the activity will open the application in a slider with options in [PLACEMENT_OPTIONS](../../../../widgets/crm/detail-activity.md#placement_options)
 
 {% note warning %}
 
-Deals with a special type provider can only be modified/deleted in the context of the application that created the deal. When updating such a deal using the method [crm.activity.update](../activity-base/crm-activity-update.md) via webhook, an error will occur: `Access denied! Application context required`.
+Activities with a special type provider can only be modified/deleted in the context of the application that created the activity. When updating such an activity using the [crm.activity.update](../activity-base/crm-activity-update.md) method via webhook, an error will occur: `Access denied! Application context required`.
 
 {% endnote %}
 
@@ -15,13 +15,13 @@ Deals with a special type provider can only be modified/deleted in the context o
 #|
 || **Name**
 `type` | **Description** ||
-|| **PROVIDER_ID***
-[`string`](../../../../data-types.md) | Provider identifier. For a special type, the value must be `REST_APP` ||
-|| **PROVIDER_TYPE_ID***
-[`string`](../../../../data-types.md) | Deal type identifier. When using the `REST_APP` provider, the developer can specify arbitrary type identifiers depending on their tasks ||
+|| **PROVIDER_ID***  
+[`string`](../../../../data-types.md) | Provider identifier. For special type, the value must be `REST_APP` ||
+|| **PROVIDER_TYPE_ID***  
+[`string`](../../../../data-types.md) | Activity type identifier. When using the `REST_APP` provider, the developer can specify arbitrary type identifiers depending on their tasks ||
 |#
 
-## Application Example
+## Example application
 
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
@@ -82,10 +82,10 @@ Deals with a special type provider can only be modified/deleted in the context o
                             "OWNER_ID": selectedEntityId,
                             "PROVIDER_ID": 'REST_APP',
                             "PROVIDER_TYPE_ID": 'LINK',
-                            "SUBJECT": "New Deal",
+                            "SUBJECT": "New activity",
                             "COMPLETED": "N",
                             "RESPONSIBLE_ID": 1,
-                            "DESCRIPTION": "Description of the new deal"
+                            "DESCRIPTION": "Description of the new activity"
                         }
                 },
                 function(result)
@@ -108,8 +108,8 @@ Deals with a special type provider can only be modified/deleted in the context o
                     fields:
                         {
                             COMPLETED: 'Y',
-                            SUBJECT: "Deal Completed!",
-                            DESCRIPTION: "Description of the new deal (completed)"
+                            SUBJECT: "Activity completed!",
+                            DESCRIPTION: "Description of the new activity (completed)"
                         }
                 },
                 function(result)

@@ -2,9 +2,9 @@
 
 > Scope: [`crm`](../../../../../scopes/permissions.md)
 >
-> Who can execute the method: `users with administrative access to the crm section`
+> Who can execute the method: users with administrative access to the crm section
 
-This method adds a new badge for a configurable deal.
+The method `crm.activity.badge.add` adds a new badge for a configurable activity.
 
 ## Method Parameters
 
@@ -15,11 +15,11 @@ This method adds a new badge for a configurable deal.
 || **code***  
 [`string`](../../../../../data-types.md) | Badge code, for example `missedCall` ||
 || **title***  
-[`string`\|`array`](../../../../../data-types.md) | Title of the badge. Can be either a string or an array of strings for different languages ||
+[`string`\|`array`](../../../../../data-types.md) | Badge title. Can be a string or an array of strings for different languages ||
 || **value***  
-[`string`\|`array`](../../../../../data-types.md) | Value of the badge. Can be either a string or an array of strings for different languages ||
+[`string`\|`array`](../../../../../data-types.md) | Badge value. Can be a string or an array of strings for different languages ||
 || **type***  
-[`string`](../../../../../data-types.md) | [Type of the badge](./index.md#tip-bejdzha) ||
+[`string`](../../../../../data-types.md) | [Badge type](./index.md#tip-bejdzha) ||
 |#
 
 ## Code Examples
@@ -27,11 +27,19 @@ This method adds a new badge for a configurable deal.
 {% include [Note on examples](../../../../../../_includes/examples.md) %}
 
 {% list tabs %}
-- cURL (Webhook)
 
 - cURL (OAuth)
+  
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"code":"missedCall","title":"Call Status","value":"Missed","type":"failure","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.activity.badge.add
+    ```
 
 - JS
+  
     ```js
     BX24.callMethod(
         "crm.activity.badge.add",
@@ -46,9 +54,28 @@ This method adds a new badge for a configurable deal.
             else
                 console.dir(result.data());
         }    
-);
+    );
     ```
+
 - PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.activity.badge.add',
+        [
+            'code' => 'missedCall',
+            'title' => 'Call Status',
+            'value' => 'Missed',
+            'type' => 'failure'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
 
 {% endlist %}
 
@@ -81,12 +108,12 @@ HTTP status: **200**
 ### Returned Data
 
 #|
-|| **Name**
+|| **Name**  
 `type` | **Description** ||
 || **result**
 [`object`](../../../../data-types.md) | Root element of the response containing information about the added badge in case of success. In case of failure, it will return `null` ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

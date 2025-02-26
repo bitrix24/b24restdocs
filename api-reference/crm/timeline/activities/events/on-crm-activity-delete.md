@@ -4,11 +4,11 @@
 >
 > Who can subscribe: `any user`
 
-The event `onCrmActivityDelete` is triggered when a deal is deleted in the CRM timeline.
+The event `onCrmActivityDelete` is triggered when an activity is deleted in the CRM timeline.
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -38,9 +38,9 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityDelete` ||
+[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityDelete`||
 || **data**
-`array` | An object containing information about the deleted deal.
+`array` | An object containing information about the deleted activity.
 
 Contains a single key `FIELDS` ||
 || **ts**
@@ -57,7 +57,7 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | `ID` with the value of the deleted deal's identifier ||
+[`integer`](../../../data-types.md) | `ID` with the value of the deleted activity identifier ||
 |#
 
 ### Parameter auth {#auth}

@@ -27,9 +27,9 @@ A button in the bottom part of the timeline record.
 || **title^*^**
 [`textWithTranslation`](./field-types.md#textwithtranslation) | Button text ||
 || **type^*^**
-[`string`](../../../../data-types.md) | Button type. Determines its appearance, e.g., `primary` ||
+[`string`](../../../../data-types.md) | Button type. Defines its appearance, e.g., `primary` ||
 || **action^*^**
-[`ActionDto`](./action.md) | Action performed when the button is pressed ||
+[`ActionDto`](./action.md) | Action to be performed when the button is clicked ||
 || **scope**
 [`string`](../../../../data-types.md) | [Scope](./field-types.md#scope), e.g., `web` ||
 || **hideIfReadonly**
@@ -40,6 +40,7 @@ Possible values for the **type** field:
 
 - **primary** - Blue button background
 - **secondary** - White button background
+
 
 ### Example
 
@@ -65,9 +66,9 @@ Dropdown menu in the bottom part of the timeline record.
 #|
 || **Field** | **Description** ||
 || **showPinItem**
-[`boolean`](../../../../data-types.md) | Show the "Pin" menu item. The menu item will not be shown if added to an incomplete deal. Default is `true` ||
+[`boolean`](../../../../data-types.md) | Show the "Pin" menu item. The menu item will not be shown if added to an incomplete activity. Default is `true` ||
 || **showPostponeItem**
-[`boolean`](../../../../data-types.md) | Show the "Postpone" menu item. The menu item will not be shown if added to an incoming deal, a deal without a deadline, or a completed deal. Default is `true`. ||
+[`boolean`](../../../../data-types.md) | Show the "Postpone" menu item. The menu item will not be shown if added to an incoming activity, an activity without a deadline, or a completed activity. Default is `true`. ||
 || **showDeleteItem**
 [`boolean`](../../../../data-types.md) | Show the "Delete" menu item. Default is `true` ||
 || **items**

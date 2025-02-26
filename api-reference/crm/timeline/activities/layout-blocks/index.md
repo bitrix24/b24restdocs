@@ -1,25 +1,25 @@
 # Additional Content Blocks
 
-REST methods for working with additional content blocks in a deal:
+REST methods for working with additional content blocks in an activity:
 
 #|
 || **Method** | **Description** ||
-|| [crm.activity.layout.blocks.set](./crm-activity-layout-blocks-set.md) | Sets a set of additional content blocks in a deal ||
-|| [crm.activity.layout.blocks.get](./crm-activity-layout-blocks-get.md) | Retrieves the set of additional content blocks established by the application in the deal ||
-|| [crm.activity.layout.blocks.delete](./crm-activity-layout-blocks-delete.md) | Deletes the set of additional content blocks established by the application for the deal ||
+|| [crm.activity.layout.blocks.set](./crm-activity-layout-blocks-set.md) | Sets a set of additional content blocks in the activity ||
+|| [crm.activity.layout.blocks.get](./crm-activity-layout-blocks-get.md) | Retrieves the set of additional content blocks installed by the application in the activity ||
+|| [crm.activity.layout.blocks.delete](./crm-activity-layout-blocks-delete.md) | Deletes the set of additional content blocks installed by the application for the activity ||
 |#
 
-## Deal Linked to Multiple Entities
+## Activity Linked to Multiple Entities
 
-Adding sets of additional content blocks to a deal linked to multiple entities will result in the sets of additional content blocks being rendered in each of the deals within the timeline.
+Adding sets of additional content blocks to an activity linked to multiple entities will result in the sets of additional content blocks being rendered in each of the activities within the timeline.
 
-## Restoring Deals from Trash
+## Restoring Activities from the Trash
 
-When restoring deals from the trash, the sets of additional content blocks added by applications will also be restored.
+When restoring activities from the trash, the sets of additional content blocks added by applications will also be restored.
 
-## Deleting REST Application
+## Deleting the REST Application
 
-When deleting a REST application, all sets of additional content blocks added to deals by it will be permanently removed.
+When the REST Application is deleted, all sets of additional content blocks added to activities by it will be permanently removed.
 
 ## See Also
 

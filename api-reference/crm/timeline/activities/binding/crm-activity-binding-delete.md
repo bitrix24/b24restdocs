@@ -1,12 +1,12 @@
-# Delete the deal's connection with the CRM entity crm.activity.binding.delete
+# Delete the connection of the activity with the CRM entity crm.activity.binding.delete
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: `any user`
 
-The method `crm.activity.binding.delete` removes the connection of a deal with a CRM entity. The deletion of the deal's binding is only possible for entities that the current user has edit access to.
+The method `crm.activity.binding.delete` removes the connection of the activity with the CRM entity. The deletion of the activity binding is only possible for entities that the current user has edit access to.
 
-If the deal is bound to only one entity, this binding cannot be deleted.
+If the activity is linked to only one entity, this binding cannot be removed.
 
 ## Method Parameters
 
@@ -15,12 +15,12 @@ If the deal is bound to only one entity, this binding cannot be deleted.
 #|
 || **Name**
 `type` | **Description** ||
-|| **activityId***  
-[`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
-|| **entityTypeId***  
-[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the deal's binding is being removed, for example `2` for a deal ||
-|| **entityId***  
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the deal's binding is being removed, for example `1`  ||
+|| **activityId***
+[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
+|| **entityTypeId***
+[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the activity binding is being removed, for example `2` for a deal ||
+|| **entityId***
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the activity binding is being removed, for example `1`  ||
 |#
 
 ## Code Examples
@@ -55,7 +55,7 @@ If the deal is bound to only one entity, this binding cannot be deleted.
     BX24.callMethod(
         'crm.activity.binding.delete',
         {
-            activityId: 999, // Deal ID
+            activityId: 999, // Activity ID
             entityTypeId: 2, // CRM object type ID
             entityId: 1 // CRM entity ID
         },
@@ -77,7 +77,7 @@ If the deal is bound to only one entity, this binding cannot be deleted.
     $result = CRest::call(
         'crm.activity.binding.delete',
         [
-            'activityId' => 999, // Deal ID
+            'activityId' => 999, // Activity ID
             'entityTypeId' => 2, // CRM object type ID
             'entityId' => 1 // CRM entity ID
         ]
@@ -116,9 +116,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the binding was successfully deleted, otherwise — `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the connection was successfully deleted, otherwise — `false` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -138,17 +138,17 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields are missing ||
+|| `100` | Required fields not provided ||
 || `NOT_FOUND` | Entity not found ||
-|| `OWNER_NOT_FOUND` | Entity owner not found ||
+|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `BINDING_NOT_FOUND` | The deal is not bound to this entity ||
-|| `LAST_BINDING_CANNOT_BE_DELETED` | Cannot delete the only binding of the deal to the entity ||
+|| `BINDING_NOT_FOUND` | Activity not linked to this entity ||
+|| `LAST_BINDING_CANNOT_BE_DELETED` | Cannot delete the only binding of the activity to the entity ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Learning 
 
 - [{#T}](./crm-activity-binding-list.md)
 - [{#T}](./crm-activity-binding-add.md)

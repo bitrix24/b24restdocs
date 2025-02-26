@@ -1,8 +1,8 @@
-# Update Color of Universal CRM Activity crm.activity.todo.updateColor
+# Update the color of the universal deal crm.activity.todo.updateColor
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with edit access permission for the CRM entity associated with the activity being updated.
+> Who can execute the method: a user with edit access permission for the CRM entity to which the activity is linked
 
 The method `crm.activity.todo.updateColor` updates the color of the universal activity.
 
@@ -20,7 +20,7 @@ The method `crm.activity.todo.updateColor` updates the color of the universal ac
 || **ownerId***
 [`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the activity is linked, for example, `1` ||
 || **colorId***
-[`integer`](../../../../data-types.md) | Identifier of the activity color in the timeline, for example `1`. There are 8 colors available, values from 1 to 7 and a default color if none is specified
+[`integer`](../../../../data-types.md) | Identifier of the activity color in the timeline, for example `1`. There are 8 colors available, values from 1 to 7 and the default color if none is specified
 
 ||
 |#
@@ -95,7 +95,7 @@ The method `crm.activity.todo.updateColor` updates the color of the universal ac
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -122,12 +122,12 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../../data-types.md) | On success, returns an object containing the identifier of the updated activity `id`, on error = `null` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -146,7 +146,7 @@ HTTP Status: **400**
 || `NOT_FOUND` | CRM entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
-|| `CAN_NOT_UPDATE_COLOR_COMPLETED_TODO` | Cannot change color in a closed activity ||
+|| `CAN_NOT_UPDATE_COLOR_COMPLETED_TODO` | Cannot change color in a completed activity ||
 || `CAN_NOT_UPDATE_WRONG_COLOR_TODO` | Invalid color value ||
 |#
 

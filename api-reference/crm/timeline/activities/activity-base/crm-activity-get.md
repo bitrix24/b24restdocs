@@ -1,25 +1,25 @@
-# Get Information About a Deal by ID crm.activity.get
+# Get information about the activity by ID crm.activity.get
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `crm.activity.get` returns information about a deal by its ID.
+The method `crm.activity.get` returns information about the activity by its ID.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | The ID of the deal in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | The ID of the activity in the timeline, for example `999` ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -94,7 +94,7 @@ HTTP Status: **200**
         "PROVIDER_TYPE_ID": "CALL",
         "PROVIDER_GROUP_ID": null,
         "ASSOCIATED_ENTITY_ID": "0",
-        "SUBJECT": "Outgoing call Andrew Smith",
+        "SUBJECT": "Outgoing call Andrew Johnson",
         "CREATED": "2020-09-27T13:26:55+02:00",
         "LAST_UPDATED": "2021-03-21T20:28:24+02:00",
         "START_TIME": "2020-09-27T13:25:00+02:00",
@@ -145,9 +145,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | The root element of the response. Values for the `result` field correspond to [fields of the object](./crm-activity-fields.md#all-fields) ||
+[`object`](../../../../data-types.md) | The root element of the response. The values for the `result` field correspond to [the fields of the object](./crm-activity-fields.md#all-fields) ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -167,9 +167,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `Activity is not found` | The deal with the specified ID was not found for the entity in CRM ||
+|| `Activity is not found` | The activity with the specified ID was not found for the entity in CRM ||
 || `Access denied` | No rights to edit the entity in CRM ||
-|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the deal created in the application context ||
+|| `Application context required` | Invalid `PROVIDER_ID` parameter for the activity created in the context of the application ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}

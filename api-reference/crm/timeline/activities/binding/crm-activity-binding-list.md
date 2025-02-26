@@ -1,10 +1,10 @@
-# Get a list of all CRM activity bindings
+# Get a list of all bindings for the activity crm.activity.binding.list
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: `any user`
 
-The method `crm.activity.binding.list` retrieves a list of all activity bindings.
+The method `crm.activity.binding.list` retrieves a list of all bindings for the activity.
 
 The method will return an array, where each element will be an array containing:
 
@@ -126,7 +126,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | Result of the operation. Returns an array, where each element will be an array containing:
+[`array`](../../../../data-types.md) | The result of the operation. Returns an array, where each element will be an array containing:
 
 - `entityTypeId` — an integer identifier of the [CRM object type](../../../data-types.md#object_type)
 - `entityId` — an integer identifier of the CRM entity
@@ -152,7 +152,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are missing ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 |#
 

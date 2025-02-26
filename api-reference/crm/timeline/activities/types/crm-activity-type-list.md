@@ -1,4 +1,4 @@
-# Get a List of Custom Activity Types crm.activity.type.list
+# Get a list of custom activity types crm.activity.type.list
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -12,7 +12,7 @@ No parameters
 
 ## Code Examples
 
-{% include [Example Notes](../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -60,14 +60,14 @@ No parameters
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": [
         {
-            "TYPE_ID": "1C",
-            "NAME": "Activity 1C",
+            "TYPE_ID": "QuickBooks and other similar platforms",
+            "NAME": "QuickBooks Activity",
             "IS_CONFIGURABLE_TYPE": "Y",
             "ICON_ID": "0"
         }
@@ -90,14 +90,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | Root element of the response containing an array of objects with information about custom activity types registered by the application ||
+[`array`](../../../../data-types.md) | The root element of the response containing an array of objects with information about custom activity types registered by the application ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

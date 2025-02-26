@@ -4,14 +4,14 @@ Header of the [timeline record](../index.md) `HeaderDto`.
 
 ## Parameters of the `HeaderDto` Object
 
-{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
 || **title^*^**
-[`textWithTranslation`](./field-types.md#textwithtranslation) | Title of the record ||
+[`textWithTranslation`](./field-types.md#textwithtranslation) | Record header ||
 || **titleAction**
-[`ActionDto`](./action.md) | Action when the record title is clicked ||
+[`ActionDto`](./action.md) | Action upon clicking the record header ||
 || **tags**
 [`TagDto[]`](#obuekt) | Associative array of objects describing tags ||
 |#
@@ -30,7 +30,7 @@ No more than two tags are allowed.
 
 ### Parameters of the `TagDto` Object
 
-{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -39,7 +39,7 @@ No more than two tags are allowed.
 || **type^*^**
 [`string`](../../../../data-types.md) | Tag type, for example `warning`. Defines its appearance ||
 || **action**
-[`ActionDto`](./action.md) | Action when the tag is clicked ||
+[`ActionDto`](./action.md) | Action upon clicking the tag ||
 || **scope**
 [`string`](../../../../data-types.md) | [Scope](./field-types.md#scope), for example `web` ||
 || **hideIfReadonly**

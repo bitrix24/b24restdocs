@@ -1,4 +1,4 @@
-# Delete CRM Activity crm.activity.delete
+# Delete activity crm.activity.delete
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -81,7 +81,7 @@ The method `crm.activity.delete` removes an activity of any type.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -112,7 +112,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

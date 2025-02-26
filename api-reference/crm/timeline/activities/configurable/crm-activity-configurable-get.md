@@ -1,10 +1,10 @@
-# Get Configurable Deal by ID crm.activity.configurable.get
+# Get Configurable Activity by ID crm.activity.configurable.get
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-The method `crm.activity.configurable.get` returns information about a configurable deal.
+The method `crm.activity.configurable.get` returns information about a configurable activity.
 
 {% note warning %}
 
@@ -14,18 +14,18 @@ The method can only be called in the context of an [application](https://helpdes
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Integer identifier of the deal, for example `999` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the activity, for example `999` ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -89,7 +89,7 @@ HTTP Status: **200**
             "fields": {
                 "typeId": "CONFIGURABLE",
                 "completed": false,
-                "deadline": "2025-02-01T01:00:00+02:00",
+                "deadline": "2025-02-01T01:00:00+03:00",
                 "pingOffsets": [],
                 "isIncomingChannel": false,
                 "responsibleId": 1,
@@ -127,7 +127,7 @@ HTTP Status: **200**
                                 "block": {
                                     "type": "text",
                                     "properties": {
-                                        "value": "LLC Horns and Hooves"
+                                        "value": "Ltd. Hoofs and Horns"
                                     }
                                 }
                             }
@@ -139,7 +139,7 @@ HTTP Status: **200**
                                     "client": {
                                         "type": "link",
                                         "properties": {
-                                            "text": "John Smith",
+                                            "text": "Sergey Vostrikov",
                                             "bold": true,
                                             "action": {
                                                 "type": "redirect",
@@ -161,7 +161,7 @@ HTTP Status: **200**
                 "footer": {
                     "buttons": {
                         "startCall": {
-                            "title": "About Client",
+                            "title": "About the Client",
                             "type": "primary",
                             "action": {
                                 "type": "openRestApp",
@@ -201,8 +201,8 @@ HTTP Status: **200**
         "finish": 1724068028.726591,
         "duration": 0.3953571319580078,
         "processing": 0.13033390045166016,
-        "date_start": "2025-01-21T13:47:08+01:00",
-        "date_finish": "2025-01-21T13:47:08+01:00",
+        "date_start": "2025-01-21T13:47:08+02:00",
+        "date_finish": "2025-01-21T13:47:08+02:00",
         "operating": 0
     }
 }

@@ -1,25 +1,25 @@
-# Delete a set of additional content blocks in the CRM activity layout
+# Delete a set of additional content blocks in the CRM activity crm.activity.layout.blocks.delete
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: REST Application
 
-This method allows a REST application to delete a set of additional content blocks that it has previously set for the CRM activity.
+This method allows a REST application to delete a set of additional content blocks that it has installed for an activity.
 
 A REST application can only delete the set of additional content blocks that it has installed.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **entityTypeId***
+|| **entityTypeId*** 
 [`integer`](../../../../data-types.md) | Identifier of the CRM object type to which the activity is linked ||
-|| **entityId***
+|| **entityId*** 
 [`integer`](../../../../data-types.md) | Identifier of the CRM object to which the activity is linked ||
-|| **activityId***
+|| **activityId*** 
 [`integer`](../../../../data-types.md) | Identifier of the activity ||
 |#
 
@@ -27,7 +27,7 @@ A REST application can only delete the set of additional content blocks that it 
 
 Delete a set of additional content blocks in the activity with `id = 8`, linked to the deal with `id = 4`:
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -94,7 +94,7 @@ Delete a set of additional content blocks in the activity with `id = 8`, linked 
 
 HTTP status: **200**
 
-Returns `{ success: true }` if the set of additional content blocks was successfully deleted; otherwise, it returns `null`.
+Returns `{ success: true }` if the set of additional content blocks is successfully deleted, otherwise `null`.
 
 ```json
 {

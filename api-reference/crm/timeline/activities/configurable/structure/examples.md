@@ -1,6 +1,6 @@
-# Examples of Deal Configurations
+# Examples of Activity Configurations
 
-Code examples for configuring [your deal types](../../types/index.md) and how they will look.
+Code examples for [custom activity types](../../types/index.md) and how they will look.
 
 ## Text
 
@@ -62,7 +62,7 @@ Long text hidden under "Show more".
 
 ## Fields
 
-Field name-value pairs, changing the deadline.
+Fields with name-value pairs, changing the deadline.
 
 ```json
 {
@@ -95,7 +95,7 @@ Field name-value pairs, changing the deadline.
                     "block": {
                         "type": "text",
                         "properties": {
-                            "value": "LLC Horns and Hooves"
+                            "value": "Ltd. Horns and Hooves"
                         }
                     }
                 }
@@ -127,7 +127,7 @@ Field name-value pairs, changing the deadline.
                         "type": "text",
                         "properties": {
                             "multiline": true,
-                            "value": "Arrive no earlier than noon. Entrance from the yard, the gate password is 555. Go up to the 5th floor, ask for Ivan Nikolaevich. Payment in cash, change from $5000."
+                            "value": "Arrive no earlier than noon. Entrance from the yard, gate password 555. Go up to the 5th floor, ask for Ivan Nikolaevich. Payment in cash, change from $5000."
                         }
                     }
                 }

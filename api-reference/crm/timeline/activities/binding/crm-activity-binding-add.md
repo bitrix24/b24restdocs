@@ -1,10 +1,10 @@
-# Add a deal binding to a CRM entity crm.activity.binding.add
+# Add an activity binding to a CRM entity crm.activity.binding.add
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: `any user`
 
-The method `crm.activity.binding.add` creates a binding between a deal and a CRM entity. A deal can only be bound to an entity that the current user has edit access to.
+The method `crm.activity.binding.add` establishes a binding between a activity and a CRM entity. An activity can only be bound to an entity that the current user has edit access to.
 
 ## Method Parameters
 
@@ -13,12 +13,12 @@ The method `crm.activity.binding.add` creates a binding between a deal and a CRM
 #|
 || **Name**
 `type` | **Description** ||
-|| **activityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
-|| **entityTypeId***
-[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the deal should be bound, for example `2` for a deal ||
-|| **entityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the deal should be bound, for example `1`  ||
+|| **activityId***  
+[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
+|| **entityTypeId***  
+[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the activity should be bound, for example `2` for a deal ||
+|| **entityId***  
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the activity should be bound, for example `1`  ||
 |#
 
 ## Code Examples
@@ -53,7 +53,7 @@ The method `crm.activity.binding.add` creates a binding between a deal and a CRM
     BX24.callMethod(
         'crm.activity.binding.add',
         {
-            activityId: 999, // Deal ID
+            activityId: 999, // Activity ID
             entityTypeId: 2, // CRM object type ID
             entityId: 1 // CRM entity ID
         },
@@ -75,7 +75,7 @@ The method `crm.activity.binding.add` creates a binding between a deal and a CRM
     $result = CRest::call(
         'crm.activity.binding.add',
         [
-            'activityId' => 999, // Deal ID
+            'activityId' => 999, // Activity ID
             'entityTypeId' => 2, // CRM object type ID
             'entityId' => 1 // CRM entity ID
         ]
@@ -114,7 +114,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Operation result. Returns `true` if the binding was successfully created, otherwise returns `false` ||
+[`boolean`](../../../../data-types.md) | Operation result. Returns `true` if the binding was successfully created, otherwise — `false` ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -138,9 +138,9 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `100` | Required fields are missing ||
 || `NOT_FOUND` | Entity not found ||
-|| `OWNER_NOT_FOUND` | Entity owner not found ||
+|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `ACTIVITY_IS_ALREADY_BOUND` | The deal is already bound to this entity ||
+|| `ACTIVITY_IS_ALREADY_BOUND` | The activity is already bound to this entity ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}

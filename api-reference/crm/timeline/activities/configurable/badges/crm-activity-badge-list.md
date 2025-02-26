@@ -2,9 +2,9 @@
 
 > Scope: [`crm`](../../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
-The method retrieves a list of available badges. It will return an array containing all registered badges. Each element of the array contains [badge fields](./index.md#badge-record-fields).
+The method `crm.activity.badge.list` retrieves a list of available badges. It will return an array containing a list of all registered badges. Each element of the array contains [badge fields](./index.md#badge-record-fields).
 
 ## Method Parameters
 
@@ -12,14 +12,22 @@ No parameters.
 
 ## Code Examples
 
-{% include [Example notes](../../../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../../../_includes/examples.md) %}
 
 {% list tabs %}
-- cURL (Webhook)
 
 - cURL (OAuth)
 
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.activity.badge.list
+    ```
+
 - JS
+
     ```js
     BX24.callMethod(
         "crm.activity.badge.list",
@@ -30,9 +38,23 @@ No parameters.
             else
                 console.dir(result.data());
         }    
-);
+    );
     ```
+
 - PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.activity.badge.list',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
 
 {% endlist %}
 
@@ -70,9 +92,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | The root element of the response, containing an array where each element carries information about a badge ||
+[`array`](../../../../data-types.md) | The root element of the response containing an array, each element of which carries information about a badge ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

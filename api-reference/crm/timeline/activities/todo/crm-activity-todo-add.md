@@ -1,8 +1,8 @@
-# Add Universal CRM Activity crm.activity.todo.add
+# Add Universal Activity crm.activity.todo.add
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with edit access permission for the CRM entity to which the activity is being added.
+> Who can execute the method: a user with permission to edit the CRM entity to which the activity is being added.
 
 The method `crm.activity.todo.add` adds a universal activity to the timeline.
 
@@ -26,9 +26,9 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
 || **responsibleId**
 [`integer`](../../../../data-types.md) | Identifier of the user responsible for the activity, for example `1` ||
 || **parentActivityId**
-[`integer`](../../../../data-types.md) | Identifier of the activity in the timeline that can be linked to the created activity, for example `888` ||
+[`integer`](../../../../data-types.md) | Identifier of the activity in the timeline with which the created activity can be linked, for example `888` ||
 || **pingOffsets**
-[`array`](../../../../data-types.md) | An array containing integer values in minutes to set reminder times for the activity. For example, `[0, 15]` means that 2 reminders will be created, one 15 minutes before the deadline and one at the moment the deadline occurs. Default is an empty array, with no reminders ||
+[`array`](../../../../data-types.md) | An array containing integer values in minutes that allow you to set reminder times for the activity. For example, `[0, 15]` means that 2 reminders will be created, one 15 minutes before the deadline and one at the moment the deadline occurs. Default is an empty array, with no reminders ||
 || **colorId**
 [`integer`](../../../../data-types.md) | Identifier of the activity color in the timeline, for example `1`. There are 8 colors available, values from 1 to 7 and a default color if none is specified
 
@@ -113,7 +113,7 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -145,7 +145,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -160,7 +160,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are missing ||
 || `NOT_FOUND` | CRM entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||

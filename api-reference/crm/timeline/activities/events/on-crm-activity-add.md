@@ -4,7 +4,7 @@
 >
 > Who can subscribe: `any user`
 
-The event `onCrmActivityAdd` is triggered when a new CRM activity is added to the timeline.
+The event `onCrmActivityAdd` is triggered when a new activity is added to the CRM timeline.
 
 ## What the Handler Receives
 
@@ -38,7 +38,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityAdd`||
+[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityAdd` ||
 || **data**
 `array` | An object containing information about the created activity.
 
@@ -57,14 +57,14 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | `ID` with the identifier of the added activity ||
+[`integer`](../../../data-types.md) | `ID` with the value of the added activity identifier ||
 |#
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with Keys in the auth Array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning 
+## Continue Your Exploration 
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

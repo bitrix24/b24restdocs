@@ -1,4 +1,4 @@
-# Get the list of deals crm.activity.list
+# Get the list of activities crm.activity.list
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -14,12 +14,12 @@ The method `crm.activity.list` returns a list of activities based on the filter,
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array of fields of the deal [crm.activity.fields](./crm-activity-fields.md) that need to be selected. To get the fields `COMMUNICATIONS` and `FILES`, specify them in select.
+[`array`](../../../data-types.md) | An array of fields from the activity [crm.activity.fields](./crm-activity-fields.md) that need to be selected. To retrieve the fields `COMMUNICATIONS` and `FILES`, specify them in select.
 ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering the selected items in key-value format.
 
-Possible values for `field` correspond to the fields of the deal [crm.activity.fields](./crm-activity-fields.md).
+Possible values for `field` correspond to the fields of the activity [crm.activity.fields](./crm-activity-fields.md).
 
 An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
 
@@ -46,17 +46,17 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `!` — not equal
 ||
 || **order**
-[`object`](../../../data-types.md) | A set of key-value pairs for sorting the output results. The keys can be the fields of the deal [crm.activity.fields](./crm-activity-fields.md).
+[`object`](../../../data-types.md) | A set of key-value pairs for sorting the output results. The keys can use the fields of the activity [crm.activity.fields](./crm-activity-fields.md).
 
 Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
 
-By default, it is sorted by increasing the Start Date field (`START_TIME`)
+By default, it is sorted in ascending order by the Start Date field (`START_TIME`)
 ||
 || **start**
-  [`integer`](../../../data-types.md) | This parameter is used to manage pagination.
+  [`integer`](../../../data-types.md) | This parameter is used to control pagination.
 
 The page size of results is always static: 50 records.
 
@@ -73,9 +73,9 @@ See the description of [list methods](../../../../how-to-call-rest-api/list-meth
 
 Pay attention to the peculiarity of the `filter[BINDINGS]` parameter.
 
-A deal can be linked to multiple CRM entities. For example, a call can be linked to both a lead and a deal, so to retrieve these entities in the parameters of the method `crm.activity.list`, there is a special filter key - `BINDINGS`.
+An activity can be linked to multiple CRM entities. For example, a call can be linked to both a lead and a deal, so to retrieve these entities in the parameters of the method `crm.activity.list`, there is a special filter key - `BINDINGS`.
 
-In it, you need to specify an array of [system](../../../index.md) or [custom](../../../universal/user-defined-object-types/index.md) types of CRM objects for which you need to find the binding.
+You need to specify an array of [system](../../../index.md) or [user-defined](../../../universal/user-defined-object-types/index.md) types of CRM objects for which you need to find the binding.
 
 Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and `OWNER_ID` (entity identifier), either one or a combination of both. For example:
 
@@ -116,7 +116,7 @@ Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and
 
 - JS
 
-    In this example, we retrieve the list of deals for the contact with `ID` = 102.
+    In this example, we retrieve the list of activities for the contact with `ID` = 102.
 
     ```js
     BX24.callMethod(
@@ -247,7 +247,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | The result of the operation. An array of deals. For information on the structure of the deal, see the method [crm.activity.fields](./crm-activity-fields.md) ||
+[`boolean`](../../../../data-types.md) | The result of the operation. An array of activities. For information on the structure of an activity, see the method [crm.activity.fields](./crm-activity-fields.md) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -267,7 +267,7 @@ HTTP status: **400**, **403**
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Private Examples
+## Specific Examples
 
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
@@ -275,11 +275,11 @@ HTTP status: **400**, **403**
 
 Retrieve fields: Identifier, Name, Owner Type (Entity Type Identifier), Owner (Entity Identifier)
 
-Selection condition: the deal is linked to both a deal and a contact
+Selection condition: the activity is linked to both a deal and a contact
 
 {% note info %}
 
-When using multiple pairs in `BINDINGS`, duplication in the results may occur. For example, in the result of executing the code example below, the deal linked to both entities will be output twice.
+When using multiple pairs in `BINDINGS`, duplication in the results is possible. For example, in the result of executing the code example below, a activity linked to both entities will be output twice.
 
 {% endnote %}
 
@@ -454,7 +454,7 @@ HTTP status: **200**
                     "NAME": "Andrew ",
                     "SECOND_NAME": "Nikolaev",
                     "LAST_NAME": "",
-                    "COMPANY_TITLE": "Fusion LLC",
+                    "COMPANY_TITLE": "Ltd. Fusion",
                     "COMPANY_ID": "21"
                 }
             }

@@ -4,7 +4,7 @@
 >
 > Who can subscribe: `any user`
 
-The event `onCrmActivityUpdate` is triggered when a deal is updated in the CRM timeline.
+The `onCrmActivityUpdate` event is triggered when an activity is updated in the CRM timeline.
 
 ## What the handler receives
 
@@ -40,13 +40,13 @@ Data is sent as a POST request {.b24-info}
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityUpdate` ||
 || **data**
-`array` | An object containing information about the updated deal.
+`array` | An object containing information about the updated activity.
 
 Contains a single key `FIELDS` ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred.
+[`array`](../../../data-types.md) | Authorization parameters and data about the account where the event occurred. 
 
 The structure is described [below](#auth) ||
 |#
@@ -57,14 +57,14 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | `ID` with the value of the updated deal's identifier ||
+[`integer`](../../../data-types.md) | `ID` with the value of the updated activity identifier ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your study
+## Continue exploring 
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

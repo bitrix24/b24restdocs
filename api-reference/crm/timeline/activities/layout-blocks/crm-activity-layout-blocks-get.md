@@ -1,33 +1,33 @@
-# Get a Set of Additional Content Blocks in a CRM Activity
+# Get a set of additional content blocks in the activity crm.activity.layout.blocks.get
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: REST Application
 
-This method allows a REST application to retrieve a set of additional content blocks that it has established in the deal.
+This method allows a REST application to retrieve a set of additional content blocks in the activity that it has set.
 
-The REST application can only obtain the set of additional content blocks that it has set up itself.
+The REST application can only obtain the set of additional content blocks that it has established.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM object type associated with the deal ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity type to which the activity is linked ||
 || **entityId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM object associated with the deal ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the activity is linked ||
 || **activityId***
-[`integer`](../../../../data-types.md) | Identifier of the deal ||
+[`integer`](../../../../data-types.md) | Identifier of the activity ||
 |#
 
 ## Code Examples
 
-Retrieve a set of additional content blocks in the deal with `id = 8`, linked to the deal with `id = 4`:
+Get a set of additional content blocks in the activity with `id = 8`, linked to the deal with `id = 4`:
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -92,7 +92,7 @@ Retrieve a set of additional content blocks in the deal with `id = 8`, linked to
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 Returns an `object` with the key `layout`, containing [RestAppLayoutDto](../configurable/structure/rest-app-layout-dto.md).
 
@@ -118,7 +118,7 @@ Returns an `object` with the key `layout`, containing [RestAppLayoutDto](../conf
             "block_3": {
                 "type": "link",
                 "properties": {
-                    "text": "Open Deal",
+                    "text": "Open deal",
                     "bold": true,
                     "action": {
                         "type": "redirect",
@@ -145,7 +145,7 @@ Returns an `object` with the key `layout`, containing [RestAppLayoutDto](../conf
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -161,9 +161,9 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a REST application ||
-|| `OWNER_NOT_FOUND` | The entity associated with the deal was not found ||
-|| `NOT_FOUND` | The deal was not found ||
-|| `ACCESS_DENIED` | Access is denied ||
+|| `OWNER_NOT_FOUND` | The entity to which the activity is linked was not found ||
+|| `NOT_FOUND` | The activity was not found ||
+|| `ACCESS_DENIED` | Access denied ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}

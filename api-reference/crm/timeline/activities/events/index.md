@@ -1,20 +1,14 @@
-# List of Events
+# Overview of Events
 
-{% note warning "We are still updating this page" %}
+> Scope: [`crm`](../../../../scopes/permissions.md)
+>
+> Who can subscribe: `any user`
 
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% note info "" %}
-
-**Scope**: [`crm`](../../../../scopes/permissions.md) | **Who can execute the method**: `any user`
-
-{% endnote %}
+A list of events when working with an activity in the timeline.
 
 #|
-|| **Event** | **Triggered** ||
-|| [onCrmActivityAdd](./on-crm-activity-add.md) | when a CRM activity is created ||
-|| [onCrmActivityUpdate](./on-crm-activity-update.md) | when a CRM activity is updated ||
-|| [onCrmActivityDelete](./on-crm-activity-delete.md) | when a CRM activity is deleted ||
+|| **Event** | **Triggered by** ||
+|| [onCrmActivityAdd](./on-crm-activity-add.md) | When a new activity is created ||
+|| [onCrmActivityUpdate](./on-crm-activity-update.md) | When a activity is updated ||
+|| [onCrmActivityDelete](./on-crm-activity-delete.md) | When a activity is deleted ||
 |#

@@ -1,16 +1,16 @@
-# Update System Deal crm.activity.update
+# Update System Activity crm.activity.update
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with permission to update the deal
+> Who can execute the method: any user with permission to update the activity
 
-{% note warning "Method development has been halted" %}
+{% note warning "Method development has been discontinued" %}
 
 The method `crm.activity.update` continues to function, but there is a more current equivalent [crm.activity.todo.update](../todo/crm-activity-todo-update.md).
 
 {% endnote %}
 
-The method `crm.activity.update` updates an existing deal.
+The method `crm.activity.update` updates an existing activity.
 
 ## Method Parameters
 
@@ -20,9 +20,9 @@ The method `crm.activity.update` updates an existing deal.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
 || **fields***
-[`array`](../../../../data-types.md) | Array of values for [deal fields](#fields) in the following structure:
+[`array`](../../../../data-types.md) | Array of values [activity fields](#fields) in the form of a structure:
 
 ```json
 fields:
@@ -47,23 +47,23 @@ fields:
 || **OWNER_TYPE_ID***
 [`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
 || **TYPE_ID***
-[`crm_enum_activitytype`](../../../data-types.md) | Type of the deal ||
+[`crm_enum_activitytype`](../../../data-types.md) | Type of activity ||
 || **ASSOCIATED_ENTITY_ID**
-[`integer`](../../../../data-types.md) | Identifier of the entity associated with the deal ||
+[`integer`](../../../../data-types.md) | Identifier of the entity associated with the activity ||
 || **COMMUNICATIONS***
 [`crm_activity_communication`](../../../data-types.md) | [Description of the communication](./crm-activity-communication-fields.md) ||
 || **DEADLINE**
-[`datetime`](../../../data-types.md) | Date and time of the deal's deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
+[`datetime`](../../../data-types.md) | Date and time of the activity deadline. The field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
 || **DESCRIPTION**
-[`string`](../../../data-types.md) | Text description of the deal ||
+[`string`](../../../data-types.md) | Text description of the activity ||
 || **DESCRIPTION_TYPE**
 [`crm.enum.contenttype`](../../../data-types.md) | Type of description ||
 || **DIRECTION**
-[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the deal: incoming/outgoing. Relevant for calls and e-mails, not used for meetings ||
+[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. Relevant for calls and e-mails, not used for meetings ||
 || **END_TIME**
-[`datetime`](../../../data-types.md) | Time of deal completion | ||
+[`datetime`](../../../data-types.md) | End time of the activity | ||
 || **FILES**
-[`diskfile`](../../../data-types.md) | Files added to the deal ||
+[`diskfile`](../../../data-types.md) | Files added to the activity ||
 || **LOCATION**
 [`string`](../../../data-types.md) | Location ||
 || **NOTIFY_TYPE**
@@ -73,7 +73,7 @@ fields:
 || **ORIGIN_ID**
 [`string`](../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
 || **ORIGIN_VERSION**
-[`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, it can be edited in CRM without fear that the next export will overwrite the data ||
+[`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will overwrite the data ||
 || **PRIORITY**
 [`crm.enum.activitypriority`](../../../data-types.md) | Priority ||
 || **PROVIDER_DATA**
@@ -87,19 +87,19 @@ fields:
 || **PROVIDER_PARAMS**
 [`object`](../../../data-types.md) | Additional provider parameters ||
 || **RESPONSIBLE_ID***
-[`user`](../../../data-types.md) | Identifier of the user responsible for the deal ||
+[`user`](../../../data-types.md) | Identifier of the user responsible for the activity ||
 || **SETTINGS**
 [`object`](../../../data-types.md) | Additional settings ||
 || **START_TIME**
-[`datetime`](../../../data-types.md) | Time when the deal execution starts ||
+[`datetime`](../../../data-types.md) | Start time of the activity ||
 || **STATUS**
-[`crm_enum_activitystatus`](../../../data-types.md) | Status of the deal ||
+[`crm_enum_activitystatus`](../../../data-types.md) | Status of the activity ||
 || **SUBJECT**
-[`string`](../../../data-types.md) | Additional description of the deal ||
+[`string`](../../../data-types.md) | Additional description of the activity ||
 || **WEBDAV_ELEMENTS**
 [`diskfile`](../../../data-types.md) | Added files. Deprecated, kept for compatibility ||
 || **IS_INCOMING_CHANNEL**
-[`char`](../../../data-types.md) | Flag indicating whether the deal was created from an incoming channel (`Y`/`N`) ||
+[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
 |#
 
 ## Code Examples
@@ -114,7 +114,7 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New deal description"}}' \
+    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New description of the activity"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.update
     ```
 
@@ -124,7 +124,7 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New deal description"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New description of the activity"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.update
     ```
 
@@ -137,7 +137,7 @@ fields:
             id: 999,
             fields: {
                 "RESPONSIBLE_ID": 1, 
-                "DESCRIPTION": "New deal description"
+                "DESCRIPTION": "New description of the activity"
             }
         },
         result => {
@@ -150,7 +150,6 @@ fields:
     );
     ```
 
-
 - PHP
 
     ```php
@@ -162,7 +161,7 @@ fields:
             'id' => 999,
             'fields' => [
                 'RESPONSIBLE_ID' => 1,
-                'DESCRIPTION' => 'New deal description'
+                'DESCRIPTION' => 'New description of the activity'
             ]
         ]
     );
@@ -176,7 +175,7 @@ fields:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -200,14 +199,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the deal was successfully updated, otherwise `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the activity was successfully changed, otherwise `false` ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -222,17 +221,17 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `Activity is not found` | The deal with the specified identifier was not found for the entity in CRM ||
+|| `Activity is not found` | The activity with the specified identifier was not found for the entity in CRM ||
 || `The field SUBJECT is not defined or empty` | The `SUBJECT` field is not set ||
 || `The field RESPONSIBLE_ID is not defined or invalid` | The `RESPONSIBLE_ID` field is not set ||
 || `The field TYPE_ID is not defined or invalid` | The `TYPE_ID` field is not set ||
 || `The field COMMUNICATIONS is not defined or invalid` | The `COMMUNICATIONS` field is not set ||
 || `The only one communication is allowed for activity of specified type` | More than one contact is allowed ||
-|| `Could not build binding. Please ensure that owner info and communications are defined correctly` | Bindings for the deal are not specified ||
-|| `The custom activity without provider is not supported in current context` | The type of deal is not supported in the given context ||
-|| `Use crm.activity.configurable.update for this activity provider` | Incorrect method call for configurable deal ||
+|| `Could not build binding. Please ensure that owner info and communications are defined correctly` | Bindings for the activity are not specified ||
+|| `The custom activity without provider is not supported in current context` | The activity type is not supported in the given context ||
+|| `Use crm.activity.configurable.update for this activity provider` | Incorrect method call for configurable activity ||
 || `Access denied` | No permission to update the entity in CRM ||
-|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the deal created in the application context ||
+|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the context of the application ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}

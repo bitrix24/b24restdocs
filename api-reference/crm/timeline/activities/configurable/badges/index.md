@@ -1,12 +1,12 @@
-# About Configurable Deal Badges
+# About Configurable Activity Badges
 
 > Quick navigation: [all methods](#all-methods)
 
-`Badge` is an icon on the card of an entity in the kanban. A badge helps highlight items that require attention. If multiple badges are added to an item, the most recently added one will be displayed.
+A `badge` is an icon on the card of a CRM entity in the kanban. The badge helps highlight entities that require attention. If multiple badges are added to an entity, only the most recently added badge will be displayed.
 
 ![Last badge](./_images/badge.png)
 
-Badges can be added for a [configurable deal](../index.md) in the `badgeCode` field. The badge will be displayed on the kanban of the object to which the deal is linked until the deal is closed.
+Badges can be added for a [configurable activity](../index.md) in the `badgeCode` field. The badge will be displayed on the kanban of the object to which the activity is linked until the activity is closed.
 
 ## Badge Record Fields
 
@@ -15,9 +15,9 @@ Badges can be added for a [configurable deal](../index.md) in the `badgeCode` fi
 || **code**
 [`string`](../../../../data-types.md) | Badge code, for example `missedCall` ||
 || **title**
-[`string`\|`array`](../../../../data-types.md) | Badge title. Can be a string or an array of strings for different languages ||
+[`string`\|`array`](../../../../data-types.md) | Title of the badge. Can be a string or an array of strings for different languages ||
 || **value**
-[`string`\|`array`](../../../../data-types.md) | Badge value. Can be a string or an array of strings for different languages ||
+[`string`\|`array`](../../../../data-types.md) | Value of the badge. Can be a string or an array of strings for different languages ||
 || **type**
 [`string`](../../../../data-types.md) | [Badge type](#badge-type) ||
 |#

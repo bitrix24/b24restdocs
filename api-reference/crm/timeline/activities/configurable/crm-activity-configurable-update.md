@@ -1,8 +1,8 @@
-# Update Configurable CRM Activity: crm.activity.configurable.update
+# Update Configurable Activity crm.activity.configurable.update
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: any user
 
 The method `crm.activity.configurable.update` makes changes to a configurable activity.
 
@@ -55,7 +55,7 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"fields":{"typeId":"CONFIGURABLE","completed":false,"deadline":"**put_current_date_time_here**","pingOffsets":[300],"isIncomingChannel":"Y","responsibleId":5,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Doe","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"id":999,"fields":{"typeId":"CONFIGURABLE","completed":false,"deadline":"**put_current_date_time_here**","pingOffsets":[300],"isIncomingChannel":"Y","responsibleId":5,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Smith","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About the Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.configurable.update
     ```
 
@@ -96,7 +96,7 @@ fields:
                                     "client": {
                                         "type": "link",
                                         "properties": {
-                                            "text": "John Doe",
+                                            "text": "John Smith",
                                             "bold": true,
                                             "action": {
                                                 "type": "redirect",
@@ -118,7 +118,7 @@ fields:
                 "footer": {
                     "buttons": {
                         "startCall": {
-                            "title": "About Client",
+                            "title": "About the Client",
                             "action": {
                                 "type": "openRestApp",
                                 "actionParams": {
@@ -176,7 +176,7 @@ fields:
                                     'client' => [
                                         'type' => 'link',
                                         'properties' => [
-                                            'text' => 'John Doe',
+                                            'text' => 'John Smith',
                                             'bold' => true,
                                             'action' => [
                                                 'type' => 'redirect',
@@ -198,7 +198,7 @@ fields:
                 'footer' => [
                     'buttons' => [
                         'startCall' => [
-                            'title' => 'About Client',
+                            'title' => 'About the Client',
                             'action' => [
                                 'type' => 'openRestApp',
                                 'actionParams' => [
@@ -232,16 +232,16 @@ HTTP Status: **200**
 {
     "result": {
         "activity": {
-            "id": 999,
+            "id": 999
         },
-    "time": {
-        "start": 1724068028.331234,
-        "finish": 1724068028.726591,
-        "duration": 0.3953571319580078,
-        "processing": 0.13033390045166016,
-        "date_start": "2025-01-21T13:47:08+02:00",
-        "date_finish": "2025-01-21T13:47:08+02:00",
-        "operating": 0
+        "time": {
+            "start": 1724068028.331234,
+            "finish": 1724068028.726591,
+            "duration": 0.3953571319580078,
+            "processing": 0.13033390045166016,
+            "date_start": "2025-01-21T13:47:08+02:00",
+            "date_finish": "2025-01-21T13:47:08+02:00",
+            "operating": 0
         }
     }
 }
@@ -253,9 +253,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response, containing information about the added activity identifier `id` in case of success. In case of failure, it will return `null` ||
+[`object`](../../../../data-types.md) | Root element of the response containing information about the added activity identifier `id` in case of success. In case of failure, it will return `null` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

@@ -1,4 +1,4 @@
-# Update Deadline for Universal CRM Activity crm.activity.todo.updateDeadline
+# Update Deadline for Universal Activity crm.activity.todo.updateDeadline
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

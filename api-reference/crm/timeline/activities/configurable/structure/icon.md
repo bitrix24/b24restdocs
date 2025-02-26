@@ -9,10 +9,10 @@ Icon of the [timeline entry](../index.md) `IconDto`.
 #|
 || **Field** | **Description** | **Additional** ||
 || **code^*^**
-[`string`](../../../../data-types.md) | Icon code | A list of available codes can be obtained using the method [crm.timeline.icon.list](../../../logmessage/icons/crm-timeline-icon-list.md) ||
+[`string`](../../../../data-types.md) | Icon code | A list of available codes can be obtained using the [crm.timeline.icon.list](../../../logmessage/icons/crm-timeline-icon-list.md) method ||
 |#
 
-## Example Object
+## Example of the Object
 
 ```json
 {
@@ -22,7 +22,7 @@ Icon of the [timeline entry](../index.md) `IconDto`.
 }
 ```
 
-## Continue Your Exploration
+## Continue Exploring
 
 - [{#T}](./layout.md)
 - [{#T}](./header.md)

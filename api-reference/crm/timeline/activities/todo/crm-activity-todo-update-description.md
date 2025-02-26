@@ -1,31 +1,31 @@
-# Update Description of Universal Deal crm.activity.todo.updateDescription
+# Update the description of the universal activity crm.activity.todo.updateDescription
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with edit access permission for the CRM entity to which the deal is linked
+> Who can execute the method: a user with permission to edit the CRM entity for which the activity is being updated
 
-The method `crm.activity.todo.updateDescription` changes the description in the universal deal.
+The method `crm.activity.todo.updateDescription` changes the description in the universal activity.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the deal being updated, for example `999` ||
+[`integer`](../../../../data-types.md) | Identifier of the activity being updated, for example `999` ||
 || **ownerTypeId***
-[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal is linked, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is linked, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the deal is linked, for example `1` ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the activity is linked, for example `1` ||
 || **value***
-[`string`](../../../../data-types.md) | New description of the deal ||
+[`string`](../../../../data-types.md) | New description of the activity ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -35,7 +35,7 @@ The method `crm.activity.todo.updateDescription` changes the description in the 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"ownerTypeId":2,"ownerId":1,"value":"New deal description"}' \
+    -d '{"id":999,"ownerTypeId":2,"ownerId":1,"value":"New activity description"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.todo.updateDescription
     ```
 
@@ -45,7 +45,7 @@ The method `crm.activity.todo.updateDescription` changes the description in the 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"ownerTypeId":2,"ownerId":1,"value":"New deal description","auth":"**put_access_token_here**"}' \
+    -d '{"id":999,"ownerTypeId":2,"ownerId":1,"value":"New activity description","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.todo.updateDescription
     ```
 
@@ -58,7 +58,7 @@ The method `crm.activity.todo.updateDescription` changes the description in the 
             id: 999,
             ownerTypeId: 2,
             ownerId: 1,
-            value: 'New deal description'
+            value: 'New activity description'
         }, 
         result => {
             if (result.error())
@@ -80,7 +80,7 @@ The method `crm.activity.todo.updateDescription` changes the description in the 
             'id' => 999,
             'ownerTypeId' => 2,
             'ownerId' => 1,
-            'value' => 'New deal description'
+            'value' => 'New activity description'
         ]
     );
 
@@ -118,7 +118,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | On success, returns an object containing the identifier of the updated deal `id`, on error = `null` ||
+[`object`](../../../../data-types.md) | On success, returns an object containing the identifier of the updated activity `id`, on error = `null` ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -144,7 +144,7 @@ HTTP Status: **400**
 || `NOT_FOUND` | CRM entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
-|| `CAN_NOT_UPDATE_COMPLETED_TODO` | Completed deal cannot be modified ||
+|| `CAN_NOT_UPDATE_COMPLETED_TODO` | Completed activity cannot be modified ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
