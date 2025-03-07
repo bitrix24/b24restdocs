@@ -1,4 +1,4 @@
-# Change the Value of the Custom Field userfieldconfig.update
+# Change the value of the user field userfieldconfig.update
 
 {% note warning "We are still updating this page" %}
 
@@ -10,9 +10,9 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Required parameters are not specified
-- No response in case of an error
-- No examples in other languages
+- required parameters are not specified
+- no response in case of an error
+- no examples in other languages
   
 {% endnote %}
 
@@ -26,7 +26,7 @@ Some data may be missing — we will complete it shortly.
 userfieldconfig.update({moduleId: string, id: number, field: {}})
 ```
 
-This method changes the value of a field.
+The method changes the value of the field.
 
 ## Parameters
 
@@ -45,7 +45,7 @@ This method changes the value of a field.
   - id - identifier of the option. Must be present if the option needs to be updated| ||
 |#
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Parameter notes](../../../../../_includes/required.md) %}
 
 {% note info "" %}
 
@@ -53,9 +53,9 @@ Be careful when working with value options for lists.
 
 {% endnote %}
 
-## Return Value and Example
+## Return value and example
 
-The method will return the same data as the userfieldconfig.get method for the modified field.
+The method will return the same data as the userfieldconfig.get method on the modified field.
 
 ### Examples
 
@@ -68,7 +68,7 @@ Updating flags and language phrases, without changing value options
     "field": {
         "mandatory": "Y",
         "editFormLabel": {
-            "de": "Neuer Feldname"
+            "de": "New field name"
         }    
     }
 }
@@ -120,4 +120,9 @@ In this example:
 - A new option "New value" will be added
 - All other options will be removed. If only the id of the option is passed in the request without the value, the option will be deleted.
 
-{% include [Example Note](../../../../../_includes/examples.md) %}
+  
+{% include [Example notes](../../../../../_includes/examples.md) %}
+
+## Continue exploring
+
+- [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)

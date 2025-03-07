@@ -1,4 +1,4 @@
-# Pin or Unpin Flow tasks.flow.flow.pin
+# Pin or Unpin Flow tasks.flow.Flow.pin
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
@@ -16,7 +16,7 @@ This method pins or unpins a flow in the list of flows by its identifier.
 || **flowId*** 
 [`integer`](../../data-types.md) | The identifier of the flow to be pinned or unpinned.
 
-You can obtain the identifier using the method to create a new flow [tasks.flow.flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
+You can obtain the identifier using the method for creating a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or the method for retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
@@ -33,7 +33,7 @@ You can obtain the identifier using the method to create a new flow [tasks.flow.
     -d '{
         "flowId": 517
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.flow.pin
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.pin
     ```
 
 - cURL (oAuth)
@@ -45,14 +45,14 @@ You can obtain the identifier using the method to create a new flow [tasks.flow.
     -d '{
         "flowId": 517
     }' \
-    https://your-domain.bitrix24.com/rest/tasks.flow.flow.pin
+    https://your-domain.bitrix24.com/rest/tasks.flow.Flow.pin
     ```
 
 - JS
 
     ```js
     BX24.callMethod(
-        'tasks.flow.flow.pin',
+        'tasks.flow.Flow.pin',
         {
             flowId: 517
         },
@@ -73,15 +73,15 @@ You can obtain the identifier using the method to create a new flow [tasks.flow.
     
     $flowId = 517;
     
-    // executing the request to the REST API
+    // executing request to REST API
     $result = CRest::call(
-        'tasks.flow.flow.pin',
+        'tasks.flow.Flow.pin',
         [
             'flowId' => $flowId
         ]
     );
     
-    // Handling the response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {

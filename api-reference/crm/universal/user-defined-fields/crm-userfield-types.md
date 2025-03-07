@@ -1,8 +1,8 @@
-# Get a list of custom field types crm.userfield.types
+# Get a list of user field types crm.userfield.types
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -19,11 +19,11 @@ Some data may be missing — we will fill it in shortly.
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can perform the method: any user
 
-The method `crm.userfield.types` returns descriptions of fields for custom fields.
+The method `crm.userfield.types` returns the description of fields for user fields.
 
-A list of custom field types. Contains descriptions of the types:
+List of user field types. Contains descriptions of types:
 
 - string
 - integer
@@ -40,7 +40,7 @@ A list of custom field types. Contains descriptions of the types:
 - money
 - url
 
-Also, the [types](../user-defined-field-types/index.md) of custom fields registered by the current application will be returned.
+Also, the [types](../user-defined-field-types/index.md) of user fields registered by the current application will be returned.
 
 ## Example
 
@@ -116,3 +116,7 @@ Also, the [types](../user-defined-field-types/index.md) of custom fields registe
 {% endlist %}
 
 {% include [Footnote about examples](../../../../_includes/examples.md) %}
+
+## Continue your exploration
+
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)

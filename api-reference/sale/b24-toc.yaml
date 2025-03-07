@@ -9,7 +9,7 @@ items:
     include:
       path: basket-item/b24-toc.yaml
       mode: link
-  - name: Cart Properties
+  - name: Shopping Cart Properties
     include:
       path: basket-properties/b24-toc.yaml
       mode: link
@@ -17,7 +17,11 @@ items:
     include:
       path: order/b24-toc.yaml
       mode: link
-  - name: Orders from External Sources
+  - name: Order Sources
+    include:
+      path: trade-platform/b24-toc.yaml
+      mode: link
+  - name: Linking Order Sources to Orders
     include:
       path: trade-binding/b24-toc.yaml
       mode: link
@@ -33,10 +37,6 @@ items:
     include:
       path: property-variant/b24-toc.yaml
       mode: link    
-  - name: Trading Platforms
-    include:
-      path: trade-platform/b24-toc.yaml
-      mode: link
   - name: Payments
     include:
       path: payment/b24-toc.yaml
@@ -73,7 +73,7 @@ items:
     include:
       path: status-lang/b24-toc.yaml
       mode: link
-  - name: Linking Cart Item to Payment
+  - name: Linking Cart Items to Payments
     include:
       path: payment-item-basket/b24-toc.yaml
       mode: link

@@ -1,10 +1,12 @@
-# List of Methods for Working with the Work Schedule
+# Work Schedule: Overview of Methods
 
-{% note warning "We are still updating this page" %}
+The work schedule defines the mode and duration of employees' work. You can obtain the work schedule settings using the [timeman.schedule.get](./timeman-schedule-get.md) method.
 
-Some data may be missing here — we will fill it in shortly.
+> Quick navigation: [all methods and events](#all-methods) 
+> 
+> User documentation: [Work schedules](https://helpdesk.bitrix24.com/open/18039560/)
 
-{% endnote %}
+## Overview of Methods {#all-methods}
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
@@ -12,5 +14,5 @@ Some data may be missing here — we will fill it in shortly.
 
 #|
 || **Method** | **Description** ||
-|| [timeman.schedule.get](./timeman-schedule-get.md) | This method allows you to retrieve the work schedule by its identifier. ||
+|| [timeman.schedule.get](./timeman-schedule-get.md) | Retrieves the work schedule by identifier ||
 |#

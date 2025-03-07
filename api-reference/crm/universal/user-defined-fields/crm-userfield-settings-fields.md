@@ -1,8 +1,8 @@
-# Get the field settings description for the custom field type crm.userfield.settings.fields
+# Get the description of the settings fields for the custom field type crm.userfield.settings.fields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -30,7 +30,7 @@ The method `crm.userfield.settings.fields` returns the description of the settin
 || **type** | The type of the custom field. Value from the list returned by the method [crm.userfield.types](crm-userfield-types.md).  ||
 |#
 
-{% include [Parameter notes](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 ## Example
 
@@ -60,7 +60,7 @@ The method `crm.userfield.settings.fields` returns the description of the settin
     ```php
     require_once('crest.php');
 
-    $type = 'string'; // Replace with the desired type
+    $type = 'string'; // Replace with the required type
 
     $result = CRest::call(
         'crm.userfield.settings.fields',
@@ -94,4 +94,8 @@ The method `crm.userfield.settings.fields` returns the description of the settin
 
 {% endlist %}
 
-{% include [Example notes](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
+
+## Continue exploring
+
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)

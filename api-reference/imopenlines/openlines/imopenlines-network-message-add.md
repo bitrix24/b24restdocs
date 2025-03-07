@@ -1,17 +1,148 @@
-# Send a message to a user on behalf of an open channel
+# Send a message to a user on behalf of the open channel imopenlines.network.message.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
-{% if build == 'dev' %}
+> Scope: [`imopenlines, imbot`](../../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
-{% note alert "TO-DO _not exported to prod_" %}
+The method `imopenlines.network.message.add` sends a message to a user on behalf of the open channel.
 
-- We do not have a description for this method. I found it in the English documentation https://training.bitrix24.com/support/training/course/?COURSE_ID=115&LESSON_ID=25018
+## Method limitations
 
-{% endnote %}
+- A message can be sent no more than once for each user within one week.
+  There are no restrictions for accounts with a Partner (NFR) license.
 
-{% endif %}
+- The keyboard can only be used for formatting the button link to an external site.
+
+## Method parameters
+
+{% include [Note on parameters](../../../_includes/required.md) %}
+
+#|
+||**Name**
+`type`|**Description**||
+|| **CODE*** 
+[`unknown`](../../data-types.md) | Open Channel code, for example `ab515f5d85a8b844d484f6ea75a2e494` ||
+|| **USER_ID*** 
+[`int`](../../data-types.md) | ID of the message recipient, for example `2` ||
+|| **MESSAGE*** 
+[`string`](../../data-types.md) | Message text, formatting is available [here](../../chats/messages/index.md) ||
+|| **ATTACH** 
+[`unknown`](../../data-types.md) | Attachment, format described in the article [How to use attachments](../../chats/messages/attachments/index.md) ||
+|| **KEYBOARD** 
+[`unknown`](../../data-types.md) | Keyboard, information on usage in the article [Working with keyboards](../../chats/messages/keyboards.md) ||
+|| **URL_PREVIEW** 
+[`unknown`](../../data-types.md) | Convert links to expanded links, default is set to `Y` ||
+|#
+
+## Code examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CODE":"ab515f5d85a8b844d484f6ea75a2e494","USER_ID":2,"MESSAGE":"message text","ATTACH":"","KEYBOARD":"","URL_PREVIEW":"Y","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imopenlines.network.message.add
+    ```
+
+- JS
+
+    ```javascript
+    BX24.callMethod(
+        'imopenlines.network.message.add',
+        {
+            'CODE': 'ab515f5d85a8b844d484f6ea75a2e494',
+            'USER_ID': 2,
+            'MESSAGE': 'message text',
+            'ATTACH': '',
+            'KEYBOARD': '',
+            'URL_PREVIEW': 'Y'
+        },
+        function(result) {
+            if(result.error()) {
+                console.error("Error: ", result.error());
+            } else {
+                console.log("Success: ", result.data());
+            }
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imopenlines.network.message.add',
+        [
+            'CODE' => 'ab515f5d85a8b844d484f6ea75a2e494',
+            'USER_ID' => 2,
+            'MESSAGE' => 'message text',
+            'ATTACH' => '',
+            'KEYBOARD' => '',
+            'URL_PREVIEW' => 'Y'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Successful response
+
+```json
+{
+	"result": true
+}
+```
+
+**Execution result**: `true` in case of success or an error.
+
+## Error handling
+
+```json
+{
+    "error": "CODE_ERROR",
+    "error_description": "Open Channel code is incorrect"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible error codes
+
+#|
+|| **Code** | **Description** ||
+|| `CODE_ERROR` | Incorrect open channel code ||
+|| `USER_ID_EMPTY` | User ID is missing ||
+|| `MESSAGE_EMPTY` | Message text is missing ||
+|| `ATTACH_ERROR` | Attachment object failed validation ||
+|| `ATTACH_OVERSIZE` | Exceeded maximum allowed attachment size (30 KB) ||
+|| `KEYBOARD_ERROR` | The provided keyboard object failed validation ||
+|| `KEYBOARD_OVERSIZE` | Exceeded maximum allowed keyboard size (30 KB) ||
+|| `USER_MESSAGE_LIMIT` | Message limit exceeded for the specific user ||
+|| `WRONG_REQUEST` | Something went wrong ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue exploring 
+
+- [{#T}](../../chats/messages/keyboards.md)
+- [{#T}](../../chats/messages/attachments/index.md)
+- [{#T}](../../chats/messages/index.md)

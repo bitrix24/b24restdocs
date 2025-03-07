@@ -5,7 +5,7 @@ items:
     href: index.md
   - name: Add Lead
     href: how-to-add-lead.md
-  - name: Add CRM Activity to Lead or Deal Considering CRM Modes
+  - name: Add Activity to Lead or Deal Considering CRM Modes
     href: how-to-add-objects-with-crm-mode.md
   - name: Add Repeat Lead
     href: how-to-add-repeat-lead.md
@@ -27,9 +27,11 @@ items:
     href: how-to-add-product-with-custom-props.md
   - name: Create Your Document Template and Document Based on It
     href: how-to-generate-documents.md
-  - name: Send E-mail to Client on Behalf of Employee
+  - name: Send e-mail to Client on Behalf of Employee
     href: how-to-send-email.md
-  - name: Add Comment to SPA Timeline
+  - name: Add Comment to Smart Process Timeline
     href: how-to-add-comment-to-spa.md
-  - name: Create Custom Field in SPA    
+  - name: Create Custom Field in Smart Process    
     href: how-to-add-user-field-to-spa.md
+  - name: Configure Rounding for Custom Field of Type "Number"
+    href: how-to-add-precision-to-user-field.md

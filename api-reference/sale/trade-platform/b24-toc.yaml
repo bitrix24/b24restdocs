@@ -1,9 +1,9 @@
-title: Trading Platforms
+title: Order Sources
 href: index.md
 items: 
   - name: Overview of Methods
     href: index.md
-  - name: Get a List of Trading Platforms
+  - name: Get a List of Order Sources
     href: sale-trade-platform-list.md
-  - name: Get Fields of Trading Platforms
+  - name: Get Available Fields of Order Sources
     href: sale-trade-platform-get-fields.md

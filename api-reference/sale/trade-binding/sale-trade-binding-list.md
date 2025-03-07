@@ -1,47 +1,47 @@
-# Get a List of Orders from External Sources sale.tradeBinding.list
+# Get a list of orders from the sources sale.tradeBinding.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with the "View product catalog" access permission
 
-The method `sale.tradeBinding.list` allows you to retrieve a list of orders from external sources.
+The method `sale.tradeBinding.list` returns a list of orders from the sources.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to be selected (see fields of the object [sale_order_trade_binding](../data-types.md#sale_order_trade_binding)).
+[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the object [sale_order_trade_binding](../data-types.md#sale_order_trade_binding)).
 
-If not provided or an empty array is passed, all available fields of orders from external sources will be selected. ||
+If not provided or an empty array is passed, all available order fields will be selected. ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected orders from external sources in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. When specifying multiple fields, AND logic is applied.
+[`object`](../../data-types.md) | An object for filtering the selected orders in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. When specifying multiple fields, AND logic is used.
 
 Possible values for `field` correspond to the fields of the object [sale_order_trade_binding](../data-types.md#sale_order_trade_binding).
 
-An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
-- `=` — equal (works with arrays as well)
-- `!=` - not equal
+An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
+- `=` — equals (works with arrays as well)
+- `!=` - not equals
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` character in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` character needs to be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"
     - "%mol" — searching for values ending with "mol"
     - "%mol%" — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
-- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search is conducted from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character in the filter value does not need to be passed. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` character needs to be passed in the value. Examples:
     - "mol%" — searching for values not starting with "mol"
     - "%mol" — searching for values not ending with "mol"
     - "%mol%" — searching for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (see description above) ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting the selected orders from external sources in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting the selected orders in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the object [sale_order_trade_binding](../data-types.md#sale_order_trade_binding).
 
@@ -49,7 +49,7 @@ Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../../data-types.md) | This parameter is used for managing pagination.
 
 The page size of results is always static: 50 records.
 
@@ -57,12 +57,12 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number ||
+`start = (N-1) * 50`, where `N` is the desired page number ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -133,7 +133,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -175,7 +175,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
 || **tradeBindings**
-[`sale_order_trade_binding[]`](../data-types.md) | An array of objects containing information about the selected orders from external sources ||
+[`sale_order_trade_binding[]`](../data-types.md#sale_order_trade_binding) | An array of objects with information about the selected orders ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
@@ -184,7 +184,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

@@ -1,10 +1,10 @@
-# Check if the flow tasks.flow.flow.isExists exists
+# Check for the existence of the flow tasks.flow.Flow.isExists
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.flow.flow.isExists` checks if a flow with the specified name exists. If an `id` is provided, it checks if flows with the same name exist, excluding the specified one.
+The method `tasks.flow.Flow.isExists` checks if a flow with the specified name exists. If an `id` is provided, it checks if there are flows with the same name, excluding the specified one.
 
 ## Method Parameters
 
@@ -20,7 +20,7 @@ The method `tasks.flow.flow.isExists` checks if a flow with the specified name e
 || **id** 
 [`integer`](../../data-types.md) | The identifier of the flow to exclude from the check (optional). 
 
-You can obtain the identifier using the method to create a new flow [tasks.flow.flow.create](./tasks-flow-flow-create.md) or the method to get a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
+You can obtain the identifier using the method to create a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or the method to get a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
@@ -39,7 +39,7 @@ You can obtain the identifier using the method to create a new flow [tasks.flow.
             "name": "Flow Name"
         }
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.flow.isExists
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.isExists
     ```
 
 - cURL (oAuth)
@@ -53,14 +53,14 @@ You can obtain the identifier using the method to create a new flow [tasks.flow.
             "name": "Flow Name"
         }
     }' \
-    https://your-domain.bitrix24.com/rest/tasks.flow.flow.isExists
+    https://your-domain.bitrix24.com/rest/tasks.flow.Flow.isExists
     ```
 
 - JS
 
     ```js
     BX24.callMethod(
-        'tasks.flow.flow.isExists',
+        'tasks.flow.Flow.isExists',
         {
             flowData: {
                 name: 'Flow Name'
@@ -87,13 +87,13 @@ You can obtain the identifier using the method to create a new flow [tasks.flow.
 
     // executing the request to the REST API
     $result = CRest::call(
-        'tasks.flow.flow.isExists',
+        'tasks.flow.Flow.isExists',
         [
             'flowData' => $flowData
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -144,7 +144,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Additional Information** ||
 || `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to perform the check ||
-|| `0` | `Unknown error` | An unknown error occurred ||
+|| `0` | `Unknown error` | Unknown error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -1,10 +1,10 @@
-# Get Fields for Orders from External Sources sale.tradeBinding.getFields
+# Get Available Order Fields from Sources sale.tradeBinding.getFields
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with the "View product catalog" access permission
 
-The method `sale.tradeBinding.getFields` returns fields for orders from external sources.
+The method `sale.tradeBinding.getFields` returns the available order fields from sources.
 
 No parameters.
 
@@ -73,7 +73,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -115,14 +115,14 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **tradeBinding**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [`sale_order_trade_binding`](../data-types.md) object, and `value` is an object of type [`rest_field_description`](../data-types.md) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_order_trade_binding`](../data-types.md#sale_order_trade_binding), and `value` is an object of type [`rest_field_description`](../../data-types.md) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

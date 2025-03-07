@@ -1,37 +1,77 @@
-# Methods for Managing Inventory
+# Inventory management in the Trade Catalog: Overview of Methods
 
-{% note warning "We are still updating this page" %}
+Inventory management is a tool that allows you to track the available and reserved quantity of products in warehouses.
 
-Some data may be missing — we will complete it soon.
+To add, move, or remove products from the inventory, use inventory management documents.
+
+> Quick navigation: [all methods](#all-methods)
+> 
+> User documentation: 
+> - [Inventory management in Bitrix24](https://helpdesk.bitrix24.com/open/14821994/)
+> - [How to get started with inventory management](https://helpdesk.bitrix24.com/open/14836088/)
+
+## Inventory Management Documents
+
+The following types of documents are available in inventory management:
+- `A` – stock receipt of products,
+- `S` – stock adjustment of products,
+- `M` – transfer of products between warehouses,
+- `R` – return of products,
+- `D` – write-off of products.
+
+Set access permissions for each type of document. If access permissions are not configured, an employee will see an error when trying to open inventory management documents and will not be able to work with them.
+
+{% note tip "User documentation" %}
+
+- [Access permissions Inventory management documents](https://helpdesk.bitrix24.com/open/16103170/)
+- [Work with sales orders](https://helpdesk.bitrix24.com/open/18570124/)
+- [Create a stock receipt](https://helpdesk.bitrix24.com/open/22619814/)
+- [Create a stock adjustment](https://helpdesk.bitrix24.com/open/22541392/)
+- [Reason for write-off](https://helpdesk.bitrix24.com/open/18043598/)
+- [Print Inventory Management documents](https://helpdesk.bitrix24.com/open/15832418/)
+- [Write-offs](https://helpdesk.bitrix24.com/open/18044940/)
+- [Transfers](https://helpdesk.bitrix24.com/open/23188106/)
 
 {% endnote %}
+
+## Connection of Inventory Management Documents with Other Objects
+
+**Products of the inventory management document.** Specify products for the inventory management document using the methods [catalog.document.element.*](./document-element/index.md).
+
+**Warehouses.** Specify the warehouse for which you are creating the inventory management document. Use the methods [catalog.store.*](../store/index.md).
+
+**Custom fields of inventory management documents.** You can create additional fields for inventory management documents using the method [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig/userfieldconfig-add.md), where `moduleId` — catalog, and `entityId` — CAT_STORE_DOCUMENT_DocumentTypeIdentifier. To view additional fields or change their values, use the methods [catalog.userfield.document.*](../userfield-document/index.md).
+
+## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can execute methods: administrator
 
-Methods for managing inventory:
+### Main
 
 #|
-|| **Method** | **Description** | **Note** ||
-|| [catalog.document.add](./catalog-document-add.md) | This method adds an inventory document. | ||
-|| [catalog.document.cancel](./catalog-document-cancel.md) | This method cancels the processing of an inventory document by ID. | ||
-|| [catalog.document.cancelList](./catalog-document-cancel-list.md) | This method cancels the processing of a group of inventory documents. | ||
-|| [catalog.document.conduct](./catalog-document-conduct.md) | This method is used to process an inventory document. | ||
-|| [catalog.document.conductList](./catalog-document-conduct-list.md) | This method is used for bulk processing of inventory documents. | ||
-|| [catalog.document.confirm](./catalog-document-confirm.md) | This method is for processing a document. | This method is deprecated since version **22.400.0**. It is recommended to use the method [catalog.document.conduct](./catalog-document-conduct.md).||
-|| [catalog.document.delete](./catalog-document-delete.md) | This method deletes an inventory document. | ||
-|| [catalog.document.deleteList](./catalog-document-delete-list.md) | This method is used for bulk deletion of inventory documents. | ||
-|| [catalog.document.fields](./catalog-document-fields.md) | This method returns a list of fields for inventory documents. | This method is deprecated since version **22.400.0**. It is recommended to use the method [catalog.document.getFields](./catalog-document-get-fields.md)||
-|| [catalog.document.getFields](./catalog-document-get-fields.md) | This method returns a list of fields for inventory documents. | ||
-|| [catalog.document.list](./catalog-document-list.md) | This method retrieves a list of documents. | ||
-|| [catalog.document.mode.status](./catalog-document-mode-status.md) | This method retrieves information on whether inventory management is enabled. | ||
-|| [catalog.document.unconfirm](./catalog-document-unconfirm.md) | This method cancels the processing of a document. | This method is deprecated since version **22.400.0**. It is recommended to use the method [catalog.document.cancel](./catalog-document-cancel.md).||
-|| [catalog.document.update](./catalog-document-update.md) | This method updates an inventory document. | ||
+|| **Method** | **Description** ||
+|| [catalog.document.mode.status](./catalog-document-mode-status.md) | Checks if inventory management is enabled ||
+|| [catalog.document.add](./catalog-document-add.md) | Adds an inventory management document ||
+|| [catalog.document.conduct](./catalog-document-conduct.md) | Conducts an inventory management document ||
+|| [catalog.document.conductList](./catalog-document-conduct-list.md) | Conducts a group of inventory management documents ||
+|| [catalog.document.cancel](./catalog-document-cancel.md) | Cancels the conduct of an inventory management document by its identifier ||
+|| [catalog.document.cancelList](./catalog-document-cancel-list.md) | Cancels the conduct of a group of inventory management documents ||
+|| [catalog.document.update](./catalog-document-update.md) | Modifies an inventory management document ||
+|| [catalog.document.list](./catalog-document-list.md) | Returns a list of inventory management documents ||
+|| [catalog.document.delete](./catalog-document-delete.md) | Deletes an inventory management document ||
+|| [catalog.document.deleteList](./catalog-document-delete-list.md) | Deletes a group of inventory management documents ||
+|| [catalog.document.getFields](./catalog-document-get-fields.md) | Returns available fields of the inventory management document ||
 |#
 
-{% note info "Attention!" %}
+### Products of the Inventory Management Document
 
-Prior to version 22.400.0 of the catalog module, input parameters and results were passed as UPPER_CASE.
-
-{% endnote %}
+#|
+|| **Method** | **Description** ||
+|| [catalog.document.element.add](./document-element/catalog-document-element-add.md) | Adds a product to the inventory management document ||
+|| [catalog.document.element.update](./document-element/catalog-document-element-update.md) | Modifies a product in the inventory management document ||
+|| [catalog.document.element.list](./document-element/catalog-document-element-list.md) | Returns a list of products in the inventory management document ||
+|| [catalog.document.element.delete](./document-element/catalog-document-element-delete.md) | Deletes a product from the inventory management document ||
+|| [catalog.document.element.getFields](./document-element/catalog-document-element-get-fields.md) | Returns a list of available fields for products in the inventory management document ||
+|#

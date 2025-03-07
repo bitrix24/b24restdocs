@@ -7,15 +7,15 @@ items:
     include:  
       path: base/b24-toc.yaml  
       mode: link  
-  - name: Office Networks  
+  - name: Work Schedule  
     include:  
-      path: networkrange/b24-toc.yaml  
+      path: schedule/b24-toc.yaml  
       mode: link  
   - name: Time Control  
     include:  
       path: timecontrol/b24-toc.yaml  
       mode: link  
-  - name: Work Schedule  
+  - name: Office Networks  
     include:  
-      path: schedule/b24-toc.yaml  
+      path: networkrange/b24-toc.yaml  
       mode: link  

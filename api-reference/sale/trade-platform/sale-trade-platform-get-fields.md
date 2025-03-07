@@ -1,16 +1,16 @@
-# Get Fields of Trade Platforms sale.tradePlatform.getFields
+# Get Available Fields of Order Sources sale.tradePlatform.getFields
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with the "View product catalog" access permission
 
-The method returns the fields of trade platforms.
+The method `sale.tradePlatform.getFields` returns the available fields of order sources.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -69,9 +69,7 @@ No parameters.
 
 ## Response Handling
 
-The method returns an object containing the key `tradePlatform` — a list of fields of trade platforms.
-
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 { 
@@ -113,14 +111,14 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **tradePlatform**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [sale_order_trade_platform](../data-types.md), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [sale_order_trade_platform](../data-types.md#sale_order_trade_platform), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

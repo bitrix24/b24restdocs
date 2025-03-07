@@ -1,10 +1,10 @@
-# Delete Flow tasks.flow.flow.delete
+# Delete Flow tasks.flow.Flow.delete
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: the Creator or Administrator of the flow
+> Who can execute the method: creator or administrator of the flow
 
-The method `tasks.flow.flow.delete` removes a flow by its identifier.
+The method `tasks.flow.Flow.delete` removes a flow by its identifier.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ The method `tasks.flow.flow.delete` removes a flow by its identifier.
 || **flowData.id*** 
 [`integer`](../../data-types.md) | Identifier of the flow to be deleted. 
 
-You can obtain the identifier using the method for creating a new flow [tasks.flow.flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
+You can obtain the identifier using the method for creating a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
@@ -37,7 +37,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
             "id": 517
         }
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.flow.delete
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.delete
     ```
 
 - cURL (oAuth)
@@ -51,14 +51,14 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
             "id": 517
         }
     }' \
-    https://your-domain.bitrix24.com/rest/tasks.flow.flow.delete
+    https://your-domain.bitrix24.com/rest/tasks.flow.Flow.delete
     ```
 
 - JS
 
     ```js
     BX24.callMethod(
-        'tasks.flow.flow.delete',
+        'tasks.flow.Flow.delete',
         {
             flowData: {
                 id: 517
@@ -85,13 +85,13 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
 
     // executing the request to the REST API
     $result = CRest::call(
-        'tasks.flow.flow.delete',
+        'tasks.flow.Flow.delete',
         [
             'flowData' => $flowData
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {

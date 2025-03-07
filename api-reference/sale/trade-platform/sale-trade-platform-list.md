@@ -1,10 +1,10 @@
-# Get a list of trade platforms sale.tradePlatform.list
+# Get a list of order sources sale.tradePlatform.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with the "View product catalog" access permission
 
-This method retrieves a list of trade platforms.
+The method `sale.tradePlatform.list` retrieves a list of order sources.
 
 ## Method Parameters
 
@@ -12,28 +12,27 @@ This method retrieves a list of trade platforms.
 || **Name**
 `Type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object)
-  ||
+[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the object [sale_order_trade_platform](../data-types.md#sale_order_trade_platform)) ||
 || **filter**
-[`object`](../../data-types.md) | A list of fields for filtering. When multiple fields are specified, AND logic is applied.
+[`object`](../../data-types.md) | A list of fields for filtering. When multiple fields are specified, AND logic is used.
 
-The fields correspond to the fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object.
+The fields correspond to the fields of the object [sale_order_trade_platform](../data-types.md#sale_order_trade_platform).
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 - `=` — equals (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol should not be included in the filter value. The search looks for the substring in any position of the string
+- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol should not be included in the filter value. The search is performed from both sides.
+- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol should be included in the value. Examples: 
+- `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples: 
     - `"mol%"` — searching for values starting with "mol"
     - `"%mol"` — searching for values ending with "mol"
     - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol should be included in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The % symbol needs to be passed in the value. Examples:
     - `"mol%"` — searching for values not starting with "mol"
     - `"%mol"` — searching for values not ending with "mol"
     - `"%mol%"` — searching for values where the substring "mol" is not present in any position
@@ -42,7 +41,7 @@ An additional prefix can be specified for the key to clarify the filter behavior
 || **order**
 [`object`](../../data-types.md) | Sorting parameters. Format: `{field: direction (ASC, DESC)}`. 
 
-The fields correspond to the fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object. ||
+The fields correspond to the fields of the object [sale_order_trade_platform](../data-types.md#sale_order_trade_platform). ||
 || **start**
 [`int`](../../data-types.md) | This parameter is used for pagination.
  
@@ -131,8 +130,6 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-The method returns an object containing the key `tradePlatforms` — a list of trade platforms.
-
 HTTP status: **200**
 
 ```json
@@ -163,13 +160,13 @@ HTTP status: **200**
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
+[`object`](../../data-types.md) | The root element of the response ||
 || **tradePlatforms**
-[`sale_order_trade_platform[]`](../data-types.md) | An array of objects containing information about trade platforms ||
+[`sale_order_trade_platform[]`](../data-types.md#sale_order_trade_platform) | An array of objects with information about order sources ||
 || **total**
-[`integer`](../../data-types.md) | Total number of records found ||
+[`integer`](../../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#

@@ -1,12 +1,12 @@
-# Create a new Flow tasks.flow.flow.create
+# Create a new Flow tasks.flow.Flow.create
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user who is not an extranet user
 
-The method `tasks.flow.flow.create` creates a flow.
+The method `tasks.flow.Flow.create` creates a flow.
 
-The flow must be linked to a group. If the group identifier is not provided when creating the flow, a new group will be automatically created, consisting of the creator, administrator, and flow team.
+The flow must be linked to a group. If a group ID is not provided when creating the flow, a new group will be automatically created, consisting of the creator, administrator, and the flow team.
 
 ## Method Parameters
 
@@ -15,8 +15,8 @@ The flow must be linked to a group. If the group identifier is not provided when
 #|
 || **Name**
 `type` | **Description** ||
-|| **flowData*** 
-[`object`](../../data-types.md) | Field values for creating the flow (detailed description provided below) ||
+|| **flowData***
+[`object`](../../data-types.md) | Field values for creating a flow (detailed description below) ||
 |#
 
 ### Parameter flowData
@@ -29,21 +29,21 @@ The flow must be linked to a group. If the group identifier is not provided when
 || **name*** 
 [`string`](../../data-types.md) | The name of the flow. Must be unique for each flow.
 
-You can check the name using the method [tasks.flow.flow.isExists](./tasks-flow-flow-is-exists.md) ||
+You can check the name using the method [tasks.flow.Flow.isExists](./tasks-flow-flow-is-exists.md) ||
 || **description** 
 [`string`](../../data-types.md) | Description of the flow ||
 || **groupId** 
-[`integer`](../../data-types.md) | Identifier of the group to which the flow will be linked.
+[`integer`](../../data-types.md) | The ID of the group to which the flow will be linked.
 
 If not specified, a new group will be automatically created ||
 || **ownerId** 
-[`integer`](../../data-types.md) | Identifier of the flow administrator.
+[`integer`](../../data-types.md) | The ID of the flow administrator.
 
 If not specified, the creator will be the administrator of the flow ||
 || **templateId** 
-[`integer`](../../data-types.md) | Identifier of the template that users will use to add tasks to the flow ||
+[`integer`](../../data-types.md) | The ID of the template that users will use to add tasks to the flow ||
 || **plannedCompletionTime*** 
-[`integer`](../../data-types.md) | Planned time to complete the task in seconds ||
+[`integer`](../../data-types.md) | The planned time to complete the task in seconds ||
 || **distributionType*** 
 [`string`](../../data-types.md) | Type of distribution:
 - `manually` — manual distribution
@@ -52,11 +52,11 @@ If not specified, the creator will be the administrator of the flow ||
 
 More about distribution types can be found in the article [{#T}](./index.md) ||
 || **responsibleList*** 
-[`object`](../../data-types.md) | Identifiers of employees who will receive tasks.
+[`object`](../../data-types.md) | IDs of employees who will receive tasks.
 
-For manual distribution, specify the identifier of the flow moderator.
+For manual distribution, specify the ID of the flow moderator.
 
-For self-distribution or queue distribution, specify the identifiers of employees or departments. For example:
+For self-distribution or queue distribution, specify the IDs of employees or departments. For example:
 
 ```js
 [
@@ -69,9 +69,9 @@ For self-distribution or queue distribution, specify the identifiers of employee
 ]
 ``` 
 
-If the suffix `:F` is not added, the system will select all sub-departments of the specified department according to the company structure ||
+If you do not add the suffix `:F`, the system will select all sub-departments of the specified department according to the company structure ||
 || **taskCreators** 
-[`object`](../../data-types.md) | List of users who can add tasks to the flow in the format `{"<entity-type>": "<entity-id>"}`. For example:
+[`object`](../../data-types.md) | A list of users who can add tasks to the flow in the format `{"<entity-type>": "<entity-id>"}`. For example
 
 ```js
 [
@@ -84,9 +84,9 @@ If the suffix `:F` is not added, the system will select all sub-departments of t
 ]
 ```
 
-If the suffix `:F` is not added, the system will select all sub-departments of the specified department according to the company structure.
+If you do not add the suffix `:F`, the system will select all sub-departments of the specified department according to the company structure.
 
-To allow all users to add tasks, specify the value `{"meta-user": "all-users"}` ||
+To allow all users to add tasks, specify the value `{"meta-user": "all-users"}`  ||
 || **matchWorkTime** 
 [`integer`](../../data-types.md) | Skip weekends and holidays when calculating the task deadline.
 
@@ -112,7 +112,7 @@ Default is `null`, meaning no notification ||
 
 Default is `null`, meaning no notification ||
 || **notifyWhenEfficiencyDecreases** 
-[`integer`](../../data-types.md) | Notify the flow administrator when efficiency drops below this parameter.
+[`integer`](../../data-types.md) | Notify the flow administrator when efficiency falls below this parameter.
 
 Default is `null`, meaning no notification ||
 |#
@@ -140,7 +140,7 @@ Default is `null`, meaning no notification ||
             "notifyAtHalfTime": 0
         }
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.flow.create
+    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.create
     ```
 
 - cURL (oAuth)
@@ -161,14 +161,14 @@ Default is `null`, meaning no notification ||
             "notifyAtHalfTime": 0
         }
     }' \
-    https://your-domain.bitrix24.com/rest/tasks.flow.flow.create
+    https://your-domain.bitrix24.com/rest/tasks.flow.Flow.create
     ```
 
 - JS
 
     ```js
     BX24.callMethod(
-        'tasks.flow.flow.create',
+        'tasks.flow.Flow.create',
         {
             flowData: {
                 name: 'Unique Flow Name',
@@ -202,7 +202,7 @@ Default is `null`, meaning no notification ||
 - PHP
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // connect CRest PHP SDK
 
     $flowData = [
         "name" => "Unique Flow Name",
@@ -215,15 +215,15 @@ Default is `null`, meaning no notification ||
         "notifyAtHalfTime" => 0
     ];
 
-    // executing the request to the REST API
+    // execute request to REST API
     $result = CRest::call(
-        'tasks.flow.flow.create',
+        'tasks.flow.Flow.create',
         [
             'flowData' => $flowData
         ]
     );
 
-    // Processing the response from Bitrix24
+    // Process the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -291,15 +291,15 @@ HTTP status: **200**
 || **result** 
 [`object`](../../data-types.md) | Object with flow data ||
 || **id** 
-[`integer`](../../data-types.md) | Identifier of the created flow ||
+[`integer`](../../data-types.md) | ID of the created flow ||
 || **creatorId** 
-[`integer`](../../data-types.md) | Identifier of the flow creator. Read-only ||
+[`integer`](../../data-types.md) | ID of the flow creator. Read-only ||
 || **ownerId** 
-[`integer`](../../data-types.md) | Identifier of the flow administrator ||
+[`integer`](../../data-types.md) | ID of the flow administrator ||
 || **groupId** 
-[`integer`](../../data-types.md) | Identifier of the group to which the flow is linked ||
+[`integer`](../../data-types.md) | ID of the group to which the flow is linked ||
 || **templateId** 
-[`integer`](../../data-types.md) | Identifier of the template used to create tasks in the flow ||
+[`integer`](../../data-types.md) | ID of the template used to create tasks in the flow ||
 || **efficiency** 
 [`integer`](../../data-types.md) | Efficiency of the flow in percentage. Read-only ||
 || **active** 
@@ -315,7 +315,7 @@ HTTP status: **200**
 || **distributionType** 
 [`string`](../../data-types.md) | Type of task distribution in the flow ||
 || **responsibleList** 
-[`array`](../../data-types.md) | List of those responsible for tasks in the flow. For manual distribution, this is the flow moderator ||
+[`array`](../../data-types.md) | List of responsible persons for tasks in the flow. For manual distribution, this is the flow moderator ||
 || **demo** 
 [`boolean`](../../data-types.md) | Indicates whether the flow is a demo. System parameter. Read-only ||
 || **responsibleCanChangeDeadline** 
@@ -337,7 +337,7 @@ HTTP status: **200**
 
 The element `{"meta-user": "all-users"}` means that all users can add tasks ||
 || **team** 
-[`object`](../../data-types.md) | The team of the flow.
+[`object`](../../data-types.md) | The flow team.
 
 For manual distribution, this includes all project participants to which the flow is linked, except for the moderator. 
 
@@ -362,7 +362,7 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Additional Information** ||
+|| **Code** | **Description** | **Additional Information**||
 || `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to create a flow ||
 || `0` | `Unknown error` | Unknown error ||
 || `0` | `'distributionType': field's value has an invalid value` | Invalid value for `distributionType` (similarly for other parameters) ||

@@ -18,6 +18,8 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [{#T}](how-to-add-crm-objects/how-to-add-product-with-custom-props.md)
 - [{#T}](how-to-add-crm-objects/how-to-generate-documents.md) 
 - [{#T}](how-to-add-crm-objects/how-to-add-comment-to-spa.md)
+- [{#T}](how-to-add-crm-objects/how-to-add-precision-to-user-field.md)
+- [{#T}](how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
 
 ## How to replace an outdated phone number for an existing client; how to update product information and other examples
 
@@ -30,7 +32,7 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [{#T}](how-to-edit-crm-objects/how-to-generate-edit-form-for-company.md)
 - [{#T}](how-to-edit-crm-objects/how-to-generate-edit-form-for-deal.md)
 
-## How to find clients by phone; how to get all activities of a client and other examples of working with lists of entities
+## How to find clients by phone; how to get all activities of a client and other examples of working with item lists
 
 - [{#T}](how-to-get-lists/search-by-phone-and-email.md)
 - [{#T}](how-to-get-lists/get-activity-list-by-contact.md)
@@ -39,12 +41,12 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [{#T}](how-to-get-lists/how-to-get-deal-funnels.md)
 - [{#T}](how-to-get-lists/how-to-get-address.md)
 
-## How to use Bitrix24's Sales Intelligence tools?
+## How to use Bitrix24 Sales Intelligence tools?
 
 - [{#T}](how-to-use-analitycs/info-to-analitics.md)
 - [{#T}](how-to-use-analitycs/use-analitics-for-add-lead.md)
 - [{#T}](how-to-use-analitycs/use-analitics-for-add-contact.md)
 
-## How to add your tab to the deal card; how to add your buttons to the lead card and other examples of CRM widgets
+## How to add your tab to the deal detail form; how to add your buttons to the lead detail form and other examples of CRM widgets
 
 - [{#T}](crm-widgets/widget-as-field-in-lead-page.md)

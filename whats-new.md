@@ -2,6 +2,17 @@
 
 ## 2025
 
+### March 5, 2025
+
+- Updated the main page of the section [Recurring Deals](./api-reference/crm/deals/recurring-deals/index.md). Added introductory information as well as an overview of methods and connections
+- Updated the main page of the section [Linking Payments to Shipments](./api-reference/sale/payment-item-shipment/index.md). Added introductory information as well as an overview of methods and connections
+- Updated the main page of the section [Linking Basket Items to Payments](./api-reference/sale/payment-item-basket/index.md). Added introductory information as well as an overview of methods and connections
+- Updated the main page of the section [Inventory Management](./api-reference/catalog/document/index.md). Added introductory information as well as an overview of methods and connections
+- Updated the main page of the section [Order Sources](./api-reference/sale/trade-platform/index.md). Added introductory information as well as an overview of methods and connections
+- Updated the main page of the section [Linking Order Sources to Orders](./api-reference/sale/trade-binding/index.md). Added introductory information as well as an overview of methods and connections
+- Added a new tutorial [How to Set Up Rounding for a Custom Field of Type "Number"](./tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)
+- Updated the main page of the section [Time Tracking](./api-reference/timeman/index.md). Added introductory information as well as an overview of methods and connections
+
 ### February 26, 2025
 
 - Updated the main page of the [Office Networks](./api-reference/timeman/networkrange/index.md) section. Added introductory information, as well as an overview of methods and connections

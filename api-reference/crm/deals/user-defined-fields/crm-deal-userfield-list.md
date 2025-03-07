@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ The method `crm.deal.userfield.list` returns a list of custom fields for deals b
 #| 
 || **Parameter** | **Description** ||
 || **order** | Sorting fields. ||
-|| **filter** | Filtering fields. ||
+|| **filter** | Filter fields. ||
 |#
 
 ## Example
@@ -76,4 +76,8 @@ How to get a list of fields with names:
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
+
+## Continue your exploration
+
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)

@@ -1,8 +1,8 @@
-# Get the value of the list property by the identifier catalog.productPropertyEnum.get
+# Get the value of the list property by identifier catalog.productPropertyEnum.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ Method to access the value of the list property by ID.
 #|
 || **Parameter** | **Description** ||
 || **id** 
-[`integer`](../../data-types.md)| Identifier of the list property. ||
+[`integer`](../../data-types.md)| Identifier of the list property value. ||
 |#
 
 {% include [Footnote about parameters](../../../_includes/required.md) %}
