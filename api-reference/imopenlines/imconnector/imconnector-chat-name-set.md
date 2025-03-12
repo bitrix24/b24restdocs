@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method sets a new name for the chat.
+This method sets a new chat name.
 
 ## Method Parameters
 
@@ -21,6 +21,8 @@ This method sets a new name for the chat.
 [`string`](../../data-types.md) | Chat identifier in the external system ||
 || **NAME***
 [`string`](../../data-types.md) | New chat name ||
+|| **USER_ID**
+[`string`](../../data-types.md) | User identifier. This parameter is required only for connectors without group chats from the external side. For such a connector, the parameter `CHAT_GROUP` in the method [imconnector.register](./imconnector-register.md) must be equal to `N` ||
 |#
 
 ## Code Examples
@@ -95,6 +97,8 @@ This method sets a new name for the chat.
 
 {% endlist %}
 
+
+
 ## Response Handling
 
 HTTP status: **200**
@@ -138,7 +142,7 @@ HTTP status: **200**
 || **SUCCESS**
 [`boolean`](../../data-types.md) | Returns `true` when the new chat name is successfully set ||
 || **DATA**
-[`object`](../../data-types.md) | Contains the `RESULT` object with parameters of the new chat name ||
+[`object`](../../data-types.md) | Contains the `RESULT` object with the parameters of the new chat name ||
 |#
 
 ## Error Handling
@@ -159,7 +163,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `NOT_ACTIVE_LINE` | The line with this ID is inactive or does not exist ||
-|| `IMCONNECTOR_NO_CORRECT_PROVIDER` | Unable to find a suitable provider for the connector ||
+|| `IMCONNECTOR_NO_CORRECT_PROVIDER` | Could not find a suitable provider for the connector ||
 || `ERROR_ARGUMENT` | Required parameters `NAME` or `CHAT_ID` are missing ||
 || `CHAT_RENAMING_FAILED` | Failed to rename the chat ||
 |#

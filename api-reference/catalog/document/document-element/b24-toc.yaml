@@ -1,17 +1,15 @@
-title: Inventory Document Items
-href: index.md
-items: 
-  - name: Overview of Methods
-    href: index.md
-  - name: Add Inventory Document Item
-    href: catalog-document-element-add.md
-  - name: Delete Inventory Document Item
-    href: catalog-document-element-delete.md
-  - name: Get List of Fields (Deprecated)
-    href: catalog-document-element-fields.md
-  - name: Get List of Inventory Document Item Fields
-    href: catalog-document-element-get-fields.md
-  - name: Get List of Items
-    href: catalog-document-element-list.md
-  - name: Update Inventory Document Item
-    href: catalog-document-element-update.md
+title: Inventory Management Document Products  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Add Product to Inventory Management Document  
+    href: catalog-document-element-add.md  
+  - name: Remove Product from Inventory Management Document  
+    href: catalog-document-element-delete.md  
+  - name: Get List of Product Fields in Document  
+    href: catalog-document-element-get-fields.md  
+  - name: Get List of Products  
+    href: catalog-document-element-list.md  
+  - name: Update Product in Document  
+    href: catalog-document-element-update.md  

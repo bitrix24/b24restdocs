@@ -9,13 +9,5 @@ items:
     href: on-crm-deal-update.md
   - name: On Deal Deletion 
     href: on-crm-deal-delete.md
-  - name: On Deal Funnel Change
+  - name: On Changes in Deal Funnel
     href: on-crm-deal-move-to-category.md
-  - name: On Creation of a New Recurring Deal
-    href: on-crm-deal-recurring-add.md
-  - name: On Update of a Recurring Deal
-    href: on-crm-deal-recurring-update.md
-  - name: On Deletion of a Recurring Deal
-    href: on-crm-deal-recurring-delete.md
-  - name: On Creation of a New Deal from a Recurring Deal
-    href: on-crm-deal-recurring-expose.md

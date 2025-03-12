@@ -11,9 +11,13 @@ items:
     href: crm-deal-recurring-expose.md
   - name: Modify an Existing Setting for a Recurring Deal Template
     href: crm-deal-recurring-update.md
-  - name: Get Template Setting Fields for a Recurring Deal by Id
+  - name: Get the Template Settings Fields for a Recurring Deal by Id
     href: crm-deal-recurring-get.md
   - name: Get the List of Recurring Deal Template Settings
     href: crm-deal-recurring-list.md
   - name: Delete an Existing Setting for a Recurring Deal Template
     href: crm-deal-recurring-delete.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

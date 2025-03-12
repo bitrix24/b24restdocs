@@ -7,31 +7,29 @@ items:
     href: catalog-document-add.md
   - name: Cancel document processing
     href: catalog-document-cancel.md
-  - name: Perform bulk cancellation of document processing
+  - name: Perform bulk cancellation of documents
     href: catalog-document-cancel-list.md
   - name: Process document
     href: catalog-document-conduct.md
   - name: Perform bulk processing of documents
-    href: catalog-document-conduct-list.md
-  - name: Process document (confirm)
-    href: catalog-document-confirm.md    
+    href: catalog-document-conduct-list.md 
   - name: Delete document
     href: catalog-document-delete.md
   - name: Perform bulk deletion of documents
     href: catalog-document-delete-list.md
-  - name: Get list of document fields (confirm)
-    href: catalog-document-fields.md
   - name: Get fields of inventory document
     href: catalog-document-get-fields.md
   - name: Get list of documents
     href: catalog-document-list.md
   - name: Get information about inventory accounting mode
     href: catalog-document-mode-status.md
-  - name: Cancel document processing (confirm)
-    href: catalog-document-unconfirm.md
   - name: Modify document
     href: catalog-document-update.md
   - name: Products of inventory document
     include:
       path: document-element/b24-toc.yaml
+      mode: link
+  - name: Deprecated inventory accounting methods
+    include:
+      path: outdated/b24-toc.yaml
       mode: link

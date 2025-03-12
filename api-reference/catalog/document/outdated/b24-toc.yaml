@@ -1,0 +1,13 @@
+title: Outdated Inventory Management Methods
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Process Document
+    href: catalog-document-confirm.md    
+  - name: Cancel Document Processing
+    href: catalog-document-unconfirm.md
+  - name: Get List of Document Fields
+    href: catalog-document-fields.md
+  - name: Get List of Product Fields in Inventory Document
+    href: catalog-document-element-fields.md

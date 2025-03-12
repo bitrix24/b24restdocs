@@ -2,17 +2,17 @@
 
 A deal is one of the key objects in CRM, where you can:
 
-* manage the sales process of a product or service, including tracking stages and accepting online payments
-* engage in dialogue with the client: calls, e-mails, chats on open lines
-* view the history of interactions: CRM activities, timeline records
+* manage the process of selling a product or service, including tracking stages and accepting online payments
+* engage in dialogue with the client: calls, e-mails, chats in open channels
+* view the history of interactions: activities, timeline records
 
 > Quick navigation: [all methods and events](#all-methods) 
 > 
-> User documentation: [deals in Bitrix24](https://helpdesk.bitrix24.com/open/11315016/) 
+> User documentation: [deals in Bitrix24](https://helpdesk.bitrix24.com/open/11315016/)  
 
 ## Connection of Deals with Other CRM Objects
 
-**Client.** A field in the deal card that consists of the associated company and contacts. All CRM activities related to calls, e-mails, and chats with the contact or company will be saved in the active deal card. There is one company in the field, and access to it is made directly through the deal field `COMPANY_ID`. Multiple contacts can be specified, and interaction with them is conducted through a separate group of methods [crm.deal.contact.*](./contacts/index.md).
+**Client.** A field in the deal card that consists of the associated company and contacts. All activities related to calls, e-mails, and chats with the contact or company will be saved in the active deal card. There can be only one company in the field, and it is accessed directly through the deal field `COMPANY_ID`. Multiple contacts can be specified, and interactions with them are managed through a separate group of methods [crm.deal.contact.*](./contacts/index.md).
 
 **Products.** Adding, modifying, and deleting product items in deals is possible through the group of methods [crm.item.productrow.*](../universal/product-rows/index.md).
 
@@ -30,9 +30,9 @@ A deal is one of the key objects in CRM, where you can:
 
 You can create various sales funnels for deals and manage them through the group of methods [crm.category.*](../universal/category/index.md) where `entityTypeId` of the deal = `2`.
 
-Each funnel will have its own stages. These can be managed through the group of CRM reference methods — [crm.status.*](../status/index.md). The `ENTITY_ID` of deal statuses is unique for each direction — `DEAL_STAGE_xx`. 
+Each funnel will have its own stages. These can be managed through the group of methods for CRM reference books — [crm.status.*](../status/index.md). The `ENTITY_ID` of deal statuses is unique for each direction — `DEAL_STAGE_xx`. 
 
-You can retrieve the history of a deal's movement through the stages of the current funnel using the method [crm.stagehistory.list](../crm-stage-history-list.md). 
+You can obtain the history of a deal's movement through the stages of the current funnel using the method [crm.stagehistory.list](../crm-stage-history-list.md). 
 
 {% note tip "User Documentation" %}
 
@@ -46,9 +46,9 @@ The main workspace in a deal is the General tab of its card. It consists of two 
 
 * the left part, which contains fields with information. If the system fields are insufficient, you can create your own custom fields. They allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom deal fields, the group of methods [crm.deal.userfield.*](./user-defined-fields/index.md) is used.
 
-* the right part, which contains the deal's timeline. In it, you can create, edit, filter, and delete CRM activities — the group of methods [crm.activity.*](../timeline/activities/index.md), and timeline records — the group of methods [crm.timeline.*](../timeline/index.md).
+* the right part, which contains the deal's timeline. Here, you can create, edit, filter, and delete CRM activities — the group of methods [crm.activity.*](../timeline/activities/index.md), and timeline records — the group of methods [crm.timeline.*](../timeline/index.md).
 
-The parameters of the deal card can be managed depending on the funnel through the group of methods [crm.deal.details.configuration.*](./custom-form/index.md).
+You can manage the parameters of the deal card depending on the funnel through the group of methods [crm.deal.details.configuration.*](./custom-form/index.md).
 
 {% note tip "User Documentation" %}
 
@@ -61,7 +61,7 @@ The parameters of the deal card can be managed depending on the funnel through t
 
 ## Widgets
 
-You can embed an application into the deal card. Thanks to the embedding, you can use the application without leaving the deal card.
+You can embed an application into the deal card. By embedding, you can use the application without leaving the deal card.
 
 There are two embedding scenarios:
 
@@ -71,7 +71,7 @@ There are two embedding scenarios:
 {% note tip "Typical use-cases and scenarios" %}
 
 - [Widget embedding mechanism](../../widgets/index.md)
-- [Embed a widget in the CRM detail form](../../../tutorials/crm/crm-widgets/widget-as-detail-tab.md)
+- [Embed a widget in the CRM card](../../../tutorials/crm/crm-widgets/widget-as-detail-tab.md)
 
 {% endnote %}
 
@@ -91,7 +91,7 @@ Automatic creation of similar [recurring deals](https://helpdesk.bitrix24.com/op
 
 - Methods
 
-    #| 
+    #|
     || **Method** | **Description** ||
     || [crm.deal.add](./crm-deal-add.md) | Creates a new deal ||
     || [crm.deal.update](./crm-deal-update.md) | Modifies a deal ||
@@ -100,12 +100,12 @@ Automatic creation of similar [recurring deals](https://helpdesk.bitrix24.com/op
     || [crm.deal.delete](./crm-deal-delete.md) | Deletes a deal and all associated objects ||
     || [crm.deal.fields](./crm-deal-fields.md) | Returns the description of deal fields ||
     || [crm.deal.productrows.set](./crm-deal-productrows-set.md) | Adds products to a deal ||
-    || [crm.deal.productrows.get](./crm-deal-get.md) | Returns the products of a deal ||
+    || [crm.deal.productrows.get](./crm-deal-get.md) | Returns products of a deal ||
     |#
 
 - Events
 
-    #| 
+    #|
     || **Event** | **Triggered** ||
     || [onCrmDealAdd](./events/on-crm-deal-add.md) | When a deal is created ||
     || [onCrmDealUpdate](./events/on-crm-deal-update.md) | When a deal is modified ||
@@ -114,14 +114,14 @@ Automatic creation of similar [recurring deals](https://helpdesk.bitrix24.com/op
     |#
 
 {% endlist %}
-
+  
 ### Recurring Deals
 
 {% list tabs %}
 
 - Methods
 
-    #| 
+    #|
     || **Method** | **Description** ||
     || [crm.deal.recurring.add](./recurring-deals/crm-deal-recurring-add.md) | Creates a new recurring deal ||
     || [crm.deal.recurring.fields](./recurring-deals/crm-deal-recurring-fields.md) | Returns the list of fields for the recurring deal template ||
@@ -134,12 +134,12 @@ Automatic creation of similar [recurring deals](https://helpdesk.bitrix24.com/op
 
 - Events
 
-    #| 
+    #|
     || **Event** | **Triggered** ||
-    || [onCrmDealRecurringAdd](./events/on-crm-deal-recurring-add.md) | When a new recurring deal is created ||
-    || [onCrmDealRecurringUpdate](./events/on-crm-deal-recurring-update.md) | When a recurring deal is modified ||
-    || [onCrmDealRecurringDelete](./events/on-crm-deal-recurring-delete.md) | When a recurring deal is deleted ||
-    || [onCrmDealRecurringExpose](./events/on-crm-deal-recurring-expose.md) | When a new deal is created from a recurring deal ||
+    || [onCrmDealRecurringAdd](./recurring-deals/events/on-crm-deal-recurring-add.md) | When a new recurring deal is created ||
+    || [onCrmDealRecurringUpdate](./recurring-deals/events/on-crm-deal-recurring-update.md) | When a recurring deal is modified ||
+    || [onCrmDealRecurringDelete](./recurring-deals/events/on-crm-deal-recurring-delete.md) | When a recurring deal is deleted ||
+    || [onCrmDealRecurringExpose](./recurring-deals/events/on-crm-deal-recurring-expose.md) | When a new deal is created from a recurring deal ||
     |#
 
 {% endlist %}
@@ -150,7 +150,7 @@ Automatic creation of similar [recurring deals](https://helpdesk.bitrix24.com/op
 
 - Methods
 
-    #| 
+    #|
     || **Method** | **Description** ||
     || [crm.deal.userfield.add](./user-defined-fields/crm-deal-userfield-add.md) | Creates a new custom field for deals ||
     || [crm.deal.userfield.update](./user-defined-fields/crm-deal-userfield-update.md) | Modifies an existing custom field for deals ||
@@ -161,7 +161,7 @@ Automatic creation of similar [recurring deals](https://helpdesk.bitrix24.com/op
 
 - Events
 
-    #| 
+    #|
     || **Event** | **Triggered** ||
     || [onCrmDealUserFieldAdd](./user-defined-fields/events/on-crm-deal-user-field-add.md) | When a custom field is added ||
     || [onCrmDealUserFieldUpdate](./user-defined-fields/events/on-crm-deal-user-field-update.md) | When a custom field is modified ||
@@ -173,11 +173,11 @@ Automatic creation of similar [recurring deals](https://helpdesk.bitrix24.com/op
 
 ### Deal Contacts
 
-#| 
+#|
 || **Method** | **Description** ||
 || [crm.deal.contact.add](./contacts/crm-deal-contact-add.md) | Adds a contact to a deal ||
 || [crm.deal.contact.items.set](./contacts/crm-deal-contact-items-set.md) | Adds multiple contacts to a deal ||
-|| [crm.deal.contact.fields](./contacts/crm-deal-contact-fields.md) | Returns the fields of the deal-contact relationship ||
+|| [crm.deal.contact.fields](./contacts/crm-deal-contact-fields.md) | Returns the fields for the deal-contact connection ||
 || [crm.deal.contact.items.get](./contacts/crm-deal-contact-items-get.md) | Retrieves the set of contacts associated with the deal ||
 || [crm.deal.contact.delete](./contacts/crm-deal-contact-delete.md) | Removes a contact from the specified deal ||
 || [crm.deal.contact.items.delete](./contacts/crm-deal-contact-items-delete.md) | Removes the set of contacts associated with the specified deal ||
@@ -185,10 +185,10 @@ Automatic creation of similar [recurring deals](https://helpdesk.bitrix24.com/op
 
 ### Managing Deal Cards
 
-#| 
+#|
 || **Method** | **Description** ||
-|| [crm.deal.details.configuration.get](./custom-form/crm-deal-details-configuration-get.md) | Retrieves the settings of deal cards ||
-|| [crm.deal.details.configuration.reset](./custom-form/crm-deal-details-configuration-reset.md) | Resets the settings of deal cards ||
-|| [crm.deal.details.configuration.set](./custom-form/crm-deal-details-configuration-set.md) | Allows setting the settings of deal cards ||
+|| [crm.deal.details.configuration.get](./custom-form/crm-deal-details-configuration-get.md) | Retrieves the settings for deal cards ||
+|| [crm.deal.details.configuration.reset](./custom-form/crm-deal-details-configuration-reset.md) | Resets the settings for deal cards ||
+|| [crm.deal.details.configuration.set](./custom-form/crm-deal-details-configuration-set.md) | Allows setting the configurations for deal cards ||
 || [crm.deal.details.configuration.forceCommonScopeForAll](./custom-form/crm-deal-details-configuration-force-common-scope-for-all.md) | Forces a common deal card for all users ||
 |#

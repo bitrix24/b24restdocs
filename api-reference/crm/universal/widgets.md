@@ -18,7 +18,7 @@ The identifiers of these types are used in the symbolic codes of the widget embe
 - [{#T}](../../widgets/crm/detail-toolbar.md)
 - [{#T}](../../widgets/crm/activity-timeline-menu.md)
 - [{#T}](../../widgets/crm/document-generator-button.md)
-- [{#T}](../../widgets/crm/automation-rule-designer-toolbar.md)
+- [{#T}](../../widgets/crm/robot-designer-toolbar.md)
 - [{#T}](../../widgets/crm/funnels-toolbar.md)
 - [{#T}](../../widgets/crm/analytics-menu.md)
 - [{#T}](../../widgets/crm/analytics-toolbar.md)

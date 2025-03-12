@@ -15,8 +15,8 @@ items:
     href: activity-timeline-menu.md
   - name: Dropdown menu item of the document generator
     href: document-generator-button.md
-  - name: Dropdown menu item of the top button in the Automation rule designer
-    href: automation-rule-designer-toolbar.md
+  - name: Dropdown menu item of the top button of the robot designer
+    href: robot-designer-toolbar.md
   - name: Dropdown menu item in the Sales Funnels
     href: funnels-toolbar.md
   - name: Item in the left menu of Sales Intelligence

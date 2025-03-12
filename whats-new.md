@@ -2,6 +2,12 @@
 
 ## 2025
 
+### March 12, 2025
+
+- Updated the event pages for recurring deals [onCrmDealRecurring*](./api-reference/crm/deals/recurring-deals/events/index.md)
+- Updated the main page of the [Chat Participants](./api-reference/chats/chat-users/index.md) section. Added introductory information as well as an overview of methods and connections
+- Added an article describing the use of universal methods for new invoices [Invoices: Overview of Methods](./api-reference/crm/universal/invoice.md). Added introductory information as well as an overview of methods and connections
+
 ### March 5, 2025
 
 - Updated the main page of the section [Recurring Deals](./api-reference/crm/deals/recurring-deals/index.md). Added introductory information as well as an overview of methods and connections

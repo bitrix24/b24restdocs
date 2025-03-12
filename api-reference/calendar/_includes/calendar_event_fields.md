@@ -10,13 +10,13 @@
 || **DELETED**
 [`string`](../../data-types.md) | Flag indicating whether the event is deleted. Possible values:
 - `Y` — event is deleted
-- `N` — event is not deleted  ||
+- `N` — event is not deleted ||
 || **CAL_TYPE**
 [`string`](../../data-types.md) | Type of calendar in which the event is located ||
 || **OWNER_ID**
 [`string`](../../data-types.md) | Identifier of the calendar owner:
-- `id` of the user for the `user` calendar type
-- `id` of the group for the `group` calendar type ||
+- `id` of the user for the calendar type `user`
+- `id` of the group for the calendar type `group` ||
 || **NAME**
 [`string`](../../data-types.md) | Event name ||
 || **DATE_FROM**
@@ -59,7 +59,7 @@
 - `Y` — private
 - `N` — not private ||
 || **ACCESSIBILITY**
-[`string`](../../data-types.md) | Accessibility of event participants ||
+[`string`](../../data-types.md) | Availability of event participants ||
 || **IMPORTANCE**
 [`string`](../../data-types.md) | Importance of the event ||
 || **IS_MEETING**
@@ -94,7 +94,7 @@
 || **CAL_DAV_LABEL**
 [`string`](../../data-types.md) | Synchronization identifier ||
 || **VERSION**
-[`string`](../../data-types.md) | Version of the event changes ||
+[`string`](../../data-types.md) | Version of event changes ||
 || **ATTENDEES_CODES**
 [`array`](../../data-types.md) | Identifiers of event participants ||
 || **RECURRENCE_ID**
@@ -122,7 +122,7 @@
 || **COLLAB_ID**
 [`integer`](../../data-types.md) | Identifier of the collaboration in which the event was created ||
 || **~RRULE_DESCRIPTION**
-[`integer`](../../data-types.md) | Text description of the event recurrence rule ||
+[`string`](../../data-types.md) | Text description of the event recurrence rule ||
 || **attendeesEntityList**
 [`array`](../../data-types.md) | Array of objects describing users — [event participants](#attendeesEntityList) ||
 || **~DESCRIPTION**
@@ -162,7 +162,7 @@
 || **Name**
 `type` | **Description** ||
 || **type**
-[`string`](../../data-types.md) | Time type of reminder
+[`string`](../../data-types.md) | Time type of the reminder
 - `min` — minutes
 - `hour` – hours
 - `day` — days ||
@@ -235,7 +235,7 @@
 || **Name**
 `type` | **Description** ||
 || **entityId**
-[`string`](../../data-types.md) | Type of the event participant entity ||
+[`string`](../../data-types.md) | Type of the entity of the event participant ||
 || **id**
 [`integer`](../../data-types.md) | Identifier of the event participant ||
 |#
