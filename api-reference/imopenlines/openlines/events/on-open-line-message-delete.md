@@ -4,11 +4,13 @@
 >
 > Who can subscribe: any user
 
-The event triggers when a message is deleted in an open line chat.
+The `OnOpenLineMessageDelete` event is triggered when a message is deleted in the open line chat.
+
+[Subscribe](../../../events/event-bind.md) to the event can only be done through the application. The handler can only receive those events that are intended for the [connector](../../imconnector/index.md) added by the application.
 
 ## What the handler receives
 
-Data is sent as a POST request
+Data is transmitted in the form of a POST request
 
 ```php
 [
@@ -55,15 +57,15 @@ Data is sent as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***  
+|| **event*** 
 [`string`](../../../data-types.md) | Symbolic event code ||
-|| **eventId***  
+|| **eventId*** 
 [`integer`](../../../data-types.md) | Event identifier ||
-|| **data***  
+|| **data*** 
 [`object`](../../../data-types.md) | Object with [event data](#data) ||
-|| **ts***  
+|| **ts*** 
 [`integer`](../../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth***  
+|| **auth*** 
 [`object`](../../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -74,11 +76,11 @@ Data is sent as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **CONNECTOR***  
+|| **CONNECTOR*** 
 [`string`](../../../data-types.md) | Connector identifier ||
-|| **LINE***  
+|| **LINE*** 
 [`integer`](../../../data-types.md) | Open line identifier ||
-|| **DATA***  
+|| **DATA*** 
 [`object`](../../../data-types.md) | Object with [chat data](#chat-params) ||
 |#
 
@@ -89,16 +91,16 @@ Data is sent as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **im***  
+|| **im*** 
 [`object`](../../../data-types.md) | Object with information about the deleted message in the chat:
 - `chat_id` — chat identifier
 - `message_id` — message identifier
 ||
-|| **message***  
+|| **message*** 
 [`object`](../../../data-types.md) | Object with information about the message:
 - `id` — message identifier
 ||
-|| **chat***  
+|| **chat*** 
 [`object`](../../../data-types.md) | Object with information about the chat:
 - `id` — chat identifier ||
 |#

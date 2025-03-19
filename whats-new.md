@@ -2,6 +2,15 @@
 
 ## 2025
 
+### March 19, 2025
+
+- Added a new parameter `useOriginalUfNames` in the methods [crm.item.*](./api-reference/crm/universal/index.md) to control the format of custom field names
+- Added a new tutorial [How to move an activity from one object type to another](./tutorials/crm/how-to-edit-crm-objects/how-to-move-activity-between-objects.md)
+- Added a new tutorial [How to move an activity between elements of the same type](./tutorials/crm/how-to-edit-crm-objects/how-to-move-activity.md)
+- Updated the main page of the section [Delivery Service Handlers](./api-reference/sale/delivery/handler/index.md) in the Online Store. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Delivery Services](./api-reference/sale/delivery/delivery/index.md) in the Online Store. Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Special Operations](./api-reference/chats/special-operations/index.md) in Chats. Added introductory information, as well as an overview of methods and relationships
+
 ### March 12, 2025
 
 - Updated the event pages for recurring deals [onCrmDealRecurring*](./api-reference/crm/deals/recurring-deals/events/index.md)

@@ -1,4 +1,4 @@
-# Set or Remove the "Unread" Flag for the im.recent.unread Chat
+# Set or Remove the "Unread" Flag for the Chat im.recent.unread
 
 {% note warning "We are still updating this page" %}
 
@@ -11,7 +11,7 @@ Some data may be missing — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
+- parameter types are not specified
 - examples are missing
 
 {% endnote %}
@@ -22,19 +22,19 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The `im.recent.unread` method sets the "unread" label on a chat or conversation.
+The method `im.recent.unread` sets the "unread" label on a chat or conversation.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **DIALOG_ID^*^**
-[`unknown`](../../data-types.md) | `'chat74'` | Identifier of the dialog. Format:
+[`unknown`](../../data-types.md) | `'chat74'` | Identifier of the conversation. Format:
 - **chatXXX** – chat of the recipient, if the message is for a chat
 - **XXX** – identifier of the recipient, if the message is for a private conversation | 30 ||
 || **ACTION**
-[`unknown`](../../data-types.md) | `'Y'` | Set / remove the "unread" label on the dialog - `'Y'|'N'` | 30 ||
+[`unknown`](../../data-types.md) | `'Y'` | Set / remove the "unread" label on the conversation - `'Y'|'N'` | 30 ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -43,7 +43,7 @@ The `im.recent.unread` method sets the "unread" label on a chat or conversation.
 - JS
 
     ```js
-    B24.callMethod(
+    BX24.callMethod(
         'im.recent.unread',
         {
             DIALOG_ID: 'chat74',
@@ -64,7 +64,7 @@ The `im.recent.unread` method sets the "unread" label on a chat or conversation.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -92,5 +92,5 @@ The `im.recent.unread` method sets the "unread" label on a chat or conversation.
 
 #|
 || **Code** | **Description** ||
-|| **DIALOG_ID_EMPTY** | The `DIALOG_ID` parameter was not provided or does not match the format. ||
+|| **DIALOG_ID_EMPTY** | The parameter `DIALOG_ID` was not provided or does not match the format. ||
 |#

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing — we will complete it soon.
 
 - edits needed for writing standards
 - examples are missing
-- no response in case of error
+- response in case of error is missing
 
 {% endnote %}
 
@@ -33,7 +33,7 @@ No parameters are passed.
 - JS
 
     ```js
-    B24.callMethod(
+    BX24.callMethod(
         'im.dialog.read.all',
         {},
         res => console.log(res.data())

@@ -54,6 +54,14 @@ The list of available fields for each entity type is described [below](#parametr
 
 An incorrect field in `fields` will be ignored
 ||
+|| **useOriginalUfNames**
+[`boolean`][1] | This parameter controls the format of custom field names in the response.   
+Possible values:
+
+- `Y` — original names of custom fields, e.g., UF_CRM_2_1639669411830
+- `N` — custom field names in camelCase, e.g., ufCrm_2_1639669411830
+
+Default is `N` ||
 |#
 
 ### Fields Parameter
@@ -232,6 +240,35 @@ An incorrect field in `fields` will be ignored
   [`crm_entity`][1] | Parent field. An element of another type of CRM object that is linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}` ||
+  || **fm**
+  [`multifield[]`][1] | An array of multipoles.
+
+  You can read more about multipoles in the section [{#T}](../data-types.md#crm_multifield)
+
+  Multifield structure:
+
+    - `typeId` — Multifield type
+    - `valueType` — Value type
+    - `value` — Value
+
+  Example:
+
+    ```bash
+    fm: [
+      {
+        "valueType": "WORK",
+        "value": "+79999999",
+        "typeId": "PHONE"
+      },
+      {
+        "valueType": "WORK",
+        "value": "bitrix@bitrix.com",
+        "typeId": "EMAIL"
+      }
+    ]
+    ```
+  Default is `null`
+  ||
   |#
 
 
@@ -560,6 +597,35 @@ An incorrect field in `fields` will be ignored
 
   Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
+  || **fm**
+  [`multifield[]`][1] | An array of multipoles.
+
+  You can read more about multipoles in the section [{#T}](../data-types.md#crm_multifield)
+
+  Multifield structure:
+
+    - `typeId` — Multifield type
+    - `valueType` — Value type
+    - `value` — Value
+
+  Example:
+
+    ```bash
+    fm: [
+      {
+        "valueType": "WORK",
+        "value": "+79999999",
+        "typeId": "PHONE"
+      },
+      {
+        "valueType": "WORK",
+        "value": "bitrix@bitrix.com",
+        "typeId": "EMAIL"
+      }
+    ]
+    ```
+  Default is `null`
+  ||
   |#
 
 
@@ -697,6 +763,35 @@ An incorrect field in `fields` will be ignored
   [`crm_entity`][1] | Parent field. An element of another type of CRM object that is linked to this element.
 
   Each such field has the code `parentId + {parentEntityTypeId}` 
+  ||
+  || **fm**
+  [`multifield[]`][1] | An array of multipoles.
+
+  You can read more about multipoles in the section [{#T}](../data-types.md#crm_multifield)
+
+  Multifield structure:
+
+    - `typeId` — Multifield type
+    - `valueType` — Value type
+    - `value` — Value
+
+  Example:
+
+    ```bash
+    fm: [
+      {
+        "valueType": "WORK",
+        "value": "+79999999",
+        "typeId": "PHONE"
+      },
+      {
+        "valueType": "WORK",
+        "value": "bitrix@bitrix.com",
+        "typeId": "EMAIL"
+      }
+    ]
+    ```
+  Default is `null`
   ||
   |#
 
@@ -2002,6 +2097,19 @@ Disabled fields always return `null`
 
   Each such field has the code `parentId + {parentEntityTypeId}`
   ||
+  || **fm**
+  [`multifield`][1] | Array of multipoles.
+
+  You can read more about multipoles in the section [{#T}](../data-types.md#crm_multifield)
+
+  Multifield structure:
+
+    - `id` — Unique identifier
+    - `typeId` — Multifield type
+    - `valueType` — Value type
+    - `value` — Value
+
+  ||  
   |#
 
 - Deal
@@ -2325,6 +2433,19 @@ Disabled fields always return `null`
 
   Each such field has the code `parentId + {parentEntityTypeId}`
   ||
+  || **fm**
+  [`multifield`][1] | Array of multipoles.
+
+  You can read more about multipoles in the section [{#T}](../data-types.md#crm_multifield)
+
+  Multifield structure:
+
+    - `id` — Unique identifier
+    - `typeId` — Multifield type
+    - `valueType` — Value type
+    - `value` — Value
+
+  || 
   |#
 
 - Company
@@ -2459,6 +2580,19 @@ Disabled fields always return `null`
 
   Each such field has the code `parentId + {parentEntityTypeId}`
   ||
+  || **fm**
+  [`multifield`][1] | Array of multipoles.
+
+  You can read more about multipoles in the section [{#T}](../data-types.md#crm_multifield)
+
+  Multifield structure:
+
+    - `id` — Unique identifier
+    - `typeId` — Multifield type
+    - `valueType` — Value type
+    - `value` — Value
+
+  || 
   |#
 
 - Estimate
@@ -2917,6 +3051,13 @@ Disabled fields always return `null`
   |#
 
 {% endlist %}
+
+{% note info " " %}
+
+By default, custom field names are returned in camelCase, e.g., ufCrm2_1639669411830. 
+When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, e.g., UF_CRM_2_1639669411830.
+
+{% endnote %}
 
 ## Error Handling
 

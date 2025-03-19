@@ -1,15 +1,15 @@
 title: Special Operations
 href: index.md
 items:
-  - name: Special Operations in Bitrix24 Chats
+  - name: Overview of Methods
     href: index.md
-  - name: Mark a Chat as "Read" or "Unread"
-    href: im-recent-unread.md
-  - name: Mark All Chats as "Read"
-    href: im-dialog-read-all.md
-  - name: Pin a Chat to Favorites
+  - name: Pin Chat to the Top of the List
     href: im-recent-pin.md
-  - name: Remove a Chat from Recent List
-    href: im-recent-hide.md
-  - name: Mute Notifications from a Chat
+  - name: Mark Chat as Read or Unread
+    href: im-recent-unread.md
+  - name: Mark All Chats as Read
+    href: im-dialog-read-all.md
+  - name: Mute Notifications from Chat
     href: im-chat-mute.md
+  - name: Remove Chat from Recent Chats List
+    href: im-recent-hide.md

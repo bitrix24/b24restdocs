@@ -18,9 +18,9 @@ If the activity is linked to only one entity, this binding cannot be removed.
 || **activityId***
 [`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
 || **entityTypeId***
-[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the activity binding is being removed, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is being unlinked, for example `2` for a deal ||
 || **entityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the activity binding is being removed, for example `1`  ||
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the activity is being unlinked, for example `1`  ||
 |#
 
 ## Code Examples
@@ -116,7 +116,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the connection was successfully deleted, otherwise — `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the connection was successfully removed, otherwise — `false` ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -142,7 +142,7 @@ HTTP status: **400**
 || `NOT_FOUND` | Entity not found ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `BINDING_NOT_FOUND` | Activity not linked to this entity ||
+|| `BINDING_NOT_FOUND` | Activity is not linked to this entity ||
 || `LAST_BINDING_CANNOT_BE_DELETED` | Cannot delete the only binding of the activity to the entity ||
 |#
 
@@ -153,3 +153,4 @@ HTTP status: **400**
 - [{#T}](./crm-activity-binding-list.md)
 - [{#T}](./crm-activity-binding-add.md)
 - [{#T}](./crm-activity-binding-move.md)
+- [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity-between-objects.md)

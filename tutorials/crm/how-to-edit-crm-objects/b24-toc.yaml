@@ -15,7 +15,11 @@ items:
     href: how-to-generate-edit-form-for-deal.md
   - name: How to Change Phone Numbers and E-mail Using a Contact Example
     href: how-to-change-email-or-phone.md
-  - name: How to Change Dates in a CRM Activity
+  - name: How to Change Dates in an Activity Event
     href: how-to-change-date-in-activity.md
-  - name: How to Change Values of Custom Product Fields
+  - name: How to Change Custom Field Values for a Product
     href: how-to-change-product-custom-field-values.md
+  - name: How to Move an Activity Between Entities of the Same Type
+    href: how-to-move-activity.md
+  - name: How to Move an Activity from One Object Type to Another
+    href: how-to-move-activity-between-objects.md

@@ -1,8 +1,8 @@
-# Get Chat Identifier im.chat.get
+# Get Chat ID im.chat.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,11 +11,11 @@ Some data may be missing — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-- response in case of error is absent
-- links to pages that have not yet been created are not provided
-- from Sergei's file: it's unclear in what context the method is applicable, needs clarification
+- parameter types not specified
+- examples missing
+- response in case of error not provided
+- links to yet-to-be-created pages not specified
+- from Sergei's file: unclear in what context the method is applicable, needs clarification
 
 {% endnote %}
 
@@ -25,29 +25,48 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `im.chat.get` retrieves the chat identifier.
+The method `im.chat.get` retrieves the chat ID.
 
 #|
-|| **Parameter** | **Example** | **Description** | **Revision** ||
+|| **Parameter** | **Example** | **Description** ||
 || **ENTITY_TYPE^*^**
-[`unknown`](../data-types.md) | `CRM` | Identifier of the entity. Can be used to find the chat and to easily determine the context in event handlers:
+[`unknown`](../data-types.md) | `CRM`, `LINES`, `LIVECHAT` | Entity identifier. Can be used to find the chat and easily determine the context in event handlers:
 - [ONIMBOTMESSAGEADD](../chat-bots/messages/events/on-imbot-message-add.md),
 - [ONIMBOTMESSAGEUPDATE](../chat-bots/messages/events/on-imbot-message-update.md),
-- [ONIMBOTMESSAGEDELETE](../chat-bots/messages/events/on-imbot-message-delete.md) | 18 ||
+- [ONIMBOTMESSAGEDELETE](../chat-bots/messages/events/on-imbot-message-delete.md) ||
 || **ENTITY_ID^*^**
-[`unknown`](../data-types.md) | `LEAD`\|`13` | Numeric identifier of the entity. Can be used to find the chat and to easily determine the context in event handlers:
+[`unknown`](../data-types.md) | `LEAD`\|`13` | Numeric entity identifier. Can be used to find the chat and easily determine the context in event handlers:
 - [ONIMBOTMESSAGEADD](../chat-bots/messages/events/on-imbot-message-add.md),
 - [ONIMBOTMESSAGEUPDATE](../chat-bots/messages/events/on-imbot-message-update.md),
-- [ONIMBOTMESSAGEDELETE](../chat-bots/messages/events/on-imbot-message-delete.md) | 18 ||
+- [ONIMBOTMESSAGEDELETE](../chat-bots/messages/events/on-imbot-message-delete.md) ||
 |#
 
-{% include [Parameter Note](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Explanation of restCommand](./_includes/rest-command.md) %}
+{% include [Explanation about restCommand](./_includes/rest-command.md) %}
 
 {% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'im.chat.get',
+        {
+            ENTITY_TYPE: "LINES",
+            ENTITY_ID: "telegrambot|2|209607941|744"
+        
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
+    );
+    ```
 
 - PHP
 
@@ -66,7 +85,7 @@ The method `im.chat.get` retrieves the chat identifier.
 
 {% endlist %}
 
-{% include [Examples Note](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -76,4 +95,4 @@ The method `im.chat.get` retrieves the chat identifier.
 }
 ```
 
-**Execution Result**: returns the chat identifier `CHAT_ID` or `null`.
+**Execution result**: returns the chat ID `CHAT_ID` or `null`.

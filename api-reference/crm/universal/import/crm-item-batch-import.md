@@ -1,4 +1,4 @@
-# Import a Batch of CRM Records - crm.item.batchImport
+# Import a Batch of CRM Records crm.item.batchImport
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -6,30 +6,38 @@
 
 A universal method for importing objects into CRM. The differences from adding an object are described in more detail [`here`](./index.md).
 
-The logic for adding elements works similarly to the [crm.item.import](crm-item-import.md) method.
+The logic for adding items works similarly to the [crm.item.import](crm-item-import.md) method.
 
 {% note warning "Attention!" %}
 
-A maximum of 20 elements can be imported in a single request.
+A maximum of 20 items can be imported in a single request.
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type`          | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the system or [user-defined type](../user-defined-object-types/index.md) for which the element needs to be created ||
+[`integer`][1] | Identifier of the system or [user-defined type](../user-defined-object-types/index.md) for which the item needs to be created ||
 || **data***
-[`array`][1] | An array of field values for the elements. It can be viewed as an array where each element contains a set of `fields`, as described in the [crm.item.import](crm-item-import.md) method ||
+[`array`][1] | An array of field values for the items. It can be viewed as an array where each element contains a set of fields `fields`, as described in the [crm.item.import](crm-item-import.md) method ||
+|| **useOriginalUfNames**
+[`boolean`][1] | A parameter to control the format of user field names in the request and response.   
+Possible values:
+
+- `Y` — original names of user fields, e.g., UF_CRM_2_1639669411830
+- `N` — user field names in camelCase, e.g., ufCrm_2_1639669411830
+
+Default is `N` ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 1. How to import deals
 
@@ -268,11 +276,11 @@ A maximum of 20 elements can be imported in a single request.
     {% endlist %}
 
 
-2. How to create an SPA element with a set of custom fields
+2. How to create an SPA element with a set of user fields
 
-    {% cut "Custom fields used in the example" %}
+    {% cut "User fields involved in the example" %}
 
-    {% include [Set of custom fields](../../_include/user-fields-for-examples-cut.md) %}
+    {% include [Set of user fields](../../_include/user-fields-for-examples-cut.md) %}
 
     {% endcut %}
 
@@ -287,7 +295,7 @@ A maximum of 20 elements can be imported in a single request.
         -d '{
             "entityTypeId": 1302,
             "data": [{
-                "ufCrm44_1721812760630": "String for custom field of type String",
+                "ufCrm44_1721812760630": "String for user field of type String",
                 "ufCrm44_1721812814433": 81,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -302,7 +310,7 @@ A maximum of 20 elements can be imported in a single request.
                 "ufCrm44_1721812935209": "Y",
                 "ufCrm44_1721812948498": 9999.9
             },{
-                "ufCrm44_1721812760630": "String for custom field of type String",
+                "ufCrm44_1721812760630": "String for user field of type String",
                 "ufCrm44_1721812814433": 45,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -330,7 +338,7 @@ A maximum of 20 elements can be imported in a single request.
         -d '{
             "entityTypeId": 1302,
             "data": [{
-                "ufCrm44_1721812760630": "String for custom field of type String",
+                "ufCrm44_1721812760630": "String for user field of type String",
                 "ufCrm44_1721812814433": 81,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -345,7 +353,7 @@ A maximum of 20 elements can be imported in a single request.
                 "ufCrm44_1721812935209": "Y",
                 "ufCrm44_1721812948498": 9999.9
             },{
-                "ufCrm44_1721812760630": "String for custom field of type String",
+                "ufCrm44_1721812760630": "String for user field of type String",
                 "ufCrm44_1721812814433": 45,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -376,7 +384,7 @@ A maximum of 20 elements can be imported in a single request.
                 entityTypeId: 1302,
                 data: [
                     {
-                        ufCrm44_1721812760630: "String for custom field of type String",
+                        ufCrm44_1721812760630: "String for user field of type String",
                         ufCrm44_1721812814433: 81,
                         ufCrm44_1721812853419: (new Date()).toISOString().slice(0, 10),
                         ufCrm44_1721812885588: [
@@ -392,7 +400,7 @@ A maximum of 20 elements can be imported in a single request.
                         ufCrm44_1721812948498: 9999.9,
                     },
                     {
-                        ufCrm44_1721812760630: "String for custom field of type String",
+                        ufCrm44_1721812760630: "String for user field of type String",
                         ufCrm44_1721812814433: 45,
                         ufCrm44_1721812853419: (new Date()).toISOString().slice(0, 10),
                         ufCrm44_1721812885588: [
@@ -430,7 +438,7 @@ A maximum of 20 elements can be imported in a single request.
                 'entityTypeId' => 1302,
                 'data' => [
                     [
-                        'ufCrm44_1721812760630' => "String for custom field of type String",
+                        'ufCrm44_1721812760630' => "String for user field of type String",
                         'ufCrm44_1721812814433' => 81,
                         'ufCrm44_1721812853419' => date('Y-m-d'),
                         'ufCrm44_1721812885588' => [
@@ -446,7 +454,7 @@ A maximum of 20 elements can be imported in a single request.
                         'ufCrm44_1721812948498' => 9999.9,
                     ],
                     [
-                        'ufCrm44_1721812760630' => "String for custom field of type String",
+                        'ufCrm44_1721812760630' => "String for user field of type String",
                         'ufCrm44_1721812814433' => 45,
                         'ufCrm44_1721812853419' => date('Y-m-d'),
                         'ufCrm44_1721812885588' => [
@@ -475,7 +483,7 @@ A maximum of 20 elements can be imported in a single request.
 
 ## Response Handling
 
-The method will return an array `items`, containing objects where each object in this array will contain the identifier of the created element in case of success, or an error message object.
+The method will return an array `items`, containing objects where each object in this array will contain the identifier of the created item in case of success, or an error message object.
 
 HTTP status: **200**
 
@@ -490,7 +498,7 @@ HTTP status: **200**
             },
             {
                 "error": "CRM_FIELD_ERROR_REQUIRED",
-                "error_description": "The field \"Title\" is required."
+                "error_description": "The field \"Title\" is required"
             }
         ]
     },
@@ -518,15 +526,21 @@ Contains a single key `item` ||
 || **items**
 [`array`][1] | An array containing `item` objects or errors ||
 || **item**
-[`object`][1] | Information about the created element.
+[`object`][1] | Information about the created item.
 
 Contains a single key `id` ||
 || **id**
-[`int`][1] | Identifier of the created element ||
+[`int`][1] | Identifier of the created item ||
 || **time**
 [`time`][1] | Information about the execution time of the request ||
 |#
 
+{% note info " " %}
+
+By default, user field names are passed and returned in camelCase, e.g., ufCrm2_1639669411830.
+When passing the parameter `useOriginalUfNames` with the value `Y`, user fields will be returned with their original names, e.g., UF_CRM_2_1639669411830.
+
+{% endnote %}
 
 ## Error Handling
 
@@ -535,7 +549,7 @@ HTTP status: **401**, **400**, **403**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "SPA not found."
+    "error_description": "SPA not found"
 }
 ```
 
@@ -545,21 +559,21 @@ HTTP status: **401**, **400**, **403**
 
 #|
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
-|| `400`      | `NOT_FOUND`                       | SPA not found.                                                      | Occurs when an invalid `entityTypeId` is passed.                                            ||
-|| `400`      | `ACCESS_DENIED`                   | Access denied.                                                      | The user does not have permission to add elements of type `entityTypeId`.                   ||
-|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for the field "`field`".                              | An incorrect value for the field `field` was passed.
+|| `400`      | `NOT_FOUND`                       | SPA not found                                                       | Occurs when an invalid `entityTypeId` is passed                                              ||
+|| `400`      | `ACCESS_DENIED`                   | Access denied                                                     | The user does not have permission to add items of type `entityTypeId`                             ||
+|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the `field` was provided.
 
-For system fields of type `createdTime`, if the request is not from an administrator. ||
-|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead. | One of the multiple fields received a value of type `type`, while an iterable type was expected. This can also occur with an incorrect request (incorrect JSON or request headers). ||
-|| `400`      | `CREATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot create a new element due to your plan's restrictions. | The plan's restrictions do not allow creating SPA elements.                                 ||
-|| `400`      | `MAX_IMPORT_BATCH_SIZE_EXCEEDED`  | You cannot import more than 20 elements.                           | Occurs when more than 20 elements are passed during import.                                 ||
-|| `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request.                         | Incorrect `user ID` and/or code in the request path.                                       ||
-|| `403`      | `allowed_only_intranet_user`      | Action allowed only for intranet users.                             | The user is not an intranet user.                                                          ||
+For system fields of type `createdTime`, if the request is not from an administrator ||
+|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | A value of type `type` was passed to one of the multiple fields, while an iterable type was expected. This can also occur with an incorrect request (invalid JSON or request headers) ||
+|| `400`      | `CREATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot create a new item due to your plan restrictions | Plan restrictions do not allow creating SPA items                              ||
+|| `400`      | `MAX_IMPORT_BATCH_SIZE_EXCEEDED`  | You cannot import more than 20 items                     | Occurs when more than 20 items are passed during import                                        ||
+|| `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request                            | Incorrect `user ID` and/or code in the request path                                       ||
+|| `403`      | `allowed_only_intranet_user`      | Action allowed only for intranet users                   | The user is not an intranet user                                                 ||
 |#
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 ## Continue Learning 
 

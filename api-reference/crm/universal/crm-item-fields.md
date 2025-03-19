@@ -1,31 +1,39 @@
-# Get Fields of CRM Item
+# Get Fields of CRM Item `crm.item.fields`
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM entity items
+> Who can execute the method: any user with "read" access permission for CRM object items
 
 This method retrieves a list of fields and their configuration for items of type `entityTypeId`.
 
 {% note warning %}
 
-Items belonging to different types of CRM entities will have different sets of fields.
+Items belonging to different types of CRM objects will have different sets of fields.
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
 [`integer`][1] | Identifier of the [system](./index.md) or [custom type](./user-defined-object-types/index.md) whose fields we want to retrieve ||
+|| **useOriginalUfNames**
+[`boolean`][1] | This parameter controls the format of custom field names in the response.   
+Possible values:
+
+- `Y` — original names of custom fields, e.g., UF_CRM_2_1639669411830
+- `N` — custom field names in camelCase, e.g., ufCrm_2_1639669411830
+
+Default is `N` ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 Retrieve the list of fields for items in the SPA with `entityTypeId = 1268`.
 
@@ -37,7 +45,7 @@ Retrieve the list of fields for items in the SPA with `entityTypeId = 1268`.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":1268}' \
+    -d '{"entityTypeId":1268,"useOriginalUfNames":"N"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.fields
     ```
 
@@ -47,7 +55,7 @@ Retrieve the list of fields for items in the SPA with `entityTypeId = 1268`.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":1268,"auth":"**put_access_token_here**"}' \
+    -d '{"entityTypeId":1268,"useOriginalUfNames":"N","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.item.fields
     ```
 
@@ -58,6 +66,7 @@ Retrieve the list of fields for items in the SPA with `entityTypeId = 1268`.
             'crm.item.fields',
             {
                 entityTypeId: 1268,
+                useOriginalUfNames: 'N',
             },
             (result) => {
                 if (result.error())
@@ -80,7 +89,8 @@ Retrieve the list of fields for items in the SPA with `entityTypeId = 1268`.
     $result = CRest::call(
         'crm.item.fields',
         [
-            'entityTypeId' => 1268
+            'entityTypeId' => 1268,
+            'useOriginalUfNames' => 'N',
         ]
     );
 
@@ -93,7 +103,7 @@ Retrieve the list of fields for items in the SPA with `entityTypeId = 1268`.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -186,7 +196,7 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Available to Everyone",
+                "title": "Available to All",
                 "upperName": "OPENED"
             },
             "webformId": {
@@ -216,7 +226,7 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Close Date",
+                "title": "End Date",
                 "upperName": "CLOSEDATE"
             },
             "companyId": {
@@ -343,7 +353,7 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Additional Information about Source",
+                "title": "Additional Info about Source",
                 "upperName": "SOURCE_DESCRIPTION"
             },
             "currencyId": {
@@ -408,7 +418,7 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Last Activity By in Timeline",
+                "title": "Last Activity By",
                 "upperName": "LAST_ACTIVITY_BY"
             },
             "lastActivityTime": {
@@ -480,9 +490,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response. Contains a single key `fields` ||
+[`object`][1] | The root element of the response. Contains a single key `fields` ||
 || **fields**
-[`object`][1] | Object in the format:
+[`object`][1] | An object in the format:
 ```
 {
     field_1: value_1,
@@ -501,9 +511,16 @@ where:
 [`time`][1]   | Information about the request execution time ||
 |#
 
+{% note info " " %}
+
+By default, custom field names are returned in camelCase, e.g., ufCrm2_1639669411830. 
+When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, e.g., UF_CRM_2_1639669411830.
+
+{% endnote %}
+
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -513,7 +530,6 @@ HTTP status: **400**, **403**
 ```
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
-
 
 ### Possible Error Codes
 

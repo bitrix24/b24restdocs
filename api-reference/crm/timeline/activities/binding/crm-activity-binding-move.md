@@ -1,10 +1,10 @@
-# Update the connection of an activity with a CRM entity crm.activity.binding.move
+# Update the deal's connection with the CRM entity crm.activity.binding.move
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: `any user`
 
-The method `crm.activity.binding.move` updates the connection of an activity with a CRM entity. The update is only possible if the current user has edit access to the CRM entities they are modifying.
+The method `crm.activity.binding.move` updates the connection of a deal with a CRM entity. The update is only possible if the current user has edit access to the CRM entities they are modifying.
 
 ## Method Parameters
 
@@ -14,15 +14,15 @@ The method `crm.activity.binding.move` updates the connection of an activity wit
 || **Name**
 `type` | **Description** ||
 || **activityId***
-[`integer`](../../../../data-types.md) | The identifier of the activity in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | The identifier of the deal in the timeline, for example `999` ||
 || **sourceEntityTypeId***
-[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is linked, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal is linked, for example `2` for a deal ||
 || **sourceEntityId***
-[`integer`](../../../../data-types.md) | The identifier of the CRM entity to which the activity is linked, for example `1` ||
+[`integer`](../../../../data-types.md) | The identifier of the CRM entity to which the deal is linked, for example `1` ||
 || **targetEntityTypeId***
-[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity should be linked, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal should be linked, for example `2` for a deal ||
 || **targetEntityId***
-[`integer`](../../../../data-types.md) | The identifier of the CRM entity to which the activity should be linked, for example `100` ||
+[`integer`](../../../../data-types.md) | The identifier of the CRM entity to which the deal should be linked, for example `100` ||
 |#
 
 ## Code Examples
@@ -57,11 +57,11 @@ The method `crm.activity.binding.move` updates the connection of an activity wit
     BX24.callMethod(
         'crm.activity.binding.move',
         {
-            activityId: 999, // ID of the activity
-            sourceEntityTypeId: 2, // Type of the object to which the activity is linked
-            sourceEntityId: 1, // ID of the entity to which the activity is linked
-            targetEntityTypeId: 2, // Type of the object to which the activity will be linked
-            targetEntityId: 100 // ID of the entity to which the activity will be linked
+            activityId: 999, // ID of the deal
+            sourceEntityTypeId: 2, // Type of the object to which the deal is linked
+            sourceEntityId: 1, // ID of the entity to which the deal is linked
+            targetEntityTypeId: 2, // Type of the object to which the deal will be linked
+            targetEntityId: 100 // ID of the entity to which the deal will be linked
         },
         function(result) {
             if (result.error()) {
@@ -81,11 +81,11 @@ The method `crm.activity.binding.move` updates the connection of an activity wit
     $result = CRest::call(
         'crm.activity.binding.move',
         [
-            'activityId' => 999, // ID of the activity
-            'sourceEntityTypeId' => 2, // Type of the object to which the activity is linked
-            'sourceEntityId' => 1, // ID of the entity to which the activity is linked
-            'targetEntityTypeId' => 2, // Type of the object to which the activity will be linked
-            'targetEntityId' => 100 // ID of the entity to which the activity will be linked
+            'activityId' => 999, // ID of the deal
+            'sourceEntityTypeId' => 2, // Type of the object to which the deal is linked
+            'sourceEntityId' => 1, // ID of the entity to which the deal is linked
+            'targetEntityTypeId' => 2, // Type of the object to which the deal will be linked
+            'targetEntityId' => 100 // ID of the entity to which the deal will be linked
         ]
     );
 
@@ -122,7 +122,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | The result of the operation. Returns `true` if the connection was successfully changed, otherwise returns `false` ||
+[`boolean`](../../../../data-types.md) | The result of the operation. Returns `true` if the connection was successfully changed, otherwise `false` ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -147,11 +147,11 @@ HTTP status: **400**
 || `100` | Required fields not provided ||
 || `NOT_FOUND` | Element not found ||
 || `OWNER_NOT_FOUND` | Owner of the element not found ||
-|| `SOURCE_AND_TARGET_ENTITY_TYPES_ARE_NOT_EQUAL` | Cannot move the activity from one CRM object type to another ||
-|| `SOURCE_AND_TARGET_ENTITY_ID_ARE_EQUAL_ERROR` | Cannot move the activity to the same activity ||
+|| `SOURCE_AND_TARGET_ENTITY_TYPES_ARE_NOT_EQUAL` | Cannot move the deal from one CRM object type to another ||
+|| `SOURCE_AND_TARGET_ENTITY_ID_ARE_EQUAL_ERROR` | Cannot move the deal to the same deal ||
 || `ACCESS_DENIED` | Insufficient rights to perform the operation ||
-|| `ACTIVITY_IS_ALREADY_BOUND` | The activity is already linked to this entity ||
-|| `BINDING_NOT_FOUND` | The activity is not linked to the specified entity ||
+|| `ACTIVITY_IS_ALREADY_BOUND` | The deal is already linked to this entity ||
+|| `BINDING_NOT_FOUND` | The deal is not linked to the specified entity ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
@@ -161,3 +161,5 @@ HTTP status: **400**
 - [{#T}](./crm-activity-binding-list.md)
 - [{#T}](./crm-activity-binding-delete.md)
 - [{#T}](./crm-activity-binding-add.md)
+- [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity.md)
+- [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity-between-objects.md)

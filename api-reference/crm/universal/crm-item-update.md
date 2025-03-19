@@ -1,4 +1,4 @@
-# Update CRM Item
+# Update CRM Item: crm.item.update
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
@@ -10,9 +10,9 @@ When updating an item, a standard series of checks, modifications, and automatic
 - access permissions are checked
 - required fields are validated if the item's stage has changed within the same direction
 - dependent required fields are validated if the item's stage has changed within the same direction
-- correctness of field entries is verified
+- correctness of field values is checked
 - default values are assigned to fields
-- if it turns out that no field values have been changed before saving, then the save **is not performed**
+- if it turns out that no field values have been changed before saving, the save **is not performed**
 - automation rules are triggered after saving
 
 ## Method Parameters
@@ -23,13 +23,13 @@ When updating an item, a standard series of checks, modifications, and automatic
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose item we want to modify ||
+[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose item we want to change ||
 || **id^*^**
-[`integer`][1] | Identifier of the item we want to modify.
+[`integer`][1] | Identifier of the item we want to change.
 
 Can be obtained using the [`crm.item.list`](crm-item-list.md) or [`crm.item.add`](crm-item-add.md) methods ||
 || **fields***
-[`object`][1] | Object in the format
+[`object`][1] | Object format
 ```
 {
     field_1: value_1,
@@ -42,7 +42,7 @@ where
 - `field_n` — field name
 - `value_n` — new field value
 
-Each CRM entity type has its own set of fields. This means that the set of fields for updating a Lead does not have to match the set of fields for updating a Contact or SPA.
+Each CRM entity type has its own set of fields. This means that the set of fields for changing a Lead does not have to match the set of fields for changing a Contact or SPA.
 
 The list of available fields for each entity type is described [below](#parametr-fields).
 
@@ -54,7 +54,15 @@ Only those fields that need to be changed should be passed in `fields`
 
 {% endnote %}
 
-|| 
+||
+|| **useOriginalUfNames**
+[`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
+Possible values:
+
+- `Y` — original custom field names, e.g., UF_CRM_2_1639669411830
+- `N` — custom field names in camelCase, e.g., ufCrm_2_1639669411830
+
+Default is `N` ||
 |#
 
 ### Fields Parameter
@@ -65,7 +73,7 @@ Only those fields that need to be changed should be passed in `fields`
 
 - Lead
 
-  Identifier of the CRM object **entityTypeId:** `1`
+  CRM object identifier **entityTypeId:** `1`
 
   #|
   || **Name**
@@ -74,9 +82,9 @@ Only those fields that need to be changed should be passed in `fields`
   [`string`][1] | Item title 
   ||
   || **honorific**
-  [`crm_status`][1] | String identifier for the lead's salutation (e.g., `'HNR_US_1' = 'Mr.'`).
+  [`crm_status`][1] | String identifier for the lead's honorific (e.g., `'HNR_EN_1' = 'Mr.'`).
 
-  The list of available salutations can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONORIFIC" }` ||
+  The list of available honorifics can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONORIFIC" }` ||
   || **name**
   [`string`][1] | First name ||
   || **secondName**
@@ -144,7 +152,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **webformId**
   [`integer`][1] | Identifier of the CRM Form ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers of the item ||
+  [`user[]`][1] | Array of user identifiers who will be Observers in the item ||
   || **utmSource**
   [`string`][1] | Advertising system. For example: Google Ads, Bing Ads, etc. ||
   || **utmMedium**
@@ -157,18 +165,18 @@ Only those fields that need to be changed should be passed in `fields`
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+  [`string`][1] | Search term for the campaign. For example, keywords for contextual advertising ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. 
+  [`crm_userfield`][1] | Custom field. 
   
-  Read about user-defined fields in the section [{#T}](./user-defined-fields/index.md) 
+  Read about custom fields in the section [{#T}](./user-defined-fields/index.md) 
   
   Values of multiple fields are passed as an array.
   
-  To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
+  To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another type of CRM object linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this item.
 
   Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
@@ -179,7 +187,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   Structure of a multifield:
 
-  - `id` — Unique identifier of the multifield. If no multifield exists with this id, a new multifield will be created
+  - `id` — Unique identifier of the multifield. If no multifield with this id exists, a new multifield will be created
   - `typeId` — Type of the multifield
   - `valueType` — Type of value
   - `value` — Value
@@ -195,19 +203,19 @@ Only those fields that need to be changed should be passed in `fields`
         },
         "16": {
             "valueType": "WORK",
-            "value": "example@example.com",
+            "value": "bitrix@bitrix.com",
             "typeId": "EMAIL"
         }
     }
   ```
-  By default — `null`
+  Default is `null`
   ||
   |#
 
 
 - Deal
 
-  Identifier of the CRM object **entityTypeId:** `2`
+  CRM object identifier **entityTypeId:** `2`
 
   #|
   || **Name**
@@ -297,9 +305,9 @@ Only those fields that need to be changed should be passed in `fields`
   || **originId**
   [`string`][1] | Identifier of the item in the external source ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers of the item ||
+  [`user[]`][1] | Array of user identifiers who will be Observers in the item ||
   || **locationId**
-  [`location`][1] | Identifier of the location. System field  ||
+  [`location`][1] | Identifier of the location. Service field  ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
@@ -311,16 +319,16 @@ Only those fields that need to be changed should be passed in `fields`
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+  [`string`][1] | Search term for the campaign. For example, keywords for contextual advertising ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](./user-defined-fields/index.md)
+  [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md)
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
+    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
   
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another type of CRM object linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this item.
 
   Each such field has the code `parentId + {parentEntityTypeId}` 
   ||
@@ -329,17 +337,17 @@ Only those fields that need to be changed should be passed in `fields`
 
 - Contact
 
-  Identifier of the CRM object **entityTypeId:** `3`
+  CRM object identifier **entityTypeId:** `3`
 
   #|
   || **Name**
   `type` | **Description** ||
   || **honorific**
-  [`crm_status`][1] | String identifier for the contact's salutation. 
+  [`crm_status`][1] | String identifier for the contact's honorific. 
   
-  For example, `'HNR_US_1' = 'Mr.'`.
+  For example, `'HNR_EN_1' = 'Mr.'`.
 
-  The list of available salutations can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONORIFIC" }` ||
+  The list of available honorifics can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONORIFIC" }` ||
   || **name**
   [`string`][1] | First name ||
   || **secondName**
@@ -375,7 +383,7 @@ Only those fields that need to be changed should be passed in `fields`
   - `N` — no
   ||
   || **export**
-  [`boolean`][1] | Is the contact included in the export? ||
+  [`boolean`][1] | Is the contact participating in the export? ||
   || **assignedById**
   [`user`][1] | Identifier of the person responsible for the item ||
   || **companyId**
@@ -393,7 +401,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **originVersion**
   [`string`][1]          | Version of the original ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers of the item ||
+  [`user[]`][1] | Array of user identifiers who will be Observers in the item ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
@@ -406,18 +414,18 @@ Only those fields that need to be changed should be passed in `fields`
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+  [`string`][1] | Search term for the campaign. For example, keywords for contextual advertising ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](./user-defined-fields/index.md)
+  [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md)
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
+    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
 
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another type of CRM object linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this item.
 
-  Each such field has the code `parentId + {parentEntityTypeId}` 
+  Each such field has the code `parentId + {parentEntityTypeId}`
   ||
   || **fm**
   [`multifield[]`][1] | Array of multifields.
@@ -426,7 +434,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   Structure of a multifield:
 
-    - `id` — Unique identifier of the multifield. If no multifield exists with this id, a new multifield will be created
+    - `id` — Unique identifier of the multifield. If no multifield with this id exists, a new multifield will be created
     - `typeId` — Type of the multifield
     - `valueType` — Type of value
     - `value` — Value
@@ -442,19 +450,19 @@ Only those fields that need to be changed should be passed in `fields`
         },
         "16": {
             "valueType": "WORK",
-            "value": "example@example.com",
+            "value": "bitrix@bitrix.com",
             "typeId": "EMAIL"
         }
     }
   ```
-  By default — `null`
+  Default is `null`
   ||
   |#
 
 
 - Company
 
-  Identifier of the CRM object **entityTypeId:** `4`
+  CRM object identifier **entityTypeId:** `4`
 
   #|
   || **Name**
@@ -486,7 +494,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **currencyId**
   [`crm_currency`][1] | Identifier of the item's currency ||
   || **revenue**
-  [`double`][1] | Annual turnover ||
+  [`double`][1] | Annual revenue ||
   || **opened**
   [`boolean`][1] | Is the item available to everyone? Possible values:
 
@@ -512,7 +520,7 @@ Only those fields that need to be changed should be passed in `fields`
   || **originVersion**
   [`string`][1] | Version of the original ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers of the item ||
+  [`user[]`][1] | Array of user identifiers who will be Observers in the item ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
@@ -524,18 +532,18 @@ Only those fields that need to be changed should be passed in `fields`
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+  [`string`][1] | Search term for the campaign. For example, keywords for contextual advertising ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](./user-defined-fields/index.md)
+  [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md)
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file
+    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the base64 encoded content of the file
 
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another type of CRM object linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this item.
 
-  Each such field has the code `parentId + {parentEntityTypeId}` 
+  Each such field has the code `parentId + {parentEntityTypeId}`
   ||
   || **fm**
   [`multifield[]`][1] | Array of multifields.
@@ -544,7 +552,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   Structure of a multifield:
 
-    - `id` — Unique identifier of the multifield. If no multifield exists with this id, a new multifield will be created
+    - `id` — Unique identifier of the multifield. If no multifield with this id exists, a new multifield will be created
     - `typeId` — Type of the multifield
     - `valueType` — Type of value
     - `value` — Value
@@ -560,19 +568,19 @@ Only those fields that need to be changed should be passed in `fields`
         },
         "16": {
             "valueType": "WORK",
-            "value": "example@example.com",
+            "value": "bitrix@bitrix.com",
             "typeId": "EMAIL"
         }
     }
   ```
-  By default — `null`
+  Default is `null`
   ||
   |#
 
 
 - Estimate
 
-  Identifier of the CRM object  **entityTypeId:** `7`
+  CRM object identifier **entityTypeId:** `7`
 
   #|
   || **Name**
@@ -598,10 +606,10 @@ Only those fields that need to be changed should be passed in `fields`
   || **leadId**
   [`crm_lead`][1] | Identifier of the lead based on which the item is created ||
   || **storageTypeId**
-  [`integer`][1] | Identifier of the storage type Possible values:
+  [`integer`][1] | Identifier of the storage type. Possible values:
   - `1` — file
   - `2` — WebDAV
-  - `3` — disk
+  - `3` — Drive
   ||
   || **storageElementIds**
   [`integer`][1] | Array of files ||
@@ -620,7 +628,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3` ||
   || **locationId**
-  [`location`][1] | Identifier of the location. System field ||
+  [`location`][1] | Identifier of the location. Service field ||
   || **currencyId**
   [`crm_currency`][1] | Identifier of the item's currency ||
   || **isManualOpportunity**
@@ -659,25 +667,25 @@ Only those fields that need to be changed should be passed in `fields`
   || **utmContent**
   [`string`][1] | Content of the campaign. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+  [`string`][1] | Search term for the campaign. For example, keywords for contextual advertising ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](./user-defined-fields/index.md).
+  [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
   - Values of multiple fields are passed as an array
-  - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
+  - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
 
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another type of CRM object linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this item.
 
-  Each such field has the code `parentId + {parentEntityTypeId}` 
+  Each such field has the code `parentId + {parentEntityTypeId}`
   ||
   |#
 
 
 - Invoice
 
-  Identifier of the CRM object **entityTypeId:** `31`
+  CRM object identifier **entityTypeId:** `31`
 
   #|
   || **Name**
@@ -714,7 +722,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3` ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers of the item ||
+  [`user[]`][1] | Array of user identifiers who will be Observers in the item ||
   || **stageId**
   [`crm_status`][1] | String identifier for the item's stage. 
   
@@ -747,55 +755,25 @@ Only those fields that need to be changed should be passed in `fields`
   || **comments**
   [`text`][1] | Comment ||
   || **locationId**
-  [`location`][1] | Identifier of the location. System field ||
+  [`location`][1] | Identifier of the location. Service field ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](./user-defined-fields/index.md).
+  [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
+    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
 
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another type of CRM object linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this item.
 
-  Each such field has the code `parentId + {parentEntityTypeId}` 
-  ||
-  || **fm**
-  [`multifield[]`][1] | Array of multifields.
-
-  More about multifields can be read in the section [{#T}](../data-types.md#crm_multifield)
-
-  Structure of a multifield:
-
-    - `id` — Unique identifier of the multifield. If no multifield exists with this id, a new multifield will be created
-    - `typeId` — Type of the multifield
-    - `valueType` — Type of value
-    - `value` — Value
-
-  Example:
-
-  ```bash
-    fm: {
-        "15": {
-            "valueType": "WORK",
-            "value": "+19999999999",
-            "typeId": "PHONE"
-        },
-        "16": {
-            "valueType": "WORK",
-            "value": "example@example.com",
-            "typeId": "EMAIL"
-        }
-    }
-  ```
-  By default — `null`
+  Each such field has the code `parentId + {parentEntityTypeId}`
   ||
   |#
 
 
 - SPA
 
-  Identifier of the CRM object **entityTypeId:** can be obtained using the [`crm.type.list`](user-defined-object-types/crm-type-list.md) method or created using the [`crm.type.add`](user-defined-object-types/crm-type-add.md) method.
+  CRM object identifier **entityTypeId:** can be obtained using the [`crm.type.list`](user-defined-object-types/crm-type-list.md) method or created using the [`crm.type.add`](user-defined-object-types/crm-type-add.md) method.
 
   #|
   || **Name**
@@ -842,15 +820,15 @@ Only those fields that need to be changed should be passed in `fields`
 
   Available only when the `isClientEnabled` setting is enabled for the corresponding SPA ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers of the item.
+  [`user[]`][1] | Array of user identifiers who will be Observers in the item.
 
   Available only when the `isObserversEnabled` setting is enabled for the corresponding SPA ||
   || **categoryId**
-  [`crm_category`][1] | Identifier of the funnel of the SPA item. 
+  [`crm_category`][1] | Identifier of the funnel for the SPA item. 
 
   If the identifier is not specified, the SPA will be moved to the main funnel.
 
-  The list of available funnels can be obtained using the [`crm.category.list`](category/crm-category-list.md) method with the corresponding `entityTypeId` ||
+  The list of available funnels can be obtained using the [`crm.category.list`](category/crm-category-list.md) with the corresponding `entityTypeId` ||
   || **stageId**
   [`crm_status`][1] | String identifier for the item's stage. 
   
@@ -864,7 +842,7 @@ Only those fields that need to be changed should be passed in `fields`
 
   Available only when the `isStagesEnabled` setting is enabled for the corresponding SPA  ||
   || **sourceId**
-  [`crm_status`][1] | String identifier for the source. (e.g., `'CALL' = 'Call'`).
+  [`crm_status`][1] | String identifier for the source. (for example, `'CALL' = 'Call'`).
   
   The list of available sources can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "SOURCE" }`.
 
@@ -897,16 +875,16 @@ Only those fields that need to be changed should be passed in `fields`
 
   Available only when the `isMycompanyEnabled` setting is enabled for the corresponding SPA ||
   || **ufCrm...**
-  [`crm_userfield`][1] | User-defined field. See the section [{#T}](./user-defined-fields/index.md).
+  [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
+    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
 
   ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An item of another type of CRM object linked to this item.
+  [`crm_entity`][1] | Parent field. An element of another type of CRM object linked to this item.
 
-  Each such field has the code `parentId + {parentEntityTypeId}` 
+  Each such field has the code `parentId + {parentEntityTypeId}`
   ||
   |#
 
@@ -918,7 +896,7 @@ Only those fields that need to be changed should be passed in `fields`
 
 {% endlist %}
 
-## How to Update a User-Defined File Field
+## How to Update a Custom File Field
 
 1. Upload a new file instead of the old one (non-multiple field)
 
@@ -935,15 +913,15 @@ Only those fields that need to be changed should be passed in `fields`
     }
     ```
 
-2. Remove the value of the user-defined file field
+2. Remove the value of the file type custom field
 
     To do this, simply pass an empty string (`''`) instead of the value.
 
 3. Leave the value of the non-multiple file field unchanged
 
-    The simplest option is to not add the key with this field in `fields`.
+    The simplest option is not to add a key with this field in `fields`.
     
-    But if you need to pass it and not change it, then the value should be passed as a list where the key `id` will be the identifier of the file.
+    But if you need to pass it and not change it, then the value should be passed as a list where the key `id` will be the file identifier.
 
     ```json
     {
@@ -957,15 +935,15 @@ Only those fields that need to be changed should be passed in `fields`
 
     {% note warning %}
     
-    If a value different from the current one is passed in `id`, the field value will be reset and the file will be deleted.
+    If a different value is passed in `id`, the field value will be reset and the file will be deleted.
     
     {% endnote %}
 
 4. Working with a multiple file field
 
-    The value of a multiple field is an array. Each element of the array is subject to the same rules as for non-multiple values.
+    The value of a multiple field is an array. Each element of the array follows the same rules as for non-multiple values.
 
-    **How to Partially Overwrite Values in a Multiple File Field**
+    **How to partially overwrite values in a multiple file field**
 
     For example, currently, the multiple file field contains values `[12, 255, 44]`.
 
@@ -994,7 +972,7 @@ Only those fields that need to be changed should be passed in `fields`
 
 ## Code Examples
 
-Update the deal with `id = 351`
+Update a deal with `id = 351`
 
 {% list tabs %}
 
@@ -1168,7 +1146,7 @@ HTTP Status: **200**
             "originatorId": null,
             "originId": null,
             "additionalInfo": "Updating deal via REST",
-            "searchContent": "351 Deal #351 10200.00 US Dollar No Made Up Made Up Sale Title2134234233 23.07.2024 31.07.2024",
+            "searchContent": "351 Deal #351 10200.00 US Dollar Not Invented Invented Sale Title2134234233 07/23/2024 07/31/2024",
             "orderStage": null,
             "movedBy": 1,
             "movedTime": "2024-07-23T18:19:21+02:00",
@@ -1221,8 +1199,15 @@ HTTP Status: **200**
 || **item**
 [`item`](./crm-item-add.md#item) | Information about the updated item ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
+
+{% note info " " %}
+
+By default, custom field names are passed and returned in camelCase, for example, ufCrm2_1639669411830.
+When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, for example, UF_CRM_2_1639669411830.
+
+{% endnote %}
 
 ## Error Handling
 
@@ -1235,22 +1220,22 @@ HTTP Status: **400**, **403**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
-|| `403`      | `allowed_only_intranet_user`      | Action allowed only for intranet users                               | User is not an intranet user                                                               ||
+|| `403`      | `allowed_only_intranet_user`      | Action is allowed only for intranet users                             | User is not an intranet user                                                                ||
 || `400`      | `NOT_FOUND`                       | SPA not found                                                        | Occurs when an invalid `entityTypeId` is passed                                          ||
 || `400`      | `ACCESS_DENIED`                   | Access denied                                                        | User does not have permission to modify items of type `entityTypeId`                      ||
-|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                    | Incorrect value passed for field `field`                                                  ||
-|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | One of the multiple fields received a value of type `type`, while an iterable type was expected ||
-|| `400`      | `-`                               | Insufficient rights to change stage                                   | If the user attempts to change the stage of the item without sufficient rights            ||
-|| `400`      | `UPDATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot modify the item due to your plan's restrictions          | Plan restrictions do not allow modifying SPA items                                         ||
+|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | Incorrect value passed for field `field`                                                   ||
+|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | A value of type `type` was passed to one of the multiple fields, while an iterable type was expected ||
+|| `400`      | `-`                               | Insufficient rights to change the stage                              | If a user tries to change the stage of an item without sufficient rights                  ||
+|| `400`      | `UPDATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot change the item due to your plan's restrictions          | Plan restrictions do not allow changing SPA items                                          ||
 |#
 
-{% include [System Errors](./../../../_includes/system-errors.md) %}
+{% include [system errors](./../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

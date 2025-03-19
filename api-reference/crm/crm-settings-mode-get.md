@@ -1,14 +1,14 @@
 # Determine the Current CRM Operating Mode crm.settings.mode.get
 
-> Method Name: **crm.settings.mode.get**
+> Method name: **crm.settings.mode.get**
 >
 > Scope: [`crm`](../scopes/permissions.md)
 >
 > Who can execute the method: `any user`
 
-This method returns the current settings for the CRM operating mode: **classic CRM mode** (with leads) or **simple CRM mode** (without leads).
+The method returns the current settings for the CRM operating mode: **classic CRM mode** (with leads) or **simple CRM mode** (without leads).
 
-This mode affects a variety of CRM operation scenarios, and for better understanding, we recommend reading the [related article](https://helpdesk.bitrix24.com/open/17611420/) in the user documentation.
+This mode affects a number of CRM operation scenarios, and for better understanding, we recommend reading the [relevant article](https://helpdesk.bitrix24.com/open/24207198/) in the user documentation.
 
 ## Method Parameters
 
@@ -42,7 +42,7 @@ The method is called without parameters.
 - JS
 
     ```js
-    BX24.callMethod("crm.settings.mode.get", result => {
+    BX24.callMethod("crm.settings.mode.get", {}, result => {
         if (result.error())
             console.error(result.error());
         else
@@ -69,7 +69,7 @@ The method is called without parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -78,8 +78,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-03T17:19:01+02:00",
+        "date_finish": "2024-05-03T17:19:01+02:00",
         "operating": 0
     }
 }

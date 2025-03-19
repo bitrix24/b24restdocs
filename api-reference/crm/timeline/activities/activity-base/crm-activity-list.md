@@ -1,4 +1,4 @@
-# Get the list of activities crm.activity.list
+# Get the list of deals crm.activity.list
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -14,14 +14,14 @@ The method `crm.activity.list` returns a list of activities based on the filter,
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array of fields from the activity [crm.activity.fields](./crm-activity-fields.md) that need to be selected. To retrieve the fields `COMMUNICATIONS` and `FILES`, specify them in select.
+[`array`](../../../data-types.md) | An array of fields of the deal [crm.activity.fields](./crm-activity-fields.md) that need to be selected. To get the fields `COMMUNICATIONS` and `FILES`, specify them in select.
 ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering the selected items in key-value format.
 
-Possible values for `field` correspond to the fields of the activity [crm.activity.fields](./crm-activity-fields.md).
+Possible values for `field` correspond to the fields of the deal [crm.activity.fields](./crm-activity-fields.md).
 
-An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
+An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -29,34 +29,34 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
 - `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
-  - "mol%" — searching for values starting with "mol"
-  - "%mol" — searching for values ending with "mol"
-  - "%mol%" — searching for values where "mol" can be in any position
+  - "mol%" — looking for values starting with "mol"
+  - "%mol" — looking for values ending with "mol"
+  - "%mol%" — looking for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
 - `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
 - `=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
-  - "mol%" — searching for values not starting with "mol"
-  - "%mol" — searching for values not ending with "mol"
-  - "%mol%" — searching for values where the substring "mol" is not present in any position
+  - "mol%" — looking for values not starting with "mol"
+  - "%mol" — looking for values not ending with "mol"
+  - "%mol%" — looking for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (see description above)
-- `=` — equal, exact match (used by default)
+- `=` — equals, exact match (used by default)
 - `!=` - not equal
 - `!` — not equal
 ||
 || **order**
-[`object`](../../../data-types.md) | A set of key-value pairs for sorting the output results. The keys can use the fields of the activity [crm.activity.fields](./crm-activity-fields.md).
+[`object`](../../../data-types.md) | A set of key-value pairs for sorting the output results. The keys can use the fields of the deal [crm.activity.fields](./crm-activity-fields.md).
 
 Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
 
-By default, it is sorted in ascending order by the Start Date field (`START_TIME`)
+By default, it is sorted by increasing the Start Date field (`START_TIME`)
 ||
 || **start**
-  [`integer`](../../../data-types.md) | This parameter is used to control pagination.
+  [`integer`](../../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 
@@ -71,11 +71,11 @@ See the description of [list methods](../../../../how-to-call-rest-api/list-meth
 
 {% note info "" %}
 
-Pay attention to the peculiarity of the `filter[BINDINGS]` parameter.
+Pay attention to the peculiarity of the parameter `filter[BINDINGS]`.
 
-An activity can be linked to multiple CRM entities. For example, a call can be linked to both a lead and a deal, so to retrieve these entities in the parameters of the method `crm.activity.list`, there is a special filter key - `BINDINGS`.
+A deal can be linked to multiple CRM entities. For example, a call can be linked to both a lead and a deal, so to retrieve these entities, there is a special filter key in the method parameters `crm.activity.list` - `BINDINGS`.
 
-You need to specify an array of [system](../../../index.md) or [user-defined](../../../universal/user-defined-object-types/index.md) types of CRM objects for which you need to find the binding.
+You need to specify an array of [system](../../../index.md) or [custom](../../../universal/user-defined-object-types/index.md) types of CRM objects for which you need to find the binding.
 
 Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and `OWNER_ID` (entity identifier), either one or a combination of both. For example:
 
@@ -116,7 +116,7 @@ Each object can consist of the keys `OWNER_TYPE_ID` (entity type identifier) and
 
 - JS
 
-    In this example, we retrieve the list of activities for the contact with `ID` = 102.
+    In this example, we get the list of activities for the contact with `ID` = 102.
 
     ```js
     BX24.callMethod(
@@ -247,7 +247,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | The result of the operation. An array of activities. For information on the structure of an activity, see the method [crm.activity.fields](./crm-activity-fields.md) ||
+[`boolean`](../../../../data-types.md) | The result of the operation. An array of deals. For information on the structure of a deal, see the method [crm.activity.fields](./crm-activity-fields.md) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -267,19 +267,19 @@ HTTP status: **400**, **403**
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Specific Examples
+## Private Examples
 
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
 ### Using BINDINGS {#example-bindings}
 
-Retrieve fields: Identifier, Name, Owner Type (Entity Type Identifier), Owner (Entity Identifier)
+Get fields: Identifier, Name, Owner Type (Entity Type Identifier), Owner (Entity Identifier)
 
-Selection condition: the activity is linked to both a deal and a contact
+Selection condition: the deal is linked to both a deal and a contact
 
 {% note info %}
 
-When using multiple pairs in `BINDINGS`, duplication in the results is possible. For example, in the result of executing the code example below, a activity linked to both entities will be output twice.
+When using multiple pairs in `BINDINGS`, duplication may occur in the results. For example, in the result of executing the code example below, the deal linked to both entities will be output twice.
 
 {% endnote %}
 
@@ -361,7 +361,7 @@ When using multiple pairs in `BINDINGS`, duplication in the results is possible.
 
 {% endlist %}
 
-### Retrieving COMMUNICATIONS {#example-communications}
+### Getting COMMUNICATIONS {#example-communications}
 
 {% list tabs %}
 
@@ -473,7 +473,7 @@ HTTP status: **200**
 }
 ```
 
-### Retrieving Attachments {#example-files}
+### Getting Attachments {#example-files}
 
 {% list tabs %}
 
@@ -573,3 +573,8 @@ HTTP status: **200**
     }
 }
 ```
+
+## Continue Learning 
+
+- [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity-between-objects.md)
+- [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity.md)

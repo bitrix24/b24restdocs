@@ -1,4 +1,4 @@
-# Get Item by Id crm.item.get
+# Get an item by Id crm.item.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
@@ -19,6 +19,14 @@ The method returns information about an item based on the item identifier and th
 [`integer`][1] | Identifier of the item whose information we want to obtain.
 
 Can be retrieved using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
+|| **useOriginalUfNames**
+[`boolean`][1] | This parameter is used to control the format of custom field names in the response.   
+Possible values:
+
+- `Y` — original custom field names, e.g., UF_CRM_2_1639669411830
+- `N` — custom field names in camelCase, e.g., ufCrm_2_1639669411830
+
+Default is `N` ||
 |#
 
 ## Code Examples
@@ -35,7 +43,7 @@ Get information about a lead with `id = 250`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":1,"id":250}' \
+    -d '{"entityTypeId":1,"id":250,"useOriginalUfNames":"N"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.get
     ```
 
@@ -45,7 +53,7 @@ Get information about a lead with `id = 250`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":1,"id":250,"auth":"**put_access_token_here**"}' \
+    -d '{"entityTypeId":1,"id":250,"useOriginalUfNames":"N","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.item.get
     ```
 
@@ -57,6 +65,7 @@ Get information about a lead with `id = 250`
             {
                 entityTypeId: 1,
                 id: 250,
+                useOriginalUfNames: 'N',
             },
             (result) => {
                 if (result.error())
@@ -80,7 +89,8 @@ Get information about a lead with `id = 250`
         'crm.item.get',
         [
             'entityTypeId' => 1,
-            'id' => 250
+            'id' => 250,
+            'useOriginalUfNames' => 'N',
         ]
     );
 
@@ -172,7 +182,7 @@ HTTP status: **200**
             "opportunity": 999.9,
             "currencyId": "USD",
             "sourceId": "TRADE_SHOW",
-            "sourceDescription": "Admin Exhibition",
+            "sourceDescription": "Admin exhibition",
             "title": "Lead #250",
             "name": "Admin",
             "lastName": "Adminov",
@@ -181,7 +191,7 @@ HTTP status: **200**
             "companyTitle": "Administrative Company",
             "post": "Admin",
             "address": null,
-            "comments": "[B]Comment about admin[/B]",
+            "comments": "[B]Comment about the admin[/B]",
             "webformId": 0,
             "originatorId": null,
             "originId": null,
@@ -193,7 +203,7 @@ HTTP status: **200**
             "hasImol": "N",
             "login": null,
             "isReturnCustomer": "N",
-            "searchContent": "250 Lead #250 Adminov Admin Adminovich Administrative Company 999.90 US Dollar 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In Process Exhibition Admin Exhibition Admin [O]Comment about admin[/O] 321",
+            "searchContent": "250 Lead #250 Adminov Admin Adminovich Administrative Company 999.90 US dollar 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In process Exhibition Exhibition about admins g Admin [O]Comment about the admin[/O] 321",
             "isManualOpportunity": "Y",
             "movedBy": 1,
             "movedTime": "2024-07-22T17:00:08+02:00",
@@ -256,6 +266,13 @@ HTTP status: **200**
 [`time`][1] | Object containing information about the request execution time ||
 |#
 
+{% note info " " %}
+
+By default, custom field names are returned in camelCase, e.g., ufCrm2_1639669411830.
+When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, e.g., UF_CRM_2_1639669411830.
+
+{% endnote %}
+
 ## Error Handling
 
 HTTP status: **400**, **403**
@@ -274,7 +291,7 @@ HTTP status: **400**, **403**
 #|
 || **Status** | **Code**                          | **Description**                                     | **Value**                                                    ||
 || `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users            | User is not an intranet user                                 ||
-|| `400`      | `NOT_FOUND`                      | SPA not found                                      | Occurs when an invalid `entityTypeId` is passed             ||
+|| `400`      | `NOT_FOUND`                      | SPA not found                                      | Occurs when an invalid `entityTypeId` is passed            ||
 || `400`      | `NOT_FOUND`                      | Item not found                                    | Item with the provided `id` of type `entityTypeId` does not exist ||
 || `400`      | `ACCESS_DENIED`                  | You do not have permission to view this item      | User does not have read access permission for items of type `entityTypeId` ||
 |#

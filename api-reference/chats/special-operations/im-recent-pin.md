@@ -1,8 +1,8 @@
-# Pin a chat to favorites im.recent.pin
+# Pin a chat at the top of the im.recent list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
-- examples missing
+- edits needed for writing standards
+- parameter types are not specified
+- examples are missing
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `im.recent.pin` pins a dialog to favorites.
+The method `im.recent.pin` pins a conversation at the top of the chat list.
 
 ## Parameters
 
@@ -38,7 +38,7 @@ or
 [`unknown`](../../data-types.md) | `Y` | Pin or unpin the dialog | 19 ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 - If the parameter `PIN = N` is specified, the pinned dialog will be unpinned.
 
@@ -91,9 +91,9 @@ or
 
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Successful response
+## Response on success
 
 ```json
 {
@@ -101,7 +101,7 @@ or
 }
 ```
 
-## Error response
+## Response on error
 
 ```json
 {
@@ -119,5 +119,5 @@ or
 
 #|
 || **Code** | **Description** ||
-|| **DIALOG_ID_EMPTY** | Dialog identifier not provided. ||
+|| **DIALOG_ID_EMPTY** | Dialog ID was not provided. ||
 |#
