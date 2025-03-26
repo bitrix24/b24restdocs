@@ -1,10 +1,12 @@
-# Dropdown Menu Item Above the CRM_XXX_LIST_TOOLBAR, CRM_DYNAMIC_XXX_LIST_TOOLBAR
+# Dropdown Menu Item Above the List of CRM Elements CRM_XXX_LIST_TOOLBAR, CRM_DYNAMIC_XXX_LIST_TOOLBAR
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your dropdown menu item above the list of elements for CRM objects such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), and [custom types](../../crm/universal/index.md) of objects.
+You can add your dropdown menu item above the list of CRM object elements: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [old invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
 
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+![Widget as a Context Menu Item in Deal](./_images/CRM__LIST_TOOLBAR.png "Widget as a Context Menu Item in Deal")
+
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 ## Where the Widget is Embedded
 
@@ -14,9 +16,10 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 || `CRM_CONTACT_LIST_TOOLBAR` | Dropdown menu item above the list of [contacts](../../crm/contacts/index.md) ||
 || `CRM_COMPANY_LIST_TOOLBAR` | Dropdown menu item above the list of [companies](../../crm/companies/index.md) ||
 || `CRM_DEAL_LIST_TOOLBAR` | Dropdown menu item above the list of [deals](../../crm/deals/index.md) ||
-|| `CRM_INVOICE_LIST_TOOLBAR` | Dropdown menu item above the list of [invoices](../../crm/outdated/invoice/index.md) ||
+|| `CRM_INVOICE_LIST_TOOLBAR` | Dropdown menu item above the list of [old invoices](../../crm/outdated/invoice/index.md) ||
+|| `CRM_SMART_INVOICE_LIST_TOOLBAR` | Dropdown menu item above the list of [new invoices](../../crm/universal/invoice.md) ||
 || `CRM_QUOTE_LIST_TOOLBAR` | Dropdown menu item above the list of [estimates](../../crm/quote/index.md) ||
-|| `CRM_DYNAMIC_XXX_LIST_TOOLBAR` | Dropdown menu item above the list of custom type elements in CRM objects. Instead of XXX, you need to specify the numeric identifier of the specific [custom type of objects](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_TOOLBAR` ||
+|| `CRM_DYNAMIC_XXX_LIST_TOOLBAR` | Dropdown menu item above the list of custom CRM object type elements. Instead of XXX, you need to specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_TOOLBAR` ||
 |#
 
 ## What the Handler Receives
@@ -124,6 +127,26 @@ Data is transmitted as a POST request {.b24-info}
     
     ```
 
+- CRM_SMART_INVOICE_LIST_TOOLBAR
+
+    ```php
+
+    Array
+    (
+        [DOMAIN] => xxx.bitrix24.com
+        [PROTOCOL] => 1
+        [LANG] => en
+        [APP_SID] => 1dc4a02fd9c7c094bb78cac8689d23cb
+        [AUTH_ID] => 6986d4ca670076a4b8006f518000000001201c07456529898882f844c5d744f564bcfafb
+        [AUTH_EXPIRES] => 3600
+        [REFRESH_ID] => 7653f2670076a4b8006f518000000001201c0710663db8587fccc71874c46996bf6f49
+        [member_id] => e8857f161a1a8288f312b6cc6ad67995
+        [status] => L
+        [PLACEMENT] => CRM_SMART_INVOICE_LIST_TOOLBAR
+    )
+    
+    ```
+
 - CRM_QUOTE_LIST_TOOLBAR
 
     ```php
@@ -166,7 +189,7 @@ Data is transmitted as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
@@ -174,7 +197,7 @@ Data is transmitted as a POST request {.b24-info}
 
 In the current widget, the `PLACEMENT_OPTIONS` parameter is not passed.
 
-## Continue Your Learning
+## Continue Learning
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

@@ -10,7 +10,7 @@ CRM entity elements will not be included in the final selection if the user does
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ CRM entity elements will not be included in the final selection if the user does
 
 Can contain only field names or `'*'`.
 
-The list of available fields for selection can be obtained via the [`crm.item.fields`](./crm-item-fields.md) method.
+The list of available fields for selection can be obtained via the [`crm.item.fields`](./crm-item-fields.md) method
 ||
 || **filter**
 [`object`][1] |
@@ -36,8 +36,8 @@ Object format:
 }
 ```
 where
-- `field_n` — name of the field by which the selection of elements will be filtered
-- `value_n` — filter value
+- `field_n` — the name of the field by which the selection of elements will be filtered
+- `value_n` — the filter value
 
 The filter can have unlimited nesting and number of conditions.
 By default, all conditions are combined with `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
@@ -50,24 +50,23 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
 
-The list of available fields for filtering can be obtained via the [`crm.item.fields`](./crm-item-fields.md) method. 
-The filter for deals `entityTypeId: 2` does not support the fields `contactIds` and `contacts` 
+The list of available fields for filtering can be obtained via the [`crm.item.fields`](./crm-item-fields.md) method
 ||
 || **order**
 [`object`][1] |
@@ -81,8 +80,8 @@ Object format:
 }
 ```
 where
-- `field_n` — name of the field by which the selection of elements will be sorted
-- `value_n` — value of type `string` equal to:
+- `field_n` — the name of the field by which the selection of elements will be sorted
+- `value_n` — a `string` value equal to:
   - `ASC` — ascending sort
   - `DESC` — descending sort
 
@@ -100,11 +99,11 @@ The formula for calculating the `start` parameter value:
 `start = (N-1) * 50`, where `N` — the desired page number
 ||
 || **useOriginalUfNames**
-[`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
+[`boolean`][1] | This parameter controls the format of user field names in the request and response.   
 Possible values:
 
-- `Y` — original custom field names, e.g., UF_CRM_2_1639669411830
-- `N` — custom field names in camelCase, e.g., ufCrm_2_1639669411830
+- `Y` — original user field names, e.g., UF_CRM_2_1639669411830
+- `N` — user field names in camelCase, e.g., ufCrm_2_1639669411830
 
 Default is `N` ||
 |#
@@ -120,7 +119,7 @@ Default is `N` ||
 6. The calculation mode for the amount is manual.
 
 **Set the following sort order for this selection:**
-* First name and last name in ascending order.
+* First name and last name in ascending order
 
 **For clarity, let's select only the fields we need:**
 * Identifier `id`
@@ -362,7 +361,7 @@ HTTP status: **200**
 || **result**
 [`object`][1] | Root element of the response. Contains a single key `items` ||
 || **items**
-[`item[]`](./crm-item-add.md#item) | Array containing information about the found elements.
+[`item[]`](./crm-item-add.md#item) | An array containing information about the found elements.
 
 Fields of a single [`item`](./crm-item-add.md#item) are configured by the `select` parameter ||
 || **total**
@@ -377,8 +376,8 @@ The `next` parameter appears in the response if the number of elements matching 
 
 {% note info " " %}
 
-By default, custom field names are passed and returned in camelCase, e.g., ufCrm2_1639669411830.
-When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, e.g., UF_CRM_2_1639669411830.
+By default, user field names are passed and returned in camelCase, e.g., ufCrm2_1639669411830.
+When passing the `useOriginalUfNames` parameter with the value `Y`, user fields will be returned with their original names, e.g., UF_CRM_2_1639669411830.
 
 {% endnote %}
 

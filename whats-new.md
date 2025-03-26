@@ -2,6 +2,15 @@
 
 ## 2025
 
+### March 26, 2025
+
+- Updated the main pages of the sections [VAT Rates in CRM](./api-reference/crm/auxiliary/vat/index.md), [Lead Communication with Contacts](./api-reference/crm/leads/management-communication/index.md). Added introductory information as well as an overview of methods and connections
+- Updated event pages when working with leads [onCrmLead*](./api-reference/crm/leads/events/index.md)
+- Added support for the `contactIds` field in the filter for the method [crm.item.list](./api-reference/crm/universal/crm-item-list.md)
+- Updated event pages when working with currency [onCrmCurrency*](./api-reference/crm/currency/events/index.md)
+- Updated the main page of the section [Workgroups and Projects](./api-reference/sonet-group/events/index.md). Added introductory information as well as an overview of methods and connections
+- Updated event pages when working with workgroups [onSonetGroup*](./api-reference/sonet-group/events/index.md)
+
 ### March 19, 2025
 
 - Added a new parameter `useOriginalUfNames` in the methods [crm.item.*](./api-reference/crm/universal/index.md) to control the format of custom field names

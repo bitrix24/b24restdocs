@@ -2,22 +2,25 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your item to the context menu of CRM objects such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [CRM activities](../../crm/timeline/activities/index.md), and [custom types](../../crm/universal/index.md) of objects.
+You can add your item to the context menu of CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [old invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
+
+![Widget as a context menu item in Deal](./_images/CRM_DEAL_LIST_MENU.png "Widget as a context menu item in Deal")
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 ## Where the Widget is Embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `CRM_LEAD_LIST_MENU` | Context menu item for [lead](../../crm/leads/index.md) ||
 || `CRM_CONTACT_LIST_MENU` | Context menu item for [contact](../../crm/contacts/index.md) ||
 || `CRM_COMPANY_LIST_MENU` | Context menu item for [company](../../crm/companies/index.md) ||
 || `CRM_DEAL_LIST_MENU` | Context menu item for [deal](../../crm/deals/index.md) ||
-|| `CRM_INVOICE_LIST_MENU` | Context menu item for [invoice](../../crm/outdated/invoice/index.md) ||
+|| `CRM_INVOICE_LIST_MENU` | Context menu item for [old invoice](../../crm/outdated/invoice/index.md) ||
+|| `CRM_SMART_INVOICE_LIST_MENU` | Context menu item for [new invoice](../../crm/universal/invoice.md) ||
 || `CRM_QUOTE_LIST_MENU` | Context menu item for [estimate](../../crm/quote/index.md) ||
-|| `CRM_ACTIVITY_LIST_MENU` | Context menu item for [CRM activity](../../crm/timeline/activities/index.md) ||
-|| `CRM_DYNAMIC_XXX_LIST_MENU` | Context menu item for custom type of CRM objects. Instead of XXX, specify the numeric identifier of the specific [custom type of objects](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` ||
+|| `CRM_ACTIVITY_LIST_MENU` | Context menu item for [activity](../../crm/timeline/activities/index.md) ||
+|| `CRM_DYNAMIC_XXX_LIST_MENU` | Context menu item for custom CRM object type. Instead of XXX, specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` || 
 |#
 
 ## What the Handler Receives
@@ -106,7 +109,7 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_COMPANY_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"2946"}
-    }
+    )
     
     ```
 
@@ -127,7 +130,7 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_QUOTE_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"5"}
-    }
+    )
     
     ```
 
@@ -148,7 +151,28 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_INVOICE_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"12"}
-    }
+    )
+    
+    ```
+
+- CRM_SMART_INVOICE_LIST_MENU
+
+    ```php
+
+    Array
+    (
+        [DOMAIN] => xxx.bitrix24.com
+        [PROTOCOL] => 1
+        [LANG] => en
+        [APP_SID] => adada92053b22a4de3895402a01693cf
+        [AUTH_ID] => 69c7ca670076a4b8006f518000000001201c0720c9c9d78077b5f2c5530f64b061c8a1
+        [AUTH_EXPIRES] => 3600
+        [REFRESH_ID] => 5946f2670076a4b8006f518000000001201c07709da4b12d3c7e82e120a20e547b638f
+        [member_id] => e8857f161a1a8288f312b6cc6ad67995
+        [status] => L
+        [PLACEMENT] => CRM_SMART_INVOICE_LIST_MENU
+        [PLACEMENT_OPTIONS] => {"ID":"32"}
+    )
     
     ```
 
@@ -169,7 +193,7 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_ACTIVITY_LIST_MENU
         [PLACEMENT_OPTIONS] => {"ID":"1465"}
-    }
+    )
     
     ```
 
@@ -195,15 +219,15 @@ Data is transmitted as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
@@ -212,14 +236,15 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 It can be used to retrieve additional information using the corresponding methods:
 
-- any object type [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
+- any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
 - deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
 - contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
 - company [crm.company.get](../../crm/companies/crm-company-get.md)
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
+- activity [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md)
 
-In the case of embedding the widget in a custom type object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above, it is `183`.
+In the case of embedding the widget in a custom object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
 
 ||
 |#

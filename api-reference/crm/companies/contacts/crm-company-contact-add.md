@@ -34,7 +34,7 @@ The method `crm.company.contact.add` adds a contact to the specified company.
 || **id**
 [`unknown`](../../../data-types.md) | Identifier of the company. ||
 || **fields**
-[`array`](../../../data-types.md) | Object with the following fields: 
+[`object`](../../../data-types.md) | Object with the following fields: 
 - **CONTACT_ID** - identifier of the contact (required field) 
 - **SORT** - sorting index
 - **IS_PRIMARY** - primary contact flag

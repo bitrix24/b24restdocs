@@ -1,11 +1,11 @@
 title: Events
 href: index.md
 items:
-  - name: Overview of Events
+  - name: Overview of events
     href: index.md
-  - name: On Currency Addition
+  - name: When adding currency
     href: on-crm-currency-add.md
-  - name: On Currency Update
+  - name: When updating currency
     href: on-crm-currency-update.md
-  - name: On Currency Deletion
+  - name: When deleting currency
     href: on-crm-currency-delete.md

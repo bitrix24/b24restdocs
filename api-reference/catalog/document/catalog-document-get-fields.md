@@ -1,4 +1,4 @@
-# Get Fields of Inventory Management Documents catalog.document.getFields
+# Get Inventory Management Document Fields catalog.document.getFields
 
 {% note warning "We are still updating this page" %}
 
@@ -57,7 +57,7 @@ No parameters.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -65,8 +65,6 @@ No parameters.
 || **Field** | **Description** | **Note** ||
 || **commentary** 
 [`char`](../../data-types.md) | Commentary. |  ||
-|| **contractorId** 
-[`integer`](../../data-types.md) | Vendor. |  ||
 || **createdBy** 
 [`integer`](../../data-types.md) | Created by. |  Read-only field. ||
 || **currency^*^** 
@@ -104,4 +102,4 @@ No parameters.
 [`double`](../../data-types.md) | Total amount of goods. |  ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}

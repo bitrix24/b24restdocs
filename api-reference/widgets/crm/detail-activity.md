@@ -1,26 +1,29 @@
-# Button above the timeline of the CRM_XXX_DETAIL_ACTIVITY, CRM_DYNAMIC_XXX_DETAIL_ACTIVITY card
+# Button above the timeline of the CRM entity card CRM_XXX_DETAIL_ACTIVITY, CRM_DYNAMIC_XXX_DETAIL_ACTIVITY
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your item to the timeline menu of CRM objects such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), and [custom types](../../crm/universal/index.md) of objects.
+You can add your item to the timeline menu of CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
+
+![Widget as a timeline menu item in Lead](./_images/CRM_DEAL_DETAIL_ACTIVITY.png "Widget as a timeline menu item in Lead")
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 ## Where the widget is embedded
 
 #|
-|| **Widget Code** | **Location** ||
-|| `CRM_LEAD_DETAIL_ACTIVITY` | Menu item in the timeline of the [lead](../../crm/leads/index.md) ||
-|| `CRM_CONTACT_DETAIL_ACTIVITY` | Menu item in the timeline of the [contact](../../crm/contacts/index.md) ||
-|| `CRM_COMPANY_DETAIL_ACTIVITY` | Menu item in the timeline of the [company](../../crm/companies/index.md) ||
-|| `CRM_DEAL_DETAIL_ACTIVITY` | Menu item in the timeline of the [deal](../../crm/deals/index.md) ||
-|| `CRM_QUOTE_DETAIL_ACTIVITY` | Menu item in the timeline of the [estimate](../../crm/quote/index.md) ||
-|| `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY` | Menu item in the timeline of the custom type of CRM objects. Instead of XXX, you need to specify the numeric identifier of the specific [custom type of objects](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
+|| **Widget code** | **Location** ||
+|| `CRM_LEAD_DETAIL_ACTIVITY` | Menu item in the timeline of [lead](../../crm/leads/index.md) ||
+|| `CRM_CONTACT_DETAIL_ACTIVITY` | Menu item in the timeline of [contact](../../crm/contacts/index.md) ||
+|| `CRM_COMPANY_DETAIL_ACTIVITY` | Menu item in the timeline of [company](../../crm/companies/index.md) ||
+|| `CRM_DEAL_DETAIL_ACTIVITY` | Menu item in the timeline of [deal](../../crm/deals/index.md) ||
+|| `CRM_QUOTE_DETAIL_ACTIVITY` | Menu item in the timeline of [estimate](../../crm/quote/index.md) ||
+|| `CRM_SMART_INVOICE_DETAIL_ACTIVITY` | Menu item in the timeline of [invoices](../../crm/universal/invoice.md) ||
+|| `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY` | Menu item in the timeline of custom CRM object types. Instead of XXX, you need to specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
 |#
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 {% list tabs %}
 
@@ -129,6 +132,27 @@ Data is sent as a POST request {.b24-info}
     
     ```
 
+- CRM_SMART_INVOICE_DETAIL_ACTIVITY
+
+    ```php
+
+    Array
+    (
+        [DOMAIN] => xxx.bitrix24.com
+        [PROTOCOL] => 1
+        [LANG] => en
+        [APP_SID] => adada92053b22a4de3895402a01693cf
+        [AUTH_ID] => 69c7ca670076a4b8006f518000000001201c0720c9c9d78077b5f2c5530f64b061c8a1
+        [AUTH_EXPIRES] => 3600
+        [REFRESH_ID] => 5946f2670076a4b8006f518000000001201c07709da4b12d3c7e82e120a20e547b638f
+        [member_id] => e8857f161a1a8288f312b6cc6ad67995
+        [status] => L
+        [PLACEMENT] => CRM_SMART_INVOICE_DETAIL_ACTIVITY
+        [PLACEMENT_OPTIONS] => {"ID":"32"}
+    )
+    
+    ```
+
 - CRM_DYNAMIC_XXX_DETAIL_ACTIVITY
 
     ```php
@@ -152,7 +176,7 @@ Data is sent as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Footnote about required parameters](../../../_includes/required.md) %}
 
 {% include notitle [description of standard data](../_includes/widget_data.md) %}
 
@@ -160,23 +184,23 @@ Data is sent as a POST request {.b24-info}
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Footnote about required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
 || **ID*** 
 [`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
 
-It can be used to retrieve additional information using the corresponding methods:
+It can be used to obtain additional information using the corresponding methods:
 
-- any type of object [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
+- any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
 - deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
 - contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
 - company [crm.company.get](../../crm/companies/crm-company-get.md)
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
 
-In the case of embedding the widget in a custom type object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above, it is `183`.
+In the case of embedding the widget in a custom type object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
 
 ||
 |#

@@ -4,7 +4,7 @@
 >
 > Who can execute the method: user with "modify" access permission for the deal
 
-The method `crm.deal.productrows.set` sets (creates or updates) the product rows of a deal.
+The method `crm.deal.productrows.set` creates or updates the product rows of a deal. To modify only one row, use the methods [crm.item.productrow.*](../universal/product-rows/index.md).
 
 #|
 || **Name**
@@ -36,7 +36,7 @@ The list of available fields is described [below](#parameter-rows). ||
 || **Name**
 `type` | **Description** ||
 || **PRODUCT_ID**
-[`integer`](../../data-types.md) | Identifier of the product in the catalog. Can get the list of products using the method [`catalog.product.list`](../../catalog/product/catalog-product-list.md)
+[`integer`](../../data-types.md) | Identifier of the product in the catalog. The list of products can be obtained using the method [`catalog.product.list`](../../catalog/product/catalog-product-list.md)
 `0` if not from the catalog
 
 Default - `0`
@@ -71,19 +71,19 @@ Possible types:
 Default - `2`
 ||
 || **DISCOUNT_RATE**
-[`double`](../../data-types.md) | Discount value in percentage (if using the percentage discount type)
+[`double`](../../data-types.md) | Discount value in percentage (if percentage discount type is used)
 
 Default - `0.0`
 ||
 || **DISCOUNT_SUM**
-[`double`](../../data-types.md) | Absolute value of the discount (if using the absolute discount type)
+[`double`](../../data-types.md) | Absolute discount value (if monetary discount type is used)
 
 Default - `0.0`
 ||
 || **TAX_RATE**
 [`double`](../../data-types.md) | Tax rate in percentage ||
 || **TAX_INCLUDED**
-[`boolean`](../../data-types.md) | Indicator of whether the tax is included in the price
+[`boolean`](../../data-types.md) | Indicator of whether tax is included in the price
 Possible values:
 - `Y` – tax included
 - `N` – tax not included
@@ -264,12 +264,12 @@ HTTP Status: **400**
 
 #|
 || **Description** | **Value** ||
-|| The parameter id is invalid or not defined. | The value provided for the `id` parameter is incorrect ||
+|| The parameter id is invalid or not defined. | The parameter `id` has an incorrect value ||
 || Access denied | The user does not have permission to "modify" the deal  ||
 || Not found | The deal with the provided `id` was not found ||
-|| Discount Rate (`DISCOUNT_RATE`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined. | `DISCOUNT_TYPE_ID = 2` was provided without `DISCOUNT_RATE` ||
-|| Discount Sum (`DISCOUNT_SUM`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined and Discount Rate (`DISCOUNT_RATE`) is 100% | `DISCOUNT_RATE = 100` and `DISCOUNT_TYPE_ID = 2` were provided without `DISCOUNT_SUM` ||
-|| Discount Sum (`DISCOUNT_SUM`) is required if Monetary Discount Type (`DISCOUNT_TYPE_ID`) is defined. | `DISCOUNT_TYPE_ID = 1` was provided without `DISCOUNT_SUM` ||
+|| Discount Rate (`DISCOUNT_RATE`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined. | `DISCOUNT_TYPE_ID = 2` was provided and `DISCOUNT_RATE` was not provided ||
+|| Discount Sum (`DISCOUNT_SUM`) is required if Percentage Discount Type (`DISCOUNT_TYPE_ID`) is defined and Discount Rate (`DISCOUNT_RATE`) is 100% | `DISCOUNT_RATE = 100` and `DISCOUNT_TYPE_ID = 2` were provided and `DISCOUNT_SUM` was not provided ||
+|| Discount Sum (`DISCOUNT_SUM`) is required if Monetary Discount Type (`DISCOUNT_TYPE_ID`) is defined. | `DISCOUNT_TYPE_ID = 1` was provided and `DISCOUNT_SUM` was not provided ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

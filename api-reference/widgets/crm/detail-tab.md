@@ -2,7 +2,9 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your own tabs to the detail form of CRM objects such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), and [custom types](../../crm/universal/index.md) of objects.
+You can add your own tabs to the detail form of CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
+
+![Widget as a tab in the detail form of the CRM entity](./_images/CRM_DEAL_DETAIL_TAB.png "Widget as a tab in the detail form of the CRM entity")
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -15,12 +17,13 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 || `CRM_CONTACT_DETAIL_TAB` | Tab in the [contact](../../crm/contacts/index.md) detail form ||
 || `CRM_COMPANY_DETAIL_TAB` | Tab in the [company](../../crm/companies/index.md) detail form ||
 || `CRM_QUOTE_DETAIL_TAB` | Tab in the [estimate](../../crm/quote/index.md) detail form ||
-|| `CRM_DYNAMIC_XXX_DETAIL_TAB` | Tab in the detail form of a custom type of CRM objects. Instead of XXX, you need to specify the numeric identifier of the specific [custom type of objects](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_TAB` ||
+|| `CRM_SMART_INVOICE_DETAIL_TAB` | Tab in the [invoice](../../crm/universal/invoice.md) detail form ||
+|| `CRM_DYNAMIC_XXX_DETAIL_TAB` | Tab in the detail form of a custom object type in CRM. Instead of XXX, you need to specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_TAB` ||
 |#
 
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 {% list tabs %}
 
@@ -129,6 +132,27 @@ Data is transmitted as a POST request {.b24-info}
     
     ```
 
+- CRM_SMART_INVOICE_DETAIL_TAB
+
+    ```php
+
+    Array
+    (
+        [DOMAIN] => xxx.bitrix24.com
+        [PROTOCOL] => 1
+        [LANG] => en
+        [APP_SID] => fff172819907af99a29b4830304aabe7
+        [AUTH_ID] => ccbfca670076a4b8006f518000000001201c07b80ac830a875756c6c0c9073bec005c5
+        [AUTH_EXPIRES] => 3600
+        [REFRESH_ID] => bc3ef2670076a4b8006f518000000001201c07efcbf35af9b89bb15ea3ab8e7223fe49
+        [member_id] => e8857f161a1a8288f312b6cc6ad67995
+        [status] => L
+        [PLACEMENT] => CRM_SMART_INVOICE_DETAIL_TAB
+        [PLACEMENT_OPTIONS] => {"ID":"32"}
+    )
+    
+    ```
+
 - CRM_DYNAMIC_XXX_DETAIL_TAB
 
     ```php
@@ -169,14 +193,14 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 It can be used to retrieve additional information using the corresponding methods:
 
-- any type of object [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
+- any object type [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
 - deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
 - contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
 - company [crm.company.get](../../crm/companies/crm-company-get.md)
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
 
-In the case of embedding the widget in a custom type object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above, it is `183`.
+In the case of embedding the widget in a custom object type, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
 
 ||
 |#
@@ -187,7 +211,7 @@ In the case of embedding the widget in a custom type object, the type identifier
 
 {% endnote %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

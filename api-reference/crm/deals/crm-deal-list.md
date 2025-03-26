@@ -12,7 +12,7 @@ The method `crm.deal.list` returns a list of deals based on a filter. It is an i
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | A list of fields that should be populated for the deals in the selection.
+[`string[]`](../../data-types.md) | List of fields that should be populated for deals in the selection.
 
 You can use the following masks for selection:
 - `'*'` — to select all fields (excluding custom and multiple fields)
@@ -38,7 +38,7 @@ where:
 - `field_n` — the name of the field by which the selection of elements will be filtered
 - `value_n` — the filter value
 
-You can add a prefix to the keys `field_n` to specify the filter operation.
+You can add a prefix to the keys `field_n` to clarify the filter operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -46,8 +46,8 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character in the filter value does not need to be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` character needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
@@ -59,7 +59,8 @@ Possible prefix values:
 The LIKE filter does not work with fields of type `crm_status`, `crm_contact`, `crm_company` (deal type `TYPE_ID`, stage `STAGE_ID`, etc.).
 
 You can find the list of available fields for filtering using the method [crm.deal.fields](./crm-deal-fields.md). 
-The filter does not support the field `CONTACT_IDS`
+
+The filter does not support the field `CONTACT_IDS`, for filtering by contacts use the method [crm.item.list](../universal/crm-item-list.md)
 ||
 || **order**
 [`object`](../../data-types.md) | Object format:
@@ -75,14 +76,14 @@ The filter does not support the field `CONTACT_IDS`
 
 where:
 - `field_n` — the name of the field by which the selection of contacts will be sorted
-- `value_n` — a string value, equal to:
+- `value_n` — a `string` value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
 You can find the list of available fields for sorting using the method [crm.deal.fields](./crm-deal-fields.md)
 ||
 || **start**
-[`integer`](../../data-types.md)  | This parameter is used for pagination control.
+[`integer`](../../data-types.md)  | This parameter is used to manage pagination.
 
 The page size of results is always static — 50 records.
 
@@ -104,13 +105,13 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note about examples](../../../_includes/examples.md) %}
 
 Get a list of deals where:
-1. the funnel ID equals `1`
-2. the deal type equals `COMPLEX`
+1. the funnel ID is `1`
+2. the deal type is `COMPLEX`
 3. the title ends with `a`
-4. the stage equals `C1:NEW`
+4. the stage is `C1:NEW`
 5. the amount is greater than 10000 but less than or equal to 20000
 6. manual mode for amount calculation is enabled
 7. the responsible person is either the user with `id = 1` or the user with `id = 6`
@@ -137,7 +138,7 @@ For clarity, select only the necessary fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"SELECT":["ID","TITLE","TYPE_ID","CATEGORY_ID","STAGE_ID","OPPORTUNITY","IS_MANUAL_OPPORTUNITY","ASSIGNED_BY_ID","DATE_CREATE"],"FILTER":{"=%TITLE":"%a","CATEGORY_ID":1,"TYPE_ID":"COMPLEX","STAGE_ID":"C1:NEW",">OPPORTUNITY":10000,"<=OPPORTUNITY":20000,"IS_MANUAL_OPPORTUNITY":"Y","@ASSIGNED_BY_ID":[1,6],">DATE_CREATE":"'"$(date --date='-6 months' +%Y-%m-%d)"'"},"ORDER":{"TITLE":"ASC","OPPORTUNITY":"ASC"}}' \
+    -d '{"SELECT":["ID","TITLE","TYPE_ID","CATEGORY_ID","STAGE_ID","OPPORTUNITY","IS_MANUAL_OPPORTUNITY","ASSIGNED_BY_ID","DATE_CREATE"],"FILTER":{"=%TITLE":"%а","CATEGORY_ID":1,"TYPE_ID":"COMPLEX","STAGE_ID":"C1:NEW",">OPPORTUNITY":10000,"<=OPPORTUNITY":20000,"IS_MANUAL_OPPORTUNITY":"Y","@ASSIGNED_BY_ID":[1,6],">DATE_CREATE":"'"$(date --date='-6 months' +%Y-%m-%d)"'"},"ORDER":{"TITLE":"ASC","OPPORTUNITY":"ASC"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.list
     ```
 
@@ -147,7 +148,7 @@ For clarity, select only the necessary fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"SELECT":["ID","TITLE","TYPE_ID","CATEGORY_ID","STAGE_ID","OPPORTUNITY","IS_MANUAL_OPPORTUNITY","ASSIGNED_BY_ID","DATE_CREATE"],"FILTER":{"=%TITLE":"%a","CATEGORY_ID":1,"TYPE_ID":"COMPLEX","STAGE_ID":"C1:NEW",">OPPORTUNITY":10000,"<=OPPORTUNITY":20000,"IS_MANUAL_OPPORTUNITY":"Y","@ASSIGNED_BY_ID":[1,6],">DATE_CREATE":"'"$(date --date='-6 months' +%Y-%m-%d)"'"},"ORDER":{"TITLE":"ASC","OPPORTUNITY":"ASC"},"auth":"**put_access_token_here**"}' \
+    -d '{"SELECT":["ID","TITLE","TYPE_ID","CATEGORY_ID","STAGE_ID","OPPORTUNITY","IS_MANUAL_OPPORTUNITY","ASSIGNED_BY_ID","DATE_CREATE"],"FILTER":{"=%TITLE":"%а","CATEGORY_ID":1,"TYPE_ID":"COMPLEX","STAGE_ID":"C1:NEW",">OPPORTUNITY":10000,"<=OPPORTUNITY":20000,"IS_MANUAL_OPPORTUNITY":"Y","@ASSIGNED_BY_ID":[1,6],">DATE_CREATE":"'"$(date --date='-6 months' +%Y-%m-%d)"'"},"ORDER":{"TITLE":"ASC","OPPORTUNITY":"ASC"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.deal.list
     ```
 
@@ -336,13 +337,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`deal[]`](crm-deal-get.md#deal) | The root element of the response. Contains an array of objects with information about the deal fields. 
+[`deal[]`](crm-deal-get.md#deal) | The root element of the response. Contains an array of objects with information about the fields of deals. 
 
-Note that the structure of the fields may change due to the `select` parameter ||
+Note that the structure of fields may change due to the `select` parameter ||
 || **total**
 [`integer`](../../data-types.md) | The total number of found elements ||
 || **next**
-[`integer`](../../data-types.md) | Contains the value that should be passed in the next request in the `start` parameter to get the next batch of data.
+[`integer`](../../data-types.md) | Contains the value that needs to be passed in the next request in the `start` parameter to get the next batch of data.
 
 The `next` parameter appears in the response if the number of elements matching your request exceeds `50` ||
 || **time**

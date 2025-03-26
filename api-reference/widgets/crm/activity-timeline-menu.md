@@ -1,14 +1,10 @@
-# Context Menu Item for CRM Activity in CRM_XXX_ACTIVITY_TIMELINE_MENU
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
+# Context Menu Item for Activity in CRM Element Card CRM_XXX_ACTIVITY_TIMELINE_MENU, CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your own context menu item for activities in CRM entities such as [leads](../../crm/leads/index.md) and [deals](../../crm/deals/index.md).
+You can add your context menu item for activities in the CRM object cards: [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
+
+![Widget as a context menu item for activity in a lead](./_images/CRM__ACTIVITY_TIMELINE_MENU.png "Widget as a context menu item for activity in a lead")
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -16,10 +12,11 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 
 #|
 || **Widget Code** | **Location** ||
-|| `CRM_LEAD_ACTIVITY_TIMELINE_MENU` | Context menu item for an activity in a [lead](../../crm/leads/index.md) ||
-|| `CRM_DEAL_ACTIVITY_TIMELINE_MENU` | Context menu item for an activity in a [deal](../../crm/deals/index.md) ||
-|| `CRM_QUOTE_ACTIVITY_TIMELINE_MENU` | Context menu item for an activity in an [estimate](../../crm/quote/index.md) ||
-|| `CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU` | Context menu item for an activity in a [custom object type](../../crm/universal/index.md) ||
+|| `CRM_LEAD_ACTIVITY_TIMELINE_MENU` | Context menu item for activity in [lead](../../crm/leads/index.md) ||
+|| `CRM_DEAL_ACTIVITY_TIMELINE_MENU` | Context menu item for activity in [deal](../../crm/deals/index.md) ||
+|| `CRM_QUOTE_ACTIVITY_TIMELINE_MENU` | Context menu item for activity in [estimate](../../crm/quote/index.md) ||
+|| `CRM_SMART_INVOICE_ACTIVITY_TIMELINE_MENU` | Context menu item for activity in [new invoices](../../crm/universal/invoice.md) ||
+|| `CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU` | Context menu item for activity in custom CRM object types. Instead of XXX, specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` ||
 |#
 
 ## What the Handler Receives
@@ -87,7 +84,28 @@ Data is transmitted as a POST request {.b24-info}
         [status] => L
         [PLACEMENT] => CRM_QUOTE_ACTIVITY_TIMELINE_MENU
         [PLACEMENT_OPTIONS] => {"ENTITY_ID":"5","ASSOCIATED_ENTITY_ID":"1529","ASSOCIATED_ENTITY_TYPE_ID":"6"}
-    }
+    )
+    
+    ```
+
+- CRM_SMART_INVOICE_ACTIVITY_TIMELINE_MENU
+
+    ```php
+
+    Array
+    (
+        [DOMAIN] => xxx.bitrix24.com
+        [PROTOCOL] => 1
+        [LANG] => en
+        [APP_SID] => a2032d292bcc91a22022db330433a933
+        [AUTH_ID] => ee2ad0670076a4b8006f518000000001201c07383646b2116914be86aecd467ade5a3e
+        [AUTH_EXPIRES] => 3600
+        [REFRESH_ID] => dea9f7670076a4b8006f518000000001201c07e183b89e2613ce88ba7c56f8f80f19d9
+        [member_id] => e8857f161a1a8288f312b6cc6ad67995
+        [status] => L
+        [PLACEMENT] => CRM_SMART_INVOICE_ACTIVITY_TIMELINE_MENU
+        [PLACEMENT_OPTIONS] => {"ENTITY_ID":"32","ASSOCIATED_ENTITY_ID":"238","ASSOCIATED_ENTITY_TYPE_ID":"6"}
+    )
     
     ```
 
@@ -114,53 +132,51 @@ Data is transmitted as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 #### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
-|| **ENTITY_ID***  
-[`string`](../../data-types.md) | Identifier of the CRM entity for which the widget was opened.
+|| **ENTITY_ID*** 
+[`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
 
 Can be used to retrieve additional information using the corresponding methods:
 
-- any type of entity [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
+- any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
 - deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
-- contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
-- company [crm.company.get](../../crm/companies/crm-company-get.md)
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
 
-In the case of embedding the widget in a custom object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above, it is `183`.
+In the case of embedding the widget in a custom type object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above, it is `183`
 
 ||
-|| **ASSOCIATED_ENTITY_ID***  
+|| **ASSOCIATED_ENTITY_ID*** 
 [`string`](../../data-types.md) | Identifier of the CRM activity for which the widget was opened.
 
-Can be used to retrieve additional information using the [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md) method.
+Can be used to retrieve additional information using the method [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md)
 
 ||
-|| **ASSOCIATED_ENTITY_TYPE_ID***  
-[`string`](../../data-types.md) | Identifier of the type of CRM activity for which the widget was opened.
+|| **ASSOCIATED_ENTITY_TYPE_ID*** 
+[`string`](../../data-types.md) | Identifier of the activity entity type
 
 ||
-|| **TYPE_ID***  
-[`string`](../../data-types.md) | _to be completed later_
+|| **TYPE_ID*** 
+[`string`](../../data-types.md) | Identifier of the event type
 
 ||
-|| **TYPE_CATEGORY_ID***  
-[`string`](../../data-types.md) | _to be completed later_
+|| **TYPE_CATEGORY_ID*** 
+[`string`](../../data-types.md) | Identifier of the timeline record type
 
 ||
-|| **TIMELINE_ITEM_ID***  
-[`string`](../../data-types.md) | _to be completed later_
+|| **TIMELINE_ITEM_ID*** 
+[`string`](../../data-types.md) | Identifier of the timeline record
 
 ||
 |#

@@ -2,7 +2,9 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your item to the list of applications in CRM analytics.
+You can add your item to the list of applications in CRM Analytics.
+
+![Widget as an item in the CRM Analytics application list](./_images/CRM_ANALYTICS_MENU.png "Widget as an item in the CRM Analytics application list")
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -10,7 +12,7 @@ The specific widget placement code is specified in the `PLACEMENT` parameter of 
 
 #|
 || **Widget Code** | **Location** ||
-|| `CRM_ANALYTICS_MENU` | Item in the CRM analytics application list ||
+|| `CRM_ANALYTICS_MENU` | Item in the CRM Analytics application list ||
 |#
 
 ## What the handler receives

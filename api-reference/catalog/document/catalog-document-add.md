@@ -1,8 +1,8 @@
-# Add Inventory Document catalog.document.add
+# Add Inventory Management Document catalog.document.add
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it shortly
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ Some data may be missing — we will complete it shortly.
 catalog.document.add(fields)
 ```
 
-This method adds an [`inventory document`](../enum/catalog-enum-get-store-document-types.md).
+This method adds an [`inventory management document`](../enum/catalog-enum-get-store-document-types.md).
 If the operation is successful, it returns the `id` of the added document.
 
 ## Parameters
@@ -53,7 +53,7 @@ If the operation is successful, it returns the `id` of the added document.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"docType":"S","contractorId":"1","responsibleId":"1","dateModify":"2000-01-01T00:00:00+01:00","dateCreate":"2000-01-01T00:00:00+01:00","createdBy":"1","modifiedBy":"1","currency":"USD","status":"S","dateStatus":"2000-01-01T00:00:00+01:00","dateDocument":"2000-01-01T00:00:00+01:00","statusBy":"1","total":"100","commentary":"first document.","title":"New Document"}}' \
+    -d '{"fields":{"docType":"S","responsibleId":"1","dateModify":"2000-01-01T00:00:00+02:00","dateCreate":"2000-01-01T00:00:00+02:00","createdBy":"1","modifiedBy":"1","currency":"USD","status":"S","dateStatus":"2000-01-01T00:00:00+02:00","dateDocument":"2000-01-01T00:00:00+02:00","statusBy":"1","total":"100","commentary":"first document.","title":"New Document"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.add
     ```
 
@@ -63,7 +63,7 @@ If the operation is successful, it returns the `id` of the added document.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"docType":"S","contractorId":"1","responsibleId":"1","dateModify":"2000-01-01T00:00:00+01:00","dateCreate":"2000-01-01T00:00:00+01:00","createdBy":"1","modifiedBy":"1","currency":"USD","status":"S","dateStatus":"2000-01-01T00:00:00+01:00","dateDocument":"2000-01-01T00:00:00+01:00","statusBy":"1","total":"100","commentary":"first document.","title":"New Document"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"docType":"S","responsibleId":"1","dateModify":"2000-01-01T00:00:00+02:00","dateCreate":"2000-01-01T00:00:00+02:00","createdBy":"1","modifiedBy":"1","currency":"USD","status":"S","dateStatus":"2000-01-01T00:00:00+02:00","dateDocument":"2000-01-01T00:00:00+02:00","statusBy":"1","total":"100","commentary":"first document.","title":"New Document"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.document.add
     ```
 
@@ -75,16 +75,15 @@ If the operation is successful, it returns the `id` of the added document.
         {
             'fields': {
                 'docType': 'S',
-                'contractorId': '1',
                 'responsibleId': '1',
-                'dateModify': '2000-01-01T00:00:00+01:00',
-                'dateCreate': '2000-01-01T00:00:00+01:00',
+                'dateModify': '2000-01-01T00:00:00+02:00',
+                'dateCreate': '2000-01-01T00:00:00+02:00',
                 'createdBy': '1',
                 'modifiedBy': '1',
                 'currency': 'USD',
                 'status': 'S',
-                'dateStatus': '2000-01-01T00:00:00+01:00',
-                'dateDocument': '2000-01-01T00:00:00+01:00',
+                'dateStatus': '2000-01-01T00:00:00+02:00',
+                'dateDocument': '2000-01-01T00:00:00+02:00',
                 'statusBy': '1',
                 'total': '100',
                 'commentary': 'first document.',
@@ -111,16 +110,15 @@ If the operation is successful, it returns the `id` of the added document.
         [
             'fields' => [
                 'docType' => 'S',
-                'contractorId' => '1',
                 'responsibleId' => '1',
-                'dateModify' => '2000-01-01T00:00:00+01:00',
-                'dateCreate' => '2000-01-01T00:00:00+01:00',
+                'dateModify' => '2000-01-01T00:00:00+02:00',
+                'dateCreate' => '2000-01-01T00:00:00+02:00',
                 'createdBy' => '1',
                 'modifiedBy' => '1',
                 'currency' => 'USD',
                 'status' => 'S',
-                'dateStatus' => '2000-01-01T00:00:00+01:00',
-                'dateDocument' => '2000-01-01T00:00:00+01:00',
+                'dateStatus' => '2000-01-01T00:00:00+02:00',
+                'dateDocument' => '2000-01-01T00:00:00+02:00',
                 'statusBy' => '1',
                 'total' => '100',
                 'commentary' => 'first document.',

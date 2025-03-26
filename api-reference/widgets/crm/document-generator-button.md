@@ -2,20 +2,15 @@
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
-You can add your item to the dropdown menu of the document generator for CRM entities such as [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [invoices](../../crm/outdated/invoice/index.md), and [estimates](../../crm/quote/index.md).
+You can add your item to the dropdown menu of the document generator for CRM entities: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom entity types](../../crm/universal/index.md).
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-## Where the Widget is Embedded
-
-#|
-|| **Widget Code** | **Location** ||
-|| `CRM_LEAD_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [leads](../../crm/leads/index.md) ||
-|| `CRM_CONTACT_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [contacts](../../crm/contacts/index.md) ||
 || `CRM_COMPANY_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [companies](../../crm/companies/index.md) ||
 || `CRM_DEAL_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [deals](../../crm/deals/index.md) ||
-|| `CRM_INVOICE_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [invoices](../../crm/outdated/invoice/index.md) ||
+|| `CRM_SMART_INVOICE_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [invoices](../../crm/universal/invoice.md) ||
 || `CRM_QUOTE_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for [estimates](../../crm/quote/index.md) ||
+|| `CRM_DYNAMIC_XXX_DOCUMENTGENERATOR_BUTTON` | Item in the dropdown menu of the document generator for custom CRM entity types. Instead of XXX, you need to specify the numeric identifier of the specific [custom entity type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DOCUMENTGENERATOR_BUTTON` ||
 |#
 
 ## What the Handler Receives
@@ -129,7 +124,28 @@ Data is transmitted as a POST request {.b24-info}
     
     ```
 
-- CRM_DYNAMIC_XXX_DOCUMENTGENERATOR_BUTTON
+- CRM_SMART_INVOICE_DOCUMENTGENERATOR_BUTTON
+
+    ```php
+
+    Array
+    (
+        [DOMAIN] => xxx.bitrix24.com
+        [PROTOCOL] => 1
+        [LANG] => en
+        [APP_SID] => adada92053b22a4de3895402a01693cf
+        [AUTH_ID] => 69c7ca670076a4b8006f518000000001201c0720c9c9d78077b5f2c5530f64b061c8a1
+        [AUTH_EXPIRES] => 3600
+        [REFRESH_ID] => 5946f2670076a4b8006f518000000001201c07709da4b12d3c7e82e120a20e547b638f
+        [member_id] => e8857f161a1a8288f312b6cc6ad67995
+        [status] => L
+        [PLACEMENT] => CRM_SMART_INVOICE_DOCUMENTGENERATOR_BUTTON
+        [PLACEMENT_OPTIONS] => {"ENTITY_ID":"32"}
+    )
+    
+    ```
+
+- CRM_DYNAMIC_ХХХ_DOCUMENTGENERATOR_BUTTON
 
     ```php
 
@@ -152,36 +168,36 @@ Data is transmitted as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
 || **ENTITY_ID*** 
-[`string`](../../data-types.md) | The identifier of the CRM entity for which the widget was opened.
+[`string`](../../data-types.md) | Identifier of the CRM entity for which the widget was opened.
 
 It can be used to retrieve additional information using the corresponding methods:
 
-- any type of object [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
+- any entity type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
 - deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
 - contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
 - company [crm.company.get](../../crm/companies/crm-company-get.md)
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
 
-In the case of embedding the widget in a custom type object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above, it is `183`.
+In the case of embedding the widget in a custom entity type, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
 
 ||
 |#
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
