@@ -1,12 +1,10 @@
-# Get a List of Available Events
+# Get a list of available events
 
 > Who can execute the method: any user
 
-```js
-BX24.callMethod('events', {});
-```
-
 The `events` method returns a comprehensive list of available events.
+
+The method works only in the context of authorizing the [application](../app-installation/index.md).
 
 ## Method Parameters
 
@@ -133,7 +131,7 @@ The `events` method returns a comprehensive list of available events.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -259,7 +257,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response ||
+[`object`](../data-types.md) | Root element of the response ||
 |#
 
 ## Error Handling

@@ -22,4 +22,4 @@ Some data may be missing here — we will fill it in shortly.
 void BX24.reloadWindow()
 ```
 
-The method `BX24.reloadWindow` reloads the page with the application (the entire page, not just the frame).
+The method `BX24.reloadWindow` reloads the page with the application and works only when the application is opened in a separate window. The method does not work when the application is opened in a slider or as a widget.

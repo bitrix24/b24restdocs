@@ -1,66 +1,109 @@
 # Get User Work Time Settings timeman.settings
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `timeman.settings` returns the work time settings of the user.
+The method `timeman.settings` retrieves the work time settings for a user.
 
-
-## Parameters
+## Method Parameters
 
 #|
-|| **Parameter** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **USER_ID**
-[`unknown`](../../data-types.md) | User identifier. Optional, by default returns settings for the current user. ||
+[`integer`](../../data-types.md) | User identifier.
+
+By default — the identifier of the current user ||
 |#
 
-## Example
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- cURL
+- cURL (Webhook)
 
-    ```http
-    https://account.bitrix24.com/rest/timeman.settings/?auth=xxxxxx&user_id=1
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"USER_ID":503}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/timeman.settings
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"USER_ID":503,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/timeman.settings
+    ```
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'timeman.settings',
+        {
+            'USER_ID' : 503
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'timeman.settings',
+        [
+            'USER_ID' => 503
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response in case of success
+HTTP status: **200**
 
-> 200 OK
 ```json
 {
     "result": {
-        "ADMIN": true,
         "UF_TIMEMAN": true,
-        "UF_TM_ALLOWED_DELTA": "00:15:00",
         "UF_TM_FREE": false,
         "UF_TM_MAX_START": "09:15:00",
+        "UF_TM_MIN_FINISH": "17:45:00",
         "UF_TM_MIN_DURATION": "08:00:00",
-        "UF_TM_MIN_FINISH": "17:45:00"
+        "UF_TM_ALLOWED_DELTA": "00:15:00",
+        "ADMIN": true
+    },
+    "time": {
+        "start": 1742994169.701416,
+        "finish": 1742994169.7355511,
+        "duration": 0.03413510322570801,
+        "processing": 0.0076749324798583984,
+        "date_start": "2025-03-26T16:02:49+02:00",
+        "date_finish": "2025-03-26T16:02:49+02:00",
+        "operating_reset_at": 1742994769,
+        "operating": 0
     }
 }
 ```
@@ -68,19 +111,72 @@ The method `timeman.settings` returns the work time settings of the user.
 ### Returned Data
 
 #|
-|| **Field** | **Description** | **Note** ||
-|| **ADMIN**
-[`true`\|`false`](../../data-types.md) | Does the user have rights to manage others' workdays | Returned only for the current user ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response.
+
+Contains an object with the description of the user's work time settings ||
 || **UF_TIMEMAN**
-[`true`\|`false`](../../data-types.md) | Is work time tracking enabled for the user | ||
+[`boolean`](../../data-types.md) | Whether work time tracking is enabled for the user.
+
+Has a value of `true` if enabled ||
 || **UF_TM_FREE**
-[`true`\|`false`](../../data-types.md) | Is a flexible work schedule enabled for the user | When a flexible schedule is enabled, changes to work time do not require confirmation or reason ||
+[`boolean`](../../data-types.md) | Whether the user has a flexible work schedule.
+
+Has a value of `true` if enabled.
+
+A user with a flexible schedule does not need to confirm changes to work time with a supervisor or provide reasons for changes ||
 || **UF_TM_MAX_START**
-[`HH:MM:SS`](../../data-types.md) | The maximum start time of the workday set for the user | A workday starting later than the specified time will be considered a violation ||
+[`string`](../../data-types.md) | Maximum start time of the workday in `HH:MM:SS` format.
+
+Starting the workday later than the set time is considered a violation ||
 || **UF_TM_MIN_FINISH**
-[`HH:MM:SS`](../../data-types.md) | The minimum finish time of the workday set for the user | A workday finishing earlier than the specified time will be considered a violation ||
+[`string`](../../data-types.md) | Minimum finish time of the workday in `HH:MM:SS` format.
+
+Finishing the workday earlier than the set time is considered a violation ||
 || **UF_TM_MIN_DURATION**
-[`HH:MM:SS`](../../data-types.md) | The minimum duration of the workday set for the user | A workday with a duration shorter than specified will be considered a violation ||
+[`string`](../../data-types.md) | Minimum duration of the workday in `HH:MM:SS` format.
+
+A workday with a duration shorter than the set time is considered a violation ||
 || **UF_TM_ALLOWED_DELTA**
-[`HH:MM:SS`](../../data-types.md) | The allowed time delta for changing work time set for the user | Changing the workday by a period shorter than specified will not require confirmation from the supervisor ||
+[`string`](../../data-types.md) | Allowed time change for work hours in `HH:MM:SS` format.
+
+Changing the workday by a period shorter than the set time does not require supervisor confirmation ||
+|| **ADMIN**
+[`boolean`](../../data-types.md) | Whether the user can manage the workdays of other employees. Returned only for the current user.
+
+Has a value of `true` if permissions are granted ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error":"",
+    "error_description":"User not found"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| empty string | User not found | User with the specified `USER_ID` not found ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./timeman-open.md)
+- [{#T}](./timeman-pause.md)
+- [{#T}](./timeman-close.md)
+- [{#T}](./timeman-status.md)

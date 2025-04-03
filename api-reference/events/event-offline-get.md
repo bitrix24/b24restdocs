@@ -1,20 +1,22 @@
-# Get a List of Offline Events with the "Clear" event.offline.get
+# Get a List of Offline Events with `event.offline.get`
 
 > Who can execute the method: any user
 
-The method `event.offline.get` returns the application's first queued offline events according to the filter settings. The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.
+The method `event.offline.get` returns the first queued offline events to the application according to the filter settings. The availability of offline events can be checked through the method [feature.get](../common/system/feature-get.md).
+
+The method works only in the context of [application](../app-installation/index.md) authorization.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **filter**
-[`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by the fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID` with standard operations like `=`, `>`, `<`, `<=`, and so on.
+[`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID` with standard operations like `=`, `>`, `<`, `<=`, and so on.
 
-Important: the operation type is placed before the filter field name ||
+Important: the operation type is placed before the field name in the filter ||
 || **order**
 [`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter, and an array of the form `[field=>ASC|DESC]` is accepted. By default — [TIMESTAMP_X:ASC] ||
 || **limit**
@@ -23,7 +25,7 @@ Important: the operation type is placed before the filter field name ||
 
 ### Additional Parameters
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **clear**
@@ -110,7 +112,7 @@ The method supports multithreaded parsing. This means that multiple parallel req
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -141,13 +143,13 @@ HTTP Status: **200**
 
 ### Returned Data
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **result**
 [`object`](../data-types.md) | Root element of the response ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

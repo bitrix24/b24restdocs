@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-Write an article that describes which fields can be modified and which can only be read. Mention that system fields can only be modified with admin rights and explain why. Additionally, specify how the connection with the CRM is implemented.
+Write an article that outlines which fields can be modified and which can only be read. Mention that system fields can only be modified with admin rights and explain why. Additionally, specify how the connection with CRM is implemented.
 
 {% endnote %}
 
@@ -12,13 +12,13 @@ Write an article that describes which fields can be modified and which can only 
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% note info "" %}
 
-The recording and modification of fields are carried out according to business logic and the user's existing rights. That is, it depends on the user's role, group permission settings, hierarchy, certain flags in the task (for example, `ALLOW_CHANGE_DEADLINE`), and the task status.
+The recording and modification of fields are carried out according to business logic and the user's existing rights. That is, it depends on the user's role, group permission settings, hierarchy, certain flags in the task (for example, `ALLOW_CHANGE_DEADLINE`), and the task's status.
 
 {% endnote %}
 
@@ -49,7 +49,7 @@ Default - 1 ||
 6 - Deferred.
 Default - 2 ||
 || **MULTITASK**
-[`enum`](../data-types.md) | Multitask. | Y - Yes,
+[`enum`](../data-types.md) | Multiple task. | Y - Yes,
 N - No.
 Default - No. ||
 || **NOT_VIEWED**
@@ -57,7 +57,7 @@ Default - No. ||
 N - No.
 Default - No. ||
 || **REPLICATE**
-[`enum`](../data-types.md) | Repeating task. | Y - Yes,
+[`enum`](../data-types.md) | Recurring task. | Y - Yes,
 N - No.
 Default - No. ||
 || **GROUP_ID**
@@ -71,11 +71,11 @@ Default - No. ||
 || **CREATED_DATE**
 [`datetime`](../data-types.md) | Creation date. | ||
 || **RESPONSIBLE_ID^*^**
-[`integer`](../data-types.md) | Executor. | ||
+[`integer`](../data-types.md) | Assignee. | ||
 || **ACCOMPLICES**
 [`array`](../data-types.md) | Participants. | ||
 || **AUDITORS**
-[`array`](../data-types.md) | Auditors. | ||
+[`array`](../data-types.md) | Observers. | ||
 || **CHANGED_BY**
 [`integer`](../data-types.md) | Modified by. | ||
 || **CHANGED_DATE**
@@ -85,7 +85,7 @@ Default - No. ||
 || **CLOSED_BY**
 [`integer`](../data-types.md) | Closed by. | ||
 || **CLOSED_DATE**
-[`datetime`](../data-types.md) | Closure date. | ||
+[`datetime`](../data-types.md) | Closing date. | ||
 || **DATE_START**
 [`datetime`](../data-types.md) | Start date. | null ||
 || **DEADLINE**
@@ -103,7 +103,11 @@ Default - No. ||
 || **NEW_COMMENTS_COUNT**
 [`integer`](../data-types.md) | Number of new comments. | ||
 || **ALLOW_CHANGE_DEADLINE**
-[`enum`](../data-types.md) | Allow deadline changes. | Y - Yes,
+[`enum`](../data-types.md) | Allow changing deadlines. | Y - Yes,
+N - No.
+Default - No. ||
+|| **ALLOW_TIME_TRACKING**
+[`enum`](../data-types.md) | Allow time tracking for the task | Y - Yes,
 N - No.
 Default - No. ||
 || **TASK_CONTROL**
@@ -115,7 +119,7 @@ Default - No. ||
 N - No.
 Default - No. ||
 || **FORKED_BY_TEMPLATE_ID**
-[`enum`](../data-types.md) | Created from template. | Y - Yes,
+[`enum`](../data-types.md) | Created from a template. | Y - Yes,
 N - No.
 Default - No. ||
 || **TIME_ESTIMATE**
@@ -167,7 +171,7 @@ L_XX - lead,
 C_XX - contact,
 D_XX - deal | ||
 || **UF_TASK_WEBDAV_FILES**
-[`disk_file`](../data-types.md) | File (Disk). | ||
+[`disk_file`](../data-types.md) | File (Drive). | ||
 || **UF_MAIL_MESSAGE**
 [`mail_message`](../data-types.md) | E-mail. | ||
 || **IS_MUTED**

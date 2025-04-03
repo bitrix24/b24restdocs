@@ -1,14 +1,14 @@
-# Get Information About a Product Item by ID crm.item.productrow.get
+# Get information about a product item by id crm.item.productrow.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires read access permission for the object to which the product items are linked.
+> Who can execute the method: requires access permission to read the object to which the product items are linked
 
-This method retrieves information about a product item in the CRM.
+The method retrieves information about a product item in the CRM.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method retrieves information about a product item in the CRM.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -81,43 +81,44 @@ This method retrieves information about a product item in the CRM.
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-   "result":{
-      "productRow":{
-         "id":17622,
-         "ownerId":13141,
-         "ownerType":"D",
-         "productId":9621,
-         "productName":"iphone 14",
-         "price":79999,
-         "priceAccount":79999,
-         "priceExclusive":79999,
-         "priceNetto":79999,
-         "priceBrutto":79999,
-         "quantity":11,
-         "discountTypeId":2,
-         "discountRate":0,
-         "discountSum":0,
-         "taxRate":null,
-         "taxIncluded":"Y",
-         "customized":"Y",
-         "measureCode":796,
-         "measureName":"pcs",
-         "sort":10,
-         "xmlId":"sale_basket_8145",
-         "type":4
+   "result": {
+      "productRow": {
+         "id": 17622,
+         "ownerId": 13141,
+         "ownerType": "D",
+         "productId": 9621,
+         "productName": "iphone 14",
+         "price": 79999,
+         "priceAccount": 79999,
+         "priceExclusive": 79999,
+         "priceNetto": 79999,
+         "priceBrutto": 79999,
+         "quantity": 11,
+         "discountTypeId": 2,
+         "discountRate": 0,
+         "discountSum": 0,
+         "taxRate": null,
+         "taxIncluded": "Y",
+         "customized": "Y",
+         "measureCode": 796,
+         "measureName": "pcs",
+         "sort": 10,
+         "xmlId": "sale_basket_8145",
+         "type": 4,
+         "storeId": 19
       }
    },
-   "time":{
-      "start":1716821358.26828,
-      "finish":1716821358.701454,
-      "duration":0.43317389488220215,
-      "processing":0.240645170211792,
-      "date_start":"2024-05-27T17:49:18+03:00",
-      "date_finish":"2024-05-27T17:49:18+03:00"
+   "time": {
+      "start": 1716821358.26828,
+      "finish": 1716821358.701454,
+      "duration": 0.43317389488220215,
+      "processing": 0.240645170211792,
+      "date_start": "2024-05-27T17:49:18+02:00",
+      "date_finish": "2024-05-27T17:49:18+02:00"
    }
 }
 ```
@@ -137,16 +138,16 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-   "error":"NOT_FOUND",
-   "error_description":"Item not found"
+   "error": "NOT_FOUND",
+   "error_description": "Item not found"
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -159,7 +160,7 @@ HTTP Status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [System Errors](../../../../_includes/system-errors.md) %}
+{% include notitle [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it shortly.
 
 > Scope: [`user.userfield`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
 This method deletes a custom field.
 
@@ -41,4 +41,4 @@ This method deletes a custom field.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}

@@ -4,11 +4,13 @@
 
 The `event.get` method allows you to retrieve a list of registered event handlers.
 
-Without parameters.
+The method works only in the context of [application](../app-installation/index.md) authorization.
+
+No parameters required.
 
 ## Code Examples
 
-{% include [Example Notes](../../_includes/examples.md) %}
+{% include [Footnote on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -76,7 +78,7 @@ Without parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {

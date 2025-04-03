@@ -1,14 +1,14 @@
-# Get Product Rows of CRM Object crm.item.productrow.list
+# Get product rows of the CRM object crm.item.productrow.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: requires read access permission for the CRM object whose product rows are being selected.
 
-This method retrieves the product rows of a CRM object.
+The method retrieves product rows of the CRM object.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -23,19 +23,19 @@ Possible values for `field` correspond to the fields of the [`crm_item_product_r
 **=ownerType**
 **=ownerId**
 
-In `=ownerType`, provide the [Short symbolic code of the type](../../data-types.md#object_type).
+In `=ownerType`, pass the [Short symbolic code of the type](../../data-types.md#object_type).
 
-An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
+The key can have an additional prefix that clarifies the behavior of the filter. Possible prefix values:
 
 - `=` — equals (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
 - `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples: 
+- `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples:
     - `"mol%"` — searching for values starting with "mol"
     - `"%mol"` — searching for values ending with "mol"
     - `"%mol%"` — searching for values where "mol" can be in any position
@@ -57,21 +57,21 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../../../data-types.md) | Parameter used for managing pagination.
 
 The page size of results is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
 
-The formula for calculating the `start` parameter value:
+The formula for calculating the value of the `start` parameter:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` — the number of the desired page
 ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -175,7 +175,8 @@ HTTP status: **200**
             "measureName": "pcs",
             "sort": 20,
             "xmlId": "sale_basket_8147",
-            "type": 4
+            "type": 4,
+            "storeId": 19
          },
          {
             "id": 17650,
@@ -199,7 +200,8 @@ HTTP status: **200**
             "measureName": "m",
             "sort": 10,
             "xmlId": "sale_basket_8148",
-            "type": 4
+            "type": 4,
+            "storeId": 17
          }
       ]
    },

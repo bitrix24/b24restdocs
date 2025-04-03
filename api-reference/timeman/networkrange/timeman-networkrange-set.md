@@ -1,141 +1,233 @@
-# Set Network Address Range timeman.networkrange.set
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Set Network Address Ranges timeman.networkrange.set
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `timeman.networkrange.set` is used to set the ranges of network addresses that belong to the office network.
+The method `timeman.networkrange.set` sets the network address ranges for the office network.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Example** | **Required** | **Description** ||
-|| **RANGES^*^**
-[`unknown`](../../data-types.md) | `[{"ip_range":"10.0.0.0-10.255.255.255","name":"Office Network 10.x.x.x"}]` | Yes | Network address ranges. ||
+|| **Name**
+`type` | **Description** ||
+|| **RANGES***
+[`string`](../../data-types.md) | Network address ranges in the form of a list of objects. Each object contains a description of the [network address range](#ip_range).
+
+```php
+ranges: [
+    {
+        "ip_range": "10.0.0.0-10.255.255.255",
+        "name": "Office Network 10.x.x.x"
+    },
+    {
+        "ip_range": "10.10.0.1",
+        "name": "Address 10.10.0.1"
+    },
+    ...
+]
+```
+
+The range can contain:
+- a block of addresses, for example, `10.0.0.0-10.255.255.255`
+- a single address, for example, `10.10.0.1` ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+## Code Examples
 
-The range can contain a block of addresses, for example `10.0.0.0-10.255.255.255` or just a single address `10.10.0.1`.
-
-## Example Call
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ranges":[{"ip_range":"10.0.0.0-10.255.255.255","name":"Office Network 10.x.x.x"},{"ip_range":"172.16.0.0-172.31.255.255","name":"Office Network 172.x.x.x"},{"ip_range":"192.168.0.0-192.168.255.255","name":"Office Network 192.168.x.x"}]}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/timeman.networkrange.set
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ranges":[{"ip_range":"10.0.0.0-10.255.255.255","name":"Office Network 10.x.x.x"},{"ip_range":"172.16.0.0-172.31.255.255","name":"Office Network 172.x.x.x"},{"ip_range":"192.168.0.0-192.168.255.255","name":"Office Network 192.168.x.x"}],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/timeman.networkrange.set
+    ```
 
 - JS
 
     ```js
-    BX24.callMethod('timeman.networkrange.set',
-    {
-        ranges: '[{"ip_range":"10.0.0.0-10.255.255.255","name":"Office Network 10.x.x.x"},{"ip_range":"172.16.0.0-172.31.255.255","name":"Office Network 172.x.x.x"},{"ip_range":"192.168.0.0-192.168.255.255","name":"Office Network 192.168.x.x"}]'
-    },
-    function(result){
-        if(result.error())
+    BX24.callMethod(
+        'timeman.networkrange.set',
         {
-            console.error(result.error().ex);
-        }
-        else
-        {
-            var answer = result.data();
-            if (answer.result)
+            ranges: [
+                {
+                    "ip_range": "10.0.0.0-10.255.255.255",
+                    "name": "Office Network 10.x.x.x"
+                },
+                {
+                    "ip_range": "172.16.0.0-172.31.255.255",
+                    "name": "Office Network 172.x.x.x"
+                },
+                {
+                    "ip_range": "192.168.0.0-192.168.255.255",
+                    "name": "Office Network 192.168.x.x"
+                }
+            ]
+        },
+        function(result){
+            if(result.error())
             {
-                console.log('range saved');
+                console.error(result.error().ex);
             }
             else
             {
-                console.warn('An error occurred while saving, the following ranges are incorrect', answer.error_ranges);
+                console.log(result.data());
             }
         }
-    });
+    );
     ```
 
 - PHP
 
     ```php
-    $result = restCommand('timeman.networkrange.set', Array(
-        'RANGES' => Array(
-            Array("ip_range" => "10.0.0.0-10.255.255.255", "name" => "Office Network 10.x.x.x"),
-            Array("ip_range" => "172.16.0.0-172.31.255.255", "name" => "Office Network 172.x.x.x"),
-            Array("ip_range" => "192.168.0.0-192.168.255.255", "name" => "Office Network 192.168.x.x")
-        )
-    ), $_REQUEST["auth"]);
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'timeman.networkrange.set',
+        [
+            'ranges' => [
+                [
+                    'ip_range' => '10.0.0.0-10.255.255.255',
+                    'name' => 'Office Network 10.x.x.x'
+                ],
+                [
+                    'ip_range' => '172.16.0.0-172.31.255.255',
+                    'name' => 'Office Network 172.x.x.x'
+                ],
+                [
+                    'ip_range' => '192.168.0.0-192.168.255.255',
+                    'name' => 'Office Network 192.168.x.x'
+                ]
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+## Response Handling
 
-## Successful Response
+HTTP status: **200**
 
-**On successful save**
-
-> 200 OK
 ```json
 {
     "result": {
         "result": true
+    },
+    "time": {
+        "start": 1742999863.0244141,
+        "finish": 1742999863.057137,
+        "duration": 0.03272294998168945,
+        "processing": 0.0023658275604248047,
+        "date_start": "2025-03-26T17:37:43+02:00",
+        "date_finish": "2025-03-26T17:37:43+02:00",
+        "operating_reset_at": 1743000463,
+        "operating": 0
     }
 }
 ```
 
-**On parsing error of ranges**
+### In case of range parsing error
 
-> 200 OK
+HTTP status: **200**
+
 ```json
 {
     "result": {
         "result": false,
-        "error_range": [
-            {"ip_range": "a10.0.0.0-10.255.255.255", "name": "Office Network 10.x.x.x"}
+        "error_ranges": [
+            {
+                "ip_range": "a172.16.0.0-172.31.255.255",
+                "name": "Office Network 172.x.x.x"
+            }
         ]
+    },
+    "time": {
+        "start": 1743058773.526674,
+        "finish": 1743058773.5625639,
+        "duration": 0.035889863967895508,
+        "processing": 0.0005609989166259766,
+        "date_start": "2025-03-27T09:59:33+02:00",
+        "date_finish": "2025-03-27T09:59:33+02:00",
+        "operating_reset_at": 1743059373,
+        "operating": 0
     }
 }
 ```
 
-### Key Descriptions
+### Returned Data
 
-- **result** - the result of the save operation.
-- **error_range** - an array of ranges where errors were found:
-    - **ip_range** - the network address range.
-    - **name** - the name of the range.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Root element of the response. Can have values:
+- `true` — all ranges were successfully set
+- `false` — there are ranges with errors ||
+|| **error_range**
+ [`array`](../../data-types.md) | Array of [ranges](#ip_range) where errors were found ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
 
-## Error Response
+#### Range Object {#ip_range}
 
-> 200 Error, 50x Error
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ip_range**
+ [`string`](../../data-types.md) | Network address range ||
+|| **name**
+ [`string`](../../data-types.md) | Name of the range ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
 ```json
 {
-    "error": "ACCESS_ERROR",
-    "error_description": "You don't have access to use this method"
+    "error": "INVALID_FORMAT",
+    "error_description": "A wrong format for the RANGES field is passed"
 }
 ```
 
-### Key Descriptions
-
-- The **error** key - the code of the occurred error.
-- The **error_description** key - a brief description of the occurred error.
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_ERROR** | The specified method is available only to administrators. ||
-|| **INVALID_FORMAT** | An incorrect format was provided in the RANGE field. ||
+|| **Code** | **Description** | **Value** ||
+|| `ACCESS_ERROR` | You don't have access to use this method | The method is available only to the administrator ||
+|| `INVALID_FORMAT` | A wrong format for the RANGES field is passed | An incorrect format was provided in the `RANGES` parameter ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./timeman-networkrange-get.md)
+- [{#T}](./timeman-networkrange-check.md)

@@ -15,13 +15,13 @@ items:
     href: sonet-group-get.md 
   - name: Check Current User's Access Permissions
     href: sonet-group-feature-access.md
-  - name: Get List of Groups for Current User
+  - name: Get List of Current User's Groups
     href: sonet-group-user-groups.md
   - name: Change Owner of Group/Project
     href: sonet-group-setowner.md
   - name: Delete Social Network Group
     href: sonet-group-delete.md
-  - name: Group/Project Members
+  - name: Group/Project Participants
     include:
       path: members/b24-toc.yaml
       mode: link
@@ -34,4 +34,8 @@ items:
   - name: Scrum
     include:
       path: scrum/b24-toc.yaml
+      mode: link
+  - name: Deprecated
+    include:
+      path: outdated/b24-toc.yaml
       mode: link

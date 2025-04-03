@@ -1,10 +1,10 @@
-# When Deleting a Custom Field onCrmCompanyUserFieldDelete
+# When Adding a Custom Field onCrmLeadUserFieldAdd
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMCOMPANYUSERFIELDDELETE` will trigger when a custom field for companies is deleted.
+The event `ONCRMLEADUSERFIELDADD` will trigger when a new custom field is added for leads.
 
 ## What the Handler Receives
 
@@ -12,16 +12,16 @@ Data is sent as a POST request {.b24-info}
 
 ```json
 {
-    "event": "ONCRMCOMPANYUSERFIELDDELETE",
-    "event_handler_id": "743",
+    "event": "ONCRMLEADUSERFIELDADD",
+    "event_handler_id": "713",
     "data": {
         "FIELDS": {
-            "ID": "6979",
-            "ENTITY_ID": "CRM_COMPANY",
-            "FIELD_NAME": "UF_CRM_1743165530"
+            "ID": "6977",
+            "ENTITY_ID": "CRM_LEAD",
+            "FIELD_NAME": "UF_CRM_1742999523"
         }
     },
-    "ts": "1743165546",
+    "ts": "1742999523",
     "auth": {
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "expires_in": "3600",
@@ -41,17 +41,17 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../../data-types.md) | Symbolic event code.
 
-In this case — `ONCRMCOMPANYUSERFIELDDELETE` ||
+In this case — `ONCRMLEADUSERFIELDADD` ||
 || **event_handler_id**
 [`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | Object containing information about the deleted custom field.
+[`object`](../../../../data-types.md) | Object containing information about the added custom field.
 
 Contains the key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | Object containing information about the fields of the deleted custom field.
+[`object`](../../../../data-types.md) | Object containing information about the fields of the added custom field.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -68,20 +68,20 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the deleted custom field ||
+[`integer`](../../../../data-types.md) | Identifier of the added custom field ||
 || **ENTITY_ID**
-[`string`](../../../../data-types.md) | Identifier of the object to which the custom field belonged. In this case — `CRM_COMPANY` ||
+[`string`](../../../../data-types.md) | Identifier of the object to which the custom field relates. In this case — `CRM_LEAD` ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Name of the deleted custom field ||
+[`string`](../../../../data-types.md) | Name of the added custom field ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
-- [{#T}](./on-crm-company-user-field-add.md)
-- [{#T}](./on-crm-company-user-field-update.md)
+- [{#T}](./on-crm-lead-user-field-update.md)
+- [{#T}](./on-crm-lead-user-field-delete.md)

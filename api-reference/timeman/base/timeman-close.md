@@ -1,23 +1,4 @@
-# End Current Day timeman.close
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types not specified
-- examples missing
-- no error response provided
-
-{% endnote %}
-
-{% endif %}
+# Close the Current Day timeman.close
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
@@ -25,59 +6,134 @@ Some data may be missing — we will complete it shortly.
 
 The method `timeman.close` ends the current workday.
 
-## Parameters
+## Method Parameters
 
 #|
-|| **Parameter** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **USER_ID**
-[`unknown`](../../data-types.md) | User identifier. Optional; defaults to the settings of the current user. ||
+[`integer`](../../data-types.md) | User identifier. 
+
+Defaults to the current user ||
 || **TIME**
-[`unknown`](../../data-types.md) | End time of the workday. Optional; defaults to the current moment in the timezone where the workday started. The date must match the start date of the workday. ||
-|| **REPORT**^*^
-[`unknown`](../../data-types.md) | Reason for changing the workday. Required when the TIME parameter is specified and the employee's flexible schedule is disabled. ||
+[`datetime`](../../data-types.md) | The end time and date of the workday in the [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) (ISO-8601) format, for example, `2025-02-12T15:52:01+00:00`. The date must match the date the workday started.
+
+By default, the workday is closed at the current moment in the timezone where the workday began.
+
+If the timezone of the end of the day differs from the timezone of the start of the day, the end time is automatically converted to the timezone in which the day was started. ||
+|| **REPORT**
+[`string`](../../data-types.md) | Reason for changing the workday.
+
+Required under the following conditions:
+- the `TIME` parameter is specified
+- the employee does not have a flexible schedule ||
 || **LAT**
-[`unknown`](../../data-types.md) | Geographical latitude at the start of the workday. Optional. ||
+[`double`](../../data-types.md) | Geographic latitude of the end of the workday ||
 || **LON**
-[`unknown`](../../data-types.md) | Geographical longitude at the start of the workday. Optional. ||
+[`double`](../../data-types.md) | Geographic longitude of the end of the workday ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+## Code Examples
 
-If the timezone of the end time of the workday differs from the timezone of the start time, the time will be converted to the timezone of the start of the day.
-
-## Example
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- cURL
+- cURL (Webhook)
 
-    ```http
-    https://account.bitrix24.com/rest/timeman.close?auth=xxxxx&time=2017-04-21T17%3A30%3A00%2B09%3A00&report=test&lat=52.5162434&lon=13.3774829&user_id=5
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"USER_ID":503,"TIME":"2025-03-27T17:00:01+00:00","REPORT":"Forgot to close the workday","LAT":53.548841,"LON":9.987274}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/timeman.close
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"USER_ID":503,"TIME":"2025-03-27T17:00:01+00:00","REPORT":"Forgot to close the workday","LAT":53.548841,"LON":9.987274,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/timeman.close
+    ```
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'timeman.close',
+        {
+            'USER_ID' : 503,
+            'TIME': '2025-03-27T17:00:01+00:00',
+            'REPORT': 'Forgot to close the workday',
+            'LAT': 53.548841, 
+            'LON': 9.987274
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'timeman.close',
+        [
+            'USER_ID' => 503,
+            'TIME' => '2025-03-27T17:00:01+00:00',
+            'REPORT' => 'Forgot to close the workday',
+            'LAT' => 53.548841,
+            'LON' => 9.987274
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on Success
+HTTP status: **200**
 
-> 200 OK
 ```json
 {
     "result": {
         "STATUS": "CLOSED",
-        "TIME_START": "2017-04-21T07:30:00+08:00",
-        "TIME_FINISH": "2017-04-21T16:30:00+08:00",
-        "DURATION": "09:00:00",
-        "TIME_LEAKS": "00:00:00",
+        "TIME_START": "2025-03-27T08:00:01+02:00",
+        "TIME_FINISH": "2025-03-27T19:00:01+02:00",
+        "DURATION": "09:37:04",
+        "TIME_LEAKS": "01:22:56",
         "ACTIVE": false,
-        "IP_OPEN": "192.168.0.1",
-        "IP_CLOSE": "192.168.0.100",
-        "LAT_OPEN": 54.7199881,
-        "LON_OPEN": 20.4879224,
-        "LAT_CLOSE": 52.5162434,
-        "LON_CLOSE": 13.3774829,
-        "TZ_OFFSET": 28800
+        "IP_OPEN": "",
+        "IP_CLOSE": "83.219.151.30",
+        "LAT_OPEN": 53.548841000000003,
+        "LON_OPEN": 9.9872739999999993,
+        "LAT_CLOSE": 53.548841000000003,
+        "LON_CLOSE": 9.9872739999999993,
+        "TZ_OFFSET": 7200
+    },
+    "time": {
+        "start": 1743057653.725821,
+        "finish": 1743057654.0894129,
+        "duration": 0.36359190940856934,
+        "processing": 0.3278491497039795,
+        "date_start": "2025-03-27T09:40:53+03:00",
+        "date_finish": "2025-03-27T09:40:54+03:00",
+        "operating_reset_at": 1743058253,
+        "operating": 0.32782983779907227
     }
 }
 ```
@@ -85,37 +141,91 @@ If the timezone of the end time of the workday differs from the timezone of the 
 ### Returned Data
 
 #|
-|| **Field** | **Description** | **Note** ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response.
+
+Contains an object with the description of the workday ||
 || **STATUS**
- [`string`](../../data-types.md) | Status of the current workday. | Possible values:
-- OPENED - workday is ongoing
-- CLOSED - workday is closed
-- PAUSED - workday is paused
-- EXPIRED - workday has expired (was opened before the start of the current calendar day and not closed) ||
+ [`string`](../../data-types.md) | Status of the current workday.
+ 
+ Possible values:
+- `OPENED` — opened
+- `CLOSED` — closed
+- `PAUSED` — paused
+- `EXPIRED` — expired, meaning opened before the start of the current calendar day and not closed ||
 || **TIME_START**
-[`datetime`](../../data-types.md) | Date-time of the start of the workday. | Timezone corresponds to the timezone of the start of the workday ||
+[`datetime`](../../data-types.md) | Date and time the workday started.
+
+The timezone corresponds to the timezone of the start of the workday ||
 || **TIME_FINISH**
-[`datetime`](../../data-types.md) | Date-time of the end of the workday | Returns null for an unfinished workday ||
+[`datetime`](../../data-types.md) | Date and time the workday was closed.
+
+Returns `null` for an unfinished workday ||
 || **DURATION**
-[`HH:MM:SS`](../../data-types.md) | Duration of the workday | Returns 00:00:00 for an unfinished workday ||
+[`string`](../../data-types.md) | Duration of the workday in the `HH:MM:SS` format.
+
+Returns `00:00:00` for an unfinished workday ||
 || **TIME_LEAKS**
-[`HH:MM:SS`](../../data-types.md) | Total duration of breaks during the day | ||
+[`string`](../../data-types.md) | Total duration of breaks during the day in the `HH:MM:SS` format. ||
 || **ACTIVE**
-[`true`\|`false`](../../data-types.md) | Confirmation of the workday | A value of false means that the change to the workday is awaiting confirmation from the supervisor. ||
+[`boolean`](../../data-types.md) | Confirmation of the workday.
+
+A value of `false` means that the change to the workday is awaiting confirmation from the supervisor ||
 || **IP_OPEN**
-[`string`](../../data-types.md) | IP address from which the workday started | ||
+[`string`](../../data-types.md) | IP address from which the workday started ||
 || **IP_CLOSE**
-[`string`](../../data-types.md) | IP address from which the workday ended | Returns null for an unfinished workday ||
+[`string`](../../data-types.md) | IP address from which the workday was closed.
+
+Returns `null` for an unfinished workday ||
 || **LAT_OPEN**
-[`double`](../../data-types.md) | Geographical latitude at the start of the workday | ||
+[`double`](../../data-types.md) | Geographic latitude of the point where the workday started ||
 || **LON_OPEN**
-[`double`](../../data-types.md) | Geographical longitude at the start of the workday | ||
+[`double`](../../data-types.md) | Geographic longitude of the point where the workday started ||
 || **LAT_CLOSE**
-[`double`](../../data-types.md) | Geographical latitude at the end of the workday | ||
+[`double`](../../data-types.md) | Geographic latitude of the point where the workday was closed ||
 || **LON_CLOSE**
-[`double`](../../data-types.md) | Geographical longitude at the end of the workday | ||
+[`double`](../../data-types.md) | Geographic longitude of the point where the workday was closed ||
 || **TZ_OFFSET**
-[`int`](../../data-types.md) | Timezone offset of the employee | Implies the timezone in which the day started. When the day ends, the end time is adjusted to the timezone of the start of the day. ||
+[`integer`](../../data-types.md) | Offset of the employee's timezone in which the workday started.
+
+The end time of the workday is adjusted to the timezone of the start of the day ||
 || **TIME_FINISH_DEFAULT**
-[`datetime`](../../data-types.md) | Default end time of the day | Only displayed for workdays with the status EXPIRED. "Recommended" end time that can be shown to the user as a default value. ||
+[`datetime`](../../data-types.md) | Recommended value for the end of the day, which can be displayed to the user as a default value.
+
+Displayed only for workdays in the expired status `EXPIRED` ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the time taken to process the request ||
 |#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error":"WRONG_DATETIME",
+    "error_description":"Day close date should correspond to the day open date"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| empty string | User not found | User with the specified `USER_ID` not found ||
+|| `WRONG_DATETIME` | Day close date should correspond to the day open date | The closing date of the workday must match the opening date ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./timeman-open.md)
+- [{#T}](./timeman-pause.md)
+- [{#T}](./timeman-status.md)
+- [{#T}](./timeman-settings.md)

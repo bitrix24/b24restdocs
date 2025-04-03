@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameters or fields and their types may be needed
-- the requiredness of parameters is not specified
+- required parameters are not specified
 - examples in other languages are missing
-- response in case of success is missing
-- response in case of error is missing
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -22,9 +22,9 @@ Some data may be missing here — we will complete it shortly.
 
 > Scope: [`user.userfield`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
-The method updates a user field.
+This method updates a user field.
 
 {% note info "" %}
 

@@ -1,4 +1,4 @@
-# Add Contact to the Specified Company crm.company.contact.add
+# Add contact to the specified company crm.company.contact.add
 
 {% note warning "We are still updating this page" %}
 
@@ -32,18 +32,18 @@ The method `crm.company.contact.add` adds a contact to the specified company.
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`unknown`](../../../data-types.md) | Identifier of the company. ||
+[`integer`](../../../data-types.md) | Company identifier. ||
 || **fields**
 [`object`](../../../data-types.md) | Object with the following fields: 
-- **CONTACT_ID** - identifier of the contact (required field) 
+- **CONTACT_ID** - contact identifier (required parameter) 
 - **SORT** - sorting index
 - **IS_PRIMARY** - primary contact flag
 
 {% note info %}
 
-To find out the required format for the fields, execute the method [crm.company.fields](../crm-company-fields.md) and check the format of the incoming values for these fields. 
+To find out the required format of the fields, execute the method [crm.company.fields](../crm-company-fields.md) and check the format of the returned values for these fields. 
 
 {% endnote %}
 
-|| 
+||
 |#

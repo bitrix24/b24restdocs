@@ -6,7 +6,7 @@ Group chats facilitate communication among multiple users simultaneously. Manage
 
 ## Linking Chat Participants to Other Objects
 
-**User.** To add participants to a chat, provide a list of their identifiers in the `USERS` parameter. To remove a participant, specify their identifier in the `USER_ID` parameter. You can obtain a user's identifier using the [user.get](https://apidocs.bitrix24.ru/api-reference/user/user-get.md) method.
+**User.** To add participants to a chat, provide a list of their identifiers in the `USERS` parameter. To remove a participant, specify their identifier in the `USER_ID` parameter. You can obtain a user's identifier using the [user.get](../../user/user-get.md) method.
 
 **Chat.** Users are linked to the chat by the chat identifier `CHAT_ID`. You can obtain the chat identifier through the [create chat](../im-chat-add.md) method or the [get chat identifier](../im-chat-get.md) method.
 

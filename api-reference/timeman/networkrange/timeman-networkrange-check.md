@@ -1,47 +1,55 @@
 # Check IP Address timeman.networkrange.check
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `timeman.networkrange.check` is used to check if an IP address falls within the ranges of the office network.
+The method `timeman.networkrange.check` checks if an IP address falls within the ranges of the office network.
 
-## Parameters
+For the method to work correctly, at least one range must be set.
+
+## Method Parameters
 
 #|
-|| **Parameter** | **Example** | **Required** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **IP**
-[`unknown`](../../data-types.md) | 10.10.255.255 | No | IP address. ||
+[`string`](../../data-types.md) | The IP address to check. For example, `10.10.255.25`.
+
+If not specified, the check will be performed for the current IP address ||
 |#
 
-If the `IP` parameter is not specified, the check will be performed for the current IP address.
+## Code Examples
 
-## Example Call
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"IP":"10.10.255.255"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/timeman.networkrange.check
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"IP":"10.10.255.255","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/timeman.networkrange.check
+    ```
 
 - JS
 
     ```js
-    BX24.callMethod('timeman.networkrange.check',
+    BX24.callMethod(
+        'timeman.networkrange.check',
         {
             'IP': '10.10.255.255'
         },
@@ -61,56 +69,91 @@ If the `IP` parameter is not specified, the check will be performed for the curr
 - PHP
 
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'timeman.networkrange.check',
-        Array(
+        [
             'IP' => '10.10.255.255'
-        ),
-        $_REQUEST["auth"]
+        ]
     );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Successful Response
+HTTP Status: **200**
 
-> 200 OK
 ```json
 {
     "result": {
         "ip": "10.10.255.255",
         "range": "10.0.0.0-10.255.255.255",
-        "name": "Office Network 10.x.x.x"
+        "name": "10.x.x.x"
+    },
+    "time": {
+        "start": 1742997578.1675889,
+        "finish": 1742997578.205729,
+        "duration": 0.038140058517456055,
+        "processing": 0.0028028488159179688,
+        "date_start": "2025-03-26T16:59:38+02:00",
+        "date_finish": "2025-03-26T16:59:38+02:00",
+        "operating_reset_at": 1742998178,
+        "operating": 0
     }
 }
 ```
 
-### Key Descriptions
+### Returned Data
 
-- **ip** - The IP address that was checked.
-- **range** - The range that the specified IP address falls within.
-- **name** - The name of the range that the specified IP address falls within.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | The root element of the response.
 
-## Error Response
+Contains an object describing the range that the IP address falls into.
 
-> 200 Error, 50x Error
+Will return `false` if the IP address does not fall into any office network range ||
+|| **ip**
+ [`string`](../../data-types.md) | The IP address that was checked ||
+|| **range**
+ [`string`](../../data-types.md) | The range that the IP address falls into ||
+|| **name**
+ [`string`](../../data-types.md) | The name of the range that the IP address falls into ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
 ```json
 {
     "error": "ACCESS_ERROR",
-    "error_description": "You don't have access to use this method"
+    "error_description": "You don't have access to user this method"
 }
 ```
 
-### Key Descriptions
-
-- The **error** key - the code of the occurred error.
-- The **error_description** key - a brief description of the occurred error.
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_ERROR** | The specified method is available only to administrators. ||
+|| **Code** | **Description** | **Value** ||
+|| `ACCESS_ERROR` | You don't have access to user this method | The method is only available to administrators ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./timeman-networkrange-get.md)
+- [{#T}](./timeman-networkrange-set.md)

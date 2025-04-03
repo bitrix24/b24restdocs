@@ -1,33 +1,78 @@
-# OnLiveFeedPostAdd Event for Adding a Message to the News Feed
+# Event for Adding a Message to the News Feed OnLiveFeedPostAdd
 
-{% note warning "We are still updating this page" %}
+> Scope: [`log`](../../scopes/permissions.md)
+> 
+> Who can subscribe: any user
 
-Some data may be missing here — we will complete it soon.
+The event `OnLiveFeedPostAdd` is triggered after a new message is added to the News Feed. This allows a third-party application to perform necessary actions when messages are added, such as checking spelling or adding tags.
 
-{% endnote %}
+## What the Handler Receives
 
-{% if build == 'dev' %}
+Data is transmitted as a POST request {.b24-info}
 
-{% note alert "TO-DO _not deployed to prod_" %}
-
-- what data is passed in the event
-- links to pages that have not yet been created are not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
-
-{% note info "OnLiveFeedPostAdd" %}
-
-{% include notitle [Scope log all](../_includes/scope-log-all.md) %}
-
-{% endnote %}
-
-The `OnLiveFeedPostAdd` event is triggered after a new post is added to the News Feed. It is a proxy to the [OnAfterSocNetLogAdd](.).
+```json
+{
+    "event": "ONLIVEFEEDPOSTADD",
+    "event_handler_id": "727",
+    "data": {
+        "FIELDS": {
+            "POST_ID": "209"
+        }
+    },
+    "ts": "1742999507",
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": "3600",
+        "scope": "log",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "L",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
+```
 
 #|
-|| **Field** | **Description** ||
-|| **ID** | Identifier of the new message ||
+|| **Parameter**
+`type` | **Description** ||
+|| **event**
+[`string`](../../data-types.md) | Symbolic code of the event.
+
+In this case — `ONLIVEFEEDPOSTADD`||
+|| **event_handler_id**
+[`integer`](../../data-types.md) | Identifier of the event handler ||
+|| **data**
+[`object`](../../data-types.md) | Object containing information about the addition of a new message to the News Feed.
+
+Contains a single key `FIELDS` ||
+|| **data.FIELDS**
+[`object`](../../data-types.md) | Object containing information about the message added to the News Feed.
+
+The structure is described [below](#fields) ||
+|| **ts**
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
+|| **auth**
+[`object`](../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
+
+The structure is described [below](#auth) ||
 |#
-{% include [Parameters note](../../_includes/required.md) %}
+
+### Parameter FIELDS {% #fields %}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **POST_ID** 
+[`integer`](../../data-types.md) | Identifier of the message added to the News Feed ||
+|#
+
+### Parameter auth
+
+{% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
+
+## Continue Exploring
+- [{#T}](../../events/index.md)
+- [{#T}](../../events/event-bind.md)

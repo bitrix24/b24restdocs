@@ -4,6 +4,8 @@
 
 The method `event.offline.error` saves a record in the database with an error mark when using offline events. The availability of offline events can be checked through the method [feature.get](../common/system/feature-get.md).
 
+The method works only in the context of authorizing the [application](../app-installation/index.md).
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}

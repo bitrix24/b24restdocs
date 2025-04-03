@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method adds a product variation to the commercial catalog.
+This method adds a product variation to the trade catalog.
 
 ## Method Parameters
 
@@ -25,9 +25,9 @@ This method adds a product variation to the commercial catalog.
 || **Name**
 `type` | **Description** ||
 || **iblockId***
-[`catalog_catalog.id`](../../data-types.md#catalog_catalog) | Identifier of the information block of the commercial catalog.
+[`catalog_catalog.id`](../../data-types.md#catalog_catalog) | Identifier of the information block of the trade catalog for variations.
 
-To obtain existing identifiers of information blocks of commercial catalogs, use [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
+To obtain existing identifiers of information blocks of trade catalogs, use [catalog.catalog.list](../../catalog/catalog-catalog-list.md). The variation info block has the `productIblockId` field filled.
 ||
 || **name***
 [`string`](../../../data-types.md) | Name of the product variation ||
@@ -77,11 +77,11 @@ Defaults to `N`
 || **detailText**
 [`string`](../../../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../../../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../../../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
 To delete the picture, use the object in the format `{remove: 'Y'}` ||
 || **detailPicture**
-[`object`](../../../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../../../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
 To delete the picture, use the object in the format `{remove: 'Y'}` ||
 || **previewTextType**
@@ -126,7 +126,7 @@ Defaults to `N`
 || **width**
 [`double`](../../../data-types.md) | Width of the product variation ||
 || **quantityTrace**
-[`string`](../../../data-types.md) | Quantity tracking mode. Possible values:
+[`string`](../../../data-types.md) | Quantity accounting mode. Possible values:
 - `Y` — enabled
 - `N` — disabled
 - `D` — default
@@ -162,7 +162,7 @@ Defaults to `0`.
 
 Used only in on-premise version for content sales ||
 || **recurSchemeType**
-[`string`](../../../data-types.md) | Unit of time for the payment period. Possible values:
+[`string`](../../../data-types.md) | Time unit of the payment period. Possible values:
 - `H` — hour
 - `D` — day
 - `W` — week
@@ -194,9 +194,9 @@ Used only in on-premise version for content sales
 To obtain identifiers of parent products, use [catalog.product.sku.list](../sku/catalog-product-sku-list.md) 
 ||
 || **propertyN**
-[`any`](../../../data-types.md) | Value of the property of the product variation, where `N` — property identifier. There can be multiple properties. 
+[`any`](../../../data-types.md) | Value of the property of the product variation, where `N` — property identifier. There can be multiple properties.
 
-When adding a product variation, the property value can be specified as a string, number, or as an object `{value: value}`. If the property is multiple, an array of values or objects of the form `{value: value}` is specified ||
+When adding a product variation, the property value can be specified as a string, number, or as an object `{value: value}`. If the property is multiple, an array of values or objects of the form `{value: value}` should be specified ||
 |#
 
 ## Code Examples
@@ -252,7 +252,7 @@ When adding a product variation, the property value can be specified as a string
                 measure: 5,
                 modifiedBy: 1,
                 previewPicture: {
-                    'fileData':['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC']},
+                    'fileData':['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC']},
                 previewText: '',
                 previewTextType: 'text',
                 purchasingCurrency: 'USD',
@@ -352,7 +352,7 @@ When adding a product variation, the property value can be specified as a string
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -449,7 +449,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -464,7 +464,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300050` | Insufficient rights to link the information block element to the section
+|| `200040300050` | Insufficient rights to bind the information block element to the section
 || 
 || `200040300040` | Insufficient rights to create a product variation
 || 
@@ -472,7 +472,7 @@ HTTP Status: **400**
 || 
 || `200040300043` | Insufficient rights to edit the information block element
 || 
-|| `200040300010` | Insufficient rights to read the commercial catalog
+|| `200040300010` | Insufficient rights to read the trade catalog
 || 
 || `100` | Parameter `fields` is not specified or is empty
 || 

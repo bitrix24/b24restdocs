@@ -2,7 +2,9 @@
 
 > Who can execute the method: any user
 
-The method `event.offline.list` is used to read the current queue without making any changes to its state, unlike [event.offline.get](./event-offline-get.md). The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.
+The method `event.offline.list` is used to read the current queue without making changes to its state, unlike [event.offline.get](./event-offline-get.md). The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.
+
+This method works only in the context of application authorization [application](../app-installation/index.md).
 
 ## Method Parameters
 
@@ -12,13 +14,13 @@ The method `event.offline.list` is used to read the current queue without making
 || **Name**
 `type` | **Description** ||
 || **filter**
-[`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by the fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID`, `PROCESS_ID`, `ERROR` with standard operations like `=`, `>`, `<`, `<=`, and so on ||
+[`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID`, `PROCESS_ID`, `ERROR` with standard operations like `=`, `>`, `<`, `<=`, and so on ||
 || **order**
-[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter, with an input array of the form `[field=>ASC|DESC]`. By default — `[ID:ASC]` ||
+[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter, and it accepts an array in the form of `[field=>ASC|DESC]`. By default — `[ID:ASC]` ||
 || **start**
 [`integer`](../data-types.md) | This parameter is used for managing pagination.
 
-The page size for results is always static: 50 records.
+The page size of results is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 

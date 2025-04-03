@@ -1,38 +1,87 @@
-# When the Custom Field is Updated onCrmCompanyUserFieldUpdate
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# When updating a custom field onCrmCompanyUserFieldUpdate
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `onCrmCompanyUserFieldUpdate` is triggered when a custom field is updated.
+The event `ONCRMCOMPANYUSERFIELDUPDATE` will trigger when a custom field for companies is updated.
 
-## Parameters
+## What the handler receives
+
+Data is sent as a POST request {.b24-info}
+
+```json
+{
+    "event": "ONCRMCOMPANYUSERFIELDUPDATE",
+    "event_handler_id": "741",
+    "data": {
+        "FIELDS": {
+            "ID": "6979",
+            "ENTITY_ID": "CRM_COMPANY",
+            "FIELD_NAME": "UF_CRM_1743165530"
+        }
+    },
+    "ts": "1743165540",
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": "3600",
+        "scope": "crm",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "L",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
+}
+```
 
 #|
-|| **Parameter** | **Description** ||
-|| **id**
-[`unknown`](../../../../data-types.md) | identifier of the custom field. ||
-|| **entityId**
-[`unknown`](../../../../data-types.md) | symbolic identifier of the entity for which the field was created. ||
-|| **fieldName**
-[`unknown`](../../../../data-types.md) | name of the created custom field. ||
+|| **Parameter**
+`type` | **Description** ||
+|| **event**
+[`string`](../../../../data-types.md) | Symbolic event code.
+
+In this case — `ONCRMCOMPANYUSERFIELDUPDATE` ||
+|| **event_handler_id**
+[`integer`](../../../../data-types.md) | Event handler identifier ||
+|| **data**
+[`object`](../../../../data-types.md) | Object containing information about the updated custom field.
+
+Contains the key `FIELDS` ||
+|| **data.FIELDS**
+[`object`](../../../../data-types.md) | Object containing information about the fields of the updated custom field.
+
+The structure is described [below](#fields) ||
+|| **ts**
+[`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+|| **auth**
+[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+
+The structure is described [below](#auth) ||
 |#
+
+### Parameter FIELDS {#fields}
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../../../data-types.md) | Identifier of the updated custom field ||
+|| **ENTITY_ID**
+[`string`](../../../../data-types.md) | Identifier of the object to which the custom field belongs. In this case — `CRM_COMPANY` ||
+|| **FIELD_NAME**
+[`string`](../../../../data-types.md) | Name of the updated custom field ||
+|#
+
+### Parameter auth {#auth}
+
+{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
+
+## Continue exploring
+
+- [{#T}](../../../../events/index.md)
+- [{#T}](../../../../events/event-bind.md)
+- [{#T}](./on-crm-company-user-field-add.md)
+- [{#T}](./on-crm-company-user-field-delete.md)

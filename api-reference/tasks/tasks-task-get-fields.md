@@ -4,9 +4,9 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- missing examples (there should be three examples - curl, js, php)
-- missing response in case of error
-- missing response in case of success
+- missing examples (should be three examples - curl, js, php)
+- no response in case of error
+- no response in case of success
  
 {% endnote %}
 
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -46,11 +46,11 @@ Without parameters.
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Note about examples](../../_includes/examples.md) %}
 
 ## List of fields
 
-#| 
+#|
 || **Field** / **Type** | **Description** | Value ||
 || **ID**
 [`integer`](../data-types.md) | Task identifier | ||
@@ -99,7 +99,7 @@ Default - No. ||
 || **CREATED_DATE**
 [`datetime`](../data-types.md) | Creation date | ||
 || **RESPONSIBLE_ID^*^**
-[`integer`](../data-types.md) | Executor | ||
+[`integer`](../data-types.md) | Assignee | ||
 || **ACCOMPLICES**
 [`array`](../data-types.md) | Participants | ||
 || **AUDITORS**
@@ -109,7 +109,7 @@ Default - No. ||
 || **CHANGED_DATE**
 [`integer`](../data-types.md) | Modification date | ||
 || **STATUS_CHANGED_BY**
-[`integer`](../data-types.md) | Status modified by | ||
+[`integer`](../data-types.md) | Status changed by | ||
 || **CLOSED_BY**
 [`integer`](../data-types.md) | Closed by | ||
 || **CLOSED_DATE**
@@ -132,6 +132,10 @@ Default - No. ||
 [`integer`](../data-types.md) | Number of new comments | ||
 || **ALLOW_CHANGE_DEADLINE**
 [`enum`](../data-types.md) | Allow changing deadlines | Y - Yes,
+N - No.
+Default - No. ||
+|| **ALLOW_TIME_TRACKING**
+[`enum`](../data-types.md) | Allow time tracking for the task | Y - Yes,
 N - No.
 Default - No. ||
 || **TASK_CONTROL**
@@ -191,12 +195,12 @@ Default - No. ||
 Default - 3 ||
 || **UF_CRM_TASK**
 [`crm`](../data-types.md) | Link to CRM entities. The value consists of 
-[Short symbolic code type](../crm/data-types.md#object_type) and ID of the entity | L_XX - lead,
+[Short symbolic code of the type](../crm/data-types.md#object_type) and ID of the entity | L_XX - lead,
 C_XX - contact,
 D_XX - deal, 
 TXX_XX - SPA ||
 || **UF_TASK_WEBDAV_FILES**
-[`disk_file`](../data-types.md) | File (Disk) | ||
+[`disk_file`](../data-types.md) | File (Drive) | ||
 || **UF_MAIL_MESSAGE**
 [`mail_message`](../data-types.md) | E-mail | ||
 || **IS_MUTED**
@@ -215,4 +219,4 @@ Default - No. ||
 [`integer`](../data-types.md) | SERVICE_COMMENTS_COUNT | ||
 |#
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note about parameters](../../_includes/required.md) %}

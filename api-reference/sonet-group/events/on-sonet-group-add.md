@@ -4,7 +4,7 @@
 > 
 > Who can subscribe: any user
 
-The `onSonetGroupAdd` event is triggered when a new workgroup/project is added. This allows third-party applications to respond to the creation of new groups and perform necessary actions—such as data synchronization or sending notifications.
+The `onSonetGroupAdd` event is triggered when a new workgroup/project is added. This allows a third-party application to respond to the creation of new groups and perform necessary actions—such as data synchronization or sending notifications.
 
 ## What the Handler Receives
 
@@ -38,13 +38,13 @@ Data is transmitted as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../data-types.md) | Symbolic event code.
+[`string`](../../data-types.md) | Symbolic code of the event.
 
 In this case—`ONSONETGROUPADD`||
 || **event_handler_id**
 [`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../data-types.md) | Object containing information about the addition of the new workgroup.
+[`object`](../../data-types.md) | Object containing information about the addition of a new workgroup.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
@@ -52,14 +52,14 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../data-types.md) | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
 [`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### FIELDS Parameter {% #fields %}
+### Parameter FIELDS {% #fields %}
 
 #|
 || **Parameter**
@@ -68,7 +68,7 @@ The structure is described [below](#auth) ||
 [`integer`](../../data-types.md) | Identifier of the new workgroup ||
 |#
 
-### auth Parameter
+### Parameter auth
 
 {% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
 

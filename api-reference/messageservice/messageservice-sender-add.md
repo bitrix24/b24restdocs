@@ -12,8 +12,8 @@ Some data may be missing — we will complete it shortly.
 
 - parameter types are not specified
 - parameter requirements are not specified
-- success response is missing
-- error response is missing
+- no success response
+- no error response
 - No examples in other languages
 
 {% endnote %}
@@ -28,19 +28,19 @@ This method registers a new message provider.
 
 #|
 || **Parameter** | **Description** ||
-|| **CODE** | Internal identifier of the provider. Allowed characters are a-z, A-Z, 0-9, dot, dash, and underscore. ||
+|| **CODE** | Internal identifier of the provider. Allowed characters are a-z, A-Z, 0-9, dot, hyphen, and underscore. ||
 || **TYPE** | Type of the provider. ||
 || **HANDLER** | URL of the application to which the data will be sent. ||
 || **NAME** | Name of the provider. Can be a string or an associative array of localized strings. ||
 || **DESCRIPTION** | Description of the provider. Can be a string or an associative array of localized strings. ||
 |#
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Footnote on parameters](../../_includes/required.md) %}
 
 Data is sent to HANDLER:
 
-- **module_id** - initiating module. `crm` means the message was sent from a card (other options may be available in the future), `bizproc` means sent from Workflows or Automation rules.
-- **bindings** - parameter relevant only for module_id = crm. It contains an array of message bindings to CRM entities (what the activity will be linked to).
+- **module_id** - initiating module. `crm` means the message was sent from a card (other options may be available in the future), `bizproc` means sent from Business Processes or Automation rules.
+- **bindings** - parameter relevant only for module_id = crm. It contains an array of message bindings to CRM entities (to which the activity will be linked).
 - **workflow_id**, **document_id**, **document_type** - parameters relevant only for module_id = bizproc. These parameters are not always present: if sent from a card, they will not be included.
 - **message_id** - unique identifier of the message. It can be used to refer to [messageservice.message.status.update](messageservice-message-status-update.md).
 - **message_to** - recipient's phone number
@@ -75,7 +75,6 @@ Data is sent to HANDLER:
 
 {% endlist %}
 
-
 **Sending from CRM card**
 
 ```plaintext
@@ -109,7 +108,7 @@ Array
 )
 ```
 
-**Sending from Workflow or Automation rule.**
+**Sending from Business Process or Automation rule.**
 
 ```plaintext
 Array

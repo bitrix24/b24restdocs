@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing — we will fill it in shortly
 >
 > Who can execute the method: administrator
 
-The method returns a list of message providers registered with the current application (or the same incoming webhook).
+The method returns a list of message providers registered by the current application (or the same incoming webhook).
 
 ## Example
 
@@ -47,4 +47,4 @@ The method returns a list of message providers registered with the current appli
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Footnote on examples](../../_includes/examples.md) %}

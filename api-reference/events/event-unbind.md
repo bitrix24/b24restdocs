@@ -2,9 +2,9 @@
 
 > Who can execute the method: administrator
 
-The method `event.unbind` cancels the registered event handler.
+The `event.unbind` method cancels a registered event handler.
 
-It only works when logged in as a user with portal administration rights.
+This method works only in the context of [application](../app-installation/index.md) authorization and only when authorized under a user with administrative rights to the account.
 
 ## Method Parameters
 
@@ -13,12 +13,12 @@ It only works when logged in as a user with portal administration rights.
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***  
-[`string`](../data-types.md) | Name of the event ||
-|| **handler***  
+|| **event***
+[`string`](../data-types.md) | Event name ||
+|| **handler***
 [`string`](../data-types.md) | Link to the event handler ||
-|| **auth_type**  
-[`integer`](../data-types.md) | Identifier of the user under which the event handler is authorized.
+|| **auth_type**
+[`integer`](../data-types.md) | User identifier under which the event handler is authorized.
 
 {% note info %}
 
@@ -26,8 +26,8 @@ If you need to remove event handlers set with an empty `auth_type` (authorized o
 
 {% endnote %} 
 ||
-|| **event_type**  
-[`string`](../data-types.md) | Values: `online|offline`. By default, `event_type=online`, and the method's behavior does not change. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
+|| **event_type**
+[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
 |#
 
 If any parameters are not specified, all event handlers that meet the other requirements will be removed.
@@ -129,9 +129,9 @@ The method returns the number of event handlers removed upon invocation.
 #|
 || **Name**
 `type` | **Description** ||
-|| **result**  
+|| **result**
 [`object`](../data-types.md) | Root element of the response ||
-|| **time**  
+|| **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 

@@ -1,25 +1,27 @@
-# Clear Records in the Offline Events Queue event.offline.clear
+# Clear records in the offline event queue event.offline.clear
 
 > Who can execute the method: any user
 
-The method `event.offline.clear` clears records in the offline events queue. The availability of offline events can be checked through the method [feature.get](../common/system/feature-get.md).
+The method `event.offline.clear` clears records in the offline event queue. The availability of offline events can be checked through the method [feature.get](../common/system/feature-get.md).
 
-## Method Parameters
+The method works only in the context of application authorization [application](../app-installation/index.md).
+
+## Method parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **process_id***  
+|| **process_id***
 [`string`](../data-types.md) | Identifier of the process that handles the records ||
-|| **id**  
-[`array`](../data-types.md) | Array of record identifiers to be cleared. By default, all records marked with the provided `process_id` will be cleared ||
-|| **message_id**  
-[`array`](../data-types.md) | Array of values for the `MESSAGE_ID` field of the records to be cleared. Ignored if the `id` parameter is specified. By default, all records marked with the provided `process_id` will be cleared ||
+|| **id**
+[`array`](../data-types.md) | Array of identifiers of the records to be cleared. By default, all records marked with the provided `process_id` will be cleared ||
+|| **message_id**
+[`array`](../data-types.md) | Array of values of the `MESSAGE_ID` field of the records to be cleared. Ignored if the `id` parameter is specified. By default, all records marked with the provided `process_id` will be cleared ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../_includes/examples.md) %}
 
@@ -78,7 +80,7 @@ The method `event.offline.clear` clears records in the offline events queue. The
 
 {% endlist %}
 
-## Response Handling
+## Response handling
 
 HTTP status: **200**
 
@@ -97,23 +99,23 @@ HTTP status: **200**
 }
 ```
 
-### Returned Data
+### Returned data
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **result**  
-[`boolean`](../data-types.md) | Success of the execution ||
-|| **time**  
+|| **result**
+[`boolean`](../data-types.md) | Success of execution ||
+|| **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
-## Error Handling
+## Error handling
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
 
-## Continue Learning
+## Continue learning
 
 - [{#T}](./events.md)
 - [{#T}](./event-bind.md)

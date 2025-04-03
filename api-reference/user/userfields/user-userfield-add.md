@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,10 +10,10 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Required parameters are not specified
-- Examples in other languages are missing
-- Success response is missing
-- Error response is missing
+- required parameters are not specified
+- examples in other languages are missing
+- success response is missing
+- error response is missing
  
 {% endnote %}
 
@@ -21,7 +21,7 @@ Some data may be missing here — we will complete it soon.
 
 > Scope: [`user.userfield`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
 This method adds a custom field.
 
@@ -39,7 +39,7 @@ This method adds a custom field.
 - `file` - file;
 - `enumeration` - list;
 - `url` - link;
-- `address` - Google Maps address;
+- `address` - Google map address;
 - `money` - money;
 - `iblock_section` - Binding to an information block section;
 - `iblock_element` - Binding to an information block element;

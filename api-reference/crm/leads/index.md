@@ -1,8 +1,8 @@
 # Leads in CRM: Overview of Methods
 
-A lead is the starting point of the Sales Funnel. Its detail form contains information about the client's interest in a product or service: filled CRM forms, e-mails, calls, and chats with the client.
+A lead is the starting point of the Sales Funnel. Its card contains information about the client's interest in a product or service: filled CRM forms, e-mails, calls, and chats with the client.
 
-The main goal of working with leads is to determine their potential and convert them into deals for further selling of the product or service.
+The main goal of working with leads is to determine how promising they are and convert them into deals for further selling of the product or service.
 
 > Quick navigation: [all methods and events](#all-methods)
 > 
@@ -12,9 +12,9 @@ The main goal of working with leads is to determine their potential and convert 
 
 **Products.** Adding, modifying, and deleting product items in deals is possible through the group of methods [crm.item.productrow.*](../universal/product-rows/index.md).
 
-**Deal.** The connection appears after converting the lead into a successful one.
+**Deal.** The connection appears after converting a lead into a successful one.
 
-**Client.** A field in the lead's detail form that consists of associated companies and contacts. The field is available in the repeat lead form. If repeat leads are disabled, the linking field appears after creating a company or contact based on the lead. There is one company in the lead, and access to it is made directly through the field `COMPANY_ID`. Multiple contacts can be specified, and interaction with them is conducted through a separate group of methods [crm.lead.contact.*](./management-communication/index.md).  
+**Client.** A field in the lead card consisting of the associated company and contacts. The field is available in the repeat lead form. If repeat leads are disabled, the linking field appears after creating a company or contact based on the lead. There is one company in the lead, and access to it is made directly through the `COMPANY_ID` field. Multiple contacts can be specified, and interaction with them is conducted through a separate group of methods [crm.lead.contact.*](./management-communication/index.md).  
 
 {% note tip "User Documentation" %}
 
@@ -25,15 +25,15 @@ The main goal of working with leads is to determine their potential and convert 
 
 {% endnote %}
 
-## Lead Detail Form
+## Lead Card
 
-The main workspace in a lead is the General tab of its detail form. It consists of two parts:
+The main workspace in a lead is the General tab of its card. It consists of two parts:
 
-* The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. They allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom lead fields, the group of methods [crm.lead.userfield.*](./userfield/index.md) is used.
+* The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. They allow storing information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom lead fields, the group of methods [crm.lead.userfield.*](./userfield/index.md) is used.
 
-* The right part contains the deal timeline. Here, you can create, edit, filter, and delete CRM activities — the group of methods [crm.activity.*](../timeline/activities/index.md), and timeline records — the group of methods [crm.timeline.*](../timeline/index.md).
+* The right part contains the deal timeline. In it, you can create, edit, filter, and delete CRM activities — the group of methods [crm.activity.*](../timeline/activities/index.md), and timeline records — the group of methods [crm.timeline.*](../timeline/index.md).
 
-The parameters of the deal detail form can be managed depending on the Sales Funnel through the group of methods [crm.lead.details.configuration.*](./custom-form/index.md).
+The parameters of the deal card can be managed depending on the funnel through the group of methods [crm.lead.details.configuration.*](./custom-form/index.md).
 
 {% note tip "User Documentation" %}
 
@@ -46,16 +46,16 @@ The parameters of the deal detail form can be managed depending on the Sales Fun
 
 ## Widgets
 
-An application can be embedded into the lead detail form. Thanks to embedding, you can use the application without leaving the lead detail form.
+An application can be embedded into the lead card. Thanks to embedding, you can use the application without leaving the lead card.
 
-There are two embedding scenarios: 
+There are two embedding scenarios:
 * Use special [embedding locations](../../widgets/crm/index.md). For example, by creating your own tab.
 * Create a [custom field](../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md), into which the content of your application will be loaded.
 
 {% note tip "Typical Use-Cases and Scenarios" %}
 
 - [Widget Embedding Mechanism](../../widgets/index.md)
-- [Embed a Widget in the CRM Detail Form](../../../tutorials/crm/crm-widgets/widget-as-detail-tab.md)
+- [Embed a Widget in the CRM Card](../../../tutorials/crm/crm-widgets/widget-as-detail-tab.md)
 
 {% endnote %}
 
@@ -84,7 +84,7 @@ It is impossible to convert a lead using the REST API. You can only change the s
 
 - Methods
   
-    #| 
+    #|
     || **Method** | **Description** ||
     || [crm.lead.add](./crm-lead-add.md) | Creates a new lead ||
     || [crm.lead.update](./crm-lead-update.md) | Modifies a lead ||
@@ -98,7 +98,7 @@ It is impossible to convert a lead using the REST API. You can only change the s
 
 - Events 
 
-    #| 
+    #|
     || **Event** | **Triggered** ||
     || [onCrmLeadAdd](./events/on-crm-lead-add.md) | When a lead is added ||
     || [onCrmLeadUpdate](./events/on-crm-lead-update.md) | When a lead is modified ||
@@ -109,14 +109,14 @@ It is impossible to convert a lead using the REST API. You can only change the s
 
 ### Connection Between Leads and Contacts
 
-#| 
+#|
 || **Method** | **Description** ||
-|| [crm.lead.contact.add](./management-communication/crm-lead-contact-add.md) | Adds a contact link to the specified lead ||
-|| [crm.lead.contact.delete](./management-communication/crm-lead-contact-delete.md) | Deletes a contact link from the specified lead ||
+|| [crm.lead.contact.add](./management-communication/crm-lead-contact-add.md) | Adds a contact binding to the specified lead ||
+|| [crm.lead.contact.delete](./management-communication/crm-lead-contact-delete.md) | Removes a contact binding from the specified lead ||
 || [crm.lead.contact.items.get](./management-communication/crm-lead-contact-items-get.md) | Retrieves a list of contacts associated with the lead ||
 || [crm.lead.contact.items.set](./management-communication/crm-lead-contact-items-set.md) | Attaches a list of contacts to the specified lead ||
-|| [crm.lead.contact.items.delete](./management-communication/crm-lead-contact-items-delete.md) | Deletes the list of contacts from the lead ||
-|| [crm.lead.contact.fields](./management-communication/crm-lead-contact-fields.md) | Retrieves the description of fields for lead-contact linkage, used by methods of the `crm.lead.contact.*` family ||
+|| [crm.lead.contact.items.delete](./management-communication/crm-lead-contact-items-delete.md) | Removes the list of contacts from the lead ||
+|| [crm.lead.contact.fields](./management-communication/crm-lead-contact-fields.md) | Retrieves the description of fields for lead-contact connection, used by methods of the `crm.lead.contact.*` family ||
 |#
 
 ### Custom Fields
@@ -125,7 +125,7 @@ It is impossible to convert a lead using the REST API. You can only change the s
 
 - Methods
 
-    #| 
+    #|
     || **Method** | **Description** ||
     || [crm.lead.userfield.add](./userfield/crm-lead-userfield-add.md) | Creates a new field ||
     || [crm.lead.userfield.update](./userfield/crm-lead-userfield-update.md) | Modifies a field ||
@@ -136,22 +136,22 @@ It is impossible to convert a lead using the REST API. You can only change the s
 
 - Events 
 
-    #| 
+    #|
     || **Event** | **Triggered** ||
-    || [onCrmLeadUserFieldAdd](./events/on-crm-lead-user-field-add.md) | When a custom field is added ||
-    || [onCrmLeadUserFieldUpdate](./events/on-crm-lead-user-field-update.md) | When a custom field is modified ||
-    || [onCrmLeadUserFieldDelete](./events/on-crm-lead-user-field-delete.md) | When a custom field is deleted ||
-    || [onCrmLeadUserFieldSetEnumValues](./events/on-crm-lead-user-field-set-enum-values.md) | When the set of values for a custom list-type field is changed ||
+    || [onCrmLeadUserFieldAdd](./userfield/events/on-crm-lead-user-field-add.md) | When a custom field is added ||
+    || [onCrmLeadUserFieldUpdate](./userfield/events/on-crm-lead-user-field-update.md) | When a custom field is modified ||
+    || [onCrmLeadUserFieldDelete](./userfield/events/on-crm-lead-user-field-delete.md) | When a custom field is deleted ||
+    || [onCrmLeadUserFieldSetEnumValues](./userfield/events/on-crm-lead-user-field-set-enum-values.md) | When the set of values for a custom field of list type is changed ||
     |#
 
 {% endlist %}
 
-### Managing Lead Detail Forms 
+### Managing Lead Cards 
 
-#| 
+#|
 || **Method** | **Description** ||
-|| [crm.lead.details.configuration.get](./custom-form/crm-lead-details-configuration-get.md) | Retrieves the configuration parameters of lead detail forms ||
-|| [crm.lead.details.configuration.reset](./custom-form/crm-lead-details-configuration-reset.md) | Resets the configuration of lead detail forms ||
-|| [crm.lead.details.configuration.set](./custom-form/crm-lead-details-configuration-set.md) | Sets the configuration of lead detail forms ||
-|| [crm.lead.details.configuration.forceCommonScopeForAll](./custom-form/crm-lead-details-configuration-force-common-scope-for-all.md) | Forces a common lead detail form for all users ||
+|| [crm.lead.details.configuration.get](./custom-form/crm-lead-details-configuration-get.md) | Retrieves the settings parameters of lead cards ||
+|| [crm.lead.details.configuration.reset](./custom-form/crm-lead-details-configuration-reset.md) | Resets the settings of lead cards ||
+|| [crm.lead.details.configuration.set](./custom-form/crm-lead-details-configuration-set.md) | Sets the settings of lead cards ||
+|| [crm.lead.details.configuration.forceCommonScopeForAll](./custom-form/crm-lead-details-configuration-force-common-scope-for-all.md) | Forces a common lead card for all users ||
 |#

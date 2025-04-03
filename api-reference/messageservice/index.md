@@ -1,25 +1,40 @@
-# About Message Providers
+# Message Providers: Overview of Methods
 
-{% note warning "We are still updating this page" %}
+Message providers are services for integration with Bitrix24. They allow sending messages to clients. Communication channels can include SMS and other systems that identify the recipient by phone number.
 
-Some data may be missing here — we will complete it soon.
+> Quick navigation: [all methods](#all-methods)
+
+## Connection of Providers with Other Objects
+
+**CRM**. A message can be sent from the CRM detail form.
+
+**Workflows**. A message can be sent automatically from a workflow action or Automation rule in CRM. The provider is specified in the workflow settings only through the Bitrix24 interface.
+
+{% note tip "User Documentation" %}
+
+- [Twilio integration: Create an account and connect it to Bitrix24](https://helpdesk.bitrix24.com/open/21991204/)
 
 {% endnote %}
 
-{% if build == 'dev' %}
+## Message Delivery Status
 
-{% note alert "TO-DO _not exported to prod_" %}
+The unique message identifier `message_id` allows you to call the method [messageservice.message.status.update](./messageservice-message-status-update.md). This method sets the delivery status for a message sent via the provider.
 
-- Here we write about scenarios, that this is mainly about SMS, but it can actually be any messaging channel that uses a phone number - WhatsApp or Viber, etc.
+## Overview of Methods {#all-methods}
 
-{% endnote %}
-
-{% endif %}
+> Scope: [`messageservice`](../scopes/permissions)
+>
+> Who can perform the method: administrator
 
 #|
-|| [messageservice.message.status.update](./messageservice-message-status-update.md) | Updates the message delivery status ||
+|| **Method** | **Description** ||
 || [messageservice.sender.add](./messageservice-sender-add.md) | Registers an SMS provider or message provider ||
 || [messageservice.sender.delete](./messageservice-sender-delete.md) | Deletes an SMS provider or message provider ||
 || [messageservice.sender.list](./messageservice-sender-list.md) | Retrieves a list of SMS providers or message providers ||
-|| [messageservice.sender.update](./messageservice-sender-update.md) | Updates an SMS provider ||
+|| [messageservice.sender.update](./messageservice-sender-update.md) | Updates an SMS provider or message provider ||
+|| [messageservice.message.status.update](./messageservice-message-status-update.md) | Updates the delivery status of a message ||
 |#
+
+## Continue Learning
+
+-  [{#T}](./tutorial.md)

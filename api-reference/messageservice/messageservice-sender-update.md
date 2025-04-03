@@ -1,10 +1,10 @@
-# Update SMS provider messageservice.sender.update
+# Update Message Provider messageservice.sender.update
 
 > Scope: [`messageservice`](../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method updates the SMS provider.
+This method updates the message provider.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ This method updates the SMS provider.
 || **CODE***
 [`string`](../data-types.md) | Internal identifier of the provider ||
 || **HANDLER**
-[`string`](../data-types.md) | URL of the application to which the data will be sent ||
+[`string`](../data-types.md) | URL of the application to which data will be sent ||
 || **NAME**
 [`string / array`](../data-types.md) | Name of the provider. It can be a string or an associative array of localized strings. 
 
@@ -196,7 +196,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Result of the SMS provider update ||
+[`boolean`](../data-types.md) | Result of the message provider update ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
@@ -221,7 +221,7 @@ HTTP status: **400**, **403**
 || `ERROR_SENDER_NOT_FOUND` | Provider not found ||
 || `ERROR_SENDER_CODE_REQUIRED` | The `CODE` parameter is missing ||
 || `ERROR_SENDER_OTHER_PARAMS_REQUIRED` | At least one of the optional parameters is missing ||
-|| `ACCESS_DENIED` | Insufficient permissions to update the SMS provider ||
+|| `ACCESS_DENIED` | Insufficient permissions to update the provider ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

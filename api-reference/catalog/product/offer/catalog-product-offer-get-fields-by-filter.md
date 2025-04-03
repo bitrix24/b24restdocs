@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-The method returns the fields of the product variation based on the filter.
+This method returns the fields of a product variation based on the filter.
 
 ## Method Parameters
 
@@ -25,9 +25,9 @@ The method returns the fields of the product variation based on the filter.
 || **Name**
 `type` | **Description** ||
 || **iblockId***
-[`catalog_catalog.id`](../../data-types.md#catalog_catalog) | Identifier of the information block.
+[`catalog_catalog.id`](../../data-types.md#catalog_catalog) | Identifier of the information block of the trade catalog for variations. 
 
-To retrieve existing identifiers of information blocks, use [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
+To obtain existing identifiers of information blocks of trade catalogs, use [catalog.catalog.list](../../catalog/catalog-catalog-list.md). The variation information block has the `productIblockId` field filled in.
 ||
 |#
 
@@ -258,7 +258,7 @@ HTTP Status: **200**
                 "isMultiple": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Catalog Item",
+                "name": "Catalog Element",
                 "propertyType": "E",
                 "type": "productproperty",
                 "userType": "SKU"
@@ -352,7 +352,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Sort Index",
+                "name": "Sorting Index",
                 "type": "integer"
             },
             "subscribe": {
@@ -432,7 +432,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **offer**
-[`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_product_offer](../../data-types.md#catalog_product_offer), and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
+[`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the field of the object [catalog_product_offer](../../data-types.md#catalog_product_offer), and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#

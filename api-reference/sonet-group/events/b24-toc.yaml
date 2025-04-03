@@ -1,17 +1,11 @@
 title: Group/Project Events
 href: index.md
 items:
-  - name: Working Group Events
+  - name: Workgroup Events
     href: index.md
-  - name: On Group/Project Creation
+  - name: On Creating a Group/Project
     href: on-sonet-group-add.md
-  - name: On Group/Project Update
+  - name: On Modifying a Group/Project
     href: on-sonet-group-update.md
-  - name: On Group/Project Deletion
+  - name: On Deleting a Group/Project
     href: on-sonet-group-delete.md
-  - name: On Group/Project Topic Creation
-    href: on-sonet-group-subject-add.md
-  - name: On Group/Project Topic Update
-    href: on-sonet-group-subject-update.md
-  - name: On Group/Project Topic Deletion
-    href: on-sonet-group-subject-delete.md

@@ -2,6 +2,18 @@
 
 ## 2025
 
+### April 3, 2025
+
+- Added the `storeId` parameter to the methods [crm.item.productrows.*](./api-reference/crm/universal/product-rows/index.md). The parameter is read-only.
+- Updated event pages when working with user fields of companies [onCrmCompanyUserField*](./api-reference/crm/companies/userfields/events/index.md).
+- Updated the main page of the section [Message Providers, SMS Providers](./api-reference/messageservice/index.md). Added introductory information as well as an overview of methods and relationships.
+- Updated event pages when working with companies [onCrmCompany*](./api-reference/crm/companies/events/index.md).
+- Updated event pages when working with user fields of leads [onCrmLeadUserField*](./api-reference/crm/leads/userfield/events/index.md).
+- Updated documentation on methods for working with [working hours](./api-reference/timeman/base/index.md) in the Time Tracking section.
+- Updated documentation on methods for working with [office networks](./api-reference/timeman/networkrange/index.md) in the Time Tracking section.
+- Updated the main page of the section [Search](./api-reference/chats/search/index.md) in Chats. Added introductory information as well as an overview of methods and relationships.
+- Updated the main page of the section [Enumerations](./api-reference/crm/auxiliary/enum/index.md) in CRM. Added introductory information as well as an overview of methods and relationships.
+
 ### March 26, 2025
 
 - Updated the main pages of the sections [VAT Rates in CRM](./api-reference/crm/auxiliary/vat/index.md), [Lead Communication with Contacts](./api-reference/crm/leads/management-communication/index.md). Added introductory information as well as an overview of methods and connections
