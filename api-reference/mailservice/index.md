@@ -1,6 +1,6 @@
 # Email Services: Overview of Methods
 
-In Bitrix24, you can connect mailboxes from services like Gmail, Mail.ru, and others. This simplifies working with emails.
+In Bitrix24, you can connect mailboxes from services like Gmail and others. This simplifies working with emails.
 
 > Quick navigation: [all methods](#all-methods)
 

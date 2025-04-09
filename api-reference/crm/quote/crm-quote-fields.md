@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing — we will fill it in shortly
 {% note alert "TO-DO _not exported to prod_" %}
 
 - missing examples (there should be three examples - curl, js, php)
-- missing error response
-- missing success response
+- missing response in case of error
+- missing response in case of success
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing — we will fill it in shortly
 >
 > Who can execute the method: any user
 
-The method `crm.quote.fields` returns the description of fields for the [estimate](./crm-quote-add.md), including [custom](./crm-quote-user-field-add.md) fields.
+The method `crm.quote.fields` returns the description of fields for the [estimate](./crm-quote-add.md), including [custom fields](./user-field/crm-quote-user-field-add.md).
 
 No parameters required.
 
@@ -48,7 +48,7 @@ No parameters required.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Fields
 
@@ -57,7 +57,7 @@ No parameters required.
 || **ASSIGNED_BY_ID** 
 [`user`](../../data-types.md) | Linked to user by ID | ||
 || **BEGINDATA** 
-[`date`](../../data-types.md) | Date of issuance | ||
+[`date`](../../data-types.md) | Date of issue | ||
 || **CLIENT_ADDR** 
 [`string`](../../data-types.md) | Contact address | ||
 || **CLIENT_CONTACT** 
@@ -103,7 +103,7 @@ No parameters required.
 || **LOCATION_ID** 
 [`location`](../../data-types.md) | Location | ||
 || **MODIFY_BY_ID** 
-[`user`](../../data-types.md) | Identifier of the last modification author | Read-only ||
+[`user`](../../data-types.md) | Identifier of the last modifier | Read-only ||
 || **MYCOMPANY_ID** 
 [`crm_company`](../../data-types.md) | Identifier of the company making the estimate | ||
 || **OPENED** 
@@ -111,7 +111,7 @@ No parameters required.
 || **OPPORTUNITY** 
 [`double`](../../data-types.md) | Amount | ||
 || **PERSON_TYPE_ID** 
-[`integer`](../../data-types.md) | Payer type identifier | ||
+[`integer`](../../data-types.md) | Identifier of the payer type | ||
 || **QUOTE_NUMBER** 
 [`string`](../../data-types.md) | Estimate number | Read-only ||
 || **STATUS_ID** 
@@ -125,11 +125,11 @@ No parameters required.
 || **UTM_CAMPAIGN** 
 [`string`](../../data-types.md) | Advertising campaign designation | ||
 || **UTM_CONTENT** 
-[`string`](../../data-types.md) | Campaign content | For example, for contextual ads. ||
+[`string`](../../data-types.md) | Content of the campaign | For example, for contextual ads. ||
 || **UTM_MEDIUM** 
-[`string`](../../data-types.md) | Traffic type | CPC (ads), CPM (banners) ||
+[`string`](../../data-types.md) | Type of traffic | CPC (ads), CPM (banners) ||
 || **UTM_SOURCE** 
 [`string`](../../data-types.md) | Advertising system | Google-Adwords and others. ||
 || **UTM_TERM** 
-[`string`](../../data-types.md) | Campaign search term | For example, keywords for contextual advertising. ||
+[`string`](../../data-types.md) | Search term of the campaign | For example, keywords for contextual advertising. ||
 |#

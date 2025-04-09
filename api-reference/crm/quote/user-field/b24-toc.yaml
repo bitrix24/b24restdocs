@@ -1,0 +1,19 @@
+title: User Fields
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create a Custom Field for Estimates
+    href: crm-quote-user-field-add.md
+  - name: Delete a Custom Field for Estimates
+    href: crm-quote-user-field-delete.md
+  - name: Get Custom Fields for Estimates by ID
+    href: crm-quote-user-field-get.md
+  - name: Get a List of Custom Fields for Estimates by Filter
+    href: crm-quote-user-field-list.md
+  - name: Modify a Custom Field for Estimates
+    href: crm-quote-user-field-update.md
+  - name: Events 
+    include:
+      path: events/b24-toc.yaml
+      mode: link

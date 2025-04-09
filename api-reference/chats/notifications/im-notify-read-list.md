@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -29,10 +29,10 @@ The method `im.notify.read.list` "reads" the list of notifications, excluding no
 || **IDS^*^**
 [`unknown`](../../data-types.md) | `[1,2,3]` | Array of notification identifiers | 30 ||
 || **ACTION**
-[`unknown`](../../data-types.md) | `'Y'` | Mark as read|unread (`Y`\|`N`) | 30 ||
+[`unknown`](../../data-types.md) | `'Y'` | Mark as read/unread (`Y`\|`N`) | 30 ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -41,7 +41,7 @@ The method `im.notify.read.list` "reads" the list of notifications, excluding no
 - JS
 
     ```js
-    B24.callMethod(
+    BX24.callMethod(
         'im.notify.read.list',
         {
             IDS: [1,2,3],
@@ -62,7 +62,7 @@ The method `im.notify.read.list` "reads" the list of notifications, excluding no
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on success
 

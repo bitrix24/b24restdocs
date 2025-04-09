@@ -1,16 +1,16 @@
 # Currencies in CRM: Overview of Methods
 
-Currency in CRM helps manage interactions with clients from different countries. For instance, the primary currency in which a company conducts transactions is rubles. The manager adds products priced in rubles to a deal, while the client pays in their preferred currency—tenge. The manager simply needs to change the currency of the deal in the detail form—Bitrix will automatically calculate the product prices in tenge based on the exchange rate set in the settings.
+Currency in CRM helps to work with clients from different countries. For example, the primary currency in which the company conducts transactions is rubles. The manager adds products priced in rubles to the deal, while the client pays in their preferred currency—tenge. The manager simply needs to change the currency of the deal in the detail form—Bitrix will automatically calculate the cost of the products in tenge based on the exchange rate set in the settings.
 
 > Quick navigation: [all methods and events](#all-methods) 
 > 
 > User documentation: [currencies in Bitrix24](https://helpdesk.bitrix24.com/open/8967215/)
 
-## Currency Connection with CRM Objects
+## Currency Relation to CRM Objects
 
-**Products.** The price of a product item can be specified through [price methods](../../catalog/price/index.md). All price type fields are composite—the amount and currency are modified separately. To specify or change the currency, use the `currency` parameter and pass the currency identifier in the format `RUB`.
+**Products.** The price of a product item can be specified through [price methods](../../catalog/price/index.md). All price type fields are composite—the amount and currency are changed separately. To specify or change the currency, use the `currency` parameter and pass the currency identifier in the format `RUB`.
 
-**Standard field "Amount and Currency."** This field displays the total amount of products and the currency in [deals](../deals/index.md), [leads](../leads/index.md), [invoices](../universal/invoice.md), [estimates](../quote/index.md), and [SPAs](../universal/index.md). The `Amount and Currency` field is composite, with the amount and currency changing separately. To specify or change the currency, use the `CURRENCY_ID` parameter and pass the currency identifier in the format `RUB`.
+**Standard field "Amount and Currency."** This field shows the total amount of products and the currency in [deals](../deals/index.md), [leads](../leads/index.md), [invoices](../universal/invoice.md), [estimates](../quote/index.md), and [SPAs](../universal/index.md). The `Amount and Currency` field is composite, with the amount and currency changing separately. To specify or change the currency, use the `CURRENCY_ID` parameter and pass the currency identifier in the format `RUB`.
 
 **Custom field of type "Money."** To specify or change the currency value, pass the amount and currency code in the format `100|RUB`.
 
@@ -18,18 +18,18 @@ Currency in CRM helps manage interactions with clients from different countries.
 
 The base currency is the currency in which the company conducts transactions.
 
-* If you create or modify a CRM element without passing the currency code, the base currency is set automatically.
+* If you create or modify a CRM entity without passing the currency code, the base currency is set automatically.
 * If you change the currency in the field, the amount will be recalculated based on the base currency exchange rate.
 
-To find out the base currency, use the method [crm.currency.base.get](./crm-currency-base-get.md). To change the base currency, use the method [crm.currency.base.set](./crm-currency-base-set.md).
+To find out the base currency, use the method [crm.currency.base.get](./crm-currency-base-get.md). To change the base currency, use the method [crm.currency.base.set](./crm-currency-base-set.md). 
 
 ## Currency Exchange Rate
 
-The exchange rate of any currency in Bitrix is calculated relative to the base currency.
+The exchange rate of any currency in Bitrix is calculated in relation to the base currency. 
 
 {% note info " " %}
 
-When you change the base currency, the exchange rate ratios are not automatically recalculated.
+When you change the base currency, the exchange rate ratios are not recalculated automatically. 
 
 {% endnote %}
 

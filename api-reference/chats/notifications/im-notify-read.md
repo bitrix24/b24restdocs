@@ -1,8 +1,8 @@
-# Set Read Notification Cancellation im.notify.read
+# Read a notification or all notifications with the specified im.notify.read
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -10,10 +10,10 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types not specified
 - examples missing
-- response in case of error is absent
+- response in case of error missing
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The `im.notify.read` method sets the cancellation of read notifications.
+The `im.notify.read` method sets a mark for read notifications.
 
 ## Parameters
 

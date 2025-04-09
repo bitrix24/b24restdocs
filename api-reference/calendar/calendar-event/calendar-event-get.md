@@ -21,15 +21,15 @@ This method retrieves a list of calendar events.
 || **ownerId***  
 [`integer`](../../data-types.md) | Identifier of the calendar owner.
 
-For the company calendar, the `ownerId` parameter has an empty value `""` ||
+For the company calendar, the `ownerId` parameter is `0` ||
 || **from**  
 [`date`](../../data-types.md) | Start date for the selection.
 
-Default value — one month before the current date ||
+Default value is one month before the current date ||
 || **to**  
 [`date`](../../data-types.md) | End date for the selection.
 
-Default value — three months after the current date ||
+Default value is three months after the current date ||
 || **section**  
 [`array`](../../data-types.md) | Array of calendar identifiers ||
 |#
@@ -132,7 +132,7 @@ Default value — three months after the current date ||
             'calendar.event.get',
             {
                 type: 'company_calendar',
-                ownerId: ''
+                ownerId: 0
             }
         );
         ```
@@ -159,7 +159,7 @@ Default value — three months after the current date ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -288,7 +288,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -304,7 +304,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || Empty string | The required parameter "type" for the method "calendar.event.get" is not set | The required parameter `type` was not provided ||
-|| Empty string | Access denied | Access to the method is denied for external users ||
+|| Empty string | Access denied | Access to the method is prohibited for external users ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

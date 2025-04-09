@@ -1,19 +1,11 @@
 title: Events
 href: index.md
 items:
-  - name: Overview of Events
+  - name: Overview of events
     href: index.md
-  - name: When Adding an Estimate
+  - name: When adding an estimate
     href: on-crm-quote-add.md
-  - name: When Updating an Estimate
+  - name: When updating an estimate
     href: on-crm-quote-update.md
-  - name: When Deleting an Estimate
+  - name: When deleting an estimate
     href: on-crm-quote-delete.md
-  - name: When Adding a Custom Field
-    href: on-crm-quote-user-field-add.md
-  - name: When Updating a Custom Field
-    href: on-crm-quote-user-field-update.md
-  - name: When Deleting a Custom Field
-    href: on-crm-quote-user-field-delete.md
-  - name: When Changing Values for a List-Type Field
-    href: on-crm-quote-user-field-set-enum-values.md

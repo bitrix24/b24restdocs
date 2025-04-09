@@ -22,15 +22,15 @@ This method adds a new event to the calendar.
 || **ownerId***
 [`integer`](../../data-types.md) | Identifier of the calendar owner. 
 
-For the company calendar, the `ownerId` parameter has an empty value `""`||
+For the company calendar, the `ownerId` parameter is `0`||
 || **from***
 [`datetime`\|`date`](../../data-types.md) | Start date and time of the event.
 
-You can specify the date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
+You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
 || **to***
 [`datetime`\|`date`](../../data-types.md) | End date of the event.
 
-You can specify the date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
+You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
 || **from_ts**
 [`integer`](../../data-types.md) | Date and time in timestamp format. Can be used instead of the `from` parameter ||
 || **to_ts**
@@ -46,11 +46,11 @@ You can specify the date without time. To do this, pass the value `Y` in the `sk
 
 Date format according to ISO-8601 ||
 || **timezone_from**
-[`string`](../../data-types.md) | Timezone of the start date and time of the event. Default — the current user's timezone.
+[`string`](../../data-types.md) | Time zone of the event start date and time. Default is the current user's time zone.
 
 The value should be passed as a string, for example, `Europe/Riga` ||
 || **timezone_to**
-[`string`](../../data-types.md) | Timezone of the end date and time of the event. Default value — the current user's timezone.
+[`string`](../../data-types.md) | Time zone of the event end date and time. Default value is the current user's time zone.
 
 The value should be passed as a string, for example, `Europe/Riga` ||
 || **description**
@@ -92,15 +92,21 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 For a meeting with participants, specify the list of participants in `attendees` and the event organizer in `host`
 ||
 || **location**
-[`string`](../../data-types.md) | Venue ||
+[`string`](../../data-types.md) | Location ||
 || **remind**
 [`array`](../../data-types.md) | Array of objects describing reminders for the event. The structure is described [below](#remind) ||
 || **attendees**
-[`array`](../../data-types.md) | List of participant identifiers for the event. If `is_meeting` = `Y` ||
+[`array`](../../data-types.md) | List of identifiers of event participants. If `is_meeting` = `Y` ||
 || **host**
 [`integer`](../../data-types.md) | Identifier of the event organizer. If `is_meeting` = `Y` ||
 || **meeting**
 [`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting) ||
+|| **crm_fields**
+ [`array`](../../data-types.md) | Array of CRM object identifiers to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
+ - `CO_` — company
+ - `C_` — contact 
+ - `L_` — lead
+ - `D_` — deal ||
 |#
 
 ### rrule Parameter {#rrule}
@@ -138,7 +144,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 || **Name**
 `type` | **Description** ||
 || **type**
-[`string`](../../data-types.md) | Time type of the reminder
+[`string`](../../data-types.md) | Time type of reminder
 - `min` — minutes
 - `hour` – hours
 - `day` — days ||
@@ -152,7 +158,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 || **Name**
 `type` | **Description** ||
 || **notify**
-[`boolean`](../../data-types.md) | Flag for notification of confirmation or rejection by participants ||
+[`boolean`](../../data-types.md) | Flag for notification of confirmation or refusal by participants ||
 || **reinvite**
 [`boolean`](../../data-types.md) | Flag for requesting re-confirmation of participation when editing the event ||
 || **allow_invite**
@@ -174,7 +180,7 @@ For a meeting with participants, specify the list of participants in `attendees`
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"type":"user","ownerId":2,"name":"New Event Name","description":"Description for event","from":"2024-06-14","to":"2024-06-14","skip_time":"Y","section":5,"color":"#9cbe1c","text_color":"#283033","accessibility":"absent","importance":"normal","is_meeting":"Y","private_event":"N","remind":[{"type":"min","count":20}],"location":"London","attendees":[1,2,3],"host":2,"meeting":{"notify":true,"reinvite":false,"allow_invite":false,"hide_guests":false},"rrule":{"FREQ":"WEEKLY","BYDAY":["MO","WE"],"COUNT":10,"INTERVAL":1},"crm_fields":["C_5","L_11"]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/calendar.event.add
     ```
 
 - cURL (OAuth)
@@ -299,7 +305,7 @@ For a meeting with participants, specify the list of participants in `attendees`
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"type":"company_calendar","ownerId":"","from":"2025-01-31T18:00:00","to":"2025-01-31T20:00:00","section":1,"name":"Important Meeting","skip_time":"N","timezone_from":"Europe/Berlin","timezone_to":"Europe/Berlin","description":"Event description","color":"#FF0000","text_color":"#000000","accessibility":"busy","importance":"high","private_event":"N","rrule":{"FREQ":"WEEKLY","COUNT":10,"INTERVAL":1,"BYDAY":["MO","WE","FR"]},"is_meeting":"Y","location":"Conference Room","remind":[{"type":"min","count":30}],"attendees":[29,93],"host":1,"meeting":{"notify":true,"reinvite":false,"allow_invite":true,"hide_guests":false}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/calendar.event.add
     ```
 
 - cURL (OAuth)
@@ -319,14 +325,14 @@ For a meeting with participants, specify the list of participants in `attendees`
         'calendar.event.add',
         {
             type: 'company_calendar', // Calendar type: company calendar
-            ownerId: '', // For the company calendar, ownerId has an empty value
+            ownerId: '', // For the company calendar, ownerId is empty
             from: '2025-01-31T18:00:00', // Start date and time of the event
             to: '2025-01-31T20:00:00', // End date and time of the event
             section: 1, // Calendar identifier
             name: 'Important Meeting', // Event name
             skip_time: 'N', // Use date and time (N)
-            timezone_from: 'Europe/Berlin', // Timezone of the start of the event
-            timezone_to: 'Europe/Berlin', // Timezone of the end of the event
+            timezone_from: 'Europe/Berlin', // Time zone of the event start
+            timezone_to: 'Europe/Berlin', // Time zone of the event end
             description: 'Event description', // Event description
             color: '%23FF0000', // Background color of the event (red)
             text_color: '%23000000', // Text color of the event (black)
@@ -340,14 +346,14 @@ For a meeting with participants, specify the list of participants in `attendees`
                 BYDAY: ['MO', 'WE', 'FR'] // Days of the week: Monday, Wednesday, Friday
             },
             is_meeting: 'Y', // Indicator of a meeting with participants
-            location: 'Conference Room', // Venue
+            location: 'Conference Room', // Location
             remind: [ // Event reminders
                 { type: 'min', count: 30 } // Reminder 30 minutes before the event
             ],
-            attendees: [29, 93], // List of participant identifiers for the event
+            attendees: [29, 93], // List of identifiers of event participants
             host: 1, // Identifier of the event organizer
             meeting: { // Meeting parameters
-                notify: true, // Notification of confirmation or rejection by participants
+                notify: true, // Notification of confirmation or refusal by participants
                 reinvite: false, // Do not request re-confirmation of participation
                 allow_invite: true, // Allow participants to invite others
                 hide_guests: false // Do not hide the list of participants
@@ -372,14 +378,14 @@ For a meeting with participants, specify the list of participants in `attendees`
         'calendar.event.add',
         [
             'type' => 'company_calendar', // Calendar type: company calendar
-            'ownerId' => '', // For the company calendar, ownerId has an empty value
+            'ownerId' => '', // For the company calendar, ownerId is empty
             'from' => '2025-01-31T18:00:00', // Start date and time of the event
             'to' => '2025-01-31T20:00:00', // End date and time of the event
             'section' => 1, // Calendar identifier (replace with actual)
             'name' => 'Important Meeting', // Event name
             'skip_time' => 'N', // Use date and time (N)
-            'timezone_from' => 'Europe/Berlin', // Timezone of the start of the event
-            'timezone_to' => 'Europe/Berlin', // Timezone of the end of the event
+            'timezone_from' => 'Europe/Berlin', // Time zone of the event start
+            'timezone_to' => 'Europe/Berlin', // Time zone of the event end
             'description' => 'Event description', // Event description
             'color' => '#FF0000', // Background color of the event (red)
             'text_color' => '#000000', // Text color of the event (black)
@@ -393,14 +399,14 @@ For a meeting with participants, specify the list of participants in `attendees`
                 'BYDAY' => ['MO', 'WE', 'FR'] // Days of the week: Monday, Wednesday, Friday
             ],
             'is_meeting' => 'Y', // Indicator of a meeting with participants
-            'location' => 'Conference Room', // Venue
+            'location' => 'Conference Room', // Location
             'remind' => [ // Event reminders
                 ['type' => 'min', 'count' => 30] // Reminder 30 minutes before the event
             ],
-            'attendees' => [29, 93], // List of participant identifiers for the event
+            'attendees' => [29, 93], // List of identifiers of event participants
             'host' => 1, // Identifier of the event organizer
             'meeting' => [ // Meeting parameters
-                'notify' => true, // Notification of confirmation or rejection by participants
+                'notify' => true, // Notification of confirmation or refusal by participants
                 'reinvite' => false, // Do not request re-confirmation of participation
                 'allow_invite' => true, // Allow participants to invite others
                 'hide_guests' => false // Do not hide the list of participants
@@ -469,8 +475,8 @@ HTTP Status: **400**
 || Empty string | The required parameter "to" for the method "calendar.event.add" is not set | The required parameter `to` or `to_ts` is not provided ||
 || Empty string | Invalid value for the parameter "name" | Incorrect data format in the `name` field ||
 || Empty string | Invalid value for the parameter "description" | Incorrect data format in the `description` field ||
-|| Empty string | Access denied | Creating events in the specified calendar is prohibited ||
-|| Empty string | You specified an invalid calendar section ID or the user does not have access to it | An identifier of an unavailable or non-existent calendar is provided ||
+|| Empty string | Access denied | Creation of events in the specified calendar is prohibited ||
+|| Empty string | You have specified an invalid calendar section ID or the user does not have access to it | An identifier of an unavailable or non-existent calendar is provided ||
 || Empty string | The list of event links to CRM must be an array | Incorrect data format in the `crm_fields` field ||
 || Empty string | An error occurred while creating the event | Another error ||
 |#

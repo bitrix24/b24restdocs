@@ -1,11 +1,11 @@
 title: News Feed
 href: index.md
 items:
-  - name: About the News Feed
+  - name: Overview of Methods
     href: index.md
   - name: Add Message
     href: log-blogpost-add.md
-  - name: Get Message List
+  - name: Get List of Messages
     href: log-blogpost-get.md
   - name: Update Message
     href: log-blogpost-update.md 

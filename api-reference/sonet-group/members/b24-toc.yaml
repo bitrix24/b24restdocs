@@ -1,17 +1,19 @@
-title: Participants of the group/project
-href: index.md
-items:
-  - name: Invite Participant
-    href: sonet-group-user-invite.md
-  - name: Send Participation Request from Current User
-    href: sonet-group-user-request.md
-  - name: Add Participant Without Invitation
-    href: sonet-group-user-add.md
-  - name: Change Participants' Roles
-    href: sonet-group-user-update.md
-  - name: Get List of Participants
-    href: sonet-group-user-get.md
-  - name: Get Extended List of Participants
-    href: sonet-group-user-get-expanded.md
-  - name: Remove Users from Group
-    href: sonet-group-user-delete.md
+title: Group and Project Participants  
+href: index.md  
+items:  
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Invite Participant  
+    href: sonet-group-user-invite.md  
+  - name: Send Participation Request from Current User  
+    href: sonet-group-user-request.md  
+  - name: Add Participant Without Invitation  
+    href: sonet-group-user-add.md  
+  - name: Change Participants' Roles  
+    href: sonet-group-user-update.md  
+  - name: Get List of Participants  
+    href: sonet-group-user-get.md  
+  - name: Get Extended List of Participants  
+    href: sonet-group-user-get-expanded.md  
+  - name: Remove Users from Group  
+    href: sonet-group-user-delete.md  

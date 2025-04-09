@@ -1,4 +1,4 @@
-# How to Interact with Notification Buttons im.notify.confirm
+# Interacting with Notification Buttons im.notify.confirm
 
 {% note warning "We are still updating this page" %}
 
@@ -32,7 +32,7 @@ The method `im.notify.confirm` interacts with notification buttons.
 [`unknown`](../../data-types.md) | `'Y'` | Value of the selected response (button value) | `30` ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 For example, consider the notification:
 
@@ -46,7 +46,7 @@ For example, consider the notification:
 - JS
 
     ```js
-    B24.callMethod(
+    BX24.callMethod(
         'im.notify.confirm',
         {
             ID: 288,
@@ -89,7 +89,7 @@ For example, consider the notification:
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Success Response
 

@@ -1,4 +1,4 @@
-# Get a List of Upcoming Events calendar.event.get.nearest
+# Get a list of upcoming events calendar.event.get.nearest
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
@@ -19,7 +19,7 @@ This method retrieves a list of upcoming events.
 || **ownerId**
 [`integer`](../../data-types.md) | Identifier of the calendar owner.
 
-For the company calendar, the `ownerId` parameter is empty `""` ||
+For the company calendar, the `ownerId` parameter is `0` ||
 || **days**
 [`integer`](../../data-types.md) | Number of days to retrieve. Default is `60` ||
 || **forCurrentUser**
@@ -32,9 +32,9 @@ For the company calendar, the `ownerId` parameter is empty `""` ||
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-1. Retrieve events for the current user for the next 10 days.
+1. Get events for the current user for the next 10 days.
 
     {% list tabs %}
 
@@ -99,7 +99,7 @@ For the company calendar, the `ownerId` parameter is empty `""` ||
     {% endlist %}
 
 
-2. Retrieve events from the company calendar.
+2. Get events from the company calendar.
 
     {% list tabs %}
 
@@ -130,7 +130,7 @@ For the company calendar, the `ownerId` parameter is empty `""` ||
             'calendar.event.get',
             {
                 type: 'company_calendar',
-                ownerId: '', // ownerId is not specified when retrieving events from the company calendar. It is empty for all events of this type.
+                ownerId: 0, // ownerId is not specified when retrieving events from the company calendar. It is empty for all events of this type.
                 forCurrentUser: false
             }
         );
@@ -159,7 +159,7 @@ For the company calendar, the `ownerId` parameter is empty `""` ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -288,7 +288,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -13,12 +13,8 @@ Some data may be missing here — we will fill it in shortly.
 {% endnote %}
 
 #|
-|| **Event** | **Triggered** ||
+|| **Event** | **Triggered by** ||
 || [onCrmQuoteAdd](./on-crm-quote-add.md) | when an estimate is created ||
 || [onCrmQuoteUpdate](./on-crm-quote-update.md) | when an estimate is updated ||
 || [onCrmQuoteDelete](./on-crm-quote-delete.md) | when an estimate is deleted ||
-|| [onCrmQuoteUserFieldAdd](./on-crm-quote-user-field-add.md) | when a custom field is added ||
-|| [onCrmQuoteUserFieldDelete](./on-crm-quote-user-field-delete.md) | when a custom field is deleted ||
-|| [onCrmQuoteUserFieldUpdate](./on-crm-quote-user-field-update.md) | when a custom field is modified ||
-|| [onCrmQuoteUserFieldSetEnumValues](./on-crm-quote-user-field-set-enum-values.md) | when the set of values for a custom list-type field is changed ||
 |#

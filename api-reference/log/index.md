@@ -1,67 +1,87 @@
-# News Feed (formerly "Live Feed")
+# News Feed: Overview of Methods
 
-Using the methods and events of the REST API for the [news feed in Bitrix24](https://helpdesk.bitrix24.com/open/18636162/), you can manage messages (add, modify, and delete them), as well as add comments to messages.
+The news feed of the corporate account resembles social media feeds. It allows employees to stay updated on company events. It displays news, messages, tasks, polls, congratulations, and much more.
 
 > Quick navigation: [all methods and events](#all-methods)
+>
+> User documentation: [News Feed](https://helpdesk.bitrix24.com/section/47478/)
 
-## Private User Scenarios
+## Connection of the Feed with Other Objects
 
-You will be able to automatically publish various types of operational information in the News Feed:
+**Users**. To send a message in the News Feed to specific users, you need to know their `ID`. You can obtain the list of users using the `user.get` method.
 
-- Sales department metrics and key business metrics
-- Project summaries, current KPIs of departments
-- New documents for discussion
-- Various informers (exchange rates, changes in the operating hours of retail outlets, etc.)
-- Congratulations to top employees
+**Workgroups and Projects**. Messages in the News Feed can be directed to participants of workgroups and projects using the `ID` of the workgroups and projects. The list of groups is available through the `sonet_group.get` method.
 
-Using the combination of "important message" + tracking the [list of readers](log-blogpost-getusers-important.md) can be utilized for automated scenarios of mass informing employees about various regulations, changes in the company, etc.
+**Company Departments**. To address a message in the Feed to company departments, you need to know the `ID` of the departments. You can get the list of departments using the `department.get` method.
 
-Tracking events for [new message appearance](events/index.md) or [message updates](events/on-live-feed-post-update.md) in the news feed will allow for quick responses to new information within Bitrix24, for example, for automatic knowledge base formation, message synchronization with external systems, tracking communications within departments, etc.
+**Files**. You can attach files from local storage, Bitrix24 Drive, or the cloud to messages in the News Feed. To attach a file to a message, pass an array containing the file name and a string with `Base64` in the `Files` field. To get information about the attached file, use the `disk.attachedObject.get` method.
 
-## Functional Features
+> Typical use-cases and scenarios
+>
+> - [How to upload files](../files/how-to-upload-files.md)
 
-Each message in the news feed can be addressed to a group of recipients:
+**Calendar Events**. These are automatically displayed in the News Feed. You can create and edit calendar events using methods from the `calendar.events.*` group.
 
-- specific [users](../user/index.md)
-- [departments](../departments/index.md) of the company
-- participants of [working groups/projects](../sonet-group/sonet-group-create.md)
+**Tasks**. These are automatically displayed in the News Feed. To create and edit tasks, use methods from the `tasks.*` group.
 
-Added messages will be visible directly on the News Feed page in Bitrix24 to those users who were specified as recipients (individually or through their departments), as well as in the news feeds of working groups.
+**New Employees**. Users can be created using the `user.add` method. The News Feed automatically publishes messages about newly hired employees if permitted by the settings.
 
-The published message can be marked as "important." Such messages are displayed in a special way, and a [special method](log-blogpost-getusers-important.md) will allow tracking users who have read such a message.
+> User documentation
+>
+> - [Bitrix24 Settings](https://helpdesk.bitrix24.com/open/19093214/)
 
+## Starting Workflows from the Feed
 
-## Recommended Learning Sequence
+Workflows can be initiated directly from the News Feed without navigating to other sections.
 
-- How to [add a new message](log-blogpost-add.md) and how to [modify an existing one](log-blogpost-update.md)
-- How to get a [list of messages](log-blogpost-get.md)
-- What [events](events/index.md) are available
-- How to [add a comment](log-blogcomment-add.md) to a message
+> User documentation
+>
+> - [Workflows in the News Feed](https://helpdesk.bitrix24.com/open/9717699/)
+
+Use the `bizproc.workflow.template.list` method to get a list of available workflows and their identifiers. To filter only the workflows for the News Feed, specify `MODULE_ID: "lists"` and `ENTITY: "BizprocDocument"`.
+
+With the `bizproc.workflow.start` method, start a workflow by specifying its `ID`. To link the workflow to the News Feed, associate it with a list item. For working with list items, use the `lists.element.*` group of methods. To create or retrieve a list item associated with the News Feed workflow, specify `IBLOCK_TYPE_ID: bitrix_processes`. If the workflow is started for a list item, the News Feed will automatically create a message.
+
+## **Managing Messages in the Feed**
+
+**How to add, modify, or delete a message**. Using methods, you can add, modify, and delete messages in the News Feed. Use the `log.blogpost.add` method to add a message to the News Feed on behalf of the current user. You can modify a message using the `log.blogpost.update` method. To delete a message, apply the `log.blogpost.delete` method.
+
+**How to manage comments**. Use the `log.blogcomment.add` method to add comments to messages and the `log.blogcomment.delete` method to delete comments. The `log.blogcomment.user.get` method returns comments on messages and can filter them by ID range (`FIRST_ID`, `LAST_ID`). If no filtering parameters are provided, the method will return all comments available to the current user, considering their access permissions.
+
+**How to find out which users read an important message**. A message published in the News Feed can be marked as important. To view the list of users who read the important message, use the `log.blogpost.getusers.important` method. The combination of "important message and tracking the list of readers" can be used for automated mass notification scenarios for employees.
+
+**How to get a list of messages**. The `log.blogpost.get` method allows you to access available messages in the News Feed.
+
+**What events are available**. The events `OnLiveFeedPostAdd`, `OnLiveFeedPostUpdate`, and `OnLiveFeedPostDelete` allow you to track the appearance, modification, and deletion of messages.
 
 ## Overview of Methods and Events {#all-methods}
+
+> Scope: [`log`](../scopes/permissions.md)
+> 
+> Who can execute the method: any user
 
 {% list tabs %}
 
 - Methods
 
-    #| 
+    #|
     || **Method** | **Description** ||
-    || [log.blogcomment.add](./log-blogcomment-add.md) | Adds a comment to a News Feed message ||
+    || [log.blogcomment.add](./log-blogcomment-add.md) | Adds a comment to a message in the News Feed ||
     || [log.blogpost.add](./log-blogpost-add.md) | Adds a message to the News Feed on behalf of the current user ||
-    || [log.blogpost.update](./log-blogpost-update.md) | Modifies a News Feed message ||
-    || [log.blogpost.get](./log-blogpost-get.md) | Retrieves messages available to the user in the News Feed ||
-    || [log.blogpost.getusers.important](./log-blogpost-getusers-important.md) | Views users who have read an important message ||
-    || [log.blogpost.share](./log-blogpost-share.md) | Adds recipients to a News Feed message ||
+    || [log.blogpost.update](./log-blogpost-update.md) | Modifies a message in the News Feed ||
+    || [log.blogpost.get](./log-blogpost-get.md) | Retrieves available messages in the News Feed for the user ||
+    || [log.blogpost.getusers.important](./log-blogpost-getusers-important.md) | Views users who read an important message ||
+    || [log.blogpost.share](./log-blogpost-share.md) | Adds recipients to a message in the News Feed ||
     || [log.blogpost.delete](./log-blogpost-delete.md) | Deletes a message from the News Feed ||
     |#
 
 - Events
 
-    #| 
-    || **Event** | **Description** ||
-    || [OnLiveFeedPostAdd](./events/on-live-feed-post-add.md) | On adding a message to the News Feed ||
-    || [OnLiveFeedPostDelete](./events/on-live-feed-post-delete.md) | On deleting a message from the News Feed ||
-    || [OnLiveFeedPostUpdate](./events/on-live-feed-post-update.md) | On editing a message in the News Feed ||
+    #|
+    || **Event** | **Triggered** ||
+    || [OnLiveFeedPostAdd](./events/on-live-feed-post-add.md) | When a message is added to the News Feed ||
+    || [OnLiveFeedPostDelete](./events/on-live-feed-post-delete.md) | When a message is deleted from the News Feed ||
+    || [OnLiveFeedPostUpdate](./events/on-live-feed-post-update.md) | When a message is edited in the News Feed ||
     |#
 
 {% endlist %}
