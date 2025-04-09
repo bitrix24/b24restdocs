@@ -21,7 +21,7 @@ Some data may be missing — we will complete it shortly.
 
 {% endif %}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -32,7 +32,7 @@ The method `crm.quote.userfield.update` updates an existing custom field for quo
 || **id**
 [`unknown`](../../data-types.md) | Identifier of the custom field. ||
 || **fields**
-[`unknown`](../../data-types.md) | Set of fields - an array in the form `array("field to update"=>"value"[, ...])`, where "field to update" can take values returned by the method [crm.userfield.fields](../universal/user-defined-fields/crm-userfield-fields.md).
+[`unknown`](../../data-types.md) | Set of fields - an array in the form `array("field to update"=>"value"[, ...])`, where "field to update" can take values returned by the method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md).
 ||
 |#
 
@@ -71,4 +71,4 @@ The method `crm.quote.userfield.update` updates an existing custom field for quo
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

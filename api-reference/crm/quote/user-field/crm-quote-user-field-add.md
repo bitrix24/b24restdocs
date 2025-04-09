@@ -21,7 +21,7 @@ Some data may be missing — we will complete it shortly.
 
 {% endif %}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -32,7 +32,7 @@ The system limitation on the field name is 20 characters. The prefix `UF_CRM_` i
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **fields**
-[`unknown`](../../data-types.md) | Set of fields - an array of the form `array("field"=>"value"[, ...])`, containing the description of the custom field. A complete description of the fields can be obtained by calling the method [crm.userfield.fields](../universal/user-defined-fields/crm-userfield-fields.md). 
+[`unknown`](../../data-types.md) | Set of fields - an array of the form `array("field"=>"value"[, ...])`, containing the description of the custom field. A complete description of the fields can be obtained by calling the method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md). 
 ||
 |#
 
@@ -68,4 +68,4 @@ The system limitation on the field name is 20 characters. The prefix `UF_CRM_` i
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

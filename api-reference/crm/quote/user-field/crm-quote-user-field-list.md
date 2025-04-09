@@ -21,7 +21,7 @@ Some data may be missing — we will fill it in shortly.
 
 {% endif %}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -65,4 +65,4 @@ The method `crm.quote.userfield.list` returns a list of custom fields for estima
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

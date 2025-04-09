@@ -20,7 +20,7 @@ Some data may be missing — we will complete it shortly.
 
 {% endif %}
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -55,4 +55,4 @@ The method `crm.quote.userfield.get` returns the custom field of estimates by ID
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
