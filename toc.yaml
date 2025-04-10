@@ -63,5 +63,8 @@ navigation:
       - text: 'API Methods'
         type: 'link'
         url: '/api-reference/index.html'
+      - text: 'GitHub'
+        type: 'link'
+        url: 'https://github.com/bitrix24/bitrix24-dev-hub'
     rightItems:    
       - type: controls
