@@ -4,3 +4,4 @@ In this section, you will find examples for solving typical tasks related to wor
 
 - [{#T}](./activity.md)
 - [{#T}](./setting-robot.md)
+- [{#T}](./how-to-kill-workflows.md)

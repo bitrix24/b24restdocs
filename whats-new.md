@@ -2,6 +2,10 @@
 
 ## 2025
 
+### April 16, 2025
+
+- Added a new tutorial [How to terminate workflows of a terminated employee](./tutorials/bizproc/how-to-kill-workflows.md)
+
 ### April 9, 2025
 
 - Updated the main page of the section [Custom fields for estimates](./api-reference/crm/quote/user-field/index.md). Added introductory information and an overview of methods and errors.

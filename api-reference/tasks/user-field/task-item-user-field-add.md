@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
 || **auth**
 [`unknown`](../../data-types.md) | Authorization token. ||
 || **PARAMS**
-[`unknown`](../../data-types.md) | An array with property parameters of the form `array("parameter": 'value' [, ...])`, containing the following parameters: 
+[`unknown`](../../data-types.md) | Array with property parameters in the form `array("parameter": 'value' [, ...])`, containing the following parameters: 
 - `USER_TYPE_ID` - data type of the custom field. Allowed values: 
   - `string` — string
   - `double` — number
@@ -51,23 +51,43 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
 
 {% list tabs %}
 
-- cURL
+- cURL (Webhook)
 
     ```bash
-    $appParams = array(
-        'auth' => 'q21g8vhcqmxdrbhqlbd2wh6ev1debppa',
-        'PARAMS' => array(
-            'USER_TYPE_ID' => 'string',
-            'FIELD_NAME' => 'NEW_TASKS_FIELD',
-            'XML_ID' => 'MY_TASK_FIELD',
-            'EDIT_FORM_LABEL' => array(
-                'en' => 'New task field',
-                'de' => 'Neues Aufgabenfeld'
-            ),
-            'LABEL' => 'New task field'
-        ),
-    );
-    $request = 'http://your-domain.com/rest/task.item.userfield.add.xml?' . http_build_query($appParams);
+    curl -X POST "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.item.userfield.add" \
+        -H "Content-Type: application/json" \
+        -d '{
+            "PARAMS": {
+                "USER_TYPE_ID": "string",
+                "FIELD_NAME": "NEW_TASKS_FIELD",
+                "XML_ID": "MY_TASK_FIELD",
+                "EDIT_FORM_LABEL": {
+                    "en": "New task field",
+                    "de": "Neues Aufgabenfeld"
+                },
+                "LABEL": "New task field"
+            }
+        }'
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.item.userfield.add" \
+        -H "Content-Type: application/json" \
+        -d '{
+            "PARAMS": {
+                "USER_TYPE_ID": "string",
+                "FIELD_NAME": "NEW_TASKS_FIELD",
+                "XML_ID": "MY_TASK_FIELD",
+                "EDIT_FORM_LABEL": {
+                    "en": "New task field",
+                    "de": "Neues Aufgabenfeld"
+                },
+                "LABEL": "New task field"
+            },
+            "auth": "**put_access_token_here**"
+        }'
     ```
 
 - JS
@@ -93,6 +113,32 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
     );
     ```
 
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'task.item.userfield.add',
+        [
+            'PARAMS' => [
+                'USER_TYPE_ID' => 'string',
+                'FIELD_NAME' => 'NEW_TASKS_FIELD',
+                'XML_ID' => 'MY_TASK_FIELD',
+                'EDIT_FORM_LABEL' => [
+                    'en' => 'New task field',
+                    'de' => 'Neues Aufgabenfeld',
+                ],
+                'LABEL' => 'New task field',
+            ],
+        ]
+    );
+
+    echo '<pre>';
+    print_r($result);
+    echo '</pre>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}
