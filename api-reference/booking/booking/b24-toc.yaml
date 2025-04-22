@@ -1,0 +1,25 @@
+title: Booking
+href: index.md
+items: 
+  - name: Overview of methods
+    href: index.md
+  - name: Add booking
+    href: booking-v1-booking-add.md
+  - name: Create booking from waitlist
+    href: booking-v1-booking-createfromwaitlist.md      
+  - name: Update booking 
+    href: booking-v1-booking-update.md
+  - name: Get booking information
+    href: booking-v1-booking-get.md
+  - name: Get list of bookings 
+    href: booking-v1-booking-list.md
+  - name: Delete booking 
+    href: booking-v1-booking-delete.md                    
+  - name: Connection with additional objects
+    include:
+      path: external-data/b24-toc.yaml
+      mode: link
+  - name: Booking client
+    include:
+      path: client/b24-toc.yaml
+      mode: link

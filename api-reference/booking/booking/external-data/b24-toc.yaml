@@ -1,0 +1,11 @@
+title: Connection with Additional Objects
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Set Connections for Booking
+    href: booking-v1-booking-externaldata-set.md
+  - name: Remove Connections for Booking
+    href: booking-v1-booking-externaldata-unset.md      
+  - name: Get Record Connections for Booking
+    href: booking-v1-booking-externaldata-list.md

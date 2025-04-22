@@ -6,6 +6,8 @@
 
 The method `crm.lead.add` creates a new lead.
 
+## Method Parameters
+
 {% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
@@ -29,12 +31,11 @@ where:
 
 The list of available fields is described [below](#fields)
 ||
-|| **options**
-[`object`](../../data-types.md) | Optional array of options (`"optionName"=>"value"[, ...]`). The list of possible fields is described [below](#options) ||
+|| **params**
+[`object`](../../data-types.md) | Optional array of options (`"optionName"=>"value"[, ...]`). The list of possible fields is described [below](#params) ||
 |#
 
 ### Parameter fields {#fields}
-
 #|
 || **Name**
 `type` | **Description** ||
@@ -79,7 +80,7 @@ Contacts can be added or removed using the group of methods [crm.lead.contact.*]
 || **IM**
 [`crm_multifield`](../../data-types.md) | Messenger. Multiple ||
 || **LINK**
-[`crm_multifield`](../../data-types.md) | User ID linked through an open line. Multiple ||
+[`crm_multifield`](../../data-types.md) | User ID linked through an open channel. Multiple ||
 || **LAST_NAME**
 [`string`](../../data-types.md) | Last name ||
 || **NAME**
@@ -87,11 +88,11 @@ Contacts can be added or removed using the group of methods [crm.lead.contact.*]
 || **SECOND_NAME**
 [`string`](../../data-types.md) | Middle name ||
 || **OPENED**
-[`char`](../../data-types.md) | Indicator of lead availability to everyone. Acceptable values are `Y` or `N`.||
+[`char`](../../data-types.md) | Indicates whether the lead is available to everyone. Acceptable values are `Y` or `N`.||
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicator of manual calculation mode for the amount. Acceptable values are Y or N||
+[`char`](../../data-types.md) | Indicates manual calculation mode for the amount. Acceptable values are Y or N||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source.
 
@@ -103,9 +104,9 @@ Used only for linking to an external source ||
 || **POST**
 [`string`](../../data-types.md) | Position ||
 || **SOURCE_DESCRIPTION**
-[`string`](../../data-types.md) | Source description ||
+[`string`](../../data-types.md) | Description of the source ||
 || **SOURCE_ID**
-[`crm_status`](../../data-types.md) | Source identifier. 
+[`crm_status`](../../data-types.md) | Identifier of the source. 
 Default values:
 
 #|
@@ -143,43 +144,42 @@ The list of all possible stages from the directory can be obtained using the met
 || **TITLE**
 [`string`](../../data-types.md) | Lead title ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Advertising campaign designation ||
+[`string`](../../data-types.md) | Identifier of the advertising campaign ||
 || **UTM_CONTENT**
-[`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
+[`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Traffic type. CPC (ads), CPM (banners) ||
+[`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners) ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google Ads and others ||
+[`string`](../../data-types.md) | Advertising system. Google-Adwords and others ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Campaign search condition. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising ||
 || **WEB**
 [`crm_multifield`](../../data-types.md) | Website. Multiple ||
 || **UF_...** | Custom fields. For example, `UF_CRM_25534736`.  
 
-Depending on the account settings, leads may have a set of custom fields of specific types. 
+Depending on the account settings, leads may have a set of custom fields of defined types. 
 
 To create, modify, or delete custom fields in leads, use the methods [crm.lead.userfield.*](./userfield/index.md) ||
 |#
 
 {% note info %}
 
-Additionally, to find out the required format of fields, you can execute the method [crm.lead.fields](crm-lead-fields.md) and check the format of the incoming values of these fields. 
+Additionally, to find out the required format of the fields, you can execute the method [crm.lead.fields](crm-lead-fields.md) and check the format of the incoming values for these fields. 
 
 {% endnote %}
 
 {% note info %}
 
-When adding a lead, you cannot explicitly set the indicator for a duplicate lead (the `IS_RETURN_CUSTOMER` field), however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when adding the lead.
+When adding a lead, you cannot explicitly set the repeat lead flag (the `IS_RETURN_CUSTOMER` field), however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when adding the lead.
 
 {% endnote %}
 
-## Parameter options {#options}
-
+### Parameter params {#params}
 #|
 || **Name**
 `type`  | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`](../../data-types.md) | Register the event of adding a lead in the activity stream. A notification will also be sent to the responsible person for the lead ||
+[`boolean`](../../data-types.md) | Flag `Y`/`N` - register the lead addition event. Additionally, a notification will be sent to the person responsible for the lead ||
 |#
 
 ## Code Examples
@@ -327,7 +327,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../data-types.md) | Root element of the response, contains the identifier of the created lead ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

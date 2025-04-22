@@ -1,0 +1,11 @@
+title: Connection with Additional Objects
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Set Connections for Waitlist Entry
+    href: booking-v1-waitlist-externaldata-set.md
+  - name: Remove Connections for Waitlist Entry
+    href: booking-v1-waitlist-externaldata-unset.md      
+  - name: Get Connections for Waitlist Entry
+    href: booking-v1-waitlist-externaldata-list.md

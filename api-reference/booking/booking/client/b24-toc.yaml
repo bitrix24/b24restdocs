@@ -1,0 +1,11 @@
+title: Booking Client
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Clients to Booking
+    href: booking-v1-booking-client-set.md
+  - name: Remove Clients from Booking
+    href: booking-v1-booking-client-unset.md      
+  - name: Get List of Booking Clients
+    href: booking-v1-booking-client-list.md

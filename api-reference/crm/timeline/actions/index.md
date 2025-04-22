@@ -1,6 +1,6 @@
 # Actions with Records in the Timeline: Overview of Methods
 
-In the timeline of a CRM entity, you can pin three records. Pinned records will be displayed simultaneously under the form for creating a new CRM activity and in their chronological place in the timeline.
+In the timeline of a CRM entity, you can pin 7 records. Pinned records will be displayed simultaneously under the form for creating a new activity and in their chronological place in the timeline.
 
 ## Connection with CRM Entities
 
@@ -12,7 +12,7 @@ In the timeline of a CRM entity, you can pin three records. Pinned records will 
 >
 > Who can execute the method: any user
 
-#| 
+#|
 || **Method** | **Description** ||
 || [crm.timeline.item.pin](./crm-timeline-item-pin.md) | Pins a record in the timeline ||
 || [crm.timeline.item.unpin](./crm-timeline-item-unpin.md) | Unpins a record in the timeline ||

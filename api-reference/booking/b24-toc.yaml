@@ -1,0 +1,19 @@
+title: Online Booking  
+href: index.md  
+items:   
+  - name: Overview of Methods  
+    href: index.md  
+  - name: Get Client Type List  
+    href: booking-v1-clienttype-list.md  
+  - name: Resource  
+    include:  
+      path: resource/b24-toc.yaml  
+      mode: link  
+  - name: Waitlist  
+    include:  
+      path: waitlist/b24-toc.yaml  
+      mode: link      
+  - name: Booking  
+    include:  
+      path: booking/b24-toc.yaml  
+      mode: link  

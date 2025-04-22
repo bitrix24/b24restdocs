@@ -1,0 +1,23 @@
+title: Resource
+href: index.md
+items: 
+  - name: Overview of methods
+    href: index.md
+  - name: Add new resource
+    href: booking-v1-resource-add.md 
+  - name: Update resource
+    href: booking-v1-resource-update.md
+  - name: Get resource
+    href: booking-v1-resource-get.md
+  - name: Get list of resources
+    href: booking-v1-resource-list.md
+  - name: Delete resource
+    href: booking-v1-resource-delete.md                
+  - name: Resource type
+    include:
+      path: resource-type/b24-toc.yaml
+      mode: link
+  - name: Resource slots
+    include:
+      path: slots/b24-toc.yaml
+      mode: link

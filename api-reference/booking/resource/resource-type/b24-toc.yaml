@@ -1,0 +1,15 @@
+title: Resource Type
+href: index.md
+items: 
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Resource Type
+    href: booking-v1-resourcetype-add.md 
+  - name: Update Resource Type
+    href: booking-v1-resourcetype-update.md
+  - name: Get Resource Type
+    href: booking-v1-resourcetype-get.md
+  - name: Get List of Resource Types
+    href: booking-v1-resourcetype-list.md
+  - name: Delete Resource Type
+    href: booking-v1-resourcetype-delete.md

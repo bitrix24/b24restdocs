@@ -85,7 +85,7 @@ items:
     include:
       path: document-generator/b24-toc.yaml
       mode: link
-  - name: Disk
+  - name: Drive
     include:
       path: disk/b24-toc.yaml
       mode: link
@@ -104,6 +104,10 @@ items:
   - name: News Feed
     include:
       path: log/b24-toc.yaml
+      mode: link
+  - name: Online Booking
+    include:
+      path: booking/b24-toc.yaml
       mode: link
   - name: Open Channels
     include:
@@ -149,7 +153,7 @@ items:
     include:
       path: telephony/b24-toc.yaml
       mode: link
-  - name: Trade Catalog
+  - name: Product Catalog
     include:
       path: catalog/b24-toc.yaml
       mode: link
