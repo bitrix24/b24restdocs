@@ -7,3 +7,5 @@ items:
     href: activity.md
   - name: How to embed your UI in the Automation rule parameters 
     href: setting-robot.md
+  - name: How to terminate workflows of a terminated employee
+    href: how-to-kill-workflows.md    

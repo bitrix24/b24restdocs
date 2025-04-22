@@ -1,20 +1,20 @@
-# Group and Project Participants: Overview of Methods
+# Participants of Groups and Projects: Overview of Methods
 
-Group and project participants are users who are part of workgroups and projects. They can have different roles and permissions.
+Participants of groups and projects are users who are part of working groups and projects. They can have different roles and permissions.
 
 > Quick navigation: [all methods](#all-methods)
 > 
 > User documentation: [Frequently Asked Questions about Groups and Projects in Bitrix24](https://helpdesk.bitrix24.com/open/24633004/)
 
-## Connection of Workgroup and Project Participants with Other Objects
+## Connection of Participants in Working Groups and Projects with Other Objects
 
-**Users**. They are part of workgroups and projects. To get the `ID` of a user, use the `user.get` method.
+**Users**. They are part of working groups and projects. To get the user ID, use the method [user.get](./../../user/user-get.md).
 
-**Groups and Projects**. To get the `ID` of a group or project, use the `sonet_group.get` method. The list of group participants can be obtained through `sonet_group.user.get`.
+**Groups and Projects**. To get the ID of a group or project, use the method [sonet_group.get](../sonet-group-get.md). The list of group participants can be obtained through [sonet_group.user.get](./sonet-group-user-get.md).
 
-**Roles of Group Participants**. Participants in workgroups and projects can have different roles: administrator, moderator, participant. Access permissions to functionality depend on these roles. To change a participant's role, use the `sonet_group.user.update` method.
+**Roles of Group Participants**. Participants in working groups and projects can have different roles: administrator, moderator, participant. Access permissions depend on these roles. To change a participant's role, use the method [sonet_group.user.update](./sonet-group-user-update.md).
 
-**Tasks**. Participants in groups and projects can be assigned as task assignees. To add a participant to a task, use the `task.member.add` method. The method `task.member.list` allows you to get the list of task participants.
+**Tasks**. Participants of groups and projects can be assigned as task performers. When creating a task, add participants using the method [tasks.task.add](./../../tasks/tasks-task-add.md). Specify the parameters `CREATED_BY` — task creator, `RESPONSIBLE_ID` — main performer, `ACCOMPLICES` — participants, `AUDITORS` — observers. When modifying a task, you can add participants through the method [tasks.task.update](./../../tasks/tasks-task-update.md). For this, pass the updated parameters `RESPONSIBLE_ID`, `ACCOMPLICES`, `AUDITORS`.
 
 ## Overview of Methods {#all-methods}
 
@@ -24,10 +24,10 @@ Group and project participants are users who are part of workgroups and projects
 
 #|
 || **Method** | **Description** ||
-|| [sonet_group.user.add](./sonet-group-user-add.md)  | Adds a participant to a workgroup ||
-|| [sonet_group.user.invite](./sonet-group-user-invite.md) | Invites a participant to a group ||
-|| [sonet_group.user.request](./sonet-group-user-request.md) | Sends a request to join a group ||
-|| [sonet_group.user.delete](./sonet-group-user-delete.md) | Removes a participant from a group ||
-|| [sonet_group.user.get](./sonet-group-user-get.md) | Retrieves the list of group participants ||
-|| [sonet_group.user.update](./sonet-group-user-update.md) | Changes a participant's role in a group ||
+|| [sonet_group.user.add](./sonet-group-user-add.md)  | Adds a participant to the working group ||
+|| [sonet_group.user.invite](./sonet-group-user-invite.md) | Invites a participant to the group ||
+|| [sonet_group.user.request](./sonet-group-user-request.md) | Sends a request to join the group ||
+|| [sonet_group.user.delete](./sonet-group-user-delete.md) | Removes a participant from the group ||
+|| [sonet_group.user.get](./sonet-group-user-get.md) | Retrieves the list of participants in the group ||
+|| [sonet_group.user.update](./sonet-group-user-update.md) | Changes a participant's role in the group || 
 |#
