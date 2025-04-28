@@ -1,0 +1,33 @@
+blocks:
+  - type: 'header-block'
+    width: 's'
+    offset: 'default'
+    title: "This page doesn't exist"
+    resetPaddings: false
+    verticalOffset: 'l'
+    description: 'Please check the page URL address or use the site search'
+    image:
+      mobile: '_images/404.svg'
+      desktop: '_images/404.svg'
+      disableCompress: true
+    color: '#FFFFFF'
+    mediaView: 'fit'
+    imageSize: 'm'
+
+  - type: 'extended-features-block'
+    title:
+      text: 'The information below may help:'
+    items:
+      - links:
+        - url: 'https://apidocs.bitrix24.com/api-reference/index.html#bitrix24-tool'
+          text: 'Find the REST API method'
+          theme: 'normal'
+          arrow: true
+        - url: 'https://apidocs.bitrix24.com/local-integrations/index.html'
+          text: 'Create your local application'
+          theme: 'normal'
+          arrow: true
+        - url: 'https://apidocs.bitrix24.com/market/index.html'
+          text: 'Publish your application at the Bitrix24 Market'
+          theme: 'normal'
+          arrow: true

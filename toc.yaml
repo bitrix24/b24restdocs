@@ -9,6 +9,9 @@ items:
     href: access-to-rest-api.md
   - name: How to Make Your First API Request 
     href: first-rest-api-call.md
+  - name: Page 404
+    href: 404.yaml
+    hidden: true
   - name: How to Use Examples 
     href: how-to-use-examples.md
   - name: Typical Use-Cases and Scenarios 
