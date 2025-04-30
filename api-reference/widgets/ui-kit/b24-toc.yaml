@@ -1,0 +1,13 @@
+title: Bitrix24 UI Kit
+href: index.md
+items: 
+  - name: UI Kit - interface, unified with the platform
+    href: index.md
+  - name: Design principles
+    href: design.md
+  - name: Components
+    href: components.md
+  - name: Integration with REST API and business logic
+    href: app-logic.md
+  - name: Quick start
+    href: quick-start.md 
