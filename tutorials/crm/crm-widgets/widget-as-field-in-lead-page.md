@@ -1,19 +1,19 @@
-# Embed a Widget in a Lead as a Custom Property
+# Embed a widget in a lead as a custom property
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-Example of adding a custom property to a lead's detail form. The example works as follows: after the first interaction with the property in the lead's edit form, the handler from the application will always be loaded, even in view mode. The handler makes a request to an external API to obtain the region and operator of the given phone number in the US.
+Example of adding a custom property to a lead's detail form. The example works as follows: after the first interaction with the property in the lead editing form, the handler from the application will always be loaded, even in view mode. The handler makes a request to an external API to obtain the region and operator of the given phone number in the US.
 
-Code for setting properties (called once), where the variable `handlerUrl` is the path to the property handler file.
+The property installation code is called once. The variable `handlerUrl` is the path to the property handler file.
 
 {% list tabs %}
 
 - JS
 
     ```js
-    var handlerUrl = 'https://yourdomain.com/handler.php';
+    var handlerUrl = 'https://yourdomain.yyy/handler.php';
     var type = 'phone_data';
     var propCode = 'PHONE_DATA'; // max length with prefix UF_CRM_ 20 char
 
@@ -67,8 +67,8 @@ Code for setting properties (called once), where the variable `handlerUrl` is th
     {% endnote %}
 
     ```php
-    <?
-    $handlerUrl = 'https://yourdomain.com/handler.php';
+    <?php
+    $handlerUrl = 'https://yourdomain.yyy/handler.php';
     $type = 'phone_data';
     $propCode = 'PHONE_DATA'; // max length with prefix UF_CRM_ 20 char
     $resultAddPropType = CRest::call(
@@ -80,9 +80,8 @@ Code for setting properties (called once), where the variable `handlerUrl` is th
             'DESCRIPTION' => 'custom description ' . $type
         ]
     );
-    if ($resultAddPropType['result'] == true)
-    {
-        echo 'property type ' . $type . ' has been added successfully ';
+    if ($resultAddPropType['result'] == true) {
+        echo 'property type ' . $type . ' has been added successfully <br>';
         $resultAddProp = CRest::call(
             'crm.lead.userfield.add',
             [
@@ -99,17 +98,12 @@ Code for setting properties (called once), where the variable `handlerUrl` is th
                 ]
             ]
         );
-        if ($resultAddProp['error'])
-        {
+        if ($resultAddProp['error']) {
             echo $resultAddProp['error'] . ': ' . $resultAddProp['error_description'];
+        } else {
+            echo 'property ' . $propCode . ' has been added successfully <br>';
         }
-        else
-        {
-            echo 'property ' . $propCode . ' has been added successfully ';
-        }
-    }
-    elseif ($resultAddPropType['error'])
-    {
+    } elseif ($resultAddPropType['error']) {
         echo $resultAddPropType['error'] . ': ' . $resultAddPropType['error_description'];
     }
     ?>
@@ -190,12 +184,11 @@ The handler file that you specified in the `handlerUrl` variable in the code abo
     {% endnote %}
 
     ```php
-    <?
+    <?php
     $placementOptions = isset($_REQUEST['PLACEMENT_OPTIONS']) ? json_decode($_REQUEST['PLACEMENT_OPTIONS'], true) : array();
     if ($_REQUEST['PLACEMENT'] == 'USERFIELD_TYPE'):
         $value = htmlspecialchars($placementOptions['VALUE']);
-        if ($placementOptions['ENTITY_ID'] == 'CRM_LEAD' && $placementOptions['ENTITY_VALUE_ID'] > 0)
-        {
+        if ($placementOptions['ENTITY_ID'] == 'CRM_LEAD' && $placementOptions['ENTITY_VALUE_ID'] > 0) {
             $result = CRest::call(
                 'crm.lead.list',
                 [
@@ -203,29 +196,20 @@ The handler file that you specified in the `handlerUrl` variable in the code abo
                     'select' => ['ID', 'PHONE']
                 ]
             );
-            if (!empty($result['result'][0]['PHONE'][0]['VALUE']))
-            {
+            if (!empty($result['result'][0]['PHONE'][0]['VALUE'])) {
                 $value = trim($result['result'][0]['PHONE'][0]['VALUE']);
                 $data = file_get_contents('http://api.bitroid.info/phone/?q=' . $value);
-                if($data)
-                {
+                if ($data) {
                     $valueData = json_decode($data, true);
-                    if(!$valueData['error'])
-                    {
+                    if (!$valueData['error']) {
                         $value = implode(', ', [$valueData['org'], $valueData['region']]);
-                    }
-                    else
-                    {
+                    } else {
                         $value = 'error: ' . $valueData['error'];
                     }
-                }
-                else
-                {
+                } else {
                     $value = 'no data in base' . $value;
                 }
-            }
-            else
-            {
+            } else {
                 $value = 'no data';
             }
         }
@@ -235,25 +219,22 @@ The handler file that you specified in the `handlerUrl` variable in the code abo
             <head>
                 <script src="//api.bitrix24.com/api/v1/dev/"></script>
             </head>
-            <body style="margin: 0; padding: 0; background-color: <?=$placementOptions['MODE'] === 'edit' ? '#fff'
-                : '#f9fafb'?>;">
-                <?
+            <body style="margin: 0; padding: 0; background-color: <?= $placementOptions['MODE'] === 'edit' ? '#fff' : '#f9fafb' ?>;">
+                <?php
                 if ($placementOptions['MODE'] === 'edit'): ?>
-                    <input type="text" style="width: 90%;" value='<?=$value?>' onkeyup="setValue(this.value)">
+                    <input type="text" style="width: 90%;" value='<?= $value ?>' onkeyup="setValue(this.value)">
                     <script>
-                        function setValue(value)
-                        {
+                        function setValue(value) {
                             BX24.placement.call('setValue', value);
                         }
-                        BX24.placement.call('setValue', '<?=$value?>');
+                        BX24.placement.call('setValue', '<?= $value ?>');
                     </script>
-                <? else: ?>
-                    <?=$value?>
-                <? endif;
-                ?>
+                <?php else: ?>
+                    <?= $value ?>
+                <?php endif; ?>
             </body>
         </html>
-    <? endif;?>
+    <?php endif; ?>
     ```
 
 {% endlist %}

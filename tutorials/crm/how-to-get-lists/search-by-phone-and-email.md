@@ -7,18 +7,16 @@
 The example displays a form for entering a phone number and e-mail. Below the form, a table is shown with the search results by columns:
 
 - `id` of the entity
-- entity
+- object type
 - title
-- entity's phones
-- entity's emails
+- entity's phone numbers
+- entity's e-mails
 
-The code uses duplicate search to find all entities (lead, contact, company) that have the specified phone/e-mail. Then, from the list of all `ID`s, it retrieves information about each entity:
+The code uses duplicate search to find all objects: lead, contact, company that have the specified phone number or e-mail. Then, from the list of all `IDs`, information about each entity is retrieved and displayed in the table:
 
 - title or first and last name
-- all phones
+- all phone numbers
 - e-mail
-
-and displays it in a table.
 
 {% list tabs %}
 
@@ -331,7 +329,7 @@ and displays it in a table.
     {% endnote %}
 
     ```php
-    <?
+    <?php
         include('crest.php');
         $phone = ($_POST['PHONE'])?htmlspecialchars($_POST['PHONE']):false;
         $email = ($_POST['EMAIL'])?htmlspecialchars($_POST['EMAIL']):false;

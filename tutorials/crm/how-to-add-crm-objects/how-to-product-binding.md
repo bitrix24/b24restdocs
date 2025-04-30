@@ -1,10 +1,20 @@
 # Add a deal (lead, invoice, quote) with products, applying discounts and taxes
 
+{% if build == 'dev' %}
+
+{% note alert "TO-DO _not exported to prod_" %}
+
+Removed from the menu to prevent publication. It needs a complete overhaul; crm.product.list is outdated, all examples can be replaced with one using a universal method.
+
+{% endnote %}
+
+{% endif %}
+
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-Examples of creating various entities while simultaneously adding products to them. The added product is taken from Bitrix24 with a price greater than zero. All examples add the product in the maximum possible number of variations, with a mini-comment around each variation describing the additional conditions under which the product will be displayed.
+Examples of creating various objects while simultaneously adding products to them. The product being added is taken from Bitrix24 with a price greater than zero. All examples add the product in the maximum possible number of variations, with a mini-comment around each variation describing the additional conditions under which the product will be displayed.
 
 ## Attaching products to a deal
 
@@ -140,12 +150,12 @@ Examples of creating various entities while simultaneously adding products to th
 
     {% note info %}
 
-    To use the examples in PHP, set up the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
     ```php
-    <?
+    <?php
     $resultProduct = CRest::call(
         'crm.product.list',
         [
@@ -372,12 +382,12 @@ Examples of creating various entities while simultaneously adding products to th
 
     {% note info %}
 
-    To use the examples in PHP, set up the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
     ```php
-    <?
+    <?php
     $resultProduct = CRest::call(
         'crm.product.list',
         [
@@ -592,12 +602,12 @@ Examples of creating various entities while simultaneously adding products to th
 
     {% note info %}
 
-    To use the examples in PHP, set up the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
     ```php
-    <?
+    <?php
     $resultProduct = CRest::call(
         'crm.product.list',
         [
@@ -837,12 +847,12 @@ Examples of creating various entities while simultaneously adding products to th
 
     {% note info %}
 
-    To use the examples in PHP, set up the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
     ```php
-    <?
+    <?php
     $resultProduct = CRest::call(
         'crm.product.list',
         [

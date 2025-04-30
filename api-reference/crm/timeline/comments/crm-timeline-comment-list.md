@@ -1,4 +1,4 @@
-# Get a List of Comments crm.timeline.comment.list
+# Get a list of comments crm.timeline.comment.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -12,7 +12,7 @@ This method retrieves a list of all comments of the specified CRM entity type.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array containing the list of fields to be selected (see the fields of the [result](./crm-timeline-comment-fields.md#fields) object). If not provided or an empty array is passed, the result will return an empty array. ||
+[`array`](../../../data-types.md) | An array containing the list of fields to select (see the fields of the [result](./crm-timeline-comment-fields.md#fields) object). If not provided or an empty array is passed, the result will return an empty array ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering the selected comments in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
@@ -20,7 +20,7 @@ Possible values for `field` correspond to the fields of the [result](./crm-timel
 
 Required fields: `ENTITY_ID`, `ENTITY_TYPE`.
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -50,8 +50,8 @@ Possible values for `field` correspond to the fields of the [result](./crm-timel
 
 Possible values for `order`:
 
-- `asc` — in ascending order
-- `desc` — in descending order
+- `ASC` — in ascending order
+- `DESC` — in descending order
  ||
 || **start**
 [`integer`](../../../data-types.md) | This parameter is used for pagination control.
@@ -62,13 +62,13 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` is the desired page number
  ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -163,13 +163,13 @@ HTTP status: **200**
             "ID": "999",
             "ENTITY_ID": "2",
             "ENTITY_TYPE": "deal",
-            "CREATED": "2020-03-02T12:00:00+03:00",
+            "CREATED": "2020-03-02T12:00:00+02:00",
             "COMMENT": "New comment was added",
             "AUTHOR_ID": "1",
             "FILES": {
                 "1": {
                     "id": 1,
-                    "date": "2020-03-02T12:00:00+03:00",
+                    "date": "2020-03-02T12:00:00+02:00",
                     "type": "image",
                     "name": "1.gif",
                     "size": 43,
@@ -178,14 +178,14 @@ HTTP status: **200**
                         "height": 1
                     },
                     "authorId": 1,
-                    "authorName": "John Doe",
+                    "authorName": "John Dou",
                     "urlPreview": "https://my.bitrix24.com/disk/showFile/930/?&ncc=1&width=640&height=640&signature=292f450929833cd881070155e05a2c41b5bb265ea8c8c1bc2108dbcbb56f667f&ts=1718366521&filename=1.gif",
                     "urlShow": "https://my.bitrix24.com/disk/showFile/930/?&ncc=1&ts=1718366521&filename=1.gif",
                     "urlDownload": "https://my.bitrix24.com/disk/downloadFile/930/?&ncc=1&filename=1.gif"
                 },
                 "2": {
                     "id": 2,
-                    "date": "2020-03-02T12:00:00+03:00",
+                    "date": "2020-03-02T12:00:00+02:00",
                     "type": "image",
                     "name": "2.gif",
                     "size": 43,
@@ -194,7 +194,7 @@ HTTP status: **200**
                         "height": 1
                     },
                     "authorId": 1,
-                    "authorName": "John Doe",
+                    "authorName": "John Dou",
                     "urlPreview": "https://my.bitrix24.com/disk/showFile/931/?&ncc=1&width=640&height=640&signature=118de010a40eff06fb9d691ee9235e2ef809a17780e46927bf8b12f8dc3224db&ts=1718366521&filename=2.gif",
                     "urlShow": "https://my.bitrix24.com/disk/showFile/931/?&ncc=1&ts=1718366521&filename=2.gif",
                     "urlDownload": "https://my.bitrix24.com/disk/downloadFile/931/?&ncc=1&filename=2.gif"
@@ -205,7 +205,7 @@ HTTP status: **200**
             "ID": "1000",
             "ENTITY_ID": "2",
             "ENTITY_TYPE": "deal",
-            "CREATED": "2020-03-02T12:00:00+03:00",
+            "CREATED": "2020-03-02T12:00:00+02:00",
             "COMMENT": "Test comment",
             "AUTHOR_ID": "1",
             "FILES": {},
@@ -216,8 +216,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-03T17:19:01+02:00",
+        "date_finish": "2024-05-03T17:19:01+02:00",
         "operating": 0
     }
 }
@@ -229,11 +229,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md) | The root element of the response containing an array of objects with information about the selected comments. ||
+[`array`](../../../data-types.md) | The root element of the response, containing an array of objects with information about the selected comments ||
 || **total**
-[`integer`](../../../data-types.md) | The total number of records found. ||
+[`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request. ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -253,7 +253,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied. | No permissions to edit the entity in CRM. ||
+|| Empty string | Access denied. | No permissions to edit the entity in CRM ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

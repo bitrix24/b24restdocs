@@ -1,4 +1,4 @@
-# Main User Scenarios and Example
+# Typical use-cases and scenarios example
 
 {% note warning "We are still updating this page" %}
 
@@ -16,23 +16,23 @@ Some data may be missing — we will fill it in shortly.
 
 {% endif %}
 
-1. An incoming call to the PBX on a specific user's internal number should display the call card for the employee in Bitrix24 (Method [telephony.externalcall.register](../../api-reference/telephony/telephony-external-call-register.md)).
+1. An incoming call to the PBX on a specific user's internal number should display the call card for the employee in Bitrix24, using the method [telephony.externalcall.register](../../api-reference/telephony/telephony-external-call-register.md).
 
-2. An incoming call from an unknown number (not registered in CRM) should enter the processing queue (a list of users who should answer incoming calls):
-   - Simultaneous queue: all employees who are not currently answering other calls will simultaneously see the call card, and when one of them starts answering the call, the card disappears for the others (first `telephony.externalcall.register` for the first in the queue, then [telephony.externalcall.show](../../api-reference/telephony/telephony-external-call-show.md) for the others).
-   - Sequential queue: each employee in the queue who is not currently answering other calls will see the call card for a certain period (3-5-7 seconds); if the employee does not start answering the call, the card disappears, and the call is transferred to the next in the queue (first `telephony.externalcall.register` for the first in the queue, then [telephony.externalcall.hide](../../api-reference/telephony/telephony-external-call-hide.md) and `telephony.externalcall.show` for the next).
+2. An incoming call from an unknown number, not registered in the CRM, should enter a processing queue from the list of users who should answer incoming calls:
+   - Simultaneous queue: all employees who are not currently answering other calls will simultaneously see the call card when one of them starts answering the call, while the others will lose the card. First, we use `telephony.externalcall.register` for the first in the queue, then [telephony.externalcall.show](../../api-reference/telephony/telephony-external-call-show.md) for the others.
+   - Sequential queue: each of the employees in the queue who are not currently answering other calls will see the call card for a certain period, 3-5-7 seconds. If the employee does not start answering the call, the card disappears, and the call is transferred to the next in line. First, we use `telephony.externalcall.register` for the first in the queue, then [telephony.externalcall.hide](../../api-reference/telephony/telephony-external-call-hide.md) and `telephony.externalcall.show` for the next.
 
-3. An incoming call from a known number is displayed as a call card in Bitrix24 for the manager responsible for the corresponding CRM object. (First `telephony.externalcall.register` with SHOW = 0, which will return either CREATED_LEAD if the phone was not found in CRM and a new lead was created, or a pair of CRM_ENTITY_TYPE and CRM_ENTITY_ID indicating the found existing client. Simultaneously, CRM_ACTIVITY_ID is returned with the identifier of the new CRM activity in which the call will be recorded later. Knowing the identifier of the object in CRM, one can use REST methods to get the identifier of the manager responsible for the client, transfer the call to them, and show them the call card `telephony.externalcall.show`).
+3. An incoming call from a known number is displayed as a call card in Bitrix24 for the manager responsible for the corresponding CRM entity. First, `telephony.externalcall.register` with `SHOW = 0`, which will return either `CREATED_LEAD` if the phone was not found in the CRM and a new lead was created, or a pair of `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID` indicating the found existing client. Simultaneously, `CRM_ACTIVITY_ID` is returned with the identifier of the new activity in the CRM, where the call will be recorded later. Knowing the identifier of the entity in the CRM, we can use CRM methods to get the identifier of the manager responsible for the client, transfer the call to them, and show them the call card using `telephony.externalcall.show`.
 
-4. An employee in Bitrix24 clicks on the phone number in the CRM interface. The application initiates an outgoing call to the specified number on the PBX side (event `onexternalcallstart`, the employee sees the call card `telephony.externalcall.register`).
+4. An employee in Bitrix24 clicks on the phone number in the CRM interface. The application initiates an outgoing call to the specified number on the PBX side, triggering the event `onexternalcallstart`, and the employee sees the call card using `telephony.externalcall.register`.
 
-5. The call is completed (incoming or outgoing). The fact of the call and the recording are recorded in connection with the CRM object ([telephony.externalcall.finish](../../api-reference/telephony/telephony-external-call-finish.md)). If at the time of the call's completion the recording of the conversation is not yet ready on the PBX, then instead of `telephony.externalcall.finish`, we first simply hide the call card `telephony.externalcall.hide`, and then, when the recording is ready, we call `telephony.externalcall.finish`.
+5. The call is completed, either incoming or outgoing. The fact of the call and the recording are recorded in relation to the CRM entity using [telephony.externalcall.finish](../../api-reference/telephony/telephony-external-call-finish.md). If at the time of call completion the recording is not yet ready on the PBX, instead of `telephony.externalcall.finish`, we first simply hide the call card using `telephony.externalcall.hide`, and then, when the recording is ready, we call `telephony.externalcall.finish`.
 
-6. An incoming call occurred on the PBX at a time when there is no connection between the PBX and Bitrix24 for some reason. After the connection is restored, information about the occurred call is recorded in Bitrix24 (see 1-3, but without showing the call card – sequentially calling the methods `telephony.externalcall.register` with the parameter SHOW = 0 and `telephony.externalcall.finish`).
+6. An incoming call occurred on the PBX at a time when there was no connection between the PBX and Bitrix24 for some reason. After the connection is restored, information about the occurred call is recorded in Bitrix24, points 1-3, but without showing the call card – a sequential call of the methods `telephony.externalcall.register` with the parameter `SHOW = 0` and `telephony.externalcall.finish`.
 
 {% note info %}
 
-To add the recording to the call in the calling scenario, applications must pass CALL_LIST_ID that they receive in the [event](../../api-reference/telephony/events/on-external-call-start.md) at the start of the call.
+To ensure the recording is added to the call during the calling scenario, applications must pass `CALL_LIST_ID` that they receive in the [event](../../api-reference/telephony/events/on-external-call-start.md) at the start of the call.
 
 {% endnote %}
 
@@ -42,7 +42,7 @@ To add the recording to the call in the calling scenario, applications must pass
 <?php
 /**
  * Created by PhpStorm.
- * User: John
+ * User: sv
  * Date: 01.11.16
  * Time: 10:44
  */
@@ -53,7 +53,7 @@ $script_url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SE
 $appsConfig = array();
 $b24domain = $_REQUEST['DOMAIN'];
 // if we received an outgoing call event, then authorization is passed through the auth node in the request array
-// but we only need the domain from there, we have already saved the authorization by this time
+// but we only need the domain from there, we have already saved the authorization by this point
 if (!empty($_REQUEST['auth'])) {
     $b24domain = $_REQUEST['auth']['domain'];
 }
@@ -62,7 +62,7 @@ echo getcwd().$configFileName."<br/>";
 if (file_exists(getcwd() . $configFileName)) {
     include_once getcwd() . $configFileName;
 } else {
-    // saving tokens of the user setting up the application
+    // saving tokens for the user setting up the application
     $appsConfig = $_REQUEST;
     saveParams($appsConfig);
     // registering the outgoing call event
@@ -113,7 +113,7 @@ if ($action == '') {
 <a class="btn btn-default" href="#" role="button" id="drop">Drop</a>
 <a class="btn btn-default" href="#" role="button" id="test">Event test</a>
 <div id="debug"></div>
-<?
+<?php
     // if you're curious, you can see what authorization parameters Bitrix24 passes to the application script
     // when the application is executed in a frame inside Bitrix24
     //echo "<pre>";
@@ -125,8 +125,8 @@ if ($action == '') {
         // here we simulate the operation of an external PBX, in particular, receiving an incoming call
         // hence AJAX, passing authorization parameters, etc.
         // in real practice, REST telephony will be called from the PBX side, and there we have already saved
-        // the authorization tokens (see $appsConfig$appsConfig) and we know which Bitrix24 to send
-        // the REST call to, which users to show the card to, etc.
+        // authorization tokens (see $appsConfig) and we know which Bitrix24 to send the
+        // REST call to, which users to show the card to, etc.
         auth = BX24.getAuth();
         $.ajax({
             url: "<?=$script_url?>",
@@ -171,7 +171,7 @@ if ($action == '') {
             }
         });
     });
-    /* initiating a test event on the server-side script, nothing important
+    /* initiating a test event on the server script side, nothing important
     $( "#test" ).on( "click", function( event ) {
         auth = BX24.getAuth();
         $.ajax({
@@ -189,7 +189,7 @@ if ($action == '') {
 </script>
 </body>
 </html>
-<? } else {
+<?php } else {
     switch ($action) {
         case 'test': writeToLog(array('test' => $_REQUEST), 'telephony test event');
                 break;
@@ -272,6 +272,7 @@ if ($action == '') {
         break;
     }
 }
+?>
 /**
  * Save application configuration.
  *
@@ -336,4 +337,4 @@ function writeToLog($data, $title = '') {
 ?>
 ```
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}

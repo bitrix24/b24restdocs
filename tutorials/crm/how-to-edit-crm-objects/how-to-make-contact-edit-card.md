@@ -69,7 +69,7 @@ $ID = intVal($_REQUEST['ID']);
                     $sResult .= ' checked';
                 }
                 if (!empty($arParams['MULTIPLE']))
-                {
+                {//sometimes work, not for standard type="text"
                     $sResult .= ' multiple';
                 }
                 if (!empty($arParams['VALUE']))
@@ -584,7 +584,7 @@ if (is_array($arResult['FIELDS'])):
 </pre>
 ```
 
-**auto_form.php** file:
+File **auto_form.php**:
 
 ```php
 <?

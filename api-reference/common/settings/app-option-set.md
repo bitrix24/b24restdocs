@@ -2,7 +2,7 @@
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
 The `app.option.set` method binds data to the application.
 
@@ -14,7 +14,7 @@ The `app.option.set` method binds data to the application.
 || **Name**
 `type` | **Description** ||
 || **options***
-[`array`](../../data-types.md) | An array where the key is the name of the property to be saved, and the value is the property value. If a value with a new key is passed, the method will write it; if an existing one, it will update it. ||
+[`array`](../../data-types.md) | An array where the key is the name of the property being saved, and the value is the property value. If a value with a new key is passed, the method will write it; if an existing one, it will update it. ||
 |#
 
 ## Code Examples

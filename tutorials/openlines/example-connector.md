@@ -1,16 +1,16 @@
-# How to Create a Connector for Open Channels for Online Chat on Your Site
+# How to Create an Open Channels Connector for Online Chat on Your Site
 
 {% note info %}
 
 The example works only on a local application. It will not function when using webhooks.
 
-To use the example, you need to set up the CRest class and include the crest.php file in the files where this class is used. Read more in the article [How to Use Examples in Documentation](../../how-to-use-examples.md).
+To use the example, you need to set up the CRest class and include the crest.php file in the files where this class is used. For more details, read the article [How to Use Examples in Documentation](../../how-to-use-examples.md).
 
 {% endnote %}
 
-This example will allow you to create an online chat on your site. The dialogue is linked to the user's session on your site and to the domain.
+This example will allow you to create an online chat on your site. The dialogue is linked to the user's session on your site and to the domain of the site.
 
-1. After installing all the files, run the install_connector.php file through your browser for the initial setup of the Open Line. If the initial setup is successful, you will see the message `successfully`.
+1. After installing all the files, open the install_connector.php file in your browser for the initial setup of the Open Lines. Upon successful initial setup, you will see the message `successfully`.
 2. Open the section with open lines and find the block named "ExampleSiteChat".
 3. Open the "ExampleSiteChat" section and click "Connect".
 4. If you have configured everything correctly, you will see the message `successfully`.
@@ -18,7 +18,7 @@ This example will allow you to create an online chat on your site. The dialogue 
 
 The example includes a check: when the install_connector.php file is called, a folder named \chats should be created in the same directory where this file is located. This folder stores information about the chats.
 
-If you see the message `error creat dir /chats`, it means that the initial setup of the connector has failed. This indicates that the permissions are set incorrectly, and the script cannot create the /chats folder.
+If you see the message `error creat dir /chats`, it means the initial setup of the connector has failed. This indicates that the permissions are set incorrectly, and the script cannot create the /chats folder.
 
 Create a file named function.php.
 
@@ -90,7 +90,7 @@ Create a file named handler.php.
 
 The variables `$widgetUri` and `$widgetName` are required if you want to display this connector in the list of connectors in the widget on the site. Otherwise, they can be left empty.
 
-- `widgetUri` — the path to the icon in the widget. For example, when clicking on the social media icon, the chat in that social media opens.
+- `widgetUri` — the path to the icon in the widget. For example, when clicking on a social media icon, the chat in that social media opens.
 - `widgetName` — the name of the connector in the widget.
 
 ```php
@@ -164,7 +164,7 @@ if(
                         ],
                         'chat' => [
                             'id' => $arMessage['chat']['id']
-                        },
+                        ],
                     ],
                 ]
             ]

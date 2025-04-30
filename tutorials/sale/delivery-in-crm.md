@@ -2,7 +2,7 @@
 
 ## Creating a Delivery Service Handler
 
-{% include [Footnote on Examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -115,8 +115,8 @@ Example response:
         "finish": 1714736791.896773,
         "duration": 1.6359591484069824,
         "processing": 0.03880000114440918,
-        "date_start": "2024-05-03T14:46:30+03:00",
-        "date_finish": "2024-05-03T14:46:31+03:00"
+        "date_start": "2024-05-03T14:46:30+02:00",
+        "date_finish": "2024-05-03T14:46:31+02:00"
     }
 }
 ```
@@ -127,7 +127,7 @@ More about the method [sale.delivery.handler.add](../../api-reference/sale/deliv
 
 ## Creating a Delivery Service
 
-{% include [Footnote on Examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -239,23 +239,23 @@ Example response:
     "finish":1714737122.894801,
     "duration":0.2940359115600586,
     "processing":0.0942530632019043,
-    "date_start":"2024-05-03T14:52:02+03:00",
-    "date_finish":"2024-05-03T14:52:02+03:00"
+    "date_start":"2024-05-03T14:52:02+02:00",
+    "date_finish":"2024-05-03T14:52:02+02:00"
 }
 }
 ```
 
-We created a delivery service with the identifier `226`. This delivery service has two child delivery services (delivery profiles) with identifiers `227` and `228`.
+We created a delivery service with the identifier `226`. This delivery service has two child delivery services, delivery profiles, with identifiers `227` and `228`.
 
 More about the method [sale.delivery.add](../../api-reference/sale/delivery/delivery/sale-delivery-add.md).
 
 ## Creating Shipment Properties
 
-To allow the manager to select "From" and "To" addresses when choosing a delivery service in the interface, we need to create the corresponding shipment properties. If such properties have already been created, you can proceed directly to the next step of linking the shipment properties to the delivery service.
+To allow the manager to select "From" and "To" addresses when choosing a delivery service in the interface, we need to create the corresponding shipment properties. If such properties have been created before, you can proceed directly to the next step of linking shipment properties to the delivery service.
 
 Let's create the property `Address From`. 
 
-{% include [Footnote on Examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -356,8 +356,8 @@ Response:
     "finish":1714738000.799885,
     "duration":1.1285769939422607,
     "processing":0.8807950019836426,
-    "date_start":"2024-05-03T15:06:39+03:00",
-    "date_finish":"2024-05-03T15:06:40+03:00"
+    "date_start":"2024-05-03T15:06:39+02:00",
+    "date_finish":"2024-05-03T15:06:40+02:00"
 }
 }
 ```
@@ -463,25 +463,25 @@ Response:
     "finish":1714738048.713083,
     "duration":0.3654971122741699,
     "processing":0.18678808212280273,
-    "date_start":"2024-05-03T15:07:28+03:00",
-    "date_finish":"2024-05-03T15:07:28+03:00"
+    "date_start":"2024-05-03T15:07:28+02:00",
+    "date_finish":"2024-05-03T15:07:28+02:00"
 }
 }
 ```
 
 We created two shipment properties: `Address From` with the identifier `102` and `Address To` with the identifier `103`.
 
-Similarly, you can create properties of other types for specific needs. For example, if you want the manager to be able to write a comment for the shipping company, you can create a shipment property with the type `STRING` and name it accordingly "Comment for the shipping company". In this case, the property will be displayed to the manager in the user interface, and he will be able to fill it out.
+Similarly, you can create properties of other types for specific needs. For example, if you want the manager to be able to write a comment for the transport company, you can create a shipment property with the type `STRING` and name it accordingly "Comment for Transport Company". In this case, the property will be displayed to the manager in the user interface, and he will be able to fill it out.
 
 More about the method [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md).
 
 ## Linking Shipment Properties to the Delivery Service
 
-After creating the properties, you need to link them to the previously created delivery services. By now, we have two delivery services with identifiers `227` and `228` (there's no need to link properties to the parent delivery service) and two properties with identifiers `102` and `103`.
+After creating the properties, you need to link them to the previously created delivery services. By now, we have two delivery services with identifiers `227` and `228` and two properties with identifiers `102` and `103`. There is no need to link properties to the parent delivery service.
 
 Let's link the properties to the delivery service with the identifier `227`. 
 
-{% include [Footnote on Examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -562,7 +562,7 @@ Let's link the properties to the delivery service with the identifier `227`.
 
 {% endlist %}
 
-Let's link the properties to the delivery service with the identifier `228`. 
+Now let's link the properties to the delivery service with the identifier `228`. 
 
 {% list tabs %}
 
@@ -646,9 +646,9 @@ More about the method [sale.propertyrelation.add](../../api-reference/sale/prope
 
 ## Adding Services to Delivery Services
 
-In some cases, it is necessary to give the manager the option to choose certain services that may be available for the delivery service. For example, the cost of delivery may differ if door delivery is required. In this case, you can create a service that the manager can specify when calculating or placing the delivery order.
+In some cases, it is necessary to give the manager the ability to choose certain services that may be available for the delivery service. For example, the cost of delivery may differ if door delivery is required. In this case, you can create a service that the manager can specify when calculating or placing an order for delivery.
 
-{% include [Footnote on Examples](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -706,38 +706,38 @@ Response:
         "finish": 1714739042.50093,
         "duration": 0.2727780342102051,
         "processing": 0.09131193161010742,
-        "date_start": "2024-05-03T15:24:02+03:00",
-        "date_finish": "2024-05-03T15:24:02+03:00"
+        "date_start": "2024-05-03T15:24:02+02:00",
+        "date_finish": "2024-05-03T15:24:02+02:00"
     }
 }
 ```
 
-In this example, we created a door delivery service with the symbolic code `door_delivery` and identifier `140`.
+In this example, we created a delivery service to the door with the symbolic code `door_delivery` and identifier `140`.
 
 More about the method [sale.delivery.extra.service.add](../../api-reference/sale/delivery/extra-service/sale-delivery-extra-service-add.md).
 
-## Handling Requests Received at Webhooks
+## Handling Requests Coming to Webhooks
 
-By now, we have made all the necessary settings on the *Bitrix24* side, and the manager can fully utilize the delivery service we created. He can perform preliminary cost calculations, place delivery orders, and also have the option to cancel the delivery. When creating the handler, we specified specific URLs for this in the parameters.
+By this point, we have made all the necessary settings on the *Bitrix24* side, and the manager can fully utilize the delivery service we created. He can perform a preliminary cost calculation, place an order for delivery, and also have the option to cancel the delivery. When creating the handler, we specified specific URLs for this in the parameters.
 
 #|
 || **Purpose** | **Parameter** | **URL** ||
 || Preliminary calculation of delivery cost | `CALCULATE_URL` | https://gateway.bx/calculate.php ||
 || Request to place a real delivery order | `CREATE_DELIVERY_REQUEST_URL` | https://gateway.bx/create_delivery_request.php ||
-|| Request to cancel a previously created delivery order | `CANCEL_DELIVERY_REQUEST_URL` | https://gateway.bx/cancel_delivery_request.php ||
+|| Request to cancel a previously formed delivery order | `CANCEL_DELIVERY_REQUEST_URL` | https://gateway.bx/cancel_delivery_request.php ||
 |#
 
-When requests are received at these URLs, the external system must process the request and return a response in the required format.
+When requests come to these URLs, the external system must process the request and return a response in the required format.
 
 More about webhooks in the section [Webhooks for Delivery Operations](../../api-reference/sale/delivery/webhooks/index.md).
 
 ## Notifications During Delivery Order Execution
 
-During the execution of a delivery order, the external system may need to inform the manager or recipient about some information regarding the order status. For this purpose, there are methods in the [sale.delivery.request.*](../../api-reference/sale/delivery/delivery-request/index.md) family. 
+During the execution of a delivery order, the external system may need to inform the manager or recipient about some information regarding the order status. For this, there are methods in the [sale.delivery.request.*](../../api-reference/sale/delivery/delivery-request/index.md) family.
 
 #|
 || **Method** | **Purpose** ||
-|| [sale.delivery.request.update](../../api-reference/sale/delivery/delivery-request/sale-delivery-request-update.md) | Updates the delivery order entity (its status and set of properties) ||
+|| [sale.delivery.request.update](../../api-reference/sale/delivery/delivery-request/sale-delivery-request-update.md) | Updates the delivery order entity: status and set of its properties ||
 
 || [sale.delivery.request.delete](../../api-reference/sale/delivery/delivery-request/sale-delivery-request-delete.md) | Notifies about the cancellation of the delivery order on the external system side and attempts to cancel the delivery order on the Bitrix24 side ||
 

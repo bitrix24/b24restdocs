@@ -1,10 +1,10 @@
-# Add a deal with the selection of details from an existing company or contact
+# How to Add a Deal and Company with Requisites
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-Example of placing a form on a webpage, after filling out which a new deal is created in Bitrix24 with the attachment of a company with details.
+An example of embedding a form on a website page, after filling out which a new deal is created in Bitrix24, along with a new company that has requisites attached.
 
 - Create a form on the desired page:
 
@@ -40,7 +40,7 @@ Example of placing a form on a webpage, after filling out which a new deal is cr
                     delete arAddressFields.result.ANCHOR_TYPE_ID;
                     delete arAddressFields.result.ANCHOR_ID;
 
-                    let formHtml = '<fo rm id="form_to_crm">';
+                    let formHtml = '<form id="form_to_crm">';
                     formHtml += '<select name="REQ_TYPE" required>';
                     formHtml += '<option value="" disabled selected>Select</option>';
                     for (let id in arRequisiteType) {
@@ -88,7 +88,7 @@ Example of placing a form on a webpage, after filling out which a new deal is cr
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
 
     {% endnote %}
 
@@ -96,7 +96,7 @@ Example of placing a form on a webpage, after filling out which a new deal is cr
     <?php
     $arAddressFields = CRest::call('crm.address.fields',[]);
     /*
-    crm.address.fields return: /api-reference/crm/requisites/addresses/index.html
+    crm.address.fields return: https://dev.quickbooks.com/rest_help/crm/requisite/requisite_fields.php#address
     */
     $arRequisiteType = CRest::call('crm.requisite.preset.list',
         [
@@ -278,7 +278,7 @@ Example of placing a form on a webpage, after filling out which a new deal is cr
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
 
     {% endnote %}
 

@@ -4,13 +4,13 @@
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-An example of using Sales Intelligence when creating a lead. First, create a PHP page with a feedback web form (First Name, Last Name, Phone). Place the example code on the page.
+An example of using Sales Intelligence when creating a lead. First, create a PHP page with a feedback form: First Name, Last Name, Phone. Place the example code on the page.
 
-What happens during code execution?
+What happens during the execution of the code?
 
-1. The standard JS code from Bitrix24 Sales Intelligence is connected.
-2. After filling out the form, in addition to the form fields, the code for Sales Intelligence `b24Tracker.guest.getTrace()` is passed in a hidden field.
-3. Then, [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) is called, where the code from getTrace is added to the TRACE field.
+1. The standard JS code from Bitrix24's Sales Intelligence is connected.
+2. After filling out the form, in addition to the form fields, a hidden field transmits the code for Sales Intelligence `b24Tracker.guest.getTrace()`.
+3. Then, the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) is called, where the code from `getTrace` is added to the `TRACE` field.
 
 The Sales Intelligence script is installed on your site before the closing `</body>` tag on all pages of the site, including the page with the form.
 
@@ -102,7 +102,7 @@ The Sales Intelligence script is installed on your site before the closing `</bo
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
@@ -114,7 +114,7 @@ The Sales Intelligence script is installed on your site before the closing `</bo
         </head>
         <body class="container">
             <h1>Feedback</h1>
-            <?
+            <?php
             include("crest.php");
             $message = '';
             if(!empty($_POST['SAVE']))

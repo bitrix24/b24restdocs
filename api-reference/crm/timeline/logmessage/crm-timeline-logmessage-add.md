@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `administrator`
+> Who can execute the method: `user with permission to modify the CRM entity to which the entry will be added`
 
 This method adds a new log entry to the timeline.
 
@@ -37,9 +37,9 @@ fields:
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md#object_type) where the entry will be created ||
+[`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md#object_type) in which the entry will be created ||
 || **entityId***
-[`integer`](../../../data-types.md) | Identifier of the entity item where the entry will be created ||
+[`integer`](../../../data-types.md) | Identifier of the entity item in which the entry will be created ||
 || **title***
 [`string`](../../../data-types.md) | Entry title ||
 || **text***
@@ -204,7 +204,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Access denied ||
 || `OWNER_NOT_FOUND` | The CRM entity with the specified `entityTypeId` and `entityId` does not exist ||
-|| `100` | Required fields are missing ||
+|| `100` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 

@@ -1,6 +1,6 @@
 # Example of Creating a Support Channel
 
-With the **Open Lines** module, you can organize technical support for any *Bitrix24* application, including chatbots.
+With the **Open Channels** module, you can organize technical support for any *Bitrix24* application, including chatbots.
 
 To do this, follow these steps:
 
@@ -14,7 +14,7 @@ To do this, follow these steps:
 
   - Be sure to fill in the `Name` and `Short Description` fields, and set an `Avatar` — this will help clients find you more easily.
 
-  - As soon as a user enters your Open Line *Bitrix24.Network*, they will automatically receive a welcome message:
+  - Once a user enters your Open Channel *Bitrix24.Network*, they will automatically receive a welcome message:
          
   ![Welcome Message](./_images/openlines4.png)
 
@@ -22,7 +22,7 @@ To do this, follow these steps:
 
 ![Creating or Selecting an Open Line](./_images/add_network000.png)
 
-Using the Rest command [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md), you can automatically connect your open line to the user account:
+Using the method [imopenlines.network.join](../../api-reference/imopenlines/openlines/imopenlines-network-join.md), you can automatically connect your open line to the user account:
 
 ```php
 $result = restCommand(
@@ -36,10 +36,10 @@ $result = restCommand(
 );
 ```
 
-After setting up the Open Line, you can send a welcome message to the client using the Rest command [imopenlines.network.message.add](../../api-reference/imopenlines/openlines/imopenlines-network-message-add.md):
+After setting up the Open Line, you can send a welcome message to the client using the method [imopenlines.network.message.add](../../api-reference/imopenlines/openlines/imopenlines-network-message-add.md):
 
 ```php
-Thank you for setting up, we will be happy to help if you have any questions — feel free to write in this chat. Have a great day! :)
+Thank you for setting up, we will be happy to help. If you have any questions, feel free to write in this chat. Have a great day! :)
 ```
 
 {% note info %}

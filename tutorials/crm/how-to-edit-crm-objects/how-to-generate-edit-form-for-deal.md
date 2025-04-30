@@ -1,10 +1,10 @@
-# How to Create Your Deal Editing Form
+# How to Create Your Deal Edit Form
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-Example of automatically generating a deal editing form with all fields created in Bitrix24 on the application page.
+Example of automatically generating a deal edit form with all fields created in Bitrix24 on the application page.
 
 Some field types are not implemented in the example; a message *field not support* will be displayed in place of unsupported field types.
 
@@ -17,7 +17,7 @@ To use the examples in PHP, configure the *CRest* class and include the **crest.
 Generated form code:
 
 ```php
-<?
+<?php
 $ID = intVal($_REQUEST['ID']);
 class CPrintForm
 {
@@ -604,7 +604,6 @@ foreach ($arResult['FIELDS'] as $key => $arField)
                 '</div>';
             $sResult .= '<div class="col-6 mt-3">' . $return . '</div>';
         }
-        ```
         ?>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
              crossorigin="anonymous">
@@ -652,9 +651,9 @@ foreach ($arResult['FIELDS'] as $key => $arField)
         </script>
         <div class="container">
             <form id="auto_form" action="" enctype="multipart/form-data" method="post">
-                <?if (!empty($arResult['ITEM']['ID']))://for update entity?>
+                <?php if (!empty($arResult['ITEM']['ID']))://for update entity?>
                         <input type="hidden" name="form[ID]" value="<?=$arResult['ITEM']['ID']?>">
-                <?endif;?>
+                <?php endif;?>
                 <h2>Standard fields</h2>
                 <div class="row">
                     <?=$sResult?>
@@ -670,7 +669,7 @@ foreach ($arResult['FIELDS'] as $key => $arField)
                 </div>
             </form>
         </div>
-        <?endif;?>
+        <?php endif;?>
 ```
 
 File **auto_form.php**:

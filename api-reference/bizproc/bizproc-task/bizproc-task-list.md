@@ -1,18 +1,18 @@
-# Get a List of Workflow Tasks bizproc.task.list
+# Get a list of business process tasks bizproc.task.list
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method retrieves a list of workflow tasks.
+This method retrieves a list of business process tasks.
 
-An account administrator can request all tasks or tasks for any user. A regular user can request their own tasks or those of their subordinate.
+An account administrator can request all tasks or tasks of any user. A regular user can request their own tasks or those of their subordinate.
 
 To request their own tasks, the `USER_ID` filter does not need to be specified.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,23 +29,23 @@ By default, it returns the fields `ENTITY`, `DOCUMENT_ID`, `ID`, `WORKFLOW_ID`, 
 - `value_N` — value of the field
 
 If `USER_ID` is present in the filter, user subordination is checked:
-- a manager can request a list of tasks for their subordinates
-- an administrator can request tasks for any users without restrictions 
+- a manager can request the list of tasks of their subordinates
+- an administrator can request tasks of any users without restrictions 
 
-If the method is called by a non-administrator and the `USER_ID` filter is not specified, it defaults to selecting tasks for the current user
+If the method is called by a non-administrator and the `USER_ID` filter is not specified, by default, it selects the tasks of the current user
 ||
 || **ORDER**
 [`object`](../../data-types.md) | An object for sorting the list of tasks in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#fields) of the task for sorting
 - `value_N` — sorting direction
 
-The sorting direction can take the following values:
+The sorting direction can take the values:
 - `asc` — ascending
 - `desc` — descending
   
 Multiple fields can be specified for sorting, for example, `{NAME: 'ASC', ID: 'DESC'}` ||
 || **START**
-[`integer`](../../data-types.md) | This parameter is used for pagination.
+[`integer`](../../data-types.md) | The parameter is used for managing pagination.
 
 The page size of results is always static — 50 records.
 
@@ -53,12 +53,12 @@ To select the second page of results, the value `50` must be passed. To select t
 
 The formula for calculating the `start` parameter value:
 
-`start = (N - 1) * 50`, where `N` — the desired page number ||
+`start = (N - 1) * 50`, where `N` — the number of the desired page ||
 |#
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -183,7 +183,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -195,14 +195,14 @@ HTTP Status: **200**
             "WORKFLOW_ID": "67a2ffdb2c57a3.35276854",
             "DOCUMENT_NAME": "Partner Conference",
             "DESCRIPTION": "",
-            "NAME": "Add Contractor Information",
-            "MODIFIED": "2025-02-05T09:06:19+01:00",
-            "WORKFLOW_STARTED": "2025-02-05T09:06:19+01:00",
+            "NAME": "Add contractor information",
+            "MODIFIED": "2025-02-05T09:06:19+02:00",
+            "WORKFLOW_STARTED": "2025-02-05T09:06:19+02:00",
             "WORKFLOW_STARTED_BY": "1",
             "OVERDUE_DATE": null,
             "WORKFLOW_TEMPLATE_ID": "565",
             "WORKFLOW_TEMPLATE_NAME": "Event Organization",
-            "WORKFLOW_STATE": "Waiting for Additional Information",
+            "WORKFLOW_STATE": "Waiting for additional information",
             "STATUS": "0",
             "USER_ID": "1",
             "USER_STATUS": "0",
@@ -213,7 +213,7 @@ HTTP Status: **200**
                 "CommentLabel": "Comment",
                 "CommentRequired": "Y",
                 "ShowComment": "Y",
-                "StatusOkLabel": "Save Result",
+                "StatusOkLabel": "Save result",
                 "Fields": [
                     {
                         "Id": "contractor",
@@ -239,7 +239,7 @@ HTTP Status: **200**
                     {
                         "Id": "phone_number",
                         "Type": "string",
-                        "Name": "Phone Number",
+                        "Name": "Phone number",
                         "Description": "",
                         "Multiple": false,
                         "Required": true,
@@ -264,8 +264,8 @@ HTTP Status: **200**
         "finish": 1738735796.510215,
         "duration": 0.037192106246948242,
         "processing": 0.0080459117889404297,
-        "date_start": "2025-02-05T09:09:56+01:00",
-        "date_finish": "2025-02-05T09:09:56+01:00",
+        "date_start": "2025-02-05T09:09:56+02:00",
+        "date_finish": "2025-02-05T09:09:56+02:00",
         "operating_reset_at": 1738736396,
         "operating": 0
     }
@@ -280,7 +280,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response. 
 
-Contains an array of objects with information about workflow tasks.
+Contains an array of objects with information about business process tasks.
 
 Each object contains [fields](#fields) of the task specified in the `SELECT` parameter ||
 || **total**
@@ -297,7 +297,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **ID**
 [`integer`](../../data-types.md) | Task identifier ||
 || **WORKFLOW_ID**
-[`integer`](../../data-types.md) | Workflow identifier ||
+[`integer`](../../data-types.md) | Business process identifier ||
 || **DOCUMENT_NAME**
 [`string`](../../data-types.md) | Document name ||
 || **DESCRIPTION**
@@ -307,17 +307,17 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **MODIFIED**
 [`datetime`](../../data-types.md) | Modification date ||
 || **WORKFLOW_STARTED**
-[`datetime`](../../data-types.md) | Workflow start date ||
+[`datatime`](../../data-types.md) | Business process start date ||
 || **WORKFLOW_STARTED_BY**
-[`user`](../../data-types.md) | Who started the workflow ||
+[`user`](../../data-types.md) | Who started the business process ||
 || **OVERDUE_DATE**
 [`datetime`](../../data-types.md) | Deadline ||
 || **WORKFLOW_TEMPLATE_ID**
-[`integer`](../../data-types.md) | Workflow template identifier ||
+[`integer`](../../data-types.md) | Business process template identifier ||
 || **WORKFLOW_TEMPLATE_NAME**
-[`string`](../../data-types.md) | Workflow template name ||
+[`string`](../../data-types.md) | Business process template name ||
 || **WORKFLOW_STATE**
-[`string`](../../data-types.md) | Workflow status ||
+[`string`](../../data-types.md) | Business process status ||
 || **STATUS**
 [`integer`](../../data-types.md) | Task status. Possible values:
 
@@ -325,7 +325,8 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 - `1` — approved
 - `2` — rejected
 - `3` — completed
-- `4` — overdue ||
+- `4` — task deadline expired ||
+
 || **USER_ID**
 [`user`](../../data-types.md) | User identifier ||
 || **USER_STATUS**
@@ -378,11 +379,11 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 - `Y` — yes
 ||
 || **StatusOkLabel**
-[`string`](../../data-types.md) | Text for the Acknowledged button ||
+[`string`](../../data-types.md) | Text of the Acknowledged button ||
 || **StatusYesLabel**
-[`string`](../../data-types.md) | Text for the Approve button ||
+[`string`](../../data-types.md) | Text of the Approve button ||
 || **StatusNoLabel**
-[`string`](../../data-types.md) | Text for the Reject button ||
+[`string`](../../data-types.md) | Text of the Reject button ||
 || **Fields**
 [`array`](../../data-types.md) | An array of objects. Each object contains a description of the [field in the task](#task-fields) ||
 |#
@@ -406,7 +407,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
   - `text` — text
   - `user` — user  
 
-Other types depend on the document with which the workflow operates ||
+Other types depend on the document with which the business process works ||
 || **Name**
 [`string` \| `object`](../../data-types.md) | Name of the parameter ||
 || **Description**
@@ -426,9 +427,9 @@ Values depend on the parameter type. Examples:
 - for the List type `select`, these are the options of the list
 ```json
 "Options": {
-    "1": "First Option",
-    "2": "Second Option",
-    "3": "Third Option",
+    "1": "First option",
+    "2": "Second option",
+    "3": "Third option",
 },
 ```
 - for the CRM Binding type `'E:ECrm'`, these are the available object types
@@ -447,12 +448,12 @@ Values depend on the parameter type. Examples:
 || **Settings**
 [`object`](../../data-types.md) | Additional field settings ||
 || **Default**
-[`any`](../../data-types.md) | Default parameter value ||
+[`any`](../../data-types.md) | Default value of the parameter ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -476,3 +477,5 @@ HTTP Status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./bizproc-task-complete.md)
+- [{#T}](../../../tutorials/bizproc/how-to-kill-workflows.md)
+- [{#T}](../../../tutorials/bizproc/how-to-filter-and-kill-workflows.md)

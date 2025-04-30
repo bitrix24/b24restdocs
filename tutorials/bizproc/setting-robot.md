@@ -1,14 +1,14 @@
-# Configure REST Automation Rules (actions) via the application (widget)
+# How to Embed Your UI in Robot Parameters
 
-In *Bitrix24*, you can configure an Automation Rule/action using the application interface. This is implemented through the standard [widget embedding mechanism](../../api-reference/widgets/index.md). In the on-premise version, it is available starting from version [20.0.600](../../api-reference/cloud-and-on-premise/on-premise/versions.md) of the `Business Processes` module.
+In *Bitrix24*, you can configure a robot and workflow action using the application interface. This is implemented through the standard [widget embedding mechanism](../../api-reference/widgets/index.md). It is available in the on-premise version starting from [20.0.600](../../api-reference/cloud-and-on-premise/on-premise/versions.md) of the `Business Processes` module.
 
-## Implementation using an application example
+## Implementation Using an Application Example
 
-Let's consider the implementation with a specific application example (the full code of the application is presented [below](#full-code-of-the-application)).
+Let's consider the implementation using a specific application example; the complete code for the application is presented [below](#full-application-code).
 
-In our example, the application adds an Automation Rule that has 2 parameters of type `string`.
+In this example, the application adds a robot that has 2 parameters of type `string`.
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Footnote on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -19,7 +19,7 @@ In our example, the application adds an Automation Rule that has 2 parameters of
         'CODE': 'robot',
         'HANDLER': 'http://handler.com',
         'AUTH_USER_ID': 1,
-        'NAME': 'Example Automation Rule Widget',
+        'NAME': 'Example of Robot Embedding',
         'USE_PLACEMENT': 'Y',
         'PLACEMENT_HANDLER': 'http://handler.com',
         'PROPERTIES': {
@@ -57,7 +57,7 @@ In our example, the application adds an Automation Rule that has 2 parameters of
             'CODE' => 'robot',
             'HANDLER' => 'http://handler.com',
             'AUTH_USER_ID' => 1,
-            'NAME' => 'Example Automation Rule Widget',
+            'NAME' => 'Example of Robot Embedding',
             'USE_PLACEMENT' => 'Y',
             'PLACEMENT_HANDLER' => 'http://handler.com',
             'PROPERTIES' => [
@@ -82,17 +82,17 @@ In our example, the application adds an Automation Rule that has 2 parameters of
 
 {% endlist %}
 
-To allow parameters to be configured through the application, when adding the Automation Rule, you need to pass the parameters `USE_PLACEMENT=Y` and the handler `PLACEMENT_HANDLER`.
+To allow parameters to be configured through the application, when adding the robot, you need to pass the parameters `USE_PLACEMENT=Y` and the handler `PLACEMENT_HANDLER`.
 
-Next, you need to write the embedding handler that will render the parameters and save their values. For this, you need to pass the following data in `PLACEMENT_OPTIONS` to the handler:
+Next, you need to write the embedding handler, which will render the parameters and save their values. For this, you need to pass the following data in `PLACEMENT_OPTIONS`:
 
-- `code` — the code of your Automation Rule upon registration
+- `code` — the code of your robot upon registration
 - `activity_name` — the identifier of the action in the workflow template
 - `properties` — a list of properties and their descriptions
 - `current_values` — the current values of the properties
-- `document_type` — the type of document for which the configuration is being conducted
+- `document_type` — the type of document for which the configuration is being made
 - `document_fields` — a list of document fields
-- `template` — a list of available template fields (in the on-premise version of *Bitrix24*, available starting from version [24.200.0](../../api-reference/cloud-and-on-premise/on-premise/versions.md))
+- `template` — a list of available template fields. In the on-premise version of *Bitrix24*, it is available starting from version [24.200.0](../../api-reference/cloud-and-on-premise/on-premise/versions.md)
 
     For the `template` parameter, the following elements are available:
 
@@ -101,28 +101,28 @@ Next, you need to write the embedding handler that will render the parameters an
     - `constants` — a list of template constants
     - `global_variables` — a list of global variables
     - `global_constants` — a list of global constants
-    - `return_activities` — a list of actions (Automation Rules) that generate additional results
+    - `return_activities` — a list of actions or robots that generate additional results
 
-    The structure of properties in these lists is unified and represents the following structure:
+    The structure of properties in these lists is unified:
 
     ```
     {
         Id: string, identifier (code) of the property
         Type: string, identifier of the property type
 
-        Name: string, name
+        Name: string, title
         Description: string, description
 
-        Multiple: boolean, whether it is a multiple property or not
-        Required: boolean, whether it is a required property or not
+        Multiple: boolean, whether it is a multiple property
+        Required: boolean, whether it is a required property
 
-        Options: mixed. Depends on the property type
-        Settings: list of settings. Depends on the property type
-        Default: mixed. Default value for the property
+        Options: mixed, depends on the property type
+        Settings: list of settings, depends on the property type
+        Default: mixed, default value for the property
     }
     ```
 
-    The list `return_activities` consists of a list of actions that return results and their properties. It has the structure:
+    The `return_activities` list consists of a list of actions that return results and their properties. It has the structure:
 
     ```
     {
@@ -133,7 +133,7 @@ Next, you need to write the embedding handler that will render the parameters an
     }
     ```
 
-All of this comes to the application in the following format:
+The data arrives in the application in the following format:
 
 ```php
 $array = [
@@ -203,7 +203,7 @@ $array = [
             [
                 'Id' => 'Manager',
                 'Type' => 'user',
-                'Name' => 'Who approves',
+                'Name' => 'Who Approves',
                 'Description' => 'director or deputy',
                 'Multiple' => 1,
                 'Required' => 1,
@@ -246,7 +246,7 @@ $array = [
             [
                 'Id' => 'A71026_84473_24610_19894',
                 'Type' => 'LogActivity',
-                'Title' => 'Log to report',
+                'Title' => 'Log to Report',
                 'Return' => [
                     [
                         'Id' => 'Report',
@@ -272,72 +272,72 @@ $array = [
                     ],
                     [
                         'Id' => 'VotedCount',
-                        'Name' => 'Number of votes',
+                        'Name' => 'Number of Votes',
                         'Type' => 'int'
                     ],
                     [
                         'Id' => 'TotalCount',
-                        'Name' => 'Total votes required',
+                        'Name' => 'Total Votes Required',
                         'Type' => 'int'
                     ],
                     [
                         'Id' => 'VotedPercent',
-                        'Name' => 'Voting percentage',
+                        'Name' => 'Voting Percentage',
                         'Type' => 'int'
                     ],
                     [
                         'Id' => 'ApprovedPercent',
-                        'Name' => 'Approval percentage',
+                        'Name' => 'Approval Percentage',
                         'Type' => 'int'
                     ],
                     [
                         'Id' => 'NotApprovedPercent',
-                        'Name' => 'Rejection percentage',
+                        'Name' => 'Rejection Percentage',
                         'Type' => 'int'
                     ],
                     [
                         'Id' => 'ApprovedCount',
-                        'Name' => 'Number approved',
+                        'Name' => 'Number Approved',
                         'Type' => 'int'
                     ],
                     [
                         'Id' => 'NotApprovedCount',
-                        'Name' => 'Number rejected',
+                        'Name' => 'Number Rejected',
                         'Type' => 'int'
                     ],
                     [
                         'Id' => 'LastApprover',
-                        'Name' => 'Last voter',
+                        'Name' => 'Last Voter',
                         'Type' => 'user'
                     ],
                     [
                         'Id' => 'LastApproverComment',
-                        'Name' => 'Comment of the last voter',
+                        'Name' => 'Last Voter Comment',
                         'Type' => 'string'
                     ],
                     [
                         'Id' => 'UserApprovers',
-                        'Name' => 'Users who approved',
+                        'Name' => 'Approved by Users',
                         'Type' => 'user'
                     ],
                     [
                         'Id' => 'Approvers',
-                        'Name' => 'Users who approved (text)',
+                        'Name' => 'Approved by Users (text)',
                         'Type' => 'string'
                     ],
                     [
                         'Id' => 'UserRejecters',
-                        'Name' => 'Users who rejected',
+                        'Name' => 'Rejected by Users',
                         'Type' => 'user'
                     ],
                     [
                         'Id' => 'Rejecters',
-                        'Name' => 'Users who rejected (text)',
+                        'Name' => 'Rejected by Users (text)',
                         'Type' => 'string'
                     ],
                     [
                         'Id' => 'IsTimeout',
-                        'Name' => 'Automatic rejection',
+                        'Name' => 'Automatic Rejection',
                         'Type' => 'int'
                     ]
                 ]
@@ -347,7 +347,7 @@ $array = [
 ];
 ```
 
-Next, you need to create the layout and learn how to save parameters directly in the Automation Rule. For this, you can use the `setPropertyValue` function, which is available through [BX24.placement.call](../../api-reference/widgets/ui-interaction/bx24-placement-call.md).
+Next, you need to create the layout and learn how to save parameters directly in the Robot. For this, you can use the `setPropertyValue` function, which is available through [BX24.placement.call](../../api-reference/widgets/ui-interaction/bx24-placement-call.md).
 
 ```js
 BX24.placement.call(
@@ -358,7 +358,7 @@ BX24.placement.call(
 )
 ```
 
-The parameters include the `ID` of the property and the values. You can pass multiple property values.
+As parameters, the `ID` of the property and values are passed. You can pass multiple property values.
 
 ```js
 BX24.placement.call(
@@ -373,13 +373,13 @@ BX24.placement.call(
 )
 ```
 
-Then the user saves the Automation Rule as usual.
+Then the user saves the robot as usual.
 
-The white area is the widget (application frame).
+The white area is the embedding, the application frame.
 
-## Full code of the application
+## Full Application Code
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Footnote on Examples](../../_includes/examples.md) %}
 
 ```php
 <?php
@@ -400,16 +400,16 @@ define('BP_APP_HANDLER', $protocol.'://'.$host.explode('?', $_SERVER['REQUEST_UR
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="//api.bitrix24.com/api/v1/"></script>
 <?if (!isset($_POST['PLACEMENT']) || $_POST['PLACEMENT'] === 'DEFAULT'):?>
-<h1>Automation Rule Widget</h1>
+<h1>Robot Embedding</h1>
 <div class="container-fluid">
 <div class="container-fluid">
-        <h2>Automation Rule</h2>
+        <h2>Robot</h2>
         <button onclick="installRobot();" class="btn btn-primary">Install</button> –
         <button onclick="uninstallRobot();" class="btn btn-danger">Remove</button>
     </div>
     <hr/>
     <div class="container-fluid">
-        <button onclick="getList();" class="btn btn-light">Get list of installed Automation Rules</button>
+        <button onclick="getList();" class="btn btn-light">Get List of Installed Robots</button>
     </div>
 </div>
 <script type="text/javascript">
@@ -424,7 +424,7 @@ define('BP_APP_HANDLER', $protocol.'://'.$host.explode('?', $_SERVER['REQUEST_UR
             'CODE': 'robot',
             'HANDLER': '<?=BP_APP_HANDLER?>',
             'AUTH_USER_ID': 1,
-            'NAME': 'Example Automation Rule Widget',
+            'NAME': 'Example of Robot Embedding',
             'USE_PLACEMENT': 'Y',
             'PLACEMENT_HANDLER': '<?=BP_APP_HANDLER?>',
             'PROPERTIES': {
@@ -478,7 +478,7 @@ define('BP_APP_HANDLER', $protocol.'://'.$host.explode('?', $_SERVER['REQUEST_UR
                 if(result.error())
                     alert("Error: " + result.error());
                 else
-                    alert("Codes of installed Automation Rules: " + result.data().join(', '));
+                    alert("Codes of Installed Robots: " + result.data().join(', '));
             }
         );
     }

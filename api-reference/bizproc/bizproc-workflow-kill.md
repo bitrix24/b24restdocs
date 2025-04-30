@@ -100,7 +100,7 @@ This method deletes the running workflow along with all process data.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -133,7 +133,7 @@ Contains `true` in case of success ||
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -148,7 +148,7 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** |**Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator ||
 || `400` | `ERROR_WRONG_WORKFLOW_ID` | Empty workflow instance ID | An empty value was passed to the `ID` parameter ||
 |#
 
@@ -160,3 +160,5 @@ HTTP Status: **400**, **403**
 - [{#T}](./bizproc-workflow-start.md)
 - [{#T}](./bizproc-workflow-instances.md)
 - [{#T}](./bizproc-workflow-terminate.md)
+- [{#T}](../../tutorials/bizproc/how-to-kill-workflows.md)
+- [{#T}](../../tutorials/bizproc/how-to-filter-and-kill-workflows.md)

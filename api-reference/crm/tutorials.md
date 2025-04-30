@@ -16,8 +16,6 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [How to add a company with details](../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
 - [How to create a deal by selecting details from an existing company or contact](../../tutorials/crm/how-to-add-crm-objects/how-to-add-deal-with-choice-of-requisite.md)
 - [How to add a calendar event for a client](../../tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)
-- [How to create a deal (lead, invoice, estimate) with products, applying discounts and taxes](../../tutorials/crm/how-to-add-crm-objects/how-to-product-binding.md)
-- [How to add a product to the catalog with custom field values](../../tutorials/crm/how-to-add-crm-objects/how-to-add-product-with-custom-props.md)
 - [How to create a new printed document using the document generator](../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md) 
 - [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
 - [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)
@@ -27,7 +25,6 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [How to attach an image in a lead field](../../tutorials/crm/how-to-edit-crm-objects/how-to-upload-images-to-lead.md)
 - [How to change phone numbers and e-mail using a contact as an example](../../tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
 - [How to change dates in an activity event](../../tutorials/crm/how-to-edit-crm-objects/how-to-change-date-in-activity.md)
-- [How to change values of custom fields for a product](../../tutorials/crm/how-to-edit-crm-objects/how-to-change-product-custom-field-values.md)
 - [How to create your own lead editing form](../../tutorials/crm/how-to-edit-crm-objects/how-to-generate-edit-form-for-lead.md)
 - [How to create your own contact editing form](../../tutorials/crm/how-to-edit-crm-objects/how-to-make-contact-edit-card.md)
 - [How to create your own company editing form](../../tutorials/crm/how-to-edit-crm-objects/how-to-generate-edit-form-for-company.md)
@@ -44,8 +41,8 @@ In this section, you will find ready-made examples for solving typical tasks rel
 ## How to use Bitrix24's Sales Intelligence tools
 
 - [How to pass information to Sales Intelligence](../../tutorials/crm/how-to-use-analitycs/info-to-analitics.md)
-- [How to use CRM widget data from Bitrix24 on your site to create a new lead](../../tutorials/crm/how-to-use-analitycs/use-analitics-for-add-lead.md)
-- [How to use CRM widget data from Bitrix24 on your site to create a new deal with a contact](../../tutorials/crm/how-to-use-analitycs/use-analitics-for-add-contact.md)
+- [How to use CRM widget data from Bitrix24 on your website to create a new lead](../../tutorials/crm/how-to-use-analitycs/use-analitics-for-add-lead.md)
+- [How to use CRM widget data from Bitrix24 on your website to create a new deal with a contact](../../tutorials/crm/how-to-use-analitycs/use-analitics-for-add-contact.md)
 
 ## How to add your own tab to the deal card; how to add your own buttons to the lead card and other examples of CRM widgets
 

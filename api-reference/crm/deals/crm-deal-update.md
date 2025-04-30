@@ -58,21 +58,21 @@ The list of available deal types can be found using the method [crm.status.list]
 [`crm_status`](../data-types.md) | Stage of the deal.
 
 The list of available stages can be found using the method [crm.status.list](../status/crm-status-list.md) with the filter:
-- `{ ENTITY_ID: "DEAL_STAGE" }` — if the deal is in the general Sales Funnel (direction)
+- `{ ENTITY_ID: "DEAL_STAGE" }` — if the deal is in the general Sales Funnel
 - `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }` — if the deal is not in the general Sales Funnel, where `categoryId` is the identifier of the [funnel](../universal/category/index.md) and equals `CATEGORY_ID` of the deal.
   
-If it is necessary to change the deal's funnel, use the method [crm.item.update](../universal/crm-item-update.md), `entityTypeId` of the deal — `2`
+If it is necessary to change the funnel of the deal, use the method [crm.item.update](../universal/crm-item-update.md), `entityTypeId` of the deal — `2`
 ||
 || **IS_RECURRING**
-[`char`](../../data-types.md) | Indicates whether the deal is a template for a recurring deal. Possible values:
+[`char`](../../data-types.md) | Is the deal a template for a recurring deal? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Indicates whether the deal is a repeat. Possible values:
+[`char`](../../data-types.md) | Is the deal a repeat? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_REPEATED_APPROACH**
-[`char`](../../data-types.md) | Indicates whether the deal is a repeated approach. Possible values:
+[`char`](../../data-types.md) | Is the deal a repeated approach? Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -86,7 +86,7 @@ The list of available currencies can be found using the method [crm.currency.lis
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicates whether manual calculation mode is enabled. Possible values:
+[`char`](../../data-types.md) | Is manual calculation mode enabled? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **TAX_VALUE**
@@ -94,25 +94,25 @@ The list of available currencies can be found using the method [crm.currency.lis
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the company associated with the deal.
 
-The list of companies can be found using the method [crm.item.list](../universal/crm-item-list.md), passing `entityTypeId = 4`
+The list of companies can be found using the method [crm.item.list](../universal/crm-item-list.md) with `entityTypeId = 4`
 ||
 || **CONTACT_ID**
 [`crm_contact`](../data-types.md) | Contact. Deprecated ||
 || **CONTACT_IDS**
 [`crm_contact[]`](../data-types.md) | List of contacts associated with the deal.
 
-The list of contacts can be found using the method [crm.item.list](../universal/crm-item-list.md), passing `entityTypeId = 3`
+The list of contacts can be found using the method [crm.item.list](../universal/crm-item-list.md) with `entityTypeId = 3`
 ||
 || **BEGINDATE**
 [`date`](../../data-types.md) | Start date ||
 || **CLOSEDATE**
 [`date`](../../data-types.md) | End date ||
 || **OPENED**
-[`char`](../../data-types.md) | Is the deal available to everyone. Possible values:
+[`char`](../../data-types.md) | Is the deal available to everyone? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **CLOSED**
-[`char`](../../data-types.md) | Is the deal closed. Possible values:
+[`char`](../../data-types.md) | Is the deal closed? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **COMMENTS**
@@ -160,9 +160,9 @@ A custom field can be added to a deal using the method [crm.deal.userfield.add](
 || **PARENT_ID_...**
 [`crm_entity`](../data-types.md) | Relationship fields. 
 
-If there are SPAs associated with deals in the account, there is a field for each such SPA that stores the relationship between this SPA and the deal. The field itself stores the identifier of the element of that SPA. 
+If there are SPAs associated with deals in the account, there is a field for each such SPA that stores the relationship between that SPA and the deal. The field itself stores the identifier of the element of that SPA. 
 
-For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`, stores the identifier of the element of this SPA associated with the current deal ||
+For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`, stores the identifier of the element of that SPA associated with the current deal ||
 |#
 
 ### Parameter params {#params}
@@ -171,11 +171,11 @@ For example, the field `PARENT_ID_153` — relationship with the SPA `entityType
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`](../../data-types.md) | Whether to register the deal change event in the activity stream. Possible values:
+[`boolean`](../../data-types.md) | Should the event of the deal change be registered in the live feed? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **REGISTER_HISTORY_EVENT**
-[`boolean`](../../data-types.md) | Whether to create a record in history. Possible values:
+[`boolean`](../../data-types.md) | Should a record be created in the history? Possible values:
 - `Y` — yes
 - `N` — no ||
 |#
@@ -198,7 +198,7 @@ For example, the field `PARENT_ID_153` — relationship with the SPA `entityType
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":123,"FIELDS":{"TITLE":"New deal title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECCURING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"}}' \
+    -d '{"ID":123,"FIELDS":{"TITLE":"New Deal Title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECURRING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.update
     ```
 
@@ -208,7 +208,7 @@ For example, the field `PARENT_ID_153` — relationship with the SPA `entityType
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":123,"FIELDS":{"TITLE":"New deal title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECCURING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"ID":123,"FIELDS":{"TITLE":"New Deal Title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECURRING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.deal.update
     ```
 
@@ -220,10 +220,10 @@ For example, the field `PARENT_ID_153` — relationship with the SPA `entityType
         {
             id: 123,
             fields: {
-                TITLE: "New deal title!",
+                TITLE: "New Deal Title!",
                 TYPE_ID: "GOODS",
                 STAGE_ID: "WON",
-                IS_RECCURING: "Y",
+                IS_RECURRING: "Y",
                 IS_RETURN_CUSTOMER: "Y",
                 OPPORTUNITY: 9999.99,
                 IS_MANUAL_OPPORTUNITY: "Y",
@@ -255,10 +255,10 @@ For example, the field `PARENT_ID_153` — relationship with the SPA `entityType
         [
             'ID' => 123,
             'FIELDS' => [
-                'TITLE' => 'New deal title!',
+                'TITLE' => 'New Deal Title!',
                 'TYPE_ID' => 'GOODS',
                 'STAGE_ID' => 'WON',
-                'IS_RECCURING' => 'Y',
+                'IS_RECURRING' => 'Y',
                 'IS_RETURN_CUSTOMER' => 'Y',
                 'OPPORTUNITY' => 9999.99,
                 'IS_MANUAL_OPPORTUNITY' => 'Y',
@@ -282,31 +282,9 @@ For example, the field `PARENT_ID_153` — relationship with the SPA `entityType
 
 ### Method Explanation
 
-To manage the contacts of the deal, it is recommended to use the multiple field `CONTACT_IDS`.
+It is not recommended to use the fields `CONTACT_IDS` and `CONTACT_ID` to manage deal contacts. 
 
-Example:
-
-```js
-BX24.callMethod("crm.deal.update", { id: 1, fields: { "CONTACT_IDS": [ 1, 2, 3 ] } });
-```
-
-As a result, the deal will be linked to the three specified contacts.
-
-The field `CONTACT_ID` is deprecated and is supported for backward compatibility.
-
-Example:
-
-```js
-BX24.callMethod("crm.deal.update", { id: 1, fields: { "CONTACT_ID": 4 } });
-```
-
-As a result of this call, a link to the specified contact will be added to the deal. 
-
-{% note warning %}
-
-Existing links to contacts will not be removed. If the deal was previously linked to contacts 1, 2, and 3, it will now be linked to contacts 1, 2, 3, and 4.
-
-{% endnote %}
+Use the methods [crm.deal.contact.*](./contacts/index.md) for working with a single contact, and the methods [crm.deal.contact.items.*](./contacts/index.md) for working with a group of deal contacts.
 
 ## Response Handling
 
@@ -355,8 +333,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `ID is not defined or invalid` | The parameter `id` is not an integer greater than zero ||
-|| `-`     | `Not found` | The deal with the provided `id` does not exist ||
+|| `-`     | `ID is not defined or invalid` | The parameter `id` is not a positive integer ||
+|| `-`     | `Not found` | The deal with the given `id` does not exist ||
 || `-`     | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
 || `-`     | `Parameter 'params' must be array` | The parameter `params` is not an object ||
 || `-`     | `Access denied` | The user does not have permission to "modify" deals ||

@@ -1,4 +1,4 @@
-# Add an action or Automation rule to create an invoice based on a lead or deal
+# How to Add an Action to Create an Invoice Based on a Lead or Deal
 
 This example is universal for workflow actions and Automation rules. The only difference is the method:
 - [bizproc.activity.add](../../api-reference/bizproc/bizproc-activity/bizproc-activity-add.md) — create a workflow action
@@ -6,11 +6,11 @@ This example is universal for workflow actions and Automation rules. The only di
 
 In the example code, the method `bizproc.activity.add` is used. If you want to create an Automation rule, replace the method with `bizproc.robot.add`.
 
-To use the example, set up the `CRest` class and include the `crest.php` file in the files where this class is used. More details can be found in the article [{#T}](../../how-to-use-examples.md).
+To use the example, configure the `CRest` class and include the `crest.php` file in the files where this class is used. More details in the article [{#T}](../../how-to-use-examples.md).
 
 ## Action Registration File
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 Replace the path `$handlerUrl` with your path to the action handler.
 
@@ -111,7 +111,7 @@ Replace the path `$handlerUrl` with your path to the action handler.
 
 ## Action Handler
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 ```php
 <?php

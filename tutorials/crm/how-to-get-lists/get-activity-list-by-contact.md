@@ -1,10 +1,10 @@
-# How to Get a List of Deals for a Contact
+# How to Get a List of Activities
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-This example retrieves a list of upcoming deals for a contact. To get deals for other entities, you need to replace the `OWNER_TYPE_ID` field; a list of possible values for this field can be obtained by making the request `CRest::call('crm.enum.ownertype');`.
+The example retrieves a list of incomplete activities for a contact. To get activities for other objects, replace the value in the `OWNER_TYPE_ID` field. A list of possible values for this field can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md).
 
 {% note info %}
 
@@ -57,7 +57,7 @@ To use the examples in PHP, configure the *CRest* class and include the **crest.
         'crm.activity.list',
         [
             'filter' => [
-                'COMPLETED' => 'N', //only new activity
+                'COMPLETED' => 'N',//only new activity
                 'OWNER_ID' => $contactID,
                 'OWNER_TYPE_ID' => 3, // CRest::call('crm.enum.ownertype');
             ],

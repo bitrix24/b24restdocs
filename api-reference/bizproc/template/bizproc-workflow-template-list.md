@@ -1,10 +1,10 @@
-# Get a List of Templates bizproc.workflow.template.list
+# Get the list of templates bizproc.workflow.template.list
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
-This method retrieves a list of workflow templates.
+This method retrieves a list of business process templates.
 
 ## Method Parameters
 
@@ -12,53 +12,53 @@ This method retrieves a list of workflow templates.
 || **Name**
 `type` | **Description** ||
 || **SELECT**
-[`array`](../../data-types.md) | An array containing the list of [fields](#fields) to be selected.
+[`array`](../../data-types.md) | The array contains a list of [fields](#fields) to be selected.
 
 You can specify only the fields that are necessary.
 
-The default value is `['ID']` ||
+Default value — `['ID']` ||
 || **FILTER**
-[`object`](../../data-types.md) | An object for filtering the list of workflow templates in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
+[`object`](../../data-types.md) | An object for filtering the list of business process templates in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#fields) of the template for filtering
-- `value_N` — value of the field
+- `value_N` — field value
 
-You can specify the type of filtering before the field name:
+You can specify the type of filtering before the name of the filtered field:
 - `!` — not equal
 - `<` — less than
 - `<=` — less than or equal to
 - `>` — greater than
 - `>=` — greater than or equal to | ||
 || **ORDER**
-[`object`](../../data-types.md) | An object for sorting the list of running workflows in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
+[`object`](../../data-types.md) | An object for sorting the list of running business processes in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#fields) of the template for sorting
 - `value_N` — sorting direction
 
-The sorting direction can take the following values:
+The sorting direction can take the values:
 - `asc` — ascending
 - `desc` — descending
   
 You can specify multiple fields for sorting, for example, `{NAME: 'ASC', ID: 'DESC'}`.
 
-The default value is `{ID: 'ASC'}` ||
+Default value — `{ID: 'ASC'}` ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used for managing pagination.
 
-The page size for results is always static — 50 records.
+The page size of results is always static — 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N - 1) * 50`, where `N` — the desired page number ||
+`start = (N - 1) * 50`, where `N` — the number of the desired page ||
 |#
 
 ### Template Fields {#fields}
 
 #|
 || **Name**
-`type` | **Description**||
+`type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the workflow template ||
+[`integer`](../../data-types.md) | Identifier of the business process template ||
 || **MODULE_ID**
 [`string`](../../data-types.md) | Identifier of the module by document. Possible values:
 - `crm` — CRM
@@ -93,24 +93,24 @@ crm:
 - `SMART_INVOICE` — invoices
 - `DYNAMIC_XXX` — SPAs, where XXX — identifier of the SPA
 
-Lists:
+lists:
 - `iblock_XXX` — information block, where XXX — identifier of the information block
 
-Disk:
+disk:
 - `STORAGE_XXX` — disk storage, where XXX — identifier of the storage
  ||
 || **AUTO_EXECUTE**
-[`integer`](../../data-types.md) | Auto-execute flag. Can take values:
+[`integer`](../../data-types.md) | Auto-execution flag. Can take values:
 
-- `0` — no auto-execute
-- `1` — execute on creation
-- `2` — execute on modification
-- `3` — execute on creation and modification
+- `0` — no auto-execution
+- `1` — trigger on creation
+- `2` — trigger on modification
+- `3` — trigger on creation and modification
 ||
 || **NAME**
-[`string`](../../data-types.md) | Name of the template ||
+[`string`](../../data-types.md) | Template name ||
 || **TEMPLATE**
-[`array`](../../data-types.md) | An array describing the structure of the template actions ||
+[`array`](../../data-types.md) | Array with the description of the template's action structure ||
 || **PARAMETERS**
 [`array`](../../data-types.md) | Template parameters ||
 || **VARIABLES**
@@ -118,24 +118,24 @@ Disk:
 || **CONSTANTS**
 [`array`](../../data-types.md) | Template constants ||
 || **MODIFIED**
-[`datetime`](../../data-types.md) | Date of the last modification ||
+[`datetime`](../../data-types.md) | Date of last modification ||
 || **IS_MODIFIED**
 [`boolean`](../../data-types.md) | Whether the template has been modified. Possible values:
 - `Y` — yes, it has been modified
 - `N` — no
 
-This option is needed for typical templates of workflows ||
+This option is needed for [typical templates](https://helpdesk.bitrix24.com/open/5415841/) of business processes ||
 || **USER_ID**
 [`integer`](../../data-types.md) | Identifier of the user who created or modified the template ||
 || **SYSTEM_CODE**
 [`string`](../../data-types.md) | System code of the template.
 
-Needed for identifying typical workflow templates or templates created by the application ||
+Needed for identifying typical business process templates or templates created by the application ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -255,7 +255,7 @@ Needed for identifying typical workflow templates or templates created by the ap
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -278,8 +278,8 @@ HTTP Status: **200**
         "finish": 1737535822.564579,
         "duration": 0.025053024291992188,
         "processing": 0.0019738674163818359,
-        "date_start": "2025-01-22T11:50:22+01:00",
-        "date_finish": "2025-01-22T11:50:22+01:00",
+        "date_start": "2025-01-22T11:50:22+02:00",
+        "date_finish": "2025-01-22T11:50:22+02:00",
         "operating_reset_at": 1737536422,
         "operating": 0
     }
@@ -294,7 +294,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response. 
 
-Contains an array of objects with information about workflow templates.
+Contains an array of objects with information about business process templates.
 
 Each object contains [fields](#fields) of the template specified in the `SELECT` parameter ||
 || **total**
@@ -305,7 +305,7 @@ Each object contains [fields](#fields) of the template specified in the `SELECT`
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -320,7 +320,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Access denied! | The method was invoked by a non-administrator ||
+|| `ACCESS_DENIED` | Access denied! | The method was executed by a non-administrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

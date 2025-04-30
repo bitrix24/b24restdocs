@@ -1,10 +1,10 @@
-# Document Generator in CRM: Create a "Route Sheet" Based on Deal Data
+# How to Create Your Own Document Template and a Document Based on It
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-An example of adding your own document template and creating a finished document based on it, for instance, a deal. In the example, **template.docx** is the document template.
+An example of adding your own document template and creating a ready document based on it, for instance, a deal. In this example, **template.docx** is the document template.
 
 {% list tabs %}
 
@@ -105,7 +105,7 @@ An example of adding your own document template and creating a finished document
 
     {% note info %}
 
-    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 

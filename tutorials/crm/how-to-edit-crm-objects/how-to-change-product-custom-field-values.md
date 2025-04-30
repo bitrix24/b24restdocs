@@ -1,4 +1,14 @@
-# How to Change the Values of Product Custom Fields
+# How to Change Product Custom Field Values
+
+{% if build == 'dev' %}
+
+{% note alert "TO-DO _not exported to prod_" %}
+
+Removed from the menu to prevent publication. Needs a complete overhaul, crm.product.* is outdated.
+
+{% endnote %}
+
+{% endif %}
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
@@ -6,7 +16,7 @@
 
 Examples of working with various product properties.
 
-To run the examples, you need to create a folder **/pictures** next to the executable file of the example and fill it with images named "1.jpg" — "6.jpg". Also, at the beginning of the example, you need to update the variable values in the example to your own:
+To run the examples, you need to create a folder **/pictures** next to the executable file of the example and fill it with images named "1.jpg" — "6.jpg". Also, at the beginning of the example, you need to update the variable values from the example to your own:
 
 - `propertyIDSelect` — identifier of the single-select property
 - `propertySelectValueID` — identifier of the value of the single-select property
@@ -15,7 +25,7 @@ To run the examples, you need to create a folder **/pictures** next to the execu
 - `propertyIDFile` — identifier of the single file property
 - `propertyIDMultiFile` — identifier of the multi-file property
 
-## Changing the Product
+## Changing a Product
 
 {% list tabs %}
 
@@ -192,7 +202,7 @@ To run the examples, you need to create a folder **/pictures** next to the execu
 
     {% note info %}
 
-    To use the examples in PHP, set up the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
@@ -206,17 +216,17 @@ To run the examples, you need to create a folder **/pictures** next to the execu
     $propertyMultiSelectValueID = [79, 80, 82];
 
     $propertyIDFile = 107;
-    $propertyFilePathToPicture = 'pictures/1.jpg';//relative or full path on server
+    $propertyFilePathToPicture = 'pictures/1.jpg'; // relative or full path on server
 
     $propertyIDMultiFile = 108;
-    $propertyMultiFilePathToPicture = [//relative or full path on server
+    $propertyMultiFilePathToPicture = [ // relative or full path on server
         'pictures/2.jpg',
         'pictures/3.jpg',
         'pictures/4.jpg',
     ];
 
-    $standardPreviewPicturePath = 'pictures/5.jpg';//relative or full path on server
-    $standardDetailPicturePath = 'pictures/6.jpg';//relative or full path on server
+    $standardPreviewPicturePath = 'pictures/5.jpg'; // relative or full path on server
+    $standardDetailPicturePath = 'pictures/6.jpg'; // relative or full path on server
 
     $arFields = [
         'NAME' => 'Example product 2',
@@ -308,19 +318,19 @@ To run the examples, you need to create a folder **/pictures** next to the execu
         }
         foreach ($arPropsFile as $prop)
         {
-            if (empty($arFields[$prop]))//if property does not change file dont delete old file
+            if (empty($arFields[$prop])) // if property does not change file don't delete old file
             {
                 continue;
             }
 
-            if (!empty($arProduct[$prop]['id']))//for standard fields PREVIEW_PICTURE and DETAIL_PICTURE
+            if (!empty($arProduct[$prop]['id'])) // for standard fields PREVIEW_PICTURE and DETAIL_PICTURE
             {
                 $arFields[$prop][] = [
                     'id' => $arProduct[$prop]['id'],
                     'remove' => 'Y',
                 ];
             }
-            elseif (!empty($arProduct[$prop]['value']['id']))//for property type file
+            elseif (!empty($arProduct[$prop]['value']['id'])) // for property type file
             {
                 $arFields[$prop][] = [
                     'valueId' => $arProduct[$prop]['valueId'],
@@ -330,7 +340,7 @@ To run the examples, you need to create a folder **/pictures** next to the execu
                     ]
                 ];
             }
-            elseif (!isset($arProduct[$prop]['value']) && is_array($arProduct[$prop]))//for property type multiple file
+            elseif (!isset($arProduct[$prop]['value']) && is_array($arProduct[$prop])) // for property type multiple file
             {
                 foreach ($arProduct[$prop] as $file)
                 {
@@ -362,7 +372,7 @@ To run the examples, you need to create a folder **/pictures** next to the execu
 
 {% endlist %}
 
-## Clearing Properties with Files in the Product
+## Clearing Properties with Files in a Product
 
 {% list tabs %}
 
@@ -450,7 +460,7 @@ To run the examples, you need to create a folder **/pictures** next to the execu
 
     {% note info %}
 
-    To use the examples in PHP, set up the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
@@ -485,14 +495,14 @@ To run the examples, you need to create a folder **/pictures** next to the execu
         $arSaveData = [];
         foreach ($arPropsFile as $prop)
         {
-            if (!empty($arProduct[$prop]['id']))//for standard fields PREVIEW_PICTURE and DETAIL_PICTURE
+            if (!empty($arProduct[$prop]['id'])) // for standard fields PREVIEW_PICTURE and DETAIL_PICTURE
             {
                 $arSaveData[$prop] = [
                     'id' => $arProduct[$prop]['id'],
                     'remove' => 'Y',
                 ];
             }
-            elseif (!empty($arProduct[$prop]['value']['id']))//for property type file
+            elseif (!empty($arProduct[$prop]['value']['id'])) // for property type file
             {
                 $arSaveData[$prop] = [
                     'valueId' => $arProduct[$prop]['valueId'],
@@ -502,7 +512,7 @@ To run the examples, you need to create a folder **/pictures** next to the execu
                     ]
                 ];
             }
-            elseif (!isset($arProduct[$prop]['value']) && is_array($arProduct[$prop]))//for property type multiple file
+            elseif (!isset($arProduct[$prop]['value']) && is_array($arProduct[$prop])) // for property type multiple file
             {
                 foreach ($arProduct[$prop] as $file)
                 {

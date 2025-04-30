@@ -4,7 +4,7 @@
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-Example of embedding a form on a website page that allows file attachments. Upon filling out the form, a new lead will be created in Bitrix24. The code below includes custom fields:
+Example of embedding a form on a website page that allows file attachments. After filling out the form, a new lead will be created in Bitrix24. The code below includes custom fields:
 
 1. **UF_CRM_1551350435588** — multiple file property
 2. **UF_CRM_1551362436225** — file property
@@ -56,7 +56,7 @@ Example of embedding a form on a website page that allows file attachments. Upon
 </form>
 ```
 
-- Create a file for saving filled forms:
+- Create a file to save the filled forms:
 
 {% list tabs %}
 
@@ -135,12 +135,12 @@ Example of embedding a form on a website page that allows file attachments. Upon
 
     {% note info %}
 
-    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
     ```php
-    <?
+    <?php
         $sName = htmlspecialchars($_POST["NAME"]);    
         $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
         $sPhone = htmlspecialchars($_POST["PHONE"]);

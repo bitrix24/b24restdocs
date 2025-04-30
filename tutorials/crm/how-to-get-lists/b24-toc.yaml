@@ -5,7 +5,7 @@ items:
     href: index.md
   - name: How to Search in CRM by Phone and e-mail
     href: search-by-phone-and-email.md
-  - name: How to Get a List of Activities by Contact
+  - name: How to Get a List of Activities
     href: get-activity-list-by-contact.md
   - name: How to Get a List of Lead Statuses with Semantics
     href: lead-statuses-with-semantics.md

@@ -17,7 +17,7 @@ To use the examples in PHP, configure the *CRest* class and include the **crest.
 Generated form code:
 
 ```php
-<?
+<?php
     $ID = intVal($_REQUEST['ID']);
     class CPrintForm
     {
@@ -591,9 +591,9 @@ if (is_array($arResult['FIELDS'])):
         </script>
     <div class="container">
             <form id="auto_form" action="" enctype="multipart/form-data" method="post">
-                <?if (!empty($arResult['ITEM']['ID']))://for update entity?>
+                <?php if (!empty($arResult['ITEM']['ID']))://for update entity?>
                     <input type="hidden" name="form[ID]" value="<?=$arResult[ 'ITEM' ][ 'ID' ]?>">
-                    <?endif;?>
+                <?php endif;?>
                 <h2>Standard fields</h2>
                 <div class="row">
                     <?=$sResult?>
@@ -609,10 +609,10 @@ if (is_array($arResult['FIELDS'])):
                 </div>
             </form>
         </div>	
-    <?endif;?>
+    <?php endif;?>
 ```
 
-File **auto_form.php**:
+**auto_form.php** file:
 
 ```php
 <?php

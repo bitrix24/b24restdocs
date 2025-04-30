@@ -1,10 +1,10 @@
-# Add a CRM activity to a lead or deal based on CRM modes
+# Add a lead or deal with an activity considering the CRM mode
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-If the CRM operates in simple mode, an activity is added to a deal; if in classic mode, it is added to a lead.
+If the CRM operates in simple mode, an activity is added to the deal; if in classic mode — to the lead.
 
 - Create a form on the desired page:
 
@@ -12,15 +12,15 @@ If the CRM operates in simple mode, an activity is added to a deal; if in classi
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
-    $('#form_to_crm').on( 'submit', function(el) {//event submit form
-        el.preventDefault();//the default action of the event will not be triggered
+    $('#form_to_crm').on('submit', function(el) { // event submit form
+        el.preventDefault(); // the default action of the event will not be triggered
         var formData = $(this).serialize();
         $.ajax({
             'method': 'POST',
             'dataType': 'json',
             'url': 'form.php', // file for saving filled forms
             'data': formData,
-            success: function(data){//success callback
+            success: function(data) { // success callback
                 alert(data.message);
             }
         });
@@ -37,7 +37,7 @@ $(document).ready(function() {
 </form>
 ```
 
-- Create a file to save the filled forms:
+- Create a file for saving filled forms:
 
 {% list tabs %}
 
@@ -150,12 +150,12 @@ $(document).ready(function() {
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
     ```php
-    <?
+    <?php
     $sName         = htmlspecialchars($_POST["NAME"]);
     $sLastName    = htmlspecialchars($_POST["LAST_NAME"]);
     $sPhone         = htmlspecialchars($_POST["PHONE"]);
@@ -167,7 +167,7 @@ $(document).ready(function() {
             'params' => [
                 'fields'    => [
                     'TITLE' => 'From the site: ' . implode(' ', [$sName, $sLastName]),
-                    'NAME' => (!empty($sName)) ? $sName : 'Empty name',//if simple mode crm NAME or LAST_NAME required for converting to contact
+                    'NAME' => (!empty($sName)) ? $sName : 'Empty name', // if simple mode crm NAME or LAST_NAME required for converting to contact
                     'LAST_NAME' => $sLastName,
                     'PHONE' => (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'HOME')) : array(),
                     'EMAIL' => (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array()
@@ -184,7 +184,7 @@ $(document).ready(function() {
     $result = CRest::callBatch($arData);
         
     if(empty($result['result']['result_error']['add_lead']) && !empty($result['result']['result']['get_lead'])){
-        //if status_id == converted on add then is simple mode crm
+        // if status_id == converted on add then is simple mode crm
         if($result['result']['result']['get_lead']['STATUS_ID'] == 'CONVERTED'){
             $resultDeal = CRest::call('crm.deal.list',
                 [
@@ -193,12 +193,12 @@ $(document).ready(function() {
                     ]
                 ]);
             if(!empty($resultDeal['result']['0']['ID'])){
-                $resultActivity = CRest::call('crm.activity.add',//call within an hour
+                $resultActivity = CRest::call('crm.activity.add', // call within an hour
                     [
                         'fields' =>[
-                            "OWNER_TYPE_ID"     => 2,//2 - is deal in CRest::call('crm.enum.ownertype');
-                            "TYPE_ID"         => 2,//2 - is call in CRest::call('crm.enum.activitytype');
-                            "OWNER_ID"         => $resultDeal['result']['0']['ID'],//entity id
+                            "OWNER_TYPE_ID"     => 2, // 2 - is deal in CRest::call('crm.enum.ownertype');
+                            "TYPE_ID"         => 2, // 2 - is call in CRest::call('crm.enum.activitytype');
+                            "OWNER_ID"         => $resultDeal['result']['0']['ID'], // entity id
                             "COMMUNICATIONS"    => [['VALUE' => $sPhone,'TYPE' => 'PHONE']],
                             "START_TIME" => date("Y-m-d H:i:s",time()),
                             "END_TIME" => date("Y-m-d H:i:s",time()+3600),
@@ -208,13 +208,13 @@ $(document).ready(function() {
                     ]);
             }
                 
-        }else{
-            $resultActivity = CRest::call('crm.activity.add',//call within an hour
+        } else {
+            $resultActivity = CRest::call('crm.activity.add', // call within an hour
                 [
                     'fields' =>[
-                        "OWNER_TYPE_ID"     => 1,//1 - is lead in CRest::call('crm.enum.ownertype');
-                        "TYPE_ID"         => 2,//2 - is call in CRest::call('crm.enum.activitytype');
-                        "OWNER_ID"         => $result['result']['result']['add_lead'],//entity id
+                        "OWNER_TYPE_ID"     => 1, // 1 - is lead in CRest::call('crm.enum.ownertype');
+                        "TYPE_ID"         => 2, // 2 - is call in CRest::call('crm.enum.activitytype');
+                        "OWNER_ID"         => $result['result']['result']['add_lead'], // entity id
                         "COMMUNICATIONS"    => [['VALUE' => $sPhone,'TYPE' => 'PHONE']],
                         "START_TIME" => date("Y-m-d H:i:s",time()),
                         "END_TIME" => date("Y-m-d H:i:s",time()+3600),
@@ -224,7 +224,7 @@ $(document).ready(function() {
                 ]);
         }
             
-    }else{
+    } else {
         if(!empty($result['result']['result_error']['add_lead']))
             $arResult[] = 'error add lead: '.$result['result']['result_error']['add_lead']['error_description'];
         if(!empty($result['result']['result_error']['get_lead']))

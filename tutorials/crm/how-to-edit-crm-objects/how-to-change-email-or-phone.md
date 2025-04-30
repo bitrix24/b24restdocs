@@ -1,10 +1,10 @@
-# How to Change Phone Numbers and E-Mail Using a Contact Example
+# How to Change or Delete Phone Numbers and E-Mails
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-Examples of adding/changing/deleting phone numbers and e-mails using a contact example.
+Examples of adding, changing, and deleting phone numbers and e-mails using a contact as an example.
 
 ## Working with E-Mail
 
@@ -83,7 +83,7 @@ Examples of adding/changing/deleting phone numbers and e-mails using a contact e
 
     {% note info %}
 
-    To use the PHP examples, set up the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
 
     {% endnote %}
 
@@ -95,13 +95,13 @@ Examples of adding/changing/deleting phone numbers and e-mails using a contact e
         [
             'VALUE' => $sEmail1,
             'VALUE_TYPE' => 'HOME'
-        },
+        ],
         [
             'VALUE' => $sEmail2,
             'VALUE_TYPE' => 'HOME'
         ]
     ];
-    //create contact with email
+    //create contact with phone
     $newContact = CRest::call(
         'crm.contact.add',
         [
@@ -149,7 +149,7 @@ Examples of adding/changing/deleting phone numbers and e-mails using a contact e
 
 {% endlist %}
 
-## Working with Phones
+## Working with Phone Numbers
 
 {% list tabs %}
 
@@ -226,7 +226,7 @@ Examples of adding/changing/deleting phone numbers and e-mails using a contact e
 
     {% note info %}
 
-    To use the PHP examples, set up the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
 
     {% endnote %}
 

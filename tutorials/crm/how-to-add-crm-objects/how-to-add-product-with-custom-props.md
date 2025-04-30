@@ -1,12 +1,22 @@
 # How to Add a Product with Custom Field Values
 
+{% if build == 'dev' %}
+
+{% note alert "TO-DO _not exported to prod_" %}
+
+Removed from the menu to prevent publication. Needs a complete overhaul; crm.product.add is outdated.
+
+{% endnote %}
+
+{% endif %}
+
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
 Example of filling various properties when adding a product.
 
-To run the example, create a folder **/pictures** next to the executable file of the example and fill it with images named "1.jpg" — "6.jpg". Also, at the beginning of the example, you need to update the variable values in the example to your own:
+To run the example, create a folder **/pictures** next to the executable file of the example and fill it with images named "1.jpg" — "6.jpg". Also, at the beginning of the example, you need to update the variable values to your own:
 
 - `propertyIDSelect` — identifier of the single-select property
 - `propertySelectValueID` — identifier of the value of the single-select property
@@ -140,12 +150,12 @@ To run the example, create a folder **/pictures** next to the executable file of
     {% endnote %}
 
     ```php
-    <?
+    <?php
         $propertyIDSelect = 106;
         $propertySelectValueID = 85;
         
         $propertyIDMultiSelect = 105;
-        $propertyMultiSelectValueID = [79, 80, 82];
+        $propertyMultiSelectValueID = [79,80,82];
         
         $propertyIDFile = 107;
         $propertyFilePathToPicture = 'pictures/1.jpg'; //relative or full path on server

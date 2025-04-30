@@ -10,17 +10,17 @@ For example, suppose the task is to create a lead in the CRM with the name "John
 https://b24-abcdef.bitrix24.com/rest/1/xxxxxxx/crm.lead.add?fields[TITLE]=John&Martin
 ```
 
-After executing the request in any desired way (in a browser, in the command line with cURL, or via a script), you may find that the created lead's name does not match the request—it only shows "John." This happened because the lead's name contains the `&` symbol, which has a special meaning in URLs: it is used to separate query parameters.
+After executing the request in any desired way (in a browser, in the command line with cURL, or via a script), you may find that the created lead's name does not match the request—it only shows "John." This happened because the lead's name contains the `&` symbol, which has a special meaning in URLs: it is used to separate request parameters.
 
 As a result, the request formed two parameters—`fields[TITLE]` with the value `John` and a new parameter `Martin` with an empty value.
 
-To ensure that Bitrix24 (and any web server in the world) understands that the ampersand is not a special character but part of the value, it must be transformed into the sequence `%26`. The correct URL for the task would look like this:
+To ensure that Bitrix24 (and any web server in the world) understands that the ampersand is not a special character but part of the value, it must be converted to the sequence `%26`. The correct URL for the task will look like this:
 
 ```curl
 https://b24-abcdef.bitrix24.com/rest/1/xxxxxxx/crm.lead.add?fields[TITLE]=John%26Martin
 ```
 
-This transformation is called URL encoding. There are many characters that can appear in a parameter value but have special roles in URLs and "break" the request: `&`, `?`, `%`, `[`, and others. To ensure the request is formed correctly, all parameter values must be URL-encoded. Each programming language has a function for this transformation:
+This transformation is called URL encoding. There are many characters that can appear in the value of a parameter but have a special role in URLs and "break" the request: `&`, `?`, `%`, `[`, etc. To ensure the request is formed correctly, all parameter values must be URL-encoded. Each programming language has a function for this transformation:
 
 * Javascript - `encodeURIComponent`;
 * PHP - `urlencode`;
@@ -39,9 +39,9 @@ You can check the correctness of the request formation using request testing ser
 
 When using the `batch` method, an array of requests is passed in the `cmd` parameter in the form of "method?parameter1=value&parameter2=7," which is practically how these requests would look [individually](./general-principles.html), just without the first part of the address.
 
-However, since such a URL becomes the value of a request parameter, it also needs to be URL-encoded. This means that first, as usual, you need to URL-encode the values of the request parameters, and then each request, because they are now values of the `cmd` parameter of the `batch` request.
+However, since such a URL becomes the value of a request parameter, it also needs to be URL-encoded. This means that first, as usual, the values of the request parameters must be URL-encoded, and then each request must be encoded as well, since they are now values of the `cmd` parameter of the `batch` request.
 
-If you needed to create a lead from the example above as part of a batch request, the URL would look like this:
+If we needed to create a lead from the example above as part of a batch request, the URL would look like this:
 
 ```curl
 https://b24-abcdef.bitrix24.com/rest/1/xxxxxxx/batch?cmd[0]=crm.lead.add%3Ffields%5BTITLE%5D%3DJohn%2526Martin
@@ -51,7 +51,7 @@ https://b24-abcdef.bitrix24.com/rest/1/xxxxxxx/batch?cmd[0]=crm.lead.add%3Ffield
 
 {% note info %}
 
-Generally speaking, to avoid such complexities, we strongly recommend using ready-made SDKs for working with REST API. Such libraries automatically encode data, handle errors, simplify working with the API, and allow you to focus on the business logic of the application.
+Generally speaking, to avoid such complexities, we strongly recommend using ready-made SDKs for working with the REST API. Such libraries automatically encode data, handle errors, simplify working with the API, and allow you to focus on the business logic of the application.
 
 Bitrix24 offers developers several SDKs for working with the REST API in different programming languages:
 
@@ -181,7 +181,7 @@ If sending JSON is not possible, the data can be sent via a GET or POST request.
 https://***/rest/***/crm.lead.add.json?fields[TITLE]=My%20company&fields[PHONE][0][VALUE]=112233&fields[PHONE][0][VALUE_TYPE]=WORK&fields[PHONE][1][VALUE]=555888112&fields[PHONE][1][VALUE_TYPE]=OTHER
 ```
 
-In PHP, you can obtain such a string from an array using the `http_build_query` function, while in JS, you can use third-party solutions (for example, the [qs](https://www.npmjs.com/package/qs) library).
+In PHP, you can obtain a similar string from an array using the `http_build_query` function, while in JS, you can use third-party solutions (for example, the library [qs](https://www.npmjs.com/package/qs)).
 
 When sending a POST request, it is necessary to specify the `Content-Type` of the sent data—`application/x-www-form-urlencoded` or `multipart/form-data; boundary=SomeBoundary`—and encode the data accordingly. Examples of request bodies:
 
@@ -225,7 +225,7 @@ When sending a POST request, it is necessary to specify the `Content-Type` of th
 
 Some methods require strict adherence to the order of parameters in the request (for example, [task.commentitem.add](../tasks/comment-item/task-comment-item-add.html), [task.checklistitem.complete](../tasks/checklist-item/task-checklist-item-complete.html)).
 
-This means that these parameters must not be passed as named (in PHP as an associative array, in JS as an object); otherwise, the execution result will be unpredictable and may result in an error. They must be represented as an indexed (ordered) array (starting from 0).
+This means that these parameters must not be passed as named (in PHP as an associative array, in JS as an object); otherwise, the execution result will be unpredictable and may result in an error. They must be presented as an indexed (ordered) array (starting from 0).
 
 Example of **incorrect** comment addition to a task:
 

@@ -4,14 +4,14 @@
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-An example of using Sales Intelligence when creating a deal and contact. First, create a PHP page with a feedback web form (First Name, Last Name, Phone). Place the example code on the page.
+An example of using Sales Intelligence when creating a deal and contact. First, create a PHP page with a feedback web form: Full Name, Phone. Place the example code on the page.
 
-What happens during code execution?
+What happens during the execution of the code?
 
 1. The standard JS code from Bitrix24 Sales Intelligence is connected.
-2. After filling out the form, in addition to the form fields, a code for Sales Intelligence `b24Tracker.guest.getTrace()` is passed in a hidden field.
+2. After filling out the form, in addition to the form fields, the code for Sales Intelligence `b24Tracker.guest.getTrace()` is passed in a hidden field.
 3. A deal and a related contact are then created.
-4. Finally, an analytics "trace" for these objects is registered by passing their types and identifiers in the following format:
+4. Finally, an analytics "trace" is registered for these objects, passing their types and identifiers in the following format:
 
 ```bash
 /rest/crm.tracking.trace.add?ENTITIES[0][TYPE]=CONTACT&ENTITIES[0][ID]=3215&ENTITIES[1][TYPE]=LEAD&ENTITIES[1][ID]=1&TRACE=…
@@ -38,7 +38,7 @@ The Sales Intelligence script is installed on your site before the closing `</bo
         <input type="hidden" id="FORM_TRACE" name="TRACE">
         <div class="row">
             <div class="col-4 mt-3">
-                <label>First Name*</label>
+                <label>Name*</label>
             </div>
             <div class="col-6 mt-3">
                 <input type="text" name="NAME" required>
@@ -46,7 +46,7 @@ The Sales Intelligence script is installed on your site before the closing `</bo
         </div>
         <div class="row">
             <div class="col-4 mt-3">
-                <label>Last Name*</label>
+                <label>Last name*</label>
             </div>
             <div class="col-6 mt-3">
                 <input type="text" name="LAST_NAME" required>
@@ -140,7 +140,7 @@ The Sales Intelligence script is installed on your site before the closing `</bo
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
@@ -152,7 +152,7 @@ The Sales Intelligence script is installed on your site before the closing `</bo
     </head>
     <body class="container">
     <h1>Feedback</h1>
-    <?
+    <?php
     include("crest.php");
     $message = '';
     if(!empty($_POST['SAVE']))
@@ -229,7 +229,7 @@ The Sales Intelligence script is installed on your site before the closing `</bo
         <input type="hidden" id="FORM_TRACE" name="TRACE">
         <div class="row">
             <div class="col-4 mt-3">
-                <label>First Name*</label>
+                <label>Name*</label>
             </div>
             <div class="col-6 mt-3">
                 <input type="text" name="NAME" required>
@@ -237,7 +237,7 @@ The Sales Intelligence script is installed on your site before the closing `</bo
         </div>
         <div class="row">
             <div class="col-4 mt-3">
-                <label>Last Name*</label>
+                <label>Last name*</label>
             </div>
             <div class="col-6 mt-3">
                 <input type="text" name="LAST_NAME" required>

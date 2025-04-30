@@ -1,13 +1,13 @@
-# Overview of Auxiliary Methods
+# Overview of Helper Methods
 
-Auxiliary method groups include multiple fields, enumerations, and VAT rates.
+The helper method groups include multiple fields, enumerations, and VAT rates.
 
 > Quick navigation: [all methods and events](#all-methods)
 
 ## Multiple Fields
 
-The method [crm.multifield.fields](./multifield/crm-multifield-fields.md) returns information about the structure of multiple fields, such as phone numbers or e-mails. To populate a field with a value [of a type](../data-types.md#crm_multifield), pass the data in the structure returned by the method. 
-Example of passing data to fill in a mobile phone number:
+The method [crm.multifield.fields](./multifield/crm-multifield-fields.md) returns information about the structure of multiple fields, such as phone numbers or e-mails. To fill a field with a value of [type](../data-types.md#crm_multifield), pass the data in the structure returned by the method. 
+Example of passing data to fill a phone number with the type mobile:
 
 ```js
 PHONE: [
@@ -31,24 +31,18 @@ The group of enumeration methods [crm.enum.*](./enum/index.md) returns informati
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [How to add a comment to the timeline of a smart process](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md)
+- [How to add a comment to a smart process timeline](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md)
 - [How to get a client's address from CRM](../../../tutorials/crm/how-to-get-lists/how-to-get-address.md)
 
 {% endnote %}
 
 ## VAT Rates
 
-The group of methods [crm.vat.*](./vat/index.md) manages VAT rates. These methods allow you to [create](./vat/crm-vat-add.md), [delete](./vat/crm-vat-delete.md), [update](./vat/crm-vat-update.md), and [retrieve](./vat/crm-vat-list.md) VAT rate values.
+The group of methods [crm.vat.*](./vat/index.md) manages VAT rates. The methods allow you to [create](./vat/crm-vat-add.md), [delete](./vat/crm-vat-delete.md), [update](./vat/crm-vat-update.md), and [retrieve](./vat/crm-vat-list.md) VAT rate values.
 
 To set the VAT for a product in a deal or another CRM object, use the `taxRate` parameter from the group of methods [crm.item.productrow.*](../universal/product-rows/index.md).
 
 To set the VAT for a product or service in the product catalog, use the `vatId` parameter from the group of methods [catalog.product.*](../../catalog/product/index.md).
-
-{% note tip "Typical use-cases and scenarios" %}
-
-- [Add a deal (lead, invoice, estimate) with products, applying discounts and taxes](../../../tutorials/crm/how-to-add-crm-objects/how-to-product-binding.md)
-
-{% endnote %}
 
 ## Overview of Methods {#all-methods}
 
@@ -69,7 +63,7 @@ To set the VAT for a product or service in the product catalog, use the `vatId` 
 || **Method** | **Description** ||
 || [crm.enum.fields](./enum/crm-enum-fields.md) | Returns the description of enumeration fields ||
 || [crm.enum.ownertype](./enum/crm-enum-owner-type.md) | Returns the enumeration items for "Owner Type" ||
-|| [crm.enum.getorderownertypes](./enum/crm-enum-get-order-owner-types.md) | Returns the identifiers of entity types to which order binding is available ||
+|| [crm.enum.getorderownertypes](./enum/crm-enum-get-order-owner-types.md) | Returns identifiers for entity types to which order binding is available ||
 || [crm.enum.contenttype](./enum/crm-enum-content-type.md) | Returns the enumeration items for "Content Type" ||
 || [crm.enum.activitytype](./enum/crm-enum-activity-type.md) | Returns the enumeration items for "Activity Type" ||
 || [crm.enum.activitypriority](./enum/crm-enum-activity-priority.md) | Returns the enumeration items for "Activity Priority" ||

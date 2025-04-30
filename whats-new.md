@@ -2,6 +2,13 @@
 
 ## 2025
 
+### April 30, 2025
+
+- Updated the main page of the [Resources](./api-reference/booking/resource/index.md) section in Online Booking. Added introductory information and an overview of methods and relationships.
+- Updated the main page of the [Waitlist](./api-reference/booking/waitlist/index.md) section in Online Booking. Added introductory information and an overview of methods and relationships.
+- Added a new tutorial [How to Mass Complete Workflows with Date Filter](./tutorials/bizproc/how-to-filter-and-kill-workflows.md).
+- Updated the main page of the [Online Booking: Methods Overview](./api-reference/booking/index.md) section. Added introductory information and an overview of methods and relationships.
+
 ### April 23, 2025
 
 - Added methods for the new module [Online Booking](./api-reference/booking/index.md)

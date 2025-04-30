@@ -1,4 +1,4 @@
-# Get a List of Running Workflows bizproc.workflow.instances
+# Get a list of running workflows bizproc.workflow.instances
 
 > Scope: [`bizproc`](../scopes/permissions.md)
 >
@@ -58,7 +58,7 @@ The sorting direction can take the following values:
   
 Default value: `{'MODIFIED': 'desc'}` ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static — 50 records.
 
@@ -68,10 +68,11 @@ The formula for calculating the `start` parameter value:
 
 `start = (N - 1) * 50`, where `N` — the number of the desired page ||
 |#
+|#
 
 ## Code Examples
 
-{% include [Examples Note](../../_includes/examples.md) %}
+{% include [Examples note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -166,7 +167,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -214,16 +215,17 @@ HTTP Status: **200**
 || **result**
 [`object`](../data-types.md) | The root element of the response. 
 
-Contains an array of objects with information about the running workflows ||
+Contains an array of objects with information about running workflows ||
 || **total**
 [`integer`](../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
+ 
 ## Error Handling
 
-HTTP Status: **403**
+HTTP status: **403**
 
 ```json
 {
@@ -238,7 +240,7 @@ HTTP Status: **403**
 
 #|
 || **Status** |**Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! | The method was executed by a non-administrator ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -249,3 +251,5 @@ HTTP Status: **403**
 - [{#T}](./bizproc-workflow-start.md)
 - [{#T}](./bizproc-workflow-terminate.md)
 - [{#T}](./bizproc-workflow-kill.md)
+- [{#T}](../../tutorials/bizproc/how-to-kill-workflows.md)
+- [{#T}](../../tutorials/bizproc/how-to-filter-and-kill-workflows.md)

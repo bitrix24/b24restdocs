@@ -8,13 +8,19 @@ Online booking is a tool for automating the reservation of resources: rooms, equ
 
 Online booking has three groups of methods: resources, waitlist, and booking. The methods are interconnected:
 
-- resources define what can be reserved
+- resources define what can be booked
 - the waitlist handles overload
 - booking methods record occupancy
 
+{% note info "" %}
+
+In the on-premise Bitrix24, methods can be used starting from the [module version](../cloud-and-on-premise/on-premise/versions.md) `booking 25.300.0`.
+
+{% endnote %}
+
 ## Setting Up Resources
 
-Resources are objects that can be reserved: rooms, equipment, services. Methods in this group allow you to:
+Resources are objects that can be booked: rooms, equipment, services. Methods in this group allow you to:
 
 - create, modify, and delete resources — [booking.v1.resource.*](./resource/index.md)
 - configure resource types, such as "room," "car," "specialist" — [booking.v1.resourceType.*](./resource/resource-type/index.md)
@@ -26,7 +32,7 @@ Use the waitlist when the desired resource is temporarily unavailable. Methods i
 
 - add, modify, and delete entries in the waitlist — [booking.v1.waitlist.*](./waitlist/index.md)
 - move an entry from booking to the waitlist — [booking.v1.waitlist.createfrombooking](./waitlist/booking-v1-waitlist-createfrombooking.md)
-- manage the relationships of waitlist entries with CRM clients — [booking.v1.waitlist.client.*](./waitlist/client/index.md) and other objects — [booking.v1.waitList.externalData.*](./waitlist/external-data/index.md)
+- manage relationships between waitlist entries and CRM clients — [booking.v1.waitlist.client.*](./waitlist/client/index.md) and other objects — [booking.v1.waitList.externalData.*](./waitlist/external-data/index.md)
 
 ## Booking Resources
 
@@ -34,7 +40,7 @@ Booking is a confirmed reservation for a resource. Methods in this group allow y
 
 - create, modify, and cancel bookings — [booking.v1.booking.*](./booking/index.md)
 - create a booking from an entry in the waitlist — [booking.v1.booking.createfromwaitlist](./booking/booking-v1-booking-createfromwaitlist.md)
-- manage the relationships of bookings with CRM clients — [booking.v1.booking.client.*](./booking/client/index.md) and other objects — [booking.v1.booking.externalData.*](./booking/external-data/index.md)
+- manage relationships between bookings and CRM clients — [booking.v1.booking.client.*](./booking/client/index.md) and other objects — [booking.v1.booking.externalData.*](./booking/external-data/index.md)
 
 ## Overview of Methods {#all-methods}
 
@@ -89,7 +95,7 @@ Booking is a confirmed reservation for a resource. Methods in this group allow y
 
 #|
 || **Method** | **Description** ||
-|| [booking.v1.waitlist.client.list](./waitlist/client/booking-v1-waitlist-client-list.md) | Retrieves a list of clients for the waitlist entry ||
+|| [booking.v1.waitlist.client.list](./waitlist/client/booking-v1-waitlist-client-list.md) | Retrieves a list of clients in the waitlist entry ||
 || [booking.v1.waitlist.client.set](./waitlist/client/booking-v1-waitlist-client-set.md) | Adds clients to the waitlist entry ||
 || [booking.v1.waitlist.client.unset](./waitlist/client/booking-v1-waitlist-client-unset.md) | Removes clients from the waitlist entry ||
 |#
@@ -119,7 +125,7 @@ Booking is a confirmed reservation for a resource. Methods in this group allow y
 
 #|
 || **Method** | **Description** ||
-|| [booking.v1.booking.client.list](./booking/client/booking-v1-booking-client-list.md) | Retrieves a list of clients for the booking ||
+|| [booking.v1.booking.client.list](./booking/client/booking-v1-booking-client-list.md) | Retrieves a list of clients in the booking ||
 || [booking.v1.booking.client.set](./booking/client/booking-v1-booking-client-set.md) | Adds a client to the booking ||
 || [booking.v1.booking.client.unset](./booking/client/booking-v1-booking-client-unset.md) | Removes clients from the booking ||
 |#

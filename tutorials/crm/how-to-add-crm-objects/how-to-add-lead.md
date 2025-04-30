@@ -1,4 +1,4 @@
-# How to Easily Add a Lead
+# How to Add a Lead
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
@@ -37,7 +37,7 @@ $(document).ready(function() {
 </form>
 ```
 
-- Create a file for saving filled forms:
+- Create a file to save the filled forms:
 
 {% list tabs %}
 
@@ -84,12 +84,12 @@ $(document).ready(function() {
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
     ```php
-    <?
+    <?php
         $sName = htmlspecialchars($_POST["NAME"]);    
         $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
         $sPhone = htmlspecialchars($_POST["PHONE"]);
@@ -103,58 +103,58 @@ $(document).ready(function() {
             'crm.lead.add',
             [
             'fields' => [
-                'TITLE' => 'From the site: '.implode(' ',[$sName,$sLastName]), // Lead Name[string]
+                'TITLE' => 'From the site: '.implode(' ',[$sName,$sLastName]), // *Lead Name[string]
                 'NAME' => $sName, // Name[string]
                 'LAST_NAME' => $sLastName, // Last name[string]
                 'PHONE' => $arPhone, // Phone[crm_multifield]
                 'EMAIL' => $arEmail, // E-mail[crm_multifield]
-                //'HONORIFIC' => '', // Salutation[string]
-                //'SECOND_NAME' => '', // Second name[string]
-                //'BIRTHDATE' => '', // Date of birth[date]
-                //'COMPANY_TITLE' => '', // Company name[string]
-                //'SOURCE_ID' => '', // Source[crm_status {CALL:"Call", EMAIL:"E-Mail", WEB:"Website",
-                //ADVERTISING:"Advertising", PARTNER:"Existing Client", RECOMMENDATION:"By Recommendation",
+                // 'HONORIFIC' => '', // Salutation[string]
+                // 'SECOND_NAME' => '', // Second name[string]
+                // 'BIRTHDATE' => '', // Date of birth[date]
+                // 'COMPANY_TITLE' => '', // Company name[string]
+                // 'SOURCE_ID' => '', // Source[crm_status {CALL:"Call", EMAIL:"E-Mail", WEB:"Website",
+                // ADVERTISING:"Advertising", PARTNER:"Existing Client", RECOMMENDATION:"By Recommendation",
                 // TRADE_SHOW:"Show/Exhibition", WEBFORM:"CRM form", CALLBACK:"Callback", RC_GENERATOR:"Sales boost", STORE:"Online Store", OTHER:"Other"}]
                 // CRest::call('crm.status.list',['filter'=>['ENTITY_ID'=>'SOURCE']]);
-                //'SOURCE_DESCRIPTION' => '', // Source information[string]
-                //'STATUS_ID' => '', // Status[crm_status {NEW:"Unassigned", IN_PROCESS:"In Progress", PROCESSED:"Processed",
+                // 'SOURCE_DESCRIPTION' => '', // Source information[string]
+                // 'STATUS_ID' => '', // Status[crm_status {NEW:"Unassigned", IN_PROCESS:"In Progress", PROCESSED:"Processed",
                 // CONVERTED:"Good lead", JUNK:"Junk Lead"}] // CRest::call('crm.status.list',['filter'=>['ENTITY_ID'=>'STATUS']]);
-                //'STATUS_DESCRIPTION' => '', // Status information[string]
-                //'STATUS_SEMANTIC_ID' => '', // Status details[string]
-                //'POST' => '', // Position[string]
-                //'ADDRESS' => '', // Address[string]
-                //'ADDRESS_2' => '', // Address (line 2)[string]
-                //'ADDRESS_CITY' => '', // City[string]
-                //'ADDRESS_POSTAL_CODE' => '', // Zip[string]
-                //'ADDRESS_REGION' => '', // Region[string]
-                //'ADDRESS_PROVINCE' => '', // State / Province[string]
-                //'ADDRESS_COUNTRY' => '', // Country[string]
-                //'ADDRESS_COUNTRY_CODE' => '', // Country Code[string]
-                //'CURRENCY_ID' => '', // Currency[crm_currency] // CRest::call('crm.currency.list');
-                //'OPPORTUNITY' => '', // Total[double]
-                //'OPENED' => '', // Available to everyone[char]
-                //'COMMENTS' => '', // Comment[string]
-                //'HAS_PHONE' => '', // Has phone[char]
-                //'HAS_EMAIL' => '', // Has email[char]
-                //'HAS_IMOL' => '', // Has Open Channel[char]
-                //'ASSIGNED_BY_ID' => '', // Responsible person[user]
-                //'CREATED_BY_ID' => '', // Created by[user]
-                //'MODIFY_BY_ID' => '', // Modified by[user]
-                //'DATE_CREATE' => '', // Created on[datetime]
-                //'DATE_MODIFY' => '', // Modified on[datetime]
-                //'COMPANY_ID' => '', // Company[crm_company] // CRest::call('crm.company.list');
-                //'CONTACT_ID' => '', // Contact[crm_contact] // CRest::call('crm.contact.list');
-                //'IS_RETURN_CUSTOMER' => '', // Repeat lead[char]
-                //'DATE_CLOSED' => '', // Completed on[datetime]
-                //'ORIGINATOR_ID' => '', // External source[string]
-                //'ORIGIN_ID' => '', // Item ID in data source[string]
-                //'UTM_SOURCE' => '', // Ad system[string]
-                //'UTM_MEDIUM' => '', // Medium[string]
-                //'UTM_CAMPAIGN' => '', // Ad campaign UTM[string]
-                //'UTM_CONTENT' => '', // Campaign contents[string]
-                //'UTM_TERM' => '', // Campaign search term[string]
-                //'WEB' => '', // Website[crm_multifield]
-                //'IM' => '', // Messenger[crm_multifield]
+                // 'STATUS_DESCRIPTION' => '', // Status information[string]
+                // 'STATUS_SEMANTIC_ID' => '', // Status details[string]
+                // 'POST' => '', // Position[string]
+                // 'ADDRESS' => '', // Address[string]
+                // 'ADDRESS_2' => '', // Address (line 2)[string]
+                // 'ADDRESS_CITY' => '', // City[string]
+                // 'ADDRESS_POSTAL_CODE' => '', // Zip[string]
+                // 'ADDRESS_REGION' => '', // Region[string]
+                // 'ADDRESS_PROVINCE' => '', // State / Province[string]
+                // 'ADDRESS_COUNTRY' => '', // Country[string]
+                // 'ADDRESS_COUNTRY_CODE' => '', // Country Code[string]
+                // 'CURRENCY_ID' => '', // Currency[crm_currency] // CRest::call('crm.currency.list');
+                // 'OPPORTUNITY' => '', // Total[double]
+                // 'OPENED' => '', // Available to everyone[char]
+                // 'COMMENTS' => '', // Comment[string]
+                // 'HAS_PHONE' => '', // Has phone[char]
+                // 'HAS_EMAIL' => '', // Has email[char]
+                // 'HAS_IMOL' => '', // Has Open Channel[char]
+                // 'ASSIGNED_BY_ID' => '', // Responsible person[user]
+                // 'CREATED_BY_ID' => '', // Created by[user]
+                // 'MODIFY_BY_ID' => '', // Modified by[user]
+                // 'DATE_CREATE' => '', // Created on[datetime]
+                // 'DATE_MODIFY' => '', // Modified on[datetime]
+                // 'COMPANY_ID' => '', // Company[crm_company] // CRest::call('crm.company.list');
+                // 'CONTACT_ID' => '', // Contact[crm_contact] // CRest::call('crm.contact.list');
+                // 'IS_RETURN_CUSTOMER' => '', // Repeat lead[char]
+                // 'DATE_CLOSED' => '', // Completed on[datetime]
+                // 'ORIGINATOR_ID' => '', // External source[string]
+                // 'ORIGIN_ID' => '', // Item ID in data source[string]
+                // 'UTM_SOURCE' => '', // Ad system[string]
+                // 'UTM_MEDIUM' => '', // Medium[string]
+                // 'UTM_CAMPAIGN' => '', // Ad campaign UTM[string]
+                // 'UTM_CONTENT' => '', // Campaign contents[string]
+                // 'UTM_TERM' => '', // Campaign search term[string]
+                // 'WEB' => '', // Website[crm_multifield]
+                // 'IM' => '', // Messenger[crm_multifield]
             ]
         ]);
         if(!empty($result['result'])){

@@ -1,4 +1,4 @@
-# How to Send an e-mail to a Client on Behalf of an Employee Indicating the Employee's Email Address
+# How to Send an E-mail to a Client on Behalf of an Employee Indicating the Employee's E-mail
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
@@ -114,12 +114,12 @@ The example retrieves the e-mail of the person responsible for the contact and c
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
 
     {% endnote %}
 
     ```php
-    <?
+    <?php
     $contactID = 1;
     $resultContact = CRest::call(
         'crm.contact.get',
@@ -191,6 +191,6 @@ The example retrieves the e-mail of the person responsible for the contact and c
         echo json_encode(['message' => 'Activity not added']);
     }
     ?>
-    ```
+    ``` 
 
 {% endlist %}

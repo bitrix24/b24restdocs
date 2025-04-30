@@ -108,7 +108,7 @@ The identifier can be obtained using the [bizproc.workflow.instances](./bizproc-
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -141,7 +141,7 @@ Contains `true` in case of success. ||
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -168,3 +168,5 @@ HTTP Status: **400**, **403**
 - [{#T}](./bizproc-workflow-start.md)
 - [{#T}](./bizproc-workflow-instances.md)
 - [{#T}](./bizproc-workflow-kill.md)
+- [{#T}](../../tutorials/bizproc/how-to-kill-workflows.md)
+- [{#T}](../../tutorials/bizproc/how-to-filter-and-kill-workflows.md)

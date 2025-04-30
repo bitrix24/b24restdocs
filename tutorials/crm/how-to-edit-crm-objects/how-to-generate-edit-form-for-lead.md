@@ -6,18 +6,18 @@
 
 Example of automatically generating a lead editing form with all fields created in Bitrix24 on the application page.
 
+Some field types are not implemented in this example; a message *field not support* will be displayed in place of fields with unsupported types.
+
 {% note info %}
 
 To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
 
 {% endnote %}
 
-Some field types are not implemented in this example; a message *field not support* will be displayed in place of fields with unsupported types.
-
 Generated form code:
 
 ```php
-<?
+<?php
     $ID = intVal($_REQUEST['ID']);
     class CPrintForm
     {
@@ -545,7 +545,7 @@ Generated form code:
 Code for the **auto_form.php** file that saves the form:
 
 ```php
-<?    
+<?php    
     $arForm = [];
     foreach($_POST['form'] as $key => $item)
     {

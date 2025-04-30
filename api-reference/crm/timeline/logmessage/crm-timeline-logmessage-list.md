@@ -1,14 +1,14 @@
-# Get a list of log entries from crm.timeline.logmessage.list
+# Get a list of log entries crm.timeline.logmessage.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: `user with read access permission to the CRM entity containing the record`
 
 This method retrieves a list of timeline log entries.
 
 {% note info "" %}
 
-It's important to note that the method can only retrieve data for entries that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System entries cannot be retrieved using `crm.timeline.logmessage.list`.
+It is important to note that the method can only retrieve data for records that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System records cannot be retrieved using `crm.timeline.logmessage.list`.
 
 {% endnote %}
 
@@ -24,15 +24,15 @@ It's important to note that the method can only retrieve data for entries that w
 || **entityId***
 [`integer`](../../../data-types.md) | Identifier of the entity item for which to retrieve the list of log entries (for example, `1`) ||
 || **order**
-[`object`](../../../data-types.md) | List for sorting, where the key is the field and the value is `asc` or `desc`.
+[`object`](../../../data-types.md) | Sorting list, where the key is the field and the value is `asc` or `desc`.
 
 By default, `desc` is used.
 
-Sorting is only supported by the fields **id** and **created** ||
+Sorting is only supported by the **id** and **created** fields ||
 || **start**
 [`integer`](../../../data-types.md) | This parameter is used for pagination control.
 
-The page size of results is always static: 10 entries.
+The result page size is always static: 10 entries.
 
 To select the second page of results, you need to pass the value `10`. To select the third page of results — the value `20`, and so on.
 
@@ -153,13 +153,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md) | The root element of the response.
+[`array`](../../../data-types.md) | Root element of the response.
 
 The `result` field contains an array, each entry of which contains an associative array of fields for the log entry [logMessage](./crm-timeline-logmessage-add.md#logMessage) ||
 || **total**
-[`integer`](../../../data-types.md) | The total number of found entries ||
+[`integer`](../../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -179,7 +179,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields are missing ||
+|| `100` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 

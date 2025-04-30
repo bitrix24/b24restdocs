@@ -1,11 +1,13 @@
 title: Typical use-cases and scenarios in workflows and Automation rules
 href: index.md
 items: 
-  - name: Standard use cases for REST API in workflows and Automation rules
+  - name: Typical use-cases for REST API in workflows and Automation rules
     href: index.md
-  - name: How to add a workflow action or Automation rule to create an invoice
+  - name: How to add an action to create an invoice based on
     href: activity.md
-  - name: How to embed your UI in the Automation rule parameters 
+  - name: How to embed your UI in the Automation rule parameters
     href: setting-robot.md
   - name: How to terminate workflows of a terminated employee
-    href: how-to-kill-workflows.md    
+    href: how-to-kill-workflows.md
+  - name: How to bulk terminate workflows with a date filter
+    href: how-to-filter-and-kill-workflows.md
