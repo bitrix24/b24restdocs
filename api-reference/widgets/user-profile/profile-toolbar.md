@@ -1,10 +1,10 @@
-# Context Menu Item for the USER_PROFILE_TOOLBAR
+# Context Menu Item for the Top Profile Button USER_PROFILE_TOOLBAR
 
-> Scope: [`intranet`](../../scopes/permissions.md)
+> Scope: [`user`](../../scopes/permissions.md)
 
 You can add your item to the context menu of the top profile button.
 
-The code for the specific widget placement is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
 ## Where the Widget is Embedded
 
@@ -15,7 +15,7 @@ The code for the specific widget placement is specified in the `PLACEMENT` param
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 Array
@@ -34,19 +34,19 @@ Array
 )
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
-|| **USER_ID***
+|| **USER_ID*** 
 [`string`](../../data-types.md) | The identifier of the user whose profile the widget was opened in.
 
 It can be used to retrieve additional information using the [user.get](../../user/user-get.md) method.

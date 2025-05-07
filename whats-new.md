@@ -2,6 +2,11 @@
 
 ## 2025
 
+### May 7, 2025
+
+- Added information about new fields for working with message send time in methods [booking.v1.resource.*](./api-reference/booking/resource/index.md) and [booking.v1.resourcetype.*](./api-reference/booking/resource/resource-type/index.md)
+- Added a new tutorial [How to enter the payment date in the deal field](./tutorials/crm/how-to-edit-crm-objects/how-to-add-paid-date-to-deal.md)
+
 ### April 30, 2025
 
 - Updated the main page of the [Resources](./api-reference/booking/resource/index.md) section in Online Booking. Added introductory information and an overview of methods and relationships.

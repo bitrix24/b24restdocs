@@ -4,20 +4,20 @@
 >
 > Who can execute the method: any user
 
-The method `booking.v1.resourceType.update` updates the information of an existing resource type.
+The method `booking.v1.resourceType.update` updates information about an existing resource type.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
 [`integer`](../../../data-types.md) | Identifier of the resource type. 
-Can be obtained through the methods [booking.v1.resourceType.add](./booking-v1-resourcetype-add.md) and [booking.v1.resourceType.list](./booking-v1-resourcetype-list.md) ||
+Can be obtained from the methods [booking.v1.resourceType.add](./booking-v1-resourcetype-add.md) and [booking.v1.resourceType.list](./booking-v1-resourcetype-list.md) ||
 || **fields***
-[`object`](../../../data-types.md) | An object containing field values to update the resource type [(detailed description)](#fields) ||
+[`object`](../../../data-types.md) | Object containing field values to update the resource type [(detailed description)](#fields) ||
 |#
 
 ### Parameter fields {#fields}
@@ -67,11 +67,27 @@ Can be obtained through the methods [booking.v1.resourceType.add](./booking-v1-r
 [`string`](../../../data-types.md) | Type of the delay message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
 - `animate` — template for booking specialists ||
+|| **infoDelay**
+[`integer`](../../../data-types.md) | Delay after which the client receives a booking message. Specified in seconds ||
+|| **reminderDelay**
+[`integer`](../../../data-types.md) | Time before the booking when the client receives a reminder. Specified in seconds ||
+|| **delayedDelay**
+[`integer`](../../../data-types.md) | Time after which to send the client a message about being late. Specified in seconds ||
+|| **delayedCounterDelay**
+[`integer`](../../../data-types.md) | Time after which to enable the counter in the calendar. Specified in seconds ||
+|| **confirmationDelay**
+[`integer`](../../../data-types.md) | Time before the booking when the client receives the first confirmation message. Specified in seconds ||
+|| **confirmationRepetitions**
+[`integer`](../../../data-types.md) | Number of messages sent to the client for booking confirmation, excluding the first one ||
+|| **confirmationRepetitionsInterval**
+[`integer`](../../../data-types.md) | Interval between confirmation messages. Specified in seconds ||
+|| **confirmationCounterDelay**
+[`integer`](../../../data-types.md) | Time before the booking after which the counter for unconfirmed bookings lights up. Specified in seconds ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -94,7 +110,15 @@ Can be obtained through the methods [booking.v1.resourceType.add](./booking-v1-r
                 isFeedbackNotificationOn: "N",
                 templateTypeFeedback: "animate",
                 isDelayedNotificationOn: "N",
-                templateTypeDelayed: "animate"
+                templateTypeDelayed: "animate",
+                infoDelay: 300,
+                reminderDelay: -1,
+                delayedDelay: 300,
+                delayedCounterDelay: 7200,
+                confirmationDelay: 86400,
+                confirmationRepetitions: 0,
+                confirmationRepetitionsInterval: 0,
+                confirmationCounterDelay: 7200
             }
         },
         result => {
@@ -112,8 +136,8 @@ Can be obtained through the methods [booking.v1.resourceType.add](./booking-v1-r
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":10,"fields":{"name":"New Name","code":"Updated Code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/booking.v1.resourceType.update
+    -d '{"id":10,"fields":{"name":"New Name","code":"Updated Code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate","infoDelay":300,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":0,"confirmationRepetitionsInterval":0,"confirmationCounterDelay":7200}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resourceType.update
     ```
 
 - cURL (OAuth)
@@ -122,7 +146,7 @@ Can be obtained through the methods [booking.v1.resourceType.add](./booking-v1-r
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":10,"fields":{"name":"New Name","code":"Updated Code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":10,"fields":{"name":"New Name","code":"Updated Code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate","infoDelay":300,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":0,"confirmationRepetitionsInterval":0,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/booking.v1.resourceType.update
     ```
 
@@ -147,7 +171,15 @@ Can be obtained through the methods [booking.v1.resourceType.add](./booking-v1-r
                 'isFeedbackNotificationOn' => 'N',
                 'templateTypeFeedback' => 'animate',
                 'isDelayedNotificationOn' => 'N',
-                'templateTypeDelayed' => 'animate'
+                'templateTypeDelayed' => 'animate',
+                'infoDelay' => 300,
+                'reminderDelay' => -1,
+                'delayedDelay' => 300,
+                'delayedCounterDelay' => 7200,
+                'confirmationDelay' => 86400,
+                'confirmationRepetitions' => 0,
+                'confirmationRepetitionsInterval' => 0,
+                'confirmationCounterDelay' => 7200
             ]
         ]
     );
@@ -206,7 +238,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `1007` | `Resource type not found` | The specified resource type `id` does not exist ||
+|| `1007` | `Resource type not found` | A non-existent `id` of the resource type was specified ||
 || `100` | `Could not find value for parameter` | A required parameter was not provided ||
 || `422` | `Invalid value of the field` | Invalid field value ||
 || `1011` | `Resource type with code already exists` | A resource type with this `code` already exists ||

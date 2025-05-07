@@ -59,7 +59,7 @@ Default is `Y` ||
 || **templateTypeReminder**
 [`string`](../../../data-types.md) | The type of the reminder message template. Possible values: `base` ||
 || **isFeedbackNotificationOn**
-[`string`](../../../data-types.md) | Request for feedback. Possible values:
+[`string`](../../../data-types.md) | Feedback request. Possible values:
 - `Y` — enabled
 - `N` — disabled
 
@@ -75,13 +75,45 @@ Default is `inanimate` ||
 - `Y` — enabled
 - `N` — disabled
 
-Default is `Y`||
+Default is `Y` ||
 || **templateTypeDelayed**
 [`string`](../../../data-types.md) | The type of the delay message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
 - `animate` — template for booking specialists
 
 Default is `inanimate` ||
+|| **infoDelay**
+[`integer`](../../../data-types.md) | Delay after which the client receives a booking message. Specified in seconds.
+
+Default is 300 ||
+|| **reminderDelay**
+[`integer`](../../../data-types.md) | Time before the booking when the client receives a reminder. Specified in seconds.
+
+Default is -1, in the morning on the day of the booking ||
+|| **delayedDelay**
+[`integer`](../../../data-types.md) | Time after which to send a message about the delay to the client. Specified in seconds.
+
+Default is 300 ||
+|| **delayedCounterDelay**
+[`integer`](../../../data-types.md) | Time after which to activate the counter in the calendar. Specified in seconds.
+
+Default is 7200 ||
+|| **confirmationDelay**
+[`integer`](../../../data-types.md) | Time before the booking when the client receives the first confirmation message. Specified in seconds.
+
+Default is 86400 ||
+|| **confirmationRepetitions**
+[`integer`](../../../data-types.md) | The number of messages sent to the client for booking confirmation, excluding the first.
+
+Default is 0 ||
+|| **confirmationRepetitionsInterval**
+[`integer`](../../../data-types.md) | Interval between confirmation messages. Specified in seconds.
+
+Default is 0 ||
+|| **confirmationCounterDelay**
+[`integer`](../../../data-types.md) | Time before the booking after which the counter for unconfirmed bookings lights up. Specified in seconds.
+
+Default is 7200 ||
 |#
 
 ## Code Examples
@@ -109,6 +141,14 @@ Default is `inanimate` ||
                 templateTypeFeedback: "inanimate",
                 isDelayedNotificationOn: "Y",
                 templateTypeDelayed: "inanimate",
+                infoDelay: 300,
+                reminderDelay: -1,
+                delayedDelay: 300,
+                delayedCounterDelay: 7200,
+                confirmationDelay: 86400,
+                confirmationRepetitions: 0,
+                confirmationRepetitionsInterval: 0,
+                confirmationCounterDelay: 7200
             }
         },
         result => {
@@ -126,7 +166,7 @@ Default is `inanimate` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FIELDS":{"name":"Name","code":"code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate"}}' \
+    -d '{"fields":{"name":"Name","code":"code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoDelay":300,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":0,"confirmationRepetitionsInterval":0,"confirmationCounterDelay":7200}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resourceType.add
     ```
 
@@ -136,7 +176,7 @@ Default is `inanimate` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FIELDS":{"name":"Name","code":"code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"name":"Name","code":"code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoDelay":300,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":0,"confirmationRepetitionsInterval":0,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/booking.v1.resourceType.add
     ```
 
@@ -148,7 +188,7 @@ Default is `inanimate` ||
     $result = CRest::call(
         'booking.v1.resourceType.add',
         [
-            'FIELDS' => [
+            'fields' => [
                 'name' => 'Name',
                 'code' => 'code',
                 'isInfoNotificationOn' => 'Y',
@@ -161,6 +201,14 @@ Default is `inanimate` ||
                 'templateTypeFeedback' => 'inanimate',
                 'isDelayedNotificationOn' => 'Y',
                 'templateTypeDelayed' => 'inanimate',
+                'infoDelay' => 300,
+                'reminderDelay' => -1,
+                'delayedDelay' => 300,
+                'delayedCounterDelay' => 7200,
+                'confirmationDelay' => 86400,
+                'confirmationRepetitions' => 0,
+                'confirmationRepetitionsInterval' => 0,
+                'confirmationCounterDelay' => 7200,
             ]
         ]
     );
@@ -174,7 +222,7 @@ Default is `inanimate` ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -201,12 +249,12 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | The root element of the response, contains the identifier of the created resource type ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -221,10 +269,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | `Required fields: code` | The required parameter inside `fields` was not provided ||
-|| `100` | `Could not find value for parameter ` | The required parameter was not provided ||
+|| `0` | `Required fields: code` | Required parameter not provided within `fields` ||
+|| `100` | `Could not find value for parameter ` | Required parameter not provided ||
 || `422` | `Invalid value of the field` | Invalid field value ||
-|| `1010` | `Resource type with code already exists'` | A resource type with this `code` already exists ||
+|| `1010` | `Resource type with code already exists'` | Resource type with this `code` already exists ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -21,3 +21,5 @@ items:
     href: how-to-move-activity.md
   - name: How to Move an Activity from One Object Type to Another
     href: how-to-move-activity-between-objects.md
+  - name: How to Enter the Payment Date in the Deal Field
+    href: how-to-add-paid-date-to-deal.md

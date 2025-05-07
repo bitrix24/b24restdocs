@@ -12,13 +12,13 @@ The method `crm.deal.list` returns a list of deals based on a filter. It is an i
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | List of fields that should be populated for deals in the selection.
+[`string[]`](../../data-types.md) | List of fields that should be filled for deals in the selection.
 
 You can use the following masks for selection:
 - `'*'` — to select all fields (excluding custom and multiple fields)
 - `'UF_*'` — to select all custom fields (excluding multiple fields)
 
-You can find the list of available fields for selection using the method [crm.deal.fields](./crm-deal-fields.md).
+The list of available fields for selection can be found using the method [crm.deal.fields](./crm-deal-fields.md).
 
 By default, all fields are taken — `'*'` + Custom fields — `'UF_*'`
 ||
@@ -38,7 +38,7 @@ where:
 - `field_n` — the name of the field by which the selection of elements will be filtered
 - `value_n` — the filter value
 
-You can add a prefix to the keys `field_n` to clarify the filter operation.
+You can add a prefix to the keys `field_n` to specify the filter operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -58,7 +58,7 @@ Possible prefix values:
 
 The LIKE filter does not work with fields of type `crm_status`, `crm_contact`, `crm_company` (deal type `TYPE_ID`, stage `STAGE_ID`, etc.).
 
-You can find the list of available fields for filtering using the method [crm.deal.fields](./crm-deal-fields.md). 
+The list of available fields for filtering can be found using the method [crm.deal.fields](./crm-deal-fields.md). 
 
 The filter does not support the field `CONTACT_IDS`, for filtering by contacts use the method [crm.item.list](../universal/crm-item-list.md)
 ||
@@ -75,12 +75,12 @@ The filter does not support the field `CONTACT_IDS`, for filtering by contacts u
 ```
 
 where:
-- `field_n` — the name of the field by which the selection of contacts will be sorted
-- `value_n` — a `string` value equal to:
+- `field_n` — the name of the field by which the selection of deals will be sorted
+- `value_n` — a `string` value, equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
-You can find the list of available fields for sorting using the method [crm.deal.fields](./crm-deal-fields.md)
+The list of available fields for sorting can be found using the method [crm.deal.fields](./crm-deal-fields.md)
 ||
 || **start**
 [`integer`](../../data-types.md)  | This parameter is used to manage pagination.
@@ -138,8 +138,8 @@ For clarity, select only the necessary fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"SELECT":["ID","TITLE","TYPE_ID","CATEGORY_ID","STAGE_ID","OPPORTUNITY","IS_MANUAL_OPPORTUNITY","ASSIGNED_BY_ID","DATE_CREATE"],"FILTER":{"=%TITLE":"%а","CATEGORY_ID":1,"TYPE_ID":"COMPLEX","STAGE_ID":"C1:NEW",">OPPORTUNITY":10000,"<=OPPORTUNITY":20000,"IS_MANUAL_OPPORTUNITY":"Y","@ASSIGNED_BY_ID":[1,6],">DATE_CREATE":"'"$(date --date='-6 months' +%Y-%m-%d)"'"},"ORDER":{"TITLE":"ASC","OPPORTUNITY":"ASC"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.list
+    -d '{"SELECT":["ID","TITLE","TYPE_ID","CATEGORY_ID","STAGE_ID","OPPORTUNITY","IS_MANUAL_OPPORTUNITY","ASSIGNED_BY_ID","DATE_CREATE"],"FILTER":{"=%TITLE":"%a","CATEGORY_ID":1,"TYPE_ID":"COMPLEX","STAGE_ID":"C1:NEW",">OPPORTUNITY":10000,"<=OPPORTUNITY":20000,"IS_MANUAL_OPPORTUNITY":"Y","@ASSIGNED_BY_ID":[1,6],">DATE_CREATE":"'"$(date --date='-6 months' +%Y-%m-%d)"'"},"ORDER":{"TITLE":"ASC","OPPORTUNITY":"ASC"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.deal.list
     ```
 
 - cURL (OAuth)
@@ -148,7 +148,7 @@ For clarity, select only the necessary fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"SELECT":["ID","TITLE","TYPE_ID","CATEGORY_ID","STAGE_ID","OPPORTUNITY","IS_MANUAL_OPPORTUNITY","ASSIGNED_BY_ID","DATE_CREATE"],"FILTER":{"=%TITLE":"%а","CATEGORY_ID":1,"TYPE_ID":"COMPLEX","STAGE_ID":"C1:NEW",">OPPORTUNITY":10000,"<=OPPORTUNITY":20000,"IS_MANUAL_OPPORTUNITY":"Y","@ASSIGNED_BY_ID":[1,6],">DATE_CREATE":"'"$(date --date='-6 months' +%Y-%m-%d)"'"},"ORDER":{"TITLE":"ASC","OPPORTUNITY":"ASC"},"auth":"**put_access_token_here**"}' \
+    -d '{"SELECT":["ID","TITLE","TYPE_ID","CATEGORY_ID","STAGE_ID","OPPORTUNITY","IS_MANUAL_OPPORTUNITY","ASSIGNED_BY_ID","DATE_CREATE"],"FILTER":{"=%TITLE":"%a","CATEGORY_ID":1,"TYPE_ID":"COMPLEX","STAGE_ID":"C1:NEW",">OPPORTUNITY":10000,"<=OPPORTUNITY":20000,"IS_MANUAL_OPPORTUNITY":"Y","@ASSIGNED_BY_ID":[1,6],">DATE_CREATE":"'"$(date --date='-6 months' +%Y-%m-%d)"'"},"ORDER":{"TITLE":"ASC","OPPORTUNITY":"ASC"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.deal.list
     ```
 
@@ -337,13 +337,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`deal[]`](crm-deal-get.md#deal) | The root element of the response. Contains an array of objects with information about the fields of deals. 
+[`deal[]`](crm-deal-get.md#deal) | The root element of the response. Contains an array of objects with information about the deal fields. 
 
-Note that the structure of fields may change due to the `select` parameter ||
+Note that the structure of the fields may change due to the `select` parameter ||
 || **total**
 [`integer`](../../data-types.md) | The total number of found elements ||
 || **next**
-[`integer`](../../data-types.md) | Contains the value that needs to be passed in the next request in the `start` parameter to get the next batch of data.
+[`integer`](../../data-types.md) | Contains the value that should be passed in the next request to the `start` parameter to get the next batch of data.
 
 The `next` parameter appears in the response if the number of elements matching your request exceeds `50` ||
 || **time**

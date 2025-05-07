@@ -1,23 +1,24 @@
 # Context Menu Item in USER_PROFILE_MENU
 
-> Scope: [`intranet`](../../scopes/permissions.md)
+> Scope: [`user`](../../scopes/permissions.md)
 
 You can add your item to the context menu in the profile.
 
-The code for the specific widget placement is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-## Where the Widget is Embedded
+## Where the widget is embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Widget code** | **Location** ||
 || `USER_PROFILE_MENU` | Context menu item in the profile ||
 |#
 
-## What the Handler Receives
+## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 ```php
+
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -32,29 +33,30 @@ Array
     [PLACEMENT] => USER_PROFILE_MENU
     [PLACEMENT_OPTIONS] => {"USER_ID":"1"}
 )
+
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
 || **USER_ID***
 [`string`](../../data-types.md) | The identifier of the user whose profile the widget was opened in.
 
-Can be used to retrieve additional information using the [user.get](../../user/user-get.md) method.
+It can be used to retrieve additional information using the [user.get](../../user/user-get.md) method.
 
 ||
 |#
 
-## Continue Your Exploration
+## Continue your exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

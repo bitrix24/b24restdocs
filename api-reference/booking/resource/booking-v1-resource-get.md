@@ -8,19 +8,19 @@ The method `booking.v1.resource.get` returns information about a resource by its
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
 [`integer`](../../data-types.md) | Resource identifier. 
-Can be obtained through the methods [booking.v1.resource.add](./booking-v1-resource-add.md) and [booking.v1.resource.list](./booking-v1-resource-list.md) ||
+Can be obtained from the methods [booking.v1.resource.add](./booking-v1-resource-add.md) and [booking.v1.resource.list](./booking-v1-resource-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -86,33 +86,43 @@ HTTP status: **200**
 
 ```json
 {
-"result": {
-    "resource": {
-        "name": "Name",
-        "description": "Description",
-        "typeId": 1,
-        "isMain": "N",
-        "isInfoNotificationOn": "Y",
-        "templateTypeInfo": "inanimate",
-        "isConfirmationNotificationOn": "Y",
-        "templateTypeConfirmation": "animate",
-        "isReminderNotificationOn": "N",
-        "templateTypeReminder": "base",
-        "isFeedbackNotificationOn": "Y",
-        "templateTypeFeedback": "inanimate",
-        "isDelayedNotificationOn": "Y",
-        "templateTypeDelayed": "inanimate"
+    "result": {
+        "resource": {
+            "confirmationCounterDelay": 10800,
+            "confirmationNotificationDelay": 86400,
+            "confirmationNotificationRepetitions": null,
+            "confirmationNotificationRepetitionsInterval": 10800,
+            "delayedCounterDelay": 300,
+            "delayedNotificationDelay": 300,
+            "description": null,
+            "id": 15,
+            "infoNotificationDelay": null,
+            "isConfirmationNotificationOn": "Y",
+            "isDelayedNotificationOn": "N",
+            "isFeedbackNotificationOn": "N",
+            "isInfoNotificationOn": "Y",
+            "isMain": "Y",
+            "isReminderNotificationOn": "Y",
+            "name": "Name",
+            "reminderNotificationDelay": -1,
+            "templateTypeConfirmation": "animate",
+            "templateTypeDelayed": "animate",
+            "templateTypeFeedback": "animate",
+            "templateTypeInfo": "inanimate",
+            "templateTypeReminder": "base",
+            "typeId": 1
+        }
+    },
+    "time": {
+        "start": 1746539524.292041,
+        "finish": 1746539524.356627,
+        "duration": 0.06458592414855957,
+        "processing": 0.018703937530517578,
+        "date_start": "2025-05-06T16:52:04+02:00",
+        "date_finish": "2025-05-06T16:52:04+02:00",
+        "operating_reset_at": 1746540124,
+        "operating": 0
     }
-},
-"time": {
-    "start": 1741002780.099604,
-    "finish": 1741002780.381558,
-    "duration": 0.2819540500640869,
-    "processing": 0.14896297454833984,
-    "date_start": "2025-03-03T11:53:00+00:00",
-    "date_finish": "2025-03-03T11:53:00+00:00",
-    "operating": 0.14890098571777344
-}
 }
 ```
 
@@ -124,65 +134,81 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response. Contains information about the resource fields. The structure is described [below](#resource) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Resource {#resource}
 
 #|
-|| **Name**
-`type` | **Description** ||
-|| **name**
-[`string`](../../data-types.md) | Resource name ||
+|| **confirmationCounterDelay**
+[`integer`](../../data-types.md) | Time until the record is created in seconds, after which the unconfirmed record counter is activated ||
+|| **confirmationDelay**
+[`integer`](../../data-types.md) | Time until the record in seconds, when the client receives the first message to confirm the record ||
+|| **confirmationRepetitions**
+[`integer`](../../data-types.md) | Number of messages sent to the client for confirming the record, excluding the first one ||
+|| **confirmationRepetitionsInterval**
+[`integer`](../../data-types.md) | Interval between confirmation messages in seconds ||
+|| **delayedCounterDelay**
+[`integer`](../../data-types.md) | Time in seconds after which to activate the counter in the calendar ||
+|| **delayedDelay**
+[`integer`](../../data-types.md) | Time in seconds after which to send a message to the client about the delay ||
 || **description**
-[`string`](../../data-types.md) | Resource description ||
-|| **typeId**
-[`integer`](../../data-types.md) | Resource type identifier. 
-
-Information about the type can be obtained using the method [booking.v1.resourceType.get](./resource-type/booking-v1-resourcetype-get.md) ||
-|| **isMain**
-[`string`](../../data-types.md) | How to display the resource. Possible values:
-- `Y` — in schedule columns
-- `N` — when resources overlap
-||
-|| **isInfoNotificationOn**
-[`string`](../../data-types.md) | Message to the client about the booking. Possible values:
-- `Y` — enabled
-- `N` — disabled ||
-|| **templateTypeInfo**
-[`string`](../../data-types.md) | Type of the booking message template. Possible values:
-- `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
+[`string`](../../data-types.md) | Description of the resource ||
+|| **id**
+[`integer`](../../data-types.md) | Resource identifier ||
+|| **infoDelay**
+[`integer`](../../data-types.md) | Delay in seconds after which the client receives a message about the record ||
 || **isConfirmationNotificationOn**
-[`string`](../../data-types.md) | Automatic confirmation of the booking. Possible values:
+[`string`](../../data-types.md) | Automatic confirmation of the record. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
-|| **templateTypeConfirmation**
-[`string`](../../data-types.md) | Type of the confirmation message template. Possible values:
-- `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
-|| **isReminderNotificationOn**
-[`string`](../../data-types.md) | Reminder about the booking. Possible values:
-- `Y` — enabled
-- `N` — disabled ||
-|| **templateTypeReminder**
-[`string`](../../data-types.md) | Type of the reminder message template. Possible values: `base` ||
-|| **isFeedbackNotificationOn**
-[`string`](../../data-types.md) | Request for feedback. Possible values:
-- `Y` — enabled
-- `N` — disabled ||
-|| **templateTypeFeedback**
-[`string`](../../data-types.md) | Type of the feedback request message template. Possible values:
-- `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
 || **isDelayedNotificationOn**
 [`string`](../../data-types.md) | Reminder when the client is late. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
+|| **isFeedbackNotificationOn**
+[`string`](../../data-types.md) | Feedback request. Possible values:
+- `Y` — enabled
+- `N` — disabled ||
+|| **isInfoNotificationOn**
+[`string`](../../data-types.md) | Message to the client about the record. Possible values:
+- `Y` — enabled
+- `N` — disabled ||
+|| **isMain**
+[`string`](../../data-types.md) | How to display the resource. Possible values:
+- `Y` — in the schedule columns
+- `N` — when resources intersect ||
+|| **isReminderNotificationOn**
+[`string`](../../data-types.md) | Reminder about the record. Possible values:
+- `Y` — enabled
+- `N` — disabled ||
+|| **name**
+[`string`](../../data-types.md) | Name of the resource ||
+|| **reminderDelay**
+[`integer`](../../data-types.md) | Time until the record in seconds, when the client receives a reminder about the record.
+Value `-1` — in the morning on the day of the record ||
+|| **templateTypeConfirmation**
+[`string`](../../data-types.md) | Type of the confirmation message template. Possible values:
+- `inanimate` — template for booking equipment and premises
+- `animate` — template for appointments with specialists ||
 || **templateTypeDelayed**
 [`string`](../../data-types.md) | Type of the delay message template. Possible values:
-- `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
+- `inanimate` — template for booking equipment and premises
+- `animate` — template for appointments with specialists ||
+|| **templateTypeFeedback**
+[`string`](../../data-types.md) | Type of the feedback request message template. Possible values:
+- `inanimate` — template for booking equipment and premises
+- `animate` — template for appointments with specialists ||
+|| **templateTypeInfo**
+[`string`](../../data-types.md) | Type of the record message template. Possible values:
+- `inanimate` — template for booking equipment and premises
+- `animate` — template for appointments with specialists ||
+|| **templateTypeReminder**
+[`string`](../../data-types.md) | Type of the reminder message template. Possible values: `base` ||
+|| **typeId**
+[`integer`](../../data-types.md) | Resource type identifier.
+
+Information about the type can be obtained using the method [booking.v1.resourceType.get](./resource-type/booking-v1-resourcetype-get.md) ||
 |#
 
 ## Error Handling

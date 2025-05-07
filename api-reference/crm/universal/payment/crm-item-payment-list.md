@@ -1,10 +1,10 @@
-# Get a List of Payments crm.item.payment.list
+# Get a list of payments crm.item.payment.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: requires read access permission for the CRM object from which payments are selected.
 
-This method retrieves a list of payments for a specific CRM object.
+This method retrieves a list of payments for a specific CRM entity.
 
 ## Method Parameters
 
@@ -14,12 +14,11 @@ This method retrieves a list of payments for a specific CRM object.
 || **Name**
 `type` | **Description** ||
 || **entityId***
-[`integer`](../../../../api-reference/data-types.md) | Identifier of the CRM object ||
+[`integer`](../../../../api-reference/data-types.md) | Identifier of the CRM entity ||
 || **entityTypeId***
-[`integer`](../../../../api-reference/data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#object_type)  ||
+[`integer`](../../../../api-reference/data-types.md) | Identifier of the [`CRM entity type`](../../data-types.md#object_type) ||
 || **filter**
-[`object`](../../../../api-reference/data-types.md) | Additional filter for cases when you need to retrieve not all payments of the entity, but based on a more specific filter.
-The format description is provided in the **filter** parameter of the [`sale.payment.list`](../../../sale/payment/sale-payment-list.md) method  ||
+[`object`](../../../../api-reference/data-types.md) | Additional filter for cases when you need to retrieve not all payments of the entity, but based on a more specific filter. The format description is provided in the **filter** parameter of the [`sale.payment.list`](../../../sale/payment/sale-payment-list.md) method ||
 || **order**
 [`object`](../../../../api-reference/data-types.md) | The format description is provided in the **order** parameter of the [`sale.payment.list`](../../../sale/payment/sale-payment-list.md) method ||
 |#
@@ -105,7 +104,7 @@ HTTP status: **200**
          "id":1036,
          "accountNumber":"3653\/1",
          "paid": "Y",
-         "datePaid":"2024-05-20T12:32:02+03:00",
+         "datePaid":"2024-05-20T12:32:02+02:00",
          "empPaidId":1,
          "paySystemId":6,
          "sum":0,
@@ -129,8 +128,8 @@ HTTP status: **200**
       "finish":1716205783.702053,
       "duration":0.41652917861938477,
       "processing":0.15817594528198242,
-      "date_start":"2024-05-20T14:49:43+03:00",
-      "date_finish":"2024-05-20T14:49:43+03:00"
+      "date_start":"2024-05-20T14:49:43+02:00",
+      "date_finish":"2024-05-20T14:49:43+02:00"
    }
 }
 ```
@@ -141,7 +140,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_order_payment_crm_simple[]`](crm-item-payment-get.md#sale_order_payment_crm_simple) | Array of objects containing brief information about the selected payments  ||
+[`sale_order_payment_crm_simple[]`](crm-item-payment-get.md#sale_order_payment_crm_simple) | Array of objects containing brief information about the selected payments ||
 || **time**
 [`time`](../../../../api-reference/data-types.md) | Information about the execution time of the request ||
 |#
@@ -178,3 +177,4 @@ HTTP status: **400**
 - [{#T}](./crm-item-payment-pay.md)
 - [{#T}](./crm-item-payment-unpay.md)
 - [{#T}](./crm-item-payment-add.md)
+- [{#T}](../../../../tutorials/crm/how-to-edit-crm-objects/how-to-add-paid-date-to-deal.md)
