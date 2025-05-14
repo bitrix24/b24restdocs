@@ -19,7 +19,11 @@ items:
     include:
       path: price-type-lang/b24-toc.yaml
       mode: link
-  - name: Linking Price Types to Customer Groups
+  - name: Binding Price Types to Customer Groups
     include:
       path: price-type-group/b24-toc.yaml
+      mode: link
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
       mode: link

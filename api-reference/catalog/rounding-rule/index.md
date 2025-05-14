@@ -1,13 +1,13 @@
 # Price Rounding Rules in the Trade Catalog: Overview of Methods
 
-The price rounding rule is a set of settings that determine how to adjust the price of a product or service in the cart. They help automatically round prices, for example, to the nearest whole number or to a specific decimal place.
+The price rounding rule is a set of settings that define how to modify the price of a product or service in the cart. They help automatically round prices, for example, to the nearest whole number or to a specific decimal place.
 
 There are three types of price rounding:
 - mathematical rounding
 - rounding up: the price increases, which benefits the store
 - rounding down: the price decreases, which benefits the customer
 
-> Quick navigation: [all methods and events](#all-methods)
+> Quick navigation: [all methods and events](#all-methods) 
 
 ## Connection of Price Rounding Rules with Other Objects
 
@@ -37,9 +37,9 @@ There are three types of price rounding:
 
     #|
     || **Event** | **Triggered** ||
-    || [CATALOG.ROUNDING.ON.ADD](../events/catalog-rounding-on-add.md) | When a price rounding rule is added ||
-    || [CATALOG.ROUNDING.ON.UPDATE](../events/catalog-rounding-on-update.md) | When a price rounding rule is updated ||
-    || [CATALOG.ROUNDING.ON.DELETE](../events/catalog-rounding-on-delete.md) | When a price rounding rule is deleted ||
+    || [CATALOG.ROUNDING.ON.ADD](./events/catalog-rounding-on-add.md) | When a price rounding rule is added ||
+    || [CATALOG.ROUNDING.ON.UPDATE](./events/catalog-rounding-on-update.md) | When a price rounding rule is updated ||
+    || [CATALOG.ROUNDING.ON.DELETE](./events/catalog-rounding-on-delete.md) | When a price rounding rule is deleted ||
     |#
 
 {% endlist %}

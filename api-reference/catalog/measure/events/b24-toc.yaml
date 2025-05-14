@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items: 
+  - name: Overview of Events
+    href: index.md
+  - name: When Adding a Unit of Measurement
+    href: catalog-measure-on-add.md
+  - name: When Updating a Unit of Measurement
+    href: catalog-measure-on-update.md
+  - name: When Deleting a Unit of Measurement
+    href: catalog-measure-on-delete.md

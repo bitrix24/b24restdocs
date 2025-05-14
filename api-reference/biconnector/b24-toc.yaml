@@ -1,0 +1,17 @@
+title: BIconnector  
+href: index.md  
+items:   
+  - name: Overview of methods  
+    href: index.md  
+  - name: Connector  
+    include:  
+      path: connector/b24-toc.yaml  
+      mode: link  
+  - name: Sources  
+    include:  
+      path: source/b24-toc.yaml  
+      mode: link      
+  - name: Datasets  
+    include:  
+      path: dataset/b24-toc.yaml  
+      mode: link  

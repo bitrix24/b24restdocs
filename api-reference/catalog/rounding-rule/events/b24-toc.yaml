@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items: 
+  - name: Overview of Events
+    href: index.md
+  - name: When Adding a Price Rounding Rule
+    href: catalog-rounding-on-add.md
+  - name: When Updating a Price Rounding Rule
+    href: catalog-rounding-on-update.md
+  - name: When Deleting a Price Rounding Rule
+    href: catalog-rounding-on-delete.md

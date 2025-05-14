@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items: 
+  - name: Overview of Events
+    href: index.md
+  - name: When Adding a Price
+    href: catalog-price-on-add.md
+  - name: When Updating a Price
+    href: catalog-price-on-update.md
+  - name: When Deleting a Price
+    href: catalog-price-on-delete.md

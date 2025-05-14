@@ -1,0 +1,17 @@
+title: Connector
+href: index.md
+items: 
+  - name: Overview of methods
+    href: index.md
+  - name: Create connector
+    href: biconnector-connector-add.md    
+  - name: Update connector 
+    href: biconnector-connector-update.md
+  - name: Get connector information
+    href: biconnector-connector-get.md
+  - name: Get list of connectors
+    href: biconnector-connector-list.md
+  - name: Delete connector 
+    href: biconnector-connector-delete.md     
+  - name: Get connector fields
+    href: biconnector-connector-fields.md                 

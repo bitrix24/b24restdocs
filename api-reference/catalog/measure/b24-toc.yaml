@@ -15,3 +15,7 @@ items:
     href: catalog-measure-delete.md
   - name: Get Available Fields of Units of Measurement
     href: catalog-measure-get-fields.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

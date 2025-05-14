@@ -2,6 +2,12 @@
 
 ## 2025
 
+### May 14, 2025
+
+- Added methods for the BIconnector module: [Connector](./api-reference/biconnector/connector/index.md), [Sources](./api-reference/biconnector/source/index.md), [Datasets](./api-reference/biconnector/dataset/index.md)
+- Updated main event pages in the Product Catalog sections: [Unit of Measurement](./api-reference/catalog/measure/events/index.md), [Price](./api-reference/catalog/price/events/index.md), [Price Types](./api-reference/catalog/price-type/events/index.md), [Products](./api-reference/catalog/product/events/index.md), [Price Rounding Rules](./api-reference/catalog/rounding-rule/events/index.md). Added introductory information as well as an overview of events
+- Updated the main page of the [Chatbots](./api-reference/imopenlines/openlines/chat-bots/index.md) section in Open Channels. Added introductory information as well as an overview of methods and connections
+
 ### May 7, 2025
 
 - Added information about new fields for working with message send time in methods [booking.v1.resource.*](./api-reference/booking/resource/index.md) and [booking.v1.resourcetype.*](./api-reference/booking/resource/resource-type/index.md)

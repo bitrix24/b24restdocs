@@ -1,0 +1,17 @@
+title: Sources
+href: index.md
+items: 
+  - name: Overview of methods
+    href: index.md
+  - name: Create source
+    href: biconnector-source-add.md    
+  - name: Update source 
+    href: biconnector-source-update.md
+  - name: Get source by id
+    href: biconnector-source-get.md
+  - name: Get list of sources
+    href: biconnector-source-list.md
+  - name: Delete source 
+    href: biconnector-source-delete.md     
+  - name: Get source fields
+    href: biconnector-source-fields.md                 
