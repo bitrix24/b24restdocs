@@ -23,8 +23,8 @@ Can be retrieved using the [`crm.item.list`](./crm-item-list.md) method or when 
 [`boolean`][1] | This parameter is used to control the format of custom field names in the response.   
 Possible values:
 
-- `Y` — original custom field names, e.g., UF_CRM_2_1639669411830
-- `N` — custom field names in camelCase, e.g., ufCrm_2_1639669411830
+- `Y` — original custom field names, e.g., `UF_CRM_2_1639669411830`
+- `N` — custom field names in camelCase, e.g., `ufCrm2_1639669411830`
 
 Default is `N` ||
 |#
@@ -268,8 +268,8 @@ HTTP status: **200**
 
 {% note info " " %}
 
-By default, custom field names are returned in camelCase, e.g., ufCrm2_1639669411830.
-When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, e.g., UF_CRM_2_1639669411830.
+By default, custom field names are returned in camelCase, e.g., `ufCrm2_1639669411830`.
+When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 

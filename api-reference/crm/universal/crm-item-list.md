@@ -102,8 +102,8 @@ The formula for calculating the `start` parameter value:
 [`boolean`][1] | This parameter controls the format of user field names in the request and response.   
 Possible values:
 
-- `Y` — original user field names, e.g., UF_CRM_2_1639669411830
-- `N` — user field names in camelCase, e.g., ufCrm_2_1639669411830
+- `Y` — original user field names, e.g., `UF_CRM_2_1639669411830`
+- `N` — user field names in camelCase, e.g., `ufCrm2_1639669411830`
 
 Default is `N` ||
 |#
@@ -376,8 +376,8 @@ The `next` parameter appears in the response if the number of elements matching 
 
 {% note info " " %}
 
-By default, user field names are passed and returned in camelCase, e.g., ufCrm2_1639669411830.
-When passing the `useOriginalUfNames` parameter with the value `Y`, user fields will be returned with their original names, e.g., UF_CRM_2_1639669411830.
+By default, user field names are passed and returned in camelCase, e.g., `ufCrm2_1639669411830`.
+When passing the `useOriginalUfNames` parameter with the value `Y`, user fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 

@@ -1,4 +1,4 @@
-# Get Source Fields of biconnector.source.fields
+# Get Source Fields biconnector.source.fields
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 > 
@@ -205,7 +205,7 @@ where:
 - `field_n` — source field
 - `value_n` — information about the field in the format [biconnector_rest_field_description](../connector/index.md#description) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

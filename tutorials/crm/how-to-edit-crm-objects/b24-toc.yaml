@@ -5,13 +5,13 @@ items:
     href: index.md
   - name: Add Images to Lead Fields
     href: how-to-upload-images-to-lead.md
-  - name: How to Create Your Lead Edit Card
+  - name: How to Create Your Lead Edit Form
     href: how-to-generate-edit-form-for-lead.md
   - name: How to Create Your Contact Edit Card
     href: how-to-make-contact-edit-card.md
-  - name: How to Create Your Company Edit Card
+  - name: How to Create Your Company Edit Form
     href: how-to-generate-edit-form-for-company.md
-  - name: How to Create Your Deal Edit Card
+  - name: How to Create Your Deal Edit Form
     href: how-to-generate-edit-form-for-deal.md
   - name: How to Change or Remove Phone Numbers and E-mail
     href: how-to-change-email-or-phone.md
@@ -22,4 +22,4 @@ items:
   - name: How to Move an Activity from One Object Type to Another
     href: how-to-move-activity-between-objects.md
   - name: How to Enter the Payment Date in the Deal Field
-    href: how-to-add-paid-date-to-deal.md
+    href: how-to-set-paid-date-to-deal.md

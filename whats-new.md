@@ -2,6 +2,12 @@
 
 ## 2025
 
+### May 21, 2025
+
+- Updated the main page of the [Price](./api-reference/catalog/price/index.md) section in the Trade Catalog. Added introductory information as well as an overview of methods and connections
+- Updated main event pages: [News Feed](./api-reference/log/events/index.md), [Open Channels](./api-reference/imopenlines/openlines/events/index.md), [Open Line Connectors](./api-reference/imopenlines/imconnector/events/index.md). Added introductory information as well as an overview of events
+- Updated the main page of the [Departments](./api-reference/chats/departments/index.md) section in Chats. Added introductory information as well as an overview of methods and connections
+
 ### May 14, 2025
 
 - Added methods for the BIconnector module: [Connector](./api-reference/biconnector/connector/index.md), [Sources](./api-reference/biconnector/source/index.md), [Datasets](./api-reference/biconnector/dataset/index.md)
@@ -11,7 +17,7 @@
 ### May 7, 2025
 
 - Added information about new fields for working with message send time in methods [booking.v1.resource.*](./api-reference/booking/resource/index.md) and [booking.v1.resourcetype.*](./api-reference/booking/resource/resource-type/index.md)
-- Added a new tutorial [How to enter the payment date in the deal field](./tutorials/crm/how-to-edit-crm-objects/how-to-add-paid-date-to-deal.md)
+- Added a new tutorial [How to enter the payment date in the deal field](./tutorials/crm/how-to-edit-crm-objects/how-to-set-paid-date-to-deal.md)
 - Updated the main page of the [Booking](./api-reference/booking/booking/index.md) section in Online Booking. Added introductory information and an overview of methods and relationships.
 
 ### April 30, 2025

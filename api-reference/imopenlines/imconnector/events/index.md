@@ -1,56 +1,34 @@
-# When Receiving New Messages OnImConnectorMessageAdd
+# Overview of Events When Working with the Connector
 
-{% note warning "We are still updating this page" %}
+Events allow applications to respond to changes in open line connectors: receiving notifications about new messages, their modifications, deletions, as well as the completion of dialogues and disconnection of lines.
 
-Some data may be missing — we will complete it shortly.
+Detailed work with events is described in the article [Concept and Benefits of Event Handling](../../../events/index.md).
 
-{% endnote %}
+> Quick navigation: [all events](#all-events)
 
-{% if build == 'dev' %}
+## How to Receive Events
 
-{% note alert "TO-DO _not exported to prod_" %}
+You can subscribe to connector events through the [application](../../../app-installation/index) and the [event.bind](../../../events/event-bind) method.
 
-- check the link to CHAT_API
-- types and required parameters are not specified
-- 
-{% endnote %}
+An example of a handler for the event is described in the article [How to Test Your Handler for Handling Bitrix24 Events](../../../events/test-handler).
 
-{% endif %}
+## Server Availability for Sending and Receiving Events
 
-> Scope: [`imopenlines`](../../../scopes/permissions.md)
+{% include notitle [Server Availability for Sending and Receiving Events](../../../../_includes/events-index.md) %}
+
+## Overview of Events {#all-events}
+
+> Scope: [`imconnector`](../../../scopes/permissions.md), [`imopenlines`](../../../scopes/permissions.md)  
 >
 > Who can subscribe: any user
 
-This event marks a new message from the open line. The event is triggered for full-fledged connectors, such as Telegram or VKontakte. It does not work with the [widget or online chat](*widget_key), which are more like js applications.
-
-It is essential to call the method [**imconnector.send.status.delivery**](../imconnector-send-status-delivery.md) in response; otherwise, the message will be marked as undelivered in the messenger.
-
-## Parameters
-
 #|
-|| **Parameter** | **Description** | **Since version** ||
-|| **CONNECTOR** | Connector ID (this is used to check if the event belongs to the verifier). | ||
-|| **LINE** | Open line ID. | ||
-|| **MESSAGES** | An array of messages, where each message is described by an array of the following format:
-
-
-```json
-{
-"im": {
-    "chat_id": 845,
-    "message_id": 344029
-},
-"message": {
-    "text": "Serg \"Pokoev\":\n Test message"
-},
-"chat": {
-    "id": "2"
-}
-}
-```
-| ||
+|| **Event** | **Triggered** ||
+|| [OnImConnectorMessageAdd](on-im-connector-message-add.md) | When new messages are received manually or via the [imconnector.send.messages](../imconnector-send-messages.md) method ||
+|| [OnImConnectorDialogStart](on-im-connector-dialog-start.md) | When a dialogue is created manually ||
+|| [OnImConnectorMessageUpdate](on-im-connector-message-update.md) | When a message is modified manually or via the [imconnector.update.messages](../imconnector-update-messages.md) method ||
+|| [OnImConnectorMessageDelete](on-im-connector-message-delete.md) | When a message is deleted manually or via the [imconnector.delete.messages](../imconnector-delete-messages.md) method ||
+|| [OnImConnectorDialogFinish](on-im-connector-dialog-finish.md) | When a dialogue is closed manually ||
+|| [OnImConnectorStatusDelete](on-im-connector-status-delete.md) | When an open line is disconnected manually ||
+|| [OnImConnectorLineDelete](on-im-connector-line-delete.md) | When an open line is deleted manually ||
 |#
-
-{% include [Notes on parameters](../../../../_includes/required.md) %}
-
-[*widget_key]: See the documentation for CHAT API. [Learn more...](../../../chats/index.md)

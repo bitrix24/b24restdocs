@@ -1,19 +1,19 @@
-# How to Enter the Payment Date in the Deal Field
+# How to Save the Payment Date in the Deal Field
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to modify the CRM entity
+> Who can execute the method: users with permission to modify CRM entity
 
 In Bitrix24, the payment date is stored in payment documents. Sometimes, the payment date may be needed in the deal field:
 
 - for integrations with external systems,
 - BI Builder reports,
 - automations through Automation rules and workflows.
-  
+
 To transfer the payment date information to the deal, we will sequentially execute three methods:
 
-1. [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) — we will get the identifier of the deal field where we will save the date information
-2. [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm-item-payment-list.md) — we will retrieve payment information
+1. [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) — we will get the identifier of the deal field where we will save the information about the date
+2. [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm-item-payment-list.md) — we will get the payment information
 3. [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) — we will save the payment date in the deal field
 
 ## 1. Getting the Field Identifier {#field_id}
@@ -23,7 +23,7 @@ To get the identifier of the deal field, we use the method [crm.deal.userfield.l
 - `filter[LANG]` — we use this language filter to display field names in the desired language. Without this filter, the names will not be displayed.
 - `filter[USER_TYPE_ID]` — we use this field type filter to get only fields of type "Date" in the result.
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -59,7 +59,7 @@ To get the identifier of the deal field, we use the method [crm.deal.userfield.l
 
 {% endlist %}
 
-As a result, we will receive information about all deal fields of type "Date". We will identify the appropriate field by its name in the `EDIT_FORM_LABEL` parameter. We will take the field identifier from the `FIELD_NAME` field.
+As a result, we will get information about all deal fields of type "Date". We will identify the appropriate field by its name in the `EDIT_FORM_LABEL` parameter. The field identifier will be taken from the `FIELD_NAME` field.
 
 ```json
 {
@@ -148,7 +148,7 @@ As a result, we will receive information about all deal fields of type "Date". W
 
 We use the method [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm-item-payment-list.md) with the parameters:
 
-- `entityId` — `ID` of the deal for which we are retrieving the payment date
+- `entityId` — `ID` of the deal for which we are getting the payment date
 - `entityTypeId` — [object type](../../../api-reference/crm/data-types.md#object_type), we will specify `2` for the deal
 
 {% list tabs %}
@@ -180,7 +180,7 @@ We use the method [crm.item.payment.list](../../../api-reference/crm/universal/p
 
 {% endlist %}
 
-As a result, we will receive a list of payments with fields for the deal. We will take the payment date from the `datePaid` field.
+As a result, we will get a list of payments with fields for the deal. We will take the payment date from the `datePaid` field.
 
 ```json
 {
@@ -193,15 +193,15 @@ As a result, we will receive a list of payments with fields for the deal. We wil
             "empPaidId": 1,
             "paySystemId": 19,
             "sum": 15,
-            "currency": "USD",
+            "currency": "EUR",
             "paySystemName": "YooKassa"
         }
     ],
 }
 ```
 
-## 3. Entering the Date in the Deal Field
-   
+## 3. Saving the Date in the Deal Field
+
 To modify the deal field and record the payment date in it, we use the method [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) with the parameters:
 
 - `id` — `ID` of the deal, required parameter
@@ -241,7 +241,7 @@ To modify the deal field and record the payment date in it, we use the method [c
 
 {% endlist %}
 
-As a result, we will receive `true`, indicating that the deal has been successfully updated. If you receive an `error` in the result, refer to the documentation for the method [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md#handling-errors) for possible error descriptions.
+As a result, we will receive `true`, indicating that the deal has been successfully updated. If you received an `error` in the result, refer to the documentation for the method [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md#error-handling) to understand possible errors.
 
 ```json
 {
@@ -283,7 +283,7 @@ The received result does not contain information about the deal fields. To check
 
 {% endlist %}
 
-As a result, we will receive the values of all deal fields, including custom fields. The value of the "Payment Date" field `UF_CRM_1723209318`: `2025-04-29T03:00:00+02:00` has been successfully set.
+As a result, we will get the values of all deal fields, including custom fields. The value of the "Payment Date" field `UF_CRM_1723209318`: `2025-04-29T03:00:00+02:00` has been successfully set.
 
 ```json
 {
@@ -293,7 +293,7 @@ As a result, we will receive the values of all deal fields, including custom fie
         "TYPE_ID": "SALE",
         "STAGE_ID": "C9:NEW",
         "PROBABILITY": "0",
-        "CURRENCY_ID": "USD",
+        "CURRENCY_ID": "EUR",
         "OPPORTUNITY": "30.00",
         "IS_MANUAL_OPPORTUNITY": "N",
         "TAX_VALUE": "0.00",

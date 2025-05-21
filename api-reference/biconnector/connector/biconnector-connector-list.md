@@ -2,9 +2,9 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: a user with access to the "Analyst's workspace" section
 
-The method `biconnector.connector.list` returns a list of connectors based on the filter. It is an implementation of the listing method for connectors.
+The method `biconnector.connector.list` returns a list of connectors based on a filter. It is an implementation of the listing method for connectors.
 
 ## Method Parameters
 
@@ -12,7 +12,7 @@ The method `biconnector.connector.list` returns a list of connectors based on th
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | List of fields that must be filled in the connectors in the selection. By default, all fields are taken ||
+[`string[]`](../../data-types.md) | A list of fields that must be filled in the connectors in the selection. By default, all fields are taken ||
 || **filter**
 [`object`](../../data-types.md) | Filter for selecting connectors. Example format:
 
@@ -32,12 +32,12 @@ Possible prefix values:
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
 - `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
 - `"mol%"` — searches for values starting with "mol"
 - `"%mol"` — searches for values ending with "mol"
 - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `=` — equal, exact match (used by default)
+- `=` — equals, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
 
@@ -56,12 +56,12 @@ The list of available fields for filtering can be found using the method [biconn
 ```
 
 - `field_n` — the name of the field by which the selection of connectors will be sorted
-- `value_n` — a `string` type value equal to:
+- `value_n` — a `string` type value, equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 ||
 || **page**
-[`integer`](../../data-types.md) | Controls pagination. The page size of results is 50 records. To navigate through results, pass the page number 
+[`integer`](../../data-types.md) | Controls pagination. The page size of results is 50 records. To navigate through the results, pass the page number 
 ||
 |#
 
@@ -69,7 +69,7 @@ The list of available fields for filtering can be found using the method [biconn
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-Get the list of connectors where:
+Get a list of connectors where:
 - the name starts with `MyConnector`
 - the description is not empty
 
@@ -222,6 +222,7 @@ HTTP status: **200**
 
 ### Returned Data
 
+#|
 || **result**
 [`object`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the fields of the connectors. 
 

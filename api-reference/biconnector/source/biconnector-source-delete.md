@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst Workspace" section
 
 The method `biconnector.source.delete` removes an existing connection.
 
@@ -10,7 +10,7 @@ A connection can be deleted if it has no datasets.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ A connection can be deleted if it has no datasets.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 

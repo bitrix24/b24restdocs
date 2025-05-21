@@ -2,24 +2,24 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.source.get` returns information about the source by its identifier.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the source, which can be obtained using the methods [biconnector.source.list](./biconnector-source-list.md) and [biconnector.source.add](./biconnector-source-add.md) ||
+[`integer`](../../data-types.md) | Source identifier, can be obtained using the methods [biconnector.source.list](./biconnector-source-list.md) and [biconnector.source.add](./biconnector-source-add.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -78,7 +78,7 @@ The method `biconnector.source.get` returns information about the source by its 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -125,14 +125,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`item`](../../data-types.md) | Root element of the response. Contains information about the fields of the source. Field descriptions can be found in the article [Sources: Overview of Methods](./index.md#fields) ||
+[`item`](../../data-types.md) | Root element of the response. Contains information about the source fields. Field descriptions can be found in the article [Sources: Overview of Methods](./index.md#fields) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {

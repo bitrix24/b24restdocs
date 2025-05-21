@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's Workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.source.add` creates a new data source associated with the connector.
 
@@ -42,10 +42,10 @@ The method `biconnector.source.add` creates a new data source associated with th
 [`string`](../../data-types.md) | Source description ||
 || **active**
 [`boolean`](../../data-types.md) | Source activity. 
-Default is `true` ||
-|| **connectorId**
+Defaults to `true` ||
+|| **connectorId***
 [`integer`](../../data-types.md) | Connector identifier, can be obtained using the methods [biconnector.connector.list](../connector/biconnector-connector-list.md) or [biconnector.connector.add](../connector/biconnector-connector-add.md) ||
-|| **settings**
+|| **settings***
 [`object`](../../data-types.md) | A list of parameters for authorization, passed as an object where the key is the `code` of the parameter. 
 Parameters can be obtained using the methods [biconnector.connector.list](../connector/biconnector-connector-list.md) or [biconnector.connector.get](../connector/biconnector-connector-get.md) ||
 |#
@@ -154,7 +154,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../data-types.md) | Root element of the response, contains the identifier of the created source ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

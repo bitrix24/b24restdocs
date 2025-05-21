@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -22,63 +22,115 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `im.message.add` sends messages in a chat.
+The method `im.message.add` sends a message from the current user to a chat.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **DIALOG_ID^*^**
-[`unknown`](../../data-types.md) | `chat13`
+[`string`](../../data-types.md) | `chat13`
 or
 `256` | Identifier of the dialog. Format:
-- **chatXXX** – chat of the recipient, if the message is for chats
-- **XXX** – identifier of the recipient, if the message is for a private dialog | 18 ||
+- **chatXXX** – chat of the recipient if the message is for chats
+- **XXX** – identifier of the recipient if the message is for a private dialog | 18 ||
 || **MESSAGE^*^**
-[`unknown`](../../data-types.md) | `Message text` | Text of the message | 18 ||
+[`text`](../../data-types.md) | `Message text` | The text of the message.
+[Formatting](./index.html) is supported | 18 ||
 || **SYSTEM**
-[`unknown`](../../data-types.md) | `N` | Display messages as a system message or not, optional field, default is 'N' | 18 ||
+[`boolean`](../../data-types.md) | `N` | Whether to display messages as a system message or not, optional field, defaults to 'N' | 18 ||
 || **ATTACH**
-[`unknown`](../../data-types.md) | | Attachment | 18 ||
+[`object`](../../data-types.md) | [Example](./attachments/index.html) | Attachment | 18 ||
 || **URL_PREVIEW**
-[`unknown`](../../data-types.md) | `Y` | Convert links to rich links, optional field, default is 'Y' | 18 ||
+[`boolean`](../../data-types.md) | `Y` | Convert links to rich links, optional field, defaults to 'Y' | 18 ||
 || **KEYBOARD**
-[`unknown`](../../data-types.md) | | Keyboard | 18 ||
+[`object`](../../data-types.md) | [Example](./keyboards.html) | Keyboard | 18 ||
 || **MENU**
-[`unknown`](../../data-types.md) | | Context menu | 18 ||
+[`object`](../../data-types.md) | [Example](./menu.html) | Context menu | 18 ||
 |#
 
 {% include [Parameter Notes](../../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Explanation of restCommand](../_includes/rest-command.md) %}
+{% include [Examples Notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{DIALOG_ID: "chat5",MESSAGE: "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",ATTACH: [{MESSAGE: "API will be available in update [B]im 24.0.0[/B]"}]}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.message.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{DIALOG_ID: "chat5",MESSAGE: "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",ATTACH: [{MESSAGE: "API will be available in update [B]im 24.0.0[/B]"}]}' \
+    https://**put_your_bitrix24_address**/rest/im.message.add
+    ```
+
+- JS
+
+    ```js
+    BX24.callMethod(    
+        'im.message.add',
+        {
+            DIALOG_ID: "chat5",
+            MESSAGE: "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",
+            ATTACH: [
+                {
+                    MESSAGE: "API will be available in update [B]im 24.0.0[/B]"
+                },
+            ],
+        },
+        function(result) {
+            console.log('response', result.answer);
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+            console.log(result.data());
+        }
+    );
+    ```
 
 - PHP
 
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.message.add',
-        Array(
-            'DIALOG_ID' => 'chat13',
-            'MESSAGE' => 'Message text',
-            'SYSTEM' => 'N',
-            'ATTACH' => '',
-            'URL_PREVIEW' => 'Y',
-            'KEYBOARD' => '',
-            'MENU' => '',
-        ),
-        $_REQUEST[
-            "auth"
+        [
+            "DIALOG_ID" => "chat20921",
+            "MESSAGE"   => "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",
+            "ATTACH"   => [
+                [
+                    "MESSAGE" => "API will be available in update [B]im 24.0.0[/B]"
+                },
+            ],
         ]
     );
+
+    echo '<pre>';
+    print_r($result);
+    echo '</pre>';
     ```
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% note tip "Typical use-cases and scenarios" %}
 
-## Response on Success
+- [Example of using the method in the "EchoBot" application](https://github.com/bitrix24com/bots)
+
+{% endnote %}
+
+## Success Response
 
 ```json
 {
@@ -86,9 +138,9 @@ or
 }
 ```
 
-**Execution result**: message identifier `MESSAGE_ID` or an error.
+**Execution result**: message identifier `MESSAGE_ID` or error.
 
-## Response on Error
+## Error Response
 
 ```json
 {
@@ -97,7 +149,7 @@ or
 }
 ```
 
-### Description of Keys
+### Key Descriptions
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
@@ -111,17 +163,17 @@ or
 || **ACCESS_ERROR** | Insufficient permissions to send a message ||
 || **MESSAGE_EMPTY** | Message text is not provided ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | The maximum allowed size of the attachment (30 KB) has been exceeded ||
+|| **ATTACH_OVERSIZE** | The maximum allowable size of the attachment (30 KB) has been exceeded ||
 || **KEYBOARD_ERROR** | The entire provided keyboard object failed validation ||
-|| **KEYBOARD_OVERSIZE** | The maximum allowed size of the keyboard (30 KB) has been exceeded ||
+|| **KEYBOARD_OVERSIZE** | The maximum allowable size of the keyboard (30 KB) has been exceeded ||
 || **MENU_ERROR** | The entire provided menu object failed validation ||
-|| **MENU_OVERSIZE** | The maximum allowed size of the menu (30 KB) has been exceeded ||
+|| **MENU_OVERSIZE** | The maximum allowable size of the menu (30 KB) has been exceeded ||
 || **PARAMS_ERROR** | Something went wrong ||
 |#
 
-## Related Links:
+## Related Links
 
-- [How to work with input keyboards](.)
-- [How to work with attachments](.)
-- [Message formatting](.)
-- [Working with context menus](.)
+- [How to work with keyboards](./keyboards.html)
+- [How to work with attachments](./attachments/index.html)
+- [Message formatting](./index.html)
+- [Working with context menus](./menu.html)

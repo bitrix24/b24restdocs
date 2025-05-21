@@ -70,7 +70,7 @@ A dataset is the final level in the hierarchy of data handling within the BIconn
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute methods: user with access to the "Analyst Workspace" section
+> Who can perform methods: user with access to the "Analyst's Workspace" section
 
 #|
 || **Method** | **Description** ||

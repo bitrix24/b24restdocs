@@ -8,7 +8,7 @@ Each connector contains settings for working with a specific source:
 
 You can register a connector through the [application](../../app-installation/index.md).
 
-> Quick navigation: [all methods](#all-methods)
+> Quick navigation: [all methods](#all-methods) 
 
 ## Connector's Relationship with Sources and Datasets
 
@@ -31,7 +31,7 @@ The connector is the top level in the data hierarchy within the BIconnector modu
 || **description**
 [`string`](../../data-types.md) | Description of the connector | ✅ | ✅ ||
 || **sort**
-[`integer`](../../data-types.md) | Sort order | ✅ | ✅ ||
+[`integer`](../../data-types.md) | Sorting order | ✅ | ✅ ||
 || **urlCheck**
 [`string`](../../data-types.md) | [URL for connection check](#urlCheck) | ✅ | ✅ ||
 || **urlData**
@@ -50,10 +50,8 @@ The connector is the top level in the data hierarchy within the BIconnector modu
 
 The `settings` field contains an array of parameters necessary for configuring data sources. Each parameter is an object with the following structure:
 
-- `code` — parameter code, used as the identifier for the parameter, which is how parameters are passed to the external source.
-
-- `name` — parameter name that will be displayed in the interface, in the "Analyst Workspace" section.
-
+- `code` — parameter code, used as the parameter identifier, this is how parameters are passed to the external source.
+- `name` — parameter name that will be displayed in the interface, in the "Analyst's Workspace" section.
 - `type` — parameter type, currently only `STRING` is supported.
 
 ```
@@ -81,7 +79,7 @@ The endpoint is called:
 
 A POST request is sent to the endpoint address with the parameters:
 
-- `setting_code_n` — code of the connector's settings parameter.
+- `setting_code_n` — code of the connector settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
@@ -98,17 +96,12 @@ Depending on availability, the endpoint returns information about the status of 
 
 #### urlTableList {#urlTableList}
 
-The `urlTableList` endpoint returns a list of available tables in `JSON` format. The endpoint will return tables that match the search query.
-
-The endpoint is called:
-
-- when creating a dataset,
-- when used in the interface.
+The `urlTableList` endpoint returns a list of available tables in `JSON` format. The endpoint will return tables that match the search query. The endpoint is called when creating a dataset through the interface.
 
 A POST request is sent to the endpoint address with the parameters:
 
 - `searchString` — value of the search string, searches tables by `externalCode`.
-- `setting_code_n` — code of the connector's settings parameter.
+- `setting_code_n` — code of the connector settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
@@ -136,18 +129,12 @@ The response returns an array of objects corresponding to the request, with the 
 
 #### urlTableDescription {#urlTableDescription}
 
-The `urlTableDescription` endpoint returns a list of fields for a specific table in `JSON` format.
-
-The endpoint is called:
-- when creating a dataset,
-- when used in the interface.
+The `urlTableDescription` endpoint returns a list of fields for a specific table in `JSON` format. The endpoint is called when creating a dataset through the interface.
 
 A POST request is sent to the endpoint address with the parameters:
 
 - `table` — `externalCode` of the dataset for which the description is requested.
-
-- `setting_code_n` — code of the connector's settings parameter.
-
+- `setting_code_n` — code of the connector settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
@@ -163,10 +150,8 @@ A POST request is sent to the endpoint address with the parameters:
 
 The response returns an array of fields with the structure:
 - `code` — code of the dataset field.
-
 - `title` — name of the dataset field.
-
-- `type` — type of the field, supported values are: `int`, `string`, `double`, `date`, `datetime`.
+- `type` — field type, supported values are: `int`, `string`, `double`, `date`, `datetime`.
 
 ```
   {
@@ -181,9 +166,9 @@ The response returns an array of fields with the structure:
 The `urlData` endpoint returns data from a specific table in `JSON` format.
 
 The endpoint is called:
-- when creating a dataset,
-- when synchronizing dataset fields,
-- when used in the interface.
+- when creating a dataset through the interface,
+- when synchronizing dataset fields through the interface,
+- when executing requests to retrieve data for the BI Builder.
 
 A POST request is sent to the endpoint address with the parameters:
 
@@ -191,7 +176,7 @@ A POST request is sent to the endpoint address with the parameters:
 - `filter` — filter by dataset fields.
 - `limit` — limit of dataset selection.
 - `table` — `externalCode` of the dataset for which data is requested.
-- `setting_code_n` — code of the connector's settings parameter.
+- `setting_code_n` — code of the connector settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
@@ -218,12 +203,12 @@ The response returns an array of fields with the structure:
 ["FIELD_1","FIELD_2",...,"FIELD_N"],
 [VALUE_ROW_1_1,VALUE_ROW_1_2,...,VALUE_ROW_1_N,],
 [VALUE_ROW_2_1,VALUE_ROW_2_2,...,VALUE_ROW_2_N,]
- ...
+...
 ,[VALUE_ROW_M_1,VALUE_ROW_M_2,...,VALUE_ROW_M_N,]
 ]
 ```
 
-## Parameters of the biconnector_rest_field_description Field {#description}
+## Field Parameters {#description}
 
 #|
 || **Name**
@@ -239,14 +224,14 @@ The response returns an array of fields with the structure:
 || **isImmutable**
 [`boolean`](../../data-types.md) | Field value can only be set once and only when creating a new element. After that, the field value cannot be changed ||
 || **isMultiple**
-[`boolean`](../../data-types.md) | Multiple field. If true, values in the field are passed as an array ||
+[`boolean`](../../data-types.md) | Multiple field. If `true`, values in the field are passed as an array ||
 |#
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can perform methods: user with access to the "Analyst Workspace" section
+> Who can execute methods: user with access to the "Analyst's Workspace" section
 
 #|
 || **Method** | **Description** ||

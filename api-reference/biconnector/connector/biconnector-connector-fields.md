@@ -1,4 +1,4 @@
-# Get Fields of the biconnector.connector.fields
+# Get Connector Fields biconnector.connector.fields
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 > 
@@ -12,7 +12,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
 

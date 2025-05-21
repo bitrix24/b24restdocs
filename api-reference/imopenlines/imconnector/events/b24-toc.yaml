@@ -1,17 +1,19 @@
 title: Events
 href: index.md
 items: 
-  - name: When receiving new messages
+  - name: Overview of Events
     href: index.md
-  - name: When creating a dialog
-    href: on-im-connector-dialog-start.md    
-  - name: When updating messages
+  - name: When New Messages Are Received
+    href: on-im-connector-message-add.md
+  - name: When a Dialogue Is Started
+    href: on-im-connector-dialog-start.md
+  - name: When Messages Are Updated
     href: on-im-connector-message-update.md
-  - name: When deleting messages
+  - name: When Messages Are Deleted
     href: on-im-connector-message-delete.md
-  - name: When closing a dialog
+  - name: When a Dialogue Is Closed
     href: on-im-connector-dialog-finish.md 
-  - name: When disabling an open channel
+  - name: When the Open Channel Is Disabled
     href: on-im-connector-status-delete.md
-  - name: When deleting an open channel
+  - name: When the Open Channel Is Deleted
     href: on-im-connector-line-delete.md

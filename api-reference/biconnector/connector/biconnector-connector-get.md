@@ -2,24 +2,24 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.connector.get` returns information about the connector by its identifier.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the connector, can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
+[`integer`](../../data-types.md) | Connector identifier, which can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -153,7 +153,7 @@ HTTP Status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | `ID is missing.` | Identifier is not provided ||
+|| `VALIDATION_ID_NOT_PROVIDED` | `ID is missing.` | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | `ID has to be a positive integer.` | Invalid ID format ||
 || `CONNECTOR_NOT_FOUND` | `Connector was not found.` | Connector not found ||
 |#

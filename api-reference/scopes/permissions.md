@@ -1,6 +1,6 @@
 # Access Permissions for Methods
 
-Access permissions for executing specific REST API methods are managed through a scope mechanism (SCOPE). When you add a mass-market solution in the Partner's area or an on-premise solution to your specific Bitrix24, you specify the list of necessary Bitrix24 scopes required for the application to function.
+Access permissions for executing specific REST API methods are regulated through a scope mechanism (SCOPE). When you add a mass-market solution in the Partner's area or an on-premise solution to your specific Bitrix24, you specify the list of necessary Bitrix24 scopes for the operation of that particular application.
 
 The binding to a specific scope is indicated in the description of each REST method at the very beginning. For example,
 
@@ -42,7 +42,7 @@ Let's consider a specific situation where your solution integrates Bitrix24 with
 || **pull** | [Pull&Push](../interactivity/push-and-pull/index.md) | Pull&Push ||
 || **rpa** | [Business Automation](../outdated/rpa/index.md) | Business Automation ||
 || **sale** | [Online Store](../sale/index.md) | Online Store ||
-|| **sign.b2e** | [e-Signature for HR + State Key](../sign/index.md) | e-Signature, Signature ||
+|| **sign.b2e** | [e-Signature for HR + Government Key](../sign/index.md) | e-Signature, Signature ||
 || **sonet_group, socialnetwork** | [Social Network Workgroups](../sonet-group/sonet-group-create.md) | Social Network Workgroups ||
 || **task** | [Tasks](../tasks/index.md) | Tasks ||
 || **telephony** | [Telephony](../telephony/index.md) | Telephony ||

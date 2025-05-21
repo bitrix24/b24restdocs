@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.department.employees.get` retrieves the list of employees in the department.
+The method `im.department.employees.get` retrieves a list of employees in the department.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -32,7 +32,7 @@ The method `im.department.employees.get` retrieves the list of employees in the 
 [`unknown`](../../data-types.md) | `N` | Load user data | 19 ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 - If the parameter `USER_DATA = Y` is passed, the response will return an array of objects with user information instead of an array of identifiers.
 
@@ -50,6 +50,7 @@ The method `im.department.employees.get` retrieves the list of employees in the 
     BX24.callMethod(
         'im.department.employees.get',
         {
+            ID: [7],
             USER_DATA: 'Y'
         },
         function(result){
@@ -73,6 +74,7 @@ The method `im.department.employees.get` retrieves the list of employees in the 
     $result = restCommand(
         'im.department.employees.get',
         Array(
+            'ID' => [7],
             'USER_DATA' => 'Y'
         ),
         $_REQUEST[
@@ -83,11 +85,11 @@ The method `im.department.employees.get` retrieves the list of employees in the 
 
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Successful response
 
-With the option `USER_DATA = N`:
+When `USER_DATA = N`:
 
 ```json
 {
@@ -97,7 +99,7 @@ With the option `USER_DATA = N`:
 }    
 ```
 
-With the option `USER_DATA = Y`:
+When `USER_DATA = Y`:
 
 ```json
 {    
@@ -143,16 +145,16 @@ With the option `USER_DATA = Y`:
 - `first_name` – user's first name
 - `last_name` – user's last name
 - `work_position` – position
-- `color` – user's color in hex format
+- `color` – user color in hex format
 - `avatar` – link to avatar (if empty, avatar is not set)
 - `gender` – user's gender
 - `birthday` – user's birthday in DD-MM format, if empty – not set
 - `extranet` – indicator of external extranet user (`true/false`)
 - `network` – indicator of Bitrix24.Network user (`true/false`)
 - `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open lines user (`true/false`)
+- `connector` – indicator of open channel user (`true/false`)
 - `external_auth_id` – external authorization code
-- `status` – user's status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users.
+- `status` – user status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users.
 - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
 - `last_activity_date` – date of the user's last action in ATOM format
 - `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
@@ -171,12 +173,12 @@ With the option `USER_DATA = Y`:
 
 ### Key descriptions
 
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
+- `error` – error code
+- `error_description` – brief description of the error
 
 ### Possible error codes
 
 #|
 || **Code** | **Description** ||
-|| **ID_EMPTY** | No list of identifiers provided ||
+|| **ID_EMPTY** | List of identifiers not provided ||
 |#

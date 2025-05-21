@@ -1,36 +1,37 @@
-# Working with Departments
+# Departments in Chats: Overview of Methods
 
-{% note warning "We are still updating this page" %}
+The methods `im.department.*` retrieve information about users in departments from the company's structure. They only work for company employees.
 
-Some data may be missing here — we will complete it soon.
+> Quick navigation: [all methods and events](#all-methods)
 
-{% endnote %}
+## Connection of Methods with Other Objects
 
-{% if build == 'dev' %}
+**Department.** The methods obtain information about users by the department identifier `ID`. You can get the department identifier using the [get department list method](../../departments/department-get.md) or the [search departments by name method](../search/im-search-department-list.md).
 
-{% note alert "TO-DO _not exported to prod_" %}
+## Get Department Data
 
-- no content (only a list of methods is available)
+The method [im.department.get](./im-department-get.md) retrieves the department name and the identifier of the manager. By using the parameter `USER_DATA = 'Y'`, you can include data about the department manager in the response.
 
-{% endnote %}
+## Get User List
 
-{% endif %}
+You can obtain lists of user identifiers using the following methods:
+
+-  [im.department.managers.get](./im-department-managers-get.md) — managers of the specified departments,
+-  [im.department.employees.get](./im-department-employees-get.md) — employees of the specified departments,
+-  [im.department.colleagues.list](./im-department-colleagues-list.md) — list of colleagues of the current user. For a manager, the method will return a list of subordinates and all managers.
+
+By using the parameter `USER_DATA = 'Y'`, you can get detailed information about each employee.
+
+## Overview of Methods {#all-methods}
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The methods `im.department.*` are available only for [intranet users](*intranet_users).
-
 #|
 || **Method** | **Description** ||
-|| [im.department.colleagues.list](./im-department-colleagues-list.md) | Retrieves a list of users in your department ||
-|| [im.department.employees.get](./im-department-employees-get.md) | Retrieves a list of department employees ||
 || [im.department.get](./im-department-get.md) | Retrieves information about the department ||
 || [im.department.managers.get](./im-department-managers-get.md) | Retrieves a list of department managers ||
+|| [im.department.employees.get](./im-department-employees-get.md) | Retrieves a list of department employees ||
+|| [im.department.colleagues.list](./im-department-colleagues-list.md) | Retrieves a list of colleagues of the current user ||
 |#
-
-[*intranet_users]: In Bitrix24, there are two types of users:
-- intranet users – internal users (employees of your company);
-- extranet users – external users (vendors, distributors, etc.).
-[Learn more...](https://helpdesk.bitrix24.com/open/18070866/)

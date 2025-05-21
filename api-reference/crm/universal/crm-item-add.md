@@ -58,8 +58,8 @@ An incorrect field in `fields` will be ignored
 [`boolean`][1] | This parameter controls the format of custom field names in the response.   
 Possible values:
 
-- `Y` — original names of custom fields, e.g., UF_CRM_2_1639669411830
-- `N` — custom field names in camelCase, e.g., ufCrm_2_1639669411830
+- `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
+- `N` — custom field names in camelCase, e.g., `ufCrm2_1639669411830`
 
 Default is `N` ||
 |#
@@ -3054,8 +3054,8 @@ Disabled fields always return `null`
 
 {% note info " " %}
 
-By default, custom field names are returned in camelCase, e.g., ufCrm2_1639669411830. 
-When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, e.g., UF_CRM_2_1639669411830.
+By default, custom field names are returned in camelCase, e.g., `ufCrm2_1639669411830`. 
+When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 

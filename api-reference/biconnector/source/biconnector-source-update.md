@@ -2,13 +2,13 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.source.update` updates an existing source.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -52,7 +52,7 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 
 {% list tabs %}

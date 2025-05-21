@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -76,9 +76,9 @@ How to get a list of fields with names:
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)
-- [{#T}](../../../../tutorials/crm/how-to-edit-crm-objects/how-to-add-paid-date-to-deal.md)
+- [{#T}](../../../../tutorials/crm/how-to-edit-crm-objects/how-to-set-paid-date-to-deal.md)

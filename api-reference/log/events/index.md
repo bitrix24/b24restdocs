@@ -1,17 +1,34 @@
-# Events Feed
+# Overview of Events When Working with the News Feed
 
-{% note warning "We are still updating this page" %}
+Events allow applications to respond to changes almost in real-time: receiving notifications about the creation, updating, or deletion of messages in the News Feed.
 
-Some data may be missing — we will complete it soon
+Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../events/index.md).
 
-{% endnote %}
+> Quick navigation: [all events](#all-events)
+
+## How to Receive Events
+
+You can subscribe to News Feed events through:
+
+- [outgoing webhook](../../../local-integrations/local-webhooks)
+
+- [application](../../app-installation/index) and the method [event.bind](../../events/event-bind)
+
+An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../events/test-handler).
+
+## Server Availability for Sending and Receiving Events
+
+{% include notitle [Server Availability for Sending and Receiving Events](../../../_includes/events-index.md) %}
+
+## Overview of Events {#all-events}
 
 > Scope: [`sonet`](../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-#| 
-|| [OnLiveFeedPostAdd](./on-live-feed-post-add.md) | On adding a message to the News Feed ||
-|| [OnLiveFeedPostDelete](./on-live-feed-post-delete.md) | On deleting a message from the News Feed ||
-|| [OnLiveFeedPostUpdate](./on-live-feed-post-update.md) | On editing a message in the News Feed ||
+#|
+|| **Event** | **Triggered By** ||
+|| [OnLiveFeedPostAdd](./on-live-feed-post-add.md) | When a message is added to the News Feed manually or via the method [log.blogpost.add](../log-blogpost-add.md) ||
+|| [OnLiveFeedPostDelete](./on-live-feed-post-delete.md) | When a message is deleted from the News Feed manually or via the method [log.blogpost.delete](../log-blogpost-delete.md) ||
+|| [OnLiveFeedPostUpdate](./on-live-feed-post-update.md) | When a message in the News Feed is edited manually or via the method [log.blogpost.update](../log-blogpost-update.md) ||
 |#

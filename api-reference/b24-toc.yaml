@@ -157,7 +157,7 @@ items:
     include:
       path: telephony/b24-toc.yaml
       mode: link
-  - name: Product Catalog
+  - name: Trade Catalog
     include:
       path: catalog/b24-toc.yaml
       mode: link

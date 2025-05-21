@@ -2,19 +2,19 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst Workspace" section
+> Who can execute the method: a user with access to the "Analyst's workspace" section
 
-The method `biconnector.dataset.add` creates a new dataset linked to a data source.
+The method `biconnector.dataset.add` creates a new dataset associated with a data source.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | An object containing data to create a new dataset. The object format is:
+[`object`](../../data-types.md) | An object containing data for creating a new dataset. The object format is:
 
 ```
 {
@@ -36,23 +36,23 @@ The method `biconnector.dataset.add` creates a new dataset linked to a data sour
 #|
 || **Name**
 `type` | **Description** ||
-|| **name**
+|| **name***
 [`string`](../../data-types.md) | Dataset name ||
-|| **externalName**
+|| **externalName***
 [`string`](../../data-types.md) | Dataset name in the external source, in the application ||
-|| **externalCode**
+|| **externalCode***
 [`string`](../../data-types.md) | Unique dataset code in the external source, used when retrieving data ||
-|| **sourceId**
+|| **sourceId***
 [`integer`](../../data-types.md) | Source identifier, can be obtained using the methods [biconnector.source.list](../source/biconnector-source-list.md) or [biconnector.source.add](../source/biconnector-source-add.md) ||
 || **description**
 [`string`](../../data-types.md) | Dataset description ||
-|| **fields**
+|| **fields***
 [`array`](../../data-types.md) | List of dataset fields, [(Detailed description)](./index.md#fields) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -227,12 +227,12 @@ HTTP Status: **200**
 || `VALIDATION_INVALID_FIELD_TYPE` | `Field "#TITLE#" must be of type #TYPE#.` | Field #TITLE# must be of type #TYPE# ||
 || `SOURCE_NOT_FOUND` | `Source was not found.` | Source not found ||
 || `DATASET_ALREADY_EXIST` | `Dataset with this name already exists.` | A dataset with this name already exists ||
-|| `VALIDATION_DATASET_NAME_INVALID` | `Dataset name has to start with a lowercase Latin character. Possible entry includes lowercase Latin characters (a-z), numbers (0-9) and underscores.` | Invalid dataset name format. The name must start with a letter and can only use lowercase Latin letters `(a-z)`, numbers, and the `_` sign ||
+|| `VALIDATION_DATASET_NAME_INVALID` | `Dataset name has to start with a lowercase Latin character. Possible entry includes lowercase Latin characters (a-z), numbers (0-9) and underscores.` | Invalid dataset name format. The name must start with a letter, only lowercase Latin letters `(a-z)`, numbers, and `_` are allowed ||
 || `VALIDATION_DATASET_NAME_TOO_LONG` | `Dataset name must not exceed 230 characters.` | Dataset name must not exceed 230 characters ||
 || `VALIDATION_DUPLICATE_FIELD_CODE` | `Duplicate values found in the "code" parameter: #LIST_CODES#` | Duplicates found in the `externalCode` parameter of dataset fields ||
 || `VALIDATION_DUPLICATE_FIELD_NAME` | `Duplicate values found in the "name" parameter: #LIST_NAMES#` | Duplicates found in the `name` parameter of dataset fields ||
 || `VALIDATION_FIELD_MISSING_REQUIRED_PARAMETERS` | `Field must include the required parameters: "name", "externalCode" and "type".` | Field must include the parameters `name`, `externalCode`, and `type` ||
-|| `VALIDATION_FIELD_NAME_INVALID_FORMAT` | `Field "name" has to start with an uppercase Latin character. Possible entry includes uppercase Latin characters (A-Z), numbers (0-9) and underscores.` | Invalid field name format. The name must start with a letter and can only use uppercase Latin letters `(A-Z)`, numbers, and the `_` sign ||
+|| `VALIDATION_FIELD_NAME_INVALID_FORMAT` | `Field "name" has to start with an uppercase Latin character. Possible entry includes uppercase Latin characters (A-Z), numbers (0-9) and underscores.` | Invalid field name format. The name must start with a letter, only uppercase Latin letters `(A-Z)`, numbers, and `_` are allowed ||
 || `VALIDATION_FIELD_NAME_TOO_LONG` | `Field "name" must not exceed 32 characters.` | Field name must not exceed 32 characters ||
 || `VALIDATION_FIELD_INVALID_TYPE` | `Invalid field type.` | Invalid field type ||
 || `-` | `Error adding dataset` | Error adding dataset ||

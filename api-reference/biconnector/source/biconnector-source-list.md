@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst Workspace" section
+> Who can execute the method: a user with access to the "Analyst's workspace" section
 
 The method `biconnector.source.list` returns a list of sources based on a filter. It is an implementation of the listing method for sources.
 
@@ -31,11 +31,11 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring at any position in the string
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
 - `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
-    - `"%mol%"` — searches for values where "mol" can be at any position
+    - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
@@ -68,17 +68,17 @@ The filter does not support the `settings` field; it will be ignored
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Get the list of sources where:
 - the name starts with `Sql`
 - the description is not empty
-- the connector ID is equal to `2` or `4`
+- the connector ID is `2` or `4`
 
 Display only the necessary fields:
 - ID `id`
-- Title `title`
-- Active status `active`
+- Name `title`
+- Activity `active`
 - Creation date `dateCreate`
 
 {% list tabs %}
@@ -162,11 +162,12 @@ Display only the necessary fields:
     echo '</PRE>';
     ```
 
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -197,6 +198,7 @@ HTTP Status: **200**
 
 ### Returned Data
 
+#|
 || **result**
 [`object`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the fields of the sources. 
 
@@ -207,7 +209,7 @@ It should be noted that the structure of the fields may change due to the `selec
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {

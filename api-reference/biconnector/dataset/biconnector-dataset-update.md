@@ -2,13 +2,13 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.dataset.update` updates an existing dataset.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -28,8 +28,8 @@ Object format:
 }
 ```
 
-- `field_n` — field name
-- `value_n` — field value
+- `field_n` — name of the field
+- `value_n` — value of the field
 
 [Detailed description below](#fields)||
 |#
@@ -47,7 +47,7 @@ To change the fields of the dataset, use the method [biconnector.dataset.fields.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -125,7 +125,7 @@ To change the fields of the dataset, use the method [biconnector.dataset.fields.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -154,7 +154,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -180,13 +180,6 @@ HTTP status: **200**
 || `DATASET_NOT_FOUND` | `Dataset was not found.` | Dataset not found ||
 || `INVALID_METHOD` | `Use the method "biconnector.dataset.fields.update" to update the dataset fields.` | To update fields, use the method `biconnector.dataset.fields.update` ||
 || `-` | `Error updating dataset.` | Error updating dataset ||
-|| `VALIDATION_DUPLICATE_FIELD_CODE` | `Duplicate values found in the "code" parameter: #LIST_CODES#` | Duplicates found in the `externalCode` parameter of dataset fields ||
-|| `VALIDATION_DUPLICATE_FIELD_NAME` | `Duplicate values found in the "name" parameter: #LIST_NAMES#` | Duplicates found in the `name` parameter of dataset fields ||
-|| `VALIDATION_FIELD_MISSING_REQUIRED_PARAMETERS` | `Field must include the required parameters: "name", "externalCode" and "type".` | Field must include the parameters `name`, `externalCode`, and `type` ||
-|| `VALIDATION_FIELD_NAME_INVALID_FORMAT` | `Field "name" has to start with an uppercase Latin character. Possible entry includes uppercase Latin characters (A-Z), numbers (0-9) and underscores.` | Invalid field name format. Name must start with a letter, only uppercase Latin letters `(A-Z)`, numbers, and `_` are allowed ||
-|| `VALIDATION_FIELD_NAME_TOO_LONG` | `Field "name" must not exceed 32 characters.` | Field name must not exceed 32 characters ||
-|| `VALIDATION_FIELD_INVALID_TYPE` | `Invalid field type.` | Invalid field type ||
-|| `-` | `Error adding dataset` | Error adding dataset ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

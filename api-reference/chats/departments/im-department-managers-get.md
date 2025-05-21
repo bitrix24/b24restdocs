@@ -1,8 +1,8 @@
-# Get a list of department managers im.department.managers.get
+# Get the list of department managers im.department.managers.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing — we will complete it soon
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- examples missing
+- parameter types are not specified
+- examples are missing
 
 {% endnote %}
 
@@ -32,7 +32,7 @@ The method `im.department.managers.get` retrieves a list of department managers.
 [`unknown`](../../data-types.md) | `N` | Load user data | 19 ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 - If the parameter `USER_DATA = Y` is passed, the response will return an array of objects with user information instead of an array of identifiers.
 
@@ -50,6 +50,7 @@ The method `im.department.managers.get` retrieves a list of department managers.
     BX24.callMethod(
         'im.department.managers.get',
         {
+            ID: [7],
             USER_DATA: 'Y'
         },
         function(result){
@@ -73,6 +74,7 @@ The method `im.department.managers.get` retrieves a list of department managers.
     $result = restCommand(
         'im.department.managers.get',
         Array(
+            'ID' => [7],
             'USER_DATA' => 'Y'
         ),
         $_REQUEST[
@@ -83,11 +85,11 @@ The method `im.department.managers.get` retrieves a list of department managers.
 
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Successful Response
+## Successful response
 
-When `USER_DATA = N`:
+With the option `USER_DATA = N`:
 
 ```json
 {
@@ -97,7 +99,7 @@ When `USER_DATA = N`:
 }    
 ```
 
-When `USER_DATA = Y`:
+With the option `USER_DATA = Y`:
 
 ```json
 {    
@@ -106,7 +108,7 @@ When `USER_DATA = Y`:
             "id": 1,
             "name": "Eugene Shelenkov",
             "first_name": "Eugene",
-            "last_name": "Shelenkov",
+            "last_name": "Shelankov",
             "work_position": "",
             "color": "#df532d",
             "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
@@ -136,31 +138,31 @@ When `USER_DATA = Y`:
 }    
 ```
 
-### Key Descriptions
+### Key descriptions
 
 - `id` – user identifier
 - `name` – user's full name
 - `first_name` – user's first name
 - `last_name` – user's last name
 - `work_position` – position
-- `color` – user color in hex format
+- `color` – user's color in hex format
 - `avatar` – link to avatar (if empty, avatar is not set)
 - `gender` – user's gender
 - `birthday` – user's birthday in DD-MM format, if empty – not set
 - `extranet` – indicator of external extranet user (`true/false`)
 - `network` – indicator of Bitrix24.Network user (`true/false`)
 - `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open lines user (`true/false`)
+- `connector` – indicator of open channel user (`true/false`)
 - `external_auth_id` – external authorization code
-- `status` – user status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users
-- `idle` – date when the user stepped away from the computer, in ATOM format (if not specified, `false`)
+- `status` – user's status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users.
+- `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
 - `last_activity_date` – date of the user's last action in ATOM format
-- `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not specified, `false`)
-- `desktop_last_date` – date of the last action in the desktop app in ATOM format (if not specified, `false`)
-- `absent` – date until which the user is on vacation, in ATOM format (if not specified, `false`)
+- `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
+- `desktop_last_date` – date of the last action in the desktop app in ATOM format (if not set, `false`)
+- `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
 - `phones` – array of phone numbers: `work_phone` – work phone, `personal_mobile` – mobile phone, `personal_phone` – home phone
 
-## Error Response
+## Error response
 
 ```json
 {
@@ -169,12 +171,12 @@ When `USER_DATA = Y`:
 }
 ```
 
-### Key Descriptions
+### Key descriptions
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||

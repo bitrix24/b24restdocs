@@ -1,14 +1,14 @@
-# Delete dataset biconnector.dataset.delete
+# Delete Dataset biconnector.dataset.delete
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's Workspace" section
 
 The method `biconnector.dataset.delete` removes an existing dataset.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ The method `biconnector.dataset.delete` removes an existing dataset.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 

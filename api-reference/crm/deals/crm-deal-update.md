@@ -49,30 +49,30 @@ Only those fields that need to be changed should be passed in `fields`
 || **Name**
 `type` | **Description** ||
 || **TITLE**
-[`string`](../../data-types.md) | Deal title ||
+[`string`](../../data-types.md) | Title of the deal ||
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | String identifier of the deal type.
 
 The list of available deal types can be found using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: 'DEAL_TYPE' }` ||
 || **STAGE_ID**
-[`crm_status`](../data-types.md) | Deal stage.
+[`crm_status`](../data-types.md) | Stage of the deal.
 
 The list of available stages can be found using the method [crm.status.list](../status/crm-status-list.md) with the filter:
 - `{ ENTITY_ID: "DEAL_STAGE" }` — if the deal is in the general Sales Funnel
-- `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }` — if the deal is not in the general Sales Funnel, where `categoryId` is the identifier of the [funnel](../universal/category/index.md) and equals `CATEGORY_ID` of the deal.
+- `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }` — if the deal is not in the general Sales Funnel, where `categoryId` is the identifier of the [funnel](../universal/category/index.md) and equals the `CATEGORY_ID` of the deal.
   
-If it is necessary to change the deal's funnel, use the method [crm.item.update](../universal/crm-item-update.md), `entityTypeId` of the deal — `2`
+If it is necessary to change the funnel of the deal, use the method [crm.item.update](../universal/crm-item-update.md), `entityTypeId` of the deal — `2`
 ||
 || **IS_RECURRING**
-[`char`](../../data-types.md) | Is the deal a template for a recurring deal? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a template for a recurring deal. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Is the deal a repeat? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a repeat. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_REPEATED_APPROACH**
-[`char`](../../data-types.md) | Is the deal a repeated approach? Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is a repeated approach. Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -86,7 +86,7 @@ The list of available currencies can be found using the method [crm.currency.lis
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Is manual calculation mode enabled? Possible values:
+[`char`](../../data-types.md) | Indicates whether manual calculation of the amount is enabled. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **TAX_VALUE**
@@ -94,25 +94,25 @@ The list of available currencies can be found using the method [crm.currency.lis
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the company associated with the deal.
 
-The list of companies can be found using the method [crm.item.list](../universal/crm-item-list.md), passing `entityTypeId = 4`
+The list of companies can be found using the method [crm.item.list](../universal/crm-item-list.md) by passing `entityTypeId = 4`
 ||
 || **CONTACT_ID**
 [`crm_contact`](../data-types.md) | Contact. Deprecated ||
 || **CONTACT_IDS**
 [`crm_contact[]`](../data-types.md) | List of contacts associated with the deal.
 
-The list of contacts can be found using the method [crm.item.list](../universal/crm-item-list.md), passing `entityTypeId = 3`
+The list of contacts can be found using the method [crm.item.list](../universal/crm-item-list.md) by passing `entityTypeId = 3`
 ||
 || **BEGINDATE**
 [`date`](../../data-types.md) | Start date ||
 || **CLOSEDATE**
 [`date`](../../data-types.md) | End date ||
 || **OPENED**
-[`char`](../../data-types.md) | Is the deal available to everyone? Possible values:
+[`char`](../../data-types.md) | Is the deal available to everyone. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **CLOSED**
-[`char`](../../data-types.md) | Is the deal closed? Possible values:
+[`char`](../../data-types.md) | Is the deal closed. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **COMMENTS**
@@ -142,16 +142,16 @@ Used only for linking to an external source
 || **UTM_SOURCE**
 [`string`](../../data-types.md) | Advertising system (Google-Adwords and others) ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Traffic type. Possible values:
+[`string`](../../data-types.md) | Type of traffic. Possible values:
 - `CPC` — ads
 - `CPM` — banners
 ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Advertising campaign designation ||
+[`string`](../../data-types.md) | Designation of the advertising campaign ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Search term of the campaign. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **UF_CRM_...** | Custom fields. For example, `UF_CRM_25534736`. 
 
 Depending on the portal settings, deals may have a set of custom fields of specific types. 
@@ -171,11 +171,11 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`](../../data-types.md) | Should the event of the deal change be registered in the live feed? Possible values:
+[`boolean`](../../data-types.md) | Whether to register the deal change event in the live feed. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **REGISTER_HISTORY_EVENT**
-[`boolean`](../../data-types.md) | Should a record be created in the history? Possible values:
+[`boolean`](../../data-types.md) | Whether to create a record in history. Possible values:
 - `Y` — yes
 - `N` — no ||
 |#
@@ -282,7 +282,7 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
 
 ### Method Explanation
 
-It is not recommended to use the fields `CONTACT_IDS` and `CONTACT_ID` for managing deal contacts. 
+It is not recommended to use the fields `CONTACT_IDS` and `CONTACT_ID` to manage deal contacts. 
 
 Use the methods [crm.deal.contact.*](./contacts/index.md) for working with a single contact, and the methods [crm.deal.contact.items.*](./contacts/index.md) for working with a group of deal contacts.
 
@@ -352,4 +352,4 @@ HTTP status: **400**
 - [{#T}](./crm-deal-delete.md)
 - [{#T}](./crm-deal-fields.md)
 - [{#T}](../universal/crm-item-update.md)
-- [{#T}](../../../tutorials/crm/how-to-edit-crm-objects/how-to-add-paid-date-to-deal.md)
+- [{#T}](../../../tutorials/crm/how-to-edit-crm-objects/how-to-set-paid-date-to-deal.md)

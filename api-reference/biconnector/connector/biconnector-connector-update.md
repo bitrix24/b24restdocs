@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.connector.update` updates an existing connector.
 
@@ -14,9 +14,9 @@ The method `biconnector.connector.update` updates an existing connector.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Connector identifier, can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
+[`integer`](../../data-types.md) | Identifier of the connector, can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
 || **fields***
-[`object`](../../data-types.md) | Object containing the updated data. Object format: 
+[`object`](../../data-types.md) | An object containing the updated data. The object format: 
 
 ```
 {
@@ -39,15 +39,15 @@ The method `biconnector.connector.update` updates an existing connector.
 || **Name**
 `type` | **Description** ||
 || **title**
-[`string`](../../data-types.md) | New connector name ||
+[`string`](../../data-types.md) | New name of the connector ||
 || **logo**
-[`string`](../../data-types.md) | New connector logo. Can be passed as a link to an image or a base64 formatted string, for example `data:image/svg+xml;base64,PHN2ZyB3...` ||
+[`string`](../../data-types.md) | New logo of the connector. Can be provided as a link to an image or a base64 formatted string, for example `data:image/svg+xml;base64,PHN2ZyB3...` ||
 || **description**
-[`string`](../../data-types.md) | New connector description ||
+[`string`](../../data-types.md) | New description of the connector ||
 || **urlCheck**
-[`string`](../../data-types.md) | New endpoint for checking connector availability, [(detailed description)](./index.md#urlCheck) ||
+[`string`](../../data-types.md) | New endpoint for checking the availability of the connector, [(detailed description)](./index.md#urlCheck) ||
 || **urlTableList**
-[`string`](../../data-types.md) | New endpoint for retrieving the list of tables, [(detailed description)](./index.md#urlTableList) ||
+[`string`](../../data-types.md) | New endpoint for retrieving the list of tables, [(detailed description)](./index.md#urlTableList)||
 || **urlTableDescription**
 [`string`](../../data-types.md) | New endpoint for retrieving the description of a specific table, [(detailed description)](./index.md#urlTableDescription) ||
 || **urlData**
@@ -260,7 +260,7 @@ HTTP status: **200**
 || **Code** | **Description** | **Value** ||
 || `VALIDATION_ID_NOT_PROVIDED` | `ID is missing.` | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | `ID has to be a positive integer.` | Invalid ID format ||
-|| `VALIDATION_FIELDS_NOT_PROVIDED` | `Fields not provided.` | Fields not passed in the request ||
+|| `VALIDATION_FIELDS_NOT_PROVIDED` | `Fields not provided.` | Fields were not passed in the request ||
 || `VALIDATION_UNKNOWN_PARAMETERS` | `Unknown parameters: #LIST_OF_PARAMS#` | Unknown parameters detected: list ||
 || `VALIDATION_READ_ONLY_FIELD` | `Field "#TITLE#" is read only.` | Field #TITLE# is read-only and cannot be modified ||
 || `VALIDATION_IMMUTABLE_FIELD` | `Field "#TITLE#" is immutable.` | Field #TITLE# is immutable ||
@@ -268,8 +268,8 @@ HTTP status: **200**
 || `CONNECTOR_NOT_FOUND` | `Connector was not found.` | Connector not found ||
 || `VALIDATION_SETTINGS_MISSING_REQUIRED_FIELDS` | `Settings must include "type", "name" and "code" fields.` | Settings must include `type`, `name`, and `code` fields ||
 || `VALIDATION_SETTINGS_INVALID_TYPE` | `Parameter "type" is not correct.` | Invalid value for parameter `type` ||
-|| `VALIDATION_SETTINGS_NAME_TOO_LONG` | `Parameter "name" must be less than 512 characters.` | Value for parameter `name` must not exceed 512 characters ||
-|| `VALIDATION_SETTINGS_CODE_TOO_LONG` | `Parameter "code" must be less than 512 characters.` | Value for parameter `code` must not exceed 512 characters ||
+|| `VALIDATION_SETTINGS_NAME_TOO_LONG` | `Parameter "name" must be less than 512 characters.` | Value of parameter `name` must not exceed 512 characters ||
+|| `VALIDATION_SETTINGS_CODE_TOO_LONG` | `Parameter "code" must be less than 512 characters.` | Value of parameter `code` must not exceed 512 characters ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

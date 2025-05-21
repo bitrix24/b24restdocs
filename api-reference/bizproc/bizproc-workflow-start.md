@@ -1,10 +1,10 @@
-# Start Business Process bizproc.workflow.start
+# Start a business process bizproc.workflow.start
 
 > Scope: [`bizproc`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method initiates a new business process.
+The method `bizproc.workflow.start` initiates a new business process.
 
 You can only start a business process using REST on paid plans, demo licenses, and NFR licenses.
 
@@ -18,26 +18,26 @@ You can only start a business process using REST on paid plans, demo licenses, a
 || **TEMPLATE_ID***
 [`integer`](../data-types.md) | Identifier of the business process template ||
 || **DOCUMENT_ID***
-[`array`](../data-types.md) | Identifier of the document to start the business process in the format [`module`, `object`, `ELEMENT_ID`].
+[`array`](../data-types.md) | Identifier of the document to start the business process in the format [`module`, `object`, `element_ID`].
 
 Examples of entries for different document types:
 
-- Lead — ['crm', 'CCrmDocumentLead', 'LEAD_777']
-- Company — ['crm', 'CCrmDocumentCompany', 'COMPANY_777']
-- Contact — ['crm', 'CCrmDocumentContact', 'CONTACT_777']
-- Deal — ['crm', 'CCrmDocumentDeal', 'DEAL_777']
-- Disk file — ['disk', 'Bitrix\Disk\BizProcDocument', '777']
-- Process document in the news feed — ['lists', 'BizprocDocument', '777']
-- List document — ['lists', 'Bitrix\Lists\BizprocDocumentLists', '777']
-- Smart process element — ['crm', 'Bitrix\Crm\Integration\BizProc\Document\Dynamic', 'DYNAMIC_147_1'], where `147` is the `ID` of the smart process, `1` is the `ID` of the smart process element
-- Invoice — ['crm', 'Bitrix\Crm\Integration\BizProc\Document\SmartInvoice', 'SMART_INVOICE_3']
+- Lead — `['crm', 'CCrmDocumentLead', 'LEAD_777']`
+- Company — `['crm', 'CCrmDocumentCompany', 'COMPANY_777']`
+- Contact — `['crm', 'CCrmDocumentContact', 'CONTACT_777']`
+- Deal — `['crm', 'CCrmDocumentDeal', 'DEAL_777']`
+- Drive file — `['disk', 'Bitrix\\Disk\\BizProcDocument', '777']`
+- News feed process document — `['lists', 'BizprocDocument', '777']`
+- Lists document — `['lists', 'Bitrix\\Lists\\BizprocDocumentLists', '777']`
+- Smart process element — `['crm', 'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic', 'DYNAMIC_147_1']`, where `147` is the `ID` of the smart process, and `1` is the `ID` of the smart process element
+- Invoice — `['crm', 'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice', 'SMART_INVOICE_3']`
 ||
 || **PARAMETERS**
-[`object`](../data-types.md) | Values of the parameters for the business process template.
+[`object`](../data-types.md) | Values of the business process template parameters.
 
 Used if the template has parameters.
 
-To pass a value to a parameter of type "User binding", use a record like `user_ID`. For example:
+To pass a value to a parameter of type "User binding," use the format `user_ID`. For example:
 
 ```php
 PARAMETERS: {
@@ -126,7 +126,7 @@ PARAMETERS: {
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -154,12 +154,12 @@ HTTP Status: **200**
 
 Returns the identifier of the started business process ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -180,8 +180,8 @@ HTTP Status: **400**
 || `400` | Empty value | Incorrect document type! | Unable to determine the document type from the provided `DOCUMENT_ID` ||
 || `400` | Empty value | Template type and DOCUMENT_ID mismatch! | The document type in the template does not match the type determined from `DOCUMENT_ID`.
 
-Attempt to start the template on the wrong entity for which it was created ||
-|| `403` | `ACCESS_DENIED` | Access denied! | The method was executed by a non-administrator ||
+Attempting to start the template on the wrong entity for which it was created ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was not executed by an administrator ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

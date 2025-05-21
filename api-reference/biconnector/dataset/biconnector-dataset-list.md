@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst Workspace" section
+> Who can execute the method: a user with access to the "Analyst's workspace" section
 
 The method `biconnector.dataset.list` returns a list of datasets based on a filter. It is an implementation of the listing method for datasets.
 
@@ -12,10 +12,10 @@ The method `biconnector.dataset.list` returns a list of datasets based on a filt
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | A list of fields that must be populated in the datasets in the selection. By default, all fields are taken. 
+[`string[]`](../../data-types.md) | A list of fields that must be populated in the datasets in the selection. By default, all fields are included. 
 The `fields` parameter is not supported and will be ignored. ||
 || **filter**
-[`object`](../../data-types.md) | A filter for selecting datasets. Example format:
+[`object`](../../data-types.md) | Filter for selecting datasets. Example format:
 
 ```json
 {
@@ -32,20 +32,19 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` character must be included in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
 
-The list of available fields for filtering can be found using the method [biconnector.dataset.fields](./biconnector-dataset-fields.md).
+The list of available fields for filtering can be obtained using the method [biconnector.dataset.fields](./biconnector-dataset-fields.md).
 
-The filter does not support the `fields` parameter and will be ignored.
-||
+The `fields` parameter is not supported and will be ignored. ||
 || **order**
 [`object`](../../data-types.md) | Sorting parameters. Example format:
 
@@ -65,19 +64,19 @@ where:
     - `DESC` — descending sort
 ||
 || **page**
-[`integer`](../../data-types.md) | Pagination control. The page size of results is 50 records. To navigate through results, pass the page number. ||
+[`integer`](../../data-types.md) | Controls pagination. The page size for results is 50 records. To navigate through results, pass the page number. ||
 |#
 
 ## Code Examples
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-Get the list of sources where:
+Get a list of sources where:
 - the name starts with `Sales`
 - the description is not empty
-- the source ID is equal to `2` or `4`
+- the source ID is `2` or `4`
 
-For clarity, select only the necessary fields:
+To illustrate, select only the necessary fields:
 - ID `id`
 - Name `name`
 - Description `description`
@@ -172,7 +171,7 @@ For clarity, select only the necessary fields:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -206,17 +205,18 @@ HTTP status: **200**
 
 ### Returned Data
 
+#|
 || **result**
 [`object`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the dataset fields. 
 
-It should be noted that the structure of fields may change due to the `select` parameter. ||
+It should be noted that the structure of the fields may change due to the `select` parameter. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
 ## Error Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {

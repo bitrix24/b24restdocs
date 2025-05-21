@@ -9,7 +9,7 @@ A source is a separate connection to an external system in the BIconnector modul
 The source is registered through the connector. In the hierarchy of the BIconnector module, sources occupy an intermediate level:
 - **Connector** establishes a connection with the external data source.
 - **Source** defines the access parameters for the data.
-- **Dataset** forms the final dataset that can be used in reports and analytics.
+- **Dataset** forms the final set of data that can be used in reports and analytics.
 
 ## Description of Source Fields {#fields}
 
@@ -21,9 +21,9 @@ The source is registered through the connector. In the hierarchy of the BIconnec
 || **title**
 [`string`](../../data-types.md) | Name of the source | ✅ | ✅ ||
 || **type**
-[`string`](../../data-types.md) | Type of the source, value is always `rest` | ✅ | ❌ ||
+[`string`](../../data-types.md) | Type of the source, the value is always `rest` | ✅ | ❌ ||
 || **code**
-[`string`](../../data-types.md) | Source code, system field | ✅ | ❌ ||
+[`string`](../../data-types.md) | Source code, a system field | ✅ | ❌ ||
 || **description**
 [`string`](../../data-types.md) | Description of the source | ✅ | ✅ ||
 || **active**

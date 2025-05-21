@@ -1,8 +1,8 @@
-# Get a list of users in your department im.department.colleagues.list
+# Get the list of colleagues of the current user im.department.colleagues.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing — we will fill it in shortly
 - edits needed for writing standards
 - parameter types not specified
 - examples missing
-- error response missing
+- response in case of error is absent
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing — we will fill it in shortly
 >
 > Who can execute the method: any user
 
-The method `im.department.colleagues.list` retrieves a list of users in your department.
+The method `im.department.colleagues.list` retrieves the list of colleagues of the current user. For a manager, the method will return a list of subordinates and all managers.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -36,7 +36,7 @@ The method `im.department.colleagues.list` retrieves a list of users in your dep
 |#
 
 - If the parameter `USER_DATA = Y` is passed, the response will return an array of objects with user information instead of an array of identifiers.
-- The method supports standard pagination of the Bitrix24 Rest API, but in addition, it allows navigation using the `OFFSET` and `LIMIT` parameters.
+- The method supports standard pagination of the Bitrix24 Rest API, but in addition to that, it allows for navigation using the `OFFSET` and `LIMIT` parameters.
 
 ## Examples
 
@@ -88,7 +88,7 @@ The method `im.department.colleagues.list` retrieves a list of users in your dep
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Successful response
+## Response in case of success
 
 With the option `USER_DATA = N`:
 
@@ -108,7 +108,7 @@ With the option `USER_DATA = Y`:
             "id": 1,
             "name": "Eugene Shelenkov",
             "first_name": "Eugene",
-            "last_name": "Shelenkov",
+            "last_name": "Shelankov",
             "work_position": "",
             "color": "#df532d",
             "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
@@ -145,7 +145,7 @@ With the option `USER_DATA = Y`:
 - `name` – user's full name
 - `first_name` – user's first name
 - `last_name` – user's last name
-- `work_position` – job title
+- `work_position` – position
 - `color` – user color in hex format
 - `avatar` – link to avatar (if empty, avatar is not set)
 - `gender` – user's gender
@@ -153,7 +153,7 @@ With the option `USER_DATA = Y`:
 - `extranet` – indicator of external extranet user (`true/false`)
 - `network` – indicator of Bitrix24.Network user (`true/false`)
 - `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open lines user (`true/false`)
+- `connector` – indicator of open channel user (`true/false`)
 - `external_auth_id` – external authorization code
 - `status` – user status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users
 - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)

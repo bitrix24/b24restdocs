@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.connector.delete` removes an existing connector.
 
@@ -85,7 +85,7 @@ A connector can be deleted if it has no sources.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -114,7 +114,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -132,7 +132,7 @@ HTTP Status: **200**
 || `VALIDATION_ID_NOT_PROVIDED` | `ID is missing.` | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | `ID has to be a positive integer.` | Invalid ID format ||
 || `CONNECTOR_NOT_FOUND` | `Connector was not found.` | Connector not found ||
-|| `CONNECTOR_DELETE_RESTRICTED` | `Connector cannot be removed. Remove the connections related to the connector first.` | Cannot delete connector while related connections exist ||
+|| `CONNECTOR_DELETE_RESTRICTED` | `Connector cannot be removed. Remove the connections related to the connector first.` | Cannot delete the connector while there are related connections ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

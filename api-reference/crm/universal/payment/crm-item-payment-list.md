@@ -1,4 +1,4 @@
-# Get a list of payments crm.item.payment.list
+# Get the list of payments crm.item.payment.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -16,9 +16,10 @@ This method retrieves a list of payments for a specific CRM entity.
 || **entityId***
 [`integer`](../../../../api-reference/data-types.md) | Identifier of the CRM entity ||
 || **entityTypeId***
-[`integer`](../../../../api-reference/data-types.md) | Identifier of the [`CRM entity type`](../../data-types.md#object_type) ||
+[`integer`](../../../../api-reference/data-types.md) | Identifier of the [`CRM entity type`](../../data-types.md#object_type)  ||
 || **filter**
-[`object`](../../../../api-reference/data-types.md) | Additional filter for cases when you need to retrieve not all payments of the entity, but based on a more specific filter. The format description is provided in the **filter** parameter of the [`sale.payment.list`](../../../sale/payment/sale-payment-list.md) method ||
+[`object`](../../../../api-reference/data-types.md) | Additional filter for cases when you need to retrieve not all payments of the entity, but based on a more specific filter.
+The format description is provided in the **filter** parameter of the [`sale.payment.list`](../../../sale/payment/sale-payment-list.md) method  ||
 || **order**
 [`object`](../../../../api-reference/data-types.md) | The format description is provided in the **order** parameter of the [`sale.payment.list`](../../../sale/payment/sale-payment-list.md) method ||
 |#
@@ -140,7 +141,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_order_payment_crm_simple[]`](crm-item-payment-get.md#sale_order_payment_crm_simple) | Array of objects containing brief information about the selected payments ||
+[`sale_order_payment_crm_simple[]`](crm-item-payment-get.md#sale_order_payment_crm_simple) | Array of objects containing brief information about the selected payments  ||
 || **time**
 [`time`](../../../../api-reference/data-types.md) | Information about the execution time of the request ||
 |#
@@ -177,4 +178,4 @@ HTTP status: **400**
 - [{#T}](./crm-item-payment-pay.md)
 - [{#T}](./crm-item-payment-unpay.md)
 - [{#T}](./crm-item-payment-add.md)
-- [{#T}](../../../../tutorials/crm/how-to-edit-crm-objects/how-to-add-paid-date-to-deal.md)
+- [{#T}](../../../../tutorials/crm/how-to-edit-crm-objects/how-to-set-paid-date-to-deal.md)

@@ -8,7 +8,7 @@ The method `biconnector.connector.add` creates a new connector that allows integ
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -38,19 +38,19 @@ The method `biconnector.connector.add` creates a new connector that allows integ
 `type` | **Description** ||
 || **title***
 [`string`](../../data-types.md) | Connector name ||
-|| **logo**
+|| **logo***
 [`string`](../../data-types.md) | Connector logo. Can be provided as a link to an image or a base64 formatted string, for example `data:image/svg+xml;base64,PHN2ZyB3...` ||
 || **description**
 [`string`](../../data-types.md) | Connector description ||
-|| **urlCheck**
+|| **urlCheck***
 [`string`](../../data-types.md) | Connector endpoint for availability check, [(detailed description)](./index.md#urlCheck) ||
-|| **urlTableList**
+|| **urlTableList***
 [`string`](../../data-types.md) | Connector endpoint for retrieving the list of tables, [(detailed description)](./index.md#urlTableList) ||
-|| **urlTableDescription**
+|| **urlTableDescription***
 [`string`](../../data-types.md) | Connector endpoint for retrieving the description of a specific table, [(detailed description)](./index.md#urlTableDescription) ||
-|| **urlData**
+|| **urlData***
 [`string`](../../data-types.md) | Connector endpoint for retrieving data from the selected table, [(detailed description)](./index.md#urlData) ||
-|| **settings**
+|| **settings***
 [`array`](../../data-types.md) | List of connection parameters, [(detailed description)](./index.md#settings) ||
 || **sort**
 [`int`](../../data-types.md) | Connector sorting parameter. Default value is `100` ||
@@ -58,7 +58,7 @@ The method `biconnector.connector.add` creates a new connector that allows integ
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -255,16 +255,16 @@ HTTP Status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_FIELDS_NOT_PROVIDED` | `Fields not provided` | Fields not passed in the request ||
+|| `VALIDATION_FIELDS_NOT_PROVIDED` | `Fields not provided` | Fields were not provided in the request ||
 || `VALIDATION_UNKNOWN_PARAMETERS` | `Unknown parameters: #LIST_OF_PARAMS#` | Unknown parameters detected: list ||
-|| `VALIDATION_REQUIRED_FIELD_MISSING` | `Field "#TITLE#" is required.` | Required field #TITLE# not provided ||
+|| `VALIDATION_REQUIRED_FIELD_MISSING` | `Field "#TITLE#" is required.` | Required field #TITLE# was not provided ||
 || `VALIDATION_READ_ONLY_FIELD` | `Field "#TITLE#" is read only.` | Field #TITLE# is read-only and cannot be modified ||
 || `VALIDATION_IMMUTABLE_FIELD` | `Field "#TITLE#" is immutable.` | Field #TITLE# is immutable ||
 || `VALIDATION_INVALID_FIELD_TYPE` | `Field "#TITLE#" must be of type #TYPE#.` | Field #TITLE# must be of type #TYPE# ||
 || `VALIDATION_SETTINGS_MISSING_REQUIRED_FIELDS` | `Settings must include "type", "name" and "code" fields.` | Settings must include `type`, `name`, and `code` fields ||
-|| `VALIDATION_SETTINGS_NAME_TOO_LONG` | `Parameter "name" must be less than 512 characters.` | The value of the `name` parameter must not exceed 512 characters ||
-|| `VALIDATION_SETTINGS_CODE_TOO_LONG` | `Parameter "code" must be less than 512 characters.` | The value of the `code` parameter must not exceed 512 characters ||
-|| `VALIDATION_SETTINGS_INVALID_TYPE` | `Parameter "type" is not correct.` | Invalid value for the `type` parameter ||
+|| `VALIDATION_SETTINGS_NAME_TOO_LONG` | `Parameter "name" must be less than 512 characters.` | The value of the parameter `name` must not exceed 512 characters ||
+|| `VALIDATION_SETTINGS_CODE_TOO_LONG` | `Parameter "code" must be less than 512 characters.` | The value of the parameter `code` must not exceed 512 characters ||
+|| `VALIDATION_SETTINGS_INVALID_TYPE` | `Parameter "type" is not correct.` | Invalid value for parameter `type` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

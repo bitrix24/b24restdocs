@@ -5,9 +5,9 @@ items:
     href: index.md
   - name: Get Information About a Department
     href: im-department-get.md
-  - name: Get a List of Users in Your Department
-    href: im-department-colleagues-list.md
-  - name: Get a List of Department Managers
+  - name: Get List of Department Managers
     href: im-department-managers-get.md
-  - name: Get a List of Department Employees
+  - name: Get List of Department Employees
     href: im-department-employees-get.md
+  - name: Get List of Current User's Colleagues
+    href: im-department-colleagues-list.md
