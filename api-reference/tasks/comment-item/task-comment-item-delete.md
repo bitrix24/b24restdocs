@@ -30,9 +30,9 @@ The method `task.commentitem.delete` deletes a comment. Mandatory authorization 
 
 #|
 || **Parameter** / **Type** | **Description** ||
-|| **TASKID^*^**
+|| **taskId^*^**
 [`unknown`](../../data-types.md) | Task identifier. ||
-|| **ITEMID^*^**
+|| **itemId^*^**
 [`unknown`](../../data-types.md) | Comment identifier. ||
 |#
 
