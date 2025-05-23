@@ -5,3 +5,5 @@ items:
     href: index.md
   - name: Working with Reviews
     href: users-rating.md
+  - name: CRM widget
+    href: crm-widget.md
