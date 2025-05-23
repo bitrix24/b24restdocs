@@ -12,9 +12,13 @@ If your application adds a widget (or multiple widgets), we begin recommending y
 
 When a user clicks on the "Market" item, we display a slider with a selection of relevant solutions.
 
+![alt-текст](_images/widgets_in_applications.jpg)
+
 The same applies to solutions that add workflow activities, automation rules, etc. – we will recommend your solutions right within the corresponding tools.
 
 The more integration and embedding scenarios you implement, the more frequently your application will "catch the user's eye."
+
+![alt-текст](_images/widgets_in_applications_2.jpg)
 
 ## How to Stand Out Among Other Solutions?
 
@@ -24,15 +28,21 @@ A well-crafted description of your application that helps potential users unders
 
 There are many solutions in the Market, and a user is more likely to open the application that interests them from the list of alternatives. Therefore, the title should be clear and concise, fitting on the screen when viewing the list.
 
+![alt-текст](_images/clear_title.jpg)
+
 ### Brief Description
 
 In addition to the title, it's important to provide a clear and compelling brief description of the application. It should complement, not duplicate, the title and be short enough to fit entirely in the application lists.
 
 Do not copy the title into the brief description. Remove introductory words and phrases. Write concisely and clearly about the purpose.
 
+![alt-текст](_images/brief_description.jpg)
+
 ### Informative Screenshots
 
 Another important aspect is high-quality screenshots that showcase real use cases of the application. Screenshots should also help the user understand why they need this application and how they can use it. Do you think a screenshot of the settings interface or a screenshot with a successful installation message is helpful in this regard? If in doubt, it likely means it's not. Consider other options.
+
+![alt-текст](_images/informative_screenshots.jpg)
 
 ## How to Help Users Find Your Application?
 
@@ -46,6 +56,8 @@ We gather interesting and useful applications and compile reviews from them.
 
 Browse the showcase, find a suitable category, and reach out to the moderators. If your solution matches in theme and functionality, we will add it to the collection.
 
+![alt-текст](_images/thematic_collections.jpg)
+
 ### Working with Reviews
 
 Working with reviews is a way to receive feedback from users and an effective tool for promoting your application.
@@ -53,6 +65,8 @@ Working with reviews is a way to receive feedback from users and an effective to
 High ratings and positive reviews will help you rank higher in the sorting by rating in the Marketplace showcase.
 
 Why is this important? - The solution will automatically rise to the top of the results and will be one of the first that a potential client sees.
+
+![alt-текст](_images/working_with_reviews.jpg)
 
 ### Search Engine Optimization
 
@@ -69,6 +83,8 @@ Here are the rules for using keywords:
 1. The most important words should be in the title; less important ones in the "keywords" field, and the broadest range in the application description;
 2. The further left a word is positioned in the title, keywords, and description, the higher the weight of that word. For example, for the query "inventory," an application titled "**Inventory** and accounting" will rank higher than "Automation of **inventory**."
 3. The shorter the text, the higher the weight of each word in that text. For example, for the query "automation," an application titled "Automation and Triggers" (3 words) will rank higher than "Automation and Triggers for CRM" (5 words).
+
+![alt-текст](_images/keywords.jpg)
 
 {% note info "" %}
 
