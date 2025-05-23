@@ -1,10 +1,15 @@
-# Technological Partnership
+# Bitrix24 Market Partner Status
 
-A technological partnership is essential for developers who are not participants in the regular [Bitrix24 partner program](https://partners.bitrix24.com), do not sell licenses for 1C-Bitrix software products, and simply want to showcase their solutions and integrations in the Bitrix24 Market.
+## General Information
 
-Becoming a technological partner to list your solutions in Bitrix24 Market is quite straightforward.
+- Bitrix24 partner status is needed to publish and list products at the [Bitrix24 Market](https://www.bitrix24.com/apps/).
+- Minimal status – “Partner”. If you are already a member of the Bitrix24 affiliate program, you can immediately proceed to authorization in the partner account.
+- Currently, the terms of the program for publishing affiliate products at the Bitrix24 Market are governed by additional documents that you will need to sign by filling out [account details](https://vendors.bitrix24.com/app/app.php?regionid=2&action=add&id=0) after receiving affiliate status.
+- Bitrix24 Market modules are managed in the [vendor’s account](https://vendors.bitrix24.com/technology-partnership/).
 
-Visit the [Developer's area](https://vendors.bitrix24.com/) and fill out the application form you see there:
+## Rules for obtaining partner status for publishing products in Bitrix24 Market
+
+**A.** Register as a developer by filling out the following [form](https://vendors.bitrix24.com/technology-partnership/) fields:
 
 - **First and Last Name** – these fields are needed to create a user account that will be linked to your partner account;
 - **E-mail** – this value will be used as your login for the partner account (you can later add additional users), as well as for sending automatic notifications (about the moderation status of your solutions, publication, etc.);
