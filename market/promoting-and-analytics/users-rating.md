@@ -15,15 +15,15 @@ Working with reviews is not only a way to receive feedback from users but also a
 
 It is essential to remember that each review is an opportunity to improve your products and strengthen relationships with clients. Therefore, respond to reviews thoughtfully and respectfully, using them as a valuable tool for development. To ensure you don't miss any reviews, we display a counter for reviews you haven't responded to.
 
-## How to edit a review?
+## How to change a review?
 
-Go to the Market, click "More" in the top right corner, and sel ect "My Reviews." Each review has three dots — click on them and choose "Edit Review." The customer can change the text or write a new one and save it.
+To edit their review, the users needs to go to the Market, click "More" in the top right corner, and select "My Reviews." Each review has three dots—click on them and choose "Edit Review." The client can change the text or write a new one and save it.
 
-**Restrictions:**
+**Limitations**
 
-- A review can be edited only twice within three months from the time it was written.
-- If the rating is changed to a positive one, the changes are applied immediately on the storefront.
-- If the rating is changed to a negative one, we give partners time to resolve the situation before publication.
+- A review can be edited only twice within three months from the publication date.
+- If the rating is changed to positive, the changes are immediately applied on the storefront.
+- If the rating is changed to negative, we give you – our partners – time to resolve the situation before publishing.
 
 **Broadcast user experiences**
 
