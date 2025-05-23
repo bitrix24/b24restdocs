@@ -15,16 +15,6 @@ Working with reviews is not only a way to receive feedback from users but also a
 
 It is essential to remember that each review is an opportunity to improve your products and strengthen relationships with clients. Therefore, respond to reviews thoughtfully and respectfully, using them as a valuable tool for development. To ensure you don't miss any reviews, we display a counter for reviews you haven't responded to.
 
-## How to change a review?
-
-To edit their review, the users needs to go to the Market, click "More" in the top right corner, and select "My Reviews." Each review has three dots—click on them and choose "Edit Review." The client can change the text or write a new one and save it.
-
-**Limitations**
-
-- A review can be edited only twice within three months from the publication date.
-- If the rating is changed to positive, the changes are immediately applied on the storefront.
-- If the rating is changed to negative, we give you – our partners – time to resolve the situation before publishing.
-
 **Broadcast user experiences**
 
 New clients will be able to see that the solution works effectively, and they won't waste their time trying to install and configure it. Reviews will also help new clients understand if your solution fits their needs.
@@ -53,6 +43,16 @@ You can create a pop-up window that prompts users to rate and opens the detailed
 You can download the code example [here](https://bitrix24.team/~UkhoQ).
 
 The best option is to ask the user to rate the application after they have confirmed its usefulness.
+
+## How to change a review?
+
+To edit their review, the users needs to go to the Market, click "More" in the top right corner, and select "My Reviews." Each review has three dots—click on them and choose "Edit Review." The client can change the text or write a new one and save it.
+
+**Limitations**
+
+- A review can be edited only twice within three months from the publication date.
+- If the rating is changed to positive, the changes are immediately applied on the storefront.
+- If the rating is changed to negative, we give you – our partners – time to resolve the situation before publishing.
 
 ## Responding to users
 
