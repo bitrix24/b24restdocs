@@ -1,30 +1,41 @@
 # FAQ - Frequently Asked Questions about Publishing Solutions in Bitrix24 Market
 
-How does the publication process work, what should you pay attention to, and what opportunities are available in the Developer's area?
+How applications are published and what options and features are available in the developer’s account.
 
-**WHAT IS ALLOWED AND WHAT IS NOT?**  
-Find out in advance [what the moderator will pay attention to](publication-requirements.md) when reviewing your solutions. The more thoroughly you familiarize yourself with this document, the faster and easier your review by the moderator will be.
+@[youtube](https://youtu.be/zDAv4xDF5Yc)
 
-**WHERE TO FIND CLIENT_ID AND CLIENT_SECRET OF THE APPLICATION?**  
-You can find these keys after adding the application in the Developer's area by opening the solution card and clicking the Test button.
+**WHAT IS A PUBLICATION REGION?**
+Your application will be published for the Global region (which includes Bitrix24 accounts in different domain zones such as .com, .de, and so on). It is mandatory to provide an English description, while descriptions in other languages are optional. Only free apps are available for publication. Monetization is available via in-app purchases only. You need to fill in the app data and and accept the agreement in the price policy section.
 
-**WHEN ADDING AN APPLICATION, AN ERROR "THE SPECIFIED URL IS UNAVAILABLE" APPEARS**  
-We send a head request to the specified URL, expecting a response of 200, 301, or 302. If we receive anything other than these, we write "The specified URL is unavailable." You can check this on the site reqbin.com.
+**WHAT SOLUTIONS CAN BE PUBLISHED IN BITRIX24 MARKET?**
+In [this document](https://vendors.bitrix24.com/upload/EN_2.2.%20marketplace_application24_publication.pdf), you can read information about what decisions are made for publication in the Market, find detailed information about possible options for the pricing policy of your solution, etc.
 
-**WHY IS MY ALREADY PUBLISHED SOLUTION IN THE "PREPARING FOR MODERATION" STAGE?**  
-Any changes made to the solution card (descriptions, pricing policies, etc.) after successful moderation automatically change the status. The current modified information is not visible to users in the public application catalog—they still see and access the solution in the form it was moderated. You can make changes until you decide to publish them. To do this, you need to submit the changes for moderation.
+**WHEN ADDING THE APPLICATION, AN ERROR OCCURS SAYING "INCORRECT URL"**
+We send a head request to the specified URL and expect a response of 200, 301, or 302. If we receive any other response, we write "The specified URL is not accessible." You can check this by visiting [reqbin.com](https://reqbin.com/).
 
-**HOW TO ASK A QUESTION TO THE MODERATOR?**  
-Correspondence with the moderator takes place in the chat in the lower right part of the account.
+**WHERE TO FIND CLIENT_ID AND CLIENT_SECRET FOR THE APPLICATION?**
+These keys can be found after adding the application to the Vendor’s account, opening the solution details page, and clicking on "Test."
 
-**HOW QUICKLY DOES MODERATION OCCUR?**  
-Typically, we review moderation requests within 2-3 business days, but ultimately it depends on the current queue, as requests come in very unevenly.
+**WHY MY ALREADY PUBLISHED SOLUTION HAS THE STATUS “PREPARE FOR PUBLISHING”?**
+Any changes in the application details form (updated descriptions, price policy and etc.), implemented after successful moderation automatically lead to an updated app status. Users won’t yet see the newly updated information in the Bitrix24 Marketplace - they will still view and install the previous version of the moderated solution. Developer can introduce changes in the app and decide to publish them by submitting these changes to be moderated by Bitrix24.
 
-**WHY CAN'T I MAKE CHANGES TO THE CARD AFTER SUBMITTING FOR MODERATION?**  
-Once you have submitted changes to the solution card for moderation, the solution card becomes available for viewing only. It is possible that one of the moderators is currently reviewing your solution, and any edits from your side at this moment would make that review pointless. If, after submitting the solution for moderation, you discover minor issues that you want to quickly fix, message the moderator in the chat requesting to cancel the moderation. After making the corrections, submit the solution for moderation again.
+**HOW TO ASK A QUESTION TO A BITRIX24 MODERATOR?**
+Developer can communicate with Bitrix24 moderator via chat assigned to a specific publication region. Chat icons are available in the slider menu on the right-side menu inside the developer’s account.
 
-**CHANGING THE APPLICATION CODE**  
+**WHY I CANNOT MAKE CHANGES IN THE APP’S DETAILS AFTER SUBMITTING THE APP TO MODERATORS?**
+After you have submitted the changes to be verified by moderators, your app details form becomes accessible for viewing only. It’s possible, that at this moment your app is being checked by Bitrix24 team and any app updates will make this check pointless. In case when you have found some minor issues in your app after submitting it, and you want to quickly solve them, please send a message to the moderator’s chat asking to cancel the moderation. After you have fixed all the issues, you can submit your app to be moderated once again.
+
+**HOW QUICKLY MY APP IS GOING TO BE MODERATED?**
+Usually we review the submitted applications during 2-3 business days. However, everything depends on an ongoing queue, because the number of in-progress moderations can be significant and may take some time.
+
+**WHAT'S PERMITTED AND WHAT'S NOT?**
+Ensure in advance that you are aware about the [details checked by moderator](common-requirements.md) when inspecting your solutions. The more attention you will invest into studying this document, the faster and easier you will pass the moderation successfully.
+
+**CHANGES TO THE APPLICATION CODE**
 After passing moderation, changing the application code is not possible.
 
-**NFR LICENSES**  
-To obtain an NFR license, you must have at least one published solution. If you have published solutions, to issue an NFR, you need to write in the chat with the moderator and specify: your partner ID, the account address, and if the license is needed for an industry solution, please also provide the solution code. Within 1-2 business days, NFR will be activated on the specified account. Please note that the NFR license is issued for a period of 6 months, and after this period, you can request it again.
+**NFR LICENSES**
+To obtain an NFR license, you must have at least one published solution. If you already have published solutions, then to obtain an NFR license for a specific industry solution, please specify that as well. The NFR license is valid for 6 months and can be renewed upon expiration.
+
+**DELETING APPLICATIONS**
+We delete applications only if they have never been moderated and published. To delete unpublished solutions, you can contact the moderator and send the code of the application to be deleted. Moderated solutions can be removed from the catalog by unchecking the Publish box in the app details.
