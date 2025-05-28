@@ -6,7 +6,7 @@ A dataset is an object of the BIconnector module. Datasets are used to display a
 
 ## Connection of Dataset with Connector and Sources
 
-A dataset is the final level in the hierarchy of data handling within the BIconnector module:
+A dataset is the final level in the hierarchy of data handling in the BIconnector module:
 - **Connector** establishes a connection with an external data source.
 - **Source** defines which specific data is available from the connected service.
 - **Dataset** forms the final set of data that can be used in reports and analytics.
@@ -19,7 +19,7 @@ A dataset is the final level in the hierarchy of data handling within the BIconn
 || **id**
 [`integer`](../../data-types.md) | Unique identifier of the dataset | ✅ | ❌ ||
 || **type**
-[`string`](../../data-types.md) | Type of the dataset, value is always `rest` | ✅ | ❌ ||
+[`string`](../../data-types.md) | Type of the dataset, the value is always `rest` | ✅ | ❌ ||
 || **name**
 [`string`](../../data-types.md) | Name of the dataset | ✅ | ✅ ||
 || **description**
@@ -59,7 +59,7 @@ A dataset is the final level in the hierarchy of data handling within the BIconn
 `date` — date, format `Y-m-d`
 `datetime` — date with time, format `Y-m-d H:i:s` | ✅ | ✅ ||
 || **name**
-[`string`](../../data-types.md) | Name of the field | ✅ | ✅ ||
+[`string`](../../data-types.md) | Name of the field. The name must start with a letter, only uppercase Latin letters `A-Z`, digits, and the sign `_` can be used. Maximum length of the name is 32 characters | ✅ | ✅ ||
 || **externalCode**
 [`string`](../../data-types.md) | External code of the field | ✅ | ✅ ||
 || **visible**
@@ -70,7 +70,7 @@ A dataset is the final level in the hierarchy of data handling within the BIconn
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can perform methods: user with access to the "Analyst's Workspace" section
+> Who can perform methods: a user with access to the "Analyst Workspace" section
 
 #|
 || **Method** | **Description** ||

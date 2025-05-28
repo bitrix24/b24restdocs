@@ -2,6 +2,11 @@
 
 ## 2025
 
+### May 28, 2025
+
+- Updated tutorials: [Add Contact via Web Form](./tutorials/crm/how-to-add-crm-objects/how-to-add-contact.md), [Add Company via Web Form](./tutorials/crm/how-to-add-crm-objects/how-to-add-company.md), [Add Calendar Event for Client Work](./tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)
+- Added new tutorial [How to Filter Elements by Stage Name](./tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
+
 ### May 21, 2025
 
 - Updated the main page of the [Price](./api-reference/catalog/price/index.md) section in the Trade Catalog. Added introductory information as well as an overview of methods and connections

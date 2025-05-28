@@ -2,9 +2,15 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator, user with the "Allow to modify settings" access permission in CRM
 
-This method creates a new product property.
+{% note warning "Method development halted" %}
+
+The method `crm.product.property.add` is still operational, but there is a more relevant alternative [catalog.productProperty.add](../../../catalog/product-property/catalog-product-property-add.md).
+
+{% endnote %}
+
+The method `crm.product.property.add` creates a new product property.
 
 ## Method Parameters
 
@@ -14,9 +20,9 @@ This method creates a new product property.
 || **Name**
 `type` | **Description** ||
 || **fields**
-[`array`](../../../data-types.md) | Field values for creating the product property.
+[`array`](../../../data-types.md) | Field values for creating a product property.
 
-To find out the required format of the fields, execute the method [crm.product.property.fields](./crm-product-property-fields.md) and check the format of the received values for these fields ||
+To find out the required field format, execute the method [crm.product.property.fields](./crm-product-property-fields.md) and check the format of the returned field values ||
 |#
 
 ## Code Examples
@@ -172,6 +178,7 @@ To find out the required format of the fields, execute the method [crm.product.p
     // Start the process
     getCatalogId();
     ```
+
 {% endlist %}
 
 ### Example 2
@@ -376,4 +383,5 @@ To find out the required format of the fields, execute the method [crm.product.p
 
     getCatalogId();
     ```
+
 {% endlist %}

@@ -1,10 +1,16 @@
-# Event for Adding Product onCrmProductAdd
+# Event onCrmProductAdd
 
-This event is triggered when a product is created.
+{% note warning "Event development has been halted" %}
+
+The event `onCrmProductAdd` is still operational, but it has a more relevant counterpart [CATALOG.PRODUCT.ON.ADD](../../../../catalog/product/events/catalog-product-on-add.md).
+
+{% endnote %}
+
+The event is triggered when a product is created.
 
 ## Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

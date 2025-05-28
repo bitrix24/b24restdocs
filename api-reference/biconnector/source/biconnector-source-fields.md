@@ -190,7 +190,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object in the format:
+[`object`](../../data-types.md) | An object in the format:
 
 ```
 {
@@ -203,7 +203,7 @@ HTTP Status: **200**
 
 where:
 - `field_n` — source field
-- `value_n` — information about the field in the format [biconnector_rest_field_description](../connector/index.md#description) ||
+- `value_n` — [field information](../connector/index.md#description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

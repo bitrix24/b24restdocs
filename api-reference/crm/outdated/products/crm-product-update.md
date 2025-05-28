@@ -2,9 +2,15 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator, user with the "Allow to modify settings" access permission in CRM
 
-This method updates an existing product.
+{% note warning "Method development has been halted" %}
+
+The method `crm.product.update` continues to function, but there are more relevant alternatives [catalog.product.*](../../../catalog/product/index.md).
+
+{% endnote %}
+
+The method `crm.product.update` updates an existing product.
 
 ## Method Parameters
 
@@ -16,7 +22,7 @@ This method updates an existing product.
 || **id**
 [`integer`](../../../data-types.md) | Product identifier ||
 || **fields**
-[`array`](../../../data-types.md) | [Set of fields](./crm-product-add.md) - an array in the format `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values returned by the method [crm.product.fields](./crm-product-fields.md). 
+[`array`](../../../data-types.md) | [Set of fields](./crm-product-add.md) - an array of the form `array("updatable field"=>"value"[, ...])`, where "updatable field" can take values returned by the method [crm.product.fields](./crm-product-fields.md). 
 It is mandatory to specify `CURRENCY_ID` to set the price. 
 
 To find out the required format of the fields, execute the method [crm.product.fields](./crm-product-property-fields.md) and check the format of the returned values for these fields.

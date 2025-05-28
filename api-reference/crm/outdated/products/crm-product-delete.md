@@ -1,12 +1,18 @@
-# Delete Product crm.product.delete
+# Delete product crm.product.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator, user with the "Allow to modify settings" access permission in CRM
 
-This method deletes a product.
+{% note warning "Method development has been halted" %}
 
-## Method Parameters
+The method `crm.product.delete` continues to function, but there are more relevant alternatives [catalog.product.*](../../../catalog/product/index.md).
+
+{% endnote %}
+
+The method `crm.product.delete` removes a product.
+
+## Method parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -17,7 +23,7 @@ This method deletes a product.
 [`integer`](../../../data-types.md) | Product identifier ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 

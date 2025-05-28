@@ -1,10 +1,10 @@
-# Get Fields of the Dataset biconnector.dataset.fields
+# Get Fields of the biconnector.dataset.fields Dataset
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 > 
 > Who can execute the method: a user with access to the "Analyst Workspace" section
 
-The method `biconnector.dataset.fields` returns the description of the dataset fields. A table with the description of standard fields can be found in the article [Datasets: Overview of Methods](./index.md#dataset).
+The method `biconnector.dataset.fields` returns a description of the dataset fields. A table with the description of standard fields can be found in the article [Datasets: Overview of Methods](./index.md#dataset).
 
 ## Method Parameters
 
@@ -212,7 +212,7 @@ HTTP Status: **200**
 
 where:
 - `field_n` — dataset field
-- `value_n` — information about the field in the format [biconnector_rest_field_description](../connector/index.md#description) ||
+- `value_n` — [field information](../connector/index.md#description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

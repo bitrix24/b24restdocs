@@ -4,11 +4,17 @@
 >
 > Who can execute the method: any user
 
-The method returns a list of product properties.
+{% note warning "Method development has been halted" %}
+
+The method `crm.product.property.list` continues to function, but there is a more relevant alternative [catalog.productProperty.list](../../../catalog/product-property/catalog-product-property-list.md).
+
+{% endnote %}
+
+The method `crm.product.property.list` returns a list of product properties.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note about required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +25,7 @@ The method returns a list of product properties.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

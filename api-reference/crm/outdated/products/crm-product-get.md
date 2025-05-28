@@ -1,16 +1,22 @@
-# Get Product by ID crm.product.get
+# Get product by ID crm.product.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns a product by its ID.
+{% note warning "Method development has been halted" %}
+
+The method `crm.product.get` continues to function, but there are more relevant alternatives [catalog.product.*](../../../catalog/product/index.md).
+
+{% endnote %}
+
+The method `crm.product.get` returns a product by its ID.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#|
+#| 
 || **Name**
 `type` | **Description** ||
 || **id**

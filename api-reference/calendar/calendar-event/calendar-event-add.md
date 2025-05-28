@@ -22,15 +22,15 @@ This method adds a new event to the calendar.
 || **ownerId***
 [`integer`](../../data-types.md) | Identifier of the calendar owner. 
 
-For the company calendar, the `ownerId` parameter is `0`||
+For the company calendar, the `ownerId` parameter is `0` ||
 || **from***
 [`datetime`\|`date`](../../data-types.md) | Start date and time of the event.
 
-You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
+You can specify a date without a time. To do this, pass the value `Y` in the `skip_time` parameter ||
 || **to***
 [`datetime`\|`date`](../../data-types.md) | End date of the event.
 
-You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
+You can specify a date without a time. To do this, pass the value `Y` in the `skip_time` parameter ||
 || **from_ts**
 [`integer`](../../data-types.md) | Date and time in timestamp format. Can be used instead of the `from` parameter ||
 || **to_ts**
@@ -71,7 +71,7 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 - `free` — free 
 ||
 || **importance**
-[`string`](../../data-types.md) | Importance of the event: 
+[`string`](../../data-types.md) | Event importance: 
 - `high` — high 
 - `normal` — medium 
 - `low` — low ||
@@ -81,7 +81,7 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 - `N` — not private
 ||
 || **rrule**
-[`object`](../../data-types.md) | Recurrence of the event in the form of an object in terms of the iCalendar standard. The structure is described [below](#rrule)
+[`object`](../../data-types.md) | Event recurrence as an object in terms of the iCalendar standard. The structure is described [below](#rrule)
 ||
 || **is_meeting**
 [`string`](../../data-types.md) | Indicator of a meeting with event participants. Possible values:
@@ -89,16 +89,16 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 - `Y` — meeting with participants
 - `N` — meeting without participants
 
-For a meeting with participants, specify the list of participants in `attendees` and the event organizer in `host`
+For a meeting with participants, you must specify the list of participants in `attendees` and the event organizer in `host`. Without filling in these fields, the event will not be created
 ||
 || **location**
 [`string`](../../data-types.md) | Location ||
 || **remind**
 [`array`](../../data-types.md) | Array of objects describing reminders for the event. The structure is described [below](#remind) ||
-|| **attendees**
-[`array`](../../data-types.md) | List of identifiers of event participants. If `is_meeting` = `Y` ||
-|| **host**
-[`integer`](../../data-types.md) | Identifier of the event organizer. If `is_meeting` = `Y` ||
+|| **attendees***
+[`array`](../../data-types.md) | List of identifiers of event participants. This field is required if `is_meeting` = `Y` ||
+|| **host***
+[`integer`](../../data-types.md) | Identifier of the event organizer. This field is required if `is_meeting` = `Y` ||
 || **meeting**
 [`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting) ||
 || **crm_fields**
@@ -162,7 +162,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 || **reinvite**
 [`boolean`](../../data-types.md) | Flag for requesting re-confirmation of participation when editing the event ||
 || **allow_invite**
-[`boolean`](../../data-types.md) | Flag allowing participants to invite others to the event ||
+[`boolean`](../../data-types.md) | Flag for allowing participants to invite others to the event ||
 || **hide_guests**
 [`boolean`](../../data-types.md) | Flag for hiding the list of participants ||
 |#
@@ -180,7 +180,7 @@ For a meeting with participants, specify the list of participants in `attendees`
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"type":"user","ownerId":2,"name":"New Event Name","description":"Description for event","from":"2024-06-14","to":"2024-06-14","skip_time":"Y","section":5,"color":"#9cbe1c","text_color":"#283033","accessibility":"absent","importance":"normal","is_meeting":"Y","private_event":"N","remind":[{"type":"min","count":20}],"location":"London","attendees":[1,2,3],"host":2,"meeting":{"notify":true,"reinvite":false,"allow_invite":false,"hide_guests":false},"rrule":{"FREQ":"WEEKLY","BYDAY":["MO","WE"],"COUNT":10,"INTERVAL":1},"crm_fields":["C_5","L_11"]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/calendar.event.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.add
     ```
 
 - cURL (OAuth)
@@ -305,7 +305,7 @@ For a meeting with participants, specify the list of participants in `attendees`
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"type":"company_calendar","ownerId":"","from":"2025-01-31T18:00:00","to":"2025-01-31T20:00:00","section":1,"name":"Important Meeting","skip_time":"N","timezone_from":"Europe/Berlin","timezone_to":"Europe/Berlin","description":"Event description","color":"#FF0000","text_color":"#000000","accessibility":"busy","importance":"high","private_event":"N","rrule":{"FREQ":"WEEKLY","COUNT":10,"INTERVAL":1,"BYDAY":["MO","WE","FR"]},"is_meeting":"Y","location":"Conference Room","remind":[{"type":"min","count":30}],"attendees":[29,93],"host":1,"meeting":{"notify":true,"reinvite":false,"allow_invite":true,"hide_guests":false}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/calendar.event.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.add
     ```
 
 - cURL (OAuth)
@@ -337,9 +337,9 @@ For a meeting with participants, specify the list of participants in `attendees`
             color: '%23FF0000', // Background color of the event (red)
             text_color: '%23000000', // Text color of the event (black)
             accessibility: 'busy', // Availability during the event: busy
-            importance: 'high', // Importance of the event: high
+            importance: 'high', // Event importance: high
             private_event: 'N', // Event is not private
-            rrule: { // Recurrence parameters of the event
+            rrule: { // Event recurrence parameters
                 FREQ: 'WEEKLY', // Recurrence frequency: weekly
                 COUNT: 10, // Number of recurrences
                 INTERVAL: 1, // Interval between recurrences
@@ -390,9 +390,9 @@ For a meeting with participants, specify the list of participants in `attendees`
             'color' => '#FF0000', // Background color of the event (red)
             'text_color' => '#000000', // Text color of the event (black)
             'accessibility' => 'busy', // Availability during the event: busy
-            'importance' => 'high', // Importance of the event: high
+            'importance' => 'high', // Event importance: high
             'private_event' => 'N', // Event is not private
-            'rrule' => [ // Recurrence parameters of the event
+            'rrule' => [ // Event recurrence parameters
                 'FREQ' => 'WEEKLY', // Recurrence frequency: weekly
                 'COUNT' => 10, // Number of recurrences
                 'INTERVAL' => 1, // Interval between recurrences
@@ -477,7 +477,7 @@ HTTP Status: **400**
 || Empty string | Invalid value for the parameter "description" | Incorrect data format in the `description` field ||
 || Empty string | Access denied | Creation of events in the specified calendar is prohibited ||
 || Empty string | You have specified an invalid calendar section ID or the user does not have access to it | An identifier of an unavailable or non-existent calendar is provided ||
-|| Empty string | The list of event links to CRM must be an array | Incorrect data format in the `crm_fields` field ||
+|| Empty string | The event's CRM link list must be an array | Incorrect data format in the `crm_fields` field ||
 || Empty string | An error occurred while creating the event | Another error ||
 |#
 

@@ -4,7 +4,7 @@
 > 
 > Who can execute the method: any user
 
-The method `biconnector.connector.fields` returns a description of the connector fields. A table with the description of standard fields can be found in the article [Connector: Overview of Methods](./index.md#fields).
+The method `biconnector.connector.fields` returns a description of the connector fields. A table with descriptions of standard fields can be found in the article [Connector: Overview of Methods](./index.md#fields).
 
 ## Method Parameters
 
@@ -12,7 +12,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -69,7 +69,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -195,7 +195,7 @@ HTTP Status: **200**
 
 where:
 - `field_n` — connector field
-- `value_n` — information about the field in the format [biconnector_rest_field_description](./index.md#description) ||
+- `value_n` — [field information](./index.md#description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

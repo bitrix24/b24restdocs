@@ -29,11 +29,11 @@ For the company calendar, the `ownerId` parameter is set to `0`. ||
 || **from**
 [`datetime`\|`date`](../../data-types.md) | Start date and time of the event.
 
-You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter. ||
+You can specify the date without time. To do this, pass the value `Y` in the `skip_time` parameter. ||
 || **to**
 [`datetime`\|`date`](../../data-types.md) | End date of the event.
 
-You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter. ||
+You can specify the date without time. To do this, pass the value `Y` in the `skip_time` parameter. ||
 || **from_ts**
 [`integer`](../../data-types.md) | Date and time in timestamp format. Can be used instead of the `from` parameter. ||
 || **to_ts**
@@ -47,7 +47,7 @@ You can specify a date without time. To do this, pass the value `Y` in the `skip
 - `Y` — use only the date
 - `N` — use date and time
 
-Date format according to ISO-8601 standard. ||
+Date format follows the ISO-8601 standard. ||
 || **timezone_from**
 [`string`](../../data-types.md) | Timezone of the event's start date and time. Default is the current user's timezone.
 
@@ -67,10 +67,10 @@ The `#` symbol in the color must be passed in unicode format — `%23`. ||
 
 The `#` symbol in the color must be passed in unicode format — `%23`. ||
 || **accessibility**
-[`string`](../../data-types.md) | Availability during the event time: 
+[`string`](../../data-types.md) | Availability during the event: 
 - `busy` — busy 
 - `absent` — absent 
-- `quest` — uncertain 
+- `quest` — tentative 
 - `free` — free  ||
 || **importance**
 [`string`](../../data-types.md) | Event importance: 
@@ -89,7 +89,7 @@ The `#` symbol in the color must be passed in unicode format — `%23`. ||
 || **current_date_from**
 [`date`](../../data-types.md) | Date of the current event for partial editing of a recurring event.
 
-Needed only for `recurrence_mode` with values `this` or `next`. ||
+Required only for `recurrence_mode` with values `this` or `next`. ||
 || **rrule**
 [`object`](../../data-types.md) | Recurrence of the event in the form of an object in terms of the iCalendar standard. The structure is described [below](#rrule). ||
 || **is_meeting**
@@ -98,26 +98,26 @@ Needed only for `recurrence_mode` with values `this` or `next`. ||
 - `Y` — meeting with participants
 - `N` — meeting without participants
 
-For a meeting with participants, specify the list of participants in `attendees` and the event organizer in `host`. ||
+For a meeting with participants, you must specify the list of participants `attendees` and the event organizer `host`. Without filling in these fields, the event will not be created. ||
 || **location**
 [`string`](../../data-types.md) | Location. ||
 || **remind**
 [`array`](../../data-types.md) | Array of objects describing reminders for the event. The structure is described [below](#remind). ||
-|| **attendees**
-[`array`](../../data-types.md) | List of identifiers of event participants. If `is_meeting` = `Y`. ||
-|| **host**
-[`string`](../../data-types.md) | Identifier of the event organizer. If `is_meeting` = `Y`. ||
+|| **attendees***
+[`array`](../../data-types.md) | List of identifiers of event participants. This field is required if `is_meeting` = `Y`. ||
+|| **host***
+[`string`](../../data-types.md) | Identifier of the event organizer. This field is required if `is_meeting` = `Y`. ||
 || **meeting**
 [`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting). ||
 || **crm_fields**
- [`array`](../../data-types.md) | Array of CRM object identifiers to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
+ [`array`](../../data-types.md) | Array of identifiers of CRM objects to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
  - `CO_` — company
  - `C_` — contact 
  - `L_` — lead
  - `D_` — deal. ||
 |#
 
-### Parameter rrule {#rrule}
+### rrule Parameter {#rrule}
 
 #|
 || **Name**
@@ -145,7 +145,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 [`date`](../../data-types.md) | End date of recurrences. ||
 |#
 
-### Parameter remind {#remind}
+### remind Parameter {#remind}
 
 #|
 || **Name**
@@ -159,7 +159,7 @@ For a meeting with participants, specify the list of participants in `attendees`
 [`integer`](../../data-types.md) | Numerical value of the time interval. ||
 |#
 
-### Parameter meeting {#meeting}
+### meeting Parameter {#meeting}
 
 #|
 || **Name**
@@ -406,13 +406,13 @@ HTTP status: **400**
 || Empty string | The required parameter "id" for the method "calendar.event.update" is not set. | The required parameter `id` is not provided. ||
 || Empty string | The required parameter "ownerId" for the method "calendar.event.update" is not set. | The required parameter `ownerId` is not provided. ||
 || Empty string | The required parameter "type" for the method "calendar.event.update" is not set. | The required parameter `type` is not provided. ||
-|| Empty string | Invalid value for the "name" parameter. | Incorrect data format in the `name` field. ||
-|| Empty string | Invalid value for the "description" parameter. | Incorrect data format in the `description` field. ||
-|| Empty string | Access denied. | Creating events in the specified calendar is prohibited. ||
+|| Empty string | Invalid value for the parameter "name". | Incorrect data format in the `name` field. ||
+|| Empty string | Invalid value for the parameter "description". | Incorrect data format in the `description` field. ||
+|| Empty string | Access denied. | Creation of events in the specified calendar is prohibited. ||
 || Empty string | You specified an invalid calendar section ID or the user does not have access to it. | An identifier of an inaccessible or non-existent calendar is provided. ||
-|| Empty string | An invalid editing type for the recurring event is specified. | An incorrect value for the `recurrence_mode` field is provided. ||
-|| Empty string | The event's CRM links list must be an array. | Incorrect data format in the `crm_fields` field. ||
-|| Empty string | An error occurred while changing the event. | Another error. ||
+|| Empty string | An invalid type of editing for the recurring event is specified. | An incorrect value for the `recurrence_mode` field is provided. ||
+|| Empty string | The list of CRM event links must be an array. | Incorrect data format in the `crm_fields` field. ||
+|| Empty string | An error occurred while modifying the event. | Another error occurred. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -2,23 +2,23 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM entity elements
+> Who can execute the method: any user with "read" access permission for CRM object elements
 
-This method retrieves a list of elements of a specific type of CRM entity.
+The method retrieves a list of elements of a specific type of CRM object.
 
-CRM entity elements will not be included in the final selection if the user does not have "read" access permission for these elements.  
+CRM object elements will not be included in the final selection if the user does not have "read" access permission for these elements.  
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose elements need to be retrieved ||
+[`integer`][1] | Identifier of the [system](./index.md) or [custom type](./user-defined-object-types/index.md) whose elements need to be retrieved ||
 || **select**
-[`array`][1] | List of fields that should be populated in the selected elements.
+[`array`][1] | List of fields that should be populated for the elements in the selection.
 
 Can contain only field names or `'*'`.
 
@@ -36,33 +36,33 @@ Object format:
 }
 ```
 where
-- `field_n` — the name of the field by which the selection of elements will be filtered
-- `value_n` — the filter value
+- `field_n` — name of the field by which the selection of elements will be filtered
+- `value_n` — filter value
 
 The filter can have unlimited nesting and number of conditions.
 By default, all conditions are combined with `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
 
-You can add a prefix to the `field_n` keys to specify the filter operation.
+You can add a prefix to the `field_n` keys to clarify the filter operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN, an array is passed as the value
-- `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
+- `@` — IN, an array is passed as a value
+- `!@` — NOT IN, an array is passed as a value
+- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for a substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default)
+- `=` — equals, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
 
@@ -80,8 +80,8 @@ Object format:
 }
 ```
 where
-- `field_n` — the name of the field by which the selection of elements will be sorted
-- `value_n` — a `string` value equal to:
+- `field_n` — name of the field by which the selection of elements will be sorted
+- `value_n` — value of type `string` equal to:
   - `ASC` — ascending sort
   - `DESC` — descending sort
 
@@ -99,11 +99,11 @@ The formula for calculating the `start` parameter value:
 `start = (N-1) * 50`, where `N` — the desired page number
 ||
 || **useOriginalUfNames**
-[`boolean`][1] | This parameter controls the format of user field names in the request and response.   
+[`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
-- `Y` — original user field names, e.g., `UF_CRM_2_1639669411830`
-- `N` — user field names in camelCase, e.g., `ufCrm2_1639669411830`
+- `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
+- `N` — names of custom fields in camelCase, e.g., `ufCrm2_1639669411830`
 
 Default is `N` ||
 |#
@@ -114,21 +114,21 @@ Default is `N` ||
 1. First name or last name is not empty
 2. They are in the status "In Progress" or "Unprocessed".
 3. They came from sources "Advertising" or "Website".
-4. They are assigned to managers with IDs 1 or 6.
-5. They have a deal amount from 5000 to 20000.
+4. They are assigned to managers with identifiers 1 or 6.
+5. They have a deal amount between 5000 and 20000.
 6. The calculation mode for the amount is manual.
 
 **Set the following sort order for this selection:**
-* First name and last name in ascending order
+* First name and last name in ascending order.
 
-**For clarity, let's select only the fields we need:**
+**For clarity, we will select only the fields we need:**
 * Identifier `id`
 * Title `title`
 * First name `name`
 * Last name `lastName`
-* Stage ID `stageId`
-* Source ID `sourceId`
-* Responsible ID `assignedById`
+* Stage identifier `stageId`
+* Source identifier `sourceId`
+* Responsible identifier `assignedById`
 * Amount `opportunity`
 * Amount calculation mode `isManualOpportunity`
 
@@ -361,7 +361,7 @@ HTTP status: **200**
 || **result**
 [`object`][1] | Root element of the response. Contains a single key `items` ||
 || **items**
-[`item[]`](./crm-item-add.md#item) | An array containing information about the found elements.
+[`item[]`](./crm-item-add.md#item) | Array containing information about the found elements.
 
 Fields of a single [`item`](./crm-item-add.md#item) are configured by the `select` parameter ||
 || **total**
@@ -376,8 +376,8 @@ The `next` parameter appears in the response if the number of elements matching 
 
 {% note info " " %}
 
-By default, user field names are passed and returned in camelCase, e.g., `ufCrm2_1639669411830`.
-When passing the `useOriginalUfNames` parameter with the value `Y`, user fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
+By default, custom field names are passed and returned in camelCase, for example `ufCrm2_1639669411830`.
+When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -398,12 +398,12 @@ HTTP status: **400**, **403**
 
 #|
 || **Status** | **Code**                          | **Description**                                             | **Value**                                          ||
-|| `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users                     | User is not an intranet user                       ||
+|| `403`      | `allowed_only_intranet_user`     | Action is allowed only for intranet users                 | User is not an intranet user                       ||
 || `400`      | `NOT_FOUND`                      | Smart process not found                                    | Occurs when an invalid `entityTypeId` is passed    ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' is not allowed in filter | The field `field` passed in `filter` is not available for filtering ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' has invalid value        | The value passed for the field `field` in `filter` is incorrect ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid order: field '`field`' is not allowed in order   | The field `field` passed in `order` is not available for sorting ||
-|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: allowed sort directions are `ASC, DESC`. But got '`orderValue`' for field '`field`' | The value `orderValue` passed for the field `field` in the `order` parameter is incorrect ||
+|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: allowed sort directions are `ASC, DESC`. But got '`orderValue`' for field '`field`' | The value `orderValue` for the field `field` in the `order` parameter is incorrect ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
@@ -416,5 +416,6 @@ HTTP status: **400**, **403**
 - [{#T}](crm-item-delete.md)
 - [{#T}](crm-item-fields.md)
 - [{#T}](../../../tutorials/tasks/how-to-connect-task-to-spa.md)
+- [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
 
 [1]: ../data-types.md

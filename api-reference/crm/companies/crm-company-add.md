@@ -11,10 +11,10 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- required parameters are not specified
-- examples are missing
-- response in case of success is missing
-- response in case of error is missing
+- required parameters not specified
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ The method `crm.company.add` creates a new company.
 
 {% note info %}
 
-To find out the required format of the fields, execute the method [crm.company.fields](./crm-company-fields.md) and check the format of the received values for these fields.
+To find out the required format of the fields, execute the method [crm.company.fields](./crm-company-fields.md) and check the format of the returned values for these fields.
 
 {% endnote %}
  ||
@@ -55,7 +55,7 @@ To find out the required format of the fields, execute the method [crm.company.f
         {
             fields:
             {
-                "TITLE": "IP Titov",
+                "TITLE": "LLC Smith",
                 "COMPANY_TYPE": "CUSTOMER",
                 "INDUSTRY": "MANUFACTURING",
                 "EMPLOYEES": "EMPLOYEES_2",
@@ -80,4 +80,9 @@ To find out the required format of the fields, execute the method [crm.company.f
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company.md)

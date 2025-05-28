@@ -1,6 +1,12 @@
 # Event onCrmProductUpdate
 
-This event is triggered when a product is updated.
+{% note warning "Event development has been halted" %}
+
+The event `onCrmProductUpdate` is still operational, but there is a more relevant alternative [CATALOG.PRODUCT.ON.UPDATE](../../../../catalog/product/events/catalog-product-on-update.md).
+
+{% endnote %}
+
+The event is triggered when a product is updated.
 
 ## Parameters
 
@@ -9,5 +15,5 @@ This event is triggered when a product is updated.
 #|
 || **Name**
 `type` | **Description** ||
-|| **FIELDS** | The array contains the field ID with the value of the updated product's identifier ||
+|| **FIELDS** | The array contains the ID field with the value of the updated product's identifier ||
 |#

@@ -4,13 +4,19 @@
 >
 > Who can execute the method: any user
 
-The method returns the description of product fields.
+{% note warning "Method development has been halted" %}
 
-No parameters.
+The method `crm.product.fields` continues to function, but there are more relevant alternatives [catalog.product.*](../../../catalog/product/index.md).
+
+{% endnote %}
+
+The method `crm.product.fields` returns the description of product fields.
+
+Without parameters.
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -22,7 +28,7 @@ No parameters.
     -H "Accept: application/json" \
     -d '{}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.product.fields
-   ```
+    ```
 
 - cURL (OAuth)
 
@@ -91,7 +97,7 @@ No parameters.
 
 ### Returned Data
 
-{% include [Footnote about required parameters](../../../../_includes/required.md) %}
+{% include [Note about required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -115,7 +121,7 @@ No parameters.
 || **ID**
 [`integer`](../../../data-types.md) | Product identifier  ||
 || **MEASURE**
-[`integer`](../../../data-types.md) | Unit of measurement  ||
+[`integer`](../../../data-types.md) | Unit of measure  ||
 || **MODIFIED_BY**
 [`integer`](../../../data-types.md) | Modified by  ||
 || **NAME***

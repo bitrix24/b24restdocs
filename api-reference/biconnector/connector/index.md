@@ -8,7 +8,7 @@ Each connector contains settings for working with a specific source:
 
 You can register a connector through the [application](../../app-installation/index.md).
 
-> Quick navigation: [all methods](#all-methods) 
+> Quick navigation: [all methods](#all-methods)
 
 ## Connector's Relationship with Sources and Datasets
 
@@ -46,12 +46,12 @@ The connector is the top level in the data hierarchy within the BIconnector modu
 [`datetime`](../../data-types.md) | Date of connector creation | ✅ | ❌ ||
 |#
 
-### Settings Field {#settings}
+### Field settings {#settings}
 
 The `settings` field contains an array of parameters necessary for configuring data sources. Each parameter is an object with the following structure:
 
 - `code` — parameter code, used as the parameter identifier, this is how parameters are passed to the external source.
-- `name` — parameter name that will be displayed in the interface, in the "Analyst's Workspace" section.
+- `name` — parameter name, which will be displayed in the interface, in the "Analyst's workspace" section.
 - `type` — parameter type, currently only `STRING` is supported.
 
 ```
@@ -79,7 +79,7 @@ The endpoint is called:
 
 A POST request is sent to the endpoint address with the parameters:
 
-- `setting_code_n` — code of the connector settings parameter.
+- `setting_code_n` — code of the connector's settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
@@ -92,7 +92,8 @@ A POST request is sent to the endpoint address with the parameters:
 }
 ```
 
-Depending on availability, the endpoint returns information about the status of the source.
+Depending on availability, the endpoint returns information about the source's status. Requirements for the endpoint's response format to a request from Bitrix24: the response must not be empty, HTTP status: **200**. The response format is flexible.
+A request to the endpoint for connection verification can be sent in the interface, in the "Analyst's workspace" section.
 
 #### urlTableList {#urlTableList}
 
@@ -100,8 +101,8 @@ The `urlTableList` endpoint returns a list of available tables in `JSON` format.
 
 A POST request is sent to the endpoint address with the parameters:
 
-- `searchString` — value of the search string, searches tables by `externalCode`.
-- `setting_code_n` — code of the connector settings parameter.
+- `searchString` — value of the search string, searches for tables by `externalCode`.
+- `setting_code_n` — code of the connector's settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
@@ -134,12 +135,12 @@ The `urlTableDescription` endpoint returns a list of fields for a specific table
 A POST request is sent to the endpoint address with the parameters:
 
 - `table` — `externalCode` of the dataset for which the description is requested.
-- `setting_code_n` — code of the connector settings parameter.
+- `setting_code_n` — code of the connector's settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
 {
-  "table": "entityName",
+  "name": "entityName",
   "connection": {
     "setting_code_1": "settings_value_1",
     ...,
@@ -150,13 +151,13 @@ A POST request is sent to the endpoint address with the parameters:
 
 The response returns an array of fields with the structure:
 - `code` — code of the dataset field.
-- `title` — name of the dataset field.
-- `type` — field type, supported values are: `int`, `string`, `double`, `date`, `datetime`.
+- `name` — name of the dataset field.
+- `type` — field type, supported values: `int`, `string`, `double`, `date`, `datetime`.
 
 ```
   {
       'code' => "code_value",
-      'title' => "title_value",
+      'name' => "title_value",
       'type' => "type_value"
   }
 ```
@@ -176,7 +177,7 @@ A POST request is sent to the endpoint address with the parameters:
 - `filter` — filter by dataset fields.
 - `limit` — limit of dataset selection.
 - `table` — `externalCode` of the dataset for which data is requested.
-- `setting_code_n` — code of the connector settings parameter.
+- `setting_code_n` — code of the connector's settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
@@ -214,9 +215,9 @@ The response returns an array of fields with the structure:
 || **Name**
 `type` | **Description** ||
 || **title**
-[`string`](../../data-types.md) | Name of the field ||
+[`string`](../../data-types.md) | Field name ||
 || **type**
-[`string`](../../data-types.md) | Type of the field ||
+[`string`](../../data-types.md) | Field type ||
 || **isRequired**
 [`boolean`](../../data-types.md) | Required field ||
 || **isReadOnly**
@@ -224,14 +225,14 @@ The response returns an array of fields with the structure:
 || **isImmutable**
 [`boolean`](../../data-types.md) | Field value can only be set once and only when creating a new element. After that, the field value cannot be changed ||
 || **isMultiple**
-[`boolean`](../../data-types.md) | Multiple field. If `true`, values in the field are passed as an array ||
+[`boolean`](../../data-types.md) | Multiple field. If true, values in the field are passed as an array ||
 |#
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute methods: user with access to the "Analyst's Workspace" section
+> Who can execute methods: user with access to the "Analyst's workspace" section
 
 #|
 || **Method** | **Description** ||
@@ -240,5 +241,5 @@ The response returns an array of fields with the structure:
 || [biconnector.connector.get](./biconnector-connector-get.md) | Returns information about the connector ||
 || [biconnector.connector.list](./biconnector-connector-list.md) | Returns a list of available connectors ||
 || [biconnector.connector.delete](./biconnector-connector-delete.md) | Deletes a connector ||
-|| [biconnector.connector.fields](./biconnector-connector-fields.md) | Returns a description of the connector fields ||
+|| [biconnector.connector.fields](./biconnector-connector-fields.md) | Returns the description of the connector fields ||
 |#

@@ -38,7 +38,7 @@ The created chat ID and open line dialog ID values will be returned as a result 
 || **LINE**
 [`unknown`](../../data-types.md) | Identifier `ID` of the open line ||
 || **MESSAGES**
-[`unknown`](../../data-types.md) | Array of messages, where messages are described by an array of the following format: 
+[`unknown`](../../data-types.md) | Array of messages. Each message is described by a separate array, including information about the user, message, and chat.
 
 ```js
 array(
@@ -55,7 +55,7 @@ array(
             'sex',//Gender. Acceptable values are male and female
             'email', //email
             'phone', //phone
-            'skip_phone_validate' => 'Y', //Value 'Y' allows skipping validation 
+            'skip_phone_validate' => 'Y', //In value 'Y' allows to skip validation 
                                             //of the user's phone number. By default         
         ),
         //Array describing the message
@@ -63,11 +63,11 @@ array(
             'id', //Message ID in the external system.*
             'date', //Message time in timestamp format *
             'disable_crm' => 'Y' ,//disable chat tracker (CRM tracker)
-            'text', //Message text. Either the text or files element must be specified. 
+            'text', //Message text. Either text or files must be specified. 
                     //Allowed formatting (BB codes) is described 
                     //here: https://apidocs.bitrix24.com/api-reference/chats/messages/index.html
             'files' => array(//Array of file descriptions, where each file is described 
-                             //by an array with a link available for the account
+                             //by an array with a link available to the account
                 array('url' => 'Link to file', 'name' => 'File name'),
                 array('url' => 'Link to file', 'name' => 'File name'),
                 ...
@@ -84,6 +84,8 @@ array(
 );
 
 ```
+In the `user` array, the fields `name` and `last_name` can contain letters, spaces, hyphens, and apostrophes. Numbers and other special characters are not allowed. The maximum length for `name` and `last_name` is 25 characters. The language and case can be any.
+
 The format of the transmitted file has no restrictions. In the chat, attachments in messages can be formatted as images for types: jpe, jpg, jpeg, png, webp, gif, bmp.
 
 Messages can be sent on behalf of the manager by specifying `user_id` in the message array.
@@ -92,7 +94,7 @@ Messages can be sent on behalf of the manager by specifying `user_id` in the mes
 
 {% note info "Note" %}
 
-The `skip_phone_validate` parameter in the user structure is recommended to be used only in exceptional cases. This parameter is a necessary measure to overcome the phone number validator's limitations.
+The `skip_phone_validate` parameter in the user structure is recommended to be used only in exceptional cases. This parameter is a forced measure to overcome the limitations of the phone number validator.
 
 {% endnote %}
 
@@ -138,7 +140,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **SUCCESS**
-[`boolean`](../../data-types.md) | Returns `true` if the sending was successful ||
+[`boolean`](../../data-types.md) | Returns `true` in case of successful sending ||
 || **DATA**
 [`object`](../../data-types.md) | Contains the object [`RESULT`](#result) with information about the sent messages ||
 |#
@@ -167,7 +169,7 @@ HTTP status: **200**
 [`object`](../../data-types.md) | Object with information about additional settings:
 - `skip_phone_validate` — whether the phone number validation was skipped ||
 || **SUCCESS**
-[`boolean`](../../data-types.md) | Returns `true` if the sending was successful ||
+[`boolean`](../../data-types.md) | Returns `true` in case of successful sending ||
 || **session**
 [`object`](../../data-types.md) | Object with information about the open line dialog
 - `ID` — session identifier
@@ -181,20 +183,20 @@ HTTP status: **200**
 #|
 || **Code** | **Description** | **Explanation** ||
 || `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Incorrect authorization type. OAuth type is required ||
-|| `CONNECTOR` | Argument 'CONNECTOR' is null or empty | The required parameter `CONNECTOR` is not specified in the request ||
-|| `LINE` | Argument 'LINE' is null or empty | The required parameter `LINE` is not specified in the request ||
-|| `MESSAGES` | Argument 'MESSAGES' is null or empty | The required parameter `MESSAGES` is not specified in the request ||
+|| `CONNECTOR` | Argument 'CONNECTOR' is null or empty | Required parameter `CONNECTOR` is not specified in the request ||
+|| `LINE` | Argument 'LINE' is null or empty | Required parameter `LINE` is not specified in the request ||
+|| `MESSAGES` | Argument 'MESSAGES' is null or empty | Required parameter `MESSAGES` is not specified in the request ||
 || `MESSAGES` | The value of an argument 'MESSAGES' must be of type array | The parameter value is not an array. ||
-|| `IMCONNECTOR_NO_CORRECT_PROVIDER` | Unable to find a suitable provider for the connector | Incorrect value in the `CONNECTOR` parameter ||
+|| `IMCONNECTOR_NO_CORRECT_PROVIDER` | Could not find a suitable provider for the connector | Incorrect value in the `CONNECTOR` parameter ||
 || `IMCONNECTOR_COULD_NOT_GET_PROVIDER_OBJECT` | Could not get the provider object | Incorrect value in the `CONNECTOR` parameter ||
-|| `IMCONNECTOR_NOT_SPECIFIED_CORRECT_COMMAND` | No correct command specified | Something incredible. The developer made a mistake somewhere ||
+|| `IMCONNECTOR_NOT_SPECIFIED_CORRECT_COMMAND` | Correct command not specified | Something incredible. This is where the developer made a mistake ||
 || `IMCONNECTOR_NOT_SPECIFIED_CORRECT_CONNECTOR` | Connector not specified | Incorrect value in the `CONNECTOR` parameter ||
-|| `NOT_ACTIVE_LINE` | Line with such ID is inactive or does not exist | The line on the account has been deleted or disabled ||
-|| `PROVIDER_UNSUPPORTED_TYPE_INCOMING_MESSAGE` | Unsupported type of incoming message from the server | Incorrect value in the `type_message` parameter, if provided ||
-|| `IMCONNECTOR_NOT_ALL_THE_REQUIRED_DATA` | Not all required data has been provided | Empty or incorrect value in the `user` parameter ||
-|| `CONNECTOR_PROXY_NO_ADD_USER` | Failed to create or get the system user mapped to the remote messenger user | To work with open line chats, a special technical user must be added to the account, marked as a user for the messenger connector, and under which it is impossible to authorize ||
+|| `NOT_ACTIVE_LINE` | Line with this ID is inactive or does not exist | The line has been deleted or disabled on the account ||
+|| `PROVIDER_UNSUPPORTED_TYPE_INCOMING_MESSAGE` | Unsupported type of incoming message from the server | Incorrect value in the `type_message` parameter, if it was passed ||
+|| `IMCONNECTOR_NOT_ALL_THE_REQUIRED_DATA` | Not all required data was provided | Empty or incorrect value in the `user` parameter ||
+|| `CONNECTOR_PROXY_NO_ADD_USER` | Could not create or get the system user associated with the remote messenger user | To work with open line chats, a special technical user must be added to the account, marked as a user for the messenger connector, and under which authorization is not possible ||
 || `CONNECTOR_PROXY_NO_USER_IM` | Messenger user ID not obtained | Incorrect value in the `id` field in the `user` parameter. This is a consequence of the previous error ||
-|| `IMCONNECTOR_NOT_ALL_THE_REQUIRED_DATA` | Not all required data has been provided | Incorrect value in the `text` or `files` field in the `message` parameter. Some data for sending the message has not been provided ||
+|| `IMCONNECTOR_NOT_ALL_THE_REQUIRED_DATA` | Not all required data was provided | Incorrect value in the `text` or `files` field in the `message` parameter. Some data for sending the message was not provided ||
 || `100` | The MESSAGES parameter must be an array of messages (arrays) | The value of the `MESSAGES` parameter must be an array of messages ||
 || `100` | The incorrect structure of a message inside the MESSAGES parameter. | Incorrect structure of messages ||
 |#

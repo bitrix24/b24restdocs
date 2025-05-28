@@ -2,9 +2,15 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator, user with the "Allow to modify settings" access permission in CRM
 
-This method deletes a product property.
+{% note warning "Method development halted" %}
+
+The method `crm.product.property.delete` is still operational, but there is a more relevant alternative [catalog.productProperty.delete](../../../catalog/product-property/catalog-product-property-delete.md).
+
+{% endnote %}
+
+The method `crm.product.property.delete` removes a product property.
 
 ## Method Parameters
 

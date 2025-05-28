@@ -4,7 +4,13 @@
 >
 > Who can execute the method: any user
 
-The method returns a list of products based on the filter.
+{% note warning "Method development has been halted" %}
+
+The method `crm.product.list` continues to function, but there are more current alternatives [catalog.product.*](../../../catalog/product/index.md).
+
+{% endnote %}
+
+The method `crm.product.list` returns a list of products based on the filter.
 
 ## Method Parameters
 
