@@ -8,13 +8,13 @@ You can place a form on the site to collect client data. When a client fills out
 
 Setting up the form consists of two steps.
 
-1. Place the form on an HTML page. It will send the data to the handler.
+1. Place the form on an HTML page. It will send data to the handler.
 
 2. Create a file to process the data. The handler will accept and prepare the data, and then create a company using the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md).
 
 ## 1. Creating the Web Form
 
-Let's create a web form on the site page with three fields:
+Let's create a web form on the website page with three fields:
 
 -  `TITLE` — company name, required,
 
@@ -69,17 +69,17 @@ When submitted, the form sends data to the handler `form.php`.
 
 To process the values from the form fields and add a company to CRM, we will create the handler `form.php`.
 
-To add a company, we will use the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md). In the `fields` object, we will pass the fields:
+To add a company, we will use the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md). In the `fields` object, we pass the fields:
 
 -  `TITLE` — company name,
 
--  `COMPANY_TYPE` — company type. We specify `CUSTOMER`, as only clients of the company fill out the form,
+-  `COMPANY_TYPE` — type of company. We specify `CUSTOMER`, as only clients of the company fill out the form,
 
 -  `PHONE` — phone number,
 
 -  `EMAIL` — email address.
 
-The values for `TITLE`, `PHONE`, and `EMAIL` are obtained from the form. The system stores the phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
+The values for `TITLE`, `PHONE`, and `EMAIL` are obtained from the form. The system stores phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
 
 1. If a value exists, we add it as the first element `VALUE` in the array, and the second value specifies the type `VALUE_TYPE`, for example:
 
@@ -91,7 +91,7 @@ The values for `TITLE`, `PHONE`, and `EMAIL` are obtained from the form. The sys
 
 {% note warning "" %}
 
-Check which required fields are configured for companies in your Bitrix24. Without them, the method will not work.
+Check which required fields are set for companies in your Bitrix24. All required fields must be passed to the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md).
 
 {% endnote %}
 

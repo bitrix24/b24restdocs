@@ -2,15 +2,15 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - required parameters not specified
 - examples missing
 - success response missing
@@ -35,7 +35,7 @@ The method `crm.company.add` creates a new company.
 
 {% note info %}
 
-To find out the required format of the fields, execute the method [crm.company.fields](./crm-company-fields.md) and check the format of the returned values for these fields.
+To find out the required format of the fields, execute the method [crm.company.fields](./crm-company-fields.md) and check the format of the received values for these fields.
 
 {% endnote %}
  ||
@@ -80,9 +80,10 @@ To find out the required format of the fields, execute the method [crm.company.f
 
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Continue Learning 
 
 - [{#T}](./index.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)

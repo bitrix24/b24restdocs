@@ -2,9 +2,9 @@
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to modify CRM entity
+> Who can execute the method: users with permission to modify a CRM entity
 
-Calendar events can be added automatically to remind employees about meetings or calls with clients. An event linked to the client's contact will appear in the calendar of the responsible employee. A task will be added to the contact's detail form for the event.
+Calendar events can be added automatically to remind employees about meetings or calls with clients. An event linked to the client's contact will appear in the calendar of the responsible employee. A task for the event will be added to the contact's detail form.
 
 To add an event to the calendar, we will sequentially execute two methods:
 
@@ -16,7 +16,7 @@ To add an event to the calendar, we will sequentially execute two methods:
 
 We will use the method [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) with the client ID. For example, we are interested in the contact with ID `1`.
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -97,7 +97,7 @@ As a result, we will receive client data, including phone `PHONE` and the ID of 
         {
             "ID": "1326",
             "VALUE_TYPE": "MOBILE",
-            "VALUE": "88001001020",
+            "VALUE": "8001001020",
             "TYPE_ID": "PHONE"
         },
         ],
@@ -135,7 +135,7 @@ To create an event, we will use the method [crm.activity.add](../../../api-refer
 
 - `OWNER_TYPE_ID` — [CRM object type ID](../../../api-reference/crm/data-types.md#object_type). We will pass `3` — contact. A complete list of object types can be obtained using the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md).
 
-- `TYPE_ID` — event type. We will specify `1` — meeting. The list of event types can be obtained using the method [crm.enum.activitytype](../../../api-reference/crm/auxiliary/enum/crm-enum-activity-type.md).
+- `TYPE_ID` — event type. We will specify `1` — meeting. A list of event types can be obtained using the method [crm.enum.activitytype](../../../api-reference/crm/auxiliary/enum/crm-enum-activity-type.md).
 
 - `COMMUNICATIONS` — client's contact details:
 
@@ -166,7 +166,7 @@ To create an event, we will use the method [crm.activity.add](../../../api-refer
                 "TYPE_ID": 1, 
                 "COMMUNICATIONS": [
                     {
-                        'VALUE': "88001001020", 
+                        'VALUE': "8001001020", 
                         'ENTITY_ID': 1, 
                         'ENTITY_TYPE_ID': 3
                     }
@@ -196,7 +196,7 @@ To create an event, we will use the method [crm.activity.add](../../../api-refer
                     "TYPE_ID" => 1,
                     "COMMUNICATIONS" => [
                         [
-                            'VALUE' => "88001001020",
+                            'VALUE' => "8001001020",
                             'ENTITY_ID' => 1,
                             'ENTITY_TYPE_ID' => 3
                         ]
@@ -335,3 +335,10 @@ The example creates a task "Meeting" in the CRM contact detail form and an event
     ```
 
 {% endlist %}
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/contacts/crm-contact-get.md)
+- [{#T}](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-add.md)
+- [{#T}](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md)
+- [{#T}](../../../api-reference/crm/auxiliary/enum/crm-enum-activity-type.md)

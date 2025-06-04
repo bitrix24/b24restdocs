@@ -2,6 +2,15 @@
 
 ## 2025
 
+### June 04, 2025
+
+- Updated the documentation for working with [custom fields](./api-reference/user/userfields/index.md) in the Users section.
+- Updated the documentation for the report methods [timeman.timecontrol.report.add](./api-reference/timeman/timecontrol/timeman-timecontrol-report-add.md), [timeman.timecontrol.report.get](./api-reference/timeman/timecontrol/timeman-timecontrol-reports-get.md), [timeman.timecontrol.reports.users.get](./api-reference/timeman/timecontrol/timeman-timecontrol-reports-users-get.md) in the Time Control section.
+- Updated the tutorial [Add a company with details via web form](./tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md).
+- Updated the tutorial [Add a deal and company with details](./tutorials/crm/how-to-add-crm-objects/how-to-add-deal-with-choice-of-requisite.md).
+- Updated the main page of the [Product and Variation Properties](./api-reference/catalog/product-property/index.md) section in the Trade Catalog. Added introductory information and an overview of methods and relationships.
+- Updated the main page of the [Files](./api-reference/chats/files/index.md) section in Chats. Added introductory information and an overview of methods and relationships.
+
 ### May 28, 2025
 
 - Updated tutorials: [Add Contact via Web Form](./tutorials/crm/how-to-add-crm-objects/how-to-add-contact.md), [Add Company via Web Form](./tutorials/crm/how-to-add-crm-objects/how-to-add-company.md), [Add Calendar Event for Client Work](./tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)

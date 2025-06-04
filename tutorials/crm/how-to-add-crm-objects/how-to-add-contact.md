@@ -4,7 +4,7 @@
 >
 > Who can execute the method: users with permission to create contacts in CRM
 
-You can place a form on the site to collect customer data. When a customer fills out the form, their data will be sent to CRM, and you will be able to process the request.
+You can place a form on the site to collect client data. When a client fills out the form, their data will be sent to CRM, and you will be able to process the request.
 
 Setting up the form consists of two steps.
 
@@ -14,7 +14,7 @@ Setting up the form consists of two steps.
 
 ## 1. Creating the Web Form
 
-Let's create a web form on the website page with four fields:
+Let's create a web form on the site page with four fields:
 
 -  `NAME` — contact's first name, required,
 
@@ -29,10 +29,10 @@ When submitted, the form sends data to the handler `form.php`.
 ```html
 <form id="form_to_crm" method="POST" action="form.php">
     
-	<!-- First Name, required field -->
+	<!-- First name, required field -->
     <input type="text" name="NAME" placeholder="First Name" required>
 
-	<!-- Last Name --> 
+	<!-- Last name --> 
     <input type="text" name="LAST_NAME" placeholder="Last Name">
 
 	<!-- Email --> 
@@ -41,7 +41,7 @@ When submitted, the form sends data to the handler `form.php`.
 	<!-- Phone -->
     <input type="text" name="PHONE" placeholder="Phone">
 
-	<!-- Submit Button --> 
+	<!-- Submit button --> 
     <input type="submit" value="Submit"> 
 </form>
 
@@ -51,7 +51,7 @@ When submitted, the form sends data to the handler `form.php`.
     $(document).ready(function() {
         $('#form_to_crm').on('submit', function(el) {
             el.preventDefault(); // Prevent default form submission
-            var formData = $(this).serialize(); // Collect form data
+            var formData = $(this).serialize(); // Gather form data
             
             // Send data to the server
             $.ajax({
@@ -82,7 +82,7 @@ To add a contact, we will use the method [crm.contact.add](../../../api-referenc
 
 -  `EMAIL` — email address.
 
-The values for these fields will be obtained from the form. The system stores phone numbers and emails as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
+The values of the fields are obtained from the form. The system stores phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
 
 1. If a value exists, we add it as the first element `VALUE` in the array, and the second value specifies the type `VALUE_TYPE`, for example:
 
@@ -90,11 +90,11 @@ The values for these fields will be obtained from the form. The system stores ph
 
    -  `HOME` — for email.
 
-2. If no values exist, we pass an empty array.
+2. If there is no value, we pass an empty array.
 
 {% note warning "" %}
 
-Check which required fields are set for contacts in your Bitrix24. Without them, the method will not work.
+Check which required fields are set for contacts in your Bitrix24. All required fields must be passed to the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md).
 
 {% endnote %}
 

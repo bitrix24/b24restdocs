@@ -8,16 +8,16 @@ Each connector contains settings for working with a specific source:
 
 You can register a connector through the [application](../../app-installation/index.md).
 
-> Quick navigation: [all methods](#all-methods)
+> Quick navigation: [all methods](#all-methods) 
 
-## Connector's Relationship with Sources and Datasets
+## Connector Relationship with Sources and Datasets
 
 The connector is the top level in the data hierarchy within the BIconnector module:
 - **Connector** establishes a connection with an external data source.
 - **Source** defines which specific data is available from the connected service.
 - **Dataset** forms the final set of data that can be used in reports and analytics.
 
-## Description of Connector Fields {#fields}
+## Field Descriptions of the Connector {#fields}
 
 #|
 || **Name**
@@ -31,26 +31,26 @@ The connector is the top level in the data hierarchy within the BIconnector modu
 || **description**
 [`string`](../../data-types.md) | Description of the connector | ✅ | ✅ ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting order | ✅ | ✅ ||
+[`integer`](../../data-types.md) | Sort order | ✅ | ✅ ||
 || **urlCheck**
-[`string`](../../data-types.md) | [URL for connection check](#urlCheck) | ✅ | ✅ ||
+[`string`](../../data-types.md) | [URL for checking connection](#urlCheck) | ✅ | ✅ ||
 || **urlData**
-[`string`](../../data-types.md) | [URL for data retrieval](#urlData) | ✅ | ✅ ||
+[`string`](../../data-types.md) | [URL for retrieving data](#urlData) | ✅ | ✅ ||
 || **urlTableList**
-[`string`](../../data-types.md) | [URL for table list](#urlTableList) | ✅ | ✅ ||
+[`string`](../../data-types.md) | [URL for the list of tables](#urlTableList) | ✅ | ✅ ||
 || **urlTableDescription**
 [`string`](../../data-types.md) | [URL for table description](#urlTableDescription) | ✅ | ✅ ||
 || **settings**
 [`array`](../../data-types.md) | [Connector settings](#settings) | ✅ | ✅ ||
 || **dateCreate**
-[`datetime`](../../data-types.md) | Date of connector creation | ✅ | ❌ ||
+[`datetime`](../../data-types.md) | Creation date of the connector | ✅ | ❌ ||
 |#
 
 ### Field settings {#settings}
 
 The `settings` field contains an array of parameters necessary for configuring data sources. Each parameter is an object with the following structure:
 
-- `code` — parameter code, used as the parameter identifier, this is how parameters are passed to the external source.
+- `code` — parameter code, used as the identifier for the parameter, this is how parameters are passed to the external source.
 - `name` — parameter name, which will be displayed in the interface, in the "Analyst's workspace" section.
 - `type` — parameter type, currently only `STRING` is supported.
 
@@ -79,7 +79,7 @@ The endpoint is called:
 
 A POST request is sent to the endpoint address with the parameters:
 
-- `setting_code_n` — code of the connector's settings parameter.
+- `setting_code_n` — code of the connector settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
@@ -92,8 +92,8 @@ A POST request is sent to the endpoint address with the parameters:
 }
 ```
 
-Depending on availability, the endpoint returns information about the source's status. Requirements for the endpoint's response format to a request from Bitrix24: the response must not be empty, HTTP status: **200**. The response format is flexible.
-A request to the endpoint for connection verification can be sent in the interface, in the "Analyst's workspace" section.
+Depending on availability, the endpoint returns information about the status of the source. Requirements for the response format from the endpoint to the request from Bitrix24: the response must not be empty, HTTP status: **200**. The response format is flexible.
+A request to the endpoint for checking the connection can be sent in the interface, in the "Analyst's workspace" section.
 
 #### urlTableList {#urlTableList}
 
@@ -102,7 +102,7 @@ The `urlTableList` endpoint returns a list of available tables in `JSON` format.
 A POST request is sent to the endpoint address with the parameters:
 
 - `searchString` — value of the search string, searches for tables by `externalCode`.
-- `setting_code_n` — code of the connector's settings parameter.
+- `setting_code_n` — code of the connector settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
@@ -135,7 +135,7 @@ The `urlTableDescription` endpoint returns a list of fields for a specific table
 A POST request is sent to the endpoint address with the parameters:
 
 - `table` — `externalCode` of the dataset for which the description is requested.
-- `setting_code_n` — code of the connector's settings parameter.
+- `setting_code_n` — code of the connector settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
@@ -152,7 +152,7 @@ A POST request is sent to the endpoint address with the parameters:
 The response returns an array of fields with the structure:
 - `code` — code of the dataset field.
 - `name` — name of the dataset field.
-- `type` — field type, supported values: `int`, `string`, `double`, `date`, `datetime`.
+- `type` — type of the field, supported values are: `int`, `string`, `double`, `date`, `datetime`.
 
 ```
   {
@@ -177,7 +177,7 @@ A POST request is sent to the endpoint address with the parameters:
 - `filter` — filter by dataset fields.
 - `limit` — limit of dataset selection.
 - `table` — `externalCode` of the dataset for which data is requested.
-- `setting_code_n` — code of the connector's settings parameter.
+- `setting_code_n` — code of the connector settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
 ```
@@ -225,14 +225,14 @@ The response returns an array of fields with the structure:
 || **isImmutable**
 [`boolean`](../../data-types.md) | Field value can only be set once and only when creating a new element. After that, the field value cannot be changed ||
 || **isMultiple**
-[`boolean`](../../data-types.md) | Multiple field. If true, values in the field are passed as an array ||
+[`boolean`](../../data-types.md) | Multiple field. If `true`, values in the field are passed as an array ||
 |#
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute methods: user with access to the "Analyst's workspace" section
+> Who can perform methods: user with access to the "Analyst's workspace" section
 
 #|
 || **Method** | **Description** ||
@@ -243,3 +243,8 @@ The response returns an array of fields with the structure:
 || [biconnector.connector.delete](./biconnector-connector-delete.md) | Deletes a connector ||
 || [biconnector.connector.fields](./biconnector-connector-fields.md) | Returns the description of the connector fields ||
 |#
+
+## Continue Learning
+
+- [Example of creating a connector based on B24PHPSDK](https://github.com/bitrix24/b24sdk-examples/tree/main/php/special/biconnector)
+- [Meetup on creating a connector](../../../meetups.md#biconnectorMeetup)

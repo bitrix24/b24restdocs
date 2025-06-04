@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user
 
-This method adds a new address for a property or lead. For the user, this address appears as the address of a contact, company, or lead.
+This method adds a new address for a requisite or lead. For the user, such an address appears as the address of a contact, company, or lead.
 
-Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-type.md) can be created and linked to a single property.
+Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-type.md) can be created, linked to one requisite.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-ty
 
 ### Parameter fields
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,19 +29,19 @@ Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-ty
 || **TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the address type. Enumeration element "Address Type".
 
-Enumeration elements of "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
+Enumeration elements for "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
 ||
 || **ENTITY_TYPE_ID***
-[`integer`](../../../data-types.md) | Identifier of the parent object type.
+[`integer`](../../../data-types.md) | Identifier of the parent object's type.
 
-Identifiers of object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
+Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Properties (which are already linked to companies or contacts) or Leads.
+Addresses can only be linked to Requisites (and requisites to companies or contacts) or Leads.
 
-For backward compatibility, the ability to link Addresses to Contacts or Companies has been retained. However, this linkage is only possible on some older accounts where the old address handling mode has been specifically enabled by support.
+For backward compatibility, the ability to link Addresses to Contacts or Companies is retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by technical support.
 ||
 || **ENTITY_ID***
-[`string`](../../../data-types.md) | Identifier of the parent object ([property](../universal/index.md) or [lead](../../leads/index.md)) ||
+[`string`](../../../data-types.md) | Identifier of the parent object ([requisite](../universal/index.md) or [lead](../../leads/index.md)) ||
 || **ADDRESS_1**
 [`string`](../../../data-types.md) | Street, house, building, structure ||
 || **ADDRESS_2**
@@ -51,9 +51,9 @@ For backward compatibility, the ability to link Addresses to Contacts or Compani
 || **POSTAL_CODE**
 [`string`](../../../data-types.md) | Postal code ||
 || **REGION**
-[`string`](../../../data-types.md) | Region ||
+[`string`](../../../data-types.md) | District ||
 || **PROVINCE**
-[`string`](../../../data-types.md) | Province ||
+[`string`](../../../data-types.md) | State ||
 || **COUNTRY**
 [`string`](../../../data-types.md) | Country ||
 || **COUNTRY_CODE**
@@ -66,15 +66,15 @@ Not used, retained for backward compatibility. An empty string can be specified 
 
 This field contains the identifier of the address object in the `Location` module, linked to the CRM address object. Each CRM address corresponds to an address object in the `location` module. This can be used to copy an existing address into CRM with location information that is not present in the CRM address fields.
 
-If the identifier of the `location` module address is specified when creating the address, a copy of the `location` address is created and linked to the newly created CRM address. If no values are specified for the string address fields in this case, they will be filled from the location address.
+If the identifier of the `location` module address is specified when creating the address, a copy of the `location` address is created and linked to the created CRM address. If no values are specified for the string address fields in this case, they will be filled from the location address.
 
-If at least one string field was specified, only the specified fields will be saved in the CRM address, and their values will overwrite the corresponding values in the location address object. The same behavior will occur when updating the address.
+If at least one string field is specified, only the specified fields will be saved in the CRM address, and their values will overwrite the corresponding values in the location address object. The same behavior will occur when updating the address.
 ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -84,7 +84,7 @@ If at least one string field was specified, only the specified fields will be sa
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":1,"ADDRESS_1":"Mira Avenue, 4","ADDRESS_2":"Kaliningrad Regional Drama Theater","CITY":"Kaliningrad","POSTAL_CODE":"236036","REGION":"Kaliningrad Urban District","PROVINCE":"Kaliningrad Region","COUNTRY":"Russia"}}' \
+    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":1,"ADDRESS_1":"Mir Avenue, 4","ADDRESS_2":"Kaliningrad Regional Drama Theater","CITY":"Kaliningrad","POSTAL_CODE":"236036","REGION":"Kaliningrad Urban District","PROVINCE":"Kaliningrad Region","COUNTRY":"Russia"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.address.add
     ```
 
@@ -94,7 +94,7 @@ If at least one string field was specified, only the specified fields will be sa
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":1,"ADDRESS_1":"Mira Avenue, 4","ADDRESS_2":"Kaliningrad Regional Drama Theater","CITY":"Kaliningrad","POSTAL_CODE":"236036","REGION":"Kaliningrad Urban District","PROVINCE":"Kaliningrad Region","COUNTRY":"Russia"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":1,"ADDRESS_1":"Mir Avenue, 4","ADDRESS_2":"Kaliningrad Regional Drama Theater","CITY":"Kaliningrad","POSTAL_CODE":"236036","REGION":"Kaliningrad Urban District","PROVINCE":"Kaliningrad Region","COUNTRY":"Russia"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.address.add
     ```
 
@@ -107,9 +107,9 @@ If at least one string field was specified, only the specified fields will be sa
             fields:
             {
                 "TYPE_ID": 1,            // Address type, see crm.enum.addresstype
-                "ENTITY_TYPE_ID": 8,     // Object type (property or lead)
-                "ENTITY_ID": 1,          // Property identifier
-                "ADDRESS_1": "Mira Avenue, 4",
+                "ENTITY_TYPE_ID": 8,     // Object type (requisite or lead)
+                "ENTITY_ID": 1,          // Identifier of the requisite
+                "ADDRESS_1": "Mir Avenue, 4",
                 "ADDRESS_2": "Kaliningrad Regional Drama Theater",
                 "CITY": "Kaliningrad",
                 "POSTAL_CODE": "236036",
@@ -138,7 +138,7 @@ If at least one string field was specified, only the specified fields will be sa
                 'TYPE_ID' => 1,
                 'ENTITY_TYPE_ID' => 8,
                 'ENTITY_ID' => 1,
-                'ADDRESS_1' => 'Mira Avenue, 4',
+                'ADDRESS_1' => 'Mir Avenue, 4',
                 'ADDRESS_2' => 'Kaliningrad Regional Drama Theater',
                 'CITY' => 'Kaliningrad',
                 'POSTAL_CODE' => '236036',
@@ -158,7 +158,7 @@ If at least one string field was specified, only the specified fields will be sa
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -168,8 +168,8 @@ HTTP Status: **200**
         "finish": 1712922623.393783,
         "duration": 2.6689260005950928,
         "processing": 2.210068941116333,
-        "date_start": "2024-04-12T14:50:20+03:00",
-        "date_finish": "2024-04-12T14:50:23+03:00"
+        "date_start": "2024-04-12T14:50:20+02:00",
+        "date_finish": "2024-04-12T14:50:23+02:00"
     }
 }
 ```
@@ -190,7 +190,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -208,7 +208,7 @@ HTTP Status: **40x**, **50x**
 || `TYPE_ID is not defined or invalid` | Address type identifier is not specified or has an invalid value ||
 || `ENTITY_TYPE_ID is not defined or invalid` | Parent object type identifier is not specified or has an invalid value. ||
 || `ENTITY_ID is not defined or invalid` | Parent object identifier is not specified or has an invalid value ||
-|| `TypeAddress exists` | An address of this type already exists for the specified parent object ||
+|| `TypeAddress exists` | An address with this type already exists for the specified parent object ||
 || `Access denied` | Insufficient access permissions to add the address ||
 |#
 
@@ -220,3 +220,4 @@ HTTP Status: **40x**, **50x**
 - [{#T}](./crm-address-list.md)
 - [{#T}](./crm-address-delete.md)
 - [{#T}](./crm-address-fields.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
