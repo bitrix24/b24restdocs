@@ -15,7 +15,7 @@ The interface for the method [event.unbind](../../events/event-unbind.md), which
 
 {% note info %}
 
-Works only when authorized as a user with administrative access permission to the account.
+Works only when authorized as a user with administrative rights on the account.
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ Works only when authorized as a user with administrative access permission to th
 
 {% note info %}
 
-If you need to remove event handlers set with an empty *auth_type* (authorized on behalf of the user who triggered the event), but keep other handlers, specify *auth_type=0* or an empty value for the parameter. If you need to remove event handlers for all users, specify the value *null*.
+If you need to remove event handlers set with an empty *auth_type* (authorized on behalf of the user who triggered the event), but keep the other handlers, specify *auth_type=0* or an empty value for the parameter. If you need to remove event handlers for all users, specify the value *null*.
 
 {% endnote %}
 
@@ -52,9 +52,8 @@ BX24.callUnbind('OnAppUninstall', 'http://www.my-domain.com/handler/');
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](./bx24-call-bind.md)
 - [{#T}](./bx24-call-method.md)
 - [{#T}](./bx24-call-batch.md)
-- [{#T}](./files.md)

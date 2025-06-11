@@ -1,8 +1,8 @@
-# Delete Dataset biconnector.dataset.delete
+# Delete dataset biconnector.dataset.delete
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's Workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.dataset.delete` removes an existing dataset.
 
@@ -120,14 +120,14 @@ HTTP status: **200**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-## Possible Error Codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | `ID is missing.` | Identifier is not provided ||
-|| `VALIDATION_INVALID_ID_FORMAT` | `ID has to be a positive integer.` | Invalid ID format ||
-|| `DATASET_NOT_FOUND` | `Dataset was not found.` | Dataset not found ||
-|| `-` | `Error deleting dataset` | Error deleting dataset ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
+|| `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
+|| `DATASET_NOT_FOUND` | Dataset was not found. | Dataset not found ||
+|| `-` | Error deleting dataset | Error deleting dataset ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: user with access to the "Analyst's Workspace" section
 
 The method `biconnector.source.add` creates a new data source associated with the connector.
 
@@ -42,7 +42,7 @@ The method `biconnector.source.add` creates a new data source associated with th
 [`string`](../../data-types.md) | Source description ||
 || **active**
 [`boolean`](../../data-types.md) | Source activity. 
-Defaults to `true` ||
+Default is `true` ||
 || **connectorId***
 [`integer`](../../data-types.md) | Connector identifier, can be obtained using the methods [biconnector.connector.list](../connector/biconnector-connector-list.md) or [biconnector.connector.add](../connector/biconnector-connector-add.md) ||
 || **settings***
@@ -154,7 +154,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../data-types.md) | Root element of the response, contains the identifier of the created source ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -174,16 +174,16 @@ HTTP status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_FIELDS_NOT_PROVIDED` | `Fields not provided.` | Fields were not provided in the request ||
-|| `VALIDATION_UNKNOWN_PARAMETERS` | `Unknown parameters: #LIST_OF_PARAMS#` | Unknown parameters detected: list ||
-|| `VALIDATION_REQUIRED_FIELD_MISSING` | `Field "#TITLE#" is required.` | Required field #TITLE# was not provided ||
-|| `VALIDATION_READ_ONLY_FIELD` | `Field "#TITLE#" is read only.` | Field #TITLE# is read-only and cannot be modified ||
-|| `VALIDATION_IMMUTABLE_FIELD` | `Field "#TITLE#" is immutable.` | Field #TITLE# is immutable ||
-|| `VALIDATION_INVALID_FIELD_TYPE` | `Field "#TITLE#" must be of type #TYPE#.` | Field #TITLE# must be of type #TYPE# ||
-|| `CONNECTOR_NOT_FOUND` | `Connector was not found.` | Connector not found ||
-|| `SOURCE_CREATE_CONNECTION_ERROR` | `Cannot create connection.` | Error creating connection ||
-|| `SOURCE_UPDATE_CONNECTION_ERROR` | `Cannot update connection.` | Error updating connection ||
-|| `BX_ERROR` | `Cannot delete source. Delete all related datasets first.` | Cannot delete source while related datasets exist ||
+|| `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields were not passed in the request ||
+|| `VALIDATION_UNKNOWN_PARAMETERS` | Unknown parameters: #LIST_OF_PARAMS# | Unknown parameters detected: list ||
+|| `VALIDATION_REQUIRED_FIELD_MISSING` | Field "#TITLE#" is required. | Required field #TITLE# was not provided ||
+|| `VALIDATION_READ_ONLY_FIELD` | Field "#TITLE#" is read only. | Field #TITLE# is read-only and cannot be modified ||
+|| `VALIDATION_IMMUTABLE_FIELD` | Field "#TITLE#" is immutable. | Field #TITLE# is immutable ||
+|| `VALIDATION_INVALID_FIELD_TYPE` | Field "#TITLE#" must be of type #TYPE#. | Field #TITLE# must be of type #TYPE# ||
+|| `CONNECTOR_NOT_FOUND` | Connector was not found. | Connector not found ||
+|| `SOURCE_CREATE_CONNECTION_ERROR` | Cannot create connection. | Error creating connection ||
+|| `SOURCE_UPDATE_CONNECTION_ERROR` | Cannot update connection. | Error updating connection ||
+|| `BX_ERROR` | Cannot delete source. Delete all related datasets first. | Cannot delete source while related datasets exist ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

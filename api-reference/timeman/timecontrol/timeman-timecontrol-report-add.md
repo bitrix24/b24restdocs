@@ -6,6 +6,8 @@
 
 The method `timeman.timecontrol.report.add` sends an absence report and adds it to the calendar.
 
+By default, a user can only send a report for themselves. A portal administrator can send a report for anyone—this requires specifying the user ID in the `USER_ID` parameter.
+
 ## Method Parameters
 
 {% include [Footnote about parameters](../../../_includes/required.md) %}
@@ -16,11 +18,11 @@ The method `timeman.timecontrol.report.add` sends an absence report and adds it 
 || **REPORT_ID*** \| **ID***
 [`integer`](../../data-types.md) | Identifier of the absence record.
 
-You can obtain record identifiers using the method [timeman.timecontrol.reports.get](./timeman-timecontrol-reports-get.md) ||
+You can obtain record IDs using the [timeman.timecontrol.reports.get](./timeman-timecontrol-reports-get.md#reports) method ||
 || **USER_ID**
 [`integer`](../../data-types.md) | User identifier. Can only be specified by an administrator.
 
-You can obtain the user identifier using the method [user.get](../../user/user-get.md) ||
+You can obtain the user ID using the [user.get](../../user/user-get.md) method ||
 || **TEXT***
 [`string`](../../data-types.md) | Report text ||
 || **TYPE**
@@ -134,7 +136,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Execution result. Returns `true` if the report was added successfully ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

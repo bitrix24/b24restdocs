@@ -1,10 +1,10 @@
-# Event when creating a new deal from a recurring deal template onCrmDealRecurringExpose
+# Event on Document Creation onCrmDocumentGeneratorDocumentAdd
 
-> Scope: [`crm`](../../../../scopes/permissions.md)
+> Scope: [`documentgenerator, crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALRECURRINGEXPOSE` will trigger when a new deal is created from a recurring deal template.
+The event `ONCRMDOCUMENTGENERATORDOCUMENTADD` will trigger upon the creation of a new document.
 
 ## What the handler receives
 
@@ -12,20 +12,20 @@ Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
-    "event": "ONCRMDEALRECURRINGEXPOSE",
-    "event_handler_id": "683",
+    "event": "ONCRMDOCUMENTGENERATORDOCUMENTADD",
+    "event_handler_id": "821",
     "data": {
         "FIELDS": {
-            "ID": "9",
-            "RECURRING_DEAL_ID": "6791",
-            "DEAL_ID": "6799"
+            "ID": "1869",
+            "ENTITY_TYPE_ID": "1",
+            "ENTITY_ID": "1000993"
         }
     },
-    "ts": "1741092489",
+    "ts": "1749042094",
     "auth": {
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "expires_in": "3600",
-        "scope": "crm",
+        "scope": "crm, documentgenerator",
         "domain": "some-domain.bitrix24.com",
         "server_endpoint": "https://oauth.bitrix.info/rest/",
         "status": "L",
@@ -43,21 +43,21 @@ Data is transmitted as a POST request {.b24-info}
 || **event**
 [`string`](../../../../data-types.md) | Symbolic code of the event.
 
-In this case — `ONCRMDEALRECURRINGEXPOSE`||
+In this case — `ONCRMDOCUMENTGENERATORDOCUMENTADD` ||
 || **event_handler_id**
 [`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | Object containing information about the created deal.
+[`object`](../../../../data-types.md) | Object containing information about the created document.
 
-Contains a single key `FIELDS` ||
+Contains the key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | Object containing information about the fields of the created deal and the template from which the deal was created.
+[`object`](../../../../data-types.md) | Object containing information about the fields of the created document.
 
 The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`object`](../../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -68,11 +68,11 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the record in the settings table for recurring deals ||
-|| **RECURRING_DEAL_ID**
-[`integer`](../../../../data-types.md) | Identifier of the recurring deal template ||
-|| **DEAL_ID**
-[`integer`](../../../../data-types.md) | Identifier of the deal created from the template ||
+[`integer`](../../../../data-types.md) | Identifier of the created document ||
+|| **ENTITY_TYPE_ID**
+[`integer`](../../../../data-types.md) | Identifier of the [object type](../../../../crm/data-types.md#object_type) to which the document belongs, for example `1` — lead ||
+|| **ENTITY_ID**
+[`integer`](../../../../data-types.md) | Identifier of the element to which the document is linked ||
 |#
 
 ### Parameter auth {#auth}
@@ -83,6 +83,5 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
-- [{#T}](./on-crm-deal-recurring-delete.md)
-- [{#T}](./on-crm-deal-recurring-add.md)
-- [{#T}](./on-crm-deal-recurring-update.md)
+- [{#T}](./on-crm-document-generator-document-update.md)
+- [{#T}](./on-crm-document-generator-document-delete.md)

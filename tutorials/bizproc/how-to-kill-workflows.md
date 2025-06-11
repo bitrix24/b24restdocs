@@ -2,7 +2,7 @@
 
 > Scope: [`user_brief, user_basic, user, bizproc`](../../api-reference/scopes/permissions.md)
 > 
-> Who can perform the methods: administrator
+> Who can execute methods: administrator
 
 When an employee is terminated in Bitrix24, there may be unfinished business processes for which they were responsible.
 
@@ -10,9 +10,9 @@ To complete the active business processes of the terminated employee, we will se
 
 1. [user.get](../../api-reference/user/user-get.md) — retrieve the `ID` of the terminated employee
 
-2. [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) — get the list of process tasks for which the terminated employee is responsible
+2. [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) — get the list of tasks for the processes that the terminated employee was responsible for
 
-3. [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) — complete the business processes with data deletion. If you need to retain the fact that the business process was initiated, use the method [bizproc.workflow.terminate](../../api-reference/bizproc/bizproc-workflow-terminate.md). Both methods are called in the same way.
+3. [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) — complete the business processes with data deletion. If you need to preserve the fact that the business process was initiated, use the method [bizproc.workflow.terminate](../../api-reference/bizproc/bizproc-workflow-terminate.md). Both methods are called in the same way.
 
 ## 1. Retrieve the ID of the Terminated Employee {#user-id}
 
@@ -22,7 +22,7 @@ We will use the method [user.get](../../api-reference/user/user-get.md) with the
 
 - `LAST_NAME` — specify the employee's last name
 
-- `ACTIVE` — this parameter controls the search for active or terminated employees. If this parameter is not provided, the search will include all employees regardless of their status. Set `0` to search only among terminated employees.
+- `ACTIVE` — this parameter controls the search for active or terminated employees. If this parameter is not passed, the search will include all employees regardless of their status. We will specify `0` to search only among terminated employees.
 
 {% include [Note on Examples](../../_includes/examples.md) %}
 
@@ -76,18 +76,17 @@ As a result, we will obtain the `ID` of the terminated employee.
             "SECOND_NAME": "",
             "TITLE": "",
             "EMAIL": "employee_email@gmail.com",
-            "LAST_LOGIN": "2025-03-27T13:49:36+03:00",
-            "DATE_REGISTER": "2020-04-23T03:00:00+03:00",
+            "LAST_LOGIN": "2025-03-27T13:49:36+02:00",
+            "DATE_REGISTER": "2020-04-23T03:00:00+02:00",
             "TIME_ZONE": "Europe/Berlin",
             "IS_ONLINE": "N",
-            "TIME_ZONE_OFFSET": "7200",
             "TIMESTAMP_X": {},
             "LAST_ACTIVITY_DATE": {},
             "PERSONAL_GENDER": "",
             "PERSONAL_PROFESSION": "",
             "PERSONAL_WWW": "",
             "PERSONAL_BIRTHDAY": "",
-            "PERSONAL_PHOTO": "https://cdn-com.bitrix24.com/b13743910/main/3f2/3f212fkdjf8c3627cfe51633f959de/avatar.png",
+            "PERSONAL_PHOTO": "https://cdn-com.bitrix24.com/b13743910/main/3f2/3f212fjf8c3627cfe51633f959de/avatar.png",
             "PERSONAL_ICQ": "",
             "PERSONAL_PHONE": "",
             "PERSONAL_FAX": "",
@@ -129,13 +128,13 @@ As a result, we will obtain the `ID` of the terminated employee.
 }
 ```
 
-## 2. Retrieve the List of Process Tasks for Which the Terminated Employee is Responsible {#workflow_id}
+## 2. Retrieve the List of Tasks for the Processes that the Terminated Employee Was Responsible For {#workflow_id}
 
 We will use the method [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) with the following filter:
 
 - `USER_ID` — the identifier of the employee, we will pass the ID obtained in [step 1](#user-id)
 
-- `STATUS` — this parameter is responsible for the status of the tasks, we will set `0` to filter only incomplete tasks.
+- `STATUS` — this parameter indicates the status of the tasks, we will specify `0` to filter only incomplete tasks.
 
 {% list tabs %}
 
@@ -264,7 +263,7 @@ As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLO
 
 ## 3. Complete the Business Processes
 
-We will use the method [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) with the parameter:
+We will use the method [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) with the following parameter:
 
 - `ID` — the identifier of the process, we will pass the `WORKFLOW_ID` obtained in [step 2](#workflow_id)
   
@@ -313,7 +312,7 @@ In the example, all found processes are deleted in a loop. If you need to delete
 - JS
 
     ```javascript
-    // Function to get the employee ID by first and last name
+    // Function to get employee ID by first name and last name
     function getUserId(firstName, lastName, callback) {
         BX24.callMethod(
             "user.get",
@@ -384,7 +383,7 @@ In the example, all found processes are deleted in a loop. If you need to delete
         });
     }
 
-    // Prompt user for first and last name
+    // Prompt user for first name and last name
     const firstName = prompt("Enter the employee's first name:");
     const lastName = prompt("Enter the employee's last name:");
 
@@ -397,7 +396,7 @@ In the example, all found processes are deleted in a loop. If you need to delete
     ```php
     require_once('crest.php');
 
-    // Function to get the employee ID by first and last name
+    // Function to get employee ID by first name and last name
     function getUserId($firstName, $lastName) {
         $result = CRest::call(
             'user.get',
@@ -469,7 +468,7 @@ In the example, all found processes are deleted in a loop. If you need to delete
         }
     }
 
-    // Prompt user for first and last name
+    // Prompt user for first name and last name
     $firstName = readline("Enter the employee's first name: ");
     $lastName = readline("Enter the employee's last name: ");
 

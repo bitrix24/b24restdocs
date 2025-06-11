@@ -1,4 +1,4 @@
-# Update the business process template bizproc.workflow.template.update
+# Update Business Process Template bizproc.workflow.template.update
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 This method updates a business process template.
 
-It allows you to update templates that were created using the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md). These templates are tied to the application and can only be updated in the context of the same [application](../../app-installation/index.md) that created them.
+It allows you to update templates that were created using the [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) method. These templates are tied to the application and can only be updated in the context of the same [application](../../app-installation/index.md) that created them.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ It allows you to update templates that were created using the method [bizproc.wo
 || **ID***
 [`string`](../../data-types.md) | Identifier of the template to be updated ||
 || **FIELDS***
-[`object`](../../data-types.md) | Object with [fields](#parametr-fields) of the business process template.
+[`object`](../../data-types.md) | Object with [fields](#parametr-fields) of the business process template. 
 
 You can update the fields: `NAME`, `DESCRIPTION`, `TEMPLATE_DATA`, `AUTO_EXECUTE`. Attempting to update [other fields](./bizproc-workflow-template-list.md#fields) of the template will not result in errors, but those fields will not be updated ||
 |#
@@ -35,9 +35,9 @@ You can update the fields: `NAME`, `DESCRIPTION`, `TEMPLATE_DATA`, `AUTO_EXECUTE
 || **TEMPLATE_DATA**
 [`file`](../../data-types.md) | Content of the file with the business process template in `.bpt` format.
 
-More about file transfer methods can be found in the article [{#T}](../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
+More details on file transfer methods can be found in the article [{#T}](../../files/how-to-update-files.md) ||
 || **AUTO_EXECUTE**
-[`integer`](../../data-types.md) | Auto-execution settings of the template. Can have the value:
+[`integer`](../../data-types.md) | Auto-execution settings for the template. Can have the following values:
 
 - `0` — no auto-execution
 - `1` — execute on creation
@@ -112,7 +112,7 @@ Default is `0` ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -122,8 +122,8 @@ HTTP Status: **200**
         "finish": 1737534421.209758,
         "duration": 0.037085056304931641,
         "processing": 0.010869026184082031,
-        "date_start": "2025-01-22T11:27:01+01:00",
-        "date_finish": "2025-01-22T11:27:01+01:00",
+        "date_start": "2025-01-22T11:27:01+02:00",
+        "date_finish": "2025-01-22T11:27:01+02:00",
         "operating_reset_at": 1737535021,
         "operating": 0
     }
@@ -143,12 +143,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "ERROR_TEMPLATE_NOT_OWNER",
-    "error_description": "You can update ONLY templates created by current application",
+    "error_description": "You can update ONLY templates created by current application"
 }
 ```
 
@@ -170,7 +170,7 @@ HTTP Status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Learning 
 
 - [{#T}](./index.md)
 - [{#T}](./bizproc-workflow-template-add.md)

@@ -3,9 +3,9 @@ href: index.md
 items: 
   - name: Overview of Events
     href: index.md
-  - name: On Contact Creation
+  - name: When Creating a Contact
     href: on-crm-contact-add.md
-  - name: On Contact Update
+  - name: When Updating a Contact
     href: on-crm-contact-update.md
-  - name: On Contact Deletion
+  - name: When Deleting a Contact
     href: on-crm-contact-delete.md

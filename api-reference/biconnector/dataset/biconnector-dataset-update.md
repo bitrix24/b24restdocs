@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: a user with access to the "Analyst's Workspace" section
 
 The method `biconnector.dataset.update` updates an existing dataset.
 
@@ -28,8 +28,8 @@ Object format:
 }
 ```
 
-- `field_n` — name of the field
-- `value_n` — value of the field
+- `field_n` — field name
+- `value_n` — field value
 
 [Detailed description below](#fields)||
 |#
@@ -125,7 +125,7 @@ To change the fields of the dataset, use the method [biconnector.dataset.fields.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -149,12 +149,12 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -165,20 +165,20 @@ HTTP Status: **200**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-## Possible Error Codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | `ID is missing.` | Identifier is not specified ||
-|| `VALIDATION_INVALID_ID_FORMAT` | `ID has to be a positive integer.` | Invalid ID format ||
-|| `VALIDATION_FIELDS_NOT_PROVIDED` | `Fields not provided.` | Fields were not passed in the request ||
-|| `VALIDATION_UNKNOWN_PARAMETERS` | `Unknown parameters: #LIST_OF_PARAMS#` | Unknown parameters detected: #LIST\_OF\_PARAMS#. ||
-|| `VALIDATION_REQUIRED_FIELD_MISSING` | `Field "#TITLE#" is required.` | Required field #TITLE# was not provided ||
-|| `VALIDATION_READ_ONLY_FIELD` | `Field "#TITLE#" is read only.` | Field #TITLE# is read-only and cannot be modified ||
-|| `VALIDATION_IMMUTABLE_FIELD` | `Field "#TITLE#" is immutable.` | Field #TITLE# is immutable ||
-|| `VALIDATION_INVALID_FIELD_TYPE` | `Field "#TITLE#" must be of type #TYPE#.` | Field #TITLE# must be of type #TYPE# ||
-|| `DATASET_NOT_FOUND` | `Dataset was not found.` | Dataset not found ||
-|| `INVALID_METHOD` | `Use the method "biconnector.dataset.fields.update" to update the dataset fields.` | To update fields, use the method `biconnector.dataset.fields.update` ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
+|| `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
+|| `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields not passed in the request ||
+|| `VALIDATION_UNKNOWN_PARAMETERS` | Unknown parameters: #LIST_OF_PARAMS# | Unknown parameters detected: #LIST\_OF\_PARAMS#. ||
+|| `VALIDATION_REQUIRED_FIELD_MISSING` | Field "#TITLE#" is required. | Required field #TITLE# not provided ||
+|| `VALIDATION_READ_ONLY_FIELD` | Field "#TITLE#" is read only. | Field #TITLE# is read-only and cannot be modified ||
+|| `VALIDATION_IMMUTABLE_FIELD` | Field "#TITLE#" is immutable. | Field #TITLE# is immutable ||
+|| `VALIDATION_INVALID_FIELD_TYPE` | Field "#TITLE#" must be of type #TYPE#. | Field #TITLE# must be of type #TYPE# ||
+|| `DATASET_NOT_FOUND` | Dataset was not found. | Dataset not found ||
+|| `INVALID_METHOD` | Use the method "biconnector.dataset.fields.update" to update the dataset fields. | To update fields, use the method `biconnector.dataset.fields.update` ||
 || `-` | `Error updating dataset.` | Error updating dataset ||
 |#
 

@@ -1,4 +1,4 @@
-# Create a New Contact crm.contact.add
+# Create a new contact crm.contact.add
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
@@ -31,7 +31,7 @@ The list of available fields is described [below](#parameter-fields).
 
 An incorrect field in `fields` will be ignored ||
 || **params**
-[`object`][1] | Object containing a set of additional parameters.
+[`object`][1] | An object containing a set of additional parameters.
 
 The structure and possible values are described [below](#parameter-params) ||
 |#
@@ -80,15 +80,15 @@ Default — the first available source type ||
 - `Y` — yes
 - `N` — no
 
-Default is `Y`. The default value can be changed in the CRM settings ||
+Default `Y`. The default value can be changed in the CRM settings ||
 || **EXPORT**
 [`boolean`][1] | Is the contact included in the export? Possible values:
 - `Y` — yes
 - `N` — no
 
-Default is `Y` ||
+Default `Y` ||
 || **ASSIGNED_BY_ID**
-[`user`][1] | Identifier of the user responsible for the item.
+[`user`][1] | Identifier of the user responsible for the element.
 
 Default — the identifier of the user calling the method ||
 || **COMPANY_ID**
@@ -100,7 +100,7 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, Facebook Ads, etc.) ||
+[`string`][1] | Advertising system (Google Ads, etc.) ||
 || **UTM_MEDIUM**
 [`string`][1] | Traffic type. Possible values:
 - `CPC` — ads
@@ -123,16 +123,16 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 [`crm_multifield[]`](../data-types.md) | Messenger ||
 || **LINK**
 [`crm_multifield[]`](../data-types.md) | Links. Service field ||
-||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`. 
+||**UF_...**  | User fields. For example, `UF_CRM_25534736`. 
 
-Depending on the account settings, contacts may have a set of custom fields of defined types. 
+Depending on the account settings, contacts may have a set of user fields of specific types. 
 
-You can add a custom field to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md) ||
+You can add a user field to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md) ||
 ||**PARENT_ID_...** | Relationship fields. 
 
-If there are SPAs related to contacts in the account, there is a field for each such SPA that stores the relationship between this SPA and the contact. The field itself stores the identifier of the item of that SPA. 
+If there are SPAs related to contacts in the account, there is a field for each such SPA that stores the relationship between this SPA and the contact. The field itself stores the identifier of the element of that SPA. 
 
-For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the item of this SPA related to the current contact ||
+For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the element of this SPA related to the current contact ||
 |#
 
 **Fields for connections with external data sources**
@@ -150,14 +150,14 @@ If the contact is created by an external system, then:
 || **ORIGIN_ID**
 [`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system. 
 
-If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to overwriting the data ||
+If the data was imported and not changed in the external system, such data can be edited in the CRM without fear that the next export will overwrite the data ||
 || **ORIGIN_VERSION**
 [`string`][1] | Original version ||
 |#
 
 **Import**
 
-The fields are available for filling when the parameter `IMPORT = 'Y'` is passed in the `params` parameter.
+The data fields are available for filling when the parameter `IMPORT = 'Y'` is passed in the `params` parameter.
 
 #|
 || **Name**
@@ -167,7 +167,8 @@ The fields are available for filling when the parameter `IMPORT = 'Y'` is passed
 
 Available when `IMPORT = Y` is passed in `params`.
 
-Cannot be earlier than the creation date of the last created contact ||
+Cannot be earlier than the creation date of the last created contact
+||
 || **DATE_MODIFY**
 [`datetime`][1] | Modification date.
 
@@ -178,7 +179,6 @@ Available when `IMPORT = Y` is passed in `params` ||
 Available when `IMPORT = Y` is passed in `params` ||
 || **MODIFY_BY_ID**
 [`user`][1] | Modified by.
-
 Available when `IMPORT = Y` is passed in `params` ||
 |#
 
@@ -192,7 +192,7 @@ Address fields in the contact are deprecated and are only used in compatibility 
 || **ADDRESS**
 [`string`][1] | Address ||
 || **ADDRESS_2**
-[`string`][1] | Second line of the address ||
+[`string`][1] | Second address line ||
 || **ADDRESS_CITY**
 [`string`][1] | City ||
 || **ADDRESS_POSTAL_CODE**
@@ -219,14 +219,14 @@ Address fields in the contact are deprecated and are only used in compatibility 
 - `Y` — yes
 - `N` — no
 
-Default is `N` ||
+Default `N` ||
 || **IMPORT**
 [`boolean`][1] | Is import mode enabled? Possible values:
 - `Y` — yes
 
 To pass the value "No", you must either not pass the parameter at all or pass the value `0`, `''`
 
-Default is "No" ||
+Default "No" ||
 |#
 
 ## Code Examples
@@ -479,9 +479,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
-|| `-`     | `Parameter 'params' must be array` | The parameter `params` is not an object ||
-|| `-`     | `Access denied` | The user does not have permission for "Add" or "Import" contacts ||
+|| `-`     | `Parameter 'fields' must be array` | The `fields` parameter is not an object ||
+|| `-`     | `Parameter 'params' must be array` | The `params` parameter is not an object ||
+|| `-`     | `Access denied` | The user does not have permission to "Add" or "Import" contacts ||
 || `-`     | Disk resource exhausted | ||
 || `ERROR_CORE` | The field `Work e-mail` contains an invalid address | ||
 |#
@@ -496,6 +496,8 @@ HTTP status: **400**
 - [{#T}](./crm-contact-delete.md)
 - [{#T}](./crm-contact-fields.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)
+- [{#T}](../../../tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
 
 [1]: ../../data-types.md
 [2]: ../status/crm-status-list.md

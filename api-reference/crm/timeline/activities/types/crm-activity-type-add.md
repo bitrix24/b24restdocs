@@ -41,7 +41,7 @@ A detailed description is provided [below](#parametr-fields)
 || **NAME**
 [`string`](../../../../data-types.md) | Name of the activity type, for example `Activity for QuickBooks` for a deal. Default is an empty string ||
 || **ICON_FILE**
-[`attached_diskfile`](../../../../data-types.md) | Icon file for the activity type, described according to [rules](../../../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
+[`attached_diskfile`](../../../../data-types.md) | Icon file for the activity type, described according to [rules](../../../../files/how-to-upload-files.md) ||
 || **IS_CONFIGURABLE_TYPE**
 [`string`](../../../../data-types.md) | Default value is `N`. Value `Y` indicates that the type will be used for [configurable activities](../configurable/crm-activity-configurable-add.md) ||
 |#

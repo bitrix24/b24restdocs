@@ -8,7 +8,7 @@ The event `onCrmDealUserFieldUpdate` will trigger when a user field is changed.
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {

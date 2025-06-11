@@ -1,76 +1,233 @@
-# How to Change or Delete Phone Numbers and E-Mails
+# How to Change or Delete Phone Numbers and Emails
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the method: users with permission to create and modify contacts in CRM
 
-Examples of adding, changing, and deleting phone numbers and e-mails using a contact as an example.
+Contact data in CRM can contain multiple phone numbers and email addresses. Sometimes it is necessary to update existing values or remove unnecessary ones.
 
-## Working with E-Mail
+Let's create a contact with multiple emails and phone numbers, and then modify this information. To do this, we will sequentially execute three methods:
+
+1. [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md) — create a contact in CRM,
+
+2. [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) — retrieve information about the created contact,
+
+3. [crm.contact.update](../../../api-reference/crm/contacts/crm-contact-update.md) — update the email and phone data.
+
+## Fields crm_multifield
+
+The system stores phone numbers and emails as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield). Each object has the following fields:
+
+```javascript
+{
+    ID: 123, // Identifier of the existing record. Needed for updating
+    TYPE_ID: "PHONE", // Type of the multifield
+    VALUE: "test@test.com", // Value
+    VALUE_TYPE: "WORK" // Type of the value
+}
+```
+
+- To delete a value from a multifield, pass the identifier `ID` and an empty value `VALUE`. Alternatively, specify the parameter `DELETE: 'Y'` instead of `VALUE`.
+
+- To update a value in a multifield, pass the identifier and the new value.
+
+## Example with Email
+
+### 1. Adding a Contact with Two Emails
+
+To create a contact in CRM, we will execute the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md). In the `fields` object, we will pass the fields:
+
+- `NAME` — the name of the contact,
+
+- `EMAIL` — an array of email addresses from `arNewEmail`.
+
+{% note warning "" %}
+
+Check which required fields are set for contacts in your Bitrix24. All required fields must be passed to the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md).
+
+{% endnote %}
+
+```javascript
+// preparing addresses in crm_multifield format
+let arNewEmail = [
+ { VALUE: 'work_email@nomail.com', VALUE_TYPE: 'WORK' },
+ { VALUE: 'home_email@nomail.com', VALUE_TYPE: 'HOME' }
+];
+
+// creating a new contact
+BX24.callMethod(
+	"crm.contact.add",
+	{
+		fields: {
+			NAME: 'New Contact',
+			EMAIL: arNewEmail
+ 		}
+	}
+);
+```
+
+As a result, we will receive the identifier of the new contact, for example, `25`.
+
+```json
+{
+	"result": 25
+}
+```
+
+### 2. Retrieving the Contact for Editing
+
+To get information about the created contact, we use the method [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) with the identifier `ID` from the result of the previous request.
+
+```javascript
+let contactId = newContact.data().result; // saving the ID of the created contact in a variable
+// retrieving information about the contact by ID
+BX24.callMethod(
+	"crm.contact.get",
+	{
+		ID: contactId
+	}
+);
+```
+
+As a result, we will receive a description of all fields of the new contact.
+
+```json
+{
+    "result": {
+        "ID": "25",
+        "NAME": "New Contact",
+		..., // other fields
+        "EMAIL": [
+            {
+                "ID": "1967",
+                "VALUE_TYPE": "WORK",
+                "VALUE": "work_email@nomail.com",
+                "TYPE_ID": "EMAIL"
+            },
+            {
+                "ID": "1969",
+                "VALUE_TYPE": "HOME",
+                "VALUE": "home_email@nomail.com",
+                "TYPE_ID": "EMAIL"
+            }
+        ]
+    }
+}
+```
+
+### 3. Updating the Email List
+
+To change the email list, we will execute the method [crm.contact.update](../../../api-reference/crm/contacts/crm-contact-update.md).
+
+- `ID` — the identifier of the contact,
+
+- `FIELDS` — an array of fields to be changed. We will pass the `EMAIL` field in the array and the new address values: for the first address, we will specify a new email, and for the second — `DELETE: 'Y'` to remove it.
+
+```javascript
+// preparing an array with new email information
+let arUpdateEmail = [
+ { ID: contactData.EMAIL[0].ID, VALUE: 'new_work_email@example.com' }, // changing value for the first email
+ { ID: contactData.EMAIL[1].ID, 'DELETE': 'Y' } // removing the second value
+];
+
+// updating the contact
+BX24.callMethod(
+	"crm.contact.update",
+	{
+		ID: contactId,
+		FIELDS: {
+			EMAIL: arUpdateEmail
+		}
+	}
+);
+```
+
+Upon successful update, the method will return `true`.
+
+```json
+{
+    "result": true,
+}
+```
+
+### Full Code Example
+
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    let sEmail1 = Math.floor(Math.random() * (999999999 - 111111111 + 1)) + 111111111 + '@nomail.com';
-    let sEmail2 = Math.floor(Math.random() * (999999999 - 111111111 + 1)) + 111111111 + '@nomail.com';
     let arNewEmail = [
         {
-            'VALUE': sEmail1,
-            'VALUE_TYPE': 'HOME'
+            'VALUE': 'work_email@nomail.com',
+            'VALUE_TYPE': 'WORK'
         },
         {
-            'VALUE': sEmail2,
+            'VALUE': 'home_email@nomail.com',
             'VALUE_TYPE': 'HOME'
         }
     ];
 
+    // Step 1: Create a contact
     BX24.callMethod(
         "crm.contact.add",
         {
             fields: {
-                'NAME': 'CHANGE EMAIL',
+                'NAME': 'New Contact',
                 'EMAIL': arNewEmail
             }
         },
         function(newContact) {
             if (newContact.error()) {
-                console.error('error create contact ' + newContact.error_description());
+                console.error('Error creating contact: ' + newContact.error_description());
             } else {
+                let contactId = newContact.data().result;
+
+                // Step 2: Retrieve contact data
                 BX24.callMethod(
                     "crm.contact.get",
                     {
-                        id: newContact.data().result
+                        ID: contactId
                     },
                     function(newContactData) {
-                        if (newContactData.data().result.EMAIL[0] && newContactData.data().result.EMAIL[1]) {
+
+                        // Check for email presence
+                        if (newContactData.data().result.EMAIL?.length >= 2) {
+                            let contactData = newContactData.data().result;
+
+                            // Step 3: Prepare email update
                             let arUpdateEmail = [
                                 {
-                                    'ID': newContactData.data().result.EMAIL[0].ID,
-                                    'VALUE': Math.floor(Math.random() * (999999999 - 111111111 + 1)) + 111111111 + '@nomail.com'
+                                    'ID': contactData.EMAIL[0].ID,
+                                    'VALUE': 'new_work_email@example.com'
                                 },
                                 {
-                                    'ID': newContactData.data().result.EMAIL[1].ID,
-                                    'VALUE': ''
+                                    'ID': contactData.EMAIL[1].ID,
+                                    'DELETE': 'Y'
                                 }
                             ];
+
+                            // Updating contact
                             BX24.callMethod(
                                 "crm.contact.update",
                                 {
-                                    id: newContactData.data().result.ID,
-                                    fields: {
+                                    ID: contactId,
+                                    FIELDS: {
                                         'EMAIL': arUpdateEmail
                                     }
                                 },
                                 function(resultContactChange) {
                                     if (resultContactChange.error()) {
-                                        console.error(resultContactChange.error());
+                                        console.error('Error updating contact:', resultContactChange.error());
                                     } else {
-                                        console.dir(resultContactChange.data());
+                                        console.log('Contact successfully updated');
                                     }
                                 }
                             );
+                        } else {
+                            console.warn('Not enough emails found for update.');
                         }
                     }
                 );
@@ -81,139 +238,250 @@ Examples of adding, changing, and deleting phone numbers and e-mails using a con
 
 - PHP
 
-    {% note info %}
-
-    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
-
-    {% endnote %}
-
     ```php
     <?php
-    $sEmail1 = rand(111111111, 999999999) . '@nomail.com';
-    $sEmail2 = rand(111111111, 999999999) . '@nomail.com';
-    $arNewEmail = [
-        [
-            'VALUE' => $sEmail1,
-            'VALUE_TYPE' => 'HOME'
-        ],
-        [
-            'VALUE' => $sEmail2,
-            'VALUE_TYPE' => 'HOME'
-        ]
+    require_once('crest.php');
+
+    // Preparing an array of emails in multifield format
+    $newEmail = [
+        ['VALUE' => 'work_email@nomail.com', 'VALUE_TYPE' => 'WORK'],
+        ['VALUE' => 'home_email@nomail.com', 'VALUE_TYPE' => 'HOME']
     ];
-    //create contact with phone
-    $newContact = CRest::call(
-        'crm.contact.add',
-        [
-            'fields' => [
-                'NAME' => 'CHANGE EMAIL',
-                'EMAIL' => $arNewEmail
-            ]
+
+    // Creating a contact
+    $newContact = CRest::call('crm.contact.add', [
+        'fields' => [
+            'NAME' => 'New Contact',
+            'EMAIL' => $newEmail
         ]
-    );
-    if ($newContact['result'] > 0) {
-        //get contact with email
-        $newContactData = CRest::call(
-            'crm.contact.get',
-            [
-                'id' => $newContact['result']
-            ]
-        );
-        //change 1 email and delete 2 email
-        if (!empty($newContactData['result']['EMAIL'][0]) && !empty($newContactData['result']['EMAIL'][1])) {
-            $arUpdateEmail = [
-                [//change
-                'ID' => $newContactData['result']['EMAIL'][0]['ID'],
-                'VALUE' => rand(111111111, 999999999) . '@nomail.com'
-                ],
-                [//delete
-                'ID' => $newContactData['result']['EMAIL'][1]['ID'],
-                'VALUE' => ''//empty value for delete email
-                ],
+    ]);
+
+    if (!empty($newContact['result'])) {
+        $contactId = $newContact['result'];
+
+        // Step 2: Retrieve contact data
+        $contactData = CRest::call('crm.contact.get', ['ID' => $contactId]);
+
+        if (!empty($contactData['result']['EMAIL'][0]) && !empty($contactData['result']['EMAIL'][1])) {
+            // Step 3: Prepare email update
+            $updateEmail = [
+                ['ID' => $contactData['result']['EMAIL'][0]['ID'], 'VALUE' => 'new_work_email@example.com'],
+                ['ID' => $contactData['result']['EMAIL'][1]['ID'], 'DELETE' => 'Y'] // Removing second email
             ];
-            $resultContactChange = CRest::call(
-                'crm.contact.update',
-                [
-                    'id' => $newContactData['result']['ID'],
-                    'fields' => [
-                        'EMAIL' => $arUpdateEmail
-                    ]
-                ]
-            );
+
+            // Updating contact
+            $changeResult = CRest::call('crm.contact.update', [
+                'ID' => $contactId,
+                'FIELDS' => ['EMAIL' => $updateEmail]
+            ]);
+
+            if (!empty($changeResult['error'])) {
+                echo 'Error updating contact: ' . $changeResult['error_description'];
+            } else {
+                echo 'Contact successfully updated.';
+            }
+        } else {
+            echo 'No emails found for update.';
         }
     } else {
-        echo 'error create contact ' . $newContact['error_description'];
+        echo 'Error creating contact: ' . $newContact['error_description'];
     }
     ?>
     ```
 
 {% endlist %}
 
-## Working with Phone Numbers
+## Example with Phone Numbers
+
+Similarly, you can update the list of phone numbers for the contact `PHONE`.
+
+### 1. Adding a Contact with Two Phone Numbers
+
+To create a contact in CRM, we will execute the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md). In the `fields` object, we will pass the fields:
+
+- `NAME` — the name of the contact,
+
+- `PHONE` — an array of phone numbers from `arNewPhone`.
+
+{% note warning "" %}
+
+Check which required fields are set for contacts in your Bitrix24. All required fields must be passed to the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md).
+
+{% endnote %}
+
+```javascript
+// preparing phones in crm_multifield format
+let arNewPhone = [
+	{ VALUE: '89991234567', VALUE_TYPE: 'WORK' },
+	{ VALUE: '89997654321', VALUE_TYPE: 'HOME' }
+];
+// creating a new contact
+BX24.callMethod(
+	"crm.contact.add",
+	{
+		fields: {
+			NAME: 'New Contact',
+			PHONE: arNewPhone
+		}
+	}
+);
+```
+
+As a result, we will receive the identifier of the new contact, for example, `25`.
+
+```json
+{
+	"result": 25
+}
+```
+
+### 2. Retrieving the Contact for Editing
+
+To get information about the created contact, we use the method [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md) with the identifier `ID` obtained from the previous request.
+
+```javascript
+let contactId = newContact.data().result; // saving the ID of the created contact in a variable
+// retrieving information about the contact by ID
+BX24.callMethod(
+	"crm.contact.get",
+	{
+		ID: contactId
+	}
+);
+```
+
+As a result, we will receive a description of all fields of the new contact.
+
+```json
+{
+    "result": {
+        "ID": "25",
+        "NAME": "New Contact",
+		..., // other fields
+        "PHONE": [
+            {
+                "ID": "1971",
+                "VALUE_TYPE": "WORK",
+                "VALUE": "89991234567",
+                "TYPE_ID": "PHONE"
+            },
+            {
+                "ID": "1973",
+                "VALUE_TYPE": "HOME",
+                "VALUE": "89997654321",
+                "TYPE_ID": "PHONE"
+            }
+        ]
+    }
+}
+```
+
+### 3. Updating the Phone List
+
+To change the phone list, we will execute the method [crm.contact.update](../../../api-reference/crm/contacts/crm-contact-update.md).
+
+- `ID` — the identifier of the contact,
+
+- `FIELDS` — an array of fields to be changed. We will pass the `PHONE` field in the array and the new phone values: for the first phone, we will specify a new value, and for the second — an empty value to remove it.
+
+```javascript
+// preparing an array with new phone information
+let arUpdatePhone = [
+	{ ID: contactData.PHONE[0].ID, VALUE: '81119876541' },
+	{ ID: contactData.PHONE[1].ID, VALUE: '' }
+ ];
+// updating the contact
+BX24.callMethod(
+	"crm.contact.update",
+	{
+		ID: contactId,
+		FIELDS: {
+			PHONE: arUpdatePhone
+		}
+	}
+);
+```
+
+Upon successful update, the method will return `true`.
+
+```json
+{
+    "result": true,
+}
+```
+
+### Full Code Example
+
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    let sPhone1 = Math.floor(Math.random() * (999999999 - 111111111 + 1)) + 111111111;
-    let sPhone2 = Math.floor(Math.random() * (999999999 - 111111111 + 1)) + 111111111;
     let arNewPhone = [
-        {
-            'VALUE': sPhone1,
-            'VALUE_TYPE': 'HOME'
-        },
-        {
-            'VALUE': sPhone2,
-            'VALUE_TYPE': 'HOME'
-        }
+        { VALUE: '89991234567', VALUE_TYPE: 'WORK' },
+        { VALUE: '89997654321', VALUE_TYPE: 'HOME' }
     ];
 
+    // Step 1: Create a contact
     BX24.callMethod(
         "crm.contact.add",
         {
             fields: {
-                'NAME': 'CHANGE PHONE',
-                'PHONE': arNewPhone
+                NAME: 'New Contact',
+                PHONE: arNewPhone
             }
         },
         function(newContact) {
             if (newContact.error()) {
-                console.error('error create contact ' + newContact.error_description());
+                console.error('Error creating contact: ' + newContact.error_description());
             } else {
+                let contactId = newContact.data().result;
+
+                // Step 2: Retrieve contact data
                 BX24.callMethod(
                     "crm.contact.get",
                     {
-                        id: newContact.data().result
+                        ID: contactId
                     },
-                    function(newContactData) {
-                        if (newContactData.data().result.PHONE[0] && newContactData.data().result.PHONE[1]) {
+                    function(contactData) {
+
+                        // Check for phone presence
+                        if (contactData.data().result.PHONE?.length >= 2) {
+                            let phoneData = contactData.data().result;
+
+                            // Step 3: Prepare phone update
                             let arUpdatePhone = [
                                 {
-                                    'ID': newContactData.data().result.PHONE[0].ID,
-                                    'VALUE': Math.floor(Math.random() * (999999999 - 111111111 + 1)) + 111111111
+                                    ID: phoneData.PHONE[0].ID,
+                                    VALUE: '81119876541'
                                 },
                                 {
-                                    'ID': newContactData.data().result.PHONE[1].ID,
-                                    'VALUE': ''
+                                    ID: phoneData.PHONE[1].ID,
+                                    VALUE: ''
                                 }
                             ];
+
+                            // Updating contact
                             BX24.callMethod(
                                 "crm.contact.update",
                                 {
-                                    id: newContactData.data().result.ID,
-                                    fields: {
-                                        'PHONE': arUpdatePhone
+                                    ID: contactId,
+                                    FIELDS: {
+                                        PHONE: arUpdatePhone
                                     }
                                 },
                                 function(resultContactChange) {
                                     if (resultContactChange.error()) {
-                                        console.error(resultContactChange.error());
+                                        console.error('Error updating contact:', resultContactChange.error());
                                     } else {
-                                        console.dir(resultContactChange.data());
+                                        console.log('Contact successfully updated');
                                     }
                                 }
                             );
+                        } else {
+                            console.warn('Not enough phones found for update.');
                         }
                     }
                 );
@@ -224,68 +492,53 @@ Examples of adding, changing, and deleting phone numbers and e-mails using a con
 
 - PHP
 
-    {% note info %}
-
-    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
-
-    {% endnote %}
-
     ```php
     <?php
-    $sPhone1 = rand(111111111, 999999999);
-    $sPhone2 = rand(111111111, 999999999);
-    $arNewPhone = [
-        [
-            'VALUE' => $sPhone1,
-            'VALUE_TYPE' => 'HOME'
-        },
-        [
-            'VALUE' => $sPhone2,
-            'VALUE_TYPE' => 'HOME'
-        ]
+    require_once('crest.php');
+
+    // Preparing an array of phones in multifield format
+    $newPhone = [
+        ['VALUE' => '89991234567', 'VALUE_TYPE' => 'WORK'],
+        ['VALUE' => '89997654321', 'VALUE_TYPE' => 'HOME']
     ];
-    //create contact with phone
-    $newContact = CRest::call(
-        'crm.contact.add',
-        [
-            'fields' => [
-                'NAME' => 'CHANGE PHONE',
-                'PHONE' => $arNewPhone
-            ]
+
+    // Creating a contact
+    $newContact = CRest::call('crm.contact.add', [
+        'fields' => [
+            'NAME' => 'New Contact',
+            'PHONE' => $newPhone
         ]
-    );
-    if ($newContact['result'] > 0) {
-        //get contact with phone
-        $newContactData = CRest::call(
-            'crm.contact.get',
-            [
-                'id' => $newContact['result']
-            ]
-        );
-        //change 1 phone and delete 2 phone
-        if (!empty($newContactData['result']['PHONE'][0]) && !empty($newContactData['result']['PHONE'][1])) {
-            $arUpdatePhone = [
-                [//change
-                    'ID' => $newContactData['result']['PHONE'][0]['ID'],
-                    'VALUE' => rand(111111111, 999999999)
-                ],
-                [//delete
-                    'ID' => $newContactData['result']['PHONE'][1]['ID'],
-                    'VALUE' => ''//empty value for delete phone
-                ],
+    ]);
+
+    if (!empty($newContact['result'])) {
+        $contactId = $newContact['result'];
+
+        // Step 2: Retrieve contact data
+        $contactData = CRest::call('crm.contact.get', ['ID' => $contactId]);
+
+        if (!empty($contactData['result']['PHONE'][0]) && !empty($contactData['result']['PHONE'][1])) {
+            // Step 3: Prepare phone update
+            $updatePhone = [
+                ['ID' => $contactData['result']['PHONE'][0]['ID'], 'VALUE' => '81119876541'],
+                ['ID' => $contactData['result']['PHONE'][1]['ID'], 'VALUE' => ''] // Removing second phone
             ];
-            $resultContactChange = CRest::call(
-                'crm.contact.update',
-                [
-                    'id' => $newContactData['result']['ID'],
-                    'fields' => [
-                        'PHONE' => $arUpdatePhone
-                    ]
-                ]
-            );
+
+            // Updating contact
+            $changeResult = CRest::call('crm.contact.update', [
+                'ID' => $contactId,
+                'FIELDS' => ['PHONE' => $updatePhone]
+            ]);
+
+            if (!empty($changeResult['error'])) {
+                echo 'Error updating contact: ' . $changeResult['error_description'];
+            } else {
+                echo 'Contact successfully updated.';
+            }
+        } else {
+            echo 'No phones found for update.';
         }
     } else {
-        echo 'error create contact ' . $newContact['error_description'];
+        echo 'Error creating contact: ' . $newContact['error_description'];
     }
     ?>
     ```

@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst Workspace" section
+> Who can execute the method: a user with access to the "Analyst Workspace" section
 
 The method `biconnector.source.delete` removes an existing connection.
 
@@ -10,7 +10,7 @@ A connection can be deleted if it has no datasets.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ A connection can be deleted if it has no datasets.
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -120,14 +120,14 @@ HTTP Status: **200**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-## Possible Error Codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | `ID is missing.` | Identifier is not specified ||
-|| `VALIDATION_INVALID_ID_FORMAT` | `ID has to be a positive integer.` | Invalid ID format ||
-|| `SOURCE_NOT_FOUND` | `Source was not found.` | Source not found ||
-|| `BX_ERROR` | `Cannot delete source. Delete all related datasets first.` | Cannot delete source while related datasets exist ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
+|| `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
+|| `SOURCE_NOT_FOUND` | Source was not found. | Source not found ||
+|| `BX_ERROR` | Cannot delete source. Delete all related datasets first. | Cannot delete source while related datasets exist ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

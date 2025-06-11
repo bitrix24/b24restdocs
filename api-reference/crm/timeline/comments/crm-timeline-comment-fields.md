@@ -1,4 +1,4 @@
-# Get Fields of crm.timeline.comment.fields
+# Get CRM Timeline Comment Fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -64,7 +64,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -137,8 +137,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-03T17:19:01+02:00",
+        "date_finish": "2024-05-03T17:19:01+02:00",
         "operating": 0
     }
 }
@@ -184,12 +184,12 @@ Values:
 || **COMMENT**
 [`string`](../../../data-types.md) | Comment text ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. Array of values described by [rules](../../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
+[`attached_diskfile`](../../../data-types.md) | List of files. Array of values described by [rules](../../../files/how-to-upload-files.md) ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

@@ -6,8 +6,8 @@
 
 In Bitrix24, there are two types of file fields:
 
-* **File.** The field is not linked to the drive; files are uploaded directly through the [Base64 format string](../../api-reference/bx24-js-sdk/how-to-call-rest-methods/files.md).
-* **File (drive).** The field is linked to the drive, and it stores the ID of the drive object. The Base64 format is not processed in this field, so the file must first be uploaded to the Bitrix24 drive.
+* **File.** This field is not linked to the drive; files are uploaded directly through the [Base64 format string](../../api-reference/files/how-to-upload-files.md).
+* **File (drive).** This field is linked to the drive, and it stores the ID of the drive object. The Base64 format is not processed in this field, so the file must first be uploaded to the Bitrix24 drive.
 
 To create a comment in a task and attach a file, we will sequentially execute two methods:
 
@@ -16,7 +16,7 @@ To create a comment in a task and attach a file, we will sequentially execute tw
 
 ## 1. Uploading a File to the Bitrix24 Drive
 
-To upload a file to the drive, we use the method [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) with the following parameters:
+To upload a file to the drive, we use the [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) method with the following parameters:
 
 * `id` — we specify the value `1739` — the identifier of the drive folder where we are uploading the file.
 * `data` — we specify the file name `NAME`, under which the file will be saved on the Bitrix24 drive.
@@ -24,7 +24,7 @@ To upload a file to the drive, we use the method [disk.folder.uploadfile](../../
 
 Uploading the file to the drive is a necessary step, as the `UF_FORUM_MESSAGE_DOC` field in comments only accepts the IDs of drive files.
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -71,7 +71,8 @@ Uploading the file to the drive is a necessary step, as the `UF_FORUM_MESSAGE_DO
 As a result of uploading the file to the drive, we received two different file ID values:
 
 * `FILE_ID`: `28073` — the internal file ID value.
-* `ID`: `6687` — the ID of the drive object; this value is used in methods for working with fields of the "file (drive)" type. If the request to change the "file (drive)" field passes the `FILE_ID` value, the file will either not be attached to the task because there is no drive object with that ID, or the wrong file will be attached.
+* `ID`: `6687` — the drive object ID; this value is used in methods for working with fields of the "file (drive)" type. 
+If the request to change the "file (drive)" field passes the `FILE_ID` value, the file will either not be attached to the task because there is no drive object with that ID, or the wrong file will be attached.
 
 ```json
 {
@@ -93,19 +94,19 @@ As a result of uploading the file to the drive, we received two different file I
         "UPDATED_BY": "1",
         "DELETED_BY": null,
         "DOWNLOAD_URL": "https://your-domain.bitrix24.com/rest/download.json?sessid=9dd90ed5a58ccc41af81f5f0043739db&token=disk%7CaWQ9NjY4NyZfPTJ5ZXdvN2Fsb09SMGw1b0FHTkRMSGR5MFJkN1pLTjNS%7CImRvd25sb2FkfGRpc2t8YVdROU5qWTROeVpmUFRKNVpYZHZOMkZzYjA5U01HdzFiMEZIVGtSTVNHUjVNRkprTjFwTFRqTlN8OWRkOTBlZDVhNThjY2M0MWFmODFmNWYwMDQzNzM5ZGIi.Lup1vDbibL6twiCPfCMFnLSoDLleNX0cfMHGv5PFaJw%3D",
-        "DETAIL_URL": "https://your-domain.bitrix24.com/company/personal/user/1/disk/file/Created files/New test folder/file.pdf"
+        "DETAIL_URL": "https://your-domain.bitrix24.com/company/personal/user/1/disk/file/Created files/New folder for testing the process/file.pdf"
     }
 }
 ```
 
 ## 2. Creating a Comment and Attaching a File
 
-To create a comment in a task, we use the method [task.commentitem.add](../../api-reference/tasks/comment-item/task-comment-item-add.md) with the following parameters:
+To create a comment in a task, we use the [task.commentitem.add](../../api-reference/tasks/comment-item/task-comment-item-add.md) method with the following parameters:
 
-* `TASKID` — the ID of the task, a required field. Without the task ID, the comment will not be created. To get the task ID, we use the method [tasks.task.list](../../api-reference/tasks/tasks-task-list.md).
+* `TASKID` — the ID of the task, a required field. Without the task ID, the comment will not be created. To obtain the task ID, we use the [tasks.task.list](../../api-reference/tasks/tasks-task-list.md) method.
 * `AUTHOR_ID` — the ID of the comment author. This parameter can be omitted, in which case the author will automatically be the employee from whose account the request is made.
 * `POST_MESSAGE` — the text of the comment.
-* `UF_FORUM_MESSAGE_DOC` — we specify the value `n6687`. This is the ID of the drive file from the previous method's result, to which we add the prefix `n` for uploading the file to the field.
+* `UF_FORUM_MESSAGE_DOC` — we specify the value `n6687`. This is the drive file ID from the result of the previous method, to which we add the prefix `n` for uploading the file to the field.
 
 {% list tabs %}
 
@@ -157,7 +158,7 @@ We created a comment with ID `9393`.
 }
 ```
 
-The received result does not contain information about the file attached to the comment. To check if the file was successfully attached, we will execute the method [task.commentitem.get](../../api-reference/tasks/comment-item/task-comment-item-get.md).
+In the received result, there is no information about the file attached to the comment. To check if the file was successfully attached, we will execute the [task.commentitem.get](../../api-reference/tasks/comment-item/task-comment-item-get.md) method.
 
 ## Code Example
 
@@ -191,7 +192,7 @@ The received result does not contain information about the file attached to the 
                 if (result.error()) {
                     console.error('Error uploading file:', result.error());
                 } else {
-                    console.log('File uploaded successfully!', result.data());
+                    console.log('File successfully uploaded!', result.data());
                     var fileId = result.data().ID; // Using ID from the result
                     createCommentWithFile(fileId);
                 }
@@ -221,7 +222,7 @@ The received result does not contain information about the file attached to the 
                 if (result.error()) {
                     console.error('Error creating comment:', result.error());
                 } else {
-                    console.log('Comment created successfully!', result.data());
+                    console.log('Comment successfully created!', result.data());
                 }
             }
         );
@@ -266,7 +267,7 @@ The received result does not contain information about the file attached to the 
         if (isset($result['error'])) {
             echo 'Error uploading file: ' . $result['error'];
         } else {
-            echo 'File uploaded successfully!';
+            echo 'File successfully uploaded!';
             $fileId = $result['result']['ID']; // Using ID from the result
             createCommentWithFile($fileId);
         }
@@ -295,7 +296,7 @@ The received result does not contain information about the file attached to the 
         if (isset($result['error'])) {
             echo 'Error creating comment: ' . $result['error'];
         } else {
-            echo 'Comment created successfully!';
+            echo 'Comment successfully created!';
         }
     }
 

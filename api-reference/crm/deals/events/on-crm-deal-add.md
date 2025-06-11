@@ -1,12 +1,12 @@
-# Event for Creating a Deal onCrmDealAdd
+# Event when creating a deal onCrmDealAdd
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALADD` will trigger upon the creation of a deal.
+The event `ONCRMDEALADD` will trigger when a deal is created.
 
-## What the Handler Receives
+## What the handler receives
 
 Data is sent as a POST request {.b24-info}
 
@@ -53,7 +53,7 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of sending the event from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -73,7 +73,7 @@ The structure is described [below](#auth) ||
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - no response in case of error
 - No examples in other languages
 
@@ -43,16 +43,16 @@ https://my.bitrix24.com/rest/log.blogpost.add.json?POST_MESSAGE=Hello%2C%20world
 
 #|
 || **Parameter** | **Description** ||
-|| **USER_ID** | ID of the message author (optional, defaults to the current user; other values are available only to the administrator in the on-premise version). ||
-|| **POST_MESSAGE** | Message text. ||
-|| **POST_TITLE** | Message title. ||
-|| **DEST** | List of recipients who will have the right to view the message. Possible values for array elements:
+|| **USER_ID** | ID of the message author (optional, defaults to the current user, other values are available only to the administrator in the on-premise version). ||
+|| **POST_MESSAGE** | The text of the message. ||
+|| **POST_TITLE** | The title of the message. ||
+|| **DEST** | A list of recipients who will have the right to view the message. Possible values for array elements:
 
 {% include notitle [message recipients](./_includes/log-recepients.md) %}
 
-Default value is `['UA']` ||
-|| **SPERM** | List of recipients who will have the right to view the message (deprecated). Similar to `DEST` ||
-|| **FILES** | Files, an array of values described by the rules provided [here](../bx24-js-sdk/how-to-call-rest-methods/files.md).||
+Default value - `['UA']` ||
+|| **SPERM** | A list of recipients who will have the right to view the message (deprecated). Similar to `DEST` ||
+|| **FILES** | Files, an array of values described by [rules](../files/how-to-upload-files.md). ||
 || **IMPORTANT** | Defaults to N. The feed message is published as "important." ||
 || **IMPORTANT_DATE_END** | Specifies the date/time value until which the message will be considered important. ||
 |#
@@ -104,4 +104,4 @@ Default value is `['UA']` ||
 
 ## See also
 
-[Using the REST API method log.blogpost.add](http://dev.1c-bitrix.com/community/blogs/wladart/rest_logblogpostadd.php) (developer blog)
+[Using the REST API method log.blogpost.add](http://dev.quickbooks.com/community/blogs/wladart/rest_logblogpostadd.php) (developer blog)

@@ -16,7 +16,7 @@ It is recommended to pass the complete set of address fields when updating the a
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the contact to be changed.
+[`integer`][1] | Identifier of the contact to be updated.
 
 The identifier can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
 || **fields***
@@ -39,7 +39,7 @@ The list of available fields is described [below](#parameter-fields).
 
 An incorrect field in `fields` will be ignored.
 
-Only those fields that need to be changed should be passed in `fields`
+Only the fields that need to be changed should be passed in `fields`
 ||
 || **params**
 [`object`][1] | Object containing a set of additional parameters.
@@ -55,7 +55,7 @@ The structure and possible values are described [below](#parameter-params)
 || **HONORIFIC**
 [`crm_status`](../data-types.md) | Salutation.
 
-The list of available salutation types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONORIFIC" }` ||
+The list of available salutation types can be obtained using [`crm.status.list`][2], applying the filter `{ ENTITY_ID: "HONORIFIC" }` ||
 || **NAME**
 [`string`][1] | First name ||
 || **SECOND_NAME**
@@ -68,10 +68,10 @@ The list of available salutation types can be obtained using [`crm.status.list`]
 [`date`][1] | Date of birth ||
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | Type of contact.
-The list of available contact types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "CONTACT_TYPE" }` ||
+The list of available contact types can be obtained using [`crm.status.list`][2], applying the filter `{ ENTITY_ID: "CONTACT_TYPE" }` ||
 || **SOURCE_ID**
 [`crm_status`](../data-types.md) | Source
-The list of available source types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "SOURCE" }` ||
+The list of available source types can be obtained using [`crm.status.list`][2], applying the filter `{ ENTITY_ID: "SOURCE" }` ||
 || **SOURCE_DESCRIPTION**
 [`string`][1] | Additional information about the source ||
 || **POST**
@@ -79,11 +79,11 @@ The list of available source types can be obtained using [`crm.status.list`][2] 
 || **COMMENTS**
 [`string`][1] | Comment. Supports bb-codes ||
 || **OPENED**
-[`boolean`][1] | Is it available to everyone. Possible values:
+[`boolean`][1] | Is it available to everyone? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **EXPORT**
-[`boolean`][1] | Is the contact participating in the export. Possible values:
+[`boolean`][1] | Is the contact participating in the export? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **ASSIGNED_BY_ID**
@@ -97,13 +97,13 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, and others) ||
+[`string`][1] | Advertising system (Google Ads, Facebook Ads, etc.) ||
 || **UTM_MEDIUM**
 [`string`][1] | Type of traffic. Possible values:
 - `CPC` — ads
 - `CPM` — banners ||
 || **UTM_CAMPAIGN**
-[`string`][1] | Designation of the advertising campaign ||
+[`string`][1] | Advertising campaign designation ||
 || **UTM_CONTENT**
 [`string`][1] | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
@@ -120,17 +120,19 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 [`crm_multifield[]`](../data-types.md) | Links. Service field ||
 ||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`.
 
-Depending on the portal settings, contacts may have a set of custom fields of specific types.
+Depending on the account settings, contacts may have a set of custom fields of defined types.
+
+To change file fields, it is recommended to use the method [crm.item.update](../universal/crm-item-update.md).
 
 A custom field can be added to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md) ||
 ||**PARENT_ID_...** | Relationship fields.
 
-If there are SPA related to contacts on the portal, for each such SPA there is a field that stores the relationship between this SPA and the contact. The field itself stores the identifier of the item of that SPA.
+If there are SPAs related to contacts in the account, for each such SPA there is a field that stores the relationship between this SPA and the contact. The field itself stores the identifier of the element of that SPA.
 
-For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the item of this SPA related to the current contact ||
+For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the element of this SPA related to the current contact ||
 |#
 
-**Fields for external data sources**
+**Fields for external data source relationships**
 
 If the contact was created by an external system, then:
 - the field `ORIGINATOR_ID` stores the string identifier of that system
@@ -141,11 +143,11 @@ If the contact was created by an external system, then:
 || **Name**
 `type` | **Description** ||
 || **ORIGINATOR_ID**
-[`string`][1] | Identifier of the external system that is the source of data about this contact ||
+[`string`][1] | Identifier of the external system that is the data source for this contact ||
 || **ORIGIN_ID**
 [`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system.
 
-If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will overwrite the data ||
+If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 || **ORIGIN_VERSION**
 [`string`][1] | Version of the original ||
 |#
@@ -168,7 +170,7 @@ Address fields in the contact are deprecated and are only used in compatibility 
 || **ADDRESS_REGION**
 [`string`][1] | Region ||
 || **ADDRESS_PROVINCE**
-[`string`][1] | Area ||
+[`string`][1] | Province ||
 || **ADDRESS_COUNTRY**
 [`string`][1] | Country ||
 || **ADDRESS_COUNTRY_CODE**
@@ -183,13 +185,13 @@ Address fields in the contact are deprecated and are only used in compatibility 
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`][1] | Whether to register the contact update event in the activity stream. Possible values:
+[`boolean`][1] | Should the contact update event be registered in the activity stream? Possible values:
 - `Y` — yes
 - `N` — no
 
 Default is `N` ||
 || **REGISTER_HISTORY_EVENT**
-[`boolean`][1] | Whether to register the contact update in history. Possible values:
+[`boolean`][1] | Should the contact update be registered in history? Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -296,7 +298,7 @@ Update contact with `id = 43`
     echo '</PRE>';
     ```
 
-- B24-PHP-SDK
+- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -412,7 +414,7 @@ Let’s say there are the following values for the `PHONE` field:
 ]
 ```
 
-Consider ways to delete all values except the phone with `ID = 225`:
+Let’s consider ways to delete all values except for the phone with `ID = 225`:
 
 ```json
 {
@@ -468,7 +470,7 @@ Example of adding a new value `55555`:
 
 ### Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -497,7 +499,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -512,11 +514,11 @@ HTTP status: **400**
 
 #|
 || **Code**      | **Description** | **Value** ||
-|| `-`          | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
-|| `-`          | `Parameter 'params' must be array` | The parameter `params` is not an object ||
+|| `-`          | `Parameter 'fields' must be array` | The `fields` parameter is not an object ||
+|| `-`          | `Parameter 'params' must be array` | The `params` parameter is not an object ||
 || `-`          | `Access denied` | The user does not have permission to "Edit" contacts ||
 || `-`          | Disk resource exhausted | ||
-|| `ERROR_CORE` | The field `Working e-mail` contains an incorrect address | ||
+|| `ERROR_CORE` | The field `Work e-mail` contains an invalid address | ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
@@ -528,6 +530,7 @@ HTTP status: **400**
 - [{#T}](./crm-contact-list.md)
 - [{#T}](./crm-contact-delete.md)
 - [{#T}](./crm-contact-fields.md)
+- [{#T}](../../../tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
 
 [1]: ../../data-types.md
 [2]: ../status/crm-status-list.md

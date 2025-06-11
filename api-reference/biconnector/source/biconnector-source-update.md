@@ -1,8 +1,8 @@
-# Update Source biconnector.source.update
+# Update biconnector.source.update
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: a user with access to the "Analyst's workspace" section
 
 The method `biconnector.source.update` updates an existing source.
 
@@ -46,7 +46,7 @@ Object format:
 || **active**
 [`boolean`](../../data-types.md) | Activity status of the source ||
 || **settings**
-[`object`](../../data-types.md) | List of parameters for authorization, passed as an object where the key is the `code` of the parameter. 
+[`object`](../../data-types.md) | A list of parameters for authorization, passed as an object where the key is the `code` of the parameter. 
 Parameters can be obtained using the methods [biconnector.connector.list](../connector/biconnector-connector-list.md) or [biconnector.connector.get](../connector/biconnector-connector-get.md) ||
 |#
 
@@ -65,8 +65,8 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
         {
             id: 4,
             fields: {
-                "title": "New Source Name",
-                "description": "Updated Source Description",
+                "title": "New source name",
+                "description": "Updated source description",
                 "active": false,
                 "settings": {
                     "login": "new_admin",
@@ -91,8 +91,8 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
     -d '{
         "id": 4,
         "fields": {
-            "title": "New Source Name",
-            "description": "Updated Source Description",
+            "title": "New source name",
+            "description": "Updated source description",
             "active": false,
             "settings": {
                 "login": "new_admin",
@@ -112,8 +112,8 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
     -d '{
         "id": 4,
         "fields": {
-            "title": "New Source Name",
-            "description": "Updated Source Description",
+            "title": "New source name",
+            "description": "Updated source description",
             "active": false,
             "settings": {
                 "login": "new_admin",
@@ -135,8 +135,8 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
         [
             'id' => 4,
             'fields' => [
-                'title' => 'New Source Name',
-                'description' => 'Updated Source Description',
+                'title' => 'New source name',
+                'description' => 'Updated source description',
                 'active' => false,
                 'settings' => [
                     'login' => 'new_admin',
@@ -195,22 +195,22 @@ HTTP status: **200**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-## Possible Error Codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | `ID is missing.` | Identifier is not specified ||
-|| `VALIDATION_INVALID_ID_FORMAT` | `ID has to be a positive integer.` | Invalid ID format ||
-|| `VALIDATION_FIELDS_NOT_PROVIDED` | `Fields not provided.` | Fields were not passed in the request ||
-|| `VALIDATION_UNKNOWN_PARAMETERS` | `Unknown parameters: #LIST_OF_PARAMS#` | Unknown parameters detected: list ||
-|| `VALIDATION_REQUIRED_FIELD_MISSING` | `Field "#TITLE#" is required.` | Required field #TITLE# was not provided ||
-|| `VALIDATION_READ_ONLY_FIELD` | `Field "#TITLE#" is read only.` | Field #TITLE# is read-only and cannot be modified ||
-|| `VALIDATION_IMMUTABLE_FIELD` | `Field "#TITLE#" is immutable.` | Field #TITLE# is immutable ||
-|| `VALIDATION_INVALID_FIELD_TYPE` | `Field "#TITLE#" must be of type #TYPE#.` | Field #TITLE# must be of type #TYPE# ||
-|| `SOURCE_NOT_FOUND` | `Source was not found.` | Source not found ||
-|| `SOURCE_CREATE_CONNECTION_ERROR` | `Cannot create connection.` | Error creating connection ||
-|| `SOURCE_UPDATE_CONNECTION_ERROR` | `Cannot update connection.` | Error updating connection ||
-|| `BX_ERROR` | `Cannot delete source. Delete all related datasets first.` | Cannot delete source while related datasets exist ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
+|| `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
+|| `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields not passed in the request ||
+|| `VALIDATION_UNKNOWN_PARAMETERS` | Unknown parameters: #LIST_OF_PARAMS# | Unknown parameters detected: list ||
+|| `VALIDATION_REQUIRED_FIELD_MISSING` | Field "#TITLE#" is required. | Required field #TITLE# not provided ||
+|| `VALIDATION_READ_ONLY_FIELD` | Field "#TITLE#" is read only. | Field #TITLE# is read-only and cannot be modified ||
+|| `VALIDATION_IMMUTABLE_FIELD` | Field "#TITLE#" is immutable. | Field #TITLE# is immutable ||
+|| `VALIDATION_INVALID_FIELD_TYPE` | Field "#TITLE#" must be of type #TYPE#. | Field #TITLE# must be of type #TYPE# ||
+|| `SOURCE_NOT_FOUND` | Source was not found. | Source not found ||
+|| `SOURCE_CREATE_CONNECTION_ERROR` | Cannot create connection. | Error creating connection ||
+|| `SOURCE_UPDATE_CONNECTION_ERROR` | Cannot update connection. | Error updating connection ||
+|| `BX_ERROR` | Cannot delete source. Delete all related datasets first. | Cannot delete source while related datasets exist ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

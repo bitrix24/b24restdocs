@@ -48,30 +48,30 @@ This method adds a custom field.
 || **XML_ID**
 [`string`](../../data-types.md)| External code ||
 || **SORT**
-[`integer`](../../data-types.md)| Sorting order ||
+[`integer`](../../data-types.md)| Sort order ||
 || **MULTIPLE**
-[`boolean`](../../data-types.md)| Is the field multiple? Possible values:
+[`boolean`](../../data-types.md)| Whether the field is multiple. Possible values:
 - `Y` — yes
 - `N` — no
  ||
 || **MANDATORY**
-[`boolean`](../../data-types.md)| Is the custom field mandatory? Possible values:
+[`boolean`](../../data-types.md)| Whether the custom field is mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
-[`boolean`](../../data-types.md)| Should the field be shown in the list filter? Possible values:
+[`boolean`](../../data-types.md)| Whether to show the field in the list filter. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_IN_LIST**
-[`boolean`](../../data-types.md)| Should the field be shown in the list? Possible values:
+[`boolean`](../../data-types.md)| Whether to show the field in the list. Possible values:
 - `Y` — yes
 - `N` — no ||
 - || **EDIT_IN_LIST**
-[`boolean`](../../data-types.md)| Can the field be edited in the list? Possible values:
+[`boolean`](../../data-types.md)| Whether to edit the field in the list. Possible values:
 - `Y` — yes
 - `N` — no ||
 - || **IS_SEARCHABLE**
-[`boolean`](../../data-types.md)| Is the field searchable? Possible values:
+[`boolean`](../../data-types.md)| Whether the field is searchable. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SETTINGS**
@@ -89,7 +89,7 @@ This method adds a custom field.
 || **LABEL**
 [`string`](../../data-types.md)| Default name of the custom field.
 
-The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided in them ||
+The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided for them ||
 |#
 
 ### Parameter SETTINGS {#settings}
@@ -242,7 +242,7 @@ Each type of custom field has its own set of additional settings.
 
     Default is `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../data-types.md) | Show elements with the active flag. Possible values:
+    [`boolean`](../../data-types.md) | Whether to show items with the active flag. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -299,7 +299,7 @@ Each type of custom field has its own set of additional settings.
 
 {% note info "" %}
 
-If you need to create a custom field with an added custom type via the API, you must specify `rest_<application_number>_<USER_TYPE_ID of added type>` in the `USER_TYPE_ID` field. For example, `rest_436278_test_type`.
+If you need to create a custom field with an added custom type via the API, the `USER_TYPE_ID` field must specify `rest_<app_number>_<added_type_USER_TYPE_ID>`. For example, `rest_436278_test_type`.
 
 {% endnote %}
 
@@ -315,21 +315,21 @@ If you need to create a custom field with an added custom type via the API, you 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{
-        "fields": {
-            "USER_TYPE_ID": "string",
-            "FIELD_NAME": "MY_TEST_FIELD_STR",
-            "XML_ID": "MY_TEST_FIELD_XML",
-            "MULTIPLE": "Y",
-            "SHOW_FILTER": "Y",
+    -d '{"fields": {
+            "FIELD_NAME": "UF_USER_DEALS",
+            "USER_TYPE_ID": "crm",
+            "XML_ID": "UF_CRM_DEALS",
             "SORT": 100,
-            "LIST_FILTER_LABEL": "Title",
-            "LIST_COLUMN_LABEL": "List Title",
-            "EDIT_FORM_LABEL": "Title",
-            "ERROR_MESSAGE": "Title",
-            "HELP_MESSAGE": "Title",
+            "MULTIPLE": "Y",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
             "SETTINGS": {
-                "DEFAULT_VALUE": "default"
+                "DEAL": "Y"
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "Binding to CRM deals"
             }
         }
     }' \
@@ -343,19 +343,20 @@ If you need to create a custom field with an added custom type via the API, you 
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields": {
-            "USER_TYPE_ID": "string",
-            "FIELD_NAME": "MY_TEST_FIELD_STR",
-            "XML_ID": "MY_TEST_FIELD_XML",
-            "MULTIPLE": "Y",
-            "SHOW_FILTER": "Y",
+            "FIELD_NAME": "UF_USER_DEALS",
+            "USER_TYPE_ID": "crm",
+            "XML_ID": "UF_CRM_DEALS",
             "SORT": 100,
-            "LIST_FILTER_LABEL": "Title",
-            "LIST_COLUMN_LABEL": "List Title",
-            "EDIT_FORM_LABEL": "Title",
-            "ERROR_MESSAGE": "Title",
-            "HELP_MESSAGE": "Title",
+            "MULTIPLE": "Y",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
             "SETTINGS": {
-                "DEFAULT_VALUE": "default"
+                "DEAL": "Y"
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "Binding to CRM deals"
             }
         },
         "auth": "**put_access_token_here**"
@@ -370,19 +371,20 @@ If you need to create a custom field with an added custom type via the API, you 
         'user.userfield.add', 
         {
             fields: {
-                USER_TYPE_ID: 'string',
-                FIELD_NAME: 'MY_TEST_FIELD_STR',
-                XML_ID: 'MY_TEST_FIELD_XML',
-                MULTIPLE: 'Y',
-                SHOW_FILTER: 'Y',
+                FIELD_NAME: "UF_USER_DEALS",
+                USER_TYPE_ID: "crm",
+                XML_ID: "UF_CRM_DEALS",
                 SORT: 100,
-                LIST_FILTER_LABEL: 'Title',
-                LIST_COLUMN_LABEL: 'List Title',
-                EDIT_FORM_LABEL: 'Title',
-                ERROR_MESSAGE: 'Title',
-                HELP_MESSAGE: 'Title',
+                MULTIPLE: "Y",
+                MANDATORY: "N",
+                SHOW_FILTER: "N",
+                SHOW_IN_LIST: "Y",
+                EDIT_IN_LIST: "Y",
                 SETTINGS: {
-                    DEFAULT_VALUE: 'default',
+                    DEAL: "Y",
+                },
+                EDIT_FORM_LABEL: {
+                    en: "Binding to CRM deals"
                 },
             },
         },
@@ -405,20 +407,21 @@ If you need to create a custom field with an added custom type via the API, you 
         'user.userfield.add',
         [
             'fields' => [
-                'USER_TYPE_ID' => 'string',
-                'FIELD_NAME' => 'MY_TEST_FIELD_STR',
-                'XML_ID' => 'MY_TEST_FIELD_XML',
-                'MULTIPLE' => 'Y',
-                'SHOW_FILTER' => 'Y',
+                'FIELD_NAME' => 'UF_USER_DEALS',
+                'USER_TYPE_ID' => 'crm',
+                'XML_ID' => 'UF_CRM_DEALS',
                 'SORT' => 100,
-                'LIST_FILTER_LABEL' => 'Title',
-                'LIST_COLUMN_LABEL' => 'List Title',
-                'EDIT_FORM_LABEL' => 'Title',
-                'ERROR_MESSAGE' => 'Title',
-                'HELP_MESSAGE' => 'Title',
+                'MULTIPLE' => 'Y',
+                'MANDATORY' => 'N',
+                'SHOW_FILTER' => 'N',
+                'SHOW_IN_LIST' => 'Y',
+                'EDIT_IN_LIST' => 'Y',
                 'SETTINGS' => [
-                    'DEFAULT_VALUE' => 'default',
-                ]
+                    'DEAL' => 'Y',
+                ],
+                'EDIT_FORM_LABEL' => [
+                    'en' => 'Binding to CRM deals'
+                ],
             ]
         ]
     );

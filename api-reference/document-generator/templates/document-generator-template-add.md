@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ The content of the file (parameter `file`) can be passed in two ways:
 - In a POST request encoded in *base64* (`fields[file]`);
 - Without encoding in *multipart/form-data* (just `file`);
 
-Since the interface must be implemented independently, visibility settings (parameter `fields[users]`) are only needed for the application itself. Similarly, the sort index (parameter `fields[sort]`) and activity (parameter `fields[active]`) are also required.
+Since the interface must be implemented independently, visibility settings (parameter `fields[users]`) are only needed for the application itself. Similarly, the sort index (parameter `fields[sort]`) and activity (parameter `fields[active]`).
 
 All templates created through this method are linked to the rest module and the sole provider `\Bitrix\DocumentGenerator\DataProvider\Rest`.
 
@@ -37,22 +37,22 @@ All templates created through this method are linked to the rest module and the 
 || **fields** | Array of template fields. ||
 |#
 
-## Parameters fields
+## fields Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **name**^*^ | Template name. ||
-|| **file**^*^ | File content encoded in `base64` (required). Alternatively, the file content can be passed in `multipart/form-data`. In this case, it should not be encoded in `base64`. ||
+|| **file**^*^ | File content encoded in [base64](../../files/how-to-upload-files.md) (required). As an alternative, file content can be passed in `multipart/form-data`. In this case, it should not be encoded in `base64`. ||
 || **code** | Symbolic code of the template. ||
 || **numeratorId**^*^ | Identifier of the numerator. ||
 || **region**^*^ | Country. ||
-|| **users** | Visibility array. Default is empty. ||
-|| **active** | Y/N flag for activity. Default is Y. ||
-|| **withStamps** | Y/N to apply stamps and signatures. Default is N. ||
+|| **users** | Visibility array. By default empty. ||
+|| **active** | Y/N flag for activity. By default Y. ||
+|| **withStamps** | Y/N to apply stamps and signatures. By default N. ||
 || **sort** | Sort index. ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Example
 

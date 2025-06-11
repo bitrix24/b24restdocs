@@ -6,15 +6,15 @@
 
 The methods for working with users in Bitrix24 allow inviting new users, modifying existing user data, and selecting users based on conditions. Applications that utilize these methods in their scenarios must ensure maximum security of user data and only retrieve the information about users that is truly necessary for the application's functionality.
 
-To guarantee the security of users' personal information, there are several levels of access through user management methods:
+To guarantee users the security of their personal information, there are several levels of access through the user management methods:
 
 - **Limited access versions**:
     - `user_brief`, which allows obtaining basic information about users without their contact details and custom fields. This scope is necessary and sufficient for scenarios where displaying the user's full name in the application interface is required.
-    - `user_basic`, which allows obtaining not only basic information but also the contact details of Bitrix24 users. This scope is needed for scenarios related to making calls or sending e-mail messages through your application.
+    - `user_basic`, which allows obtaining not only basic information but also the contact details of Bitrix24 users. This scope is needed for scenarios related to making calls or sending e-mails through your application.
 
 - **Full access versions**:
-    - `user`, which allows access to all standard fields and also enables inviting new users and modifying existing user data.
-    - `user.userfield`, which provides access to methods for working with user custom fields (expands the list of available fields in the reading methods available in the scopes above) for retrieving, adding, modifying, and deleting custom fields.
+    - `user`, which allows retrieving all standard fields and also provides the ability to invite new users and modify existing user data.
+    - `user.userfield`, which grants access to methods for working with user custom fields (expands the list of available fields in the reading methods available in the scopes above) for retrieving, adding, modifying, and deleting custom fields.
 
 {% note info "Attention!" %}
 
@@ -30,7 +30,7 @@ The username length must not exceed 25 characters.
 
 ## Limited Versions of the User Scope
 
-In these scopes, you cannot add/update users: the methods [user.add](./user-add.md) and [user.update](./user-update.md) are not available. In all other methods for obtaining user information, only these fields are accessible (starting from version **Rest 21.600.0**):
+In these scopes, users cannot be added/updated: the methods [user.add](./user-add.md) and [user.update](./user-update.md) are not available. In all other methods for obtaining user information, only these fields are accessible (starting from version **Rest 21.600.0**):
 
 | user_basic | user_brief |
 |------------|------------|
@@ -43,13 +43,12 @@ In these scopes, you cannot add/update users: the methods [user.add](./user-add.
 | TITLE | TITLE |
 | EMAIL | IS_ONLINE |
 | PERSONAL_PHONE | TIME_ZONE |
-| WORK_PHONE | TIME_ZONE_OFFSET |
+| WORK_PHONE | PERSONAL_PHOTO |
 | WORK_POSITION | TIMESTAMP_X |
 | WORK_COMPANY | DATE_REGISTER |
 | IS_ONLINE | PERSONAL_PROFESSION |
 | TIME_ZONE | PERSONAL_GENDER |
 | TIMESTAMP_X | PERSONAL_BIRTHDAY |
-| TIME_ZONE_OFFSET | PERSONAL_PHOTO |
 | DATE_REGISTER | PERSONAL_CITY |
 | LAST_ACTIVITY_DATE | PERSONAL_STATE |
 | PERSONAL_PROFESSION | PERSONAL_COUNTRY |
@@ -123,7 +122,6 @@ In the full version, the following fields are available (starting from version *
 || DATE_REGISTER ||
 || TIME_ZONE ||
 || IS_ONLINE ||
-|| TIME_ZONE_OFFSET ||
 || TIMESTAMP_X ||
 || LAST_ACTIVITY_DATE ||
 || PERSONAL_PROFESSION ||
@@ -186,7 +184,7 @@ In the full version, the following fields are available (starting from version *
 
 #|
 || **Method** | **Description** ||
-|| [user.fields](user-fields.md) | Retrieve a list of user field names ||
+|| [user.fields](user-fields.md) | Retrieve the list of user field names ||
 || [user.current](user-current.md) | Get information about the current user ||
 || [user.add](user-add.md) | Invite a user ||
 || [user.update](user-update.md) | Update user data ||

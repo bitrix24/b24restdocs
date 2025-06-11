@@ -24,36 +24,15 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `lists.element.add` creates a list element. If the element is created successfully, the response is `true`, otherwise *Exception*.
+The method `lists.element.add` creates a list element. If the element is created successfully, the response is `true`; otherwise, an *Exception* is returned.
 
-To upload files to a File (Drive) type field, you need to:
+To upload files in a "File" type field, pass the content in [Base64](../../files/how-to-upload-files.md) format.
+
+To upload files in a "File (Drive)" type field, you need to:
 
 1. use the REST API of the disk module: disk.folder.uploadfile and disk.storage.uploadfile. In the response when uploading these files, you will receive `"FILE_ID": 290`.
 2. Get the list of uploaded file `IDs`.
-3. Then, using the REST API of the lists module, add files to the required field:
-
-```js
-var params = {
-    'IBLOCK_TYPE_ID': 'lists',
-    'IBLOCK_ID': '41',
-    'ELEMENT_CODE': 'element1',
-    'FIELDS': {
-        'NAME': 'Test element 1',
-        'PROPERTY_121': { 'n0':["n1582"]}
-    }
-};
-BX24.callMethod(
-    'lists.element.add',
-    params,
-    function(result)
-    {
-        if(result.error())
-            alert("Error: " + result.error());
-        else
-            alert("Success: " + result.data());
-    }
-);
-```
+3. Then, using the REST API of the lists module, add the files to the required field:
 
 ## Parameters
 
@@ -71,12 +50,12 @@ BX24.callMethod(
 || **LIST_ELEMENT_URL**
 [`unknown`](../../data-types.md) | Template address for list elements ||
 || **FIELDS**
-[`unknown`](../../data-types.md) | Array of fields and values. In the File type field `F`, you cannot pass the file identifier from Drive ||
+[`unknown`](../../data-types.md) | Array of fields and values. In the File type field `F`, you cannot pass the file ID from the Drive ||
 || **SOCNET_GROUP_ID**^*^
 [`unknown`](../../data-types.md) | `id` of the group (required if the list is created for a group); ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -146,4 +125,4 @@ Example of adding a file:
 
 {% endlist %}
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}

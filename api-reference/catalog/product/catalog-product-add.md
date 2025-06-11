@@ -79,7 +79,7 @@ This method adds a product to the trading catalog.
 || **iblockId***
 [`catalog_catalog.id`](../data-types.md)| Identifier of the trading catalog information block.
 
-To get existing identifiers of trading catalog information blocks, use the method [catalog.catalog.list](../catalog/catalog-catalog-list.md)
+To obtain existing identifiers of trading catalog information blocks, use the method [catalog.catalog.list](../catalog/catalog-catalog-list.md)
  ||
 || **name***
 [`string`](../../data-types.md)| Product name ||
@@ -88,7 +88,7 @@ To get existing identifiers of trading catalog information blocks, use the metho
 - `Y` — yes
 - `N` — no
 
-Default value is set to `Y`
+Defaults to `Y`
  ||
 || **code**
 [`string`](../../data-types.md)| Symbolic code ||
@@ -99,19 +99,19 @@ Default value is set to `Y`
 - `Y` — yes
 - `N` — no
 
-Default is set to `N`
+Defaults to `N`
  ||
 || **canBuyZero**
-[`string`](../../data-types.md)| Is it possible to buy the product when out of stock:
+[`string`](../../data-types.md)| Is it possible to purchase the product when out of stock:
 - `Y` — yes
 - `N` — no
 
-Default is set to `N`
+Defaults to `N`
  ||
 || **createdBy**
-[`user.id`](../../data-types.md)| Created by whom ||
+[`user.id`](../../data-types.md)| Created by ||
 || **modifiedBy**
-[`user.id`](../../data-types.md)| Modified by whom ||
+[`user.id`](../../data-types.md)| Modified by ||
 || **dateActiveFrom**
 [`datetime`](../../data-types.md)| Start date of activity ||
 || **dateActiveTo**
@@ -131,28 +131,28 @@ Default is set to `N`
 || **previewPicture**
 [`object`](../../data-types.md)| Picture for the announcement.
 
-Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format.
+Object in the format `{fileData: [value1, value2]}`, where `value1` — file name of the image with extension, `value2` — image in [base64](../../files/how-to-upload-files.md) format.
 
-To delete the image, use the object in the format `{remove: 'Y'}` ||
+To delete the picture, use the object in the format `{remove: 'Y'}` ||
 || **detailPicture**
 [`object`](../../data-types.md)| Detailed picture.
 
-Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format.
+Object in the format `{fileData: [value1, value2]}`, where `value1` — file name of the image with extension, `value2` — image in [base64](../../files/how-to-upload-files.md) format.
 
-To delete the image, use the object in the format `{remove: 'Y'}` ||
+To delete the picture, use the object in the format `{remove: 'Y'}` ||
 || **previewTextType**
 [`string`](../../data-types.md)| Type of description for the announcement. Possible values:
 - `text` — text
 - `html` — HTML
 
-Default is set to `text`
+Defaults to `text`
  ||
 || **detailTextType**
 [`string`](../../data-types.md)| Type of detailed description. Possible values:
 - `text` — text
 - `html` — HTML
 
-Default is set to `text` ||
+Defaults to `text` ||
 || **sort**
 [`integer`](../../data-types.md)| Sorting ||
 || **subscribe**
@@ -161,7 +161,7 @@ Default is set to `text` ||
 - `N` — no
 - `D` — default
 
-Default is set to `D`
+Defaults to `D`
  ||
 || **vatId**
 [`catalog_vat.id`](../data-types.md#catalog_vat)| VAT identifier ||
@@ -170,7 +170,7 @@ Default is set to `D`
 - `Y` — yes
 - `N` — no
 
-Default is set to `N`
+Defaults to `N`
  ||
 || **height**
 [`double`](../../data-types.md)| Height of the product ||
@@ -186,34 +186,34 @@ Default is set to `N`
 - `N` – disabled
 - `D` – default
 
-Default is set to `D`
+Defaults to `D`
  ||
 || **purchasingCurrency**
 [`string`](../../data-types.md)| Currency of the purchasing price.
 
 The list of currencies can be obtained using the method [crm.currency.list](../../crm/currency/crm-currency-list.md).
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
  ||
 || **purchasingPrice**
 [`double`](../../data-types.md)| Purchasing price.
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
  ||
 || **quantity**
 [`double`](../../data-types.md)| Quantity.
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
  ||
 || **quantityReserved**
 [`double`](../../data-types.md)| Reserved quantity.
 
-Not editable when inventory accounting is enabled
+Not editable when inventory management is enabled
  ||
 || **recurSchemeLength**
 [`integer`](../../data-types.md)| Length of the payment period.
 
-Default is set to `0`.
+Defaults to `0`.
 
 Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
  ||
@@ -227,7 +227,7 @@ Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
 - `S` — half-year
 - `Y` — year
 
-Default is set to `D`.
+Defaults to `D`.
 
 Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
  ||
@@ -237,19 +237,21 @@ Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
 Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
  ||
 || **withoutOrder**
-[`string`](../../data-types.md)| Renewal without placing an order. Values:
+[`string`](../../data-types.md)| Extension without placing an order. Values:
 - `Y` — yes
 - `N` — no
 
-Default is set to `N`.
+Defaults to `N`.
 
 Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
  ||
 || **propertyN**
 [`any`](../../data-types.md)| Value of the product property, where `N` — property identifier. There can be multiple properties.
 
-When adding a product, the property value can be specified as a string, number, or as an object `{value: value}`. If the property is multiple, an array of values or objects of the form `{value: value}` is specified
- ||
+When adding a product, the property value can be specified as a string, number, or as an object `{value: value}`. If the property is multiple, an array of values or objects of the form `{value: value}` is specified.
+
+File field uploads are described in the article [How to update and delete files](../../files/how-to-update-files.md)
+||
 |#
 
 ## Code Examples
@@ -373,7 +375,7 @@ When adding a product, the property value can be specified as a string, number, 
                         'detailPicture.png',
                         'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'
                     ]
-                },
+                ],
                 'detailText' => '',
                 'detailTextType' => 'text',
                 'height' => 100,
@@ -384,9 +386,9 @@ When adding a product, the property value can be specified as a string, number, 
                 'previewPicture' => [
                     'fileData' => [
                         'previewPicture.png',
-                        'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC'
+                        'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC'
                     ]
-                },
+                ],
                 'previewText' => '',
                 'previewTextType' => 'text',
                 'purchasingCurrency' => 'USD',
@@ -423,7 +425,7 @@ When adding a product, the property value can be specified as a string, number, 
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -516,7 +518,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -539,7 +541,7 @@ HTTP status: **400**
 || `100` | Parameter `fields` is not specified or is empty ||
 || `0` | Section with the specified identifier does not exist ||
 || `0` | VAT rate with the specified identifier does not exist ||
-|| `0` | The specified currency of the purchasing price does not exist ||
+|| `0` | The specified purchasing price currency does not exist ||
 || `0` | User with the specified identifier who created the product does not exist ||
 || `0` | User with the specified identifier who modified the product does not exist ||
 || `0` | Required fields are not provided ||

@@ -2,17 +2,17 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
-> Quick navigation: [all methods and events](#all-methods)
+> Quick navigation: [all methods](#all-methods)
 
 Currently, there are **two scopes** for working with the document generator:
 - Methods `crm.documentgenerator.*`. The results of these methods are displayed in the CRM interface;
 - Methods `documentgenerator.*`. The results of these methods are only available at the REST level.
 
-You cannot access data from one scope using methods from another:
+Data from one scope cannot be accessed from another:
 - You cannot create a CRM document with a template for REST;
 - You cannot use CRM data when working with methods `documentgenerator.*`.
 
@@ -23,15 +23,15 @@ The following **field types** and their **modifiers** are supported:
 - DATE - dates;
 - NAME - names.
 
-The field types **Money** and **Address** are implemented within the *crm* module, so they cannot be used in the REST of this module. If you need to output such data, you will have to pass it in a pre-formed format.
+The field types **Money** and **Address** are implemented within the *crm* module, so they cannot be used in the REST of this module. If you need to display such data, you will have to pass it in a pre-formed format.
 
-It is possible to use arrays for inserting into tables and repeating blocks.
+It is possible to use arrays for insertion into tables and repeating blocks.
 
 ## Differences in Method Parameters Across Scopes
 
-The methods are identical "from the inside." In fact, the methods `crm.documentgenerator.*` call the methods `documentgenerator.*` after preprocessing the parameters. However, there are several differences:
+“Internally,” the methods are identical. In fact, the methods `crm.documentgenerator.*` call the methods `documentgenerator.*` after preprocessing the parameters. However, there are several differences:
 - For the input of methods `crm.documentgenerator.*`, you need to pass the **ID** of the CRM entity type instead of provider names (parameter `entityTypeId`);
-- For the input of methods `crm.documentgenerator.*`, you need to pass the parameter `entityId` - **ID** of the CRM entity instead of the **value** parameter.
+- For the input of methods `crm.documentgenerator.*`, you need to pass the parameter `entityId` instead of the **value** parameter - the **ID** of the CRM entity.
 
 ## Templates
 
@@ -39,14 +39,14 @@ All templates and documents created by this API are tied to the REST module. You
 
 Only two providers are available for REST:
 
-- `Bitrix\DocumentGenerator\DataProvider\Rest` - must always be specified as the provider for the template;
-- `Bitrix\DocumentGenerator\DataProvider\HashDataProvider` - used for passing data into tables / repeating blocks.
+- `Bitrix\DocumentGenerator\DataProvider\Rest` - must always be specified as the provider for the template
+- `Bitrix\DocumentGenerator\DataProvider\HashDataProvider` - used for passing data into tables / repeating blocks
 
-The binding of the template to the user is not considered by the REST methods themselves. However, it can be used on the application side.
+The binding of the template to the user is not considered by the REST methods. However, it can be utilized on the application side.
 
 ## Numbering
 
-To work with numbering, there are methods `documentgenerator.numerator.*`, described [here](./numerators/index.md). It should be noted that through this scope, you can access all numberers for documents, including those that work in CRM. However, you can only update/delete the numberer that was created through REST.
+For working with numberers, there are methods `documentgenerator.numerator.*`, described [here](./numerators/index.md). It should be noted that through this scope, you can access all numberers for documents, including those that work in CRM. However, you can only update/delete the numberer that was created through REST.
 
 ## List of Regions
 
@@ -62,21 +62,21 @@ Each template is tied to a specific country. The list of countries is fixed and 
 - uk - United Kingdom
 - pl - Poland
 
-Starting from version documentgenerator 18.6.1, it became possible to add your own regions. A [separate section](./region/index.md) has been created for managing them.
+Starting from version documentgenerator 18.6.1, it became possible to add your own regions. A [separate section](./region/index.md) was created for managing them.
 
 ## Summary
 
 **What can be done?**
 
 - Create documents based on templates in .docx file format;
-- Insert lists with an arbitrary number of items into the template through tables or repeating blocks;
+- Insert lists with an arbitrary number of items into the template via tables or repeating blocks;
 - Insert images into the template, including from lists;
 - Insert fields in HTML format with partial preservation of formatting;
-- Create documents, send them, and track views without user involvement (through Automation rules).
+- Create documents, send them, and track views without user involvement (via Automation rules).
 
 **What cannot be done?**
 
-- Insert multiple values for the "file" field type;
+- Insert multiple values for the file type field;
 - Insert tables and images from HTML;
 - Insert vector images;
 - Formatting transfer is not fully executed.
@@ -85,35 +85,20 @@ Starting from version documentgenerator 18.6.1, it became possible to add your o
 
 ### Documents
 
-{% list tabs %}
-
-- Methods
-
-    #| 
-    || **Method** | **Description** ||
-    || [documentgenerator.document.add](./document-generator-document-add.md) | Creates a new document based on a template ||
-    || [documentgenerator.document.delete](./document-generator-document-delete.md) | Deletes a document ||
-    || [documentgenerator.document.enablepublicurl](./document-generator-document-enable-public-url.md) | Enables/disables public link to the document ||
-    || [documentgenerator.document.getfields](./document-generator-document-get-fields.md) | Retrieves a list of document fields ||
-    || [documentgenerator.document.get](./document-generator-document-get.md) | Retrieves a document by its identifier ||
-    || [documentgenerator.document.list](./document-generator-document-list.md) | Retrieves a list of documents ||
-    || [documentgenerator.document.update](./document-generator-document-update.md) | Modifies an existing document ||
-    |#
-
-- Events
-
-    #| 
-    || **Event** | **Description** ||
-    || [onCrmDocumentGeneratorDocumentAdd](./events/on-crm-document-generator-add.md) | On document generation ||
-    || [onCrmDocumentGeneratorDocumentDelete](./events/on-crm-document-generator-document-delete.md) | On document deletion ||
-    || [onCrmDocumentGeneratorDocumentUpdate](./events/on-crm-document-generator-document-update.md) | On document modification ||
-    |#
-
-{% endlist %}
+#|
+|| **Method** | **Description** ||
+|| [documentgenerator.document.add](./document-generator-document-add.md) | Creates a new document based on a template ||
+|| [documentgenerator.document.delete](./document-generator-document-delete.md) | Deletes a document ||
+|| [documentgenerator.document.enablepublicurl](./document-generator-document-enable-public-url.md) | Enables/disables a public link to the document ||
+|| [documentgenerator.document.getfields](./document-generator-document-get-fields.md) | Retrieves a list of document fields ||
+|| [documentgenerator.document.get](./document-generator-document-get.md) | Retrieves a document by its identifier ||
+|| [documentgenerator.document.list](./document-generator-document-list.md) | Retrieves a list of documents ||
+|| [documentgenerator.document.update](./document-generator-document-update.md) | Modifies an existing document ||
+|#
 
 ### Numbering
 
-#| 
+#|
 || **Method** | **Description** ||
 || [documentgenerator.numerator.add](./numerators/document-generator-numerator-add.md) | Adds a numberer ||
 || [documentgenerator.numerator.delete](./numerators/document-generator-numerator-delete.md) | Deletes a numberer ||
@@ -124,7 +109,7 @@ Starting from version documentgenerator 18.6.1, it became possible to add your o
 
 ### Regions
 
-#| 
+#|
 || **Method** | **Description** ||
 || [documentgenerator.region.get](./region/document-generator-region-get.md) | Returns information about a region by its identifier ||
 || [documentgenerator.region.list](./region/document-generator-region-list.md) | Returns a list of regions, both default and custom ||
@@ -135,19 +120,19 @@ Starting from version documentgenerator 18.6.1, it became possible to add your o
 
 ### Roles
 
-#| 
+#|
 || **Method** | **Description** ||
-|| [documentgenerator.role.get](./role/document-generator-role-get.md) | Returns information about a role and its access permissions ||
+|| [documentgenerator.role.get](./role/document-generator-role-get.md) | Provides information about a role and its access permissions ||
 || [documentgenerator.role.list](./role/document-generator-role-list.md) | Returns a list of roles without their access permissions ||
 || [documentgenerator.role.delete](./role/document-generator-role-delete.md) | Deletes a role ||
 || [documentgenerator.role.add](./role/document-generator-role-add.md) | Adds a new role ||
 || [documentgenerator.role.update](./role/document-generator-role-update.md) | Updates roles ||
-|| [documentgenerator.role.fillaccesses](./role/document-generator-role-fill-accesses.md) | Sets the set of roles and their bindings ||
+|| [documentgenerator.role.fillaccesses](./role/document-generator-role-fill-accesses.md) | Sets a set of roles and their bindings ||
 |#
 
 ### Templates
 
-#| 
+#|
 || **Method** | **Description** ||
 || [documentgenerator.template.add](./templates/document-generator-template-add.md) | Uploads a new document template ||
 || [documentgenerator.template.update](./templates/document-generator-template-update.md) | Updates an existing document template ||

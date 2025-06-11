@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,9 +11,9 @@ Some data may be missing here — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
-- no success response
-- no error response
+- parameter requirements are not indicated
+- no response in case of success
+- no response in case of error
 - no examples in other languages
 
 {% endnote %}
@@ -28,10 +28,10 @@ Adds a comment to the specified news feed message.
 
 #|
 || **Parameter** | **Description** | **Version** ||
-|| **USER_ID** | Comment author. A user with regular permissions cannot specify another user's ID as a value. This capability is available only to users with administrator rights | ||
-|| **POST_ID** | Message ID | ||
-|| **TEXT** | Comment text | ||
-|| **FILES** | Files, an array of values described by the rules of [working with files](../how-to-call-rest-api/how-to-upload-files.md) | ||
+|| **USER_ID** | Author of the comment. A user with regular permissions cannot specify another user's ID as a value. This capability is only available to users with administrator rights | ||
+|| **POST_ID** | ID of the message | ||
+|| **TEXT** | Text of the comment | ||
+|| **FILES** | Files, an array of values described by the rules of [working with files](../files/how-to-upload-files.md) | ||
 |#
 
 {% include [Footnote on parameters](../../_includes/required.md) %}

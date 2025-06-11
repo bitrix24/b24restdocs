@@ -1,12 +1,12 @@
-# Upload a New File to the Root of the Storage disk.storage.uploadfile
+# Upload a new file to the root of the storage disk.storage.uploadfile
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not uploaded to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
-- no response in case of an error
+- parameter requirements are not specified
+- no response in case of error
 
 {% endnote %}
 
@@ -29,9 +29,9 @@ The method `disk.storage.uploadfile` uploads a new file to the root of the stora
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Identifier of the storage. ||
+[`unknown`](../../data-types.md) | Storage identifier. ||
 || **fileContent**
-[`unknown`](../../data-types.md) | Similar to `DETAIL_PICTURE` in the example [File Handling](../../bx24-js-sdk/how-to-call-rest-methods/files.md). ||
+[`unknown`](../../data-types.md) | Upload the file in [Base64](../../files/how-to-upload-files.md) format. ||
 || **data**
 [`unknown`](../../data-types.md) | An array describing the file. The required field `NAME` - the name of the new file. ||
 || **generateUniqueName**
@@ -87,11 +87,11 @@ Please note that the list of available `TASK_ID` identifiers for setting permiss
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Response on Success
+## Response on success
 
 > 200 OK
 
-On success, it returns a structure similar to that in [disk.file.get](../file/disk-file-get.md).
+On success, it returns a structure similar to that provided in [disk.file.get](../file/disk-file-get.md).
 
 ```json
 "result": {

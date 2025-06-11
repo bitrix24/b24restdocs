@@ -3,11 +3,11 @@ href: index.md
 items: 
   - name: Overview of Events
     href: index.md
-  - name: On Deal Creation 
+  - name: When Creating a Deal
     href: on-crm-deal-add.md
-  - name: On Deal Update 
+  - name: When Updating a Deal
     href: on-crm-deal-update.md
-  - name: On Deal Deletion 
+  - name: When Deleting a Deal
     href: on-crm-deal-delete.md
-  - name: On Changes in Deal Funnel
+  - name: When Changing the Sales Funnel
     href: on-crm-deal-move-to-category.md

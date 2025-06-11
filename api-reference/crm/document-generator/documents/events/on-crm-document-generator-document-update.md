@@ -1,10 +1,10 @@
-# Event on Regular Deal Template Change onCrmDealRecurringUpdate
+# Event on Document Update `onCrmDocumentGeneratorDocumentUpdate`
 
-> Scope: [`crm`](../../../../scopes/permissions.md)
+> Scope: [`documentgenerator, crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALRECURRINGUPDATE` will trigger when a regular deal template is updated.
+The event `ONCRMDOCUMENTGENERATORDOCUMENTUPDATE` will trigger when an existing document is updated.
 
 ## What the handler receives
 
@@ -12,19 +12,20 @@ Data is sent as a POST request {.b24-info}
 
 ```json
 {
-    "event": "ONCRMDEALRECURRINGUPDATE",
-    "event_handler_id": "679",
+    "event": "ONCRMDOCUMENTGENERATORDOCUMENTUPDATE",
+    "event_handler_id": "823",
     "data": {
         "FIELDS": {
-            "ID": "9",
-            "RECURRING_DEAL_ID": "6791"
+            "ID": "1869",
+            "ENTITY_TYPE_ID": "1",
+            "ENTITY_ID": "1000993"
         }
     },
-    "ts": "1741092489",
+    "ts": "1749042219",
     "auth": {
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "expires_in": "3600",
-        "scope": "crm",
+        "scope": "crm, documentgenerator",
         "domain": "some-domain.bitrix24.com",
         "server_endpoint": "https://oauth.bitrix.info/rest/",
         "status": "L",
@@ -40,17 +41,17 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../../data-types.md) | Symbolic event code.
 
-In this case — `ONCRMDEALRECURRINGUPDATE`||
+In this case — `ONCRMDOCUMENTGENERATORDOCUMENTUPDATE` ||
 || **event_handler_id**
 [`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | Object containing information about the modified template.
+[`object`](../../../../data-types.md) | Object containing information about the updated document.
 
-Contains a single key `FIELDS` ||
+Contains the key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | Object containing information about the fields of the modified template.
+[`object`](../../../../data-types.md) | Object containing information about the fields of the updated document.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -67,9 +68,11 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the record in the regular deal settings table ||
-|| **RECURRING_DEAL_ID**
-[`integer`](../../../../data-types.md) | Identifier of the regular deal template ||
+[`integer`](../../../../data-types.md) | Identifier of the updated document ||
+|| **ENTITY_TYPE_ID**
+[`integer`](../../../../data-types.md) | Identifier of the [object type](../../../../crm/data-types.md#object_type) to which the document belongs, for example `1` — lead ||
+|| **ENTITY_ID**
+[`integer`](../../../../data-types.md) | Identifier of the element to which the document is linked ||
 |#
 
 ### Parameter auth {#auth}
@@ -80,6 +83,5 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
-- [{#T}](./on-crm-deal-recurring-delete.md)
-- [{#T}](./on-crm-deal-recurring-expose.md)
-- [{#T}](./on-crm-deal-recurring-add.md)
+- [{#T}](./on-crm-document-generator-document-add.md)
+- [{#T}](./on-crm-document-generator-document-delete.md)

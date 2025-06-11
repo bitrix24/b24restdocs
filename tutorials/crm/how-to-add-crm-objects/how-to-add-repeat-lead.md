@@ -1,12 +1,36 @@
-# Add a Duplicate Lead
+# Add Repeat Lead
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the method: users with read access permission for leads, contacts, companies, and permission to create leads.
 
-The example will place a CRM form on the website page. Upon filling out the form, a new lead will be created in Bitrix24 as a duplicate, linked to a contact or company from existing leads.
+When a client fills out a form on the site, their data is sent to the handler. The script searches the CRM for matches by phone or email among leads, contacts, and companies. If matches are found, the lead is marked as a repeat and linked to the existing record. This approach helps avoid duplicates and increases the efficiency of managers.
 
-- Create a form on the desired page:
+{% note info "" %}
+
+The repeat lead mode must be enabled in Bitrix24. Read more in the article [Repeat Leads and Deals](https://helpdesk.bitrix24.com/open/24147842/).
+
+{% endnote %}
+
+The setup consists of two stages:
+
+1. Prepare the fields and place the form on the page.
+
+2. Create a handler file that sequentially calls the methods [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md), [crm.lead.list](../../../api-reference/crm/leads/crm-lead-list.md), [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md).
+
+## 1. Create Web Form
+
+Create an HTML form with the fields:
+
+- `NAME` — client's first name, required field,
+
+- `LAST_NAME` — last name,
+
+- `PHONE` — phone number,
+
+- `EMAIL` — email address.
+
+The form sends data using the `POST` method to the file `form.php`.
 
 ```html
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -37,203 +61,217 @@ $(document).ready(function() {
 </form>
 ```
 
-- Create a file for saving filled forms:
+## 2. Create Form Handler
 
-{% list tabs %}
+Create the file `form.php`. The handler will process the data, check for duplicates, and create a lead.
 
-- JS
+### Get Data from the Form
 
-    ```js
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('form_to_crm').addEventListener('submit', function(el) {
-            el.preventDefault();
-            let formData = new FormData(this);
-            let sName = formData.get("NAME");
-            let sLastName = formData.get("LAST_NAME");
-            let sPhone = formData.get("PHONE");
-            let sEmail = formData.get("EMAIL");
+Retrieve and safely process data from the fields `NAME`, `LAST_NAME`, `PHONE`, `EMAIL` to avoid XSS attacks.
 
-            let arFields = {
-                'TITLE': 'From the site: ' + [sName, sLastName].join(' '),
-                'NAME': sName || 'Empty name',
-                'LAST_NAME': sLastName,
-                'PHONE': sPhone ? [{ 'VALUE': sPhone, 'VALUE_TYPE': 'HOME' }] : [],
-                'EMAIL': sEmail ? [{ 'VALUE': sEmail, 'VALUE_TYPE': 'HOME' }] : []
-            };
+```php
+$sName = htmlspecialchars($_POST["NAME"]);    
+$sLastName = htmlspecialchars($_POST["LAST_NAME"]);
+$sPhone = htmlspecialchars($_POST["PHONE"]);
+$sEmail = htmlspecialchars($_POST["EMAIL"]);
+```
 
-            let arLeadDuplicate = [];
+Form an array `$arFields` with the new lead's data.
 
-            function findDuplicates(type, values) {
-                return new Promise((resolve, reject) => {
-                    BX24.callMethod(
-                        'crm.duplicate.findbycomm',
-                        {
-                            "entity_type": "LEAD",
-                            "type": type,
-                            "values": values
-                        },
-                        function(result) {
-                            if (result.error()) {
-                                reject(result.error());
-                            } else {
-                                resolve(result.data().LEAD || []);
-                            }
-                        }
-                    );
-                });
-            }
+```php
+$arFields = [
+    'TITLE' => 'From the site: ' . implode(' ', [$sName, $sLastName]),
+    'NAME' => (!empty($sName)) ? $sName : 'Empty name',
+    'LAST_NAME' => $sLastName,
+    'PHONE' => (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'HOME')) : array(),
+    'EMAIL' => (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array()
+];
+```
 
-            function getConvertedLeads(leadIds) {
-                return new Promise((resolve, reject) => {
-                    BX24.callMethod(
-                        'crm.lead.list',
-                        {
-                            "filter": {
-                                '=ID': leadIds,
-                                'STATUS_ID': 'CONVERTED'
-                            },
-                            'select': ['ID', 'COMPANY_ID', 'CONTACT_ID']
-                        },
-                        function(result) {
-                            if (result.error()) {
-                                reject(result.error());
-                            } else {
-                                resolve(result.data());
-                            }
-                        }
-                    );
-                });
-            }
+The lead's title is formed as `From the site: FirstName LastName`.
 
-            async function processForm() {
-                try {
-                    if (sPhone) {
-                        let phoneDuplicates = await findDuplicates("PHONE", [sPhone]);
-                        arLeadDuplicate = arLeadDuplicate.concat(phoneDuplicates);
-                    }
+The system stores phone numbers and email addresses as arrays of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so we form the arrays `PHONE` and `EMAIL` using the values `$sPhone` and `$sEmail`.
 
-                    if (sEmail) {
-                        let emailDuplicates = await findDuplicates("EMAIL", [sEmail]);
-                        arLeadDuplicate = arLeadDuplicate.concat(emailDuplicates);
-                    }
+- In the `VALUE` fields, we write `$sPhone` and `$sEmail`.
 
-                    if (arLeadDuplicate.length > 0) {
-                        let convertedLeads = await getConvertedLeads(arLeadDuplicate);
-                        let companyIds = convertedLeads.map(lead => lead.COMPANY_ID).filter(id => id);
-                        let contactIds = convertedLeads.map(lead => lead.CONTACT_ID).filter(id => id);
+- In the `VALUE_TYPE` fields, we pass [types](../../../api-reference/crm/data-types.md#crm_multifield), for example, `HOME`.
 
-                        if (companyIds.length > 0) {
-                            arFields['COMPANY_ID'] = companyIds[0];
-                        }
+If there are no values in the variables `$sPhone` and `$sEmail`, we specify empty arrays.
 
-                        if (contactIds.length > 0) {
-                            arFields['CONTACT_ID'] = contactIds[0];
-                        }
-                    }
+### Search for Duplicate Leads
 
-                    BX24.callMethod(
-                        'crm.lead.add',
-                        {
-                            'fields': arFields
-                        },
-                        function(result) {
-                            if (result.error()) {
-                                console.error(result.error());
-                                alert('Lead not added: ' + result.error_description());
-                            } else {
-                                alert('Lead added');
-                            }
-                        }
-                    );
-                } catch (error) {
-                    console.error(error);
-                    alert('An error occurred: ' + error.message);
-                }
-            }
+To find duplicate leads by phone and email, we use the method [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md) twice. We need to pass the following data:
 
-            processForm();
-        });
-    });
-    ```
+- `entity_type` — object type. We pass `LEAD` — lead.
 
-- PHP
+- `type` — communication type. For the first call, we specify `PHONE`, and for the second — `EMAIL`.
 
-    {% note info %}
+- `PHONE` — array with the phone `$arPhone` obtained from the form.
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+Search by phone, `"type" => "PHONE"`.
 
-    {% endnote %}
-
-    ```php
-    <?
-    $sName = htmlspecialchars($_POST["NAME"]);    
-    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
-    $sPhone = htmlspecialchars($_POST["PHONE"]);
-    $sEmail = htmlspecialchars($_POST["EMAIL"]);
-            
-    $arFields = [
-        'TITLE'         => 'From the site: ' . implode(' ', [$sName, $sLastName]),
-        'NAME'         => (!empty($sName)) ? $sName : 'Empty name', // if simple mode crm NAME or LAST_NAME required for converting to contact
-        'LAST_NAME' => $sLastName,
-        'PHONE'         => (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'HOME')) : array(),
-        'EMAIL'         => (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array()
-    ];
-        
-    $arLeadDuplicate = [];
-    if(!empty($sPhone)) { // search duplicate by phone
-        $arResultDuplicate = CRest::call('crm.duplicate.findbycomm', [
-            "entity_type" => "LEAD",
-            "type" => "PHONE",
-            "values" => array($sPhone)
-        ]);
-        if(!empty($arResultDuplicate['result']['LEAD'])) {
-            $arLeadDuplicate = array_merge($arLeadDuplicate, $arResultDuplicate['result']['LEAD']);
-        }
-    }
-        
-    if(!empty($sEmail)) { // search duplicate by email
-        $arResultDuplicate = CRest::call('crm.duplicate.findbycomm', [
-            "entity_type" => "LEAD",
-            "type" => "EMAIL",
-            "values" => [$sEmail]
-        ]);
-        if(!empty($arResultDuplicate['result']['LEAD'])) {
-            $arLeadDuplicate = array_merge($arLeadDuplicate, $arResultDuplicate['result']['LEAD']);
-        }
-    }
-        
-    if(!empty($arLeadDuplicate)) { // get converted duplicate lead and filling $arFields COMPANY_ID or CONTACT_ID
-        $arDuplicateLead = CRest::call('crm.lead.list', [
-            "filter" => [
-                '=ID' => $arLeadDuplicate,
-                'STATUS_ID' => 'CONVERTED',
-            ],
-            'select' => [
-                'ID', 'COMPANY_ID', 'CONTACT_ID'
-            ]
-        ]);
-            
-        if(!empty($arDuplicateLead['result'])) {
-            $sCompany = reset(array_diff(array_column($arDuplicateLead['result'], 'COMPANY_ID', 'ID'), ['']));
-            $sContact = reset(array_diff(array_column($arDuplicateLead['result'], 'CONTACT_ID', 'ID'), ['']));
-            if($sCompany > 0)
-                $arFields['COMPANY_ID'] = $sCompany;
-            if($sContact > 0)
-                $arFields['CONTACT_ID'] = $sContact;
-        }
-    }
-        
-    $result = CRest::call('crm.lead.add', [
-        'fields' => $arFields
+```php
+if(!empty($sPhone)){
+    $arResultDuplicate = CRest::call('crm.duplicate.findbycomm', [
+        "entity_type" => "LEAD",
+        "type" => "PHONE",
+        "values" => array($sPhone)
     ]);
-    if(!empty($result['result'])) {
-        echo json_encode(['message' => 'Lead added']);
-    } elseif(!empty($result['error_description'])) {
-        echo json_encode(['message' => 'Lead not added: ' . $result['error_description']]);
-    } else {
-        echo json_encode(['message' => 'Lead not added']);
+    if(!empty($arResultDuplicate['result']['LEAD'])){
+        $arLeadDuplicate = array_merge($arLeadDuplicate, $arResultDuplicate['result']['LEAD']);
     }
-    ?>
-    ```
+}
+```
 
-{% endlist %}
+Search for duplicates by email, `"type" => "EMAIL"`.
+
+```php
+if(!empty($sEmail)){
+    $arResultDuplicate = CRest::call('crm.duplicate.findbycomm', [
+        "entity_type" => "LEAD",
+        "type" => "EMAIL",
+        "values" => array($sEmail)
+    ]);
+    if(!empty($arResultDuplicate['result']['LEAD'])){
+        $arLeadDuplicate = array_merge($arLeadDuplicate, $arResultDuplicate['result']['LEAD']);
+    }
+}
+```
+
+The identifiers of found duplicates are combined in the array `$arLeadDuplicate`.
+
+### Process Duplicates
+
+If duplicates are found, we call the method [crm.lead.list](../../../api-reference/crm/leads/crm-lead-list.md).
+
+1. Apply a filter by ID and status `CONVERTED`.
+
+2. Select fields: `ID`, `COMPANY_ID`, `CONTACT_ID`.
+
+3. Save the result in the array `$arDuplicateLead`.
+
+4. Fill the fields `COMPANY_ID` and `CONTACT_ID` in the array `$arFields` with values from `$arDuplicateLead`.
+
+```php
+if(!empty($arLeadDuplicate)){
+    $arDuplicateLead = CRest::call('crm.lead.list', [
+        "filter" => [
+            '=ID' => $arLeadDuplicate,
+            'STATUS_ID' => 'CONVERTED'
+        ],
+        "select" => ['ID', 'COMPANY_ID', 'CONTACT_ID']
+    ]);
+
+    if(!empty($arDuplicateLead['result'])){
+        $sCompany = reset(array_diff(array_column($arDuplicateLead['result'], 'COMPANY_ID', 'ID'), ['']));
+        $sContact = reset(array_diff(array_column($arDuplicateLead['result'], 'CONTACT_ID', 'ID'), ['']));
+        if($sCompany > 0) $arFields['COMPANY_ID'] = $sCompany;
+        if($sContact > 0) $arFields['CONTACT_ID'] = $sContact;
+    }
+}
+```
+
+### Add New Lead
+
+To add a lead, we use the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md). We pass the array `$arFields`.
+
+{% note warning "" %}
+
+Check which required fields are set for leads in your Bitrix24. All required fields must be passed to the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md).
+
+{% endnote %}
+
+```php
+$result = CRest::call('crm.lead.add', [
+    'fields' => $arFields
+]);
+```
+
+If the lead is created successfully, the method will return its identifier. If you receive an `error`, review the possible error descriptions in the documentation for the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md).
+
+```json
+{
+    "result": 3289
+}
+```
+
+### Complete Example of the Handler Code
+
+```php
+<?php
+$sName = htmlspecialchars($_POST["NAME"]);    
+$sLastName = htmlspecialchars($_POST["LAST_NAME"]);
+$sPhone = htmlspecialchars($_POST["PHONE"]);
+$sEmail = htmlspecialchars($_POST["EMAIL"]);
+        
+$arFields = [
+    'TITLE' => 'From the site: ' . implode(' ', [$sName, $sLastName]),
+    'LAST_NAME' => $sLastName,
+    'PHONE' => (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'HOME')) : array(),
+    'EMAIL' => (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array()
+];
+    
+$arLeadDuplicate = [];
+if(!empty($sPhone)){ // search for duplicates by phone
+    $arResultDuplicate = CRest::call('crm.duplicate.findbycomm', [
+        "entity_type" => "LEAD",
+        "type" => "PHONE",
+        "values" => array($sPhone)
+    ]);
+    if(!empty($arResultDuplicate['result']['LEAD'])){
+        $arLeadDuplicate = array_merge($arLeadDuplicate, $arResultDuplicate['result']['LEAD']);
+    }
+}
+    
+if(!empty($sEmail)) { // search for duplicates by email
+    $arResultDuplicate = CRest::call('crm.duplicate.findbycomm', [
+        "entity_type" => "LEAD",
+        "type" => "EMAIL",
+        "values" => [$sEmail]
+    ]);
+    if(!empty($arResultDuplicate['result']['LEAD'])) {
+        $arLeadDuplicate = array_merge($arLeadDuplicate, $arResultDuplicate['result']['LEAD']);
+    }
+}
+    
+if(!empty($arLeadDuplicate)){ // get duplicate lead with selection of related contact and company fields
+    $arDuplicateLead = CRest::call('crm.lead.list', [
+        "filter" => [
+            '=ID' => $arLeadDuplicate,
+            'STATUS_ID' => 'CONVERTED',
+        ],
+        'select' => [
+            'ID', 'COMPANY_ID', 'CONTACT_ID'
+        ]
+    ]);
+        
+    if(!empty($arDuplicateLead['result'])){
+        $sCompany = reset(array_diff(array_column($arDuplicateLead['result'], 'COMPANY_ID', 'ID'), ['']));
+        $sContact = reset(array_diff(array_column($arDuplicateLead['result'], 'CONTACT_ID', 'ID'), ['']));
+        if($sCompany > 0)
+            $arFields['COMPANY_ID'] = $sCompany;
+        if($sContact > 0)
+            $arFields['CONTACT_ID'] = $sContact;
+    }
+}
+    
+$result = CRest::call('crm.lead.add', // create duplicate lead
+    [
+        'fields' => $arFields
+    ]
+);
+if(!empty($result['result'])){
+    echo json_encode(['message' => 'Lead added']);
+}elseif(!empty($result['error_description'])){
+    echo json_encode(['message' => 'Lead not added: '.$result['error_description']]);
+}else{
+    echo json_encode(['message' => 'Lead not added']);
+}
+?>
+```
+
+## Continue Learning 
+
+- [{#T}](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md)
+- [{#T}](../../../api-reference/crm/leads/crm-lead-list.md)
+- [{#T}](../../../api-reference/crm/leads/crm-lead-add.md)

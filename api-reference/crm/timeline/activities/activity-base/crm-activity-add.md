@@ -80,7 +80,7 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 || **ORIGINATOR_ID**
 [`string`](../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../../data-types.md) | Identifier of the element in the data source, used only for linking to an external source ||
+[`string`](../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
 || **ORIGIN_VERSION**
 [`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 || **PRIORITY**
@@ -108,13 +108,13 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 || **WEBDAV_ELEMENTS**
 [`diskfile`](../../../data-types.md) | Added files. Deprecated, kept for compatibility ||
 || **IS_INCOMING_CHANNEL**
-[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
+[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel or not (`Y`/`N`) ||
 |#
 
 ### Usage Scenarios for Field Values
 
 For activities of type `e-mail`:
-- if the email should not be sent, set parameters `DIRECTION=2` and `COMPLETED='N'`;
+- if the email should not be sent, set the parameters `DIRECTION=2` and `COMPLETED='N'`;
 - if it is necessary to mark emails as completed, update the activities by setting the completion flag.
 
 ## Code Examples
@@ -238,7 +238,7 @@ For activities of type `e-mail`:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -262,14 +262,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns the identifier of the activity in the timeline upon success, otherwise — `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns the identifier of the activity in the timeline in case of success, otherwise — `false` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -301,10 +301,10 @@ HTTP Status: **400**
 - `Email send error. Failed to update activity`
 - `Email send error. General error`
  | Errors related to "email" activities ||
-|| `The custom activity without provider is not supported in current context` | Activity type is not supported in the given context ||
+|| `The custom activity without provider is not supported in current context` | Activity type is not supported in the specified context ||
 || `Use crm.activity.configurable.add for this activity provider` | Incorrect method call for configurable activity ||
-|| `Access denied` | No permission to add entity in CRM ||
-|| `Application context required` | Incorrect `PROVIDER_ID` parameter for activity created in the application context ||
+|| `Access denied` | No permission to add an entity in CRM ||
+|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the application context ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}

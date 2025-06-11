@@ -4,7 +4,7 @@
 >
 > Who can execute the method: `any user`
 
-This method updates a "Comment" type deal in the timeline.
+This method updates a "Comment" type activity in the timeline.
 
 ## Method Parameters
 
@@ -14,9 +14,9 @@ This method updates a "Comment" type deal in the timeline.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type deal (for example, `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method. ||
+[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type activity (for example, `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the "Comment" type deal in the structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the "Comment" type activity in the structure:
 
 ```js
 fields:
@@ -37,7 +37,7 @@ fields:
 
 {% note warning %}
 
-Starting from version crm 23.100.0, only parameters with the key `fields` in lowercase are accepted. Other undocumented variants (Fields, FIELDS, arFields) are not accepted.
+Starting from crm version 23.100.0, only parameters with the key `fields` in lowercase are accepted. Other undocumented variants (Fields, FIELDS, arFields) are not accepted.
 
 {% endnote %}
 
@@ -56,7 +56,7 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
 || **COMMENT**
 [`string`](../../../data-types.md) | Text of the comment ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described by [rules](../../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
+[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described by [rules](../../../files/how-to-update-files.md) ||
 |#
 
 ## Code Examples
@@ -153,8 +153,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-03T17:19:01+02:00",
+        "date_finish": "2024-05-03T17:19:01+02:00",
         "operating": 0
     }
 }
@@ -168,7 +168,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Returns the integer identifier of the updated comment ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

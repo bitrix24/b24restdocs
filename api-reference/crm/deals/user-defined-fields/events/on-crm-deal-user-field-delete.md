@@ -1,4 +1,4 @@
-# Event on deleting a custom field onCrmDealUserFieldDelete
+# Event onCrmDealUserFieldDelete
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The event `onCrmDealUserFieldDelete` will trigger when a custom field is deleted
 
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 ```json
 {
@@ -55,7 +55,7 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 

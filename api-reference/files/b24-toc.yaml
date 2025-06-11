@@ -1,5 +1,7 @@
-title: Working with Files  
-href: how-to-upload-files.md  
-items:  
-  - name: How to Upload Files  
-    href: how-to-upload-files.md  
+title: Working with Files
+href: how-to-upload-files.md
+items: 
+  - name: How to Upload Files
+    href: how-to-upload-files.md
+  - name: How to Update and Delete Files
+    href: how-to-update-files.md

@@ -6,13 +6,13 @@
 
 This method adds a business process template from a file.
 
-The business process template must be pre-configured. Export the finished template [to a file](https://helpdesk.bitrix24.com/open/8605753/) with the `.bpt` extension. The resulting file can be added as a template to the desired Bitrix24.
+The business process template must be pre-configured. Export the completed template [to a file](https://helpdesk.bitrix24.com/open/8605753/) with the `.bpt` extension. The resulting file can be added as a template to the desired Bitrix24.
 
 The method works only in the context of the [application](../../app-installation/index.md). The system binds the new template to the application.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -32,10 +32,10 @@ Possible value options:
     `['crm', 'Bitrix\Crm\Integration\BizProc\Document\Dynamic', 'DYNAMIC_XXX']` — SPAs, where XXX is the identifier of the SPA
 
 - Lists Module
-    `['lists', 'BizprocDocument', 'iblock_XXX']` — processes in the news feed, where XXX is the identifier of the information block
-    `['lists', 'Bitrix\Lists\BizprocDocumentLists', 'iblock_XXX']` — lists in groups, where XXX is the identifier of the information block
+    `['lists', 'BizprocDocument', 'iblock_XXX']` — processes in the news feed, where XXX is the information block identifier
+    `['lists', 'Bitrix\Lists\BizprocDocumentLists', 'iblock_XXX']` — lists in groups, where XXX is the information block identifier
 
-- Disk Module
+- Drive Module
     `['disk', 'Bitrix\Disk\BizProcDocument', 'STORAGE_XXX']`, where XXX is the storage identifier
 ||
 || **NAME***
@@ -45,9 +45,9 @@ Possible value options:
 || **TEMPLATE_DATA***
 [`file`](../../data-types.md) | Content of the business process template file in `.bpt` format.
 
-More about file transfer methods can be found in the article [{#T}](../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
+More about file transfer methods can be found in the article [{#T}](../../files/how-to-upload-files.md) ||
 || **AUTO_EXECUTE**
-[`integer`](../../data-types.md) | Auto-execution settings for the template. Can have the value:
+[`integer`](../../data-types.md) | Auto-execution settings for the template. Can have the following values:
 
 - `0` — no auto-execution
 - `1` — execute on creation
@@ -59,7 +59,7 @@ Default is `0` ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -172,7 +172,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Application context required | Access token is not from the application ||
+|| `ACCESS_DENIED` | Application context required | Access token not from the application ||
 || `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
 || `ERROR_TEMPLATE_VALIDATION_FAILURE` | Incorrect field DOCUMENT_TYPE! | Incorrect document type specified ||
 || `ERROR_TEMPLATE_VALIDATION_FAILURE` | Empty template name! | Template name not specified ||

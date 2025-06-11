@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except: bots, email users, users for Open Channels, and Replica users.
+The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except for: bots, users for e-mail, users for Open Channels, and Replica users.
 
 {% note info "" %}
 
@@ -35,10 +35,10 @@ The method does not return Bitrix24 Partners. The list of user fields returned a
     - `employee` — employee, 
     - `extranet` — extranet user, 
     - `email` — email user
-- `ACTIVE` — when set to *true* excludes dismissed users from the request.
+- `ACTIVE` — when set to *true* excludes dismissed users.
   
-Filtering parameters can accept array values.
-An additional prefix can be assigned to the key to specify the filter's behavior. Possible prefix values:
+Filtering parameters can take array values.
+An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
 
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -46,17 +46,17 @@ An additional prefix can be assigned to the key to specify the filter's behavior
 - `<` — less than
 - `@` — IN (an array is passed as a value)
 - `!@`— NOT IN (an array is passed as a value)
-- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The search looks for a substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` character needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for a substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"
     - "%mol" — searching for values ending with "mol"
     - "%mol%" — searching for values where "mol" can be in any position
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides.
 
-- `!=%` — NOT LIKE, substring search. The `%` character needs to be passed in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values not starting with "mol"
     - "%mol" — searching for values not ending with "mol"
     - "%mol%" — searching for values where the substring "mol" is not in any position
@@ -71,7 +71,7 @@ An additional prefix can be assigned to the key to specify the filter's behavior
 || **ADMIN_MODE**
 [`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to obtain data about any users ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../data-types.md) | This parameter is used to control pagination.
 
 The page size of results is always static: 50 records.
 
@@ -302,7 +302,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"@PERSONAL_CITY":["New York","San Francisco"]}}' \
+    -d '{"filter":{"@PERSONAL_CITY":["New York","Los Angeles"]}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/user.get
     ```
 
@@ -312,7 +312,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"@PERSONAL_CITY":["New York","San Francisco"]},"auth":"**put_access_token_here**"}' \
+    -d '{"filter":{"@PERSONAL_CITY":["New York","Los Angeles"]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/user.get
     ```
 
@@ -323,7 +323,7 @@ The formula for calculating the `start` parameter value:
         "user.get",
         {
             filter: {
-                "@PERSONAL_CITY": ["New York", "San Francisco"]
+                "@PERSONAL_CITY": ["New York", "Los Angeles"]
             }
         },
         function(result) {
@@ -345,7 +345,7 @@ The formula for calculating the `start` parameter value:
         'user.get',
         [
             'filter' => [
-                '@PERSONAL_CITY' => ['New York', 'San Francisco']
+                '@PERSONAL_CITY' => ['New York', 'Los Angeles']
             ]
         ]
     );
@@ -375,7 +375,6 @@ HTTP status: **200**
                 "DATE_REGISTER": "2024-07-15T00:00:00+00:00",
                 "TIME_ZONE": "",
                 "IS_ONLINE": "Y",
-                "TIME_ZONE_OFFSET": "7200",
                 "TIMESTAMP_X": {
                 },
                 "LAST_ACTIVITY_DATE": {
@@ -400,7 +399,6 @@ HTTP status: **200**
                 "LAST_LOGIN": "2024-07-24T09:01:55+00:00",
                 "DATE_REGISTER": "2024-07-22T00:00:00+00:00",
                 "IS_ONLINE": "N",
-                "TIME_ZONE_OFFSET": "7200",
                 "TIMESTAMP_X": {
                 },
                 "LAST_ACTIVITY_DATE": {

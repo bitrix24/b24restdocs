@@ -12,7 +12,7 @@ This method is used to send multiple requests in succession, as well as related 
 || **Name**
 `type` | **Description** ||
 || **halt**
-[`boolean`](../data-types.md) | Determines whether to stop the sequence of requests in case of an error. Defaults to `false` ||
+[`boolean`](../data-types.md) | Determines whether to halt the sequence of requests in case of an error. Defaults to `false` ||
 || **cmd**
 [`array`](../data-types.md) | An array of requests in standard format (remember to [URL-encode](./data-encoding.md) the request data; this means that the data for sub-requests must undergo double encoding) ||
 |#
@@ -23,7 +23,7 @@ The number of requests in a batch is limited to 50.
 
 {% endnote %}
 
-The array of requests can have either numeric keys or be associative. In the parameters of each subsequent request, you can use data from previous requests in the following format:
+The array of requests can have both numeric keys and associative keys. In the parameters of each subsequent request, you can use data from previous requests in the following format:
 
 ```php
 
@@ -78,7 +78,7 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
 
     {% note info %}
     
-    **Note**, that the parameters are URL-encoded. It is mandatory to encode parameters; otherwise, the correctness of the result is not guaranteed.
+    **Note** that the parameters are URL-encoded. It is mandatory to encode parameters; otherwise, the correctness of the result is not guaranteed.
     
     {% endnote %}
 
@@ -149,7 +149,6 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
                     "LAST_LOGIN": "2024-08-29T10:29:54+02:00",
                     "DATE_REGISTER": "2023-08-24T03:00:00+02:00",
                     "IS_ONLINE": "Y",
-                    "TIME_ZONE_OFFSET": "0",
                     "TIMESTAMP_X": "24.08.2023 13:19:39",
                     "LAST_ACTIVITY_DATE": "2024-08-29 10:30:11",
                     "PERSONAL_GENDER": "",
@@ -303,12 +302,12 @@ As a result:
 
 {% note info %}
 
-**Note**, that in the `user_lead` request we use nesting `[0][ID]`. Since the `user.search` method is list-based, it can return up to 50 results, and in this case, we will take the identifier of the first returned user.
+**Note** that in the `user_lead` request, we use nesting `[0][ID]`. Since the `user.search` method is list-based, it can return up to 50 results, and in this case, we will take the identifier of the first returned user.
 
 {% endnote %}
 
 {% note warning %}
 
-When designing a chain of commands, do not neglect the `halt` key — when enabled, it will stop the execution of the chain if one request in the chain returns an error.
+When designing a chain of commands, do not neglect the `halt` key — when enabled, it will halt the execution of the chain if one request in the chain returns an error.
 
 {% endnote %}

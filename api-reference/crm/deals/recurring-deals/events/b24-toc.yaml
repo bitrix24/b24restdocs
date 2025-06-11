@@ -3,11 +3,11 @@ href: index.md
 items: 
   - name: Overview of Events
     href: index.md
-  - name: Creating a New Recurring Deal
+  - name: When Creating a New Recurring Deal
     href: on-crm-deal-recurring-add.md
-  - name: Modifying a Recurring Deal
+  - name: When Modifying a Recurring Deal
     href: on-crm-deal-recurring-update.md
-  - name: Deleting a Recurring Deal
+  - name: When Deleting a Recurring Deal
     href: on-crm-deal-recurring-delete.md
-  - name: Creating a New Deal from a Recurring Deal
+  - name: When Creating a New Deal from a Recurring Deal
     href: on-crm-deal-recurring-expose.md

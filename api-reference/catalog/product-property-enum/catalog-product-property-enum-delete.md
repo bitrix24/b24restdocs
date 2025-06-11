@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of error
+- no response in case of an error
 - no examples in other languages
   
 {% endnote %}
@@ -38,7 +38,7 @@ This method deletes values of list properties. If the operation is successful, i
 [`integer`](../../data-types.md)| Identifier of the list property value. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -48,15 +48,9 @@ This method deletes values of list properties. If the operation is successful, i
 
     ```javascript
     BX24.callMethod(
-        'catalog.productPropertyEnum.add',
+        'catalog.productPropertyEnum.delete',
         {
-            fields: {
-                propertyId: 128,
-                value: "Medium",
-                def: "Y",
-                sort: 123,
-                xmlId: "M"
-            }
+            id: 42 // Specify the ID of the value to be deleted
         },
         function(result) {
             if (result.error())
@@ -69,4 +63,4 @@ This method deletes values of list properties. If the operation is successful, i
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

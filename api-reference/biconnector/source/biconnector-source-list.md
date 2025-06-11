@@ -2,9 +2,9 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst's workspace" section
+> Who can execute the method: a user with access to the "Analyst Workspace" section
 
-The method `biconnector.source.list` returns a list of sources based on a filter. It is an implementation of the listing method for sources.
+The method `biconnector.source.list` returns a list of sources based on a filter. It is an implementation of the list method for sources.
 
 ## Method Parameters
 
@@ -12,7 +12,7 @@ The method `biconnector.source.list` returns a list of sources based on a filter
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | List of fields that must be filled in the sources in the selection. By default, all fields are taken ||
+[`string[]`](../../data-types.md) | A list of fields that must be filled in the sources in the selection. By default, all fields are taken. ||
 || **filter**
 [`object`](../../data-types.md) | Filter for selecting sources. Example format:
 
@@ -23,16 +23,16 @@ The method `biconnector.source.list` returns a list of sources based on a filter
 }
 ```
 
-You can add a prefix to the keys `field_n` to specify the filter operation.
+You can add a prefix to the keys `field_n` to clarify the filter's operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN, an array is passed as the value
-- `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `@` — IN, an array is passed as a value
+- `!@` — NOT IN, an array is passed as a value
+- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for a substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
@@ -43,7 +43,7 @@ Possible prefix values:
 
 The list of available fields for filtering can be found using the method [biconnector.source.fields](./biconnector-source-fields.md).
 
-The filter does not support the `settings` field; it will be ignored
+The filter does not support the `settings` field; it will be ignored.
 ||
 || **order**
 [`object`](../../data-types.md) | Sorting parameters. Example format:
@@ -58,17 +58,17 @@ The filter does not support the `settings` field; it will be ignored
 ```
 
 - `field_n` — the name of the field by which the sources will be sorted
-- `value_n` — a `string` value equal to:
+- `value_n` — a `string` type value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 ||
 || **page**
-[`integer`](../../data-types.md) | Controls pagination. The page size of results is 50 records. To navigate through results, pass the page number  ||
+[`integer`](../../data-types.md) | Controls pagination. The page size of results is 50 records. To navigate through results, pass the page number. ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 Get the list of sources where:
 - the name starts with `Sql`
@@ -77,8 +77,8 @@ Get the list of sources where:
 
 Display only the necessary fields:
 - ID `id`
-- Name `title`
-- Activity `active`
+- Title `title`
+- Active status `active`
 - Creation date `dateCreate`
 
 {% list tabs %}
@@ -162,7 +162,6 @@ Display only the necessary fields:
     echo '</PRE>';
     ```
 
-
 {% endlist %}
 
 ## Response Handling
@@ -202,9 +201,9 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the fields of the sources. 
 
-It should be noted that the structure of the fields may change due to the `select` parameter ||
+It should be noted that the structure of the fields may change due to the `select` parameter. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
 ## Error Handling
@@ -224,12 +223,12 @@ HTTP status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_SELECT_TYPE` | `Parameter "select" must be array.` | The `select` parameter is not an object ||
-|| `VALIDATION_FILTER_TYPE` | `Parameter "filter" must be array.` | The `filter` parameter is not an object ||
-|| `VALIDATION_ORDER_TYPE` | `Parameter "order" must be array.` | The `order` parameter is not an object ||
-|| `VALIDATION_FIELD_NOT_ALLOWED_IN_SELECT` | `Field "#TITLE#" is not allowed in the "select".` | These fields are not allowed in the selection ||
-|| `VALIDATION_FIELD_NOT_ALLOWED_IN_FILTER` | `Field "#TITLE#" is not allowed in the "filter".` | These fields are not allowed in the filter ||
-|| `VALIDATION_FIELD_NOT_ALLOWED_IN_ORDER` | `Field "#TITLE#" is not allowed in the "order".` | These fields are not allowed for sorting ||
+|| `VALIDATION_SELECT_TYPE` | Parameter "select" must be array. | The `select` parameter is not an object. ||
+|| `VALIDATION_FILTER_TYPE` | Parameter "filter" must be array. | The `filter` parameter is not an object. ||
+|| `VALIDATION_ORDER_TYPE` | Parameter "order" must be array. | The `order` parameter is not an object. ||
+|| `VALIDATION_FIELD_NOT_ALLOWED_IN_SELECT` | Field "#TITLE#" is not allowed in the "select". | These fields are not allowed in the selection. ||
+|| `VALIDATION_FIELD_NOT_ALLOWED_IN_FILTER` | Field "#TITLE#" is not allowed in the "filter". | These fields are not allowed in the filter. ||
+|| `VALIDATION_FIELD_NOT_ALLOWED_IN_ORDER` | Field "#TITLE#" is not allowed in the "order". | These fields are not allowed for sorting. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

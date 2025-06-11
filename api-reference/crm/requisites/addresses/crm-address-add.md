@@ -4,9 +4,9 @@
 >
 > Who can execute the method: any user
 
-This method adds a new address for a requisite or lead. For the user, such an address appears as the address of a contact, company, or lead.
+This method adds a new address for a requisite or lead. For the user, this address appears as the address of a contact, company, or lead.
 
-Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-type.md) can be created, linked to one requisite.
+Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-type.md) can be created, linked to a single requisite.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-ty
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` for adding the address ||
+[`object`](../../../data-types.md) | Set of fields — an object of the form `{"field": "value"[, ...]}` for adding an address ||
 |#
 
 ### Parameter fields
@@ -29,14 +29,14 @@ Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-ty
 || **TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the address type. Enumeration element "Address Type".
 
-Enumeration elements for "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
+Enumeration elements of "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
 ||
 || **ENTITY_TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the parent object's type.
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Requisites (and requisites to companies or contacts) or Leads.
+Addresses can only be linked to Requisites (and requisites are linked to companies or contacts) or Leads.
 
 For backward compatibility, the ability to link Addresses to Contacts or Companies is retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by technical support.
 ||
@@ -221,3 +221,4 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-address-delete.md)
 - [{#T}](./crm-address-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)

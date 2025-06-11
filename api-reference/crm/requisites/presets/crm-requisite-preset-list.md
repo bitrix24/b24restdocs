@@ -1,10 +1,10 @@
-# Get a List of Requisite Templates by Filter crm.requisite.preset.list
+# Get a list of requisites templates by filter crm.requisite.preset.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns a list of requisite templates based on the filter.
+The method returns a list of requisites templates based on the filter.
 
 ## Method Parameters
 
@@ -12,15 +12,15 @@ The method returns a list of requisite templates based on the filter.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array of fields to select (see [template fields](#fields)).
+[`array`](../../../data-types.md) | An array of fields to be selected (see [template fields](#fields)).
 
-If the array is not provided or an empty array is passed, all available template fields will be selected. ||
+If the array is not provided or is empty, all available template fields will be selected. ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering selected templates in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to [template fields](#fields).
 
-An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -33,7 +33,7 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search is conducted from both sides.
 - `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
@@ -53,11 +53,11 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used for pagination control.
+[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 
-To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
+To select the second page of results, the value `50` must be passed. To select the third page of results, the value should be `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
@@ -65,7 +65,7 @@ The formula for calculating the `start` parameter value:
 ||
 |#
 
-### Description of Requisite Template Fields {#fields}
+### Description of Requisites Template Fields {#fields}
 
 #|
 || **Name**
@@ -73,12 +73,12 @@ The formula for calculating the `start` parameter value:
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the requisite. Automatically created and unique within the account. ||
 || **ENTITY_TYPE_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object type.
+[`integer`](../../../data-types.md) | Identifier of the parent object's type.
 
 The identifiers of CRM object types are provided by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **COUNTRY_ID**
-[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of requisite template fields (to get available values, see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)) ||
+[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of fields in the requisites template (to obtain available values, see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)) ||
 || **DATE_CREATE**
 [`datetime`](../../../data-types.md) | Creation date ||
 || **DATE_MODIFY**
@@ -189,7 +189,7 @@ HTTP status: **200**
         },
         {
             "ID": "2",
-            "NAME": "Individual Entrepreneur"
+            "NAME": "Sole Proprietor"
         },
         {
             "ID": "3",
@@ -257,3 +257,4 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-requisite-preset-delete.md)
 - [{#T}](./crm-requisite-preset-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)

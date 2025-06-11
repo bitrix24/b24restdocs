@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.connector.add` creates a new connector that allows integrating external data sources into Bitrix24.
 
@@ -14,7 +14,7 @@ The method `biconnector.connector.add` creates a new connector that allows integ
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | An object containing data for creating a new connector. The object format: 
+[`object`](../../data-types.md) | An object containing data to create a new connector. The object format: 
 
 ```
 {
@@ -208,7 +208,7 @@ The method `biconnector.connector.add` creates a new connector that allows integ
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -240,7 +240,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -255,16 +255,16 @@ HTTP Status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_FIELDS_NOT_PROVIDED` | `Fields not provided` | Fields were not provided in the request ||
-|| `VALIDATION_UNKNOWN_PARAMETERS` | `Unknown parameters: #LIST_OF_PARAMS#` | Unknown parameters detected: list ||
-|| `VALIDATION_REQUIRED_FIELD_MISSING` | `Field "#TITLE#" is required.` | Required field #TITLE# was not provided ||
-|| `VALIDATION_READ_ONLY_FIELD` | `Field "#TITLE#" is read only.` | Field #TITLE# is read-only and cannot be modified ||
-|| `VALIDATION_IMMUTABLE_FIELD` | `Field "#TITLE#" is immutable.` | Field #TITLE# is immutable ||
-|| `VALIDATION_INVALID_FIELD_TYPE` | `Field "#TITLE#" must be of type #TYPE#.` | Field #TITLE# must be of type #TYPE# ||
-|| `VALIDATION_SETTINGS_MISSING_REQUIRED_FIELDS` | `Settings must include "type", "name" and "code" fields.` | Settings must include `type`, `name`, and `code` fields ||
-|| `VALIDATION_SETTINGS_NAME_TOO_LONG` | `Parameter "name" must be less than 512 characters.` | The value of the parameter `name` must not exceed 512 characters ||
-|| `VALIDATION_SETTINGS_CODE_TOO_LONG` | `Parameter "code" must be less than 512 characters.` | The value of the parameter `code` must not exceed 512 characters ||
-|| `VALIDATION_SETTINGS_INVALID_TYPE` | `Parameter "type" is not correct.` | Invalid value for parameter `type` ||
+|| `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided | Fields were not passed in the request ||
+|| `VALIDATION_UNKNOWN_PARAMETERS` | Unknown parameters: #LIST_OF_PARAMS# | Unknown parameters detected: list ||
+|| `VALIDATION_REQUIRED_FIELD_MISSING` | Field "#TITLE#" is required. | Required field #TITLE# was not provided ||
+|| `VALIDATION_READ_ONLY_FIELD` | Field "#TITLE#" is read only. | Field #TITLE# is read-only and cannot be modified ||
+|| `VALIDATION_IMMUTABLE_FIELD` | Field "#TITLE#" is immutable. | Field #TITLE# is immutable ||
+|| `VALIDATION_INVALID_FIELD_TYPE` | Field "#TITLE#" must be of type #TYPE#. | Field #TITLE# must be of type #TYPE# ||
+|| `VALIDATION_SETTINGS_MISSING_REQUIRED_FIELDS` | Settings must include "type", "name" and "code" fields. | Settings must specify the `type`, `name`, and `code` fields ||
+|| `VALIDATION_SETTINGS_NAME_TOO_LONG` | Parameter "name" must be less than 512 characters. | The value of the `name` parameter must not exceed 512 characters ||
+|| `VALIDATION_SETTINGS_CODE_TOO_LONG` | Parameter "code" must be less than 512 characters. | The value of the `code` parameter must not exceed 512 characters ||
+|| `VALIDATION_SETTINGS_INVALID_TYPE` | Parameter "type" is not correct. | Invalid value for the `type` parameter ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

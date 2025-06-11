@@ -1,20 +1,20 @@
-# How a Request is Executed
+# How to Make a Request
 
-As already mentioned in the article about [authorization in REST API](./authorization.md), a request to a REST API method is an HTTP request to a specific address of a particular Bitrix24 instance in the following format:
+As already mentioned in the article about [authorization in REST API](./authorization.md), a request to the REST API method is an HTTP request to a specific address of a particular Bitrix24 in the following format:
 
 ```http
 https://your-domain.bitrix24.com/rest/method-name?param1=value1&param2=value2....
 ```
 
-Most methods support passing an array of parameters as a `POST` request in `JSON` format. All methods support the `GET` protocol, and `POST` in `multipart/form-data` format.
+Most methods support passing an array of parameters as a `POST` request in `JSON` format. All methods support the `GET` protocol and `POST` in `multipart/form-data` format.
 
 In response to a request, the REST API returns the result in `JSON` or `XML` format depending on what the user requested, containing meaningful data or [error information](../../error-codes.md). We recommend trying to [make a simple request](../../first-rest-api-call.md) before you start exploring the Bitrix24 REST API in depth.
 
 ## Request Result
 
-The default response format is `JSON`, but it is possible to receive a response in `XML` format if needed. To do this, you need to append the desired format to the REST method name: `.json` or `.xml`.
+The default response format is `JSON`, but it is possible to receive a response in `XML` format if necessary. To do this, you need to add the desired format to the name of the REST method: `.json` or `.xml`.
 
-Pay attention to the result of [batch](./batch.md) in both variations:
+Please note the result of [batch](./batch.md) in both variations:
 
 {% list tabs %}
 
@@ -33,7 +33,7 @@ Pay attention to the result of [batch](./batch.md) in both variations:
         }' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/batch
     ```
-    
+
     Result:
 
     ```json
@@ -46,10 +46,9 @@ Pay attention to the result of [batch](./batch.md) in both variations:
                     "NAME": "Administrator",
                     "LAST_NAME": "Fusion",
                     "EMAIL": "info@efusion.com",
-                    "LAST_LOGIN": "2024-08-29T10:29:54+03:00",
-                    "DATE_REGISTER": "2023-08-24T03:00:00+03:00",
+                    "LAST_LOGIN": "2024-08-29T10:29:54+02:00",
+                    "DATE_REGISTER": "2023-08-24T03:00:00+02:00",
                     "IS_ONLINE": "Y",
-                    "TIME_ZONE_OFFSET": "0",
                     "TIMESTAMP_X": "24.08.2023 13:19:39",
                     "LAST_ACTIVITY_DATE": "2024-08-29 10:59:12",
                     "PERSONAL_GENDER": "",
@@ -69,8 +68,8 @@ Pay attention to the result of [batch](./batch.md) in both variations:
                     "finish": 1724918931.689633,
                     "duration": 0.0028679370880126953,
                     "processing": 0.0027151107788085938,
-                    "date_start": "2024-08-29T11:08:51+03:00",
-                    "date_finish": "2024-08-29T11:08:51+03:00"
+                    "date_start": "2024-08-29T11:08:51+02:00",
+                    "date_finish": "2024-08-29T11:08:51+02:00"
                 }
             }
         },
@@ -79,14 +78,15 @@ Pay attention to the result of [batch](./batch.md) in both variations:
             "finish": 1724918931.689674,
             "duration": 0.05537295341491699,
             "processing": 0.0031290054321289062,
-            "date_start": "2024-08-29T11:08:51+03:00",
-            "date_finish": "2024-08-29T11:08:51+03:00"
+            "date_start": "2024-08-29T11:08:51+02:00",
+            "date_finish": "2024-08-29T11:08:51+02:00"
         }
     }
     ```
+
 - batch (xml)
 
-    Request: 
+    Request:
 
     ```bash
     curl -X POST \
@@ -111,10 +111,9 @@ Pay attention to the result of [batch](./batch.md) in both variations:
                     <NAME>Administrator</NAME>
                     <LAST_NAME>Fusion</LAST_NAME>
                     <EMAIL>info@efusion.com</EMAIL>
-                    <LAST_LOGIN>2024-08-29T10:29:54+03:00</LAST_LOGIN>
-                    <DATE_REGISTER>2023-08-24T03:00:00+03:00</DATE_REGISTER>
+                    <LAST_LOGIN>2024-08-29T10:29:54+02:00</LAST_LOGIN>
+                    <DATE_REGISTER>2023-08-24T03:00:00+02:00</DATE_REGISTER>
                     <IS_ONLINE>Y</IS_ONLINE>
-                    <TIME_ZONE_OFFSET>0</TIME_ZONE_OFFSET>
                     <TIMESTAMP_X>24.08.2023 13:19:39</TIMESTAMP_X>
                     <LAST_ACTIVITY_DATE>2024-08-29 10:59:12</LAST_ACTIVITY_DATE>
                     <PERSONAL_GENDER></PERSONAL_GENDER>
@@ -134,8 +133,8 @@ Pay attention to the result of [batch](./batch.md) in both variations:
                     <finish>1724918984.0386</finish>
                     <duration>0.0037539005279541</duration>
                     <processing>0.0035719871520996</processing>
-                    <date_start>2024-08-29T11:09:44+03:00</date_start>
-                    <date_finish>2024-08-29T11:09:44+03:00</date_finish>
+                    <date_start>2024-08-29T11:09:44+02:00</date_start>
+                    <date_finish>2024-08-29T11:09:44+02:00</date_finish>
                 </get_user>
             </result_time>
         </result>
@@ -144,13 +143,12 @@ Pay attention to the result of [batch](./batch.md) in both variations:
             <finish>1724918984.0386</finish>
             <duration>0.06153392791748</duration>
             <processing>0.0040559768676758</processing>
-            <date_start>2024-08-29T11:09:43+03:00</date_start>
-            <date_finish>2024-08-29T11:09:44+03:00</date_finish>
+            <date_start>2024-08-29T11:09:43+02:00</date_start>
+            <date_finish>2024-08-29T11:09:44+02:00</date_finish>
         </time>
     </response>
     ```
 {% endlist %}
-
 
 {% note info %}
 

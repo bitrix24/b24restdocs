@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst's workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.connector.list` returns a list of connectors based on a filter. It is an implementation of the listing method for connectors.
 
@@ -12,7 +12,7 @@ The method `biconnector.connector.list` returns a list of connectors based on a 
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | A list of fields that must be filled in the connectors in the selection. By default, all fields are taken ||
+[`string[]`](../../data-types.md) | List of fields that must be filled in the connectors in the selection. By default, all fields are taken ||
 || **filter**
 [`object`](../../data-types.md) | Filter for selecting connectors. Example format:
 
@@ -32,12 +32,12 @@ Possible prefix values:
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
 - `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
 - `"mol%"` — searches for values starting with "mol"
 - `"%mol"` — searches for values ending with "mol"
 - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
 
@@ -69,7 +69,7 @@ The list of available fields for filtering can be found using the method [biconn
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-Get a list of connectors where:
+Get the list of connectors where:
 - the name starts with `MyConnector`
 - the description is not empty
 
@@ -248,13 +248,13 @@ HTTP status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_SELECT_TYPE` | `Parameter "select" must be array.` | The `select` parameter is not an object ||
-|| `VALIDATION_FILTER_TYPE` | `Parameter "filter" must be array.` | The `filter` parameter is not an object ||
-|| `VALIDATION_ORDER_TYPE` | `Parameter "order" must be array.` | The `order` parameter is not an object ||
-|| `VALIDATION_FIELD_NOT_ALLOWED_IN_SELECT` | `Field "#TITLE#" is not allowed in the "select".` | These fields are not allowed in the selection ||
-|| `VALIDATION_FIELD_NOT_ALLOWED_IN_FILTER` | `Field "#TITLE#" is not allowed in the "filter".` | These fields are not allowed in the filter ||
-|| `VALIDATION_FIELD_NOT_ALLOWED_IN_ORDER` | `Field "#TITLE#" is not allowed in the "order".` | These fields are not allowed for sorting ||
-|| `VALIDATION_INVALID_FILTER_LOGIC` | `Field "logic" must be either "AND" or "OR".` | The `logic` field can only have the value "AND" or "OR" ||
+|| `VALIDATION_SELECT_TYPE` | Parameter "select" must be array. | The `select` parameter is not an object ||
+|| `VALIDATION_FILTER_TYPE` | Parameter "filter" must be array. | The `filter` parameter is not an object ||
+|| `VALIDATION_ORDER_TYPE` | Parameter "order" must be array. | The `order` parameter is not an object ||
+|| `VALIDATION_FIELD_NOT_ALLOWED_IN_SELECT` | Field "#TITLE#" is not allowed in the "select". | These fields are not allowed in the selection ||
+|| `VALIDATION_FIELD_NOT_ALLOWED_IN_FILTER` | Field "#TITLE#" is not allowed in the "filter". | These fields are not allowed in the filter ||
+|| `VALIDATION_FIELD_NOT_ALLOWED_IN_ORDER` | Field "#TITLE#" is not allowed in the "order". | These fields are not allowed for sorting ||
+|| `VALIDATION_INVALID_FILTER_LOGIC` | Field "logic" must be either "AND" or "OR". | The `logic` field can only have the value "AND" or "OR" ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -1,10 +1,10 @@
-# Event on Change in Sales Funnel onCrmDealMoveToCategory
+# Event on deal funnel change onCrmDealMoveToCategory
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALMOVETOCATEGORY` will trigger when the sales funnel of a deal is changed.
+The event `ONCRMDEALMOVETOCATEGORY` will trigger when the deal funnel changes.
 
 ## What the handler receives
 
@@ -55,7 +55,7 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -70,16 +70,16 @@ The structure is described [below](#auth) ||
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the modified deal ||
 || **CATEGORY_ID**
-[`integer`](../../../data-types.md) | Identifier of the new sales funnel ||
+[`integer`](../../../data-types.md) | Identifier of the new deal funnel ||
 || **STAGE_ID**
-[`string`](../../../data-types.md) | Identifier of the new stage of the deal ||
+[`string`](../../../data-types.md) | Identifier of the new deal stage ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

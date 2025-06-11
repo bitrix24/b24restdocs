@@ -37,7 +37,7 @@ fields:
 }
 ```
 
-The file content is transmitted as a base64 string.
+File content is transmitted as a [base64 string](../../../files/how-to-upload-files.md)
 
 {% note warning %}
 
@@ -66,7 +66,7 @@ The value can be obtained using the [`crm.item.list`](../../universal/crm-item-l
 || **COMMENT***
 [`string`](../../../data-types.md) | Text of the comment ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described according to [the rules](../../../bx24-js-sdk/how-to-call-rest-methods/files.md) ||
+[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described according to [the rules](../../../files/how-to-upload-files.md) ||
 |#
 
 ## Code Examples
@@ -181,7 +181,7 @@ HTTP Status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Returns the integer identifier of the added comment ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

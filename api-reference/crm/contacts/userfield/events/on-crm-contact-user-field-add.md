@@ -1,12 +1,12 @@
-# Event for Adding a Custom Field onCrmContactUserFieldAdd
+# Event when adding a custom field onCrmContactUserFieldAdd
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 > 
 > Who can subscribe: any user
 
-The event triggers when a custom field is added to a contact.
+The event `onCrmContactUserFieldAdd` is triggered when a custom field is added to a contact.
 
-## What the Handler Receives
+## What the handler receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -41,7 +41,7 @@ Data is transmitted as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../../data-types.md) | Symbolic event code.
 
 In this case — `ONCRMCONTACTUSERFIELDADD`||
 || **event_handler_id**
@@ -55,9 +55,9 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -81,7 +81,7 @@ In this case — `CRM_CONTACT` ||
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](./index.md)
 - [{#T}](./on-crm-contact-user-field-update.md)

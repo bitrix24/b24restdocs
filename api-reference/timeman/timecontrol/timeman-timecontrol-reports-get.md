@@ -1,8 +1,8 @@
-# Get Report on Identified Absences timeman.timecontrol.reports.get
+# Get a report on identified absences timeman.timecontrol.reports.get
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with report viewing access
+> Who can execute the method: any user with report viewing permission
 
 The method `timeman.timecontrol.reports.get` retrieves a report on identified absences.
 
@@ -14,7 +14,7 @@ The method `timeman.timecontrol.reports.get` retrieves a report on identified ab
 || **Name**
 `type` | **Description** ||
 || **USER_ID***
-[`integer`](../../data-types.md) | User ID for whom the reports are requested.
+[`integer`](../../data-types.md) | The identifier of the user for whom the reports are requested.
 
 You can obtain the user ID using the [user.get](../../user/user-get.md) method. ||
 || **MONTH***
@@ -106,7 +106,7 @@ Default is 8 hours. ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -181,10 +181,10 @@ HTTP Status: **200**
 }
 ```
 
-### If the response contains empty days
+### If the response has empty days
 
 If the method returns an empty array `days`, configure the time control tool.
-1. Execute the method [timeman.timecontrol.settings.set](./timeman-timecontrol-settings-set.md) under an administrator with the following parameters:
+1. Execute the method [timeman.timecontrol.settings.set](./timeman-timecontrol-settings-set.md) as an administrator with the parameters:
 
     ```js
     BX24.callMethod(
@@ -224,9 +224,9 @@ If the method returns an empty array `days`, configure the time control tool.
 || **month_title**
 [`string`](../../data-types.md) | Month name ||
 || **date_start**
-[`datetime`](../../data-types.md) | Start date of the sampling period in ATOM format ||
+[`datetime`](../../data-types.md) | Start date of the sampling period in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format ||
 || **date_finish**
-[`datetime`](../../data-types.md) | End date of the sampling period in ATOM format ||
+[`datetime`](../../data-types.md) | End date of the sampling period in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format ||
 || **days**
 [`array`](../../data-types.md) | List of objects describing [worked days](#days) ||
 || **user**
@@ -241,13 +241,13 @@ If the method returns an empty array `days`, configure the time control tool.
 || **Name**
 `type` | **Description** ||
 || **index**
-[`integer`](../../data-types.md) | Index of the day of the week in the format `YYYYMMDD`, for example, `20250526` for May 26, 2025 ||
+[`integer`](../../data-types.md) | Weekday index in the format `YYYYMMDD`, for example, `20250526` for May 26, 2025 ||
 || **day_title**
 [`string`](../../data-types.md) | Date in site format ||
 || **workday_date_start**
-[`datetime`](../../data-types.md) | Start date of the workday in ATOM format ||
+[`datetime`](../../data-types.md) | Start date of the workday in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format ||
 || **workday_date_finish**
-[`datetime`](../../data-types.md) | End date of the workday in ATOM format.
+[`datetime`](../../data-types.md) | End date of the workday in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format.
 
 If `workday_complete = false`, the date is indicated at the time of report generation. ||
 || **workday_complete**
@@ -262,9 +262,9 @@ If `workday_complete = false`, the date is indicated at the time of report gener
 [`integer`](../../data-types.md) | Duration of the workday according to the schedule in seconds, including breaks ||
 || **workday_duration_final**
 [`integer`](../../data-types.md) | Duration of the workday according to actual output in seconds. Includes:
-- breaks
+- break
 - unconfirmed absences
-- personal absences ||
+- absences for personal matters ||
 || **workday_duration_config**
 [`integer`](../../data-types.md) | Required duration of the workday in seconds ||
 || **reports**
@@ -272,7 +272,7 @@ If `workday_complete = false`, the date is indicated at the time of report gener
 
 Values are displayed in full detail of the report and for the manager. ||
 || **workday_time_leaks_real**
-[`integer`](../../data-types.md) | Duration of the break established by the automatic recording system. Contains unconfirmed absences and personal absences. ||
+[`integer`](../../data-types.md) | Duration of the break set by the automatic recording system. Contains unconfirmed absences and absences for personal matters. ||
 |#
 
 #### Objects reports {#reports}
@@ -289,17 +289,17 @@ Values are displayed in full detail of the report and for the manager. ||
 
 - `IDLE` — stepped away, recorded using the desktop application
 - `OFFLINE` — offline
-- `DESKTOP_ONLINE` — launched the application. Only for the manager
-- `DESKTOP_OFFLINE` — turned off the application. Only for the manager
-- `DESKTOP_START` — launched the application. Only for the manager
+- `DESKTOP_ONLINE` — started the application. For manager only
+- `DESKTOP_OFFLINE` — turned off the application. For manager only
+- `DESKTOP_START` — started the application. For manager only
 - `TM_START` — started the workday
 - `TM_PAUSE` — went on break
 - `TM_CONTINUE` — continued the day
 - `TM_END` — finished the workday ||
 || **date_start**
-[`datetime`](../../data-types.md) | Start date of the recording in ATOM format ||
+[`datetime`](../../data-types.md) | Start date of the recording in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format ||
 || **date_finish**
-[`datetime`](../../data-types.md) | End date of the recording in ATOM format.
+[`datetime`](../../data-types.md) | End date of the recording in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format.
 
 If `active = true`, the field contains the date at the time of report generation. ||
 || **duration**
@@ -310,45 +310,45 @@ If `active = true`, the field contains the date at the time of report generation
 [`string`](../../data-types.md) | Time record identifier ||
 || **report_type**
 [`string`](../../data-types.md) | Absence type. Possible values:
-- `work` — for work-related issues
+- `work` — for work matters
 - `private` — for personal matters
 - `none` — type not specified, equated to `private` ||
 || **report_text**
 [`string`](../../data-types.md) | Description of the reason for absence ||
 || **system_text**
-[`string`](../../data-types.md) | System description of the reason for absence. Only for the manager ||
+[`string`](../../data-types.md) | System description of the reason for absence. For manager only ||
 || **source_start**
 [`string`](../../data-types.md) | Data source for the start of the record. Possible values:
 
 - `ONLINE_EVENT` — user authorization event
 - `OFFLINE_AGENT` — agent that sets the Offline status
-- `DESKTOP_OFFLINE_AGENT` — agent that sets the indicator of the application being turned off
-- `DESKTOP_ONLINE_EVENT` — event that sets the indicator of the application being turned on
-- `DESKTOP_START_EVENT` — event that sets the indicator of the application being turned on
+- `DESKTOP_OFFLINE_AGENT` — agent that sets the indicator of the turned-off application
+- `DESKTOP_ONLINE_EVENT` — event that sets the indicator of the turned-on application
+- `DESKTOP_START_EVENT` — event that sets the indicator of the turned-on application
 - `IDLE_EVENT` — event changing the status to Stepped Away. Recorded by the application
-- `TM_EVENT` — event changing the workday: start, break, end ||
+- `TM_EVENT` — event changing the workday: start, break, end. ||
 || **source_finish**
 [`string`](../../data-types.md) | Data source for the end of the record. Possible values:
 
 - `ONLINE_EVENT` — user authorization event
 - `OFFLINE_AGENT` — agent that sets the Offline status
-- `DESKTOP_OFFLINE_AGENT` — agent that sets the indicator of the application being turned off
-- `DESKTOP_ONLINE_EVENT` — event that sets the indicator of the application being turned on
-- `DESKTOP_START_EVENT` — event that sets the indicator of the application being turned on
+- `DESKTOP_OFFLINE_AGENT` — agent that sets the indicator of the turned-off application
+- `DESKTOP_ONLINE_EVENT` — event that sets the indicator of the turned-on application
+- `DESKTOP_START_EVENT` — event that sets the indicator of the turned-on application
 - `IDLE_EVENT` — event changing the status to Stepped Away. Recorded by the application
-- `TM_EVENT` — event changing the workday: start, break, end ||
+- `TM_EVENT` — event changing the workday: start, break, end. ||
 || **ip_start**
-[`string`](../../data-types.md) | IP address at the start of the record. Only for the manager ||
+[`string`](../../data-types.md) | IP address at the start of the record. For manager only ||
 || **ip_finish**
-[`string`](../../data-types.md) | IP address at the end of the record. Only for the manager ||
+[`string`](../../data-types.md) | IP address at the end of the record. For manager only ||
 || **ip_start_network**
-[`boolean`](../../data-types.md) \| [`object`](../../data-types.md) | Object with [IP address decoding](#ip_network) for the start of the record, if the IP address is not within the office network. For the office network, it will return `false`.
+[`boolean`](../../data-types.md) \| [`object`](../../data-types.md) | Object with [IP address decoding](#ip_network) for the start of the record, if the IP address is not within the office network. For office network, it will return `false`.
 
-Only for the manager ||
+For manager only ||
 || **ip_finish_network**
-[`boolean`](../../data-types.md) \| [`object`](../../data-types.md) | Object with [IP address decoding](#ip_network) for the end of the record, if the IP address is not within the office network. For the office network, it will return `false`.
+[`boolean`](../../data-types.md) \| [`object`](../../data-types.md) | Object with [IP address decoding](#ip_network) for the end of the record, if the IP address is not within the office network. For office network, it will return `false`.
 
-Only for the manager ||
+For manager only ||
 |#
 
 #### Object ip_network {#ip_network}
@@ -388,12 +388,12 @@ If the value is empty, the user has no avatar. ||
 || **personal_gender**
 [`string`](../../data-types.md) | User's gender ||
 || **last_activity_date**
-[`datetime`](../../data-types.md) | Date of the user's last activity in ATOM format ||
+[`datetime`](../../data-types.md) | Date of the user's last activity in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -408,8 +408,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_ERROR` | You don't have access to this method | You do not have access to this method ||
-|| `USER_ACCESS_ERROR` | You don't have access to report for this user | You do not have access to this user's reports ||
+|| `ACCESS_ERROR` | You don't have access to this method | You do not have access to this method. ||
+|| `USER_ACCESS_ERROR` | You don't have access to report for this user | You do not have access to this user's reports. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

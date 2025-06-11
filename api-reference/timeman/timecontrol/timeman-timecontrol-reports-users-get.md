@@ -2,9 +2,14 @@
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: department head or administrator
+> Who can execute the method: any user
 
 The method `timeman.timecontrol.reports.users.get` retrieves the list of users in the department.
+
+The data returned by the method depends on the role:
+- An employee will receive only their own data,
+- A manager will receive data for their department,
+- An administrator will receive data for any department.
 
 ## Method Parameters
 
@@ -12,14 +17,14 @@ The method `timeman.timecontrol.reports.users.get` retrieves the list of users i
 || **Name**
 `type` | **Description** ||
 || **DEPARTMENT_ID**
-[`integer`](../../data-types.md) | Department identifier. This parameter should only be specified by the department head or administrator.
+[`integer`](../../data-types.md) | The identifier of the department. This parameter should only be specified by a manager or administrator.
 
-You can obtain the department identifier using the [get department list](../../departments/department-get.md) method ||
+The department identifier can be obtained using the [get department list](../../departments/department-get.md) method ||
 |#
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -82,7 +87,7 @@ You can obtain the department identifier using the [get department list](../../d
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -129,36 +134,18 @@ HTTP Status: **200**
 || **work_position**
 [`string`](../../data-types.md) | Job title ||
 || **avatar**
-[`string`](../../data-types.md) | User's avatar URL.
+[`string`](../../data-types.md) | URL of the user's avatar.
 
 If the value is empty, the user does not have an avatar ||
 || **personal_gender**
 [`string`](../../data-types.md) | Gender ||
 || **last_activity_date**
-[`string`](../../data-types.md) | Date of the user's last activity in ATOM format ||
+[`string`](../../data-types.md) | Date of the user's last activity in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
-
-HTTP Status: **400**
-
-```json
-{
-    "error": "ACCESS_ERROR",
-    "error_description": "You don't have access to this method"
-}
-```
-
-{% include notitle [error handling](../../../_includes/error-info.md) %}
-
-### Possible Error Codes
-
-#|
-|| **Code** | **Description** | **Value** ||
-|| `ACCESS_ERROR` | You don't have access to this method | You do not have access to this method ||
-|#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

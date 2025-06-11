@@ -14,7 +14,7 @@ This method adds a new requisite.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Set of fields — an object of the form `{"field": "value"[, ...]}` for adding a requisite ||
+[`object`](../../../data-types.md) | Set of fields — an object of the form `{"field": "value"[, ...]}` for adding the requisite ||
 |#
 
 ## Parameter fields
@@ -36,7 +36,7 @@ Identifiers for all CRM entity types can be obtained using the method [crm.enum.
 || **ENTITY_ID***
 [`integer`](../../../data-types.md) | Identifier of the parent entity (contact or company).
 
-The identifier can be obtained using the method [crm.company.list](../../companies/crm-company-list.md) for a company and the method [crm.contact.list](../../contacts/crm-contact-list.md) for a contact ||
+The identifier can be obtained using the method [crm.company.list](../../companies/crm-company-list.md) for companies and the method [crm.contact.list](../../contacts/crm-contact-list.md) for contacts ||
 || **PRESET_ID***
 [`integer`](../../../data-types.md) | Identifier of the requisite template.
 
@@ -102,7 +102,7 @@ Order in the list of entity requisites when there are multiple ||
 || **RQ_FAX**
 [`string`](../../../data-types.md) | Fax ||
 || **RQ_IDENT_TYPE**
-[`crm_status`](../../../data-types.md) | Method of identification ||
+[`crm_status`](../../../data-types.md) | Identification method ||
 || **RQ_IDENT_DOC**
 [`string`](../../../data-types.md) | Type of document ||
 || **RQ_IDENT_DOC_SER**
@@ -122,7 +122,7 @@ Order in the list of entity requisites when there are multiple ||
 || **RQ_KPP**
 [`string`](../../../data-types.md) | Tax registration reason code ||
 || **RQ_USRLE**
-[`string`](../../../data-types.md) | Handelsregisternummer (for country DE) ||
+[`string`](../../../data-types.md) | Commercial register number (for country DE) ||
 || **RQ_IFNS**
 [`string`](../../../data-types.md) | Tax authority ||
 || **RQ_OGRN**
@@ -166,7 +166,7 @@ Values `Y` or `N` are used ||
 || **RQ_RESIDENCE_COUNTRY**
 [`string`](../../../data-types.md) | Country of residence ||
 || **RQ_BASE_DOC**
-[`string`](../../../data-types.md) | Basis for action ||
+[`string`](../../../data-types.md) | Basis for the action ||
 || **RQ_REGON**
 [`string`](../../../data-types.md) | REGON (for country PL) ||
 || **RQ_KRS**
@@ -195,12 +195,12 @@ Values `Y` or `N` are used ||
 
 Requisites can have a set of custom fields with types: `string`, `boolean`, `double`, `datetime`.
 
-You can add a custom field to requisites using the method [crm.requisite.userfield.add](../user-fields/crm-requisite-userfield-add.md) ||
+You can add a custom field to the requisites using the method [crm.requisite.userfield.add](../user-fields/crm-requisite-userfield-add.md) ||
 |#
 
 {% note info "Which fields with the prefix `RQ_` can be specified?" %}
 
-When creating a requisite, only those fields with the prefix `RQ_` that are present in the requisite template associated with the created requisite (see the field `PRESET_ID`) should be specified. The values of other fields will be saved but will not be visible to the user.
+When creating a requisite, only those fields with the prefix `RQ_` that are present in the requisite template linked to the created requisite (see the field `PRESET_ID`) should be specified. The values of other fields will be saved but will not be visible to the user.
 
 {% endnote %}
 
@@ -216,7 +216,7 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_TYPE_ID":4,"ENTITY_ID":1,"PRESET_ID":1,"NAME":"Organization","ACTIVE":"Y","ADDRESS_ONLY":"N","SORT":500,"RQ_COMPANY_NAME":"Ltd. \"QuickBooks and other similar platforms\"","RQ_COMPANY_FULL_NAME":"LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"","RQ_COMPANY_REG_DATE":"06.04.2007","RQ_DIRECTOR":"SMITH JOHN","RQ_INN":"7717586110","RQ_KPP":"770501001","RQ_OGRN":"5077746476209","UF_CRM_1707997209":"56","UF_CRM_1708012333":"Category 1","XML_ID":"5e4641fd-1dd9-11e6-b2f2-005056c00008"}}' \
+    -d '{"fields":{"ENTITY_TYPE_ID":4,"ENTITY_ID":1,"PRESET_ID":1,"NAME":"Organization","ACTIVE":"Y","ADDRESS_ONLY":"N","SORT":500,"RQ_COMPANY_NAME":"Ltd. \"Bitrix24\"","RQ_COMPANY_FULL_NAME":"LIMITED LIABILITY COMPANY \"Bitrix24\"","RQ_COMPANY_REG_DATE":"06.04.2007","RQ_DIRECTOR":"SMITH JOHN DOE","RQ_INN":"7717586110","RQ_KPP":"770501001","RQ_OGRN":"5077746476209","UF_CRM_1707997209":"56","UF_CRM_1708012333":"Category 1","XML_ID":"5e4641fd-1dd9-11e6-b2f2-005056c00008"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.add
     ```
 
@@ -226,7 +226,7 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_TYPE_ID":4,"ENTITY_ID":1,"PRESET_ID":1,"NAME":"Organization","ACTIVE":"Y","ADDRESS_ONLY":"N","SORT":500,"RQ_COMPANY_NAME":"Ltd. \"QuickBooks and other similar platforms\"","RQ_COMPANY_FULL_NAME":"LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"","RQ_COMPANY_REG_DATE":"06.04.2007","RQ_DIRECTOR":"SMITH JOHN","RQ_INN":"7717586110","RQ_KPP":"770501001","RQ_OGRN":"5077746476209","UF_CRM_1707997209":"56","UF_CRM_1708012333":"Category 1","XML_ID":"5e4641fd-1dd9-11e6-b2f2-005056c00008","auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"ENTITY_TYPE_ID":4,"ENTITY_ID":1,"PRESET_ID":1,"NAME":"Organization","ACTIVE":"Y","ADDRESS_ONLY":"N","SORT":500,"RQ_COMPANY_NAME":"Ltd. \"Bitrix24\"","RQ_COMPANY_FULL_NAME":"LIMITED LIABILITY COMPANY \"Bitrix24\"","RQ_COMPANY_REG_DATE":"06.04.2007","RQ_DIRECTOR":"SMITH JOHN DOE","RQ_INN":"7717586110","RQ_KPP":"770501001","RQ_OGRN":"5077746476209","UF_CRM_1707997209":"56","UF_CRM_1708012333":"Category 1","XML_ID":"5e4641fd-1dd9-11e6-b2f2-005056c00008","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.add
     ```
 
@@ -245,10 +245,10 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
                 "ACTIVE": "Y",
                 "ADDRESS_ONLY": "N",
                 "SORT": 500,
-                "RQ_COMPANY_NAME": "Ltd. \"QuickBooks and other similar platforms\"",
-                "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
+                "RQ_COMPANY_NAME": "Ltd. \"Bitrix24\"",
+                "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"Bitrix24\"",
                 "RQ_COMPANY_REG_DATE": "06.04.2007",
-                "RQ_DIRECTOR": "SMITH JOHN",
+                "RQ_DIRECTOR": "SMITH JOHN DOE",
                 "RQ_INN": "7717586110",
                 "RQ_KPP": "770501001",
                 "RQ_OGRN": "5077746476209",
@@ -283,10 +283,10 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
                 "ACTIVE" => "Y",
                 "ADDRESS_ONLY" => "N",
                 "SORT" => 500,
-                "RQ_COMPANY_NAME" => "Ltd. \"QuickBooks and other similar platforms\"",
-                "RQ_COMPANY_FULL_NAME" => "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
+                "RQ_COMPANY_NAME" => "Ltd. \"Bitrix24\"",
+                "RQ_COMPANY_FULL_NAME" => "LIMITED LIABILITY COMPANY \"Bitrix24\"",
                 "RQ_COMPANY_REG_DATE" => "06.04.2007",
-                "RQ_DIRECTOR" => "SMITH JOHN",
+                "RQ_DIRECTOR" => "SMITH JOHN DOE",
                 "RQ_INN" => "7717586110",
                 "RQ_KPP" => "770501001",
                 "RQ_OGRN" => "5077746476209",
@@ -305,7 +305,7 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
 {% endlist %}
 
 
-## Response on Success
+## Successful Response
 
 HTTP status: **200**
 
@@ -335,7 +335,7 @@ HTTP status: **200**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-## Response on Error
+## Error Response
 
 HTTP status: **400**
 
@@ -370,3 +370,4 @@ HTTP status: **400**
 - [{#T}](./crm-requisite-delete.md)
 - [{#T}](./crm-requisite-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)

@@ -10,7 +10,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -81,8 +81,7 @@ HTTP Status: **200**
         "NAME": "Vadim",
         "LAST_NAME": "Valeev",
         "PERSONAL_GENDER": "",
-        "TIME_ZONE": "",
-        "TIME_ZONE_OFFSET": 7200
+        "TIME_ZONE": ""
     },
     "time": {
         "start": 1722848182.67776,

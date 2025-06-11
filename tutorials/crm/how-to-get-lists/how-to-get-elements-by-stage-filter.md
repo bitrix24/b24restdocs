@@ -15,7 +15,7 @@ The stage name is not stored in the "Stage" field of the CRM entity. The "Stage"
 We will use the method [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) with the parameters:
 - `entityTypeId` — specify `2` for deals. This is the identifier of the [object type](../../../api-reference/crm/data-types.md#object_type). To find out the identifier of the SPA, execute the method [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) without parameters.
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -44,7 +44,7 @@ We will use the method [crm.category.list](../../../api-reference/crm/universal/
 
 {% endlist %}
 
-As a result, we obtained the deal funnels. We will identify the required funnel by its name in the `name` field. The funnel identifier will be taken from the `id` field.
+As a result, we received the deal funnels. We will identify the required funnel by its name in the `name` field. The funnel identifier will be taken from the `id` field.
 
 ```json
 {
@@ -128,7 +128,7 @@ If the `ID` of the funnel is `0`, make the request for stages without adding `_I
 
 {% endlist %}
 
-As a result, we obtained a list of stages. We will identify the required stage by its name in the `NAME` field. The stage identifier will be taken from the `STATUS_ID` field.
+As a result, we received a list of stages. We will identify the required stage by its name in the `NAME` field. The stage identifier will be taken from the `STATUS_ID` field.
 
 ```json
 {
@@ -169,7 +169,7 @@ As a result, we obtained a list of stages. We will identify the required stage b
             "ID": "335",
             "ENTITY_ID": "DEAL_STAGE_10",
             "STATUS_ID": "C10:PREPAYMENT_INVOICE",
-            "NAME": "Agreement",
+            "NAME": "Approval",
             "NAME_INIT": "",
             "SORT": "30",
             "SYSTEM": "N",
@@ -319,7 +319,7 @@ We will use the method [crm.item.list](../../../api-reference/crm/universal/crm-
 
 {% endlist %}
 
-As a result, we obtained a list of items at the requested stage.
+As a result, we received a list of items at the requested stage.
 
 ```json
 {
@@ -346,7 +346,7 @@ As a result, we obtained a list of items at the requested stage.
             {
                 "id": 5273,
                 "assignedById": 29,
-                "title": "Purchase of Cars",
+                "title": "Purchase of Machines",
                 "opportunity": 0
             },
             {
@@ -363,7 +363,7 @@ As a result, we obtained a list of items at the requested stage.
 
 ## Retrieve the Responsible Person's Data
 
-In the obtained result, the `ID` of the employee responsible for the item is specified. To display the first and last name of the employee, we will use the method [user.get](../../../api-reference/user/user-get.md) with the filter:
+In the received result, the `ID` of the employee responsible for the item is specified. To display the first name and last name of the employee, we will use the method [user.get](../../../api-reference/user/user-get.md) with the filter:
 
 - `ID` — specify the value from the `assignedById` parameter obtained in step 3.
 
@@ -411,7 +411,6 @@ As a result, we will receive data about the employee, including the fields `NAME
             "DATE_REGISTER": "2024-07-15T00:00:00+00:00",
             "TIME_ZONE": "",
             "IS_ONLINE": "Y",
-            "TIME_ZONE_OFFSET": "7200",
             "TIMESTAMP_X": {
             },
             "LAST_ACTIVITY_DATE": {
@@ -464,7 +463,7 @@ As a result, we will receive data about the employee, including the fields `NAME
             let funnelId = selectedFunnel.id;
 
             // Step 3: Request the stage name from the user
-            let stageName = prompt("Enter the stage name:");
+            let stageName = prompt("Enter the name of the stage:");
 
             // Step 4: Retrieve the list of stages for the selected funnel
             let entityID = funnelId === 0 ? "DEAL_STAGE" : `DEAL_STAGE_${funnelId}`;
@@ -541,9 +540,9 @@ As a result, we will receive data about the employee, including the fields `NAME
                                 table.push([
                                     "Deal ID",
                                     "Title",
-                                    "Responsible Name",
+                                    "Responsible First Name",
                                     "Responsible Last Name",
-                                    "Expected Income"
+                                    "Expected Revenue"
                                 ]);
 
                                 // Data rows
@@ -608,7 +607,7 @@ As a result, we will receive data about the employee, including the fields `NAME
     $funnelId = $selectedFunnel['ID'];
 
     // Step 3: Request the stage name from the user
-    $stageName = readline("Enter the stage name: ");
+    $stageName = readline("Enter the name of the stage: ");
 
     // Step 4: Retrieve the list of stages for the selected funnel
     $entityID = $funnelId === 0 ? "DEAL_STAGE" : "DEAL_STAGE_{$funnelId}";
@@ -699,9 +698,9 @@ As a result, we will receive data about the employee, including the fields `NAME
     $table[] = [
         "Deal ID",
         "Title",
-        "Responsible Name",
+        "Responsible First Name",
         "Responsible Last Name",
-        "Expected Income"
+        "Expected Revenue"
     ];
 
     // Data rows

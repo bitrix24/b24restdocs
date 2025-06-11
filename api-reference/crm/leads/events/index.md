@@ -1,20 +1,33 @@
-# Events
+# Overview of Events When Working with Leads
 
-{% note warning "We are still updating this page" %}
+Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, update, or deletion of leads.
 
-Some data may be missing here — we will complete it shortly.
+Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../events/index.md).
 
-{% endnote %}
+> Quick navigation: [all events](#all-events)
 
-{% note info "Permissions" %}
+## How to Receive Events
 
-**Scope**: [`crm`](../../../scopes/permissions.md) | **Who can subscribe**: `any user`
+You can subscribe to lead events through:
 
-{% endnote %}
+- [outgoing webhook](../../../../local-integrations/local-webhooks.md)
+- [application](../../../app-installation/index.md) and the method [event.bind](../../../events/event-bind.md)
+
+An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../events/test-handler.md).
+
+## Server Availability for Sending and Receiving Events
+
+{% include notitle [Server Availability for Sending and Receiving Events](../../../../_includes/events-index.md) %}
+
+## Overview of Events {#all-events}
+
+> Scope: [`crm`](../../../scopes/permissions.md)
+>
+> Who can subscribe: any user
 
 #|
-|| **Event** | **Triggered by** ||
-|| [onCrmLeadAdd](./on-crm-lead-add.md) | When a lead is added ||
-|| [onCrmLeadUpdate](./on-crm-lead-update.md) | When a lead is updated ||
-|| [onCrmLeadDelete](./on-crm-lead-delete.md) | When a lead is deleted ||
+|| **Event** | **Triggered By** ||
+|| [onCrmLeadAdd](./on-crm-lead-add.md) | When a lead is added manually or via the [crm.lead.add](../crm-lead-add.md) method ||
+|| [onCrmLeadUpdate](./on-crm-lead-update.md) | When a lead is updated manually or via the [crm.lead.update](../crm-lead-update.md) method ||
+|| [onCrmLeadDelete](./on-crm-lead-delete.md) | When a lead is deleted manually or via the [crm.lead.delete](../crm-lead-delete.md) method ||
 |#
