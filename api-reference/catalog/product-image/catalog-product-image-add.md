@@ -18,7 +18,7 @@ This method adds images to a product, parent product, variation, or service.
 || **fileContent***
 [`array`](../../data-types.md)| An array of two elements:
 - the first — file name
-- the second – file in base64 encoding ||
+- the second – file in [base64](../../files/how-to-upload-files.md) encoding ||
 |#
 
 ### Parameter fields {#fields}
@@ -46,7 +46,7 @@ To obtain existing identifiers, use the following methods:
 - `PREVIEW_PICTURE` — preview image
 - `MORE_PHOTO` — product images
 
-If no value is specified, the image will be saved in `MORE_PHOTO`
+If no value is specified, the image will be saved as `MORE_PHOTO`
 ||
 |#
 
@@ -162,7 +162,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **productImage**
-[`catalog_product_image`](../data-types.md#catalog_product_image) | Object containing information about the added product image ||
+[`catalog_product_image`](../data-types.md#catalog_product_image) | Object with information about the added product image ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -202,7 +202,7 @@ HTTP status: **400**
 || 
 || `0` | Disk space limit exceeded
 || 
-|| `0` | Maximum upload file size exceeded
+|| `0` | Maximum file size exceeded
 || 
 || `0` | Product property for the image does not exist. Create the `MORE_PHOTO` property
 || 
@@ -210,7 +210,7 @@ HTTP status: **400**
 || 
 || `0` | Product not found
 || 
-|| `0` | Product identifier is not specified
+|| `0` | Product identifier not specified
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

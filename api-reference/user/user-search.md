@@ -1,14 +1,14 @@
-# Get User List with Personal Data Search user.search
+# Get a list of users with a search by personal data user.search
 
 > Scope: [`user`](../scopes/permissions.md), [`user_brief`](../scopes/permissions.md), [`user_basic`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The `user.search` method allows you to retrieve a list of users with accelerated search based on personal data (first name, last name, middle name, department name, job title). It operates in two modes: quickly using **Fulltext Index** and a slower option through [right LIKE](*key_right LIKE) (support is determined automatically).
+The `user.search` method allows you to retrieve a list of users with accelerated searching through personal data (first name, last name, middle name, department name, job title). It operates in two modes: quickly using **Fulltext Index** and a slower option through [right LIKE](*key_right LIKE) (support is determined automatically).
 
 {% note info "" %}
 
-The list of fields for Bitrix24 users that will be returned as a result of executing the method depends on the application's/webhook's scope. Details about user data access can be found in the [article](index.md).
+The list of user fields in Bitrix24 that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
 
 {% endnote %}
 
@@ -32,7 +32,7 @@ The method inherits the behavior of the [user.get](./user-get.md) method, and al
     - `extranet` — extranet user
     - `email` — email user
 
-Or `FIND` — a field that will search across all listed fields.
+Or `FIND` — the field that will search across all listed fields.
 
 {% note info "" %}
 
@@ -46,9 +46,9 @@ The method can work either with filtering using the FIND key or with all other f
 - `ASC` — ascending
 - `DESC` — descending ||
 || **ADMIN_MODE**
-[`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to retrieve data about any users ||
+[`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to obtain data about any users ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 
@@ -141,7 +141,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
     {
@@ -157,7 +157,6 @@ HTTP Status: **200**
                 "DATE_REGISTER": "2024-07-15T00:00:00+00:00",
                 "TIME_ZONE": "",
                 "IS_ONLINE": "Y",
-                "TIME_ZONE_OFFSET": "7200",
                 "TIMESTAMP_X": {
                 },
                 "LAST_ACTIVITY_DATE": {
@@ -182,7 +181,6 @@ HTTP Status: **200**
                 "LAST_LOGIN": "2024-07-24T09:01:55+00:00",
                 "DATE_REGISTER": "2024-07-22T00:00:00+00:00",
                 "IS_ONLINE": "N",
-                "TIME_ZONE_OFFSET": "7200",
                 "TIMESTAMP_X": {
                 },
                 "LAST_ACTIVITY_DATE": {
@@ -218,7 +216,7 @@ HTTP Status: **200**
 || **total**
 [`integer`](../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -233,4 +231,4 @@ HTTP Status: **200**
 - [{#T}](./user-current.md)
 - [{#T}](./user-fields.md)
 
-[*key_right LIKE]: USER_NAME LIKE "Text%" - this is called right like, where the search is performed only on text that starts with the specified phrase but can have different endings - such a search is significantly faster than two-way like "%text%" or left-side "%text" - due to the architecture of indexed field storage in the database.
+[*key_right LIKE]: USER_NAME LIKE "Text%" - this is called right like, when the search is performed only on text that starts with the specified phrase but can have different endings - this search is significantly faster than two-way like "%text%" or left-sided "%text" - due to the architecture of storing indexed fields in the database.

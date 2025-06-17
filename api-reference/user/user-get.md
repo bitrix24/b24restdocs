@@ -4,17 +4,17 @@
 >
 > Who can execute the method: any user
 
-The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except: bots, users for e-mail, users for Open Lines, and Replica users.
+The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except for: bots, users for e-mail, users for Open Channels, and Replica users.
 
 {% note info "" %}
 
-The method does not return integrators. The list of fields for Bitrix24 users that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
+The method does not return Bitrix24 Partners. The list of user fields returned as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,8 +26,8 @@ The method does not return integrators. The list of fields for Bitrix24 users th
 - `ASC` — ascending
 - `DESC` — descending ||
 || **FILTER**
-[`string`](../data-types.md) | You can additionally specify any parameters from [user.add](./user-add.md) for filtering by their values. In addition to the main fields, additional ones are available:
-- `UF_DEPARTMENT` — department affiliation;
+[`string`](../data-types.md) | You can additionally specify any parameters from [user.add](./user-add.md) to filter by their values. In addition to the main fields, the following additional fields are available:
+- `UF_DEPARTMENT` — company structure affiliation;
 - `UF_PHONE_INNER` — internal phone number;
 - `IS_ONLINE` — [Y\|N] allows you to show only authorized users or not.
 - `NAME_SEARCH` — quick search by personal data.
@@ -35,9 +35,9 @@ The method does not return integrators. The list of fields for Bitrix24 users th
     - `employee` — employee, 
     - `extranet` — extranet user, 
     - `email` — email user
-- `ACTIVE` — when set to *true*, excludes dismissed users from the request.
+- `ACTIVE` — when set to *true* excludes dismissed users.
   
-Filtering parameters can accept array values.
+Filtering parameters can take array values.
 An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
 
 - `>=` — greater than or equal to
@@ -46,7 +46,7 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `<` — less than
 - `@` — IN (an array is passed as a value)
 - `!@`— NOT IN (an array is passed as a value)
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
+- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for a substring in any position of the string
 - `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"
     - "%mol" — searching for values ending with "mol"
@@ -54,7 +54,7 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides.
 
 - `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values not starting with "mol"
@@ -71,7 +71,7 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 || **ADMIN_MODE**
 [`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to obtain data about any users ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../data-types.md) | This parameter is used to control pagination.
 
 The page size of results is always static: 50 records.
 
@@ -84,7 +84,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -357,9 +357,9 @@ The formula for calculating the `start` parameter value:
 
 {% endlist %}
 
-## Processing the Response
+## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
     {
@@ -375,7 +375,6 @@ HTTP Status: **200**
                 "DATE_REGISTER": "2024-07-15T00:00:00+00:00",
                 "TIME_ZONE": "",
                 "IS_ONLINE": "Y",
-                "TIME_ZONE_OFFSET": "7200",
                 "TIMESTAMP_X": {
                 },
                 "LAST_ACTIVITY_DATE": {
@@ -400,7 +399,6 @@ HTTP Status: **200**
                 "LAST_LOGIN": "2024-07-24T09:01:55+00:00",
                 "DATE_REGISTER": "2024-07-22T00:00:00+00:00",
                 "IS_ONLINE": "N",
-                "TIME_ZONE_OFFSET": "7200",
                 "TIMESTAMP_X": {
                 },
                 "LAST_ACTIVITY_DATE": {
@@ -450,5 +448,6 @@ HTTP Status: **200**
 - [{#T}](./user-current.md)
 - [{#T}](./user-search.md)
 - [{#T}](./user-fields.md)
+- [{#T}](../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
 
 [*key_Key for operation]: `'ADMIN_MODE': 'True'`

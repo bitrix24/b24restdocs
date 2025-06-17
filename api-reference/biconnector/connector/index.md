@@ -10,14 +10,14 @@ You can register a connector through the [application](../../app-installation/in
 
 > Quick navigation: [all methods](#all-methods) 
 
-## Connector's Relationship with Sources and Datasets
+## Connector Relationship with Sources and Datasets
 
 The connector is the top level in the data hierarchy within the BIconnector module:
 - **Connector** establishes a connection with an external data source.
 - **Source** defines which specific data is available from the connected service.
 - **Dataset** forms the final set of data that can be used in reports and analytics.
 
-## Description of Connector Fields {#fields}
+## Field Descriptions of the Connector {#fields}
 
 #|
 || **Name**
@@ -31,27 +31,27 @@ The connector is the top level in the data hierarchy within the BIconnector modu
 || **description**
 [`string`](../../data-types.md) | Description of the connector | ✅ | ✅ ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting order | ✅ | ✅ ||
+[`integer`](../../data-types.md) | Sort order | ✅ | ✅ ||
 || **urlCheck**
-[`string`](../../data-types.md) | [URL for connection check](#urlCheck) | ✅ | ✅ ||
+[`string`](../../data-types.md) | [URL for checking connection](#urlCheck) | ✅ | ✅ ||
 || **urlData**
-[`string`](../../data-types.md) | [URL for data retrieval](#urlData) | ✅ | ✅ ||
+[`string`](../../data-types.md) | [URL for retrieving data](#urlData) | ✅ | ✅ ||
 || **urlTableList**
-[`string`](../../data-types.md) | [URL for table list](#urlTableList) | ✅ | ✅ ||
+[`string`](../../data-types.md) | [URL for the list of tables](#urlTableList) | ✅ | ✅ ||
 || **urlTableDescription**
 [`string`](../../data-types.md) | [URL for table description](#urlTableDescription) | ✅ | ✅ ||
 || **settings**
 [`array`](../../data-types.md) | [Connector settings](#settings) | ✅ | ✅ ||
 || **dateCreate**
-[`datetime`](../../data-types.md) | Date of connector creation | ✅ | ❌ ||
+[`datetime`](../../data-types.md) | Creation date of the connector | ✅ | ❌ ||
 |#
 
-### Settings Field {#settings}
+### Field settings {#settings}
 
 The `settings` field contains an array of parameters necessary for configuring data sources. Each parameter is an object with the following structure:
 
-- `code` — parameter code, used as the parameter identifier, this is how parameters are passed to the external source.
-- `name` — parameter name that will be displayed in the interface, in the "Analyst's Workspace" section.
+- `code` — parameter code, used as the identifier for the parameter, this is how parameters are passed to the external source.
+- `name` — parameter name, which will be displayed in the interface, in the "Analyst's workspace" section.
 - `type` — parameter type, currently only `STRING` is supported.
 
 ```
@@ -92,7 +92,8 @@ A POST request is sent to the endpoint address with the parameters:
 }
 ```
 
-Depending on availability, the endpoint returns information about the status of the source.
+Depending on availability, the endpoint returns information about the status of the source. Requirements for the response format from the endpoint to the request from Bitrix24: the response must not be empty, HTTP status: **200**. The response format is flexible.
+A request to the endpoint for checking the connection can be sent in the interface, in the "Analyst's workspace" section.
 
 #### urlTableList {#urlTableList}
 
@@ -100,7 +101,7 @@ The `urlTableList` endpoint returns a list of available tables in `JSON` format.
 
 A POST request is sent to the endpoint address with the parameters:
 
-- `searchString` — value of the search string, searches tables by `externalCode`.
+- `searchString` — value of the search string, searches for tables by `externalCode`.
 - `setting_code_n` — code of the connector settings parameter.
 - `settings_value_n` — value of this parameter related to a specific source.
 
@@ -139,7 +140,7 @@ A POST request is sent to the endpoint address with the parameters:
 
 ```
 {
-  "table": "entityName",
+  "name": "entityName",
   "connection": {
     "setting_code_1": "settings_value_1",
     ...,
@@ -150,13 +151,13 @@ A POST request is sent to the endpoint address with the parameters:
 
 The response returns an array of fields with the structure:
 - `code` — code of the dataset field.
-- `title` — name of the dataset field.
-- `type` — field type, supported values are: `int`, `string`, `double`, `date`, `datetime`.
+- `name` — name of the dataset field.
+- `type` — type of the field, supported values are: `int`, `string`, `double`, `date`, `datetime`.
 
 ```
   {
       'code' => "code_value",
-      'title' => "title_value",
+      'name' => "title_value",
       'type' => "type_value"
   }
 ```
@@ -214,9 +215,9 @@ The response returns an array of fields with the structure:
 || **Name**
 `type` | **Description** ||
 || **title**
-[`string`](../../data-types.md) | Name of the field ||
+[`string`](../../data-types.md) | Field name ||
 || **type**
-[`string`](../../data-types.md) | Type of the field ||
+[`string`](../../data-types.md) | Field type ||
 || **isRequired**
 [`boolean`](../../data-types.md) | Required field ||
 || **isReadOnly**
@@ -231,7 +232,7 @@ The response returns an array of fields with the structure:
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute methods: user with access to the "Analyst's Workspace" section
+> Who can perform methods: user with access to the "Analyst's workspace" section
 
 #|
 || **Method** | **Description** ||
@@ -240,5 +241,10 @@ The response returns an array of fields with the structure:
 || [biconnector.connector.get](./biconnector-connector-get.md) | Returns information about the connector ||
 || [biconnector.connector.list](./biconnector-connector-list.md) | Returns a list of available connectors ||
 || [biconnector.connector.delete](./biconnector-connector-delete.md) | Deletes a connector ||
-|| [biconnector.connector.fields](./biconnector-connector-fields.md) | Returns a description of the connector fields ||
+|| [biconnector.connector.fields](./biconnector-connector-fields.md) | Returns the description of the connector fields ||
 |#
+
+## Continue Learning
+
+- [Example of creating a connector based on B24PHPSDK](https://github.com/bitrix24/b24sdk-examples/tree/main/php/special/biconnector)
+- [Meetup on creating a connector](../../../meetups.md#biconnectorMeetup)

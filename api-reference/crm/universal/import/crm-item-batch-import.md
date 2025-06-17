@@ -16,7 +16,7 @@ A maximum of 20 items can be imported in a single request.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,15 +29,15 @@ A maximum of 20 items can be imported in a single request.
 [`boolean`][1] | A parameter to control the format of user field names in the request and response.   
 Possible values:
 
-- `Y` — original names of user fields, e.g., UF_CRM_2_1639669411830
-- `N` — user field names in camelCase, e.g., ufCrm_2_1639669411830
+- `Y` — original names of user fields, e.g., `UF_CRM_2_1639669411830`
+- `N` — user field names in camelCase, e.g., `ufCrm2_1639669411830`
 
 Default is `N` ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 1. How to import deals
 
@@ -257,6 +257,7 @@ Default is `N` ||
                 2,
             ]
         ];
+        
         $result = CRest::call(
             'crm.item.batchImport',
             [
@@ -537,8 +538,8 @@ Contains a single key `id` ||
 
 {% note info " " %}
 
-By default, user field names are passed and returned in camelCase, e.g., ufCrm2_1639669411830.
-When passing the parameter `useOriginalUfNames` with the value `Y`, user fields will be returned with their original names, e.g., UF_CRM_2_1639669411830.
+By default, user field names are passed and returned in camelCase, e.g., `ufCrm2_1639669411830`.
+When passing the parameter `useOriginalUfNames` with the value `Y`, user fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -561,10 +562,10 @@ HTTP status: **401**, **400**, **403**
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
 || `400`      | `NOT_FOUND`                       | SPA not found                                                       | Occurs when an invalid `entityTypeId` is passed                                              ||
 || `400`      | `ACCESS_DENIED`                   | Access denied                                                     | The user does not have permission to add items of type `entityTypeId`                             ||
-|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the `field` was provided.
+|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the field `field` was passed.
 
 For system fields of type `createdTime`, if the request is not from an administrator ||
-|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | A value of type `type` was passed to one of the multiple fields, while an iterable type was expected. This can also occur with an incorrect request (invalid JSON or request headers) ||
+|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | One of the multiple fields received a value of type `type`, while an iterable type was expected. This can also occur with an incorrect request (incorrect JSON or request headers) ||
 || `400`      | `CREATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot create a new item due to your plan restrictions | Plan restrictions do not allow creating SPA items                              ||
 || `400`      | `MAX_IMPORT_BATCH_SIZE_EXCEEDED`  | You cannot import more than 20 items                     | Occurs when more than 20 items are passed during import                                        ||
 || `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request                            | Incorrect `user ID` and/or code in the request path                                       ||
@@ -573,7 +574,7 @@ For system fields of type `createdTime`, if the request is not from an administr
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 ## Continue Learning 
 

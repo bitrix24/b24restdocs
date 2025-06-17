@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -13,9 +13,9 @@ Some data may be missing — we will complete it shortly.
 - edits needed for writing standards
 - parameter types are not specified
 - examples are missing
-- success response is absent
-- error response is absent
-- links to pages not yet created are not provided
+- success response is missing
+- error response is missing
+- links to pages that have not yet been created are not specified
 
 {% endnote %}
 
@@ -32,7 +32,6 @@ The method `lists.element.update` updates a list element. If the element is succ
 All fields of the element and their values must be passed in the request.
 
 {% endnote %}
-
 
 ## Parameters
 
@@ -51,7 +50,7 @@ All fields of the element and their values must be passed in the request.
 || **ELEMENT_CODE/ELEMENT_ID***
 [`unknown`](../../data-types.md) | Code or `id` of the element ||
 || **FIELDS**
-[`unknown`](../../data-types.md) | Array of fields and values. In the File type field `F`, you cannot pass the file ID from Drive ||
+[`unknown`](../../data-types.md) | Array of fields and values. For a field of type "File" `F`, pass the file in [Base64](../../files/how-to-update-files.md) format ||
 || **SOCNET_GROUP_ID***
 [`unknown`](../../data-types.md) | `id` of the group. This parameter is required if the list is created for a group ||
 |#
@@ -69,7 +68,7 @@ All fields of the element and their values must be passed in the request.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"IBLOCK_TYPE_ID":"lists_socnet","IBLOCK_CODE":"rest_1","ELEMENT_CODE":"element_1","FIELDS":{"NAME":"Test element (Update)","PROPERTY_62":{"599":"Text string (Update)"},"PROPERTY_63":{"600":"73","601":"97","602":"17"}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/lists.element.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/lists.element.update
     ```
 
 - cURL (OAuth)
@@ -146,11 +145,11 @@ All fields of the element and their values must be passed in the request.
 
 {% endlist %}
 
-### How to Upload a File in a File Type Field (Drive)
+### How to Upload a File to a File Type Field (Drive)
 
 1. Use the REST API of the disk module: `disk.folder.uploadfile` and `disk.storage.uploadfile`. In the response when uploading these files, you will receive `"ID": 290`.
-2. Get the list of uploaded file `IDs`.
-3. Using the REST API of the lists module, add files to the required field. If the field already has attached files, you need to retrieve the previous values from [lists.element.get](./lists-element-get.md) and pass them along with the new ones.
+2. Get the list of `ID`s of uploaded files.
+3. Using the REST API of the lists module, add files to the required field. If the field already has attached files, you need to get the previous values from [lists.element.get](./lists-element-get.md) and pass them along with the new ones.
 
 {% list tabs %}
 
@@ -161,7 +160,7 @@ All fields of the element and their values must be passed in the request.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"IBLOCK_TYPE_ID":"lists","IBLOCK_ID":"41","ELEMENT_CODE":"element1","FIELDS":{"NAME":"Test element 1","PROPERTY_121":{"4754":["50","n1582"]}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/lists.element.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/lists.element.update
     ```
 
 - cURL (OAuth)
@@ -224,11 +223,11 @@ All fields of the element and their values must be passed in the request.
 
 {% endlist %}
 
-Values in the File (Drive) field without the prefix `"n"` are already attached files (`attachedId`), while those with the prefix are your new files that have been previously uploaded to the drive.
+Values in the File (Drive) field without the prefix `"n"` are already attached files (`attachedId`), while those with the prefix are your new files that have already been uploaded to the drive.
 
 ### How to Delete a File
 
-Find out the file value IDs using the method [lists.element.get](./lists-element-get.md).
+Find out the ID of file values using the method [lists.element.get](./lists-element-get.md).
 
 {% list tabs %}
 
@@ -239,7 +238,7 @@ Find out the file value IDs using the method [lists.element.get](./lists-element
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"IBLOCK_TYPE_ID":"bitrix_processes","IBLOCK_ID":47}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/lists.element.get
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/lists.element.get
     ```
 
 - cURL (OAuth)
@@ -300,9 +299,9 @@ You will receive a response in the following format.
 ],
 ```
 
-Here, `PROPERTY_133` is a multiple file type field. It represents an object where the key is the `ID` of the property value needed for deletion, and the value is the `ID` of the file.
+Here, `PROPERTY_133` is a multiple field of type File. It represents an object where the key is the `ID` of the property value that you will need for deletion, and the value is the `ID` of the file.
 
-To delete a property value, pass a field with the suffix `_DEL` to the method `lists.element.update`. Specify the list of values to be deleted. Use the `ID` of the property value as the key and `"Y"` as the value.
+To delete a property value, pass a field with the suffix `_DEL` to the method `lists.element.update`. Specify the list of values to be deleted. Use the `ID` of the property value as the key, and `"Y"` as the value.
 
 {% list tabs %}
 
@@ -313,7 +312,7 @@ To delete a property value, pass a field with the suffix `_DEL` to the method `l
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"IBLOCK_TYPE_ID":"bitrix_processes","IBLOCK_ID":47,"ELEMENT_ID":480,"FIELDS":{"NAME":"1","PROPERTY_133_DEL":{"2857":"Y"}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/lists.element.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/lists.element.update
     ```
 
 - cURL (OAuth)

@@ -1,12 +1,12 @@
-# Event for Updating the Regular Deal Template onCrmDealRecurringUpdate
+# Event on Regular Deal Template Change onCrmDealRecurringUpdate
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALRECURRINGUPDATE` will trigger when the template of a regular deal is updated.
+The event `ONCRMDEALRECURRINGUPDATE` will trigger when a regular deal template is updated.
 
-## What the Handler Receives
+## What the handler receives
 
 Data is sent as a POST request {.b24-info}
 
@@ -74,9 +74,9 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with Keys in the auth Array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring
+## Continue exploring
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

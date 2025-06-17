@@ -2,6 +2,31 @@
 
 ## 2025
 
+### June 11, 2025
+
+- Updated the main event pages in the sections: [Contacts](./api-reference/crm/contacts/events/index.md), [Contact Custom Fields](./api-reference/crm/contacts/userfield/events/index.md), [Company Custom Fields](./api-reference/crm/companies/userfields/events/index.md), [Leads](./api-reference/crm/leads/events/index.md), [Lead Custom Fields](./api-reference/crm/leads/userfield/events/index.md), [Estimates](./api-reference/crm/quote/events/index.md), [Estimate Custom Fields](./api-reference/crm/quote/user-field/events/index.md), [Deals](./api-reference/crm/deals/events/index.md), [Deal Custom Fields](./api-reference/crm/deals/user-defined-fields/events/index.md), [Recurring Deals](./api-reference/crm/deals/recurring-deals/events/index.md). Added introductory information and an overview of events
+- Updated the main page of the [Custom Fields](./api-reference/user/userfields/index.md) section. Added introductory information and an overview of methods and relationships
+- Updated the event pages [onCrmDocumentGeneratorDocument*](./api-reference/crm/document-generator/documents/events/index.md)
+- Updated the documentation for the method to get the work schedule [timeman.schedule.get](./api-reference/timeman/schedule/timeman-schedule-get.md)
+- Added the article [How to Update and Delete Files](./api-reference/files/how-to-update-files.md)
+- Updated the tutorial [Add Contact with Requisites via Web Form](./tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)
+- Updated the tutorial [How to Edit or Remove Phone Numbers and Email](./tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
+- Updated the tutorial [Add Recurring Lead](./tutorials/crm/how-to-add-crm-objects/how-to-add-repeat-lead.md)
+- 
+### June 04, 2025
+
+- Updated the documentation for working with [custom fields](./api-reference/user/userfields/index.md) in the Users section
+- Updated the documentation for the report methods [timeman.timecontrol.report.add](./api-reference/timeman/timecontrol/timeman-timecontrol-report-add.md), [timeman.timecontrol.report.get](./api-reference/timeman/timecontrol/timeman-timecontrol-reports-get.md), [timeman.timecontrol.reports.users.get](./api-reference/timeman/timecontrol/timeman-timecontrol-reports-users-get.md) in the Time Control section
+- Updated the tutorial [Add a company with details via web form](./tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
+- Updated the tutorial [Add a deal and company with details](./tutorials/crm/how-to-add-crm-objects/how-to-add-deal-with-choice-of-requisite.md)
+- Updated the main page of the [Product and Variation Properties](./api-reference/catalog/product-property/index.md) section in the Trade Catalog. Added introductory information and an overview of methods and relationships
+- Updated the main page of the [Files](./api-reference/chats/files/index.md) section in Chats. Added introductory information and an overview of methods and relationships
+
+### May 28, 2025
+
+- Updated tutorials: [Add Contact via Web Form](./tutorials/crm/how-to-add-crm-objects/how-to-add-contact.md), [Add Company via Web Form](./tutorials/crm/how-to-add-crm-objects/how-to-add-company.md), [Add Calendar Event for Client Work](./tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)
+- Added new tutorial [How to Filter Elements by Stage Name](./tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
+
 ### May 21, 2025
 
 - Updated the main page of the [Price](./api-reference/catalog/price/index.md) section in the Trade Catalog. Added introductory information as well as an overview of methods and connections

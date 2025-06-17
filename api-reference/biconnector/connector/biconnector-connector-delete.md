@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: user with access to the "Analyst Workspace" section
 
 The method `biconnector.connector.delete` removes an existing connector.
 
@@ -109,7 +109,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -125,14 +125,14 @@ HTTP status: **200**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-## Possible Error Codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | `ID is missing.` | Identifier is not specified ||
-|| `VALIDATION_INVALID_ID_FORMAT` | `ID has to be a positive integer.` | Invalid ID format ||
-|| `CONNECTOR_NOT_FOUND` | `Connector was not found.` | Connector not found ||
-|| `CONNECTOR_DELETE_RESTRICTED` | `Connector cannot be removed. Remove the connections related to the connector first.` | Cannot delete the connector while there are related connections ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not provided ||
+|| `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
+|| `CONNECTOR_NOT_FOUND` | Connector was not found. | Connector not found ||
+|| `CONNECTOR_DELETE_RESTRICTED` | Connector cannot be removed. Remove the connections related to the connector first. | Cannot delete connector while related connections exist ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

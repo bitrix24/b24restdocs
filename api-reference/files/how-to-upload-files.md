@@ -1,12 +1,12 @@
 # How to Upload Files
 
-In Bitrix24, there are two types of file fields:
+In Bitrix24, there are two types of file fields.
 
-- **File.** This field is not linked to the Disk; files are uploaded directly through a Base64 formatted string.
+- **File.** This field is not linked to Drive; files are uploaded directly through a Base64 formatted string.
 
-- **File (disk).** This field is linked to the Disk, and it stores the ID of the disk object. The Base64 format is not processed in this field, so the file must first be uploaded to the Bitrix24 Disk using the methods [disk.folder.uploadfile](../disk/folder/disk-folder-upload-file.md) or [disk.storage.uploadfile](../disk/storage/disk-storage-upload-file.md).
+- **File (Drive).** This field is linked to Drive, and it stores the ID of the Drive object. The Base64 format is not processed in this field, so the file must first be uploaded to Bitrix24 Drive using the methods [disk.folder.uploadfile](../disk/folder/disk-folder-upload-file.md) or [disk.storage.uploadfile](../disk/storage/disk-storage-upload-file.md).
 
-To upload files in Bitrix24, use the standard Base64 encoding. This encoding is used when you need to transmit a file over text protocols, such as HTTP.
+To upload files to Bitrix24, use the standard Base64 encoding. Encoding is used when you need to transmit a file through text protocols, such as HTTP.
 
 ## How to Encode a File in Base64
 
@@ -40,7 +40,7 @@ As a result of encoding the file, you will get a string like `YmFzZSDRgtC10YHRgg
 
 ## How to Pass a Base64 String to a Field
 
-In Bitrix24, there are 4 specifics for uploading files.
+In Bitrix24, there are 4 features for uploading files.
 
 1. Pass the Base64 string to the `file` field if you are using the methods:
 
@@ -99,20 +99,18 @@ In Bitrix24, there are 4 specifics for uploading files.
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
         -d '{"fields":{"name":"Template Example","file":"base64_encoded_content_here","code":"example_template_code"}}' \
-        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/documentgenerator.template.add
+        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/documentgenerator.template.add
         ```
 
     {% endlist %}
 
-2. Pass an array consisting of the file name and the Base64 string if you are using the methods:
+2. Pass an array of the file name and Base64 string if you are using the methods:
 
    - [crm.timeline.comment.add](../crm/timeline/comments/crm-timeline-comment-add.md) — in the `FILES` field
 
-   - [crm.item.add](../crm/universal/crm-item-add.md) — in file-type fields of CRM objects
+   - [crm.item.add](../crm/universal/crm-item-add.md) — in file-type fields of CRM entities
 
    - [log.blogpost.add](../log/log-blogpost-add.md) — in the `FILES` field
-
-   - [user.add](../user/user-add.md) — in file-type fields
 
    - [lists.element.add](../lists/elements/lists-element-add.md) — in file-type properties
 
@@ -175,12 +173,12 @@ In Bitrix24, there are 4 specifics for uploading files.
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
         -d '{"DOCUMENT_TYPE":["lists","BizprocDocument","iblock_164"],"NAME":"App template","TEMPLATE_DATA":["bp-379.bpt","base64_encoded_content_here"]}' \
-        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/bizproc.workflow.template.add
+        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/bizproc.workflow.template.add
         ```
 
     {% endlist %}
 
-3. Pass an object with the key `fileData`, which contains an array of the file name and the Base64 string if you are using the methods:
+3. Pass an object with the key `fileData`, which contains an array of the file name and Base64 string if you are using the methods:
 
    - [catalog.product.add](../catalog/product/catalog-product-add.md) — in the `previewPicture`, `detailPicture` fields
 
@@ -247,12 +245,12 @@ In Bitrix24, there are 4 specifics for uploading files.
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
         -d '{"fields":{"iblockId":"24","name":"Product Example","previewPicture":{"fileData":["example.jpg","base64_encoded_content_here"]}}}' \
-        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.add
+        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.product.add
         ```
 
     {% endlist %}
 
-4. Pass the `fileContent` parameter, which contains an array of the file name and the Base64 string if you are using the methods:
+4. Pass the `fileContent` parameter, which contains an array of the file name and Base64 string if you are using the methods:
 
    - [disk.file.uploadversion](../disk/file/disk-file-upload-version.md)
 
@@ -316,26 +314,24 @@ In Bitrix24, there are 4 specifics for uploading files.
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
         -d '{"id":4,"fileContent":["1.gif","base64_encoded_content_here"]}' \
-        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.file.uploadversion
+        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/disk.file.uploadversion
         ```
 
     {% endlist %}
 
 ## How to Upload Files to a Multiple Field
 
-If a field has a "multiple" flag, you can upload several files to it. Uploading multiple files works in the following methods:
+If the field has a "multiple" flag, you can upload several files to it. Uploading multiple files works in the following methods:
 
 - [crm.item.add](../crm/universal/crm-item-add.md) — file-type fields
 
-- [user.add](../user/user-add.md) — file-type fields
-
 - [lists.element.add](../lists/elements/lists-element-add.md) — file-type properties
-
-- [entity.item.add](../entity/items/entity-item-add.md) — file-type properties
 
 - [crm.timeline.comment.add](../crm/timeline/comments/crm-timeline-comment-add.md) — `FILES` field
 
 - [log.blogpost.add](../log/log-blogpost-add.md) — `FILES` field
+
+- [catalog.product.add](../catalog/product/catalog-product-add.md) — file-type fields
 
 To upload multiple files, pass an array where each element is the file name and the file itself, in a Base64 encoded string format.
 
@@ -349,7 +345,7 @@ To upload multiple files, pass an array where each element is the file name and 
         {
             entityTypeId: 2, 
             fields: {
-                title: "New deal (specifically for REST method example)", 
+                title: "New Deal (specifically for REST method example)", 
                 // Multiple field with an array of files
                 ufCrm_123456: [ 
                     [
@@ -380,7 +376,7 @@ To upload multiple files, pass an array where each element is the file name and 
         [
             'entityTypeId' => 2, 
             'fields' => [
-                'title' => 'New deal (specifically for REST method example)', 
+                'title' => 'New Deal (specifically for REST method example)', 
                 // Multiple field with an array of files
                 'ufCrm_123456' => [
                     [
@@ -396,7 +392,7 @@ To upload multiple files, pass an array where each element is the file name and 
                         'base64_encoded_content_here' // Base64 content of the third file
                     ]
                 ]
-            ]
+            }
         ]
     );
     ```
@@ -407,7 +403,7 @@ To upload multiple files, pass an array where each element is the file name and 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":2,"fields":{"title":"New deal (specifically for REST method example)","ufCrm_123456":[["green_pixel.png","base64_encoded_content_here"],["blue_pixel.png","base64_encoded_content_here"],["red_pixel.png","base64_encoded_content_here"]]},"auth":"**put_access_token_here**"}' \
+    -d '{"entityTypeId":2,"fields":{"title":"New Deal (specifically for REST method example)","ufCrm_123456":[["green_pixel.png","base64_encoded_content_here"],["blue_pixel.png","base64_encoded_content_here"],["red_pixel.png","base64_encoded_content_here"]]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.item.add
     ```
 
@@ -417,11 +413,100 @@ To upload multiple files, pass an array where each element is the file name and 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":2,"fields":{"title":"New deal (specifically for REST method example)","ufCrm_123456":[["green_pixel.png","base64_encoded_content_here"],["blue_pixel.png","base64_encoded_content_here"],["red_pixel.png","base64_encoded_content_here"]]}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.add
+    -d '{"entityTypeId":2,"fields":{"title":"New Deal (specifically for REST method example)","ufCrm_123456":[["green_pixel.png","base64_encoded_content_here"],["blue_pixel.png","base64_encoded_content_here"],["red_pixel.png","base64_encoded_content_here"]]}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.item.add
     ```
 
 {% endlist %}
+
+To upload multiple files in the method [catalog.product.add](../catalog/product/catalog-product-add.md), pass an array of objects, where each object contains the `value` field, which holds an object with the `fileData` key. The value of `fileData` is an array of two elements: the file name and the file itself, in a Base64 encoded string format.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    BX24.callMethod(
+        'catalog.product.add',
+        {
+            fields: {
+                iblockId: 1,
+                name: "Product Example",
+                PROPERTY_1077: [
+                    {
+                        value: {
+                            fileData: [
+                                "blue_pixel.txt", // File name
+                                "YmFzZSDRgtC10YHRgg==" // Base64 content
+                            ]
+                        }
+                    },
+                    {
+                        value: {
+                            fileData: [
+                                "red_pixel.txt", // File name
+                                "YmFzZSDRgtC10YHRgg==" // Base64 content
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    );
+    ```
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"fields": {"iblockId": 1, "name": "Product Example", "PROPERTY_1077": [{"value": {"fileData": ["blue_pixel.txt", "YmFzZSDRgtC10YHRgg=="]}}, {"value": {"fileData": ["red_pixel.txt", "YmFzZSDRgtC10YHRgg=="]}}]}}' https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.product.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"fields": {"iblockId": 1, "name": "Product Example", "PROPERTY_1077": [{"value": {"fileData": ["blue_pixel.txt", "YmFzZSDRgtC10YHRgg=="]}}, {"value": {"fileData": ["red_pixel.txt", "YmFzZSDRgtC10YHRgg=="]}}]}, "auth": "**put_access_token_here**"}' https://**put_your_bitrix24_address**/rest/catalog.product.add
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.product.add',
+        [
+            'fields' => [
+                'iblockId' => 1,
+                'name' => 'Product Example',
+                'PROPERTY_1077' => [
+                    [
+                        'value' => [
+                            'fileData' => [
+                                'blue_pixel.txt',
+                                'YmFzZSDRgtC10YHRgg=='
+                            ]
+                        ]
+                    },
+                    [
+                        'value' => [
+                            'fileData' => [
+                                'red_pixel.txt',
+                                'YmFzZSDRgtC10YHRgg=='
+                            ]
+                        ]
+                    }
+                ]
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
 
 ## Limitations When Working with Files
 
@@ -429,6 +514,6 @@ To upload multiple files, pass an array where each element is the file name and 
 
 - The limit on the size of a POST request in Bitrix24 is 2GB. Files larger than 2GB will not be processed. If multiple files are sent in one request totaling more than 2GB, the request will be interrupted. To upload several large files, send the data in separate requests.
 
-- The execution time limit for a request is 60 seconds for cloud Bitrix24. The request will be interrupted due to a timeout if processing takes longer than 60 seconds. You can check the execution time of the request in the [time](../data-types.md#time) object of the response, under the `duration` parameter.
+- The limit on the execution time of a request is 60 seconds for cloud Bitrix24. The request will be interrupted due to a timeout if processing takes longer than 60 seconds. You can check the execution time of the request in the [time](../data-types.md#time) object of the response, parameter `duration`.
 
-- If you are passing a file encoded in Base64, and the method is executed in the address bar as a GET request or through curl, the Base64 must be additionally [encoded in urlencode](../how-to-call-rest-api/data-encoding.md), otherwise the file will not be read.
+- If you are transmitting a file encoded as a Base64 string, and the method is executed in the address bar as a GET request or the method is executed via curl — Base64 needs to be additionally [encoded in urlencode](../how-to-call-rest-api/data-encoding.md), otherwise, the file will not be read.

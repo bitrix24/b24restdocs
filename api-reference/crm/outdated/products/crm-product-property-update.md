@@ -2,9 +2,15 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator, user with the "Allow to change settings" access permission in CRM
 
-This method updates an existing product property.
+{% note warning "Method development halted" %}
+
+The method `crm.product.property.update` continues to function, but there is a more relevant alternative [catalog.productProperty.update](../../../catalog/product-property/catalog-product-property-update.md).
+
+{% endnote %}
+
+The method `crm.product.property.update` updates an existing product property.
 
 ## Method Parameters
 
@@ -18,7 +24,7 @@ This method updates an existing product property.
 || **fields**
 [`array`](../../../data-types.md) | Field values for updating the product property.
 
-To find out the required format for the fields, execute the method [crm.product.property.fields](./crm-product-property-fields.md) and check the format of the received values for these fields ||
+To find out the required format of the fields, execute the method [crm.product.property.fields](./crm-product-property-fields.md) and check the format of the received values for these fields ||
 |#
 
 ## Code Examples

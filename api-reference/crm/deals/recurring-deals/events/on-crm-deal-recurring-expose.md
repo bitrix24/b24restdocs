@@ -1,4 +1,4 @@
-# Event for Creating a New Deal from a Recurring Deal Template onCrmDealRecurringExpose
+# Event when creating a new deal from a recurring deal template onCrmDealRecurringExpose
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -6,9 +6,9 @@
 
 The event `ONCRMDEALRECURRINGEXPOSE` will trigger when a new deal is created from a recurring deal template.
 
-## What the Handler Receives
+## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -55,9 +55,9 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -68,7 +68,7 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the record in the recurring deals settings table ||
+[`integer`](../../../../data-types.md) | Identifier of the record in the settings table for recurring deals ||
 || **RECURRING_DEAL_ID**
 [`integer`](../../../../data-types.md) | Identifier of the recurring deal template ||
 || **DEAL_ID**
@@ -79,7 +79,7 @@ The structure is described [below](#auth) ||
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring
+## Continue exploring
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

@@ -1,13 +1,11 @@
 # Events
 
-{% note info "Permissions" %}
-
-**Scope**: [`crm`](../../../../scopes/permissions.md) | **Who can subscribe**: `any user`
-
-{% endnote %}
+> Scope: [`crm`](../../../../scopes/permissions.md)
+>
+> Who can subscribe: any user
 
 #|
-|| **Event** | **Triggered** ||
+|| **Event** | **Triggered by** ||
 || [onCrmProductAdd](./on-crm-product-add.md) | when a product is created ||
 || [onCrmProductUpdate](./on-crm-product-update.md) | when a product is updated ||
 || [onCrmProductDelete](./on-crm-product-delete.md) | when a product is deleted ||

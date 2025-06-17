@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: user with access to the "Analyst Workspace" section
 
 The method `biconnector.source.get` returns information about the source by its identifier.
 
@@ -14,7 +14,7 @@ The method `biconnector.source.get` returns information about the source by its 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Source identifier, can be obtained using the methods [biconnector.source.list](./biconnector-source-list.md) and [biconnector.source.add](./biconnector-source-add.md) ||
+[`integer`](../../data-types.md) | Identifier of the source, which can be obtained using the methods [biconnector.source.list](./biconnector-source-list.md) and [biconnector.source.add](./biconnector-source-add.md) ||
 |#
 
 ## Code Examples
@@ -78,7 +78,7 @@ The method `biconnector.source.get` returns information about the source by its 
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -132,7 +132,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -146,9 +146,9 @@ HTTP status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | `ID is missing.` | Identifier is not specified ||
-|| `VALIDATION_INVALID_ID_FORMAT` | `ID has to be a positive integer.` | Invalid ID format ||
-|| `SOURCE_NOT_FOUND` | `Source was not found.` | Source not found ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not provided ||
+|| `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
+|| `SOURCE_NOT_FOUND` | Source was not found. | Source not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

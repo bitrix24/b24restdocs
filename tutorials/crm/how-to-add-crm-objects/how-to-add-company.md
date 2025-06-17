@@ -1,33 +1,63 @@
-# How to Easily Add a Company
+# Add a Company via Web Form
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the method: users with permission to create companies in CRM
 
-Example of embedding a form on a webpage, which, when filled out, creates a new company in Bitrix24.
+You can place a form on the site to collect client data. When a client fills out the form, their data will be sent to CRM, and you will be able to process the request.
 
-- Create a form on the desired page:
+Setting up the form consists of two steps.
+
+1. Place the form on an HTML page. It will send data to the handler.
+
+2. Create a file to process the data. The handler will accept and prepare the data, and then create a company using the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md).
+
+## 1. Creating the Web Form
+
+Let's create a web form on the website page with three fields:
+
+-  `TITLE` — company name, required,
+
+-  `EMAIL` — email address,
+
+-  `PHONE` — phone number.
+
+When submitted, the form sends data to the handler `form.php`.
 
 ```html
-<form id="form_to_crm">
-    <input type="text" name="TITLE" placeholder="Title" required>
-    <input type="text" name="EMAIL" placeholder="E-mail">
+<form id="form_to_crm" method="POST" action="form.php">
+    <!-- Company name (required field) -->
+    <input type="text" name="TITLE" placeholder="Company name" required>
+    
+    <!-- Email address -->
+    <input type="text" name="EMAIL" placeholder="Email">
+    
+    <!-- Phone number -->
     <input type="text" name="PHONE" placeholder="Phone">
+    
+    <!-- Submit button -->
     <input type="submit" value="Submit">
 </form>
+
+<!-- Include jQuery for AJAX request -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#form_to_crm').on('submit', function(el) { // event submit form
-            el.preventDefault(); // the default action of the event will not be triggered
+        // Submit the form without reloading the page
+        $('#form_to_crm').on('submit', function(el) {
+            el.preventDefault(); // Cancel the default submission
+            
+            // Get form data
             var formData = $(this).serialize();
+            
+            // Send data to the server
             $.ajax({
                 'method': 'POST',
                 'dataType': 'json',
-                'url': 'form.php', // file for saving filled forms form.js or form.php
+                'url': 'form.php', // Handler file
                 'data': formData,
-                success: function(data) { // success callback
-                    alert(data.message);
+                success: function(data) {
+                    alert(data.message); // Show the result
                 }
             });
         });
@@ -35,169 +65,69 @@ Example of embedding a form on a webpage, which, when filled out, creates a new 
 </script>
 ```
 
-- Create a file to save the filled forms:
+## 2. Creating the Form Handler
 
-{% list tabs %}
+To process the values from the form fields and add a company to CRM, we will create the handler `form.php`.
 
-- JS
+To add a company, we will use the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md). In the `fields` object, we pass the fields:
 
-    ```js
-    var sTitle = BX24.placement.call('getValue', 'TITLE');
-    var sPhone = BX24.placement.call('getValue', 'PHONE');
-    var sEmail = BX24.placement.call('getValue', 'EMAIL');
+-  `TITLE` — company name,
 
-    var arPhone = sPhone ? [{ 'VALUE': sPhone, 'VALUE_TYPE': 'WORK' }] : [];
-    var arEmail = sEmail ? [{ 'VALUE': sEmail, 'VALUE_TYPE': 'HOME' }] : [];
+-  `COMPANY_TYPE` — type of company. We specify `CUSTOMER`, as only clients of the company fill out the form,
 
-    BX24.callMethod(
-        'crm.company.add',
-        {
-            'fields': {
-                "TITLE": sTitle, // *Company Name[string]
-                "COMPANY_TYPE": 'CUSTOMER', // Company type[crm_status {CUSTOMER:"Client", SUPPLIER:"Supplier", COMPETITOR:"Competitor", PARTNER:"Partner", OTHER:"Other"}] // BX24.callMethod('crm.status.list', { 'filter': { 'ENTITY_ID': 'COMPANY_TYPE' } });
-                "PHONE": arPhone, // Phone[crm_multifield]
-                "EMAIL": arEmail, // E-mail[crm_multifield]
-                // "LOGO": '', // Logo[file]
-                // "ADDRESS": '', // Street address[string]
-                // "ADDRESS_2": '', // Address (line 2)[string]
-                // "ADDRESS_CITY": '', // City[string]
-                // "ADDRESS_POSTAL_CODE": '', // Zip[string]
-                // "ADDRESS_REGION": '', // Region[string]
-                // "ADDRESS_PROVINCE": '', // State / Province[string]
-                // "ADDRESS_COUNTRY": '', // Country[string]
-                // "ADDRESS_COUNTRY_CODE": '', // Country Code[string]
-                // "ADDRESS_LEGAL": '', // Legal address[string]
-                // "REG_ADDRESS": '', // Billing Address[string]
-                // "REG_ADDRESS_2": '', // Billing Address (line 2)[string]
-                // "REG_ADDRESS_CITY": '', // Billing City[string]
-                // "REG_ADDRESS_POSTAL_CODE": '', // Billing Zip[string]
-                // "REG_ADDRESS_REGION": '', // Billing Region[string]
-                // "REG_ADDRESS_PROVINCE": '', // Billing State / Province[string]
-                // "REG_ADDRESS_COUNTRY": '', // Billing Country[string]
-                // "REG_ADDRESS_COUNTRY_CODE": '', // Billing Country Code[string]
-                // "BANKING_DETAILS": '', // Payment details[string]
-                // "INDUSTRY": '', // Industry[crm_status {IT:"Information Technology", TELECOM:"Telecommunication", MANUFACTURING:"Manufacturing", BANKING:"Banking Services", CONSULTING:"Consulting", FINANCE:"Finance", GOVERNMENT:"Government", DELIVERY:"Delivery", ENTERTAINMENT:"Entertainment", NOTPROFIT:"Non-profit", OTHER:"Other"}] // BX24.callMethod('crm.status.list', { 'filter': { 'ENTITY_ID': 'INDUSTRY' } });
-                // "EMPLOYEES": '', // Employees[crm_status {EMPLOYEES_1:"less than 50", EMPLOYEES_2:"50 to 250", EMPLOYEES_3:"250 to 500", EMPLOYEES_4:"over 500"}] // BX24.callMethod('crm.status.list', { 'filter': { 'ENTITY_ID': 'EMPLOYEES' } });
-                // "CURRENCY_ID": '', // Currency[crm_currency] // BX24.callMethod('crm.currency.list');
-                // "REVENUE": '', // Annual revenue[double]
-                // "OPENED": '', // Available to everyone[char]
-                // "COMMENTS": '', // Comment[string]
-                // "HAS_PHONE": '', // Has phone[char]
-                // "HAS_EMAIL": '', // Has email[char]
-                // "HAS_IMOL": '', // Has Open Channel[char]
-                // "IS_MY_COMPANY": '', // My Company[char]
-                // "ASSIGNED_BY_ID": '', // Responsible person[user]
-                // "CREATED_BY_ID": '', // Created by[user]
-                // "MODIFY_BY_ID": '', // Modified by[user]
-                // "DATE_CREATE": '', // Created on[datetime]
-                // "DATE_MODIFY": '', // Modified on[datetime]
-                // "CONTACT_ID": '', // Contact[crm_contact] // BX24.callMethod('crm.contact.list');
-                // "LEAD_ID": '', // Lead[crm_lead]
-                // "ORIGINATOR_ID": '', // External source[string]
-                // "ORIGIN_ID": '', // Item ID in data source[string]
-                // "ORIGIN_VERSION": '', // Original version[string]
-                // "UTM_SOURCE": '', // Ad system[string]
-                // "UTM_MEDIUM": '', // Medium[string]
-                // "UTM_CAMPAIGN": '', // Ad campaign UTM[string]
-                // "UTM_CONTENT": '', // Campaign contents[string]
-                // "UTM_TERM": '', // Campaign search term[string]
-                // "WEB": '', // Website[crm_multifield]
-                // "IM": '', // Messenger[crm_multifield]
-            }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error() + ': ' + result.error_description());
-                console.log(JSON.stringify({ 'message': 'Company not added: ' + result.error_description() }));
-            } else {
-                console.log(JSON.stringify({ 'message': 'Company added' }));
-            }
-        }
-    );
-    ```
+-  `PHONE` — phone number,
 
-- PHP
+-  `EMAIL` — email address.
 
-    {% note info %}
+The values for `TITLE`, `PHONE`, and `EMAIL` are obtained from the form. The system stores phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+1. If a value exists, we add it as the first element `VALUE` in the array, and the second value specifies the type `VALUE_TYPE`, for example:
 
-    {% endnote %}
+   -  `WORK` — for phone,
 
-    ```php
-    <?
-    $sTitle = htmlspecialchars($_POST["TITLE"]);
-    $sPhone = htmlspecialchars($_POST["PHONE"]);
-    $sEmail = htmlspecialchars($_POST["EMAIL"]);
+   -  `HOME` — for email.
 
-    $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
-    $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
+2. If no value exists, we pass an empty array.
 
-    $result = CRest::call(
-        'crm.company.add',
-        [
-            'fields' => [
-                "TITLE" => $sTitle, // *Company Name[string]
-                "COMPANY_TYPE" => 'CUSTOMER', // Company type[crm_status {CUSTOMER:"Client", SUPPLIER:"Supplier", COMPETITOR:"Competitor", PARTNER:"Partner", OTHER:"Other"}] // CRest::call('crm.status.list',['filter'=>['ENTITY_ID'=>'COMPANY_TYPE']]);
-                "PHONE" => $arPhone, // Phone[crm_multifield]
-                "EMAIL" => $arEmail, // E-mail[crm_multifield]
-                // "LOGO" => '', // Logo[file]
-                // "ADDRESS" => '', // Street address[string]
-                // "ADDRESS_2" => '', // Address (line 2)[string]
-                // "ADDRESS_CITY" => '', // City[string]
-                // "ADDRESS_POSTAL_CODE" => '', // Zip[string]
-                // "ADDRESS_REGION" => '', // Region[string]
-                // "ADDRESS_PROVINCE" => '', // State / Province[string]
-                // "ADDRESS_COUNTRY" => '', // Country[string]
-                // "ADDRESS_COUNTRY_CODE" => '', // Country Code[string]
-                // "ADDRESS_LEGAL" => '', // Legal address[string]
-                // "REG_ADDRESS" => '', // Billing Address[string]
-                // "REG_ADDRESS_2" => '', // Billing Address (line 2)[string]
-                // "REG_ADDRESS_CITY" => '', // Billing City[string]
-                // "REG_ADDRESS_POSTAL_CODE" => '', // Billing Zip[string]
-                // "REG_ADDRESS_REGION" => '', // Billing Region[string]
-                // "REG_ADDRESS_PROVINCE" => '', // Billing State / Province[string]
-                // "REG_ADDRESS_COUNTRY" => '', // Billing Country[string]
-                // "REG_ADDRESS_COUNTRY_CODE" => '', // Billing Country Code[string]
-                // "BANKING_DETAILS" => '', // Payment details[string]
-                // "INDUSTRY" => '', // Industry[crm_status {IT:"Information Technology", TELECOM:"Telecommunication", MANUFACTURING:"Manufacturing", BANKING:"Banking Services", CONSULTING:"Consulting", FINANCE:"Finance", GOVERNMENT:"Government", DELIVERY:"Delivery", ENTERTAINMENT:"Entertainment", NOTPROFIT:"Non-profit", OTHER:"Other"}] // CRest::call('crm.status.list',['filter'=>['ENTITY_ID'=>'INDUSTRY']]);
-                // "EMPLOYEES" => '', // Employees[crm_status {EMPLOYEES_1:"less than 50", EMPLOYEES_2:"50 to 250", EMPLOYEES_3:"250 to 500", EMPLOYEES_4:"over 500"}] // CRest::call('crm.status.list',['filter'=>['ENTITY_ID'=>'EMPLOYEES']]);
-                // "CURRENCY_ID" => '', // Currency[crm_currency] // CRest::call('crm.currency.list');
-                // "REVENUE" => '', // Annual revenue[double]
-                // "OPENED" => '', // Available to everyone[char]
-                // "COMMENTS" => '', // Comment[string]
-                // "HAS_PHONE" => '', // Has phone[char]
-                // "HAS_EMAIL" => '', // Has email[char]
-                // "HAS_IMOL" => '', // Has Open Channel[char]
-                // "IS_MY_COMPANY" => '', // My Company[char]
-                // "ASSIGNED_BY_ID" => '', // Responsible person[user]
-                // "CREATED_BY_ID" => '', // Created by[user]
-                // "MODIFY_BY_ID" => '', // Modified by[user]
-                // "DATE_CREATE" => '', // Created on[datetime]
-                // "DATE_MODIFY" => '', // Modified on[datetime]
-                // "CONTACT_ID" => '', // Contact[crm_contact] // CRest::call('crm.contact.list');
-                // "LEAD_ID" => '', // Lead[crm_lead]
-                // "ORIGINATOR_ID" => '', // External source[string]
-                // "ORIGIN_ID" => '', // Item ID in data source[string]
-                // "ORIGIN_VERSION" => '', // Original version[string]
-                // "UTM_SOURCE" => '', // Ad system[string]
-                // "UTM_MEDIUM" => '', // Medium[string]
-                // "UTM_CAMPAIGN" => '', // Ad campaign UTM[string]
-                // "UTM_CONTENT" => '', // Campaign contents[string]
-                // "UTM_TERM" => '', // Campaign search term[string]
-                // "WEB" => '', // Website[crm_multifield]
-                // "IM" => '', // Messenger[crm_multifield]
-            ]
+{% note warning "" %}
+
+Check which required fields are set for companies in your Bitrix24. All required fields must be passed to the method [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md).
+
+{% endnote %}
+
+```php
+<?
+// Get data from the form
+$sTitle = htmlspecialchars($_POST["TITLE"]);
+$sPhone = htmlspecialchars($_POST["PHONE"]);
+$sEmail = htmlspecialchars($_POST["EMAIL"]);
+
+// Format phone and email for Bitrix24 in crm_multifield format
+$arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
+$arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
+
+// Send data to Bitrix24
+$result = CRest::call(
+    'crm.company.add',
+    [
+        'fields' =>[
+            "TITLE" => $sTitle, // Company name
+            "COMPANY_TYPE" => 'CUSTOMER', // Company type — client
+            "PHONE" => $arPhone, // Phone
+            "EMAIL" => $arEmail, // Email
         ]
-    );
-    if (!empty($result['result'])) {
-        echo json_encode(['message' => 'Company added']);
-    } elseif (!empty($result['error_description'])) {
-        echo json_encode(['message' => 'Company not added: ' . $result['error_description']]);
-    } else {
-        echo json_encode(['message' => 'Company not added']);
-    }
-    ?>
-    ```
+    ]
+);
 
-{% endlist %}
+// Return the result
+if(!empty($result['result'])){
+    echo json_encode(['message' => 'Company added']);
+}
+elseif(!empty($result['error_description'])){
+    echo json_encode(['message' => 'Company not added: '.$result['error_description']]);
+}
+else{
+    echo json_encode(['message' => 'Company not added']);
+}
+?>
+```

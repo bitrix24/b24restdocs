@@ -31,7 +31,7 @@ The method `disk.file.uploadversion` uploads a new version of the file.
 || **id**
 [`unknown`](../../data-types.md) | File identifier. ||
 || **fileContent**
-[`unknown`](../../data-types.md) | Similar to `DETAIL_PICTURE` in the example [File Handling](../../bx24-js-sdk/how-to-call-rest-methods/files.md). ||
+[`unknown`](../../data-types.md) | Upload the file in [Base64](../../files/how-to-upload-files.md) format. ||
 |#
 
 ## Example
@@ -59,7 +59,7 @@ The method `disk.file.uploadversion` uploads a new version of the file.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 

@@ -4,13 +4,19 @@
 >
 > Who can execute the method: any user
 
-The method returns a description of the fields for product properties.
+{% note warning "Method development has been halted" %}
+
+The method `crm.product.property.fields` is still operational, but there is a more relevant alternative [catalog.productProperty.getFields](../../../catalog/product-property/catalog-product-property-get-fields.md).
+
+{% endnote %}
+
+The method `crm.product.property.fields` returns the description of fields for product properties.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -22,7 +28,7 @@ No parameters.
     -H "Accept: application/json" \
     -d '{}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.product.property.fields
-   ```
+    ```
 
 - cURL (OAuth)
 

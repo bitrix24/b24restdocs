@@ -16,9 +16,9 @@ You can read about the differences between the import logic and the logic of reg
 || **Name**
 `type`          | **Description** ||
 || **entityTypeId***
-[`integer`][3] | Identifier of the system or [user-defined type](../user-defined-object-types/index.md) for which the item needs to be created ||
+[`integer`][3] | Identifier of the system or [custom type](../user-defined-object-types/index.md) for which the item needs to be created ||
 || **fields***
-[`object`][3]  | An object in the following format:
+[`object`][3]  | Object in the format:
 
 ```js
 {
@@ -29,17 +29,38 @@ You can read about the differences between the import logic and the logic of reg
 }
 ```
 
-where
 - `field_n` — field name
 - `value_n` — field value
 
-Each CRM entity type has its own set of fields. This means that the set of fields for creating a Lead may not match the set of fields for creating a Contact or SPA.
+For multi-fields, such as `PHONE`, `EMAIL`, pass the data in the [crm_multifield](../../data-types.md#crm_multifield) structure:
 
-The list of available fields for each entity type is described [below](#parametr-fields).
+```js
+{
+    field_name: [
+        {
+            VALUE: "value_1",
+            VALUE_TYPE: "type_1"
+        },
+        {
+            VALUE: "value_2",
+            VALUE_TYPE: "type_2"
+        },
+        ...
+    ]
+}
+```
+
+- `field_name` — field name, for example `PHONE`
+- `VALUE` — field value, for example a phone number
+- `VALUE_TYPE` — value type, for example `WORK`
+
+Each CRM object has its own set of fields. This means that the set of fields for creating a Lead does not have to match the set of fields for creating a Contact or SPA.
+
+The list of available fields for each type of object is described [below](#parametr-fields).
 
 An incorrect field in `fields` will be ignored.
 
-You can also find out the set of fields using the universal method [crm.item.fields](../crm-item-fields.md) or methods for specific CRM objects: 
+You can also find out the set of fields using the universal method [crm.item.fields](../crm-item-fields.md) or methods for specific CRM objects:
 - [crm.lead.fields](../../leads/crm-lead-fields.md)
 - [crm.deal.fields](../../deals/crm-deal-fields.md)
 - [crm.contact.fields](../../contacts/crm-contact-fields.md)
@@ -47,18 +68,18 @@ You can also find out the set of fields using the universal method [crm.item.fie
 - [crm.quote.fields](../../quote/crm-quote-fields.md)
 ||
 || **useOriginalUfNames**
-[`boolean`][1] | A parameter to control the format of user-defined field names in the request and response.   
+[`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
-- `Y` — original names of user-defined fields, e.g., UF_CRM_2_1639669411830
-- `N` — user-defined field names in camelCase, e.g., ufCrm_2_1639669411830
+- `Y` — original names of custom fields, for example `UF_CRM_2_1639669411830`
+- `N` — custom field names in camelCase, for example `ufCrm2_1639669411830`
 
 Default is `N` ||
 |#
 
 {% include [Parameter fields in different entities](../../_include/crm-entity-fields-list.md) %}
 
-To upload a file, the value of the user-defined field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
+To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the base64 encoded content of the file.
 
 ## Code Examples
 
@@ -225,11 +246,11 @@ To upload a file, the value of the user-defined field must be an array where the
    {% endlist %}
 
 
-2. How to create an SPA element with a set of user-defined fields
+2. How to create an SPA item with a set of custom fields
 
-    {% cut "User-defined fields involved in the example" %}
+    {% cut "Custom fields involved in the example" %}
 
-    {% include [Set of user-defined fields](../../_include/user-fields-for-examples-cut.md) %}
+    {% include [Set of custom fields](../../_include/user-fields-for-examples-cut.md) %}
 
     {% endcut %}
 
@@ -244,7 +265,7 @@ To upload a file, the value of the user-defined field must be an array where the
         -d '{
             "entityTypeId": 1302,
             "fields": {
-                "ufCrm44_1721812760630": "String for user-defined field of type String",
+                "ufCrm44_1721812760630": "String for custom field of type String",
                 "ufCrm44_1721812814433": 81,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -272,7 +293,7 @@ To upload a file, the value of the user-defined field must be an array where the
         -d '{
             "entityTypeId": 1302,
             "fields": {
-                "ufCrm44_1721812760630": "String for user-defined field of type String",
+                "ufCrm44_1721812760630": "String for custom field of type String",
                 "ufCrm44_1721812814433": 81,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -302,7 +323,7 @@ To upload a file, the value of the user-defined field must be an array where the
             {
                 entityTypeId: 1302,
                 fields: {
-                    ufCrm44_1721812760630: "String for user-defined field of type String",
+                    ufCrm44_1721812760630: "String for custom field of type String",
                     ufCrm44_1721812814433: 81,
                     ufCrm44_1721812853419: (new Date()).toISOString().slice(0, 10),
                     ufCrm44_1721812885588: [
@@ -338,7 +359,7 @@ To upload a file, the value of the user-defined field must be an array where the
             [
                 'entityTypeId' => 1302,
                 'fields' => [
-                    'ufCrm44_1721812760630' => "String for user-defined field of type String",
+                    'ufCrm44_1721812760630' => "String for custom field of type String",
                     'ufCrm44_1721812814433' => 81,
                     'ufCrm44_1721812853419' => date('Y-m-d'),
                     'ufCrm44_1721812885588' => [
@@ -404,13 +425,13 @@ Contains a single key — `id` ||
 || **id**
 [`int`][3] | Identifier of the created item ||
 || **time**
-[`time`][3] | Information about the execution time of the request ||
+[`time`][3] | Information about the request execution time ||
 |#
 
 {% note info " " %}
 
-By default, user-defined field names are passed and returned in camelCase, e.g., ufCrm2_1639669411830.
-When passing the parameter `useOriginalUfNames` with the value `Y`, user-defined fields will be returned with their original names, e.g., UF_CRM_2_1639669411830.
+By default, custom field names are passed and returned in camelCase, for example `ufCrm2_1639669411830`.
+When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with original names, for example `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -433,7 +454,7 @@ HTTP status: **401**, **400**, **403**
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
 || `400`      | `NOT_FOUND`                       | SPA not found                                                       | Occurs when an invalid `entityTypeId` is passed                                              ||
 || `400`      | `ACCESS_DENIED`                   | Access denied                                                     | The user does not have permission to add items of type `entityTypeId`                             ||
-|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the `field` was passed.
+|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the field `field` was passed.
 
 For system fields of type `createdTime`, if the request is not made by an administrator ||
 || `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | One of the multiple fields received a value of type `type`, while an iterable type was expected. This can also occur with an incorrect request (invalid JSON or request headers) ||

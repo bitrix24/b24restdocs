@@ -1,17 +1,15 @@
-title: How to Call REST API Methods  
-href: authorization.md  
-items:  
+title: How to Call REST API Methods
+href: authorization.md
+items: 
   - name: Authorization in REST  
-    href: authorization.md  
-  - name: How to Make a Request  
-    href: general-principles.md  
-  - name: Data Encoding  
-    href: data-encoding.md  
-  - name: Features of List Methods  
-    href: list-methods-pecularities.md  
-  - name: How to Execute Batch Requests  
-    href: batch.md  
-  - name: How to Work with Files via REST API  
-    href: how-to-upload-files.md  
-  - name: Features of REST Calls When Changing the Bitrix24 Address  
-    href: change-domen.md  
+    href: authorization.md
+  - name: How to Make a Request 
+    href: general-principles.md
+  - name: Data Encoding
+    href: data-encoding.md
+  - name: Features of List Methods 
+    href: list-methods-pecularities.md
+  - name: How to Execute Batch Requests
+    href: batch.md
+  - name: Features of REST Calls When Changing the Bitrix24 Address
+    href: change-domen.md

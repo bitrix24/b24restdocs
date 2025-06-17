@@ -10,7 +10,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -206,8 +206,8 @@ HTTP Status: **200**
         "finish": 1712938175.432068,
         "duration": 0.9956400394439697,
         "processing": 0.5710320472717285,
-        "date_start": "2024-04-12T19:09:34+03:00",
-        "date_finish": "2024-04-12T19:09:35+03:00"
+        "date_start": "2024-04-12T19:09:34+02:00",
+        "date_finish": "2024-04-12T19:09:35+02:00"
     }
 }
 ```
@@ -223,24 +223,24 @@ HTTP Status: **200**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Description of Address Fields
+### Address Field Descriptions
 
 #|
 || **Name**
 `type` | **Description** ||
 || **TYPE_ID**
-[`integer`](../../../data-types.md) | Identifier of the address type. An element of the enumeration "Address Type".
+[`integer`](../../../data-types.md) | Identifier of the address type. Enumeration element "Address Type".
 
-Elements of the enumeration "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
+Enumeration elements for "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
 ||
 || **ENTITY_TYPE_ID**
 [`integer`](../../../data-types.md) | Identifier of the parent object type.
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Attributes (and attributes to companies or contacts) or Leads. 
+Addresses can only be linked to Requisites (and requisites to companies or contacts) or Leads.
 
-For backward compatibility, the ability to link Addresses to Contacts or Companies is retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by technical support.
+For backward compatibility, the ability to link Addresses to Contacts or Companies is retained. However, this link is only possible on some older accounts where the old address handling mode was specifically enabled by support.
 ||
 || **ENTITY_ID**
 [`string`](../../../data-types.md) | Identifier of the parent object ||
@@ -266,11 +266,11 @@ Not used, retained for backward compatibility. An empty string can be specified 
 || **LOC_ADDR_ID**
 [`integer`](../../../data-types.md) | Identifier of the location address.
 
-This field contains the identifier of the address object in the `Location` module, associated with the CRM address object. Each CRM address corresponds to an address object in the location module. This can be used to copy an existing address into CRM with location information that is not present in the CRM address fields.
+This field contains the identifier of the address object in the `Location` module, associated with the CRM address object. Each CRM address corresponds to an address object in the `location` module. This can be used to copy an existing address into CRM with location information that is not present in the CRM address fields.
 
-If the identifier of the location module address is specified when creating an address, a copy of the location address is created and linked to the created CRM address. If no values are specified for the string address fields in this case, they will be filled from the location address.
+If the identifier of the `location` module address is specified when creating an address, a copy of the `location` address is created and linked to the created CRM address. If no values are specified for the string address fields in this case, they will be filled from the location address.
 
-If at least one string field was specified, only the specified fields will be saved in the CRM address, and their values will overwrite the corresponding values in the location address object. The same behavior will occur when updating the address.
+If at least one string field is specified, only the specified fields will be saved in the CRM address, and their values will overwrite the corresponding values in the location address object. The same behavior will occur when updating the address.
 ||
 || **ANCHOR_TYPE_ID**
 [`integer`](../../../data-types.md) | Identifier of the main parent object type.
@@ -279,16 +279,16 @@ This field is for internal use. The value is automatically filled when adding an
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-This field contains the identifier of the parent object type of the attribute (company or contact) if the address is linked to an attribute. If the address is linked to a lead, this value will be the lead type identifier.
+This field contains the identifier of the parent object type of the requisite (company or contact) if the address is linked to the requisite. If the address is linked to a lead, this value will be the lead type identifier.
 ||
 || **ANCHOR_ID**
 [`integer`](../../../data-types.md) | This field is for internal use. The value is automatically filled when adding an address.
 
-This field contains the identifier of the parent object of the attribute (company or contact) if the address is linked to an attribute. If the address is linked to a lead, this value will be the lead identifier.
+This field contains the identifier of the parent object of the requisite (company or contact) if the address is linked to the requisite. If the address is linked to a lead, this value will be the lead identifier.
 ||
 |#
 
-### Description of Attributes {#attributes}
+### Attribute Descriptions {#attributes}
 
 #|
 || **Name**
@@ -316,7 +316,7 @@ This field contains the identifier of the parent object of the attribute (compan
 - false — no
 ||
 || **isDynamic**
-[`boolean`](../../../data-types.md) | "Dynamic" attribute. Possible values:
+[`boolean`](../../../data-types.md) | "Custom" attribute. Possible values:
 - true — yes
 - false — no
 ||
@@ -334,3 +334,5 @@ This field contains the identifier of the parent object of the attribute (compan
 - [{#T}](./crm-address-update.md)
 - [{#T}](./crm-address-list.md)
 - [{#T}](./crm-address-delete.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)

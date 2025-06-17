@@ -8,11 +8,11 @@ The method `user.current` retrieves information about the [current](*current_key
 
 {% note info "" %}
 
-The list of fields for Bitrix24 users that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about user data access can be found in the [article](index.md).
+The list of user fields in Bitrix24 that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about user data access can be found in the [article](index.md).
 
 {% endnote %}
 
-The method does not have any parameters. However, by making a REST request using data from `$_REQUEST` to the domain `DOMAIN` and adding `AUTH_ID` to the request for access to Bitrix24, you can find out which user opened the page in the context of Bitrix24.
+The method has no parameters. However, by making a REST request using data from `$_REQUEST` to the domain `DOMAIN` and adding `AUTH_ID` to the request for access to Bitrix24, you can find out which user opened the page in the context of Bitrix24.
 
 ## Code Examples
 
@@ -79,31 +79,30 @@ HTTP Status: **200**
 
 ```json
     {
-        "result":{
-            "ID":"3",
-            "ACTIVE":true,
-            "NAME":"John",
-            "LAST_NAME":"Doe",
-            "EMAIL":"test@gmail.com",
-            "LAST_LOGIN":"2024-07-23T08:07:26+00:00",
-            "DATE_REGISTER":"2024-07-22T00:00:00+00:00",
-            "IS_ONLINE":"Y",
-            "TIME_ZONE_OFFSET":"7200",
-            "LAST_ACTIVITY_DATE":"2024-07-23 08:08:50",
-            "PERSONAL_GENDER":"",
-            "PERSONAL_BIRTHDAY":"",
-            "WORK_POSITION":"",
-            "UF_EMPLOYMENT_DATE":"",
-            "UF_DEPARTMENT":[1]
+        "result": {
+            "ID": "3",
+            "ACTIVE": true,
+            "NAME": "John",
+            "LAST_NAME": "Doe",
+            "EMAIL": "test@gmail.com",
+            "LAST_LOGIN": "2024-07-23T08:07:26+00:00",
+            "DATE_REGISTER": "2024-07-22T00:00:00+00:00",
+            "IS_ONLINE": "Y",
+            "LAST_ACTIVITY_DATE": "2024-07-23 08:08:50",
+            "PERSONAL_GENDER": "",
+            "PERSONAL_BIRTHDAY": "",
+            "WORK_POSITION": "",
+            "UF_EMPLOYMENT_DATE": "",
+            "UF_DEPARTMENT": [1]
         },
-        "time":{
-            "start":1721722262.960948,
-            "finish":1721722262.985244,
-            "duration":0.024296045303344727,
-            "processing":0.0012989044189453125,
-            "date_start":"2024-07-23T08:11:02+00:00",
-            "date_finish":"2024-07-23T08:11:02+00:00",
-            "operating":0
+        "time": {
+            "start": 1721722262.960948,
+            "finish": 1721722262.985244,
+            "duration": 0.024296045303344727,
+            "processing": 0.0012989044189453125,
+            "date_start": "2024-07-23T08:11:02+00:00",
+            "date_finish": "2024-07-23T08:11:02+00:00",
+            "operating": 0
         }
     }
 ```
@@ -131,4 +130,4 @@ HTTP Status: **200**
 - [{#T}](./user-search.md)
 - [{#T}](./user-fields.md)
 
-[*current_key]: The one whose token you used when calling REST. If you are using a saved admin token, the administrator will be displayed. If you are using a token that comes in the POST request within the application frame, it will be the user who logged into the application.
+[*current_key]: The one whose token you used when calling REST. If you use a saved admin token, the administrator will be displayed. If you use a token that comes in the POST request within the application frame, it will be the user who logged into the application.

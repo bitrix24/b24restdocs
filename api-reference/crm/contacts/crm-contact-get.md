@@ -106,7 +106,7 @@ Get contact with `id = 23`
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -229,7 +229,7 @@ HTTP Status: **200**
 || **PHOTO**
 [`file`][1] | Photo ||
 || **LEAD_ID**
-[`crm_lead`](../data-types.md) | Identifier of the lead from which the contact was created ||
+[`crm_lead`](../data-types.md) | Identifier of the lead based on which the contact was created ||
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | Type of contact ||
 || **SOURCE_ID**
@@ -278,13 +278,13 @@ HTTP Status: **200**
 || **LAST_ACTIVITY_BY**
 [`user`][1] | Who performed the last activity in the timeline ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, Bing Ads, etc.) ||
+[`string`][1] | Advertising system (Google Ads, etc.) ||
 || **UTM_MEDIUM**
 [`string`][1] | Type of traffic. Possible values:
 - `CPC` — ads
 - `CPM` — banners ||
 || **UTM_CAMPAIGN**
-[`string`][1] | Advertising campaign designation ||
+[`string`][1] | Designation of the advertising campaign ||
 || **UTM_CONTENT**
 [`string`][1] | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
@@ -301,12 +301,12 @@ HTTP Status: **200**
 [`crm_multifield[]`](../data-types.md) | Links. Service field ||
 |#
 
-**Fields for external data source connections**
+**Fields for external data sources**
 
 If the contact was created by an external system, then:
-- the field `ORIGINATOR_ID` stores the string identifier of that system
-- the field `ORIGIN_ID` stores the string identifier of the contact in that external system
-- the field `ORIGIN_VERSION` stores the version of the contact data in that external system
+- the `ORIGINATOR_ID` field stores the string identifier of that system
+- the `ORIGIN_ID` field stores the string identifier of the contact in that external system
+- the `ORIGIN_VERSION` field stores the version of the contact data in that external system
 
 #|
 || **Name**
@@ -319,9 +319,9 @@ If the contact was created by an external system, then:
 [`string`][1] | Version of the original ||
 |#
 
-**Deprecated Fields**
+**Deprecated fields**
 
-Address fields in the contact are deprecated and are only used for compatibility mode. To work with the address, use [requisites](../requisites/index.md).
+Address fields in the contact are deprecated and are only used in compatibility mode. To work with the address, use [details](../requisites/index.md).
 
 #|
 || **Name**
@@ -341,7 +341,7 @@ Address fields in the contact are deprecated and are only used for compatibility
 || **ADDRESS_COUNTRY**
 [`string`][1] | Country ||
 || **ADDRESS_LOC_ADDR_ID**
-[`integer`][1] | Location address identifier ||
+[`integer`][1] | Identifier of the location address ||
 |#
 
 {% note tip "Fields of type `crm_multifield`" %}
@@ -352,7 +352,7 @@ Fields of type `crm_multifield` (`PHONE`, `EMAIL`, `WEB`, `IM`, `LINK`) are expl
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -369,7 +369,7 @@ HTTP Status: **400**
 || **Description** | **Value** ||
 || `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not a positive integer ||
 || `Access denied` | The user does not have permission for "Read" contact ||
-|| `Not found` | Contact with the provided `id` was not found ||
+|| `Not found` | Contact with the provided `id` not found ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
@@ -381,5 +381,6 @@ HTTP Status: **400**
 - [{#T}](./crm-contact-list.md)
 - [{#T}](./crm-contact-delete.md)
 - [{#T}](./crm-contact-fields.md)
+- [{#T}](../../../tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
 
 [1]: ../../data-types.md

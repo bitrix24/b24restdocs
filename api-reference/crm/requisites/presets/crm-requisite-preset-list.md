@@ -1,10 +1,10 @@
-# Get a List of Requisite Templates by Filter crm.requisite.preset.list
+# Get a list of requisites templates by filter crm.requisite.preset.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns a list of requisite templates based on the filter.
+The method returns a list of requisites templates based on the filter.
 
 ## Method Parameters
 
@@ -14,27 +14,27 @@ The method returns a list of requisite templates based on the filter.
 || **select**
 [`array`](../../../data-types.md) | An array of fields to be selected (see [template fields](#fields)).
 
-If the array is not provided or an empty array is passed, all available template fields will be selected. ||
+If the array is not provided or is empty, all available template fields will be selected. ||
 || **filter**
-[`object`](../../../data-types.md) | An object for filtering the selected templates in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../../data-types.md) | An object for filtering selected templates in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to [template fields](#fields).
 
-An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search is conducted from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search is conducted from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -44,7 +44,7 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `!` — not equal 
 ||
 || **order**
-[`object`](../../../data-types.md) | An object for sorting the selected templates in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../../data-types.md) | An object for sorting selected templates in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to [template fields](#fields).
 
@@ -53,7 +53,7 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 
@@ -65,7 +65,7 @@ The formula for calculating the `start` parameter value:
 ||
 |#
 
-### Description of Requisite Template Fields {#fields}
+### Description of Requisites Template Fields {#fields}
 
 #|
 || **Name**
@@ -75,12 +75,12 @@ The formula for calculating the `start` parameter value:
 || **ENTITY_TYPE_ID**
 [`integer`](../../../data-types.md) | Identifier of the parent object's type.
 
-The identifiers of CRM object types are provided by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md). 
+The identifiers of CRM object types are provided by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **COUNTRY_ID**
-[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of requisite template fields (to get available values, see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)). ||
+[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of fields in the requisites template (to obtain available values, see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)) ||
 || **DATE_CREATE**
-[`datetime`](../../../data-types.md) | Creation date. ||
+[`datetime`](../../../data-types.md) | Creation date ||
 || **DATE_MODIFY**
 [`datetime`](../../../data-types.md) | Modification date. Contains an empty string if the template has not been modified since creation. ||
 || **CREATED_BY_ID**
@@ -96,7 +96,7 @@ The purpose of the field may change by the final developer.
 
 Each application ensures the uniqueness of values in this field. It is recommended to use a unique prefix to avoid collisions with other applications. 
 
-Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for identifying templates that are used by default. These identifiers should not be used for your purposes, as this may disrupt logic. ||
+Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for identifying templates that are used by default. These identifiers should not be used for your purposes, as this may lead to logic violations. ||
 || **ACTIVE**
 [`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. Determines the availability of the template in the selection list when adding requisites. ||
 || **SORT**
@@ -189,7 +189,7 @@ HTTP status: **200**
         },
         {
             "ID": "2",
-            "NAME": "Individual Entrepreneur"
+            "NAME": "Sole Proprietor"
         },
         {
             "ID": "3",
@@ -219,11 +219,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md)| An array of objects containing information about the selected templates. Each element contains the selected [template fields](#fields). ||
+[`array`](../../../data-types.md)| An array of objects with information about the selected templates. Each element contains the selected [template fields](#fields) ||
 || **total**
-[`integer`](../../../data-types.md) | Total number of records found. ||
+[`integer`](../../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request. ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -256,3 +256,5 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-requisite-preset-get.md)
 - [{#T}](./crm-requisite-preset-delete.md)
 - [{#T}](./crm-requisite-preset-fields.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)

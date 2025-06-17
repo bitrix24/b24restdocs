@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst's workspace" section
+> Who can execute the method: a user with access to the "Analyst Workspace" section
 
 The method `biconnector.dataset.list` returns a list of datasets based on a filter. It is an implementation of the listing method for datasets.
 
@@ -12,10 +12,10 @@ The method `biconnector.dataset.list` returns a list of datasets based on a filt
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | A list of fields that must be populated in the datasets in the selection. By default, all fields are included. 
+[`string[]`](../../data-types.md) | A list of fields that must be populated in the datasets in the selection. By default, all fields are taken. 
 The `fields` parameter is not supported and will be ignored. ||
 || **filter**
-[`object`](../../data-types.md) | Filter for selecting datasets. Example format:
+[`object`](../../data-types.md) | A filter for selecting datasets. Example format:
 
 ```json
 {
@@ -32,8 +32,8 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` character must be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
@@ -42,9 +42,10 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-The list of available fields for filtering can be obtained using the method [biconnector.dataset.fields](./biconnector-dataset-fields.md).
+The list of available fields for filtering can be found using the method [biconnector.dataset.fields](./biconnector-dataset-fields.md).
 
-The `fields` parameter is not supported and will be ignored. ||
+The filter does not support the `fields` parameter and will be ignored.
+||
 || **order**
 [`object`](../../data-types.md) | Sorting parameters. Example format:
 
@@ -59,24 +60,24 @@ The `fields` parameter is not supported and will be ignored. ||
 
 where:
 - `field_n` — the name of the field by which the dataset selection will be sorted
-- `value_n` — a `string` value equal to:
+- `value_n` — a `string` value, equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 ||
 || **page**
-[`integer`](../../data-types.md) | Controls pagination. The page size for results is 50 records. To navigate through results, pass the page number. ||
+[`integer`](../../data-types.md) | Controls pagination. The page size for results is 50 records. To navigate through the results, pass the page number. ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Get a list of sources where:
 - the name starts with `Sales`
 - the description is not empty
-- the source ID is `2` or `4`
+- the source ID is equal to `2` or `4`
 
-To illustrate, select only the necessary fields:
+For clarity, select only the necessary fields:
 - ID `id`
 - Name `name`
 - Description `description`
@@ -171,7 +172,7 @@ To illustrate, select only the necessary fields:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -216,7 +217,7 @@ It should be noted that the structure of the fields may change due to the `selec
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -231,12 +232,12 @@ HTTP Status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_SELECT_TYPE` | `Parameter "select" must be array.` | The `select` parameter is not an object. ||
-|| `VALIDATION_FILTER_TYPE` | `Parameter "filter" must be array.` | The `filter` parameter is not an object. ||
-|| `VALIDATION_ORDER_TYPE` | `Parameter "order" must be array.` | The `order` parameter is not an object. ||
-|| `VALIDATION_FIELD_NOT_ALLOWED_IN_SELECT` | `Field "#TITLE#" is not allowed in the "select".` | These fields are not allowed in the selection. ||
-|| `VALIDATION_FIELD_NOT_ALLOWED_IN_FILTER` | `Field "#TITLE#" is not allowed in the "filter".` | These fields are not allowed in the filter. ||
-|| `VALIDATION_FIELD_NOT_ALLOWED_IN_ORDER` | `Field "#TITLE#" is not allowed in the "order".` | These fields are not allowed for sorting. ||
+|| `VALIDATION_SELECT_TYPE` | Parameter "select" must be array. | The `select` parameter is not an object. ||
+|| `VALIDATION_FILTER_TYPE` | Parameter "filter" must be array. | The `filter` parameter is not an object. ||
+|| `VALIDATION_ORDER_TYPE` | Parameter "order" must be array. | The `order` parameter is not an object. ||
+|| `VALIDATION_FIELD_NOT_ALLOWED_IN_SELECT` | Field "#TITLE#" is not allowed in the "select". | These fields are not allowed in the selection. ||
+|| `VALIDATION_FIELD_NOT_ALLOWED_IN_FILTER` | Field "#TITLE#" is not allowed in the "filter". | These fields are not allowed in the filter. ||
+|| `VALIDATION_FIELD_NOT_ALLOWED_IN_ORDER` | Field "#TITLE#" is not allowed in the "order". | These fields are not allowed for sorting. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -1,12 +1,12 @@
-# Event for Changing the Set of Values for a Custom List Field onCrmDealUserFieldSetEnumValues
+# Event on changing the set of values for a custom list-type field onCrmDealUserFieldSetEnumValues
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `onCrmDealUserFieldSetEnumValues` will trigger when the set of values for a custom list field is changed.
+The event `onCrmDealUserFieldSetEnumValues` will trigger when the set of values for a custom list-type field is changed.
 
-## What the Handler Receives
+## What the handler receives
 
 Data is sent as a POST request {.b24-info}
 
@@ -47,11 +47,11 @@ In this case — `ONCRMDEALUSERFIELDSETENUMVALUES`||
 || **event_handler_id**
 [`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../data-types.md) | Object containing information about the updated list field.
+[`object`](../../../data-types.md) | Object containing information about the updated list-type field.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../data-types.md) | Object containing information about the fields of the updated list field.
+[`object`](../../../data-types.md) | Object containing information about the fields of the updated list-type field.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -68,18 +68,18 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the custom list field ||
+[`integer`](../../../data-types.md) | Identifier of the custom list-type field ||
 || **ENTITY_ID**
-[`string`](../../../data-types.md) | Symbolic identifier of the object for which the list field was updated. In this case — `CRM_DEAL` ||
+[`string`](../../../data-types.md) | Symbolic identifier of the object for which the list-type field was updated. In this case — `CRM_DEAL` ||
 || **FIELD_NAME**
-[`string`](../../../data-types.md) | Name of the updated custom list field ||
+[`string`](../../../data-types.md) | Name of the updated custom list-type field ||
 |#
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with Keys in the auth Array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

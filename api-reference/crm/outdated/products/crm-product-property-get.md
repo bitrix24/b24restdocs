@@ -1,12 +1,18 @@
-# Get Product Property by ID crm.product.property.get
+# Get product property by ID crm.product.property.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method returns the product property by its ID.
+{% note warning "Method development has been halted" %}
 
-## Method Parameters
+The method `crm.product.property.get` is still operational, but there is a more relevant alternative [catalog.productProperty.get](../../../catalog/product-property/catalog-product-property-get.md).
+
+{% endnote %}
+
+The method `crm.product.property.get` returns the property of products by ID.
+
+## Method parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -17,7 +23,7 @@ This method returns the product property by its ID.
 [`integer`](../../../data-types.md) | Identifier of the product property ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -30,7 +36,7 @@ This method returns the product property by its ID.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":"your_product_id"}' \ # Replace 'your_product_id' with the actual product ID
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.product.get
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.product.get
     ```
 
 - cURL (OAuth)
@@ -40,7 +46,7 @@ This method returns the product property by its ID.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":"your_property_id"}' \ # Replace 'your_property_id' with the actual property ID
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.product.property.get
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.product.property.get
     ```
 
 - JS

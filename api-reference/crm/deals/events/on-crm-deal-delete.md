@@ -1,10 +1,10 @@
-# Event on Deal Deletion ONCRMDEALDELETE
+# Event on deal deletion onCrmDealDelete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALDELETE` will trigger when a deal is deleted.
+The event `ONCRMDEALDELETE` will trigger upon the deletion of a deal.
 
 ## What the handler receives
 
@@ -55,7 +55,7 @@ The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -73,7 +73,7 @@ The structure is described [below](#auth) ||
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

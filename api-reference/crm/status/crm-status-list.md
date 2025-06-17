@@ -1,4 +1,4 @@
-# Get a list of directory items by filter crm.status.list
+# Get a List of Directory Items by Filter crm.status.list
 
 {% note warning "We are still updating this page" %}
 
@@ -27,7 +27,7 @@ Some data may be missing — we will fill it in shortly.
 crm.status.list()
 ```
 
-The method returns a list of directory items by filter. It is an implementation of the list method for directory items. Please note that in this implementation, the "select" and "navigation" parameters are not supported.
+The method returns a list of directory items based on the filter. It is an implementation of the list method for directory items. Please note that in this implementation, the "select" and "navigation" parameters are not supported.
 
 ## Parameters
 
@@ -62,4 +62,8 @@ See the description of [list methods](../../../api-reference/how-to-call-rest-ap
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Continue Learning
+
+- [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}

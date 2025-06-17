@@ -1,10 +1,10 @@
-# Get a List of Sales Funnels crm.category.list
+# Get the list of Sales Funnels crm.category.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method retrieves a list of sales funnels (directions) that belong to the CRM object type with the identifier `entityTypeId`.
+The method retrieves a list of sales funnels (directions) that belong to the CRM object type with the identifier `entityTypeId`.
 
 {% note warning "Which funnels will be included in the list" %}
 
@@ -14,20 +14,20 @@ The list of returned funnels is filtered by access permissions. This means that 
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM entities for which the list of funnels is to be retrieved ||
+[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM entities for which to retrieve the list of funnels ||
 |#
 
 ## Code Examples
 
-Get a list of funnels for deals.
+Get the list of funnels for deals.
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -155,9 +155,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response. Contains a single element with the key `categories`, which represents an array of funnels. The structure of an individual funnel corresponds to the [`category`](./crm-category-add.md#category) object ||
+[`object`](../../data-types.md) | Root element of the response. Contains a single element with the key `categories`, which represents an array of funnels. The structure of an individual funnel corresponds to the [`category`](./crm-category-add.md#category) object ||
 || **total**
-[`integer`][1] | The total number of funnels belonging to the specified `entityTypeId` ||
+[`integer`][1] | Total number of funnels belonging to the specified `entityTypeId` ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -192,5 +192,6 @@ HTTP Status: **400**
 - [{#T}](./crm-category-get.md)
 - [{#T}](./crm-category-delete.md)
 - [{#T}](./crm-category-fields.md)
+- [{#T}](../../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
 
 [1]: ../../../data-types.md

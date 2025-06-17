@@ -1,34 +1,66 @@
-# How to Easily Add a Contact
+# Add Contact via Web Form
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the method: users with permission to create contacts in CRM
 
-Example of embedding a form on a webpage that creates a new contact in Bitrix24 upon submission.
+You can place a form on the site to collect client data. When a client fills out the form, their data will be sent to CRM, and you will be able to process the request.
 
-- Create a form on the desired page:
+Setting up the form consists of two steps.
+
+1. Place the form on an HTML page. It will send the data to the handler.
+
+2. Create a file to process the data. The handler will accept and prepare the data, and then create a contact using the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md).
+
+## 1. Creating the Web Form
+
+Let's create a web form on the site page with four fields:
+
+-  `NAME` — contact's first name, required,
+
+-  `LAST_NAME` — last name,
+
+-  `EMAIL` — email address,
+
+-  `PHONE` — phone number.
+
+When submitted, the form sends data to the handler `form.php`.
 
 ```html
-<form id="form_to_crm">
-    <input type="text" name="NAME" placeholder="Name" required>
-    <input type="text" name="LAST_NAME" placeholder="Last name">
-    <input type="text" name="EMAIL" placeholder="E-mail">
+<form id="form_to_crm" method="POST" action="form.php">
+    
+	<!-- First name, required field -->
+    <input type="text" name="NAME" placeholder="First Name" required>
+
+	<!-- Last name --> 
+    <input type="text" name="LAST_NAME" placeholder="Last Name">
+
+	<!-- Email --> 
+    <input type="text" name="EMAIL" placeholder="Email">
+
+	<!-- Phone -->
     <input type="text" name="PHONE" placeholder="Phone">
-    <input type="submit" value="Submit">
+
+	<!-- Submit button --> 
+    <input type="submit" value="Submit"> 
 </form>
+
+<!-- Include jQuery for AJAX request -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#form_to_crm').on('submit', function(el) { // event submit form
-            el.preventDefault(); // the default action of the event will not be triggered
-            var formData = $(this).serialize();
+        $('#form_to_crm').on('submit', function(el) {
+            el.preventDefault(); // Prevent default form submission
+            var formData = $(this).serialize(); // Gather form data
+            
+            // Send data to the server
             $.ajax({
                 'method': 'POST',
                 'dataType': 'json',
-                'url': 'form.php', // file for saving filled forms
+                'url': 'form.php', // Handler file
                 'data': formData,
-                success: function(data) { // success callback
-                    alert(data.message);
+                success: function(data) {
+                    alert(data.message); // Show result
                 }
             });
         });
@@ -36,169 +68,70 @@ Example of embedding a form on a webpage that creates a new contact in Bitrix24 
 </script>
 ```
 
-- Create a file to save the filled forms:
+## 2. Creating the Form Handler
 
-{% list tabs %}
+To process the values from the form fields and add a contact to CRM, we will create the handler `form.php`.
 
-- JS
+To add a contact, we will use the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md). In the `fields` object, we will pass the fields:
 
-    ```js
-    var sName = BX24.placement.call('getValue', 'NAME');
-    var sLastName = BX24.placement.call('getValue', 'LAST_NAME');
-    var sPhone = BX24.placement.call('getValue', 'PHONE');
-    var sEmail = BX24.placement.call('getValue', 'EMAIL');
+-  `NAME` — contact's first name,
 
-    var arPhone = sPhone ? [{ 'VALUE': sPhone, 'VALUE_TYPE': 'WORK' }] : [];
-    var arEmail = sEmail ? [{ 'VALUE': sEmail, 'VALUE_TYPE': 'HOME' }] : [];
+-  `LAST_NAME` — last name,
 
-    BX24.callMethod(
-        'crm.contact.add',
-        {
-            'fields': {
-                'NAME': sName, // *First name[string]
-                'LAST_NAME': sLastName, // *Last name[string]
-                'PHONE': arPhone, // Phone[crm_multifield]
-                'EMAIL': arEmail, // E-mail[crm_multifield]
-                // "HONORIFIC": '', // Salutation[crm_status {HNR_EN_1:"Mr.", HNR_EN_2:"Mrs.", HNR_EN_3:"Ms.", HNR_EN_4:"Dr."}]
-                // BX24.callMethod('crm.status.list', { 'filter': { 'ENTITY_ID': 'HONORIFIC' } });
-                // "SECOND_NAME": '', // *Second name[string]
-                // "PHOTO": '', // Photo[file]
-                // "BIRTHDATE": '', // Date of birth[date]
-                // "TYPE_ID": '', // Contact type[crm_status {CLIENT:"Clients", SUPPLIER:"Suppliers", PARTNER:"Partners", OTHER:"Other"}]
-                // BX24.callMethod('crm.status.list', { 'filter': { 'ENTITY_ID': 'CONTACT_TYPE' } });
-                // "SOURCE_ID": '', // Source[crm_status {CALL:"Call", EMAIL:"E-Mail", WEB:"Website", ADVERTISING:"Advertising",
-                // PARTNER:"Existing Client", RECOMMENDATION:"By Recommendation", TRADE_SHOW:"Show/Exhibition", WEBFORM:"CRM form", CALLBACK:"Callback", // RC_GENERATOR:"Sales boost", STORE:"Online Store", OTHER:"Other"}]
-                // BX24.callMethod('crm.status.list', { 'filter': { 'ENTITY_ID': 'SOURCE' } });
-                // "SOURCE_DESCRIPTION": '', // Description[string]
-                // "POST": '', // Position[string]
-                // "ADDRESS": '', // Address[string]
-                // "ADDRESS_2": '', // Address (line 2)[string]
-                // "ADDRESS_CITY": '', // City[string]
-                // "ADDRESS_POSTAL_CODE": '', // Zip[string]
-                // "ADDRESS_REGION": '', // Region[string]
-                // "ADDRESS_PROVINCE": '', // State / Province[string]
-                // "ADDRESS_COUNTRY": '', // Country[string]
-                // "ADDRESS_COUNTRY_CODE": '', // Country Code[string]
-                // "COMMENTS": '', // Comment[string]
-                // "OPENED": '', // Available to everyone[char]
-                // "EXPORT": '', // Mark for export[char]
-                // "HAS_PHONE": '', // Has phone[char]
-                // "HAS_EMAIL": '', // Has email[char]
-                // "HAS_IMOL": '', // Has Open Channel[char]
-                // "ASSIGNED_BY_ID": '', // Responsible person[user]
-                // "CREATED_BY_ID": '', // Created by[user]
-                // "MODIFY_BY_ID": '', // Modified by[user]
-                // "DATE_CREATE": '', // Created on[datetime]
-                // "DATE_MODIFY": '', // Modified on[datetime]
-                // "COMPANY_ID": '', // Company[crm_company]// BX24.callMethod('crm.company.list');
-                // "COMPANY_IDS": '', // COMPANY_IDS[crm_company]// BX24.callMethod('crm.company.list');
-                // "LEAD_ID": '', // Lead[crm_lead]
-                // "ORIGINATOR_ID": '', // External source[string]
-                // "ORIGIN_ID": '', // Item ID in data source[string]
-                // "ORIGIN_VERSION": '', // Original version[string]
-                // "FACE_ID": '', // FaceID connection[integer]
-                // "UTM_SOURCE": '', // Ad system[string]
-                // "UTM_MEDIUM": '', // Medium[string]
-                // "UTM_CAMPAIGN": '', // Ad campaign UTM[string]
-                // "UTM_CONTENT": '', // Campaign contents[string]
-                // "UTM_TERM": '', // Campaign search term[string]
-                // "WEB": '', // Website[crm_multifield]
-                // "IM": '', // Messenger[crm_multifield]
-            }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error() + ': ' + result.error_description());
-                console.log(JSON.stringify({ 'message': 'Contact not added: ' + result.error_description() }));
-            } else {
-                console.log(JSON.stringify({ 'message': 'Contact added' }));
-            }
-        }
-    );
-    ```
+-  `PHONE` — phone number,
 
-- PHP
+-  `EMAIL` — email address.
 
-    {% note info %}
+The values of the fields are obtained from the form. The system stores phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+1. If a value exists, we add it as the first element `VALUE` in the array, and the second value specifies the type `VALUE_TYPE`, for example:
 
-    {% endnote %}
+   -  `WORK` — for phone,
 
-    ```php
-    <?php
-    $sName = htmlspecialchars($_POST["NAME"]);
-    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
-    $sPhone = htmlspecialchars($_POST["PHONE"]);
-    $sEmail = htmlspecialchars($_POST["EMAIL"]);                
+   -  `HOME` — for email.
 
-    $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
-    $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
+2. If there is no value, we pass an empty array.
 
-    $result = CRest::call(
-        'crm.contact.add',
-        [
-            'fields' => [
-                'NAME' => $sName, //*First name[string]
-                'LAST_NAME' => $sLastName, //*Last name[string]
-                'PHONE' => $arPhone, // Phone[crm_multifield]
-                'EMAIL' => $arEmail, // E-mail[crm_multifield]
-                //"HONORIFIC" => '', // Salutation[crm_status {HNR_EN_1:"Mr.", HNR_EN_2:"Mrs.", HNR_EN_3:"Ms.", HNR_EN_4:"Dr."}]
-                // CRest::call('crm.status.list',['filter'=>['ENTITY_ID'=>'HONORIFIC']]);
-                //"SECOND_NAME" => '', //*Second name[string]
-                //"PHOTO" => '', // Photo[file]
-                //"BIRTHDATE" => '', // Date of birth[date]
-                //"TYPE_ID" => '', // Contact type[crm_status {CLIENT:"Clients", SUPPLIER:"Suppliers", PARTNER:"Partners", OTHER:"Other"}]
-                // CRest::call('crm.status.list',['filter'=>['ENTITY_ID'=>'CONTACT_TYPE']]);
-                //"SOURCE_ID" => '', // Source[crm_status {CALL:"Call", EMAIL:"E-Mail", WEB:"Website", ADVERTISING:"Advertising",
-                //PARTNER:"Existing Client", RECOMMENDATION:"By Recommendation", TRADE_SHOW:"Show/Exhibition", WEBFORM:"CRM form", CALLBACK:"Callback", //RC_GENERATOR:"Sales boost", STORE:"Online Store", OTHER:"Other"}]
-                // CRest::call('crm.status.list',['filter'=>['ENTITY_ID'=>'SOURCE']]);
-                //"SOURCE_DESCRIPTION" => '', // Description[string]
-                //"POST" => '', // Position[string]
-                //"ADDRESS" => '', // Address[string]
-                //"ADDRESS_2" => '', // Address (line 2)[string]
-                //"ADDRESS_CITY" => '', // City[string]
-                //"ADDRESS_POSTAL_CODE" => '', // Zip[string]
-                //"ADDRESS_REGION" => '', // Region[string]
-                //"ADDRESS_PROVINCE" => '', // State / Province[string]
-                //"ADDRESS_COUNTRY" => '', // Country[string]
-                //"ADDRESS_COUNTRY_CODE" => '', // Country Code[string]
-                //"COMMENTS" => '', // Comment[string]
-                //"OPENED" => '', // Available to everyone[char]
-                //"EXPORT" => '', // Mark for export[char]
-                //"HAS_PHONE" => '', // Has phone[char]
-                //"HAS_EMAIL" => '', // Has email[char]
-                //"HAS_IMOL" => '', // Has Open Channel[char]
-                //"ASSIGNED_BY_ID" => '', // Responsible person[user]
-                //"CREATED_BY_ID" => '', // Created by[user]
-                //"MODIFY_BY_ID" => '', // Modified by[user]
-                //"DATE_CREATE" => '', // Created on[datetime]
-                //"DATE_MODIFY" => '', // Modified on[datetime]
-                //"COMPANY_ID" => '', // Company[crm_company]// CRest::call('crm.company.list');
-                //"COMPANY_IDS" => '', // COMPANY_IDS[crm_company]// CRest::call('crm.company.list');
-                //"LEAD_ID" => '', // Lead[crm_lead]
-                //"ORIGINATOR_ID" => '', // External source[string]
-                //"ORIGIN_ID" => '', // Item ID in data source[string]
-                //"ORIGIN_VERSION" => '', // Original version[string]
-                //"FACE_ID" => '', // FaceID connection[integer]
-                //"UTM_SOURCE" => '', // Ad system[string]
-                //"UTM_MEDIUM" => '', // Medium[string]
-                //"UTM_CAMPAIGN" => '', // Ad campaign UTM[string]
-                //"UTM_CONTENT" => '', // Campaign contents[string]
-                //"UTM_TERM" => '', // Campaign search term[string]
-                //"WEB" => '', // Website[crm_multifield]
-                //"IM" => '', // Messenger[crm_multifield]
-            ]
+{% note warning "" %}
+
+Check which required fields are set for contacts in your Bitrix24. All required fields must be passed to the method [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md).
+
+{% endnote %}
+
+```php
+<?php
+require_once('crest.php');
+            
+// Get and sanitize data from the form
+$sName = htmlspecialchars($_POST["NAME"]);
+$sLastName = htmlspecialchars($_POST["LAST_NAME"]);
+$sPhone = htmlspecialchars($_POST["PHONE"]);
+$sEmail = htmlspecialchars($_POST["EMAIL"]);                 
+
+// Format phone and email for Bitrix24 in crm_multifield format
+$arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
+$arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
+
+// Send data to Bitrix24
+$result = CRest::call(
+    'crm.contact.add',
+    [
+        'fields' => [
+            'NAME' => $sName, // First Name
+            'LAST_NAME' => $sLastName, // Last Name
+            'PHONE' => $arPhone, // Phone
+            'EMAIL' => $arEmail, // Email
         ]
-    );
-    if (!empty($result['result'])) {
-        echo json_encode(['message' => 'Contact added']);
-    } elseif (!empty($result['error_description'])) {
-        echo json_encode(['message' => 'Contact not added: ' . $result['error_description']]);
-    } else {
-        echo json_encode(['message' => 'Contact not added']);
-    }
-    ?>
-    ```
+    ]
+);
 
-{% endlist %}
+// Check the result and output the message
+if(!empty($result['result'])){
+    echo json_encode(['message' => 'Contact added']);
+} elseif(!empty($result['error_description'])){
+    echo json_encode(['message' => 'Contact not added: '.$result['error_description']]);
+} else {
+    echo json_encode(['message' => 'Contact not added']);
+}
+?>
+```

@@ -1,16 +1,22 @@
-# Get Fields of List Type Property crm.product.property.enumeration.fields
+# Get the fields of the enumeration type property crm.product.property.enumeration.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns the description of the fields of the list type property of products.
+{% note warning "Method development has been halted" %}
+
+The method `crm.product.property.enumeration.fields` is still operational, but there is a more relevant alternative [catalog.productPropertyEnum.*](../../../catalog/product-property-enum/index.md).
+
+{% endnote %}
+
+The method `crm.product.property.enumeration.fields` returns the description of the fields of the enumeration type product property.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

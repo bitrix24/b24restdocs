@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -29,11 +29,11 @@ The method `disk.folder.uploadfile` uploads a new file to the specified folder.
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Identifier of the folder. In the current API, it is not possible to upload a file by the folder path. It is necessary to compute the `ID` of the folder. ||
+[`unknown`](../../data-types.md) | Folder identifier. In the current API, it is not possible to upload a file by the folder path. It is necessary to compute the `ID` of the folder. ||
 || **fileContent**
-[`unknown`](../../data-types.md) | Similar to `DETAIL_PICTURE` in the example [File Handling](../../bx24-js-sdk/how-to-call-rest-methods/files.md). ||
+[`unknown`](../../data-types.md) | Upload the file in [Base64](../../files/how-to-upload-files.md) format. ||
 || **data**
-[`unknown`](../../data-types.md) | An array describing the file. The required field `NAME` — the name of the new file. It is possible to send the file as a base64 encoded string. ||
+[`unknown`](../../data-types.md) | An array describing the file. The required field `NAME` — the name of the new file. It is possible to send the file as a string encoded in base64. ||
 || **generateUniqueName**
 [`unknown`](../../data-types.md) | Optional, defaults to `false`. If set to `true`, the uploaded file will have a unique name by adding a suffix (1), (2), etc. Example: avatar (1).jpg, avatar (2).jpg. ||
 || **rights**
@@ -87,7 +87,7 @@ Please note that the list of available `TASK_ID` identifiers for setting permiss
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ### Example of Direct File Upload to Disk
 
@@ -102,7 +102,7 @@ Please note that the list of available `TASK_ID` identifiers for setting permiss
     "uploadUrl": "http://b24.sigurd.bx/rest/upload.json?auth=n2423m863oil59f99c9g0bm4918l5erz&token=disk%7CaWQ9Mjg5Jl89QkYzazEzaXNnUjNHcVZQcDJZaGxGRmI4TGhXOG5EZXQ%3D%7CInVwbG9hZHxkaXNrfGFXUTlNamc1Smw4OVFrWXphekV6YVhOblVqTkhjVlpRY0RKWmFHeEdSbUk0VEdoWE9HNUVaWFE9fG4yNDIzbTg2M29pbDU5Zjk5YzlnMGJtNDkxOGw1ZXJ6Ig%3D%3D.Aga709nyY0%2BrFiv3laHjfg6XuOO5JT6ttjU%2F53ifphM%3D"
     }
     ```
-3. Send a POST request to the received `UploadUrl` in `multipart/form-data`, where you pass the file in the field with the name received in the `field` parameter.
+3. Send a POST request to the received `UploadUrl` in `multipart/form-data`, where the file is passed in the field with the name received in the `field` parameter.
     ``` 
     http --form POST "http://b24.sigurd.bx/rest/upload.json?auth=n2423m863oil59f99c9g0bm4918l5erz&token=disk%7CaWQ9Mjg5Jl89QkYzazEzaXNnUjNHcVZQcDJZaGxGRmI4TGhXOG5EZXQ%3D%7CInVwbG9hZHxkaXNrfGFXUTlNamc1Smw4OVFrWXphekV6YVhOblVqTkhjVlpRY0RKWmFHeEdSbUk0VEdoWE9HNUVaWFE9fG4yNDIzbTg2M29pbDU5Zjk5YzlnMGJtNDkxOGw1ZXJ6Ig%3D%3D.Aga709nyY0%2BrFiv3laHjfg6XuOO5JT6ttjU%2F53ifphM%3D" file@~/somelongfile.log
     ```
@@ -209,7 +209,7 @@ Please note that the list of available `TASK_ID` identifiers for setting permiss
 
 > 200 OK
 
-On success, returns a structure similar to [disk.file.get](../file/disk-file-get.md).
+On success, it returns a structure similar to [disk.file.get](../file/disk-file-get.md).
 
 ## Continue Learning
 

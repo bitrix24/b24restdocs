@@ -1,21 +1,34 @@
-# List of Events When Working with Custom Company Fields
+# Overview of Events When Working with Company User Fields
 
-{% note warning "We are still updating this page" %}
+Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, update, or deletion of company user fields.
 
-Some data may be missing here — we will complete it soon.
+Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../../events/index.md).
 
-{% endnote %}
+> Quick navigation: [all events](#all-events) 
 
-{% note info " " %}
+## How to Receive Events
 
-**Scope**: [`crm`](../../../../scopes/permissions.md) | **Who can subscribe**: `any user`
+You can subscribe to company user field events through:
 
-{% endnote %}
+- [outgoing webhook](../../../../../local-integrations/local-webhooks.md)
+- [application](../../../../app-installation/index.md) and the method [event.bind](../../../../events/event-bind.md)
+
+An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../../events/test-handler.md).
+
+## Server Availability for Sending and Receiving Events
+
+{% include notitle [Server Availability for Sending and Receiving Events](../../../../../_includes/events-index.md) %}
+
+## Overview of Events {#all-events}
+
+> Scope: [`crm`](../../../../scopes/permissions.md)
+>
+> Who can subscribe: any user
 
 #|
 || **Event** | **Triggered** ||
-|| [onCrmCompanyUserFieldAdd](./on-crm-company-user-field-add.md) | when a custom field is added ||
-|| [onCrmCompanyUserFieldUpdate](./on-crm-company-user-field-update.md) | when a custom field is updated ||
-|| [onCrmCompanyUserFieldDelete](./on-crm-company-user-field-delete.md) | when a custom field is deleted ||
-|| [onCrmCompanyUserFieldSetEnumValues](./on-crm-company-user-field-set-enum-values.md) | when the set of values for a custom list-type field is changed ||
+|| [onCrmCompanyUserFieldAdd](./on-crm-company-user-field-add.md) | When a user field is added manually or via the method [crm.company.userfield.add](../crm-company-userfield-add.md) ||
+|| [onCrmCompanyUserFieldUpdate](./on-crm-company-user-field-update.md) | When a user field is changed manually or via the method [crm.company.userfield.update](../crm-company-userfield-update.md) ||
+|| [onCrmCompanyUserFieldDelete](./on-crm-company-user-field-delete.md) | When a user field is deleted manually or via the method [crm.company.userfield.delete](../crm-company-userfield-delete.md) ||
+|| [onCrmCompanyUserFieldSetEnumValues](./on-crm-company-user-field-set-enum-values.md) | When the set of values for a list-type user field is changed manually or via the method [crm.company.userfield.updates](../crm-company-userfield-update.md) ||
 |#

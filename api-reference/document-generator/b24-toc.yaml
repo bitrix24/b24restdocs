@@ -1,7 +1,7 @@
 title: Document Generator
 href: index.md
 items: 
-  - name: About the Document Generator 
+  - name: About the Document Generator
     href: index.md
   - name: Typical use-cases and scenarios
     include:
@@ -11,25 +11,21 @@ items:
     href: document-generator-document-add.md
   - name: Modify an Existing Document
     href: document-generator-document-update.md
-  - name: Retrieve Document by ID
+  - name: Retrieve a Document by ID
     href: document-generator-document-get.md
   - name: Get a List of Documents
     href: document-generator-document-list.md
-  - name: Delete Document
+  - name: Delete a Document
     href: document-generator-document-delete.md
   - name: Enable/Disable Public Link for Document
     href: document-generator-document-enable-public-url.md
   - name: Get a List of Document Fields
     href: document-generator-document-get-fields.md
-  - name: Events
-    include:
-      path: events/b24-toc.yaml
-      mode: link
   - name: Templates
     include:
       path: templates/b24-toc.yaml
       mode: link
-  - name: Numbering
+  - name: Numbering Systems
     include:
       path: numerators/b24-toc.yaml
       mode: link

@@ -1,14 +1,20 @@
-# Get Fields of Additional Settings for Custom Type crm.product.property.settings.fields
+# Get fields of additional settings for custom type crm.product.property.settings.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns the description of the fields for additional settings of custom type product properties.
+{% note warning "Method development has been halted" %}
 
-## Method Parameters
+The method `crm.product.property.settings.fields` is still operational, but there is a more relevant alternative [catalog.productPropertyFeature.*](../../../catalog/product-property-feature/index.md).
 
-{% include [Footnote about required parameters](../../../../_includes/required.md) %}
+{% endnote %}
+
+The method `crm.product.property.settings.fields` returns a description of the fields for additional settings of custom type product properties.
+
+## Method parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -17,9 +23,9 @@ The method returns the description of the fields for additional settings of cust
 || **userType** | Custom property type ||
 |#
 
-## Code Examples
+## Code examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 

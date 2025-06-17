@@ -1,14 +1,14 @@
-# Event for User Field Change onCrmContactUserFieldUpdate
+# Event on User Field Change onCrmContactUserFieldUpdate
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 > 
 > Who can subscribe: any user
 
-The event triggers when a user field is changed for contacts.
+The event `onCrmContactUserFieldUpdate` is triggered when a user field is changed for contacts.
 
-## What the Handler Receives
+## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -41,7 +41,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../../data-types.md) | Symbolic event code.
 
 In this case — `ONCRMCONTACTUSERFIELDUPDATE`||
 || **event_handler_id**
@@ -53,13 +53,13 @@ Contains a single key `FIELDS` ||
 || **data.FIELDS**
 [`object`](../../../../data-types.md) | Object containing information about the fields of the changed user field
 
-Structure is described [below](#fields) ||
+The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
-Structure is described [below](#auth) ||
+The structure is described [below](#auth) ||
 |#
 
 ### Parameter FIELDS {#fields}
@@ -81,7 +81,7 @@ In this case — `CRM_CONTACT` ||
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring
+## Continue your exploration
 
 - [{#T}](./index.md)
 - [{#T}](./on-crm-contact-user-field-add.md)

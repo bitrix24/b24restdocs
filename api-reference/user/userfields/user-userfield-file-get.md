@@ -2,7 +2,9 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+The page is hidden from the menu, and the method is not operational.
+
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,11 +12,11 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- parameters or fields may need to be detailed in a table
-- the requirement for parameters is not specified
-- examples in other languages are missing
-- response in case of success is missing
-- response in case of error is missing
+- It may be necessary to list parameters or fields in a table.
+- The required parameters are not specified.
+- Examples in other languages are missing.
+- The success response is absent.
+- The error response is absent.
 
 {% endnote %}
 
@@ -60,6 +62,6 @@ Webhook request:
 
 {% note info "" %}
 
-The method returns the file as content for download, not json/xml.
+The method returns the file as content for download, not as json/xml.
 
 {% endnote %}

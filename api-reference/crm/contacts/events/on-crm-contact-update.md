@@ -1,10 +1,10 @@
-# Event for Contact Update onCrmContactUpdate
+# Event onCrmContactUpdate
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can subscribe: any user
 
-The event will trigger upon updating a contact.
+The event `onCrmContactUpdate` will trigger when a contact is updated.
 
 ## What the handler receives
 

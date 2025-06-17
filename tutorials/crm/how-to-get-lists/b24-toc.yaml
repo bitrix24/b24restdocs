@@ -11,7 +11,9 @@ items:
     href: lead-statuses-with-semantics.md
   - name: How to Get a List of Estimate Statuses
     href: quote-statuses-with-semantics.md
-  - name: How to Get a Deal Funnel for a Specific Direction
+  - name: How to Get a Deal Funnel for a Given Direction
     href: how-to-get-deal-funnels.md
   - name: How to Get a Client's Address from CRM
     href: how-to-get-address.md
+  - name: How to Filter Elements by Stage Name
+    href: how-to-get-elements-by-stage-filter.md

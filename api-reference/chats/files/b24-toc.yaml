@@ -1,13 +1,13 @@
 title: Files
 href: index.md
 items:
-  - name: Working with files in chats
+  - name: Overview of methods
     href: index.md
   - name: Add a file to the chat
     href: im-disk-file-commit.md
-  - name: Remove a file from the chat folder
-    href: im-disk-file-delete.md
   - name: Save a file to your Drive
     href: im-disk-file-save.md
-  - name: Get the storage folder of the specified chat
+  - name: Delete a file from the chat folder
+    href: im-disk-file-delete.md
+  - name: Get the chat file storage folder
     href: im-disk-folder-get.md

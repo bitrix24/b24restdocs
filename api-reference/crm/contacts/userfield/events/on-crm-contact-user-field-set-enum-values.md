@@ -1,12 +1,12 @@
-# Event for Changing the Set of Values for a Custom List Field onCrmContactUserFieldSetEnumValues
+# Event on changing the set of values for a custom list-type field onCrmContactUserFieldSetEnumValues
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 > 
 > Who can subscribe: any user
 
-The event triggers when the set of values for a custom list field on contacts is changed.
+The event `onCrmContactUserFieldSetEnumValues` is triggered when the set of values for a custom list-type field on contacts is changed.
 
-## What the Handler Receives
+## What the handler receives
 
 Data is sent as a POST request {.b24-info}
 
@@ -55,7 +55,7 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -70,7 +70,7 @@ The structure is described [below](#auth) ||
 || **ID**
 [`integer`](../../../../data-types.md) | Identifier of the custom field whose list of possible values has changed ||
 || **ENTITY_ID**
-[`userFieldEntityId`](../../../data-types.md#object_type) | Type of the CRM object to which the custom field is linked.
+[`userFieldEntityId`](../../../data-types.md#object_type) | Type of CRM object to which the custom field is linked.
 
 In this case — `CRM_CONTACT` ||
 || **FIELD_NAME**
@@ -79,9 +79,9 @@ In this case — `CRM_CONTACT` ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with Keys in the auth Array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](./index.md)
 - [{#T}](./on-crm-contact-user-field-add.md)

@@ -4,9 +4,15 @@
 >
 > Who can execute the method: any user
 
-The method returns a list of product property types.
+{% note warning "Method development has been halted" %}
 
-No parameters.
+The method `crm.product.property.types` is still operational, but there is a more relevant alternative [catalog.productPropertyFeature.*](../../../catalog/product-property-feature/index.md).
+
+{% endnote %}
+
+The method `crm.product.property.types` returns a list of product property types.
+
+No parameters required.
 
 ## Code Examples
 

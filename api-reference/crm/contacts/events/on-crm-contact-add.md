@@ -1,12 +1,12 @@
-# Event for Creating a Contact onCrmContactAdd
+# Event onCrmContactAdd
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can subscribe: any user
 
-The event will trigger upon the creation of a contact.
+The `onCrmContactAdd` event will trigger when a contact is created.
 
-## What the Handler Receives
+## What the handler receives
 
 Data is sent as a POST request {.b24-info}
 
@@ -39,7 +39,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../data-types.md) | Symbolic event code.
 
 In this case — `ONCRMCONTACTADD`||
 || **event_handler_id**
@@ -73,7 +73,7 @@ The structure is described [below](#auth) ||
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](./index.md)
 - [{#T}](./on-crm-contact-update.md)
