@@ -3,7 +3,7 @@ href: index.md
 items: 
   - name: How to Develop an Application
     href: index.md
-  - name: Sandbox Access Conditions for Solution Development
+  - name: Sandbox Access
     href: access-to-sandbox.md
   - name: How to Add an Application
     href: how-to-add-app.md
