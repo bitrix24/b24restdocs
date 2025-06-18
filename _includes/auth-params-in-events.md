@@ -4,29 +4,30 @@
 || **Name**
 `type` | **Description** ||
 || **access_token**
-[`string`](../api-reference/data-types.md) | Authorization token [OAuth 2.0](../api-reference/oauth/index.md) ||
+[`string`](/api-reference/data-types.html) | Authorization token [OAuth 2.0](/api-reference/oauth/index.html) ||
 || **expires_in**
-[`integer`](../api-reference/data-types.md) | Time in seconds until the token expires ||
+[`integer`](/api-reference/data-types.html) | Time in seconds until the token expires ||
 || **scope***
-[`string`](../api-reference/data-types.md) | [Scope](../api-reference/scopes/permissions.md) under which the event occurred ||
+[`string`](/api-reference/data-types.html) | [Scope](/api-reference/scopes/permissions.html) under which the event occurred ||
 || **domain***
-[`string`](../api-reference/data-types.md) | Bitrix24 address where the event occurred ||
+[`string`](/api-reference/data-types.html) | Address of Bitrix24 where the event occurred ||
 || **server_endpoint***
-[`string`](../api-reference/data-types.md) | Authorization server address for Bitrix24, needed for refreshing OAuth 2.0 tokens ||
+[`string`](/api-reference/data-types.html) | Address of the Bitrix24 authorization server needed to refresh OAuth 2.0 tokens ||
 || **status***
-[`string`](../api-reference/data-types.md) | Status of the application that subscribed to this event:
+[`string`](/api-reference/data-types.html) | Status of the application that subscribed to this event:
 
-- `L` — [local](../local-integrations/local-apps.md) application
-- `F` — [free mass-market](../market/index.md) application
+- `L` — [local](/local-integrations/local-apps.html) application
+- `F` — [free mass-market](/market/index.html) application
+
 ||
 || **client_endpoint***
-[`string`](../api-reference/data-types.md) | Common path for REST API method calls for Bitrix24 where the event occurred ||
+[`string`](/api-reference/data-types.html) | Common path for REST API method calls for Bitrix24 where the event occurred ||
 || **member_id***
-[`string`](../api-reference/data-types.md) | Bitrix24 identifier where the event occurred ||
+[`string`](/api-reference/data-types.html) | Identifier of Bitrix24 where the event occurred ||
 || **refresh_token**
-[`string`](../api-reference/data-types.md) | Authorization renewal token [OAuth 2.0](../api-reference/oauth/index.md) ||
+[`string`](/api-reference/data-types.html) | Token for extending authorization [OAuth 2.0](/api-reference/oauth/index.html) ||
 || **application_token***
-[`string`](../api-reference/data-types.md) | Token for secure event handling ||
+[`string`](/api-reference/data-types.html) | Token for secure event handling ||
 |#
 
 {% note alert "" %}

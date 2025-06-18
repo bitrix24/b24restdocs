@@ -2,6 +2,10 @@
 
 ## 2025
 
+### June 18, 2025
+
+- Updated the pages for [system events](./api-reference/common/events/index.md) and the event [onOfflineEvent](./api-reference/events/on-offline-event.md)
+
 ### June 11, 2025
 
 - Updated the main event pages in the sections: [Contacts](./api-reference/crm/contacts/events/index.md), [Contact Custom Fields](./api-reference/crm/contacts/userfield/events/index.md), [Company Custom Fields](./api-reference/crm/companies/userfields/events/index.md), [Leads](./api-reference/crm/leads/events/index.md), [Lead Custom Fields](./api-reference/crm/leads/userfield/events/index.md), [Estimates](./api-reference/crm/quote/events/index.md), [Estimate Custom Fields](./api-reference/crm/quote/user-field/events/index.md), [Deals](./api-reference/crm/deals/events/index.md), [Deal Custom Fields](./api-reference/crm/deals/user-defined-fields/events/index.md), [Recurring Deals](./api-reference/crm/deals/recurring-deals/events/index.md). Added introductory information and an overview of events

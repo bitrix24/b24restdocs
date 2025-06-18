@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method adds a custom field.
+The method `user.userfield.add` adds a custom field.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method adds a custom field.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md)| Field values for adding a new custom field ||
+[`object`](../../data-types.md)| Values of the fields to add a new custom field ||
 |#
 
 ### Parameter fields
@@ -40,38 +40,38 @@ This method adds a custom field.
 - `url` — link
 - `address` — Google map address
 - `money` — money
-- `iblock_section` — Binding to an information block section
-- `iblock_element` — Binding to an information block element
-- `employee` — Binding to a user
-- `crm` — Binding to a CRM entity
-- `crm_status` — Binding to a CRM directory ||
+- `iblock_section` — Binding to the information block section
+- `iblock_element` — Binding to the information block element
+- `employee` — Binding to the user
+- `crm` — Binding to the CRM entity
+- `crm_status` — Binding to the CRM directory ||
 || **XML_ID**
 [`string`](../../data-types.md)| External code ||
 || **SORT**
 [`integer`](../../data-types.md)| Sort order ||
 || **MULTIPLE**
-[`boolean`](../../data-types.md)| Whether the field is multiple. Possible values:
+[`boolean`](../../data-types.md)| Is the field multiple. Possible values:
 - `Y` — yes
 - `N` — no
  ||
 || **MANDATORY**
-[`boolean`](../../data-types.md)| Whether the custom field is mandatory. Possible values:
+[`boolean`](../../data-types.md)| Is the custom field mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
-[`boolean`](../../data-types.md)| Whether to show the field in the list filter. Possible values:
+[`boolean`](../../data-types.md)| Show the field in the list filter. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_IN_LIST**
-[`boolean`](../../data-types.md)| Whether to show the field in the list. Possible values:
+[`boolean`](../../data-types.md)| Show the field in the list. Possible values:
 - `Y` — yes
 - `N` — no ||
 - || **EDIT_IN_LIST**
-[`boolean`](../../data-types.md)| Whether to edit the field in the list. Possible values:
+[`boolean`](../../data-types.md)| Edit the field in the list. Possible values:
 - `Y` — yes
 - `N` — no ||
 - || **IS_SEARCHABLE**
-[`boolean`](../../data-types.md)| Whether the field is searchable. Possible values:
+[`boolean`](../../data-types.md)| Is the field searchable. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SETTINGS**
@@ -89,7 +89,7 @@ This method adds a custom field.
 || **LABEL**
 [`string`](../../data-types.md)| Default name of the custom field.
 
-The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided for them ||
+The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided in them ||
 |#
 
 ### Parameter SETTINGS {#settings}
@@ -242,7 +242,7 @@ Each type of custom field has its own set of additional settings.
 
     Default is `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../data-types.md) | Whether to show items with the active flag. Possible values:
+    [`boolean`](../../data-types.md) | Show elements with the active flag. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -270,25 +270,25 @@ Each type of custom field has its own set of additional settings.
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`](../../data-types.md) | Is the binding to [Leads](../../crm/leads/index.md) enabled? Possible values:
+    [`boolean`](../../data-types.md) | Is the binding to [Leads](../../crm/leads/index.md) enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **CONTACT**
-    [`boolean`](../../data-types.md) | Is the binding to [Contacts](../../crm/contacts/index.md) enabled? Possible values:
+    [`boolean`](../../data-types.md) | Is the binding to [Contacts](../../crm/contacts/index.md) enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **COMPANY**
-    [`boolean`](../../data-types.md) | Is the binding to [Companies](../../crm/companies/index.md) enabled? Possible values:
+    [`boolean`](../../data-types.md) | Is the binding to [Companies](../../crm/companies/index.md) enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **DEAL**
-    [`boolean`](../../data-types.md) | Is the binding to [Deals](../../crm/deals/index.md) enabled? Possible values:
+    [`boolean`](../../data-types.md) | Is the binding to [Deals](../../crm/deals/index.md) enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -299,7 +299,7 @@ Each type of custom field has its own set of additional settings.
 
 {% note info "" %}
 
-If you need to create a custom field with an added custom type via the API, the `USER_TYPE_ID` field must specify `rest_<app_number>_<added_type_USER_TYPE_ID>`. For example, `rest_436278_test_type`.
+If you need to create a custom field with an added custom type via the API, the `USER_TYPE_ID` field must specify `rest_<app_number>_<USER_TYPE_ID of the added type>`. For example, `rest_436278_test_type`.
 
 {% endnote %}
 
@@ -460,7 +460,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../data-types.md) | Identifier of the created custom field ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -483,7 +483,7 @@ HTTP status: **400**
 || ERROR_ARGUMENT | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not set ||
 || ERROR_ARGUMENT | Argument 'HANDLER' is null or empty | `HANDLER` is not set ||
 || ERROR_CORE | Field \*** for the USER object already exists | Field \*** for the `USER` object already exists ||
-|| ERROR_CORE | Fail to create new user field | Error creating field ||
+|| ERROR_CORE | Fail to create new user field | Error creating the field ||
 || Empty string | The \u0027FIELD_NAME\u0027 field is not found. | Mandatory field `FIELD_NAME` is not set ||
 || Empty string | The \u0027USER_TYPE_ID\u0027 field is not found. | Mandatory field `USER_TYPE_ID` is not set ||
 |#

@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method deletes a custom field.
+The method `user.userfield.delete` removes a custom field.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ This method deletes a custom field.
 || **id*** 
 [`integer`](../../data-types.md)| Identifier of the custom field.
 
-To obtain the identifiers of custom fields, use the [user.userfield.list](./user-userfield-list.md) method.
+To obtain the identifiers of custom fields, use the method [user.userfield.list](./user-userfield-list.md)
  ||
 |#
 
@@ -108,9 +108,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of deleting the custom field ||
+[`boolean`](../../data-types.md) | Result of the custom field deletion ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

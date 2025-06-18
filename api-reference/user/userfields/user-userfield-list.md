@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of custom fields based on a filter.
+The method `user.userfield.list` retrieves a list of custom fields based on the filter.
 
 ## Method Parameters
 
@@ -57,7 +57,7 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
   - `"%mol"` — searching for values not ending with "mol"
   - `"%mol%"` — searching for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
  ||
@@ -65,7 +65,7 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -156,7 +156,7 @@ HTTP status: **200**
             "SHOW_IN_LIST":"Y",
             "EDIT_IN_LIST":"Y",
             "IS_SEARCHABLE":"N",
-            "SETTINGS": {
+            "SETTINGS":{
                 "DISPLAY":"UI",
                 "LIST_HEIGHT":1,
                 "CAPTION_NO_VALUE":"",
@@ -199,13 +199,13 @@ HTTP status: **200**
             "SHOW_IN_LIST":"Y",
             "EDIT_IN_LIST":"Y",
             "IS_SEARCHABLE":"N",
-            "SETTINGS": {
+            "SETTINGS":{
                 "DEFAULT_VALUE":""
             }
         }
     ],
     "total":2,
-    "time": {
+    "time":{
         "start":1747313326.788124,
         "finish":1747313328.641663,
         "duration":1.853538990020752,
@@ -227,7 +227,7 @@ HTTP status: **200**
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -248,7 +248,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || Empty string | Access denied. | A field with such `id` does not exist or access is denied ||
-|| Empty string | ID is not defined or invalid | The `id` is not specified or is incorrect ||
+|| Empty string | ID is not defined or invalid | `id` is not specified or is invalid ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
