@@ -48,7 +48,7 @@ The method `user.userfield.add` adds a custom field.
 || **XML_ID**
 [`string`](../../data-types.md)| External code ||
 || **SORT**
-[`integer`](../../data-types.md)| Sort order ||
+[`integer`](../../data-types.md)| Sorting order ||
 || **MULTIPLE**
 [`boolean`](../../data-types.md)| Is the field multiple. Possible values:
 - `Y` — yes
@@ -59,15 +59,15 @@ The method `user.userfield.add` adds a custom field.
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
-[`boolean`](../../data-types.md)| Show the field in the list filter. Possible values:
+[`boolean`](../../data-types.md)| Should the field be shown in the list filter. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_IN_LIST**
-[`boolean`](../../data-types.md)| Show the field in the list. Possible values:
+[`boolean`](../../data-types.md)| Should the field be shown in the list. Possible values:
 - `Y` — yes
 - `N` — no ||
 - || **EDIT_IN_LIST**
-[`boolean`](../../data-types.md)| Edit the field in the list. Possible values:
+[`boolean`](../../data-types.md)| Can the field be edited in the list. Possible values:
 - `Y` — yes
 - `N` — no ||
 - || **IS_SEARCHABLE**
@@ -94,7 +94,7 @@ The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LI
 
 ### Parameter SETTINGS {#settings}
 
-Each type of custom field has its own set of additional settings.
+Each type of custom fields has its own set of additional settings.
 
 {% list tabs %}
 
@@ -299,7 +299,7 @@ Each type of custom field has its own set of additional settings.
 
 {% note info "" %}
 
-If you need to create a custom field with an added custom type via the API, the `USER_TYPE_ID` field must specify `rest_<app_number>_<USER_TYPE_ID of the added type>`. For example, `rest_436278_test_type`.
+If you need to create a custom field with an added custom type via the API, you must specify `rest_<app_number>_<USER_TYPE_ID of added type>` in the `USER_TYPE_ID` field. For example, `rest_436278_test_type`.
 
 {% endnote %}
 
@@ -329,7 +329,7 @@ If you need to create a custom field with an added custom type via the API, the 
                 "DEAL": "Y"
             },
             "EDIT_FORM_LABEL": {
-                "en": "Binding to CRM deals"
+                "en": "Binding to CRM Deals"
             }
         }
     }' \
@@ -356,7 +356,7 @@ If you need to create a custom field with an added custom type via the API, the 
                 "DEAL": "Y"
             },
             "EDIT_FORM_LABEL": {
-                "en": "Binding to CRM deals"
+                "en": "Binding to CRM Deals"
             }
         },
         "auth": "**put_access_token_here**"
@@ -384,7 +384,7 @@ If you need to create a custom field with an added custom type via the API, the 
                     DEAL: "Y",
                 },
                 EDIT_FORM_LABEL: {
-                    en: "Binding to CRM deals"
+                    en: "Binding to CRM Deals"
                 },
             },
         },
@@ -420,7 +420,7 @@ If you need to create a custom field with an added custom type via the API, the 
                     'DEAL' => 'Y',
                 ],
                 'EDIT_FORM_LABEL' => [
-                    'en' => 'Binding to CRM deals'
+                    'en' => 'Binding to CRM Deals'
                 ],
             ]
         ]
@@ -480,10 +480,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| ERROR_ARGUMENT | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not set ||
-|| ERROR_ARGUMENT | Argument 'HANDLER' is null or empty | `HANDLER` is not set ||
-|| ERROR_CORE | Field \*** for the USER object already exists | Field \*** for the `USER` object already exists ||
-|| ERROR_CORE | Fail to create new user field | Error creating the field ||
+|| ERROR_ARGUMENT | Argument 'USER_TYPE_ID' is null or empty | 'USER_TYPE_ID' is not set ||
+|| ERROR_ARGUMENT | Argument 'HANDLER' is null or empty | 'HANDLER' is not set ||
+|| ERROR_CORE | Field \*** for USER object already exists | Field \*** for `USER` object already exists ||
+|| ERROR_CORE | Fail to create new user field | Error creating field ||
 || Empty string | The \u0027FIELD_NAME\u0027 field is not found. | Mandatory field `FIELD_NAME` is not set ||
 || Empty string | The \u0027USER_TYPE_ID\u0027 field is not found. | Mandatory field `USER_TYPE_ID` is not set ||
 |#

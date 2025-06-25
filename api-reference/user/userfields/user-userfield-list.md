@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-The method `user.userfield.list` retrieves a list of custom fields based on the filter.
+The method `user.userfield.list` retrieves a list of custom fields based on a filter.
 
 ## Method Parameters
 
@@ -36,23 +36,23 @@ Possible values for `order_N`:
 || **filter** 
 [`array`](../../data-types.md)| Filter for the selected custom fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field_N` are similar to those in sorting.
+Possible values for `field_N` are similar to the fields in sorting.
 
-An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
+A key can have an additional prefix that specifies the behavior of the filter. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN (an array is passed as the value)
-- `!@` — NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `@` — IN (an array is passed as a value)
+- `!@` — NOT IN (an array is passed as a value)
+- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
   - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
   - `"%mol%"` — searching for values where the substring "mol" is not present in any position
@@ -65,7 +65,7 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 

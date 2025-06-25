@@ -1,91 +1,167 @@
 # Get leads, contacts, and companies with matching data crm.duplicate.findbycomm
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing (in other languages)
-- success response is missing
-- error response is missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`crm`](../../scopes/permissions.md)
->
-> Who can execute the method: any user
+> 
+> Who can execute the method: user with read access permission to CRM entities
 
-```http
-crm.duplicate.findbycomm()
-```
+The method `crm.duplicate.findbycomm` returns the identifiers of leads, contacts, and companies that contain phone numbers or email addresses from a specified list. The search does not consider the phone extension.
 
-Returns the identifiers of leads, contacts, and companies containing phone numbers or email addresses from the specified list. The search does not consider the phone extension.
+## Method Parameters
 
-## Parameters
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **type^*^** | Type of communication:
-- **EMAIL** - email address;
-- **PHONE** - phone. ||
-|| **values^*^** | Array of emails or phone numbers (up to [20 values](*value_key)). The method returns no more than 20 duplicates per entity, and not 20 new ones, but 20 old ones.
+|| **Name**
+`type` | **Description** ||
+|| **type***
+[`string`](../../data-types.md) | Type of communication. Possible values:
+- `EMAIL` — email address
+- `PHONE` — phone ||
+|| **values***
+[`string[]`](../../data-types.md) | Array of emails or phone numbers.  
 
-If there are 20 or more duplicates in the entity, results for the other entities will not be returned. For example, if **entity_type** is not specified and duplicates are expected across all three entities, but we have 20 or more duplicates in leads, the contact and company entities will not be returned. If the contact entity has 20 or more duplicates, we will get duplicates for leads and contacts, while the company will be absent from the selection. ||
-|| **entity_type** | Can be omitted; in this case, all three types of entities will be returned. If the parameter is used, only one of them can be operated on. If an array or a non-existent parameter is specified, all types will be returned.
-Entity types:
-- **LEAD** - lead;
-- **CONTACT** - contact;
-- **COMPANY** - company. ||
+Maximum number of values — 20 ||
+|| **entity_type**
+[`string`](../../data-types.md) | Type of object. Possible values:
+- `LEAD` — lead
+- `CONTACT` — contact
+- `COMPANY` — company
+
+If not specified — the search is performed across all three types ||
 |#
 
-{% include [Notes on parameters](../../../_includes/required.md) %}
+### Method Operation Features
 
-The result is returned as an object containing arrays of identifiers for leads, contacts, and companies.
+If 20 or more duplicates are found for one object, the other types are not returned. For example, if `entity_type` is not specified and duplicates are expected across all three objects, but there are 20 or more duplicates in leads, contacts and companies will not be returned. If there are 20 or more duplicates in contacts, we will receive duplicates for leads and contacts, while the company will be absent from the selection.
 
-Access to the array of identifiers is done by the type name.
+## Code Examples
 
-## Example
-
-```json
-{'LEAD': [1, 2, 3], 'CONTACT': [4, 5, 6], 'COMPANY': [7, 8, 9]}
-```
-
-## Example of searching for a contact by phone:
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```js
-    //Searching for a contact by phone
     BX24.callMethod(
         "crm.duplicate.findbycomm",
         {
             entity_type: "CONTACT",
             type: "PHONE",
-            values: [ "8976543", "11223355" ],
+            values: ["1234567", "11223355"]
         },
-        function(result)
-        {
+        function(result) {
             if(result.error())
                 console.error(result.error());
             else
-                {
-                    console.dir(result.data());
-                }
+                console.dir(result.data());
         }
     );
     ```
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+         -H "Content-Type: application/json" \
+         -H "Accept: application/json" \
+         -d '{"entity_type":"CONTACT","type":"PHONE","values":["1234567","11223355"]}' \
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.duplicate.findbycomm
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+         -H "Content-Type: application/json" \
+         -H "Accept: application/json" \
+         -d '{"auth":"**put_access_token_here**","entity_type":"CONTACT","type":"PHONE","values":["1234567","11223355"]}' \
+         https://**put_your_bitrix24_address**/rest/crm.duplicate.findbycomm
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.duplicate.findbycomm',
+        [
+            'entity_type' => 'CONTACT',
+            'type' => 'PHONE',
+            'values' => ['1234567', '11223355']
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Notes on examples](../../../_includes/examples.md) %}
+## Response Handling
 
-[*value_key]: Limited to reduce load.
+HTTP status: **200**
+
+```json
+{
+    "result": {
+        "CONTACT": [275, 2297]
+    },
+    "time": {
+        "start": 1750684060.672785,
+        "finish": 1750684060.724903,
+        "duration": 0.05211806297302246,
+        "processing": 0.018191099166870117,
+        "date_start": "2025-06-23T16:07:40+02:00",
+        "date_finish": "2025-06-23T16:07:40+02:00",
+        "operating_reset_at": 1750684660,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **LEAD**
+[`integer[]`](../../data-types.md) | Array of identifiers of found leads ||
+|| **CONTACT**
+[`integer[]`](../../data-types.md) | Array of identifiers of found contacts ||
+|| **COMPANY**
+[`integer[]`](../../data-types.md) | Array of identifiers of found companies ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "Communication type is not defined",
+    "error_description": "Parameter 'type' is required."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `403` | `Access denied` | User does not have permission to read CRM entities ||
+|| `400` | `Communication type is not defined` | Required parameter `type` is not specified ||
+|| `400` | `Communication type '{type}' is not supported in current context` | An unsupported communication type was specified ||
+|| `400` | `Communication values is not defined` | Required parameter `values` is not specified ||
+|#
+
+{% include [system errors](./../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./crm-entity-merge-batch.md)

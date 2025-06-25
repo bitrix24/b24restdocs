@@ -19,7 +19,7 @@ The method `user.userfield.update` updates a user field.
 To obtain the identifiers of user fields, use the method [user.userfield.list](./user-userfield-list.md)
  ||
 || **fields**
-[`object`](../../data-types.md)| Values of the fields to update the user field ||
+[`object`](../../data-types.md)| Field values for updating the user field ||
 |#
 
 ### Parameter fields
@@ -32,7 +32,7 @@ To obtain the identifiers of user fields, use the method [user.userfield.list](.
 || **SORT**
 [`integer`](../../data-types.md)| Sort order ||
 || **MANDATORY**
-[`boolean`](../../data-types.md)| Whether the user field is mandatory. Possible values:
+[`boolean`](../../data-types.md)| Indicates whether the user field is mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
@@ -52,7 +52,7 @@ To obtain the identifiers of user fields, use the method [user.userfield.list](.
 - `Y` — yes
 - `N` — no ||
 || **SETTINGS**
-[`object`](../../data-types.md)| Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}` for passing additional settings for user fields. Settings are described [below](#settings) ||
+[`object`](../../data-types.md)| An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}` for passing additional settings for user fields. Settings are described [below](#settings) ||
 || **EDIT_FORM_LABEL**
 [`string`](../../data-types.md)| Label in the edit form ||
 || **LIST_COLUMN_LABEL**
@@ -237,31 +237,31 @@ Each type of user field has its own set of additional settings.
 
 - crm
 
-    If none of the following options are provided, lead binding will be enabled by default (`LEAD = Y`).
+    If none of the following options are provided, the binding to leads will be enabled by default (`LEAD = Y`).
 
     #|
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`](../../data-types.md) | Is lead binding enabled? Possible values:
+    [`boolean`](../../data-types.md) | Is the binding to [Leads](../../crm/leads/index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **CONTACT**
-    [`boolean`](../../data-types.md) | Is contact binding enabled? Possible values:
+    [`boolean`](../../data-types.md) | Is the binding to [Contacts](../../crm/contacts/index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **COMPANY**
-    [`boolean`](../../data-types.md) | Is company binding enabled? Possible values:
+    [`boolean`](../../data-types.md) | Is the binding to [Companies](../../crm/companies/index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **DEAL**
-    [`boolean`](../../data-types.md) | Is deal binding enabled? Possible values:
+    [`boolean`](../../data-types.md) | Is the binding to [Deals](../../crm/deals/index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -383,9 +383,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Contains `true` if the user field was successfully updated ||
+[`boolean`](../../data-types.md) | Contains `true` in case of successful update of the user field ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

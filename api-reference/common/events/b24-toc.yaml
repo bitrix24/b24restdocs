@@ -3,11 +3,11 @@ href: index.md
 items: 
   - name: Overview of Events
     href: index.md
-  - name: After Successful App Installation
+  - name: After Successful Installation of the Application
     href: on-app-install.md
-  - name: When Uninstalling the App
+  - name: When Uninstalling the Application
     href: on-app-uninstall.md
-  - name: When Paying for the App
+  - name: When Paying for the Application
     href: on-app-payment.md
   - name: When Receiving Permission to Use Methods
     href: on-app-method-confirm.md

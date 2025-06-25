@@ -245,16 +245,15 @@ HTTP status: **200**
 - `Y` — yes
 - `N` — no ||
 || **HAS_PHONE**
-[`boolean`][1] | Is a phone number provided. Possible values:
+[`boolean`][1] | Whether a phone number is provided. Possible values:
 - `Y` — yes
-- `N` — no
-||
+- `N` — no ||
 || **HAS_EMAIL**
-[`boolean`][1] | Is an e-mail provided. Possible values:
+[`boolean`][1] | Whether an e-mail is provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_IMOL**
-[`boolean`][1] | Is an open channel provided. Possible values:
+[`boolean`][1] | Whether an open channel is provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **DATE_CREATE**
@@ -301,12 +300,12 @@ HTTP status: **200**
 [`crm_multifield[]`](../data-types.md) | Links. Service field ||
 |#
 
-**Fields for external data sources**
+**Fields for connection with external data sources**
 
 If the contact was created by an external system, then:
-- the `ORIGINATOR_ID` field stores the string identifier of that system
-- the `ORIGIN_ID` field stores the string identifier of the contact in that external system
-- the `ORIGIN_VERSION` field stores the version of the contact data in that external system
+- the field `ORIGINATOR_ID` stores the string identifier of that system
+- the field `ORIGIN_ID` stores the string identifier of the contact in that external system
+- the field `ORIGIN_VERSION` stores the version of the contact data in that external system
 
 #|
 || **Name**
@@ -319,7 +318,7 @@ If the contact was created by an external system, then:
 [`string`][1] | Version of the original ||
 |#
 
-**Deprecated fields**
+**Deprecated Fields**
 
 Address fields in the contact are deprecated and are only used in compatibility mode. To work with the address, use [details](../requisites/index.md).
 
@@ -368,8 +367,8 @@ HTTP status: **400**
 #|
 || **Description** | **Value** ||
 || `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not a positive integer ||
-|| `Access denied` | The user does not have permission for "Read" contact ||
-|| `Not found` | Contact with the provided `id` not found ||
+|| `Access denied` | The user does not have permission to "Read" the contact ||
+|| `Not found` | The contact with the provided `id` was not found ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
@@ -382,5 +381,7 @@ HTTP status: **400**
 - [{#T}](./crm-contact-delete.md)
 - [{#T}](./crm-contact-fields.md)
 - [{#T}](../../../tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-send-email.md)
 
 [1]: ../../data-types.md

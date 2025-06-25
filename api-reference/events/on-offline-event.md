@@ -1,4 +1,4 @@
-# Event onOfflineEvent Change
+# Event of Queue Change onOfflineEvent
 
 > Who can subscribe: any user
 
@@ -6,14 +6,14 @@ The `onOfflineEvent` notifies about the occurrence of new offline events at cert
 
 The application can subscribe to two types of events.
 
-- Regular: the event triggers an external URL and executes an action defined by that address.
-- Offline: instead of calling an external URL, events are locally saved on the account, from where they can later be retrieved using the [event.offline.*](./index.md#all-methods) methods.
+- Regular: the event triggers an external URL and performs an action defined by that address.
+- Offline: instead of calling an external URL, events are locally saved on the account, from where they can later be retrieved using the methods [event.offline.*](./index.md#all-methods).
 
 For the `onOfflineEvent`, the necessity of sending a notification is determined based on the local saving, and then it is sent as a regular event to the external URL.
 
-## What the handler receives
+## What the Handler Receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is transmitted in the form of a POST request {.b24-info}
 
 ```
 {
@@ -77,7 +77,7 @@ The structure is described [below](#auth) ||
 || **minTimeout**
 [`integer`](../data-types.md) | Minimum delay before sending the event in seconds. Used for event grouping. Default is 1 sec. If the parameter value:
 - is `0`, regardless of the number of events added to the offline queue, only one event will be sent to the handler's address within a single hit
-- is greater than `0`, upon the first trigger, it sends one event. Then a pause is made for at least the timeout duration before sending the next event
+- is greater than `0`, upon the first trigger, it sends one event. Then it pauses for at least the timeout duration before sending the next event
   
 The `minTimeout` field appears only if the event was added to the queue with a delay ||
 |#
@@ -116,9 +116,9 @@ The `minTimeout` field appears only if the event was added to the queue with a d
 [`string`](../data-types.md) | Token for secure event processing ||
 |#
 
-offline_event — the application is not always in a position to receive events. It may be hidden behind firewalls, reside in an internal network, and so on. In this case, the offline event mechanism is used, where the application subscribes to events but does not specify a handler URL.
+offline_event — the application is not always in a position to receive events. It may be hidden behind firewalls, live in an internal network, and so on. In this case, the offline event mechanism is used, where the application subscribes to events but does not specify a handler URL.
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](./events.md)
 - [{#T}](./event-bind.md)

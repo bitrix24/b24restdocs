@@ -23,7 +23,7 @@ items:
       mode: link
   - name: Widgets
     href: widgets.md
-  - name: Product Items
+  - name: Product Rows
     include:
       path: product-rows/b24-toc.yaml
       mode: link
@@ -38,10 +38,6 @@ items:
   - name: Custom Field Settings
     include:
       path: userfieldconfig/b24-toc.yaml
-      mode: link
-  - name: Custom Field Types
-    include:
-      path: user-defined-field-types/b24-toc.yaml
       mode: link
   - name: CRM Sales Funnels
     include:
@@ -63,7 +59,7 @@ items:
     include:
       path: delivery/b24-toc.yaml
       mode: link
-  - name: Managing Item Detail Forms
+  - name: Manage Entity Detail Forms
     include:
       path: item-details-configuration/b24-toc.yaml
       mode: link

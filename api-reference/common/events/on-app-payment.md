@@ -44,7 +44,7 @@ Data is sent as a POST request {.b24-info}
 
 The structure is described [below](#data) ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
+[`timestamp`](../../data-types.md) | Date and time of event sending from the queue ||
 || **auth***
 [`array`](../../data-types.md) | Authorization and account data.
 
@@ -66,7 +66,7 @@ The structure is described [below](#auth) ||
 [`string`](../../data-types.md) | Application status. Possible values:
 - `F` (Free) — free
 - `D` (Demo) — demo version
-- `T` (Trial) — time-limited trial version
+- `T` (Trial) — trial version, time-limited
 - `P` (Paid) — paid application ||
 || **PAYMENT_EXPIRED***
 [`string`](../../data-types.md) | [Y\|N] Flag indicating whether the paid period or trial period has expired ||
@@ -88,9 +88,9 @@ The structure is described [below](#auth) ||
 || **server_endpoint***
 [`string`](../../data-types.md) | Authorization server address for token renewal ||
 || **client_endpoint***
-[`string`](../../data-types.md) | Common path for API method calls for the account ||
+[`string`](../../data-types.md) | General path for API method calls ||
 || **member_id***
-[`string`](../../data-types.md) | Unique identifier of the account ||
+[`string`](../../data-types.md) | Unique account identifier ||
 |#
 
 ## Continue exploring

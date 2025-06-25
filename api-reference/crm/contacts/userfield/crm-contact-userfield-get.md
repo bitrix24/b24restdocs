@@ -232,9 +232,9 @@ HTTP Status: **200**
 || **ID**
 [`integer`][1] | Identifier of the custom field ||
 || **ENTITY_ID**
-[`string`][1] | String identifier linking the custom field to the entity. 
+[`string`][1] | String identifier binding the custom field to the entity. 
 
-For the methods `crm.contact.userfield.*`, the value `CRM_CONTACT` is automatically assigned ||
+In the case of methods `crm.contact.userfield.*`, the value `CRM_CONTACT` is automatically assigned ||
 || **FIELD_NAME**
 [`string`][1] | Field code. Unique ||
 || **USER_TYPE_ID**
@@ -250,36 +250,36 @@ For the methods `crm.contact.userfield.*`, the value `CRM_CONTACT` is automatica
 - `address` — address
 - `enumeration` — list
 - `file` — file
-- `employee` — link to employee
-- `crm_status` — link to CRM directory
-- `iblock_section` — link to information block sections
-- `iblock_element` — link to information block elements
-- `crm` — link to CRM elements
-- [custom field types](../../universal/user-defined-field-types/index.md)
+- `employee` — binding to an employee
+- `crm_status` — binding to a CRM directory
+- `iblock_section` — binding to information block sections
+- `iblock_element` — binding to information block elements
+- `crm` — binding to CRM elements
+- [custom field types](../../universal/user-defined-fields/userfield-type.md)
 ||
 || **XML_ID**
 [`string`][1] | External code ||
 || **SORT**
 [`integer`][1] | Sort index ||
 || **MULTIPLE**
-[`boolean`][1] | Indicates if the field is multiple. Possible values:
+[`boolean`][1] | Whether the field is multiple. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **MANDATORY**
-[`boolean`][1] | Indicates if the field is mandatory. Possible values:
+[`boolean`][1] | Whether the field is mandatory. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **SHOW_FILTER**
-[`boolean`][1] | Indicates if the field should be shown in the filter. Possible values:
+[`boolean`][1] | Whether to show the field in the filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
 - `S` — substring
 ||
 || **SHOW_IN_LIST**
-[`boolean`][1] | Indicates if the custom field should be shown in the list.
+[`boolean`][1] | Whether to show the custom field in the list.
 
 This parameter does not affect anything within `crm`.
 
@@ -288,12 +288,12 @@ Possible values:
 - `N` — no
 ||
 || **EDIT_IN_LIST**
-[`boolean`][1] | Allows user editing. Possible values:
+[`boolean`][1] | Allow user editing. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **IS_SEARCHABLE**
-[`boolean`][1] | Indicates if the field values participate in search.
+[`boolean`][1] | Whether the field values participate in search.
 
 This parameter does not affect anything within `crm`.
 
@@ -316,7 +316,7 @@ Possible values:
 || **HELP_MESSAGE**
 [`lang_map`](../../data-types.md) | Help ||
 || **USER_TYPE_OWNER**
-[`string`][1] | `CLIENT_ID` of the REST application that serves this field type.
+[`string`][1] | `CLIENT_ID` of the REST application that services this field type.
 
 Returned when the field type is custom ||
 |#
@@ -348,7 +348,7 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`integer`][1] | Indicates if the default value. Possible values:
+    [`integer`][1] | Whether the default value. Possible values:
     - `0` — no
     - `1` — yes ||
     || **DISPLAY**
@@ -384,7 +384,7 @@ Returned when the field type is custom ||
     - `TYPE` — type of default value:
         - `NONE` — absent
         - `NOW` — current date
-        - `FIXED` — date from the `VALUE`
+        - `FIXED` — date from `VALUE`
     - `VALUE` is of type `date` ||
     |#
 
@@ -422,14 +422,14 @@ Returned when the field type is custom ||
     - `TYPE` — type of default value:
         - `NONE` — absent
         - `NOW` — current date with time
-        - `FIXED` — date with time from the `VALUE`
+        - `FIXED` — date with time from `VALUE`
     - `VALUE` is of type `datetime` ||
     || **USE_SECOND**
-    [`boolean`][1] | Indicates if seconds are used. Possible values:
+    [`boolean`][1] | Whether to use seconds. Possible values:
     - `Y` — yes
     - `N` — no ||
     || **USE_TIMEZONE**
-    [`boolean`][1] | Indicates if time zones are used. Possible values:
+    [`boolean`][1] | Whether to use time zones. Possible values:
     - `Y` — yes
     - `N` — no ||
     |#
@@ -467,9 +467,9 @@ Returned when the field type is custom ||
     || **LIST_HEIGHT**
     [`integer`][1] | List height ||
     || **CAPTION_NO_VALUE**
-    [`string`][1] | Label when no value is present ||
+    [`string`][1] | Label when no value ||
     || **SHOW_NO_VALUE**
-    [`boolean`][1] | Indicates if empty value should be shown for mandatory field. Possible values:
+    [`boolean`][1] | Whether to show empty value for mandatory field. Possible values:
     - `Y` — yes
     - `N` — no ||
     |#
@@ -512,23 +512,23 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`][1] | Indicates if link to Leads is enabled ||
+    [`boolean`][1] | Whether binding to Leads is enabled ||
     || **CONTACT**
-    [`boolean`][1] | Indicates if link to Contacts is enabled ||
+    [`boolean`][1] | Whether binding to Contacts is enabled ||
     || **COMPANY**
-    [`boolean`][1] | Indicates if link to Companies is enabled ||
+    [`boolean`][1] | Whether binding to Companies is enabled ||
     || **DEAL**
-    [`boolean`][1] | Indicates if link to Deals is enabled ||
+    [`boolean`][1] | Whether binding to Deals is enabled ||
     || **ORDER**
-    [`boolean`][1] | Indicates if link to Orders is enabled ||
+    [`boolean`][1] | Whether binding to Orders is enabled ||
     || **QUOTE**
-    [`boolean`][1] | Indicates if link to Estimates is enabled ||
+    [`boolean`][1] | Whether binding to Estimates is enabled ||
     || **SMART_INVOICE**
-    [`boolean`][1] | Indicates if link to New Invoices is enabled ||
+    [`boolean`][1] | Whether binding to New Invoices is enabled ||
     || **DYNAMIC_...**
-    [`boolean`][1] | Indicates if link to a specific SPA is enabled.
+    [`boolean`][1] | Whether binding to a specific SPA is enabled.
 
-    Each such field has the form: `DYNAMIC_{entityTypeId}`, where `entityTypeId` is the identifier of the type of smart process to which the link is enabled ||
+    Each such field has the form: `DYNAMIC_{entityTypeId}`, where `entityTypeId` is the identifier of the SPA type to which the binding is enabled ||
     |#
 
 - money
@@ -588,9 +588,9 @@ Returned when the field type is custom ||
     || **LIST_HEIGHT**
     [`integer`][1] | Maximum height for display in the list ||
     || **MAX_SHOW_SIZE**
-    [`integer`][1] | Maximum allowed size for display in the list (0 — do not limit) ||
+    [`integer`][1] | Maximum allowable size for display in the list (0 — no limit) ||
     || **MAX_ALLOWED_SIZE**
-    [`integer`][1] | Maximum allowed file size for upload (0 — do not check) ||
+    [`integer`][1] | Maximum allowable file size for upload (0 — do not check) ||
     || **EXTENSIONS**
     [`string[]`][1] | Allowed extensions ||
     || **TARGET_BLANK**
@@ -611,7 +611,7 @@ Returned when the field type is custom ||
 || **SORT**
 [`integer`][1] | Sort index ||
 || **DEF**
-[`boolean`][1] | Indicates if the list element is the default value. Possible values:
+[`boolean`][1] | Whether the list element is the default value. Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -636,8 +636,8 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `-` | `Access denied` | Occurs when:
 - the user does not have administrative rights
-- the user attempts to access a custom field not linked to contacts ||
-|| `-` | `ID is not defined or invalid` | The provided `id` is less than or equal to zero, or not provided at all ||
+- the user tries to access a custom field not associated with contacts ||
+|| `-` | `ID is not defined or invalid` | The provided `id` is less than or equal to zero, or is not provided at all ||
 || `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` was not found ||
 |#
 

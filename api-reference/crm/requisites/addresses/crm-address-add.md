@@ -16,7 +16,7 @@ Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-ty
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Set of fields — an object of the form `{"field": "value"[, ...]}` for adding an address ||
+[`object`](../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` for adding the address ||
 |#
 
 ### Parameter fields
@@ -29,7 +29,7 @@ Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-ty
 || **TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the address type. Enumeration element "Address Type".
 
-Enumeration elements of "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
+Enumeration elements for "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
 ||
 || **ENTITY_TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the parent object's type.
@@ -38,7 +38,7 @@ Object type identifiers can be obtained using the method [crm.enum.ownertype](..
 
 Addresses can only be linked to Requisites (and requisites are linked to companies or contacts) or Leads.
 
-For backward compatibility, the ability to link Addresses to Contacts or Companies is retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by technical support.
+For backward compatibility, the ability to link Addresses to Contacts or Companies has been retained. However, this linkage is only possible on some older accounts where the old address handling mode has been specifically enabled by technical support.
 ||
 || **ENTITY_ID***
 [`string`](../../../data-types.md) | Identifier of the parent object ([requisite](../universal/index.md) or [lead](../../leads/index.md)) ||
@@ -84,7 +84,7 @@ If at least one string field is specified, only the specified fields will be sav
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":1,"ADDRESS_1":"Mir Avenue, 4","ADDRESS_2":"Kaliningrad Regional Drama Theater","CITY":"Kaliningrad","POSTAL_CODE":"236036","REGION":"Kaliningrad Urban District","PROVINCE":"Kaliningrad Region","COUNTRY":"Russia"}}' \
+    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":1,"ADDRESS_1":"4 Peace Avenue","ADDRESS_2":"Drama Theater","CITY":"City","POSTAL_CODE":"000000","REGION":"Urban District","PROVINCE":"Region","COUNTRY":"USA"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.address.add
     ```
 
@@ -94,7 +94,7 @@ If at least one string field is specified, only the specified fields will be sav
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":1,"ADDRESS_1":"Mir Avenue, 4","ADDRESS_2":"Kaliningrad Regional Drama Theater","CITY":"Kaliningrad","POSTAL_CODE":"236036","REGION":"Kaliningrad Urban District","PROVINCE":"Kaliningrad Region","COUNTRY":"Russia"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":8,"ENTITY_ID":1,"ADDRESS_1":"4 Peace Avenue","ADDRESS_2":"Drama Theater","CITY":"City","POSTAL_CODE":"000000","REGION":"Urban District","PROVINCE":"Region","COUNTRY":"USA"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.address.add
     ```
 
@@ -109,13 +109,13 @@ If at least one string field is specified, only the specified fields will be sav
                 "TYPE_ID": 1,            // Address type, see crm.enum.addresstype
                 "ENTITY_TYPE_ID": 8,     // Object type (requisite or lead)
                 "ENTITY_ID": 1,          // Identifier of the requisite
-                "ADDRESS_1": "Mir Avenue, 4",
-                "ADDRESS_2": "Kaliningrad Regional Drama Theater",
-                "CITY": "Kaliningrad",
-                "POSTAL_CODE": "236036",
-                "REGION": "Kaliningrad Urban District",
-                "PROVINCE": "Kaliningrad Region",
-                "COUNTRY": "Russia",
+                "ADDRESS_1": "4 Peace Avenue",
+                "ADDRESS_2": "Drama Theater",
+                "CITY": "City",
+                "POSTAL_CODE": "00000",
+                "REGION": "Urban District",
+                "PROVINCE": "Region",
+                "COUNTRY": "USA",
             }
         },
         function(result)
@@ -138,13 +138,13 @@ If at least one string field is specified, only the specified fields will be sav
                 'TYPE_ID' => 1,
                 'ENTITY_TYPE_ID' => 8,
                 'ENTITY_ID' => 1,
-                'ADDRESS_1' => 'Mir Avenue, 4',
-                'ADDRESS_2' => 'Kaliningrad Regional Drama Theater',
-                'CITY' => 'Kaliningrad',
-                'POSTAL_CODE' => '236036',
-                'REGION' => 'Kaliningrad Urban District',
-                'PROVINCE' => 'Kaliningrad Region',
-                'COUNTRY' => 'Russia',
+                'ADDRESS_1' => '4 Peace Avenue',
+                'ADDRESS_2' => 'Drama Theater',
+                'CITY' => 'City',
+                'POSTAL_CODE' => '00000',
+                'REGION' => 'Urban District',
+                'PROVINCE' => 'Region',
+                'COUNTRY' => 'USA',
             ]
         ]
     );
@@ -222,3 +222,4 @@ HTTP status: **40x**, **50x**
 - [{#T}](./crm-address-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-deal-with-choice-of-requisite.md)

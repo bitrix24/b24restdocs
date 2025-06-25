@@ -1,4 +1,4 @@
-# Get a List of Custom Fields for Contacts crm.contact.userfield.list
+# Get a list of custom fields for contacts crm.contact.userfield.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -44,7 +44,7 @@ All conditions for individual fields are combined using `AND`. See the [list of 
 
 where:
 - `field_n` — the name of the field by which the selection of elements will be sorted
-- `value_n` — a `string` value, equal to:
+- `value_n` — a `string` value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
@@ -66,7 +66,7 @@ By default:
 ||
 |#
 
-### Available Fields for Filtering {#filterable}
+### Filterable Fields {#filterable}
 
 #|
 || **Name**
@@ -88,12 +88,12 @@ By default:
 - `address` — address
 - `enumeration` — list
 - `file` — file
-- `employee` — link to employee
-- `crm_status` — link to CRM directory
-- `iblock_section` — link to information block sections
-- `iblock_element` — link to information block elements
-- `crm` — link to CRM elements
-- [custom field types](../../universal/user-defined-field-types/index.md)
+- `employee` — binding to an employee
+- `crm_status` — binding to the CRM directory
+- `iblock_section` — binding to information block sections
+- `iblock_element` — binding to information block elements
+- `crm` — binding to CRM elements
+- [custom field types](../../universal/user-defined-fields/userfield-type.md)
 ||
 || **XML_ID**
 [`string`][1] | External code ||
@@ -111,19 +111,19 @@ By default:
 - `S` — substring
 ||
 || **SHOW_IN_LIST**
-[`boolean`][1] | Should it be shown in the list (`Y` — yes/ `N` — no).
+[`boolean`][1] | Should it be shown in the list (`Y` — yes / `N` — no).
 
 This parameter does not affect anything within `crm`
 ||
 || **EDIT_IN_LIST**
-[`boolean`][1] | Allow user editing (`Y` — yes/ `N` — no) ||
+[`boolean`][1] | Allow user editing (`Y` — yes / `N` — no) ||
 || **IS_SEARCHABLE**
-[`boolean`][1] | Are the field values included in the search (`Y` — yes/ `N` — no)
+[`boolean`][1] | Are the field values included in the search (`Y` — yes / `N` — no)
 
 This parameter does not affect anything within `crm`
 ||
 || **LANG**
-[`string`][1] | [Language identifier](../../data-types.md#last-ids). When filtering by this parameter, a set of fields with values in the specified language will be provided:
+[`string`][1] | [Language identifier](../../data-types.md#last-ids). When filtering by this parameter, a set of fields with values in the provided language will be returned:
 - `EDIT_FORM_LABEL` — label in the edit form
 - `LIST_COLUMN_LABEL` — header in the list
 - `LIST_FILTER_LABEL` — filter label in the list
@@ -152,7 +152,7 @@ Set the following sort order for this selection: field type and sort index in as
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"filter":{"MULTIPLE":"Y","MANDATORY":"Y","LANG":"de"},"order":{"USER_TYPE_ID":"ASC","SORT":"ASC"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.contact.userfield.list
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.userfield.list
     ```
 
 - cURL (OAuth)
@@ -219,7 +219,7 @@ Set the following sort order for this selection: field type and sort index in as
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -268,9 +268,9 @@ HTTP Status: **200**
             "DYNAMIC_1278": "Y",
             "LEAD": null
         },
-        "EDIT_FORM_LABEL": "Custom Field (Link to CRM Elements)",
-        "LIST_COLUMN_LABEL": "Custom Field (Link to CRM Elements)",
-        "LIST_FILTER_LABEL": "Custom Field (Link to CRM Elements)",
+        "EDIT_FORM_LABEL": "Custom Field (Binding to CRM Elements)",
+        "LIST_COLUMN_LABEL": "Custom Field (Binding to CRM Elements)",
+        "LIST_FILTER_LABEL": "Custom Field (Binding to CRM Elements)",
         "ERROR_MESSAGE": null,
         "HELP_MESSAGE": null
         },
@@ -395,7 +395,7 @@ HTTP Status: **200**
 || **result**
 [`userfield[]`](crm-contact-userfield-get.md#userfield) | Root element of the response, contains a list of custom fields.
 
-The structure of an individual custom field is identical to [`userfield`](./crm-contact-userfield-get.md#userfield) except that the fields: `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned either as `string` when passing `filter.LANG`, or are not returned at all ||
+The structure of an individual custom field is identical to [`userfield`](./crm-contact-userfield-get.md#userfield) except that the fields: `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned either as `string` when passing `filter.LANG`, or not returned at all ||
 || **total**
 [`integer`][1] | Number of found custom fields ||
 || **time**
@@ -404,7 +404,7 @@ The structure of an individual custom field is identical to [`userfield`](./crm-
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

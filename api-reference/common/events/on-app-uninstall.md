@@ -1,10 +1,10 @@
-# Event on Application Uninstallation onAppUninstall
+# Event on Application Uninstall onAppUninstall
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `onAppUninstall` is triggered when an application is uninstalled.
+The `onAppUninstall` event is triggered when an application is uninstalled.
 
 ## What the handler receives
 
@@ -78,7 +78,7 @@ The structure is described [below](#auth) ||
 || **member_id***
 [`string`](../../data-types.md) | Unique account identifier ||
 || **application_token***
-[`string`](../../data-types.md) | Token for secure event processing ||
+[`string`](../../data-types.md) | Token for secure event handling ||
 |#
 
 {% note warning "" %}

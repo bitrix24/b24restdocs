@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will add it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing here — we will add it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- no response in case of an error
+- no response in case of error
 - no examples in other languages
   
 {% endnote %}
@@ -84,12 +84,12 @@ Possible values:
 - `enumeration` - List
 - `file` - File
 - `employee` - Link to employee
-- `crm_status` - Link to CRM reference
+- `crm_status` - Link to CRM directory
 - `iblock_section` - Link to information block sections
 - `iblock_element` - Link to information block elements
 - `crm` - Link to CRM entities
-- `disk_file` - File (Disk)
-- `disk_version` - File version (Disk)
+- `disk_file` - File (Drive)
+- `disk_version` - File version (Drive)
 - `video` - Video
 - `hlblock` - Link to highload block elements
 - `mail_message` - E-mail
@@ -97,6 +97,6 @@ Possible values:
 - `string_formatted` - Template
 - `vote` - Survey
 - `url_preview` - Link content
-- [Custom field types](../../../universal/user-defined-field-types/index.md)
+- [Custom field types](../../../universal/user-defined-fields/userfield-type.md)
 
 {% endif %}

@@ -1,10 +1,10 @@
-# Event after successful application installation OnAppInstall
+# Event after successful installation of the application OnAppInstall
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The `OnAppInstall` event is triggered immediately after the successful installation of an application on Bitrix24. The `application_token` is passed to the handler, which is important to save. For more details, refer to the article [{#T}](../../events/safe-event-handlers.md).
+The `OnAppInstall` event is triggered immediately after the successful installation of the application on Bitrix24. The `application_token` is passed to the handler, which is important to save. For more details, refer to the article [{#T}](../../events/safe-event-handlers.md).
 
 ## What the handler receives
 
@@ -39,7 +39,7 @@ array(
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic code of the event. In this case — `ONAPPINSTALL` ||
+[`string`](../../data-types.md) | Symbolic event code. In this case — `ONAPPINSTALL` ||
 || **data***
 [`object`](../../data-types.md) | Data about the installed application.
 
@@ -70,7 +70,7 @@ Possible values:
 `Y` — active
 `N` — inactive ||
 || **INSTALLED***
-[`string`](../../data-types.md) | Is the application ready for use. 
+[`string`](../../data-types.md) | Whether the application is ready for use. 
 
 Possible values: 
 `Y` — ready
@@ -102,7 +102,7 @@ Possible values:
 
 {% endnote %}
 
-## Continue your study
+## Continue your exploration
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

@@ -2,19 +2,19 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with read access to leads
+> Who can execute the method: user with read access permission for leads
 
 The method `crm.lead.list` returns a list of leads based on a filter. It is an implementation of the list method for leads.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to be selected (see lead fields [crm-lead-fields](./crm-lead-fields.md)).
+[`array`](../../data-types.md) | An array containing the list of fields to select (see lead fields [crm-lead-fields](./crm-lead-fields.md)).
 
 When selecting, use masks:
 - "*" - to select all fields (excluding custom and multiple fields)
@@ -25,7 +25,7 @@ There is no option to add a logical OR condition to the filter if you need to se
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected leads in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to lead fields [crm-lead-fields](./crm-lead-fields.md).
+Possible values for `field` correspond to the lead fields [crm-lead-fields](./crm-lead-fields.md).
 
 An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -47,11 +47,11 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `=%` — NOT LIKE, substring search. The "%" symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values not starting with "mol"
   - "%mol" — searching for values not ending with "mol"
-  - "%mol%" — searching for values where the substring "mol" is not present in any position
+  - "%mol%" — searching for values where the substring "mol" is not in any position
 
 - `!%=` — NOT LIKE (see description above)
 
-- `=` — equal, exact match (used by default)
+- `=` — equals, exact match (used by default)
 - `!=` - not equal
 - `!` — not equal
   ||
@@ -75,7 +75,7 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -191,7 +191,7 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
 
 {% list tabs %}
 
-- Searching for Unconverted Leads with Amount Greater than Zero
+- Searching for unconverted leads with an amount greater than zero
 
   ```js
   BX24.callMethod(
@@ -218,7 +218,7 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
   );
   ```
 
-- Searching for a Lead by Phone
+- Searching for a lead by phone
 
   ```js
   BX24.callMethod(
@@ -244,7 +244,7 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
   );
   ```
 
-- Selecting Leads for the Month
+- Selecting leads for the month
 
   ```php
   $result = CRest::call(
@@ -408,17 +408,17 @@ HTTP Status: **200**
 || **result**
 [`array`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the deal fields. 
 
-Keep in mind that the structure of the fields may change due to the `select` parameter.
+It should be noted that the structure of the fields may change due to the `select` parameter.
 
- For information on the lead structure, see the method [`crm.lead.get`](./crm-lead-get.md) ||
+ For information about the lead structure, see the method [`crm.lead.get`](./crm-lead-get.md) ||
 || **total**
 [`integer`](../../data-types.md) | The total number of found items ||
 || **next**
-[`integer`](../../data-types.md) | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
+[`integer`](../../data-types.md) | Contains the value that needs to be passed in the next request in the `start` parameter to get the next batch of data.
 
 The `next` parameter appears in the response if the number of items matching your request exceeds `50` ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -442,3 +442,7 @@ The `next` parameter appears in the response if the number of items matching you
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-repeat-lead.md)

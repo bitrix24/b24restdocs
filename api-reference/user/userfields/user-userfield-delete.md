@@ -130,8 +130,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Field with such `id` does not exist or access is denied ||
-|| Empty string | ID is not defined or invalid | `id` is not specified or is incorrect ||
+|| Empty string | Access denied. | A field with such `id` does not exist or access is denied ||
+|| Empty string | ID is not defined or invalid | The `id` is not specified or is incorrect ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

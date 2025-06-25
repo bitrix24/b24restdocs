@@ -1,10 +1,10 @@
-# Event on receiving permission to use methods onAppMethodConfirm
+# Event on receiving permission to use onAppMethodConfirm methods
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `onAppMethodConfirm` is triggered upon receiving the [administrator's decision](../../scopes/confirmation.md) from the account to use the methods.
+The `onAppMethodConfirm` event is triggered upon receiving the [administrator's decision](../../scopes/confirmation.md) from the account to use the methods.
 
 ## What the handler receives
 
@@ -44,7 +44,7 @@ Data is transmitted in the form of a POST request {.b24-info}
 
 The structure is described [below](#data) ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time of event sending ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent ||
 || **auth***
 [`array`](../../data-types.md) | Authorization and account data.
 
@@ -87,7 +87,7 @@ The structure is described [below](#auth) ||
 [`string`](../../data-types.md) | Token for secure event processing ||
 |#
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

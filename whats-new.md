@@ -2,6 +2,13 @@
 
 ## 2025
 
+### June 25, 2025
+
+- Updated documentation for methods [crm.duplicate.findbycomm](./api-reference/crm/duplicates/crm-duplicate-find-by-comm.md), [crm.entity.mergeBatch](./api-reference/crm/duplicates/crm-entity-merge-batch.md), [crm.multifield.fields](./api-reference/crm/auxiliary/multifield/crm-multifield-fields.md) in CRM 
+- Updated documentation for enumeration methods [crm.enum.*](./api-reference/crm/auxiliary/enum/index.md) in CRM
+- Added article [Custom Field Types in CRM](./api-reference/crm/universal/user-defined-fields/userfield-type.md)
+- Updated tutorial [How to Send an E-mail to a Client on Behalf of an Employee](./tutorials/crm/how-to-add-crm-objects/how-to-send-email.md)
+
 ### June 18, 2025
 
 - Updated the pages for [system events](./api-reference/common/events/index.md) and the event [onOfflineEvent](./api-reference/events/on-offline-event.md)
@@ -16,7 +23,7 @@
 - Updated the tutorial [Add Contact with Requisites via Web Form](./tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)
 - Updated the tutorial [How to Edit or Remove Phone Numbers and Email](./tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
 - Updated the tutorial [Add Recurring Lead](./tutorials/crm/how-to-add-crm-objects/how-to-add-repeat-lead.md)
-- 
+  
 ### June 04, 2025
 
 - Updated the documentation for working with [custom fields](./api-reference/user/userfields/index.md) in the Users section

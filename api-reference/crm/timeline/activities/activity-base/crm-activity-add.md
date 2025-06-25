@@ -28,7 +28,7 @@ fields:
     "OWNER_TYPE_ID": 2, 
     "OWNER_ID": 102, 
     "TYPE_ID": 2, 
-    "SUBJECT": "New Call",
+    "SUBJECT": "New call",
 }
 ```
 There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to forcibly disable sending a copy of the message to the recipient from MESSAGE_FROM. If the parameter is not filled or any value other than `Y` is specified, a copy will be sent. Example:
@@ -108,13 +108,13 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 || **WEBDAV_ELEMENTS**
 [`diskfile`](../../../data-types.md) | Added files. Deprecated, kept for compatibility ||
 || **IS_INCOMING_CHANNEL**
-[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel or not (`Y`/`N`) ||
+[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
 |#
 
 ### Usage Scenarios for Field Values
 
 For activities of type `e-mail`:
-- if the email should not be sent, set the parameters `DIRECTION=2` and `COMPLETED='N'`;
+- if the email should not be sent, set parameters `DIRECTION=2` and `COMPLETED='N'`;
 - if it is necessary to mark emails as completed, update the activities by setting the completion flag.
 
 ## Code Examples
@@ -129,7 +129,7 @@ For activities of type `e-mail`:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+18005551234","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New Call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important Call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]} }' \
+    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+18005551234","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]} }' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.add
     ```
 
@@ -139,7 +139,7 @@ For activities of type `e-mail`:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+18005551234","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New Call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important Call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"OWNER_TYPE_ID":2,"OWNER_ID":102,"TYPE_ID":2,"COMMUNICATIONS":[{"VALUE":"+18005551234","ENTITY_ID":134,"ENTITY_TYPE_ID":3}],"SUBJECT":"New call","START_TIME":"2023-12-31T12:00:00+00:00","END_TIME":"2023-12-31T12:30:00+00:00","COMPLETED":"N","PRIORITY":3,"RESPONSIBLE_ID":1,"DESCRIPTION":"Important call","DESCRIPTION_TYPE":3,"DIRECTION":2,"FILES":[{"fileData":["example.jpg","base64_encoded_content_here"]}]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.add
     ```
 
@@ -156,13 +156,13 @@ For activities of type `e-mail`:
                 "COMMUNICATIONS": [
                     { VALUE: "+18005551234", ENTITY_ID: 134, ENTITY_TYPE_ID: 3 }
                 ],
-                "SUBJECT": "New Call",
+                "SUBJECT": "New call",
                 "START_TIME": "2023-12-31T12:00:00+00:00", // Example date and time
                 "END_TIME": "2023-12-31T12:30:00+00:00", // Example date and time
                 "COMPLETED": "N",
                 "PRIORITY": 3,
                 "RESPONSIBLE_ID": 1,
-                "DESCRIPTION": "Important Call",
+                "DESCRIPTION": "Important call",
                 "DESCRIPTION_TYPE": 3,
                 "DIRECTION": 2,
                 "FILES": [
@@ -204,13 +204,13 @@ For activities of type `e-mail`:
                         'ENTITY_TYPE_ID' => 3
                     ]
                 ],
-                'SUBJECT' => 'New Call',
+                'SUBJECT' => 'New call',
                 'START_TIME' => '2023-12-31T12:00:00+00:00', // Example date and time
                 'END_TIME' => '2023-12-31T12:30:00+00:00', // Example date and time
                 'COMPLETED' => 'N',
                 'PRIORITY' => 3,
                 'RESPONSIBLE_ID' => 1,
-                'DESCRIPTION' => 'Important Call',
+                'DESCRIPTION' => 'Important call',
                 'DESCRIPTION_TYPE' => 3,
                 'DIRECTION' => 2,
                 'FILES' => [
@@ -238,7 +238,7 @@ For activities of type `e-mail`:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -262,14 +262,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns the identifier of the activity in the timeline in case of success, otherwise — `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns the identifier of the activity in the timeline on success, otherwise — `false` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -288,7 +288,7 @@ HTTP status: **400**
 || `The field RESPONSIBLE_ID is not defined or invalid` | The `RESPONSIBLE_ID` field is not set ||
 || `The field TYPE_ID is not defined or invalid` | The `TYPE_ID` field is not set ||
 || `The field COMMUNICATIONS is not defined or invalid` | The `COMMUNICATIONS` field is not set ||
-|| `The only one communication is allowed for activity of specified type` | More than one contact is specified ||
+|| `The only one communication is allowed for activity of specified type` | More than one contact is allowed ||
 || `Could not build binding. Please ensure that owner info and communications are defined correctly` | Connections for the activity are not specified ||
 || 
 - `Email send error. Failed to load module "subscribe"`
@@ -303,8 +303,8 @@ HTTP status: **400**
  | Errors related to "email" activities ||
 || `The custom activity without provider is not supported in current context` | Activity type is not supported in the specified context ||
 || `Use crm.activity.configurable.add for this activity provider` | Incorrect method call for configurable activity ||
-|| `Access denied` | No permission to add an entity in CRM ||
-|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the application context ||
+|| `Access denied` | No permission to add entity in CRM ||
+|| `Application context required` | Incorrect `PROVIDER_ID` parameter for activity created in the context of the application ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
@@ -317,3 +317,5 @@ HTTP status: **400**
 - [{#T}](./crm-activity-list.md)
 - [{#T}](./crm-activity-communication-fields.md)
 - [{#T}](./crm-activity-fields.md)
+- [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)
+- [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-send-email.md)
