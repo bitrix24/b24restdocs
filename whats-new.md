@@ -2,6 +2,11 @@
 
 ## 2025
 
+### July 02, 2025
+
+- Updated the main page of the [Services](./api-reference/catalog/product/service/index.md) section in the Trade catalog. Added introductory information and an overview of methods and relationships
+- Updated documentation for methods [crm.duplicate.volatileType.*](./api-reference/crm/duplicates/volatile-type/index.md) in CRM
+
 ### June 25, 2025
 
 - Updated documentation for methods [crm.duplicate.findbycomm](./api-reference/crm/duplicates/crm-duplicate-find-by-comm.md), [crm.entity.mergeBatch](./api-reference/crm/duplicates/crm-entity-merge-batch.md), [crm.multifield.fields](./api-reference/crm/auxiliary/multifield/crm-multifield-fields.md) in CRM 

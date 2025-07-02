@@ -1,6 +1,6 @@
 ### Statuses and System Error Codes
 
-HTTP Status: **20x**, **40x**, **50x**
+HTTP status: **20x**, **40x**, **50x**
 
 The errors described below may occur when calling any method.
 
@@ -20,9 +20,9 @@ Max batch length exceeded | The maximum length of parameters passed to the [batc
 || `401` | `NO_AUTH_FOUND`
 Wrong authorization data | Invalid [access token](/api-reference/oauth/index.html) or [webhook code](/local-integrations/local-webhooks.html). ||
 || `400` | `INVALID_REQUEST`
-Https required. | The REST methods require the use of the HTTPS protocol. ||
+Https required. | The HTTPS protocol is required for calling REST methods. ||
 || `503` | `OVERLOAD_LIMIT`
-REST API is blocked due to overload | The REST API is blocked due to overload. This is a manual individual block, and to remove it, you need to contact Bitrix24 technical support. ||
+REST API is blocked due to overload | The REST API is blocked due to overload. This is a manual individual block; to remove it, you need to contact [Bitrix24 technical support](../bitrix-support.md). ||
 || `403` | `ACCESS_DENIED`
 REST API is available only on commercial plans | The REST API is available only on commercial plans. ||
 || `403` | `INVALID_CREDENTIALS`

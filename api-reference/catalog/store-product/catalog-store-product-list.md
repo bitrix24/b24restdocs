@@ -1,8 +1,8 @@
-# Get Inventory Balances by Warehouse catalog.storeproduct.list
+# Get the list of inventory balances catalog.storeproduct.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -26,9 +26,9 @@ Some data may be missing — we will complete it soon.
 catalog.storeproduct.list(select, filter, order, start)
 ```
 
-The method retrieves inventory balances by warehouse, filtered according to the specified criteria.
+The method retrieves inventory balances filtered by the specified criteria.
 
-If the operation is successful, a list of inventory balances by warehouse is returned in the response body.
+If the operation is successful, a list of inventory balances is returned in the response body.
 
 ## Parameters
 
@@ -44,7 +44,7 @@ If the operation is successful, a list of inventory balances by warehouse is ret
 [`string`](../../data-types.md)| Page number for output. Works for HTTPS requests. ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -56,9 +56,9 @@ If the operation is successful, a list of inventory balances by warehouse is ret
     BX24.callMethod(
         'catalog.storeproduct.list',
         {
-            select: {
-                id
-            },
+            select: [
+                "id"
+            ],
             filter: {
                 productId: 8
             },
@@ -75,10 +75,10 @@ If the operation is successful, a list of inventory balances by warehouse is ret
 
 {% endlist %}
 
-Example HTTPS request
+Example of an HTTPS request
 
 ```
 https://your_account/rest/catalog.storeproduct.list?auth=_authorization_key_&start=50
 ```
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
