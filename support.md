@@ -25,6 +25,8 @@ News, tips, and recommendations for developers of mass-market solutions can alwa
 
 Support is provided to developers of [mass-market solutions](./market/index.md) in the developer's area, where you can address both technical issues related to the REST API and questions regarding the placement of solutions in the Bitrix24 Market.
 
+For questions regarding the Bitrix24 REST API, you can contact [technical support](./bitrix-support.md).
+
 ## Questions About Documentation {#documentation}
 
 All of this documentation is stored in the [GitHub repository](https://github.com/bitrix24/b24restdocs). If any articles raise questions, you can add relevant [issues](https://github.com/bitrix24/b24restdocs/issues) directly there. We strive to respond to them or make changes to the documentation to improve clarity.

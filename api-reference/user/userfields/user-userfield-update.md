@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method updates a user field.
+The method `user.userfield.update` updates a user field.
 
 ## Method Parameters
 
@@ -16,10 +16,10 @@ This method updates a user field.
 || **id*** 
 [`integer`](../../data-types.md)| Identifier of the user field.
 
-To obtain identifiers of user fields, use the [user.userfield.list](./user-userfield-list.md) method.
+To obtain the identifiers of user fields, use the method [user.userfield.list](./user-userfield-list.md)
  ||
 || **fields**
-[`object`](../../data-types.md)| Values of the fields to update the user field ||
+[`object`](../../data-types.md)| Field values for updating the user field ||
 |#
 
 ### Parameter fields
@@ -30,9 +30,9 @@ To obtain identifiers of user fields, use the [user.userfield.list](./user-userf
 || **XML_ID**
 [`string`](../../data-types.md)| External code ||
 || **SORT**
-[`integer`](../../data-types.md)| Sorting order ||
+[`integer`](../../data-types.md)| Sort order ||
 || **MANDATORY**
-[`boolean`](../../data-types.md)| Whether the user field is mandatory. Possible values:
+[`boolean`](../../data-types.md)| Indicates whether the user field is mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
@@ -52,7 +52,7 @@ To obtain identifiers of user fields, use the [user.userfield.list](./user-userf
 - `Y` — yes
 - `N` — no ||
 || **SETTINGS**
-[`object`](../../data-types.md)| Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}` for passing additional settings for user fields. Settings are described [below](#settings) ||
+[`object`](../../data-types.md)| An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}` for passing additional settings for user fields. Settings are described [below](#settings) ||
 || **EDIT_FORM_LABEL**
 [`string`](../../data-types.md)| Label in the edit form ||
 || **LIST_COLUMN_LABEL**
@@ -215,7 +215,7 @@ Each type of user field has its own set of additional settings.
 
     Default is `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../data-types.md) | Whether to show elements with the active flag. Possible values:
+    [`boolean`](../../data-types.md) | Whether to show items with the active flag. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -385,7 +385,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Contains `true` in case of successful update of the user field ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -405,8 +405,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Field with such `id` does not exist or access is denied ||
-|| Empty string | ID is not defined or invalid | `id` is not set or is invalid ||
+|| Empty string | Access denied. | The field with such `id` does not exist or access is denied ||
+|| Empty string | ID is not defined or invalid | The `id` is not set or is invalid ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

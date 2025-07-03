@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,9 +24,9 @@ Some data may be missing — we will complete it soon
 
 The method `im.disk.folder.get` retrieves information about the file storage folder for a chat.
 
-#| 
+#|
 || **Parameter** | **Example** | **Description** | **Revision** ||
-|| **CHAT_ID^*^** 
+|| **CHAT_ID^*^**
 [`unknown`](../../data-types.md) | `17` | Chat identifier | 18 ||
 |#
 
@@ -106,9 +106,9 @@ The method `im.disk.folder.get` retrieves information about the file storage fol
 
 ## Possible error codes
 
-#| 
+#|
 || **Code** | **Description** ||
 || **CHAT_ID_EMPTY** | Chat identifier not provided ||
-|| **ACCESS_ERROR** | Current user does not have access permission to the dialog ||
-|| **INTERNAL_ERROR** | Server error, please contact technical support ||
+|| **ACCESS_ERROR** | The current user does not have access permission to the dialog ||
+|| **INTERNAL_ERROR** | Server error, please contact [technical support](../../../bitrix-support.md) ||
 |#

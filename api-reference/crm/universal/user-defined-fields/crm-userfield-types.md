@@ -19,7 +19,7 @@ Some data may be missing — we will complete it soon.
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can execute the method: any user
 
 The method `crm.userfield.types` returns the description of fields for user fields.
 
@@ -40,7 +40,7 @@ List of user field types. Contains descriptions of types:
 - money
 - url
 
-Also, the [types](../user-defined-field-types/index.md) of user fields registered by the current application will be returned.
+Also, the [types](../user-defined-fields/userfield-type.md) of user fields registered by the current application will be returned.
 
 ## Example
 
@@ -117,6 +117,6 @@ Also, the [types](../user-defined-field-types/index.md) of user fields registere
 
 {% include [Footnote about examples](../../../../_includes/examples.md) %}
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)

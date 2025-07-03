@@ -4,11 +4,11 @@ Tutorials are a practical guide for developers on the Bitrix24 REST API. They he
 
 ## How to Use Tutorials
 
-- As a training material for making your first requests. Suitable for developers who are starting to work with the Bitrix24 REST API. Tutorials will help you understand how to form requests and handle responses. For example, the tutorial [How to Attach a Task to a SPA](./tasks/how-to-connect-task-to-spa.md).
+- As educational material for making your first requests. Suitable for developers who are starting to work with the Bitrix24 REST API. Tutorials will help you understand how to form requests and process responses. For example, the tutorial [How to Attach a Task to a SPA](./tasks/how-to-connect-task-to-spa.md).
 
 - As templates for real scenarios. Tutorials can be used as a basis for your own solutions: adapt the examples to your needs, add error handling logic, logging. For example, the tutorial [How to Implement a Simple Cash Register Using REST API](./sale/cashbox-add-example.md).
 
-- For quickly solving specific tasks. Tutorials will help you find a ready-made code example that you can use right away. For example, the tutorial [How to Set Up Rounding for a Custom Number Field](./crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md).
+- For quickly solving specific tasks. Tutorials will help you find a ready-made code example that you can use immediately. For example, the tutorial [How to Set Up Rounding for a Custom Number Field](./crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md).
 
 ## Structure of Tutorials
 
@@ -24,7 +24,7 @@ Tutorials consist of:
 
 ## Tips for Beginners
 
-Explore the sections [Getting Started](../about.md), [How to Make Your First Request](../first-rest-api-call.md), and install the application [REST API Documentation](https://www.bitrix24.com/apps/app/bitrix.restapi/) — where you can view documentation and make requests in the application console simultaneously.
+Explore the sections [Getting Started](../about.md), [How to Make Your First Request](../first-rest-api-call.md).
 
 Start with simple scenarios, such as filtering data in the tutorial [How to Filter Elements by Stage Name](./crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md). It does not use methods for modifying or deleting entities, so the data within the entities will be safe.
 
@@ -35,19 +35,19 @@ Example algorithm for working with the section:
 3. Follow the step-by-step instructions and examples.
 4. Adapt the code to your needs.
 5. Check the result and ensure everything works.
-6. Contact [Bitrix24 support](https://helpdesk.bitrix24.com/open/25301464/) if you encounter difficulties.
+6. Contact [Bitrix24 Support](../bitrix-support.md) if you encounter difficulties.
 
 ## Categories of Tutorials {#categories}
 
 #|
-|| [CRM](./crm/index) | How to Work with CRM Entities: Contacts, Deals, SPAs, Custom Fields, Widgets, and Sales Intelligence ||
-|| [Online Sales and E-commerce](./sale/index) | How to Integrate Sales Functions: Create Product Items, Set Up Delivery, Implement a Cash Register ||
-|| [Workflows](./bizproc/index) | How to Embed Actions, Complete Processes, Configure Automation Rules ||
-|| [CoPilot](./ai/add-joke-prompt) | How to Add a Custom Prompt ||
-|| [Chatbots](./chat-bots/index) | How to Create a Chatbot, Set It Up for Open Channels, Create a Support Channel ||
-|| [Telephony](./telephony/index) | How to Implement Custom Scenarios for Integration with a Call Center ||
-|| [Tasks](./tasks/index) | How to Create Tasks with Files, Attach Them to SPAs, Add Comments ||
-|| [Open Channels](./openlines/example-connector) | How to Create a Connector for Online Chat on Your Site and Integrate It with Bitrix24 ||
+|| [CRM](./crm/index) | How to work with CRM entities: contacts, deals, SPAs, custom fields, widgets, and Sales Intelligence ||
+|| [Online Sales and E-commerce](./sale/index) | How to integrate trading functions: create product items, set up delivery, implement a cash register ||
+|| [Workflows](./bizproc/index) | How to embed actions, complete processes, configure Automation rule parameters ||
+|| [CoPilot](./ai/add-joke-prompt) | How to add a custom prompt ||
+|| [Chatbots](./chat-bots/index) | How to create a chatbot, configure it for Open Channels, create a support channel ||
+|| [Telephony](./telephony/index) | How to implement custom scenarios for integration with a call center ||
+|| [Tasks](./tasks/index) | How to create tasks with files, attach them to SPAs, add comments ||
+|| [Open Channels](./openlines/example-connector) | How to create a connector for online chat on the site and integrate it with Bitrix24 ||
 |#
 
 ## How to Provide Feedback on Tutorials

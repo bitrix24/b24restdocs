@@ -1,0 +1,15 @@
+title: Outdated Methods
+href: index.md
+items:  
+  - name: "Types of Activities"
+    href: crm-enum-activity-type.md
+  - name: "Activity Direction"
+    href: crm-enum-activity-direction.md
+  - name: "Activity Priorities"
+    href: crm-enum-activity-priority.md
+  - name: "Notification Type for Activity Start"
+    href: crm-enum-activity-notify-type.md
+  - name: "Description Type"
+    href: crm-enum-content-type.md    
+  - name: "Status"
+    href: crm-enum-activity-status.md

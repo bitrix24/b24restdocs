@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except for: bots, users for e-mail, users for Open Channels, and Replica users.
+The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except: bots, email users, users for Open Channels, and Replica users.
 
 {% note info "" %}
 
@@ -26,7 +26,7 @@ The method does not return Bitrix24 Partners. The list of user fields returned a
 - `ASC` — ascending
 - `DESC` — descending ||
 || **FILTER**
-[`string`](../data-types.md) | You can additionally specify any parameters from [user.add](./user-add.md) to filter by their values. In addition to the main fields, the following additional fields are available:
+[`string`](../data-types.md) | You can additionally specify any parameters from [user.add](./user-add.md) for filtering by their values. In addition to the main fields, the following additional fields are available:
 - `UF_DEPARTMENT` — company structure affiliation;
 - `UF_PHONE_INNER` — internal phone number;
 - `IS_ONLINE` — [Y\|N] allows you to show only authorized users or not.
@@ -46,11 +46,11 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `<` — less than
 - `@` — IN (an array is passed as a value)
 - `!@`— NOT IN (an array is passed as a value)
-- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for a substring in any position of the string
+- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for a substring at any position in the string.
 - `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"
     - "%mol" — searching for values ending with "mol"
-    - "%mol%" — searching for values where "mol" can be in any position
+    - "%mol%" — searching for values where "mol" can be at any position.
 
 - `%=` — LIKE (see description above)
 
@@ -59,7 +59,7 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values not starting with "mol"
     - "%mol" — searching for values not ending with "mol"
-    - "%mol%" — searching for values where the substring "mol" is not in any position
+    - "%mol%" — searching for values where the substring "mol" is not present at any position.
 
 - `!%=` — NOT LIKE (see description above)
 
@@ -79,7 +79,7 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number ||
+`start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
 ## Code Examples
@@ -359,7 +359,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
     {
@@ -430,7 +430,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response that contains the filtered list of users ||
+[`object`](../data-types.md) | The root element of the response, which contains the filtered list of users ||
 || **total**
 [`integer`](../data-types.md) | The total number of records found ||
 || **time**
@@ -449,5 +449,6 @@ HTTP status: **200**
 - [{#T}](./user-search.md)
 - [{#T}](./user-fields.md)
 - [{#T}](../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
+- [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-send-email.md)
 
 [*key_Key for operation]: `'ADMIN_MODE': 'True'`

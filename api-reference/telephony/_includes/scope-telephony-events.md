@@ -1,3 +1,3 @@
-> Scope: [`telephony`](../../scopes/permissions.md)
+> Scope: [`telephony`](/api-reference/scopes/permissions.html)
 >
 > Who can subscribe: any user

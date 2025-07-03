@@ -54,12 +54,12 @@ An incorrect field in `fields` will be ignored ||
 - `address` — address
 - `enumeration` — list
 - `file` — file
-- `employee` — link to employee
-- `crm_status` — link to CRM directory
+- `employee` — link to an employee
+- `crm_status` — link to the CRM directory
 - `iblock_section` — link to information block sections
 - `iblock_element` — link to information block elements
 - `crm` — link to CRM elements
-- [custom field types](../../universal/user-defined-field-types/index.md)
+- [custom field types](../../universal/user-defined-fields/userfield-type.md)
 ||
 || **FIELD_NAME***
 [`string`][1] | Field code. Unique.
@@ -79,7 +79,7 @@ The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LI
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` value is provided, the value from `LABEL` will be set for all languages not provided.
+When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages not provided.
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **LIST_COLUMN_LABEL**
@@ -87,7 +87,7 @@ By default, the value passed in `LABEL` is set for all language identifiers ||
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` value is provided, the value from `LABEL` will be set for all languages not provided.
+When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages not provided.
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **EDIT_FORM_LABEL**
@@ -95,7 +95,7 @@ By default, the value passed in `LABEL` is set for all language identifiers ||
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` value is provided, the value from `LABEL` will be set for all languages not provided.
+When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages not provided.
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **ERROR_MESSAGE**
@@ -103,7 +103,7 @@ By default, the value passed in `LABEL` is set for all language identifiers ||
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` value is provided, the value from `LABEL` will be set for all languages not provided.
+When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages not provided.
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **HELP_MESSAGE**
@@ -111,11 +111,11 @@ By default, the value passed in `LABEL` is set for all language identifiers ||
 
 When a string is provided, it will be set for all language identifiers.
 
-When a `lang_map` value is provided, the value from `LABEL` will be set for all languages not provided.
+When a `lang_map` type value is provided, the value from `LABEL` will be set for all languages not provided.
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **MULTIPLE**
-[`boolean`][1] | Is the field multiple? Possible values:
+[`boolean`][1] | Is the field multiple. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -123,19 +123,19 @@ Fields of type `boolean` cannot be multiple.
 
 By default, `N` ||
 || **MANDATORY**
-[`boolean`][1] | Is the field mandatory? Possible values:
+[`boolean`][1] | Is the field mandatory. Possible values:
 - `Y` — yes
 - `N` — no
 
 By default, `N` ||
 || **SHOW_FILTER**
-[`boolean`][1] | Show the field in the filter? Possible values:
+[`boolean`][1] | Show the field in the filter. Possible values:
 - `Y` — yes
 - `N` — no
 
 By default, `N` ||
 || **SETTINGS**
-[`object`][1] | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, described [below](#settings) ||
+[`object`][1] | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, which are described [below](#settings) ||
 || **LIST**
 [`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. For custom fields of other types, this parameter is meaningless.
 
@@ -155,13 +155,13 @@ Possible values:
 
 By default, `N` ||
 || **EDIT_IN_LIST**
-[`boolean`][1] | Allow user editing? Possible values:
+[`boolean`][1] | Allow user editing. Possible values:
 - `Y` — yes
 - `N` — no
 
 By default, `Y` ||
 || **IS_SEARCHABLE**
-[`boolean`][1] | Are the field values searchable?
+[`boolean`][1] | Are the field values included in the search.
 
 This parameter has no effect within `crm`.
 
@@ -322,7 +322,7 @@ Each type of custom field has its own set of additional settings. This method on
 
     By default `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`][1] | Show elements with the active flag enabled. Possible values:
+    [`boolean`][1] | Show elements with the active flag. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -350,25 +350,25 @@ Each type of custom field has its own set of additional settings. This method on
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`][1] | Is the link to [Leads](../../leads/index.md) enabled? Possible values:
+    [`boolean`][1] | Is the link to [Leads](../../leads/index.md) enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     By default `N` ||
     || **CONTACT**
-    [`boolean`][1] | Is the link to [Contacts](../index.md) enabled? Possible values:
+    [`boolean`][1] | Is the link to [Contacts](../index.md) enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     By default `N` ||
     || **COMPANY**
-    [`boolean`][1] | Is the link to [Companies](../../companies/index.md) enabled? Possible values:
+    [`boolean`][1] | Is the link to [Companies](../../companies/index.md) enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     By default `N` ||
     || **DEAL**
-    [`boolean`][1] | Is the link to [Deals](../../deals/index.md) enabled? Possible values:
+    [`boolean`][1] | Is the link to [Deals](../../deals/index.md) enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -391,11 +391,11 @@ List items with an empty or missing `VALUE` will be ignored ||
 
 By default `0` ||
 || **DEF**
-[`boolean`][1] | Is the list item the default value? Possible values:
+[`boolean`][1] | Is the list item the default value. Possible values:
 - `Y` — yes
 - `N` — no
 
-For multiple fields, multiple `DEF = Y` are allowed. For non-multiple fields, the first provided list item with `DEF = Y` will be considered the default value.
+For multiple fields, several `DEF = Y` are allowed. For non-multiple fields, the first provided list item with `DEF = Y` will be considered the default value.
 
 By default `N` ||
 || **XML_ID**
@@ -406,7 +406,7 @@ By default `N` ||
 
 {% include [Example Notes](../../../../_includes/examples.md) %}
 
-### Example of Creating a String Type Custom Field
+### Example of Creating a Custom Field of Type String
 
 {% list tabs %}
 
@@ -561,7 +561,7 @@ By default `N` ||
 
 {% endlist %}
 
-### Example of Creating a List Type Custom Field
+### Example of Creating a Custom Field of Type List
 
 {% list tabs %}
 
@@ -693,7 +693,7 @@ By default `N` ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -723,9 +723,9 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
-This method may return errors not immediately, but by collecting several and concatenating them with the string: `\n`.
+This method may return errors not immediately, but by collecting several and concatenating them into a string: `\n`.
 
 ```json
 {
@@ -746,7 +746,7 @@ This method may return errors not immediately, but by collecting several and con
 || Field name contains invalid characters. Allowed are: `A-Z`, `0-9`, and `_` | The provided `FIELD_NAME` contains invalid characters ||
 || `The 'USER_TYPE_ID' field is not found` | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
 || Invalid user type specified | The provided `USER_TYPE_ID` does not exist ||
-|| List item with XML_ID=`XML_ID` already exists | The provided list item `XML_ID`s are not unique ||
+|| List item with XML_ID=`XML_ID` already exists | The provided `XML_ID` in list items are not unique ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

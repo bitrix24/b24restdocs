@@ -42,7 +42,7 @@ The list of available fields is described [below](#fields)
 || **ADDRESS**
 [`string`](../../data-types.md) | Address ||
 || **ADDRESS_2**
-[`string`](../../data-types.md) | Second line of the address. In some countries, it is common to split the address into 2 parts ||
+[`string`](../../data-types.md) | Second line of the address. In some countries, it is customary to split the address into 2 parts ||
 || **ADDRESS_CITY**
 [`string`](../../data-types.md) | City ||
 || **ADDRESS_COUNTRY**
@@ -88,17 +88,17 @@ Contacts can be added or removed using the group of methods [crm.lead.contact.*]
 || **SECOND_NAME**
 [`string`](../../data-types.md) | Middle name ||
 || **OPENED**
-[`char`](../../data-types.md) | Indicates whether the lead is available to everyone. Acceptable values are `Y` or `N`.||
+[`char`](../../data-types.md) | Indicator of lead availability for everyone. Acceptable values are `Y` or `N`.||
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicates manual calculation mode for the amount. Acceptable values are Y or N||
+[`char`](../../data-types.md) | Indicator of manual mode for calculating the amount. Acceptable values are Y or N||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source.
 
 Used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source ||
+[`string`](../../data-types.md) | Identifier of the element in the data source. Used only for linking to an external source ||
 || **PHONE**
 [`crm_multifield`](../../data-types.md) | Phone. Multiple ||
 || **POST**
@@ -150,9 +150,9 @@ The list of all possible stages from the directory can be obtained using the met
 || **UTM_MEDIUM**
 [`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners) ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google-Adwords and others ||
+[`string`](../../data-types.md) | Advertising system. Google AdWords, and others ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **WEB**
 [`crm_multifield`](../../data-types.md) | Website. Multiple ||
 || **UF_...** | Custom fields. For example, `UF_CRM_25534736`.  
@@ -170,7 +170,7 @@ Additionally, to find out the required format of the fields, you can execute the
 
 {% note info %}
 
-When adding a lead, you cannot explicitly set the repeat lead flag (the `IS_RETURN_CUSTOMER` field), however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when adding the lead.
+When adding a lead, you cannot explicitly set the indicator for a repeat lead (the `IS_RETURN_CUSTOMER` field), however, this field automatically takes the value Y if you specify a value for `COMPANY_ID` or `CONTACT_ID` when adding the lead.
 
 {% endnote %}
 
@@ -179,7 +179,7 @@ When adding a lead, you cannot explicitly set the repeat lead flag (the `IS_RETU
 || **Name**
 `type`  | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`](../../data-types.md) | Flag `Y`/`N` - register the lead addition event. Additionally, a notification will be sent to the person responsible for the lead ||
+[`boolean`](../../data-types.md) | Flag `Y`/`N` - register the event of adding a lead. Additionally, a notification will be sent to the person responsible for the lead ||
 |#
 
 ## Code Examples
@@ -356,3 +356,4 @@ HTTP status: **200**
 
 - [{#T}](./crm-lead-delete.md)
 - [{#T}](./crm-lead-fields.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-repeat-lead.md)

@@ -1,1 +1,1 @@
-[{#T}](../how-to-use-examples.md) {.b24-info}
+[How to Use Examples in Documentation](/how-to-use-examples.html) {.b24-info}

@@ -2,19 +2,19 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for standard writing
-- required parameters not specified
-- examples missing
-- success response missing
-- error response missing
+- edits needed for writing standards
+- required parameters are not specified
+- examples are missing
+- response in case of success is missing
+- response in case of error is missing
 
 {% endnote %}
 
@@ -80,10 +80,11 @@ To find out the required format of the fields, execute the method [crm.company.f
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 ## Continue Learning 
 
 - [{#T}](./index.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-deal-with-choice-of-requisite.md)

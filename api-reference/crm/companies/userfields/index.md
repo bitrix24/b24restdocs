@@ -23,7 +23,7 @@ Use the method [crm.userfield.fields](../../universal/user-defined-fields/crm-us
     [MANDATORY] => Array
                 (
                     [type] => char
-                    [title] => Mandatory
+                    [title] => Required
                 )
 ````
 
@@ -46,27 +46,27 @@ Use the method [crm.userfield.settings.fields](../../universal/user-defined-fiel
 
 ## Errors When Working with Custom Fields
 
-When creating or deleting custom fields, the request may be interrupted with an [INTERNAL_SERVER_ERROR](../../../../error-codes.md). This is an internal server error. The cause of the error can be found in the server logs at the time of the request:
-* In cloud Bitrix24, submit a request to technical support to obtain error details.
-* In on-premise Bitrix24, request the server error log from the server administrator or hosting administrator. Then contact technical support and attach the log for analysis.
+When creating or deleting custom fields, the request may be interrupted with an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md). This is an internal server error. The cause of the error can be found in the server logs at the time of the request:
+* In cloud Bitrix24, submit a request to [technical support](../../../../bitrix-support.md) to obtain error details.
+* In on-premise Bitrix24, request the server error log from the server administrator or hosting administrator. Then, contact [technical support](../../../../bitrix-support.md) and attach the log for analysis.
 
 ### Common Causes of Server Errors
 
-1. Up to 1016 custom fields can be created for companies—this is a limitation of the database architecture. If there are already 1016 fields for companies in Bitrix24, attempting to create a new field will result in an [INTERNAL_SERVER_ERROR](../../../../error-codes.md) from the method [crm.company.userfield.add](./crm-company-userfield-add.md).
+1. Up to 1016 custom fields can be created for companies—this is a limitation of the database architecture. If there are already 1016 fields for companies in Bitrix24, attempting to create a new field will result in an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md) when using the method [crm.company.userfield.add](./crm-company-userfield-add.md).
 
     You can check the number of custom fields for companies using the method [crm.company.userfield.list](./crm-company-userfield-list.md).
 
-2. There is a limitation on servers for the execution time of a single request—`max_execution_time`. The standard time is 60 seconds. If the request takes longer, it will be interrupted with an [INTERNAL_SERVER_ERROR](../../../../error-codes.md).
+2. There is a limitation on servers for the execution time of a single request—`max_execution_time`. The standard time is 60 seconds. If the request takes longer, it will be interrupted with an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md).
 
    The time to create or delete a custom field for a company depends on the number of companies. When a field is created, it is added to all company detail forms. When a field is deleted, it is removed from all detail forms. The fewer companies in your Bitrix24, the faster fields are created and deleted.
-   
+
    To check the number of companies in Bitrix24, use the method [crm.company.list](../crm-company-list.md).
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can perform methods: depending on the method
+> Who can execute the methods: depending on the method
 
 #| 
 || **Method** | **Description** ||

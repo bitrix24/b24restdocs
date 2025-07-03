@@ -1,52 +1,104 @@
 # Event onAppPayment
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- parameter types not specified
-- parameter requirements not specified
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`basic`](../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
 The `onAppPayment` event is triggered when an application is paid for.
 
-## Response Fields
+## What the handler receives
+
+Data is sent as a POST request {.b24-info}
+
+```
+{
+    "event": "ONAPPPAYMENT",
+    "data": {
+        "CODE": "bitrix.gds_company",
+        "VERSION": 1,
+        "STATUS": "S",
+        "PAYMENT_EXPIRED": "N",
+        "DAYS": 28,
+        "LANGUAGE_ID": "de",
+    },
+    "ts": "1466439714",
+    "auth": {
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/", 
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/", 
+    }
+}
+```
+
+## Request parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Field** | **Description** ||
-|| **CODE**
-[`unknown`](../../data-types.md) | application code ||
-|| **VERSION**
-[`unknown`](../../data-types.md) | installed version of the application ||
-|| **STATUS**
-[`unknown`](../../data-types.md) | application status. Possible values:
-- **F** (Free) - free
-- **D** (Demo) - demo version
-- **T** (Trial) - trial version (time-limited)
-- **P** (Paid) - paid application ||
-|| **PAYMENT_EXPIRED**
-[`unknown`](../../data-types.md) | [Y\|N] flag indicating whether the paid period or trial period has expired. ||
-|| **DAY**
-[`unknown`](../../data-types.md) | number of days remaining until the end of the paid period or trial period. ||
+|| **Name**
+`type` | **Description** ||
+|| **event***
+[`string`](../../data-types.md) | Symbolic event code — `ONAPPPAYMENT` ||
+|| **data***
+[`array`](../../data-types.md) | Payment data.
+
+The structure is described [below](#data) ||
+|| **ts***
+[`timestamp`](../../data-types.md) | Date and time of event sending from the queue ||
+|| **auth***
+[`array`](../../data-types.md) | Authorization and account data.
+
+The structure is described [below](#auth) ||
 |#
 
-{% note tip "Related methods and topics" %}
+### Parameter data {#data}
 
-[app.info](../system/app-info.md)
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% endnote %}
+#|
+|| **Name**
+`type` | **Description** ||
+|| **CODE***
+[`string`](../../data-types.md) | Application code ||
+|| **VERSION***
+[`integer`](../../data-types.md) | Installed application version ||
+|| **STATUS***
+[`string`](../../data-types.md) | Application status. Possible values:
+- `F` (Free) — free
+- `D` (Demo) — demo version
+- `T` (Trial) — trial version, time-limited
+- `P` (Paid) — paid application ||
+|| **PAYMENT_EXPIRED***
+[`string`](../../data-types.md) | [Y\|N] Flag indicating whether the paid period or trial period has expired ||
+|| **DAYS***
+[`integer`](../../data-types.md) | Number of days remaining until the end of the paid period or trial period ||
+|| **LANGUAGE_ID***
+[`string`](../../data-types.md) | Set language: `de`, `en`, and others ||
+|#
+
+### Parameter auth {#auth}
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **domain***
+[`string`](../../data-types.md) | Bitrix24 account address ||
+|| **server_endpoint***
+[`string`](../../data-types.md) | Authorization server address for token renewal ||
+|| **client_endpoint***
+[`string`](../../data-types.md) | General path for API method calls ||
+|| **member_id***
+[`string`](../../data-types.md) | Unique account identifier ||
+|#
+
+## Continue exploring
+
+- [{#T}](../../events/index.md)
+- [{#T}](../../events/event-bind.md)
+- [{#T}](../system/app-info.md)
+- [{#T}](./on-app-install.md)
+- [{#T}](./on-app-method-confirm.md)
+- [{#T}](./on-user-add.md)
+- [{#T}](./on-app-uninstall.md)

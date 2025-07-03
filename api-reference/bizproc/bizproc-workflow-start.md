@@ -2,7 +2,7 @@
 
 > Scope: [`bizproc`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
 The method `bizproc.workflow.start` initiates a new business process.
 
@@ -18,7 +18,7 @@ You can only start a business process using REST on paid plans, demo licenses, a
 || **TEMPLATE_ID***
 [`integer`](../data-types.md) | Identifier of the business process template ||
 || **DOCUMENT_ID***
-[`array`](../data-types.md) | Identifier of the document to start the business process in the format [`module`, `object`, `element_ID`].
+[`array`](../data-types.md) | Identifier of the document to start the business process in the format [`module`, `object`, `ID_element`].
 
 Examples of entries for different document types:
 
@@ -27,8 +27,8 @@ Examples of entries for different document types:
 - Contact — `['crm', 'CCrmDocumentContact', 'CONTACT_777']`
 - Deal — `['crm', 'CCrmDocumentDeal', 'DEAL_777']`
 - Drive file — `['disk', 'Bitrix\\Disk\\BizProcDocument', '777']`
-- News feed process document — `['lists', 'BizprocDocument', '777']`
-- Lists document — `['lists', 'Bitrix\\Lists\\BizprocDocumentLists', '777']`
+- Document from the news feed — `['lists', 'BizprocDocument', '777']`
+- Document from lists — `['lists', 'Bitrix\\Lists\\BizprocDocumentLists', '777']`
 - Smart process element — `['crm', 'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic', 'DYNAMIC_147_1']`, where `147` is the `ID` of the smart process, and `1` is the `ID` of the smart process element
 - Invoice — `['crm', 'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice', 'SMART_INVOICE_3']`
 ||
@@ -154,7 +154,7 @@ HTTP status: **200**
 
 Returns the identifier of the started business process ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

@@ -7,21 +7,13 @@ items:
     href: crm-enum-fields.md
   - name: Get IDs of objects to which an order can be linked
     href: crm-enum-get-order-owner-types.md
-  - name: "Owner type"
+  - name: Get CRM object types
     href: crm-enum-owner-type.md
-  - name: "Content type"
-    href: crm-enum-content-type.md
-  - name: "Activity type"
-    href: crm-enum-activity-type.md
-  - name: "Activity direction"
-    href: crm-enum-activity-direction.md
-  - name: "Activity priority"
-    href: crm-enum-activity-priority.md
-  - name: "Notification type for activity start"
-    href: crm-enum-activity-notify-type.md
-  - name: "Address type"
+  - name: Get address types
     href: crm-enum-address-type.md
-  - name: "Status"
-    href: crm-enum-activity-status.md
-  - name: Get description of CRM operation modes
-    href: crm-enum-settings-mode.md
+  - name: Get descriptions of CRM operation modes
+    href: crm-enum-settings-mode.md 
+  - name: Deprecated methods
+    include:
+      path: outdated/b24-toc.yaml
+      mode: link

@@ -1,73 +1,147 @@
-# Get a list of fields available for use in crm.duplicate.volatileType.fields
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will add it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- missing response in case of success
-- missing response in case of error
-- required fields are not specified
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
+# Get a list of fields for duplicate search crm.duplicate.volatileType.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
-```http
-crm.duplicate.volatileType.fields({?entityTypeId: number})
-```
+The method `crm.duplicate.volatileType.fields` returns a list of standard and custom fields that can be used for finding duplicates in leads, contacts, and companies.
 
-The method will return an array containing array elements with the following keys:
+## Method Parameters
+
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Key** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **entityTypeId**
-| Entity type identifier. Can take values `1` (lead), `3` (contact), or `4` (company). Not a required parameter. If not specified, available fields for all entities will be returned. ||
+[`integer`](../../../data-types.md) | Identifier of the object type. Possible values:
+- `1` — [lead](../../leads/index.md)
+- `3` — [contact](../../contacts/index.md)
+- `4` — [company](../../companies/index.md)
+
+If not specified, fields for all types will be returned ||
 |#
 
-## Parameters
+## Code Examples
 
-#|
-|| **Parameter** | **Description** ||
-|| **entityTypeId** | Entity type identifier ||
-|| **fieldCode** | Field code ||
-|| **fieldTitle** | Field title ||
-|#
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
-{% include [Parameter notes](../../../../_includes/required.md) %}
+{% list tabs %}
 
-## Example
+- JS
+
+    ```js
+    BX24.callMethod(
+        "crm.duplicate.volatileType.fields",
+        {
+            entityTypeId: 1
+        },
+        function(result) {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+         -H "Content-Type: application/json" \
+         -H "Accept: application/json" \
+         -d '{"entityTypeId":1}' \
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.duplicate.volatileType.fields
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"entityTypeId":1,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.duplicate.volatileType.fields
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.duplicate.volatileType.fields',
+        [
+            'entityTypeId' => 1
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+{% endlist %}
+
+## Response Handling
+
+HTTP status: **200**
 
 ```json
-[
-    {
-        "entityTypeId": 1,
-        "fieldCode": "TITLE",
-        "fieldTitle": "Lead Title"
-    },
-    {
-        "entityTypeId": 1,
-        "fieldCode": "ADDRESS",
-        "fieldTitle": "Address"
-    },
-    {
-        "entityTypeId": 1,
-        "fieldCode": "SOURCE_DESCRIPTION",
-        "fieldTitle": "Additional Information about the Source"
-    },
-    ...
-]
+{
+    "result": [
+        {
+            "entityTypeId": 1,
+            "fieldCode": "TITLE",
+            "fieldTitle": "Lead Title"
+        },
+        {
+            "entityTypeId": 1,
+            "fieldCode": "ADDRESS",
+            "fieldTitle": "Address"
+        },
+        {
+            "entityTypeId": 1,
+            "fieldCode": "UF_CRM_1750854801",
+            "fieldTitle": "String"
+        },
+        // ... other fields ...
+    ],
+    "time": {
+        "start": 1750854837.219779,
+        "finish": 1750854837.296077,
+        "duration": 0.07629799842834473,
+        "processing": 0.028430938720703125,
+        "date_start": "2025-06-25T12:33:57+00:00",
+        "date_finish": "2025-06-25T12:33:57+00:00" 
+    }
+}
 ```
 
-{% include [Example notes](../../../../_includes/examples.md) %}
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **entityTypeId**
+[`integer`](../../../data-types.md) | Object type ||
+|| **fieldCode**
+[`string`](../../../data-types.md) | Field code ||
+|| **fieldTitle**
+[`string`](../../../data-types.md) | Field name ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+The method does not return errors.
+
+{% include [system errors](./../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [crm.duplicate.volatileType.list](./crm-duplicate-volatile-type-list.md)
+- [crm.duplicate.volatileType.register](./crm-duplicate-volatile-type-register.md)
+- [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md)

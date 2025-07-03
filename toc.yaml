@@ -31,6 +31,9 @@ items:
   - name: Documentation Edits
     href: change-article.md
     hidden: true
+  - name: How to Contact Support
+    href: bitrix-support.md
+    hidden: true     
   - name: Feedback
     href: feedback.md
   - name: Local Integrations and Customization 
