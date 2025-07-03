@@ -38,6 +38,4 @@ It is possible that the owner of the on-premise Bitrix24 has closed network acce
 
 The same applies to the authorization server. If network access to it is closed, REST will not work in on-premise Bitrix24, as on-premise Bitrix24 will not be able to validate the token that your application is using to access it.
 
-There is an alternative option where you can specifically connect your own authorization and event mechanism for a particular client on their on-premise Bitrix24. More details about this method were discussed in a presentation by Maxim Sidorenko:
-
-@[youtube](https://www.youtube.com/watch?v=MtTVF9Vf0Wo)
+There is an alternative option where you can specifically connect your own authorization and event mechanism for a particular client on their on-premise Bitrix24. 
