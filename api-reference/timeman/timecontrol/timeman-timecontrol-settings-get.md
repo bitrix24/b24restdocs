@@ -1,35 +1,39 @@
-# Get Time Control Tool Settings timeman.timecontrol.settings.get
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- examples are missing
-
-{% endnote %}
-
-{% endif %}
+# Get Time Control Settings timeman.timecontrol.settings.get
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `timeman.timecontrol.settings.get` is used to retrieve the settings of the time control tool.
+The method `timeman.timecontrol.settings.get` retrieves the settings of the time control module.
 
-## Parameters
+## Method Parameters
 
 No parameters.
 
-## Example Call
+## Code Examples
+
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/timeman.timecontrol.settings.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/timeman.timecontrol.settings.get
+    ```
 
 - JS
 
@@ -37,14 +41,11 @@ No parameters.
     BX24.callMethod(
         'timeman.timecontrol.settings.get',
         {},
-        function(result){
-            if(result.error())
-            {
-                console.error(result.error().ex);
-            }
-            else
-            {
-                console.log(result.data());
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
             }
         }
     );
@@ -53,25 +54,29 @@ No parameters.
 - PHP
 
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'timeman.timecontrol.settings.get',
-        Array(),
-        $_REQUEST["auth"]
-    );    
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+## Response Handling
 
-## Successful Response
+HTTP status: **200**
 
-> 200 OK
 ```json
 {
     "result": {
         "active": true,
-        "minimum_idle_for_report": 1,
+        "minimum_idle_for_report": 15,
         "register_offline": true,
         "register_idle": true,
         "register_desktop": true,
@@ -81,40 +86,93 @@ No parameters.
         "report_simple_users": [],
         "report_full_type": "all",
         "report_full_users": []
+    },
+    "time": {
+        "start": 1748526089.625516,
+        "finish": 1748526089.656787,
+        "duration": 0.03127098083496094,
+        "processing": 0.008746147155761719,
+        "date_start": "2025-05-29T16:41:29+02:00",
+        "date_finish": "2025-05-29T16:41:29+02:00",
+        "operating_reset_at": 1748526689,
+        "operating": 0
     }
 }
 ```
 
-### Key Descriptions
+### Returned Data
 
-- **active** - availability of the time control tool.
-- **minimum_idle_for_report** - minimum idle time for report request (in minutes).
-- **register_offline** - log when the user goes offline.
-- **register_idle** - log when the user goes idle.
-- **register_desktop** - log when the desktop application is turned on or off.
-- **report_request_type** - who to request the report from (`all` - from everyone, `user` - only from specified users, `none` - from no one).
-- **report_request_users** - list of users to request the report from (if `report_request_type == user`).
-- **report_simple_type** - who has access to the simplified report (`all` - everyone, `user` - only specified users).
-- **report_simple_users** - list of users who have access to the simplified report (if `report_simple_type == user`).
-- **report_full_type** - who has access to the extended report (`all` - everyone, `user` - only specified users).
-- **report_full_users** - list of users who have access to the extended report (if `report_simple_type == user`).
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response ||
+|| **active**
+[`boolean`](../../data-types.md) | Activity of the time control module ||
+|| **minimum_idle_for_report**
+[`integer`](../../data-types.md) | Minimum idle time in minutes after which a report is required ||
+|| **register_offline**
+[`boolean`](../../data-types.md) | Register offline status ||
+|| **register_idle**
+[`boolean`](../../data-types.md) | Register idle status ||
+|| **register_desktop**
+[`boolean`](../../data-types.md) | Register desktop application status ||
+|| **report_request_type**
+[`string`](../../data-types.md) | Type of report requests. Possible values:
+- `all` — for everyone
+- `user` — for specific users
+- `none` — for no one ||
+|| **report_request_users**
+[`array`](../../data-types.md) | Array of user IDs for whom report requests are required.
 
-## Error Response
+Filled if `report_request_type` is set to `user` ||
+|| **report_simple_type**
+[`string`](../../data-types.md) | Type of simple report. Possible values:
+- `all` — for everyone
+- `user` — for specific users
+- `none` — for no one ||
+|| **report_simple_users**
+[`array`](../../data-types.md) | Array of user IDs with access to the simple report.
 
-> 200 Error, 50x Error
+Filled if `report_simple_type` is set to `user` ||
+|| **report_full_type**
+[`string`](../../data-types.md) | Type of full report. Possible values:
+- `all` — for everyone
+- `user` — for specific users
+- `none` — for no one ||
+|| **report_full_users**
+[`array`](../../data-types.md) | Array of user IDs with access to the full report.
+
+Filled if `report_full_type` is set to `user` ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
 ```json
 {
     "error": "ACCESS_ERROR",
-    "error_description": "You don't have access to use this method"
+    "error_description": "You don't have access to user this method"
 }
 ```
 
-- **error** - code of the occurred error.
-- **error_description** - brief description of the occurred error.
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_ERROR** | The specified method is only available to administrators. ||
+|| **Code** | **Description** | **Value** ||
+|| `ACCESS_ERROR` | You don't have access to user this method | You do not have access to this method ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./timeman-timecontrol-report-add.md)
+- [{#T}](./timeman-timecontrol-reports-get.md)
+- [{#T}](./timeman-timecontrol-reports-users-get.md)

@@ -1,4 +1,4 @@
-# Get a List of Contacts crm.contact.list
+# Get a list of contacts crm.contact.list
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
@@ -14,13 +14,13 @@ To get a list of companies associated with a contact, use the method [`crm.conta
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`][1] | A list of fields that should be filled for the contacts in the selection.
+[`string[]`][1] | A list of fields that must be filled in the contacts in the selection.
 
 You can use masks in the selection:
 - `'*'` — to select all fields (excluding custom and multiple fields)
 - `'UF_*'` — to select all custom fields (excluding multiple fields)
 
-There is no mask for selecting multiple fields. To select multiple fields, specify the required ones in the selection list (`PHONE`, `EMAIL`, etc.).
+There are no masks for selecting multiple fields. To select multiple fields, specify the required ones in the selection list (`PHONE`, `EMAIL`, etc.).
 
 You can find the list of available fields for selection using the method [`crm.contact.fields`](crm-contact-fields.md).
 
@@ -50,8 +50,8 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character in the filter value does not need to be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` character needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
@@ -62,7 +62,7 @@ Possible prefix values:
 
 The fields Phone (`PHONE`), Email (`EMAIL`), Website (`WEB`), Messengers (`IM`), Links (`LINK`) — are multiple. Filters for them only work on exact matches.
 
-Also, the `LIKE` filter does not work with fields of type `crm_status`, `crm_contact`, `crm_company` — for example, Contact Type (`TYPE_ID`), Honorific (`HONORIFIC`), etc.
+Also, the `LIKE` filter does not work with fields of type `crm_status`, `crm_contact`, `crm_company` — for example, Contact Type (`TYPE_ID`), Salutation (`HONORIFIC`), etc.
 
 You can find the list of available fields for filtering using the method [`crm.contact.fields`](crm-contact-fields.md)
 ||
@@ -94,7 +94,7 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the value of the `start` parameter:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` — the number of the desired page
 ||
 |#
 
@@ -102,15 +102,15 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Get a list of contacts where:
 1. the source is CRM Form
 2. first name and last name are not empty
 3. first name or last name starts with "I"
-4. are participating in the export
+4. are participating in export
 5. e-mail equals 'special-for@example.com'
-6. the responsible ID is either 1 or 6
+6. the responsible person's ID is either 1 or 6
 7. created less than 6 months ago
 
 Set the following sort order for this selection: first name and last name in ascending order.
@@ -120,7 +120,7 @@ For clarity, select only the necessary fields:
 - First Name
 - Last Name
 - E-mail
-- Participation in Export
+- Participating in Export
 - Responsible
 - Creation Date
 
@@ -256,7 +256,7 @@ HTTP Status: **200**
 		{
 			"ID": "75",
 			"NAME": "Anastasia",
-			"LAST_NAME": "Ilina",
+			"LAST_NAME": "Ilyina",
 			"EXPORT": "Y",
 			"ASSIGNED_BY_ID": "6",
 			"DATE_CREATE": "2024-02-26T00:00:00+02:00",
@@ -356,7 +356,7 @@ HTTP Status: **200**
 
 The fields of an individual contact are configured by the `select` parameter ||
 || **total**
-[`integer`][1] | The total number of contacts found based on the specified conditions ||
+[`integer`][1] | The total number of found contacts based on the specified conditions ||
 || **next**
 [`integer`][1] | Contains the value that should be passed in the next request in the `start` parameter to get the next batch of data.
 
@@ -397,5 +397,6 @@ HTTP Status: **400**
 - [{#T}](./crm-contact-get.md)
 - [{#T}](./crm-contact-delete.md)
 - [{#T}](./crm-contact-fields.md)
+- [{#T}](../../../tutorials/crm/how-to-get-lists/search-by-phone-and-email.md)
 
 [1]: ../../data-types.md

@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items: 
+  - name: Overview of Events
+    href: index.md
+  - name: When Creating a Booking
+    href: on-booking-add.md 
+  - name: When Updating a Booking
+    href: on-booking-update.md
+  - name: When Deleting a Booking
+    href: on-booking-delete.md                

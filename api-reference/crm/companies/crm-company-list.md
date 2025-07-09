@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -97,4 +97,8 @@ See the description of [list methods](../../how-to-call-rest-api/list-methods-pe
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
+
+## Continue Learning
+
+- [{#T}](../../../tutorials/crm/how-to-get-lists/search-by-phone-and-email.md)

@@ -1,82 +1,104 @@
-# Set Time Control Tool Settings timeman.timecontrol.settings.set
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- adjustments needed for writing standards
-- parameter types not specified
-- examples missing
-
-{% endnote %}
-
-{% endif %}
+# Set Time Control Settings timeman.timecontrol.settings.set
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `timeman.timecontrol.settings.set` is used to set the settings for the time control tool.
+The method `timeman.timecontrol.settings.set` sets the settings for the time control module.
 
-## Parameters
+## Method Parameters
 
 #|
-|| **Parameter** | **Default** | **Required** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **ACTIVE**
-[`unknown`](../../data-types.md) | false | No | Availability of the time control tool. 
-Enabled with `active: true`. Disabled with `active: false` if the data is sent as *bool*. If the data is sent as text *false* in text form as *true*, it can only be disabled with `active: 0`. ||
+[`boolean`](../../data-types.md) | Activate the time control module. Possible values:
+- `true` or `1` — enable the module
+- `0` — disable the module. The option `'ACTIVE': false` does not disable the module
+||
 || **MINIMUM_IDLE_FOR_REPORT**
-[`unknown`](../../data-types.md) | 15 | No | Minimum amount of time to request a report in minutes. ||
+[`integer`](../../data-types.md) | Minimum idle time in minutes after which a report is required ||
 || **REGISTER_OFFLINE**
-[`unknown`](../../data-types.md) | true | No | Record the fact that the user has gone offline. ||
+[`boolean`](../../data-types.md) | Register offline status ||
 || **REGISTER_IDLE**
-[`unknown`](../../data-types.md) | true | No | Record the fact that the user has stepped away. ||
+[`boolean`](../../data-types.md) | Register idle status ||
 || **REGISTER_DESKTOP**
-[`unknown`](../../data-types.md) | true | No | Record the fact of turning the desktop application on and off. ||
+[`boolean`](../../data-types.md) | Register desktop application status ||
 || **REPORT_REQUEST_TYPE**
-[`unknown`](../../data-types.md) | none | No | Who to request the report from (`all` - from everyone, `user` - only from specified users, none - from no one). ||
+[`string`](../../data-types.md) | Type of report request. Possible values:
+- `all` — for everyone
+- `user` — for specific users
+- `none` — for no one ||
 || **REPORT_REQUEST_USERS**
-[`unknown`](../../data-types.md) | [] | No* | List of users to request the report from (if `report_request_type == user`). ||
+[`array`](../../data-types.md) | Array of user IDs for whom report requests are required.
+
+Filled if `REPORT_REQUEST_USERS` is set to `user` ||
 || **REPORT_SIMPLE_TYPE**
-[`unknown`](../../data-types.md) | all | No | Who has access to the simplified report (`all` - everyone, `user` - only specified users). ||
+[`string`](../../data-types.md) | Type of simple report. Possible values:
+- `all` — for everyone
+- `user` — for specific users
+- `none` — for no one ||
 || **REPORT_SIMPLE_USERS**
-[`unknown`](../../data-types.md) | [] | No* | List of users who have access to the simplified report (if `report_simple_type == user`). ||
+[`array`](../../data-types.md) | Array of user IDs with access to the simple report.
+
+Filled if `REPORT_SIMPLE_USERS` is set to `user` ||
 || **REPORT_FULL_TYPE**
-[`unknown`](../../data-types.md) | user | No | Who has access to the extended report (`all` - everyone, `user` - only specified users). ||
+[`string`](../../data-types.md) | Type of full report. Possible values:
+- `all` — for everyone
+- `user` — for specific users
+- `none` — for no one ||
 || **REPORT_FULL_USERS**
-[`unknown`](../../data-types.md) | [] | No* | List of users who have access to the extended report (if `report_simple_type == user`). ||
+[`array`](../../data-types.md) | Array of user IDs with access to the full report.
+
+Filled if `REPORT_FULL_USERS` is set to `user`  ||
 |#
 
-\* - if you pass the parameter `REPORT_REQUEST_TYPE = user` (or `REPORT_SIMPLE_TYPE = user`, or `REPORT_FULL_TYPE = user`), you must also pass `REPORT_REQUEST_USERS` (or `REPORT_SIMPLE_USERS`, or `REPORT_FULL_USERS`) accordingly.
+## Code Examples
 
-## Example
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ACTIVE":true,"MINIMUM_IDLE_FOR_REPORT":15,"REGISTER_OFFLINE":true,"REGISTER_IDLE":true,"REGISTER_DESKTOP":true,"REPORT_REQUEST_TYPE":"all","REPORT_SIMPLE_TYPE":"all","REPORT_FULL_TYPE":"all"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/timeman.timecontrol.settings.set
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"ACTIVE":true,"MINIMUM_IDLE_FOR_REPORT":15,"REGISTER_OFFLINE":true,"REGISTER_IDLE":true,"REGISTER_DESKTOP":true,"REPORT_REQUEST_TYPE":"all","REPORT_SIMPLE_TYPE":"all","REPORT_FULL_TYPE":"all","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/timeman.timecontrol.settings.set
+    ```
+
 - JS
 
-    ```javascript
+    ```js
     BX24.callMethod(
         'timeman.timecontrol.settings.set',
         {
-            active: true,
-            report_request_type: 'user',
-            report_request_users: [1,2,3],
+            'ACTIVE': true,
+            'MINIMUM_IDLE_FOR_REPORT': 15,
+            'REGISTER_OFFLINE': true,
+            'REGISTER_IDLE': true,
+            'REGISTER_DESKTOP': true,
+            'REPORT_REQUEST_TYPE': 'all',
+            'REPORT_SIMPLE_TYPE': 'all',
+            'REPORT_FULL_TYPE': 'all'
         },
-        function(result){
-            if(result.error())
-            {
-                console.error(result.error().ex);
-            }
-            else
-            {
-                console.log(result.data());
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
             }
         }
     );
@@ -85,49 +107,87 @@ Enabled with `active: true`. Disabled with `active: false` if the data is sent a
 - PHP
 
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'timeman.timecontrol.settings.set',
-        Array(
-            active: true,
-            report_request_type: 'user',
-            report_request_users: [1,2,3],
-        ),
-        $_REQUEST["auth"]
+        [
+            'ACTIVE' => true,
+            'MINIMUM_IDLE_FOR_REPORT' => 15,
+            'REGISTER_OFFLINE' => true,
+            'REGISTER_IDLE' => true,
+            'REGISTER_DESKTOP' => true,
+            'REPORT_REQUEST_TYPE' => 'all',
+            'REPORT_SIMPLE_TYPE' => 'all',
+            'REPORT_FULL_TYPE' => 'all'
+        ]
     );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on Success
+HTTP status: **200**
 
-> 200 OK
 ```json
 {
-    "result": true
+    "result": true,
+    "time": {
+        "start": 1748526089.625516,
+        "finish": 1748526089.656787,
+        "duration": 0.03127098083496094,
+        "processing": 0.008746147155761719,
+        "date_start": "2025-05-29T16:41:29+02:00",
+        "date_finish": "2025-05-29T16:41:29+02:00",
+        "operating_reset_at": 1748526689,
+        "operating": 0
+    }
 }
 ```
 
-## Response on Error
+### Returned Data
 
-> 200 Error, 50x Error
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Execution result.
+
+Returns `true` if the settings are successfully saved ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
 ```json
 {
     "error": "ACCESS_ERROR",
-    "error_description": "You don't have access to use this method"
+    "error_description": "You don't have access to user this method"
 }
 ```
 
-### Description of Keys
-
-- **error** - code of the occurred error.
-- **error_description** - brief description of the occurred error.
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_ERROR** | The specified method is available only to administrators. ||
-|| **INVALID_FORMAT** | An incorrect format was provided in the `RANGE` field. ||
+|| **Code** | **Description** | **Value** ||
+|| `ACCESS_ERROR` | You don't have access to user this method | You do not have access to this method ||
 |#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./timeman-timecontrol-report-add.md)
+- [{#T}](./timeman-timecontrol-reports-get.md)
+- [{#T}](./timeman-timecontrol-reports-users-get.md)

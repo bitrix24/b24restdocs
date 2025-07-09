@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items: 
+  - name: Overview of Events
+    href: index.md
+  - name: When Creating a Resource Type
+    href: on-booking-resource-type-add.md 
+  - name: When Updating a Resource Type
+    href: on-booking-resource-type-update.md
+  - name: When Deleting a Resource Type
+    href: on-booking-resource-type-delete.md                

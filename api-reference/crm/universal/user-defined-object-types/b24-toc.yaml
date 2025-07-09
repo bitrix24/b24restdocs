@@ -1,19 +1,19 @@
-title: Custom Object Types
-href: index.md
-items:
-  - name: Overview of Methods
-    href: index.md
-  - name: Create a New Custom Type
-    href: crm-type-add.md
-  - name: Update Custom Type
-    href: crm-type-update.md
-  - name: Get Custom Type by ID
-    href: crm-type-get.md
-  - name: Get Smart Process Type by entityTypeId
-    href: crm-type-get-by-entity-type-id.md
-  - name: Get List of Custom Types
-    href: crm-type-list.md
-  - name: Delete Custom Type
-    href: crm-type-delete.md
-  - name: Get Fields of Custom Type
-    href: crm-type-fields.md
+title: SPA  
+href: index.md  
+items:  
+  - name: Overview of methods  
+    href: index.md  
+  - name: Create a new custom type  
+    href: crm-type-add.md  
+  - name: Update custom type  
+    href: crm-type-update.md  
+  - name: Get custom type by id  
+    href: crm-type-get.md  
+  - name: Get custom type by entityTypeId  
+    href: crm-type-get-by-entity-type-id.md  
+  - name: Get list of custom types  
+    href: crm-type-list.md  
+  - name: Delete custom type  
+    href: crm-type-delete.md  
+  - name: Get fields of custom type  
+    href: crm-type-fields.md  

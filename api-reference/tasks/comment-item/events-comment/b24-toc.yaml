@@ -1,11 +1,11 @@
 title: Events
 href: index.md
 items:
-  - name: Events
+  - name: Overview of Events
     href: index.md
-  - name: On adding a comment
+  - name: When Adding a Comment
     href: on-task-comment-add.md
-  - name: On updating a comment
+  - name: When Updating a Comment
     href: on-task-comment-update.md
-  - name: On deleting a comment
+  - name: When Deleting a Comment
     href: on-task-comment-delete.md

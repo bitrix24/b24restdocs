@@ -1,10 +1,10 @@
-# Event on Comment Change OnTaskCommentUpdate
+# Event on Comment Update OnTaskCommentUpdate
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event triggers after a comment is changed in a task. The following data is passed to the handler:
+The event triggers after a comment is updated in a task. The following data is passed to the handler:
 
 ## What the handler receives
 
@@ -12,7 +12,7 @@ Data is sent as a POST request {.b24-info}
 
 ```json
 array(
-    'event' => 'ONTASKCOMMENUPDATE',
+    'event' => 'ONTASKCOMMENTUPDATE',
     'data' => array(
         'FIELDS_BEFORE' => array('ID' => 123, 'TASK_ID' => 555),
         'FIELDS_AFTER' => array('ID' => 123, 'TASK_ID' => 555, 'ACTION' => 'EDIT'),
@@ -41,13 +41,13 @@ array(
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic code of the event, in this case `OnTaskUpdate`||
+[`string`](../../../data-types.md) | Symbolic event code, in this case `OnTaskUpdate`||
 || **data***
 [`array`](../../../data-types.md) | Array with task comment data ||
 || **ts***
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
+[`array`](../../../data-types.md) | Authorization parameters and data about the account where the event occurred ||
 |#
 
 ### Parameter data[]
@@ -62,9 +62,9 @@ array(
 || **FIELDS_AFTER***
 [`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` ||
 || **IS_ACCESSIBLE_BEFORE***
-[`string`](../../../data-types.md) | Whether the task was accessible for reading before the event (detailed description provided [below](#is_accessible_before)) ||
+[`string`](../../../data-types.md) | Was the task readable before the event (detailed description provided [below](#is_accessible_before)) ||
 || **IS_ACCESSIBLE_AFTER***
-[`string`](../../../data-types.md) | Whether the task became accessible for reading after the event (detailed description provided [below](#is_accessible_after)) ||
+[`string`](../../../data-types.md) | Is the task readable after the event (detailed description provided [below](#is_accessible_after)) ||
 |#
 
 ### Field FIELDS_BEFORE {#fields_before}
@@ -92,7 +92,7 @@ array(
 || **TASK_ID***
 [`integer`](../../../data-types.md) | Identifier of the task to which the comment belongs ||
 || **ACTION***
-[`string`](../../../data-types.md) | Action, which will always be `EDIT` in this case ||
+[`string`](../../../data-types.md) | Action, in this case will always be `EDIT` ||
 |#
 
 ### Field IS_ACCESSIBLE_BEFORE {#is_accessible_before}

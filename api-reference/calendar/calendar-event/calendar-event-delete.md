@@ -31,8 +31,8 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.details.configuration.forceCommonScopeForAll
+    -d '{"id":698}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.delete
     ```
 
 - cURL (OAuth)
@@ -41,8 +41,8 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/crm.contact.details.configuration.forceCommonScopeForAll
+    -d '{"id":698,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/calendar.event.delete
     ```
 
 - JS
@@ -62,8 +62,8 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
     require_once('crest.php');
 
     $result = CRest::call(
-        'crm.contact.details.configuration.forceCommonScopeForAll',
-        []
+        'calendar.event.delete',
+        ['id' => 42],
     );
 
     echo '<PRE>';

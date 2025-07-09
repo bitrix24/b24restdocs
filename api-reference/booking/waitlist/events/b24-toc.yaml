@@ -1,0 +1,11 @@
+title: Events
+href: index.md
+items: 
+  - name: Overview of events
+    href: index.md
+  - name: When creating a record in the waitlist
+    href: on-booking-waitlistitem-add.md 
+  - name: When updating a record in the waitlist
+    href: on-booking-waitlistitem-update.md
+  - name: When deleting a record in the waitlist
+    href: on-booking-waitlistitem-delete.md

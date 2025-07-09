@@ -1,170 +1,149 @@
-# How to Add a Lead
+# Add a lead through a web form
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the method: users with the permission to create leads in CRM
 
-This example will allow you to place a form on any page of your website, which when filled out will create a new lead in Bitrix24.
+You can place a form on the site to collect potential client data. When a client fills out the form, their data will be sent to CRM, and you will be able to process the request.
 
-- Create a form on the desired page:
+Setting up the form consists of two steps.
+
+1. Place the form on an HTML page. It will send the data to the handler.
+
+2. Create a file to process the data. The handler will accept and prepare the data, and then create a lead using the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method.
+
+## 1. Creating the web form
+
+In Bitrix24, you can automatically create a contact and a company from a lead. To make the form suitable for various cases, we will make it universal. For the contact, you need to specify the first name and last name, and for the company — the name. We will create a web form on the site page with five fields:
+
+- `NAME` — first name, required,
+
+- `LAST_NAME` — last name,
+
+- `COMPANY_TITLE` — company name,
+
+- `EMAIL` — e-mail,
+
+- `PHONE` — phone.
+
+When submitted, the form sends data to the handler `form.php`.
 
 ```html
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#form_to_crm').on('submit', function(el) { // event submit form
-        el.preventDefault(); // the default action of the event will not be triggered
-        var formData = $(this).serialize();
-        $.ajax({
-            'method': 'POST',
-            'dataType': 'json',
-            'url': 'form.php', // file for saving filled forms
-            'data': formData,
-            success: function(data) { // success callback
-                alert(data.message);
-            }
-        });
-    });
-});
-</script>
-    
-<form id="form_to_crm">
-    <input type="text" name="NAME" placeholder="Name" required>
-    <input type="text" name="LAST_NAME" placeholder="Last name">
-    <input type="text" name="PHONE" placeholder="Phone">
+<form id="form_to_crm" method="POST" action="form.php">
+    <!-- First Name (required field) -->
+    <input type="text" name="NAME" placeholder="First Name" required>
+    <!-- Last Name -->
+    <input type="text" name="LAST_NAME" placeholder="Last Name">
+    <!-- Company Name -->
+    <input type="text" name="COMPANY_TITLE" placeholder="Company Name">
+    <!-- Email -->
     <input type="text" name="EMAIL" placeholder="E-mail">
+    <!-- Phone -->
+    <input type="text" name="PHONE" placeholder="Phone">
+    <!-- Submit button -->
     <input type="submit" value="Submit">
 </form>
-```
 
-- Create a file to save the filled forms:
-
-{% list tabs %}
-
-- JS
-
-    ```js
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('form_to_crm').addEventListener('submit', function(el) {
-            el.preventDefault();
-            let formData = new FormData(this);
-            let sName = formData.get("NAME");
-            let sLastName = formData.get("LAST_NAME");
-            let sPhone = formData.get("PHONE");
-            let sEmail = formData.get("EMAIL");
-
-            let arPhone = sPhone ? [{ 'VALUE': sPhone, 'VALUE_TYPE': 'WORK' }] : [];
-            let arEmail = sEmail ? [{ 'VALUE': sEmail, 'VALUE_TYPE': 'HOME' }] : [];
-
-            BX24.callMethod(
-                'crm.lead.add',
-                {
-                    'fields': {
-                        'TITLE': 'From the site: ' + [sName, sLastName].join(' '),
-                        'NAME': sName,
-                        'LAST_NAME': sLastName,
-                        'PHONE': arPhone,
-                        'EMAIL': arEmail
-                    }
-                },
-                function(result) {
-                    if (result.error()) {
-                        console.error(result.error());
-                        alert('Lead not added: ' + result.error_description());
-                    } else {
-                        alert('Lead added');
-                    }
+<!-- Include jQuery for AJAX request -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#form_to_crm').on('submit', function(el) {
+            el.preventDefault(); // Prevent default form submission
+            var formData = $(this).serialize(); // Collect form data
+            // Send data to the server
+            $.ajax({
+                'method': 'POST',
+                'dataType': 'json',
+                'url': 'form.php', // Handler file
+                'data': formData,
+                success: function(data) {
+                    alert(data.message); // Show result
                 }
-            );
+            });
         });
     });
-    ```
+</script>
+```
 
-- PHP
+## 2. Creating the form handler
 
-    {% note info %}
+To process the values from the form fields and add a lead to CRM, we will create the handler `form.php`.
 
-    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
+To add a lead, we will use the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method. In the `fields` object, we will pass the fields:
 
-    {% endnote %}
+- `TITLE` — lead title (can be composed of first name and last name),
 
-    ```php
-    <?php
-        $sName = htmlspecialchars($_POST["NAME"]);    
-        $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
-        $sPhone = htmlspecialchars($_POST["PHONE"]);
-        $sEmail = htmlspecialchars($_POST["EMAIL"]);
-            
-        // Format phone and email for saving
-        $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
-        $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
+- `NAME` — lead first name,
 
-        $result = CRest::call(
-            'crm.lead.add',
-            [
-            'fields' => [
-                'TITLE' => 'From the site: '.implode(' ',[$sName,$sLastName]), // *Lead Name[string]
-                'NAME' => $sName, // Name[string]
-                'LAST_NAME' => $sLastName, // Last name[string]
-                'PHONE' => $arPhone, // Phone[crm_multifield]
-                'EMAIL' => $arEmail, // E-mail[crm_multifield]
-                // 'HONORIFIC' => '', // Salutation[string]
-                // 'SECOND_NAME' => '', // Second name[string]
-                // 'BIRTHDATE' => '', // Date of birth[date]
-                // 'COMPANY_TITLE' => '', // Company name[string]
-                // 'SOURCE_ID' => '', // Source[crm_status {CALL:"Call", EMAIL:"E-Mail", WEB:"Website",
-                // ADVERTISING:"Advertising", PARTNER:"Existing Client", RECOMMENDATION:"By Recommendation",
-                // TRADE_SHOW:"Show/Exhibition", WEBFORM:"CRM form", CALLBACK:"Callback", RC_GENERATOR:"Sales boost", STORE:"Online Store", OTHER:"Other"}]
-                // CRest::call('crm.status.list',['filter'=>['ENTITY_ID'=>'SOURCE']]);
-                // 'SOURCE_DESCRIPTION' => '', // Source information[string]
-                // 'STATUS_ID' => '', // Status[crm_status {NEW:"Unassigned", IN_PROCESS:"In Progress", PROCESSED:"Processed",
-                // CONVERTED:"Good lead", JUNK:"Junk Lead"}] // CRest::call('crm.status.list',['filter'=>['ENTITY_ID'=>'STATUS']]);
-                // 'STATUS_DESCRIPTION' => '', // Status information[string]
-                // 'STATUS_SEMANTIC_ID' => '', // Status details[string]
-                // 'POST' => '', // Position[string]
-                // 'ADDRESS' => '', // Address[string]
-                // 'ADDRESS_2' => '', // Address (line 2)[string]
-                // 'ADDRESS_CITY' => '', // City[string]
-                // 'ADDRESS_POSTAL_CODE' => '', // Zip[string]
-                // 'ADDRESS_REGION' => '', // Region[string]
-                // 'ADDRESS_PROVINCE' => '', // State / Province[string]
-                // 'ADDRESS_COUNTRY' => '', // Country[string]
-                // 'ADDRESS_COUNTRY_CODE' => '', // Country Code[string]
-                // 'CURRENCY_ID' => '', // Currency[crm_currency] // CRest::call('crm.currency.list');
-                // 'OPPORTUNITY' => '', // Total[double]
-                // 'OPENED' => '', // Available to everyone[char]
-                // 'COMMENTS' => '', // Comment[string]
-                // 'HAS_PHONE' => '', // Has phone[char]
-                // 'HAS_EMAIL' => '', // Has email[char]
-                // 'HAS_IMOL' => '', // Has Open Channel[char]
-                // 'ASSIGNED_BY_ID' => '', // Responsible person[user]
-                // 'CREATED_BY_ID' => '', // Created by[user]
-                // 'MODIFY_BY_ID' => '', // Modified by[user]
-                // 'DATE_CREATE' => '', // Created on[datetime]
-                // 'DATE_MODIFY' => '', // Modified on[datetime]
-                // 'COMPANY_ID' => '', // Company[crm_company] // CRest::call('crm.company.list');
-                // 'CONTACT_ID' => '', // Contact[crm_contact] // CRest::call('crm.contact.list');
-                // 'IS_RETURN_CUSTOMER' => '', // Repeat lead[char]
-                // 'DATE_CLOSED' => '', // Completed on[datetime]
-                // 'ORIGINATOR_ID' => '', // External source[string]
-                // 'ORIGIN_ID' => '', // Item ID in data source[string]
-                // 'UTM_SOURCE' => '', // Ad system[string]
-                // 'UTM_MEDIUM' => '', // Medium[string]
-                // 'UTM_CAMPAIGN' => '', // Ad campaign UTM[string]
-                // 'UTM_CONTENT' => '', // Campaign contents[string]
-                // 'UTM_TERM' => '', // Campaign search term[string]
-                // 'WEB' => '', // Website[crm_multifield]
-                // 'IM' => '', // Messenger[crm_multifield]
-            ]
-        ]);
-        if(!empty($result['result'])){
-            echo json_encode(['message' => 'Lead added']);
-        } elseif(!empty($result['error_description'])){
-            echo json_encode(['message' => 'Lead not added: '.$result['error_description']]);
-        } else {
-            echo json_encode(['message' => 'Lead not added']);
-        }
-    ?>
-    ```
+- `LAST_NAME` — lead last name,
 
-{% endlist %}
+- `COMPANY_TITLE` — company name,
+
+- `PHONE` — phone number,
+
+- `EMAIL` — e-mail.
+
+The values of the fields are obtained from the form. The system stores the phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
+
+1. If a value exists, we add it as the first element `VALUE` in the array, and the second value specifies the type `VALUE_TYPE`, for example:
+
+   -  `WORK` — for phone,
+
+   -  `HOME` — for email.
+
+2. If no value exists, we pass an empty array.
+
+{% note warning "" %}
+
+Check which required fields are set for leads in your Bitrix24. All required fields must be passed to the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method.
+
+{% endnote %}
+
+```php
+<?php
+require_once('crest.php');
+
+// Get and sanitize data from the form
+$sName = htmlspecialchars($_POST["NAME"]);
+$sLastName = htmlspecialchars($_POST["LAST_NAME"]);
+$sCompanyTitle = htmlspecialchars($_POST["COMPANY_TITLE"]);
+$sPhone = htmlspecialchars($_POST["PHONE"]);
+$sEmail = htmlspecialchars($_POST["EMAIL"]);
+
+// Format phone and email for Bitrix24 in crm_multifield format
+$arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
+$arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
+
+// Create lead title from first name and last name
+$sTitle = 'From the site: ' . trim($sName . ' ' . $sLastName);
+// If there is a company name — add it with a dash after the first name and last name
+if (!empty($sCompanyTitle)) {
+    $sTitle .= ' — ' . $sCompanyTitle;
+}
+
+// Send data to Bitrix24
+$result = CRest::call(
+    'crm.lead.add',
+    [
+        'fields' => [
+            'TITLE' => $sTitle, // Lead title
+            'NAME' => $sName, // First Name
+            'LAST_NAME' => $sLastName, // Last Name
+            'COMPANY_TITLE' => $sCompanyTitle, // Company Name
+            'PHONE' => $arPhone, // Phone
+            'EMAIL' => $arEmail, // E-mail
+        ]
+    ]
+);
+
+// Check the result and output the message
+if(!empty($result['result'])){
+    echo json_encode(['message' => 'Lead added']);
+} elseif(!empty($result['error_description'])){
+    echo json_encode(['message' => 'Lead not added: '.$result['error_description']]);
+} else {
+    echo json_encode(['message' => 'Lead not added']);
+}
+?>
+```

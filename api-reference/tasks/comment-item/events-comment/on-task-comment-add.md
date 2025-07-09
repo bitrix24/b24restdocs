@@ -1,4 +1,4 @@
-# Event for Adding Comment OnTaskCommentAdd
+# Event on Comment Addition OnTaskCommentAdd
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -41,13 +41,13 @@ array(
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic code of the event, in this case `OnTaskAdd`||
+[`string`](../../../data-types.md) | Symbolic event code, in this case `OnTaskAdd`||
 || **data***
 [`array`](../../../data-types.md) | Array with data of the new task comment ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
+[`array`](../../../data-types.md) | Authorization parameters and data about the account where the event occurred ||
 |#
 
 ### Parameter data[]
@@ -62,9 +62,9 @@ array(
 || **FIELDS_AFTER***
 [`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` ||
 || **IS_ACCESSIBLE_BEFORE***
-[`string`](../../../data-types.md) | Whether the task was accessible for reading before the event (detailed description provided [below](#is_accessible_before)) ||
+[`string`](../../../data-types.md) | Was the task readable before the event (detailed description provided [below](#is_accessible_before)) ||
 || **IS_ACCESSIBLE_AFTER***
-[`string`](../../../data-types.md) | Whether the task became accessible for reading after the event (detailed description provided [below](#is_accessible_after)) ||
+[`string`](../../../data-types.md) | Is the task readable after the event (detailed description provided [below](#is_accessible_after)) ||
 |#
 
 ### Field FIELDS_BEFORE {#fields_before}

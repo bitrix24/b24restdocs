@@ -8,7 +8,7 @@ The method `crm.duplicate.findbycomm` returns the identifiers of leads, contacts
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -36,7 +36,7 @@ If 20 or more duplicates are found for one object, the other types are not retur
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -154,10 +154,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `403` | `Access denied` | User does not have permission to read CRM entities ||
-|| `400` | `Communication type is not defined` | Required parameter `type` is not specified ||
-|| `400` | `Communication type '{type}' is not supported in current context` | An unsupported communication type was specified ||
-|| `400` | `Communication values is not defined` | Required parameter `values` is not specified ||
+|| `403` | `Access denied` | The user does not have permission to read CRM entities ||
+|| `400` | `Communication type is not defined` | The required parameter `type` is not specified ||
+|| `400` | `Communication type '{type}' is not supported in current context` | An unsupported communication type is specified ||
+|| `400` | `Communication values is not defined` | The required parameter `values` is not specified ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
@@ -165,3 +165,4 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-entity-merge-batch.md)
+- [{#T}](../../../tutorials/crm/how-to-get-lists/search-by-phone-and-email.md)

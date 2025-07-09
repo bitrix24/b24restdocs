@@ -1,25 +1,29 @@
 title: Waitlist  
 href: index.md  
 items:   
-  - name: Overview of methods  
+  - name: Overview of Methods  
     href: index.md  
-  - name: Add to waitlist  
+  - name: Add to Waitlist  
     href: booking-v1-waitlist-add.md  
-  - name: Create a waitlist entry from a booking  
+  - name: Create Waitlist Entry from Booking  
     href: booking-v1-waitlist-createfrombooking.md      
-  - name: Update a waitlist entry  
+  - name: Update Waitlist Entry  
     href: booking-v1-waitlist-update.md  
-  - name: Get an entry from the waitlist  
+  - name: Get Entry from Waitlist  
     href: booking-v1-waitlist-get.md  
-  - name: Get a list of entries from the waitlist  
+  - name: Get List of Entries from Waitlist  
     href: booking-v1-waitlist-list.md  
-  - name: Delete an entry from the waitlist  
-    href: booking-v1-waitlist-delete.md                    
-  - name: Connection with additional objects  
+  - name: Delete Entry from Waitlist  
+    href: booking-v1-waitlist-delete.md   
+  - name: Events  
+    include:  
+      path: events/b24-toc.yaml  
+      mode: link                      
+  - name: Connection with Additional Objects  
     include:  
       path: external-data/b24-toc.yaml  
       mode: link  
-  - name: Client in the waitlist  
+  - name: Client in Waitlist  
     include:  
       path: client/b24-toc.yaml  
       mode: link  

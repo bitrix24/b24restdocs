@@ -1,95 +1,156 @@
-# Get User Settings timeman.timecontrol.reports.settings.get
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for writing standards
-- examples are missing
-- response in case of error is missing
-
-{% endnote %}
-
-{% endif %}
+# Get Report Settings timeman.timecontrol.reports.settings.get
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `timeman.timecontrol.reports.settings.get` is used to retrieve user settings for building the reporting interface of the time control tool.
+The method `timeman.timecontrol.reports.settings.get` retrieves report settings for building the report interface of the time control tool.
 
-## Parameters
+## Method Parameters
 
 No parameters.
 
-## Example Call
+## Code Examples
+
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/timeman.timecontrol.reports.settings.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/timeman.timecontrol.reports.settings.get
+    ```
 
 - JS
 
     ```js
-    BX24.callMethod('timeman.timecontrol.reports.settings.get', {}, function(result){
-        if(result.error())
-        {
-            console.error(result.error().ex);
+    BX24.callMethod(
+        'timeman.timecontrol.reports.settings.get',
+        {},
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
         }
-        else
-        {
-            console.log(result.data());
-        }
-    });
+    );
     ```
 
 - PHP
 
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'timeman.timecontrol.reports.settings.get',
-        Array(),
-        $_REQUEST["auth"]
-    );    
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Response on Success
+HTTP status: **200**
 
-> 200 OK
 ```json
 {
     "result": {
-        "active":true,
-        "user_id":2,
-        "user_admin":true,
-        "user_head":true,
-        "departments":[
-            {"id":"92","name":"Kaliningrad Branch"},
-            {"id":"93","name":"Administration"},
-            {"id":"106","name":"IT Department"}
+        "active": true,
+        "user_id": 547,
+        "user_admin": false,
+        "user_head": true,
+        "departments": [
+            {
+                "id": "9",
+                "name": "Marketing and Advertising Department"
+            }
         ],
-        "minimum_idle_for_report":1,
-        "report_view_type":"head"
+        "minimum_idle_for_report": 15,
+        "report_view_type": "head"
+    },
+    "time": {
+        "start": 1749211142.210397,
+        "finish": 1749211142.280698,
+        "duration": 0.07030105590820312,
+        "processing": 0.03640604019165039,
+        "date_start": "2025-06-06T14:59:02+02:00",
+        "date_finish": "2025-06-06T14:59:02+02:00",
+        "operating_reset_at": 1749211742,
+        "operating": 0
     }
 }
 ```
 
-### Description of Keys
+### Returned Data
 
-- **active** - availability of the time control tool.
-- **user_id** - current user identifier.
-- **user_admin** - flag indicating if you are an administrator.
-- **user_head** - flag indicating if you are a manager.
-- **departments** - list of available departments (available only if you are a manager)
-- **id** - department identifier
-- **name** - department name
-- **minimum_idle_for_report** - minimum idle time for requesting a report (in minutes)
-- **report_view_type** - level of report detail (head, full, simple)
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response ||
+|| **active**
+[`boolean`](../../data-types.md) | Is the time control module active? ||
+|| **user_id**
+[`integer`](../../data-types.md) | Identifier of the current user ||
+|| **user_admin**
+[`boolean`](../../data-types.md) | Is the user an administrator? ||
+|| **user_head**
+[`boolean`](../../data-types.md) | Is the user a manager? ||
+|| **departments**
+[`array`](../../data-types.md) | List of objects with information about [departments](#departments). The content of the array depends on the user's role:
+- Administrator — description of all departments,
+- Manager — description of their department,
+- Regular employee — empty array ||
+|| **minimum_idle_for_report**
+[`integer`](../../data-types.md) | Minimum idle time in minutes after which a report is required ||
+|| **report_view_type**
+[`string`](../../data-types.md) | Type of report view. Possible values:
+- `none` — no access to reports
+- `head` — manager
+- `full` — full access
+- `simple` — simplified access ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Departments Object {#departments}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`string`](../../data-types.md) | Identifier of the department ||
+- || **name**
+[`string`](../../data-types.md) | Name of the department ||
+|#
+
+## Error Handling
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./timeman-timecontrol-report-add.md)
+- [{#T}](./timeman-timecontrol-reports-get.md)
+- [{#T}](./timeman-timecontrol-reports-users-get.md)

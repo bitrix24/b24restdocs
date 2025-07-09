@@ -2,6 +2,17 @@
 
 ## 2025
 
+### July 09, 2025
+
+- Added events for the Online Booking module: [onBooking*](./api-reference/booking/booking/events/index.md), [onBookingResource*](./api-reference/booking/resource/events/index.md), [onBookingResourceType*](./api-reference/booking/resource/resource-type/events/index.md), [onBookingWaitListItem*](./api-reference/booking/waitlist/events/index.md)
+- Updated the tutorial [Add a lead via web form](./tutorials/crm/how-to-add-crm-objects/how-to-add-lead.md)
+- Updated the main page of the [Head Products](./api-reference/catalog/product/sku/index.md) section in the Trade Catalog. Added introductory information as well as an overview of methods and relationships
+- Updated the main page of the [Smart Processes](./api-reference/crm/universal/user-defined-object-types/index.md) section in CRM. Added introductory information as well as an overview of methods and relationships
+- Updated the main page of the [Product Variations](./api-reference/catalog/product/offer/index.md) section in the Trade Catalog. Added introductory information as well as an overview of methods and relationships
+- Updated the tutorial [How to find duplicates in CRM by phone and email](./tutorials/crm/how-to-get-lists/search-by-phone-and-email.md)
+- Updated the main pages of events in the sections: [Tasks](./api-reference/tasks/events-tasks/index.md), [Comments](./api-reference/tasks/comment-item/events-comment/index.md). Added introductory information as well as an overview of events
+- Updated the documentation for methods related to settings [timeman.timecontrol.reports.settings.get](./api-reference/timeman/timecontrol/timeman-timecontrol-reports-settings-get.md), [timeman.timecontrol.settings.get](./api-reference/timeman/timecontrol/timeman-timecontrol-settings-get.md), [timeman.timecontrol.settings.set](./api-reference/timeman/timecontrol/timeman-timecontrol-settings-set.md) in the Time Control section.
+
 ### July 02, 2025
 
 - Updated the main page of the [Services](./api-reference/catalog/product/service/index.md) section in the Trade catalog. Added introductory information and an overview of methods and relationships

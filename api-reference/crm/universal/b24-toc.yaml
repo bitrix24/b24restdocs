@@ -2,9 +2,13 @@ title: Universal Methods for CRM
 href: index.md
 items:
   - name: Universal Methods for Core Elements
-    href: index.md
+    href: index.md 
   - name: Universal Methods for Invoices
     href: invoice.md
+  - name: SPAs
+    include:
+      path: user-defined-object-types/b24-toc.yaml
+      mode: link             
   - name: Create New CRM Entity
     href: crm-item-add.md
   - name: Update Entity
@@ -21,15 +25,9 @@ items:
     include:
       path: events/b24-toc.yaml
       mode: link
-  - name: Widgets
-    href: widgets.md
   - name: Product Rows
     include:
       path: product-rows/b24-toc.yaml
-      mode: link
-  - name: Custom Object Types
-    include:
-      path: user-defined-object-types/b24-toc.yaml
       mode: link
   - name: Custom Fields
     include:
@@ -63,3 +61,5 @@ items:
     include:
       path: item-details-configuration/b24-toc.yaml
       mode: link
+  - name: Widgets
+    href: widgets.md      

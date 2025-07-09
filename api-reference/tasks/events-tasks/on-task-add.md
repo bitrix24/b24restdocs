@@ -1,4 +1,4 @@
-# Event for Task Addition OnTaskAdd
+# Event on Task Addition OnTaskAdd
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
@@ -35,13 +35,13 @@ array(
 )
 ```
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
+{% include notitle [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic code of the event, in this case `OnTaskAdd`||
+[`string`](../../data-types.md) | Symbolic event code, in this case `OnTaskAdd`||
 || **data***
 [`array`](../../data-types.md) | Array with data of the added task ||
 || **ts***
@@ -52,15 +52,15 @@ array(
 
 ### Parameter data[]
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
+{% include notitle [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **FIELDS_BEFORE***
-[`undefined`\|`object`](../../data-types.md) | Fields of the task before the event (detailed description provided [below](#fields_before)). If there are no available task fields, this field will contain the value `undefined` ||
+[`undefined`\|`object`](../../data-types.md) | Fields of the task before the event (detailed description provided [below](#fields_before)). If no task fields are available, this field will contain the value `undefined` ||
 || **FIELDS_AFTER***
-[`undefined`\|`object`](../../data-types.md) | Fields of the task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` ||
+[`undefined`\|`object`](../../data-types.md) | Fields of the task after the event (detailed description provided [below](#fields_after)). If no task fields are available, this field will contain the value `undefined` ||
 || **IS_ACCESSIBLE_BEFORE***
 [`string`](../../data-types.md) | Whether the task was accessible for reading before the event (detailed description provided [below](#is_accessible_before)) ||
 || **IS_ACCESSIBLE_AFTER***
@@ -69,7 +69,7 @@ array(
 
 ### Field FIELDS_BEFORE {#fields_before}
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
+{% include notitle [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -80,7 +80,7 @@ array(
 
 ### Field FIELDS_AFTER {#fields_after}
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
+{% include notitle [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -91,7 +91,7 @@ array(
 
 ### Field IS_ACCESSIBLE_BEFORE {#is_accessible_before}
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
+{% include notitle [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -105,7 +105,7 @@ array(
 
 ### Field IS_ACCESSIBLE_AFTER {#is_accessible_after}
 
-{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
+{% include notitle [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -117,10 +117,9 @@ array(
 - `undefined` — not defined or check not performed ||
 |#
 
-
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 

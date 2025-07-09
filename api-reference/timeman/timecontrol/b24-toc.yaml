@@ -3,15 +3,15 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
-  - name: Send Report of Detected Absences
+  - name: Submit Absence Report
     href: timeman-timecontrol-report-add.md
-  - name: Get Report of Detected Absences
+  - name: Get Absence Reports
     href: timeman-timecontrol-reports-get.md
   - name: Get Time Control Tool Settings
     href: timeman-timecontrol-settings-get.md
   - name: Set Time Control Tool Settings
     href: timeman-timecontrol-settings-set.md
-  - name: Get User Settings
+  - name: Get Report Settings
     href: timeman-timecontrol-reports-settings-get.md
-  - name: Get List of Users
+  - name: Get User List
     href: timeman-timecontrol-reports-users-get.md

@@ -98,7 +98,7 @@ Contacts can be added or removed using the group of methods [crm.lead.contact.*]
 
 Used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the element in the data source. Used only for linking to an external source ||
+[`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source ||
 || **PHONE**
 [`crm_multifield`](../../data-types.md) | Phone. Multiple ||
 || **POST**
@@ -136,21 +136,21 @@ The list of all possible identifiers from the directory can be obtained using th
 ||NEW | Unprocessed||
 ||IN_PROCESS | In progress||
 ||PROCESSED | Processed||
-||JUNK | Low-quality lead||
-||CONVERTED | High-quality lead||
+||JUNK | Poor quality lead||
+||CONVERTED | Quality lead||
 |#
 
 The list of all possible stages from the directory can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=STATUS` ||
 || **TITLE**
 [`string`](../../data-types.md) | Lead title ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Identifier of the advertising campaign ||
+[`string`](../../data-types.md) | Advertising campaign designation ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_MEDIUM**
 [`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners) ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google AdWords, and others ||
+[`string`](../../data-types.md) | Advertising system. Google-Adwords and others ||
 || **UTM_TERM**
 [`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **WEB**
@@ -164,7 +164,7 @@ To create, modify, or delete custom fields in leads, use the methods [crm.lead.u
 
 {% note info %}
 
-Additionally, to find out the required format of the fields, you can execute the method [crm.lead.fields](crm-lead-fields.md) and check the format of the incoming values for these fields. 
+Additionally, to find out the required format of fields, you can execute the method [crm.lead.fields](crm-lead-fields.md) and check the format of the received values of these fields. 
 
 {% endnote %}
 
@@ -194,7 +194,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"IP Titov","NAME":"Gleb","SECOND_NAME":"Egorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"}}' \
+    -d '{"fields":{"TITLE":"LLC Smith","NAME":"Gleb","SECOND_NAME":"Yegorovich","LAST_NAME":"Smith","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.lead.add
     ```
 
@@ -204,7 +204,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"IP Titov","NAME":"Gleb","SECOND_NAME":"Egorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TITLE":"LLC Smith","NAME":"Gleb","SECOND_NAME":"Yegorovich","LAST_NAME":"Smith","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.lead.add
     ```
 
@@ -216,10 +216,10 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
         {
             fields:
             {
-                TITLE: "IP Titov",
+                TITLE: "LLC Smith",
                 NAME: "Gleb",
-                SECOND_NAME: "Egorovich",
-                LAST_NAME: "Titov",
+                SECOND_NAME: "Yegorovich",
+                LAST_NAME: "Smith",
                 STATUS_ID: "NEW",
                 OPENED: "Y",
                 ASSIGNED_BY_ID: 1,
@@ -264,10 +264,10 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
         'crm.lead.add',
         [
             'fields' => [
-                'TITLE' => 'IP Titov',
+                'TITLE' => 'LLC Smith',
                 'NAME' => 'Gleb',
-                'SECOND_NAME' => 'Egorovich',
-                'LAST_NAME' => 'Titov',
+                'SECOND_NAME' => 'Yegorovich',
+                'LAST_NAME' => 'Smith',
                 'STATUS_ID' => 'NEW',
                 'OPENED' => 'Y',
                 'ASSIGNED_BY_ID' => 1,
@@ -277,7 +277,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
                     [
                         'VALUE' => '555888',
                         'VALUE_TYPE' => 'WORK',
-                    ],
+                    },
                 ],
                 'WEB' => [
                     [
@@ -356,4 +356,5 @@ HTTP status: **200**
 
 - [{#T}](./crm-lead-delete.md)
 - [{#T}](./crm-lead-fields.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-lead.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-repeat-lead.md)

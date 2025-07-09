@@ -1,4 +1,4 @@
-# Get a List of Leads crm.lead.list
+# Get a list of leads crm.lead.list
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
@@ -21,7 +21,8 @@ When selecting, use masks:
 - "UF_*" - to select all custom fields (excluding multiple fields)
 
 There are no masks for selecting multiple fields. To select multiple fields, specify the required ones in the selection list ("PHONE", "EMAIL", etc.).
-There is no option to add a logical OR condition to the filter if you need to select by several different fields. ||
+There is no option to add a logical OR condition to the filter if you need to select by several different fields.||
+
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected leads in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
@@ -34,8 +35,8 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@` — NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The "%" symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The "%" symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The "%" symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string.
+- `=%` — LIKE, substring search. The "%" symbol must be passed in the value. Examples:
   - "mol%" — searching for values starting with "mol"
   - "%mol" — searching for values ending with "mol"
   - "%mol%" — searching for values where "mol" can be in any position
@@ -44,7 +45,7 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 
 - `!%` — NOT LIKE, substring search. The "%" symbol in the filter value does not need to be passed. The search goes from both sides.
 
-- `=%` — NOT LIKE, substring search. The "%" symbol needs to be passed in the value. Examples:
+- `=%` — NOT LIKE, substring search. The "%" symbol must be passed in the value. Examples:
   - "mol%" — searching for values not starting with "mol"
   - "%mol" — searching for values not ending with "mol"
   - "%mol%" — searching for values where the substring "mol" is not in any position
@@ -55,12 +56,14 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `!=` - not equal
 - `!` — not equal
   ||
-  || **order**
+
+|| **order**
 Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order ||
-  || **start**
-  [`integer`](../data-types.md) | This parameter is used to control pagination.
+
+|| **start**
+[`integer`](../data-types.md) | This parameter is used to control pagination.
 
 The page size of results is always static: 50 records.
 
@@ -265,7 +268,7 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -406,11 +409,11 @@ HTTP Status: **200**
 || **Name**
 `type`  | **Description** ||
 || **result**
-[`array`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the deal fields. 
+[`array`](../../data-types.md) | The root element of the response. Contains an array of objects that hold information about the fields of deals. 
 
 It should be noted that the structure of the fields may change due to the `select` parameter.
 
- For information about the lead structure, see the method [`crm.lead.get`](./crm-lead-get.md) ||
+ For information about the structure of a lead, see the method [`crm.lead.get`](./crm-lead-get.md) ||
 || **total**
 [`integer`](../../data-types.md) | The total number of found items ||
 || **next**
@@ -418,12 +421,12 @@ It should be noted that the structure of the fields may change due to the `selec
 
 The `next` parameter appears in the response if the number of items matching your request exceeds `50` ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-> HTTP Status: 40x, 50x Error
+> HTTP status: 40x, 50x Error
 
 ```json
 {
@@ -446,3 +449,4 @@ The `next` parameter appears in the response if the number of items matching you
 ## Continue Learning 
 
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-repeat-lead.md)
+- [{#T}](../../../tutorials/crm/how-to-get-lists/search-by-phone-and-email.md)
