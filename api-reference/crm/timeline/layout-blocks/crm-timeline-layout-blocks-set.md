@@ -24,7 +24,7 @@ The set of additional content blocks cannot be applied to timeline records relat
 [`integer`](../../../data-types.md) | Identifier of the CRM object to which the timeline record is linked ||
 || **entityId***
 [`integer`](../../../data-types.md) | Identifier of the CRM object to which the timeline record is linked ||
-|| **activityId***
+|| **timelineId***
 [`integer`](../../../data-types.md) | Identifier of the timeline record ||
 || **layout***
 [`RestAppLayoutDto`](../activities/configurable/structure/rest-app-layout-dto.md) | Object describing the set of additional content blocks ||
