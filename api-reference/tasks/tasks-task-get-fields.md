@@ -194,8 +194,8 @@ Default - No. ||
 \[6\] => years.
 Default - 3 ||
 || **UF_CRM_TASK**
-[`crm`](../data-types.md) | Link to CRM entities. The value consists of 
-[Short symbolic code of the type](../crm/data-types.md#object_type) and ID of the entity | L_XX - lead,
+[`array` of `string`](../data-types.md) | Links to CRM entities. The array values are string consisting of 
+[Short symbolic code of the type](../crm/data-types.md#object_type) concatenated with the ID of the entity with a `_` in between. | L_XX - lead,
 C_XX - contact,
 D_XX - deal, 
 TXX_XX - SPA ||
