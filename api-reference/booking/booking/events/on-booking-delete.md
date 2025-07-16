@@ -1,14 +1,14 @@
-# Event on Booking Deletion onBookingDelete
+# Event onBookingDelete
 
 > Scope: [`booking`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The `ONBOOKINGDELETE` event will trigger when a booking is deleted either manually or via the [booking.v1.booking.delete](../booking-v1-booking-delete.md) method.
+The `ONBOOKINGDELETE` event will trigger when a booking is deleted manually or via the [booking.v1.booking.delete](../booking-v1-booking-delete.md) method.
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -60,7 +60,7 @@ The structure is described [below](#auth) ||
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

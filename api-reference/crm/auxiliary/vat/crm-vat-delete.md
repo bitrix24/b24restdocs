@@ -1,66 +1,145 @@
-# Delete VAT Rate crm.vatdelete
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- type and required parameter are not specified
-- no response in case of error and success
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
+# Delete VAT Rate crm.vat.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with CRM administrator rights
 
-## Description
+The method `crm.vat.delete` removes a VAT rate by its identifier.
 
-```http
-crm.vat.delete(id)
-```
-
-Deletes the VAT rate.
-
-## Parameters
-
-#|
-|| **Parameter** | **Description** ||
-|| **id** | Identifier of the VAT rate. ||
-|#
+## Method Parameters
 
 {% include [Note on parameters](../../../../_includes/required.md) %}
 
-## Examples
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id*** 
+[`integer`](../../../data-types.md) | Identifier of the VAT rate to be deleted. 
+You can obtain a list of rates with identifiers using the [crm.vat.list](./crm-vat-list.md) method ||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
-  
-    ```javascript
-    var id = prompt("Enter ID");
+
+    ```js
     BX24.callMethod(
         "crm.vat.delete",
-        { "id": id },
-        function(result)
         {
+            id: 7
+        },
+        function(result) {
             if(result.error())
                 console.error(result.error());
             else
-                console.info(result.data());
+                console.dir(result.data());
         }
     );
     ```
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+         -H "Content-Type: application/json" \
+         -H "Accept: application/json" \
+         -d '{"id":7}' \
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.vat.delete
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":7,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.vat.delete
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.vat.delete',
+        [
+            'id' => 7
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
+## Response Handling
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+HTTP status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1751983429.678159,
+        "finish": 1751983429.873604,
+        "duration": 0.19544506072998047,
+        "processing": 0.01796698570251465,
+        "date_start": "2025-07-08T17:03:49+02:00",
+        "date_finish": "2025-07-08T17:03:49+02:00",
+        "operating_reset_at": 1751984029,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result** 
+[`boolean`](../../../data-types.md) |  Root element of the response, contains `true` in case of success ||
+|| **time** 
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "Invalid identifier.",
+    "error_description": "An invalid identifier was provided."
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `400`     | `The Commercial Catalog module is not installed.` | The catalog module is not installed ||
+|| `400`     | `Invalid identifier.` | An invalid identifier was provided ||
+|| `400`     | `Access denied.` | No rights to perform the operation ||
+|| `400`     | `Error on deleting VAT rate.` | Error while deleting the VAT rate ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./crm-vat-fields.md)
+- [{#T}](./crm-vat-list.md)
+- [{#T}](./crm-vat-get.md)
+- [{#T}](./crm-vat-add.md)
+- [{#T}](./crm-vat-update.md)

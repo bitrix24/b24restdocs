@@ -1,25 +1,25 @@
-# OnCalendarEntryUpdate Event
+# OnCalendarEntryDelete Event
 
-> Scope: [`calendar`](../../scopes/permissions.md)
+> Scope: [`calendar`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-This event is triggered when a calendar event is modified.
+This event is triggered when a calendar event is deleted.
 
 ## What the handler receives
 
 Data is sent as a POST request {.b24-info}
 
-Example: event for updating a calendar event object with `id = 1414`.
+Example: event for deleting a calendar event object with `id = 1412`.
 
 ```json
 {
-    "event": "ONCALENDARENTRYUPDATE",
-    "event_handler_id": "4",
+    "event": "ONCALENDARENTRYDELETE",
+    "event_handler_id": "5",
     "data": {
-        "id": "1414"
+        "id": "1412"
     },
-    "ts": "1734608349",
+    "ts": "1734608570",
     "auth": {
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "expires_in": "3600",
@@ -39,19 +39,19 @@ Example: event for updating a calendar event object with `id = 1414`.
 || **Name**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic code of the event.
+[`string`][1] | Symbolic event code.
 
-In this case — `ONCALENDARENTRYUPDATE`||
+In this case — `ONCALENDARENTRYDELETE`||
 || **event_handler_id**
 [`integer`][1] | Identifier of the event handler ||
 || **data**
-[`object`][1] | Object containing information about the modified calendar event object.
+[`object`][1] | Object containing information about the deleted calendar event object.
 
 Contains a single key — `id` ||
 || **data.id**
 [`string`][1] | Identifier of the calendar event object ||
 || **ts**
-[`timestamp`][1] | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`][1] | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -60,14 +60,14 @@ The structure is described [below](#auth) ||
 
 ### auth Parameter {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
 ## Continue exploring 
 
-- [{#T}](../../events/index.md)
-- [{#T}](../../events/event-bind.md)
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
 - [{#T}](./index.md)
 - [{#T}](./on-calendar-entry-add.md)
-- [{#T}](./on-calendar-entry-delete.md)
+- [{#T}](./on-calendar-entry-update.md)
 
-[1]: ../../data-types.md
+[1]: ../../../data-types.md

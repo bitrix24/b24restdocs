@@ -2,7 +2,7 @@
 
 A lead is the starting point of the Sales Funnel. Its card contains information about the client's interest in a product or service: filled CRM forms, e-mails, calls, and chats with the client.
 
-The main goal of working with leads is to determine how promising they are and convert them into deals for further selling of the product or service.
+The main goal of working with leads is to determine their potential and convert them into deals for further selling of the product or service.
 
 > Quick navigation: [all methods and events](#all-methods)
 > 
@@ -12,9 +12,9 @@ The main goal of working with leads is to determine how promising they are and c
 
 **Products.** Adding, modifying, and deleting product items in deals is possible through the group of methods [crm.item.productrow.*](../universal/product-rows/index.md).
 
-**Deal.** The connection appears after converting a lead into a successful one.
+**Deal.** The connection appears after converting the lead into a successful one.
 
-**Client.** A field in the lead card consisting of the associated company and contacts. The field is available in the repeat lead form. If repeat leads are disabled, the linking field appears after creating a company or contact based on the lead. There is one company in the lead, and access to it is made directly through the `COMPANY_ID` field. Multiple contacts can be specified, and interaction with them is conducted through a separate group of methods [crm.lead.contact.*](./management-communication/index.md).  
+**Client.** A field in the lead card consisting of the associated company and contacts. The field is available in the repeat lead form. If repeat leads are disabled, the linking field appears after creating a company or contact based on the lead. There is one company in the lead, and access to it is made directly through the field `COMPANY_ID`. Multiple contacts can be specified, and interaction with them is conducted through a separate group of methods [crm.lead.contact.*](./management-communication/index.md).  
 
 {% note tip "User Documentation" %}
 
@@ -48,7 +48,7 @@ The parameters of the deal card can be managed depending on the funnel through t
 
 An application can be embedded into the lead card. Thanks to embedding, you can use the application without leaving the lead card.
 
-There are two embedding scenarios:
+There are two embedding scenarios: 
 * Use special [embedding locations](../../widgets/crm/index.md). For example, by creating your own tab.
 * Create a [custom field](../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md), into which the content of your application will be loaded.
 
@@ -141,7 +141,7 @@ It is impossible to convert a lead using the REST API. You can only change the s
     || [onCrmLeadUserFieldAdd](./userfield/events/on-crm-lead-user-field-add.md) | When a custom field is added ||
     || [onCrmLeadUserFieldUpdate](./userfield/events/on-crm-lead-user-field-update.md) | When a custom field is modified ||
     || [onCrmLeadUserFieldDelete](./userfield/events/on-crm-lead-user-field-delete.md) | When a custom field is deleted ||
-    || [onCrmLeadUserFieldSetEnumValues](./userfield/events/on-crm-lead-user-field-set-enum-values.md) | When the set of values for a custom field of list type is changed ||
+    || [onCrmLeadUserFieldSetEnumValues](./userfield/events/on-crm-lead-user-field-set-enum-values.md) | When the set of values for a custom list-type field is modified ||
     |#
 
 {% endlist %}
@@ -150,8 +150,8 @@ It is impossible to convert a lead using the REST API. You can only change the s
 
 #|
 || **Method** | **Description** ||
-|| [crm.lead.details.configuration.get](./custom-form/crm-lead-details-configuration-get.md) | Retrieves the settings parameters of lead cards ||
-|| [crm.lead.details.configuration.reset](./custom-form/crm-lead-details-configuration-reset.md) | Resets the settings of lead cards ||
-|| [crm.lead.details.configuration.set](./custom-form/crm-lead-details-configuration-set.md) | Sets the settings of lead cards ||
+|| [crm.lead.details.configuration.get](./custom-form/crm-lead-details-configuration-get.md) | Retrieves the settings parameters for lead cards ||
+|| [crm.lead.details.configuration.reset](./custom-form/crm-lead-details-configuration-reset.md) | Resets the settings for lead cards ||
+|| [crm.lead.details.configuration.set](./custom-form/crm-lead-details-configuration-set.md) | Sets the settings for lead cards ||
 || [crm.lead.details.configuration.forceCommonScopeForAll](./custom-form/crm-lead-details-configuration-force-common-scope-for-all.md) | Forces a common lead card for all users ||
 |#

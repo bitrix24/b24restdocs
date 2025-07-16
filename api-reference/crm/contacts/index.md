@@ -30,7 +30,7 @@ The main workspace in a contact is the General tab of its card. It consists of t
 
 * The right part contains the contact's timeline. In it, you can create, edit, filter, and delete CRM activities using the group of methods [crm.activity.*](../timeline/activities/index.md), and timeline records using the group of methods [crm.timeline.*](../timeline/index.md).
 
-You can manage the parameters of the contact card through the group of methods [crm.contact.details.configuration.*](./custom-form/index.md). 
+The parameters of the contact card can be managed through the group of methods [crm.contact.details.configuration.*](./custom-form/index.md). 
 
 {% note tip "User Documentation" %}
 
@@ -47,13 +47,13 @@ You can embed an application into the contact card. Thanks to embedding, you can
 
 There are two embedding scenarios:
 
-* Use special [embedding spots](../../widgets/crm/index.md). For example, by creating your own tab.
-* Create a [custom field](../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md) that will load the interface of your application.
+* Use special [embedding locations](../../widgets/crm/index.md). For example, by creating your own tab.
+* Create a [custom field](../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md) where the interface of your application will be loaded.
 
-{% note tip "Typical Use-Cases and Scenarios" %}
+{% note tip "Typical use-cases and scenarios" %}
 
-- [Widget Embedding Mechanism](../../widgets/index.md)
-- [Embed a Widget in the CRM Card](../../../tutorials/crm/crm-widgets/widget-as-detail-tab.md)
+- [Widget embedding mechanism](../../widgets/index.md)
+- [Embed a widget in the CRM card](../../../tutorials/crm/crm-widgets/widget-as-detail-tab.md)
 
 {% endnote %}
 
@@ -61,7 +61,7 @@ There are two embedding scenarios:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute methods: depending on the method
+> Who can perform methods: depending on the method
 
 ### Basic
 
@@ -69,19 +69,19 @@ There are two embedding scenarios:
 
 - Methods
   
-    #| 
+    #|
     || **Method** | **Description** ||
     || [crm.contact.add](./crm-contact-add.md) | Creates a new contact ||
     || [crm.contact.update](./crm-contact-update.md) | Updates an existing contact ||
     || [crm.contact.get](./crm-contact-get.md) | Returns a contact by ID ||
     || [crm.contact.list](./crm-contact-list.md) | Returns a list of contacts by filter ||
     || [crm.contact.delete](./crm-contact-delete.md) | Deletes a contact and all associated objects ||
-    || [crm.contact.fields](./crm-contact-fields.md) | Returns the description of contact fields, including custom ones ||
+    || [crm.contact.fields](./crm-contact-fields.md) | Returns the description of contact fields, including custom fields ||
     |#
 
 - Events
 
-    #| 
+    #|
     || **Event** | **Triggered** ||
     || [onCrmContactAdd](./events/on-crm-contact-add.md) | When a contact is created ||
     || [onCrmContactUpdate](./events/on-crm-contact-update.md) | When a contact is updated ||
@@ -92,7 +92,7 @@ There are two embedding scenarios:
 
 ### Companies
 
-#| 
+#|
 || **Method** | **Description** ||
 || [crm.contact.company.add](./company/crm-contact-company-add.md) | Adds a company to the specified contact ||
 || [crm.contact.company.items.get](./company/crm-contact-company-items-get.md) | Retrieves the set of companies associated with the specified contact ||
@@ -108,18 +108,18 @@ There are two embedding scenarios:
 
 - Methods
 
-    #| 
+    #|
     || **Method** | **Description** ||
     || [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md) | Creates a custom field for contacts ||
     || [crm.contact.userfield.update](./userfield/crm-contact-userfield-update.md) | Modifies an existing custom field for contacts ||
-    || [crm.contact.userfield.get](./userfield/crm-contact-userfield-get.md) | Returns a custom field for contacts by ID ||
+    || [crm.contact.userfield.get](./userfield/crm-contact-userfield-get.md) | Returns a custom field for contacts by Id ||
     || [crm.contact.userfield.list](./userfield/crm-contact-userfield-list.md) | Returns a list of custom fields for contacts ||
     || [crm.contact.userfield.delete](./userfield/crm-contact-userfield-delete.md) | Deletes a custom field for contacts ||
     |#
 
 - Events
 
-    #| 
+    #|
     || **Event** | **Triggered** ||
     || [onCrmContactUserFieldAdd](./userfield/events/on-crm-contact-user-field-add.md) | When a custom field is added ||
     || [onCrmContactUserFieldUpdate](./userfield/events/on-crm-contact-user-field-update.md) | When a custom field is updated ||
@@ -131,7 +131,7 @@ There are two embedding scenarios:
 
 ### Managing Contact Cards
 
-#| 
+#|
 || **Method** | **Description** ||
 || [crm.contact.details.configuration.get](./custom-form/crm-contact-details-configuration-get.md) | Retrieves the settings of contact cards ||
 || [crm.contact.details.configuration.reset](./custom-form/crm-contact-details-configuration-reset.md) | Resets the settings of contact cards ||

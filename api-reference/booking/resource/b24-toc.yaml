@@ -17,7 +17,7 @@ items:
     include:
       path: events/b24-toc.yaml
       mode: link                  
-  - name: Resource type
+  - name: Resource types
     include:
       path: resource-type/b24-toc.yaml
       mode: link

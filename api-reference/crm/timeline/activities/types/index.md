@@ -2,7 +2,7 @@
 
 > Quick navigation: [all methods](#all-methods) 
 > 
-> User documentation: [Timeline in CRM entity](https://helpdesk.bitrix24.com/open/16749348/)
+> User documentation: [Timeline in CRM entity](https://helpdesk.bitrix24.com/open/16767378/)
 
 Applications can register custom activity types: upload a custom icon and specify the type name. For example, you can create your own activity type with an icon and name of your application.
 

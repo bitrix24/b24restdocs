@@ -4,7 +4,7 @@
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGRESOURCETYPEDELETE` will be triggered when a resource type is deleted using the method [booking.v1.resourcetype.delete](../booking-v1-resourcetype-delete.md).
+The event `ONBOOKINGRESOURCETYPEDELETE` will trigger when a resource type is deleted using the method [booking.v1.resourcetype.delete](../booking-v1-resourcetype-delete.md).
 
 ## What the handler receives
 

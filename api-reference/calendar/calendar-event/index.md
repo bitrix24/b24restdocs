@@ -1,22 +1,22 @@
 # Calendar Events: Overview of Methods
 
-Calendar events are scheduled deals or meetings. They contain information about the date, time, location, and participants of the event. Events help users manage their schedules and remind them of upcoming deals and meetings.
+Calendar events are scheduled activities or meetings. They contain information about the date, time, location, and participants of the event. Events help users manage their schedules and remind them of upcoming activities and meetings.
 
 > Quick navigation: [all methods and events](#all-methods) 
 > 
 > User documentation: [how to create an event in the calendar](https://helpdesk.bitrix24.com/open/21307284/)
 
-## Connection of Calendar Events with Other Objects
+## Linking Calendar Events with Other Objects
 
-**User.** An event is linked to a user by the calendar owner's identifier `ownerId` for the calendar type `user`. If the event is a meeting with participants `is_meeting = 'Y'`, it is additionally linked to the event organizer `host` and participants `attendees`. You can obtain the user identifier using the [user.get](../../user/user-get.md) method.
+**User.** An event is linked to a user by the calendar owner's ID `ownerId` for the `user` calendar type. If the event is a meeting with participants `is_meeting = 'Y'`, it is additionally linked to the event organizer `host` and the participants `attendees`. You can obtain the user ID using the [user.get](../../user/user-get.md) method.
 
-**Group.** An event is linked to a group by the calendar owner's identifier `ownerId` for the calendar type `group`. The identifier can be obtained using the [create new group](../../sonet-group/sonet-group-create.md) method or the [get list of groups](../../sonet-group/socialnetwork-api-workgroup-list.md) method.
+**Group.** An event is linked to a group by the calendar owner's ID `ownerId` for the `group` calendar type. The ID can be obtained using the [create new group](../../sonet-group/sonet-group-create.md) method or the [get list of groups](../../sonet-group/socialnetwork-api-workgroup-list.md) method.
 
-**CRM Objects.** You can link CRM objects to an event: companies, contacts, leads, and deals. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type) in the `crm_fields` parameter. For example, `C_3` for a contact with `id = 3`. You can obtain the identifier using the [create new CRM item](../../crm/universal/crm-item-add.md) method or the [get list of items](../../crm/universal/crm-item-list.md) method.
+**CRM Objects.** You can link CRM objects to an event: companies, contacts, leads, and deals. To link objects, list their IDs with [prefixes](../../crm/data-types.md#object_type) in the `crm_fields` parameter. For example, `C_3` for a contact with `id = 3`. You can obtain the ID using the [create new CRM item](../../crm/universal/crm-item-add.md) method or the [get list of items](../../crm/universal/crm-item-list.md) method.
 
 {% note tip "User Documentation" %}
 
-- [FAQ: Calendar](https://helpdesk.bitrix24.com/open/15144548/)
+- [Bitrix24 Calendar](https://helpdesk.bitrix24.com/open/15144548/)
 - [How to create a group and project](https://helpdesk.bitrix24.com/open/22796428/)
 
 {% endnote %}
@@ -41,13 +41,13 @@ The [calendar.accessibility.get](./calendar-accessibility-get.md) method retriev
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can execute the method: any user
 
 {% list tabs %}
 
 - Methods
 
-    #| 
+    #|
     || **Method** | **Description** ||
     || [calendar.event.add](./calendar-event-add.md) | Add an event ||
     || [calendar.event.update](./calendar-event-update.md) | Update an event ||
@@ -62,11 +62,11 @@ The [calendar.accessibility.get](./calendar-accessibility-get.md) method retriev
 
 - Events
 
-    #| 
+    #|
     || **Event** | **Triggered** ||
-    || [OnCalendarEntryAdd](../events/on-calendar-entry-add.md) | When an event is added ||
-    || [OnCalendarEntryUpdate](../events/on-calendar-entry-update.md) | When an event is updated ||
-    || [OnCalendarEntryDelete](../events/on-calendar-entry-delete.md) | When an event is deleted ||
+    || [OnCalendarEntryAdd](./events/on-calendar-entry-add.md) | When an event is added ||
+    || [OnCalendarEntryUpdate](./events/on-calendar-entry-update.md) | When an event is updated ||
+    || [OnCalendarEntryDelete](./events/on-calendar-entry-delete.md) | When an event is deleted ||
     |#
 
 {% endlist %}

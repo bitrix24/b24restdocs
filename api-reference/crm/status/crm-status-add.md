@@ -1,112 +1,214 @@
-# Create a new CRM directory element crm.status.add
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing (in other languages)
-- success response is missing
-- error response is missing
-- parameter types are not specified
-
-{% endnote %}
-
-{% endif %}
+# Create CRM Directory Element crm.status.add
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with CRM administrator rights
 
-```http
-crm.status.add(fields)
-```
+The method `crm.status.add` creates a new element in the specified CRM directory: deal stage, source, company type, and others.
 
-This method creates a new element in the specified directory.
+## Method Parameters
 
-{% note info "" %}
-
-If a stage is added for a custom deal direction, a prefix corresponding to the direction will automatically be added to the status identifier. This is necessary to determine the direction by the stage identifier.
-
-{% endnote %}
-
-## Parameters
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **fields**
-| A set of fields - an array of the form `array("field"=>"value"[, ...])`, containing the values of the directory fields. ||
+|| **Name**
+`type` | **Description** ||
+|| **fields*** 
+[`object`](../../data-types.md) | Object with fields of the new directory element. The list of available fields is described [below](#fields) ||
 |#
 
-{% include [Parameter note](../../../_includes/required.md) %}
+### Parameter fields {#fields}
 
-**Attention!**
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ENTITY_ID*** 
+[`string`](../../data-types.md) | Type of directory, for example `DEAL_STAGE`, `SOURCE`. You can get the list of types using the method [crm.status.entity.types](./crm-status-entity-types.md) ||
+|| **STATUS_ID*** 
+[`string`](../../data-types.md) | Status value code. The code must be unique within the directory. Length and character restrictions depend on the type of directory ||
+|| **NAME*** 
+[`string`](../../data-types.md) | Name ||
+|| **SORT** 
+[`integer`](../../data-types.md) | Sorting. Default is 10 ||
+|| **COLOR** 
+[`string`](../../data-types.md) | Hex color code, for example `#39A8EF`. Use for status stages ||
+|| **SEMANTICS** 
+[`string`](../../data-types.md) | Group of stages:
+- `"S"` — "Success", 
+- `"F"` — "Failure", 
+- `""` — "In Progress".
 
-Starting from version 20.5.500 of the CRM module, there is a restriction on the length and format of the STATUS_ID field value for certain ENTITY_IDs:
+Use for status stages. Default is the "In Progress" group ||
+|#
 
-- **STATUS** (lead status). Max length: 21, can contain only Latin letters, digits, hyphens, and underscores.
-- **QUOTE_STATUS** (invoice status). Max length: 22, can contain only Latin letters, digits, hyphens, and underscores.
-- **DEAL_STAGE** (deal status). Max length: 22, can contain only Latin letters, digits, hyphens, and underscores.
-- **DEAL_STAGE_xx** (deal status in non-default directions. xx - direction identifier). Max length depends on the direction identifier. Can contain only Latin letters, digits, hyphens, and underscores.
-- For other ENTITY_IDs, the maximum length of STATUS_ID is 50 characters, and it can contain any characters.
+### Field Features
 
-## Examples
+**Restrictions for `STATUS_ID`**
+
+Observe length and character restrictions for different types of directories:
+
+- **STATUS** lead stages. Max. length: 21, can contain only Latin letters, numbers, hyphens, and underscores.
+- **QUOTE_STATUS** estimate stages. Max. length: 22, can contain only Latin letters, numbers, hyphens, and underscores.
+- **DEAL_STAGE** deal stages. Max. length: 22, can contain only Latin letters, numbers, hyphens, and underscores.
+- **DEAL_STAGE_xx** deal stages in non-default funnels. xx — funnel identifier. Max. length depends on the funnel identifier. Can contain only Latin letters, numbers, hyphens, and underscores.
+- For other `ENTITY_ID`, the maximum length of `STATUS_ID` is 50 characters, and it can contain any characters.
+
+If a stage is added for a custom deal funnel, a prefix for the funnel will be automatically added to the status identifier. This is necessary to identify the funnel by the stage identifier.
+
+For example, the value `DECISION` for a deal funnel with identifier `1` will be saved as `C1:DECISION`. The system will automatically add the prefix `C1:`, corresponding to the deal funnel identifier. 
+If a value is passed to the field with the prefix `C1:DECISION`, it will be saved as `C1:DECISION`, and no additional prefix will be added.
+
+For SPAs with funnels, a similar logic for forming `STATUS_ID` from the value and prefix applies. The funnel prefix can be obtained using the method [crm.status.entity.types](./crm-status-entity-types.md).
+
+**Restrictions for `SORT`**
+
+For the correct operation of status stages, the sorting order must be followed: 
+1. Stages of the "In Progress" group
+2. Stage of the "Success" group
+3. Stages of the "Failure" group
+
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
-    ```javascript
+    ```js
     BX24.callMethod(
         "crm.status.add",
         {
-            fields:
-            {
-                "ENTITY_ID": "DEAL_STAGE",        
-                "STATUS_ID": "DECISION",
-                "NAME": "Decision Making",
-                "SORT": 70
+            fields: {
+                ENTITY_ID: "DEAL_STAGE_1",
+                STATUS_ID: "DECISION",
+                NAME: "Decision Making",
+                SORT: 70,
+                COLOR: "#FFA900"
             }
         },
-        function(result)
-        {
+        function(result) {
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Created directory element with ID " + result.data());
+                console.dir(result.data());
         }
     );
     ```
 
-    ```javascript
-    BX24.callMethod(
-        "crm.status.add",
-        {
-        fields:
-        {
-            "ENTITY_ID": "DEAL_STAGE_1",        
-            "STATUS_ID": "DECISION",
-            "NAME": "Decision Making",
-            "SORT": 70
-        }
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error());
-        else
-            console.info("Created directory element with ID " + result.data());
-    }
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+         -H "Content-Type: application/json" \
+         -H "Accept: application/json" \
+         -d '{"fields":{"ENTITY_ID":"DEAL_STAGE_1","STATUS_ID":"DECISION","NAME":"Decision Making","SORT":70,"COLOR":"#FFA900"}}' \
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.status.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"ENTITY_ID":"DEAL_STAGE_1","STATUS_ID":"DECISION","NAME":"Decision Making","SORT":70,"COLOR":"#FFA900"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.status.add
+    ```
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.status.add',
+        [
+            'fields' => [
+                'ENTITY_ID' => 'DEAL_STAGE_1',
+                'STATUS_ID' => 'DECISION',
+                'NAME' => 'Decision Making',
+                'SORT' => 70,
+                'COLOR' => '#FFA900'
+            ]
+        ]
     );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-In the second example, the STATUS_ID field will be saved as `C1:DECISION`, where the prefix "C1:" corresponding to the deal direction identifier will be added.
+## Response Handling
 
-{% include [Example note](../../../_includes/examples.md) %}
+HTTP status: **200**
+
+```json
+{
+    "result": 773,
+    "time": {
+        "start": 1752215174.862923,
+        "finish": 1752215174.916697,
+        "duration": 0.053774118423461914,
+        "processing": 0.014070987701416016,
+        "date_start": "2025-07-11T09:26:14+02:00",
+        "date_finish": "2025-07-11T09:26:14+02:00",
+        "operating_reset_at": 1752215774,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result** 
+[`integer`](../../data-types.md) | Identifier of the created directory element ||
+|| **time** 
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "Invalid parameters.",
+    "error_description": "Invalid parameters were provided."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `400`     | `Access denied.` | No rights to perform the operation ||
+|| `400`     | `Invalid parameters.` | Invalid parameters were provided ||
+|| `400`     | `Specified entity type is not supported.` | An unsupported directory type was specified ||
+|| `400`     | `The field ENTITY_ID is required.` | `ENTITY_ID` is not specified ||
+|| `400`     | `The field STATUS_ID is required.` | `STATUS_ID` is not specified ||
+|| `400`     | `Duplicate STATUS_ID.` | Such `STATUS_ID` already exists ||
+|| `400`     | `Error on creating status.` | Error while creating the element ||
+|| `400`     | ` ` | Cannot create an intermediate stage after success ||
+|| `400`     | ` ` | The required field "Title" is not filled ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+
+## Continue Learning
+
+- [{#T}](./crm-status-list.md)
+- [{#T}](./crm-status-get.md)
+- [{#T}](./crm-status-update.md)
+- [{#T}](./crm-status-delete.md)
+- [{#T}](./crm-status-fields.md)
+- [{#T}](./crm-status-entity-types.md) 
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)

@@ -4,7 +4,7 @@
 >
 > Who can subscribe: any user
 
-The `ONBOOKINGUPDATE` event will trigger when a booking is updated manually or via the [booking.v1.booking.update](../booking-v1-booking-update.md) method.
+The event `ONBOOKINGUPDATE` will trigger when a booking is updated manually or via the method [booking.v1.booking.update](../booking-v1-booking-update.md).
 
 ## What the handler receives
 

@@ -3,15 +3,9 @@ href: index.md
 items: 
   - name: Overview of Events
     href: index.md
-  - name: When Adding an Event
-    href: on-calendar-entry-add.md
-  - name: When Updating an Event
-    href: on-calendar-entry-update.md
-  - name: When Deleting an Event
-    href: on-calendar-entry-delete.md
-  - name: When Adding a Calendar Section or Resource
+  - name: When Adding a Calendar or Resource Section
     href: on-calendar-section-add.md
-  - name: When Updating a Calendar Section or Resource
+  - name: When Updating a Calendar or Resource Section
     href: on-calendar-section-update.md
-  - name: When Deleting a Calendar Section or Resource
+  - name: When Deleting a Calendar or Resource Section
     href: on-calendar-section-delete.md

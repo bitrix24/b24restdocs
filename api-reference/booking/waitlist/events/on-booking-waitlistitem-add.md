@@ -1,4 +1,4 @@
-# Event on Creating a Record in the Waitlist onBookingWaitListItemAdd
+# Event on creating a record in the waitlist onBookingWaitListItemAdd
 
 > Scope: [`booking`](../../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 The event `ONBOOKINGWAITLISTITEMADD` will trigger when a new record is created in the waitlist either manually or through the methods [booking.v1.waitlist.add](../booking-v1-waitlist-add.md), [booking.v1.waitlist.createfrombooking](../booking-v1-waitlist-createfrombooking.md).
 
-## What the Handler Receives
+## What the handler receives
 
 Data is sent as a POST request {.b24-info}
 
@@ -60,7 +60,7 @@ The structure is described [below](#auth) ||
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

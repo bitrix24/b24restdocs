@@ -53,23 +53,23 @@ The user must have at least read access permission (**R**) to the storage.
 - **DESC** - descending.
 The default value `Array("SORT"=>"ASC")` means that the result will be sorted in ascending order. If an empty array `Array()` is specified, the result will not be sorted. ||
 || **FILTER**
-[`unknown`](../../data-types.md) | An array in the form `array("filter_field"=>"value" [, ...])`. `Filter field` can take the following values:
+[`unknown`](../../data-types.md) | An array in the form `array("filter field"=>"value" [, ...])`. The `filter field` can take the following values:
 - **ACTIVE** - filter by activity (Y\|N);
 - **NAME** - by name (can search by pattern [%_]);
 - **CODE** - by symbolic code (by pattern [%_]);
 - **SECTION_ID** - by parent section code (if false is specified, root sections will be returned);
 - **DEPTH_LEVEL** - by depth level (starts from 1);
-- **LEFT_MARGIN**, **RIGHT_MARGIN** - by position in the tree (used when a selection of the subtree is needed);
+- **LEFT_MARGIN**, **RIGHT_MARGIN** - by position in the tree (used when a selection of the tree of subsections is needed);
 - **ID** - by section code;
 - **TIMESTAMP_X** - by the time of the last modification;
 - **DATE_CREATE** - by creation time;
 - **MODIFIED_BY** - by the code of the user who modified the section;
 - **CREATED_BY** - by creator;
 All filterable fields can contain a type of filter check before the name. Optional. By default, records are not filtered. ||
-|| **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
+|| **start** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -100,7 +100,7 @@ All filterable fields can contain a type of filter check before the name. Option
 
 {% endlist %}
 
-{% include [Examples notes](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response in case of success
 

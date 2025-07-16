@@ -1,21 +1,21 @@
-title: Reference Guides
+title: Directories
 href: index.md
 items:
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Create a New Item in the Reference
+  - name: Create a new item in the directory
     href: crm-status-add.md
-  - name: Delete a Reference Item
-    href: crm-status-delete.md
-  - name: Get a Reference Item by ID
+  - name: Update a directory item
+    href: crm-status-update.md    
+  - name: Get directory types
+    href: crm-status-entity-types.md    
+  - name: Get directory items by type
     href: crm-status-entity-items.md
-  - name: Get Reference Types
-    href: crm-status-entity-types.md
-  - name: Get Reference Fields
-    href: crm-status-fields.md
-  - name: Get a Reference Item by ID
+  - name: Get a directory item by ID
     href: crm-status-get.md
-  - name: Get a List of Items by Filter
+  - name: Get a list of items by filter
     href: crm-status-list.md
-  - name: Update a Reference Item
-    href: crm-status-update.md
+  - name: Delete a directory item
+    href: crm-status-delete.md   
+  - name: Get directory fields
+    href: crm-status-fields.md     

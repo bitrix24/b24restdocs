@@ -1,4 +1,4 @@
-# Event on Creating a Resource Type onBookingResourceTypeAdd
+# Event when creating a resource type onBookingResourceTypeAdd
 
 > Scope: [`booking`](../../../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 The event `ONBOOKINGRESOURCETYPEADD` will trigger when a new resource type is created either manually or via the [booking.v1.resourcetype.add](../booking-v1-resourcetype-add.md) method.
 
-## What the Handler Receives
+## What the handler receives
 
 Data is sent as a POST request {.b24-info}
 
@@ -60,7 +60,7 @@ The structure is described [below](#auth) ||
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring
+## Continue exploring
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

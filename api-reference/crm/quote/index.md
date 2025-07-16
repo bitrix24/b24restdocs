@@ -1,31 +1,31 @@
 # Estimates in CRM: Overview of Methods
 
-An estimate is a CRM object that allows you to create printed documents and send them to the client before a deal.
+An estimate is a CRM entity that allows you to create printed documents and send them to clients before a deal.
 
 > Quick navigation: [all methods and events](#all-methods)
 > 
 > User documentation: [estimates in Bitrix24](https://helpdesk.bitrix24.com/open/17643444/) 
 
-## Linking Estimates with Other CRM Objects
+## Connection of Estimates with Other CRM Entities
 
 **Deal.** An estimate can be created based on a deal and vice versa. The connection is established in the estimate field `DEAL_ID`.
 
 **Products.** Adding, modifying, and deleting product items in estimates can be done through the group of methods [crm.item.productrow.*](../universal/product-rows/index.md). 
 
-**Details.** The buyer's details are pulled into the estimate form from the associated contact or company. The seller's details are pulled from the field `MYCOMPANY_ID`.
+**Details.** Buyer details are pulled into the estimate form from the associated contact or company. Seller details are pulled from the field `MYCOMPANY_ID`.
 
-**Client.** This field in the estimate card consists of the associated company and contacts. There is one company in the field, and it is accessed directly through the field `COMPANY_ID`. Multiple contacts can be specified, and they can be modified through an array of data in the multiple field `CONTACT_IDS`.
+**Client.** This field in the estimate detail form consists of the associated company and contacts. There is one company in the field, and it is accessed directly through the field `COMPANY_ID`. Multiple contacts can be specified, and their modification is done through an array of data in the multiple field `CONTACT_IDS`.
 
 {% note tip "User Documentation" %}
 
 - [How to add products to deals, leads, and estimates](https://helpdesk.bitrix24.com/open/14303190/)
-- [How to use your company's details](https://helpdesk.bitrix24.com/open/16059544/)
+- [How to use your company details](https://helpdesk.bitrix24.com/open/16059544/)
 
 {% endnote %}
 
-## Estimate Card
+## Estimate Detail Form
 
-The main workspace in an estimate is the General tab of its card. It consists of two parts: 
+The main workspace in an estimate is the General tab of its detail form. It consists of two parts:
 
 * The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. They allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom fields for estimates, the group of methods [crm.quote.userfield.*](./user-field/index.md) is used.
 
@@ -33,7 +33,7 @@ The main workspace in an estimate is the General tab of its card. It consists of
 
 {% note tip "User Documentation" %}
 
-- [CRM Card: Features and Settings](https://helpdesk.bitrix24.com/open/22879716/)
+- [CRM Detail Form: Features and Settings](https://helpdesk.bitrix24.com/open/22879716/)
 - [System Fields in CRM](https://helpdesk.bitrix24.com/open/18529390/)
 - [Custom Fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
 - [Timeline in CRM Entity](https://helpdesk.bitrix24.com/open/16767378/)
@@ -42,16 +42,16 @@ The main workspace in an estimate is the General tab of its card. It consists of
 
 ## Widgets
 
-You can embed an application into the estimate card. This allows you to use the application without leaving the estimate card. 
+You can embed an application into the estimate detail form. This allows you to use the application without leaving the estimate detail form.
 
-There are two embedding scenarios: 
+There are two embedding scenarios:
 * Use special [embedding locations](../../widgets/crm/index.md). For example, by creating your own tab.
-* Create a [custom field](../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md), into which the content of your application will be loaded.
+* Create a [custom field](../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md) where the content of your application will be loaded.
 
 {% note tip "Typical use-cases and scenarios" %}
 
 - [Widget Embedding Mechanism](../../widgets/index.md)
-- [Embed a Widget in a CRM Card](../../../tutorials/crm/crm-widgets/widget-as-detail-tab.md)
+- [Embed a Widget in a CRM Detail Form](../../../tutorials/crm/crm-widgets/widget-as-detail-tab.md)
 
 {% endnote %}
 

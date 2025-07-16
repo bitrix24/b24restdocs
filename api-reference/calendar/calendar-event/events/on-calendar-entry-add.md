@@ -1,6 +1,6 @@
 # When Adding the OnCalendarEntryAdd Event
 
-> Scope: [`calendar`](../../scopes/permissions.md)
+> Scope: [`calendar`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
@@ -51,7 +51,7 @@ Contains a single key — `id` ||
 || **data.id**
 [`string`][1] | Identifier of the calendar event object ||
 || **ts**
-[`timestamp`][1] | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`][1] | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -60,15 +60,15 @@ The structure is described [below](#auth) ||
 
 ### auth Parameter {#auth}
 
-{% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
 ## Continue Exploring 
 
-- [{#T}](../../events/index.md)
-- [{#T}](../../events/event-bind.md)
+- [{#T}](../../../events/index.md)
+- [{#T}](../../../events/event-bind.md)
 - [{#T}](./index.md)
 - [{#T}](./on-calendar-entry-update.md)
 - [{#T}](./on-calendar-entry-delete.md)
 
 
-[1]: ../../data-types.md
+[1]: ../../../data-types.md

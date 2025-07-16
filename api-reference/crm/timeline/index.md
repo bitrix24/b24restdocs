@@ -2,8 +2,8 @@
 
 The timeline is the primary workspace in the CRM entity detail form. It records:
 
-* System information about working with the entity: stage changes, payments, creation of entities based on the current one
-* User information: CRM activities (tasks, e-mails, calls) and timeline entries (comments, documents generated from templates, application log entries)
+* system information about working with the entity: stage changes, payments, creating entities based on the current one
+* user information: CRM activities (tasks, e-mails, calls) and timeline entries (comments, documents generated from templates, application log entries)
 
 > Quick navigation: [all methods and events](#all-methods) 
 > 
@@ -13,14 +13,14 @@ The timeline is the primary workspace in the CRM entity detail form. It records:
 
 Activities in CRM are divided into incoming and scheduled:
 
-* Incoming — activities received from the client, such as an e-mail or a call. For these activities, it is important to correctly specify the `DIRECTION` parameter = `1` so that the incoming CRM activities counter works
+* Incoming — activities received from the client, such as an e-mail or a call. For these activities, it is important to correctly specify the parameter `DIRECTION` = `1` so that the incoming CRM activities counter works
 * Scheduled — activities created by employees, such as tasks or universal activities
   
 More details about activities and methods for managing them can be found in the article [Activities in CRM: Overview of Methods](./activities/index.md).
 
 ## Timeline
 
-Timeline entries are divided into two types:
+Timeline entries are divided into two types: 
 
 * Comments. You can add, delete, modify, and retrieve comments through the group of methods [crm.timeline.comment.*](./comments/index.md)
 * Log entries. You can add, delete, modify, and retrieve log entries through the group of methods [crm.timeline.logmessage.*](./logmessage/index.md)
@@ -29,7 +29,7 @@ You can manage the relationships of timeline entries with CRM entities using the
 
 ## Widgets
 
-You can embed an application into activities and timeline entries. Thanks to the embedding, you will be able to use the application without leaving the CRM entity detail form. For embedding, there are special places in the timeline:
+You can embed an application into activities and timeline entries. Thanks to the embedding, you can use the application without leaving the CRM entity detail form. For embedding, there are special places in the timeline:
 
 * [Button above the timeline of the entity detail form](../../widgets/crm/detail-activity.md) `CRM_XXX_DETAIL_ACTIVITY`, `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY`
 * [Context menu item of the activity in the entity detail form](../../widgets/crm/activity-timeline-menu.md) `CRM_XXX_ACTIVITY_TIMELINE_MENU`
@@ -45,7 +45,7 @@ You can embed an application into activities and timeline entries. Thanks to the
 
 **Text notes** can be added to activities and timeline comments and deleted. Use the group of methods [crm.timeline.note.*](./note/index.md).
 
-**Content blocks** can be added to timeline comments and deleted. Use the group of methods [crm.timeline.layout.blocks.*](./layout-blocks/index.md). 
+**Content blocks** can be added to timeline comments and deleted. Use the group of methods [crm.timeline.layout.blocks.*](./layout-blocks/index.md).
 
 * [Available content blocks](./activities/configurable/structure/body.md#contentblockdto)
 
@@ -54,7 +54,7 @@ You can embed an application into activities and timeline entries. Thanks to the
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute methods: depending on the method
+> Who can perform methods: depending on the method
 
 ### Timeline Comments
 
@@ -83,7 +83,7 @@ You can embed an application into activities and timeline entries. Thanks to the
 
 {% endlist %}
 
-### Notes for Timeline Entry
+### Notes for Timeline Entries
 
 #|
 || **Method** | **Description** ||
@@ -99,8 +99,8 @@ You can embed an application into activities and timeline entries. Thanks to the
 || **Method** | **Description** ||
 || [crm.timeline.bindings.bind](./bindings/crm-timeline-bindings-bind.md) | Adds a relationship between a timeline entry and a CRM entity ||
 || [crm.timeline.bindings.list](./bindings/crm-timeline-bindings-list.md) | Retrieves a list of relationships for a timeline entry ||
-|| [crm.timeline.bindings.unbind](./bindings/crm-timeline-bindings-unbind.md) | Removes a relationship between a timeline entry and a CRM entity ||
-|| [crm.timeline.bindings.fields](./bindings/crm-timeline-bindings-fields.md) | Retrieves fields of the relationship between CRM entities and timeline entries ||
+|| [crm.timeline.bindings.unbind](./bindings/crm-timeline-bindings-unbind.md) | Removes the relationship between a timeline entry and a CRM entity ||
+|| [crm.timeline.bindings.fields](./bindings/crm-timeline-bindings-fields.md) | Retrieves the fields of the relationship between CRM entities and timeline entries ||
 |#
 
 ### Additional Content Blocks
@@ -122,4 +122,12 @@ You can embed an application into activities and timeline entries. Thanks to the
 || [crm.timeline.logmessage.delete](./logmessage/crm-timeline-logmessage-delete.md) | Deletes a log entry ||
 || [crm.timeline.icon.*](./logmessage/icons/index.md) | Manages entry icons ||
 || [crm.timeline.logo.*](./logmessage/logo/index.md) | Manages entry logos ||
+|#
+
+### Actions with Timeline Entries
+
+#|
+|| **Method** | **Description** ||
+|| [crm.timeline.item.pin](./actions/crm-timeline-item-pin.md) | Pins an entry in the timeline ||
+|| [crm.timeline.item.unpin](./actions/crm-timeline-item-unpin.md) | Unpins an entry in the timeline ||
 |#

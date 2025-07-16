@@ -4,7 +4,7 @@
 >
 > Who can perform methods: any user
 
-Bank details are a strict sequence of numbers required for conducting operations with a checking account. With these details, you can send a cashless payment or deposit money into the account through the cashier.
+Bank details are a strict sequence of numbers required for conducting operations with a bank account. They can be used to send a cashless payment or deposit money into the account through the cashier.
 
 The mandatory bank details include:
 - account number
@@ -20,14 +20,12 @@ In CRM, bank details are linked to the universal details object. Multiple bank d
 `type` | **Description** | **Read** | **Write** | **Required** | **Immutable** ||
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the bank detail. Created automatically and unique within the account | Yes | No | No | No ||
-|| **ENTITY_TYPE_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object's type. Can only be `Detail` (value `8`).
-
-Object type identifiers are returned by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) | Yes | No | No | No ||
 || **ENTITY_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object | Yes | Yes | Yes | Yes ||
+[`integer`](../../../data-types.md) | Identifier of the parent object. Currently, it can only be the identifier of the detail. 
+
+Identifiers of details can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) | Yes | Yes | Yes | Yes ||
 || **COUNTRY_ID**
-[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank detail fields (see the method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
+[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank detail fields (see method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
 
 The country code of the bank detail matches the country code in the linked detail template, the identifier of which is specified in the `ENTITY_ID` field | Yes | Yes | No | No ||
 || **DATE_CREATE**
@@ -43,13 +41,13 @@ The country code of the bank detail matches the country code in the linked detai
 || **CODE**
 [`string`](../../../data-types.md) | Symbolic code of the detail | Yes | Yes | No | No ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base.
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
-The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field.
+The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field. 
 
 It is recommended to use a unique prefix to avoid collisions with other applications | Yes | Yes | No | No ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity indicator. Uses values `Y` or `N`.
+[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. 
 
 Currently, the field does not actually affect anything | Yes | Yes | No | No ||
 || **SORT**
@@ -104,7 +102,7 @@ Currently, the field does not actually affect anything | Yes | Yes | No | No ||
 || **Method** | **Description** ||
 || [crm.requisite.bankdetail.add](./crm-requisite-bank-detail-add.md) | Creates a new bank detail ||
 || [crm.requisite.bankdetail.update](./crm-requisite-bank-detail-update.md) | Modifies an existing bank detail ||
-|| [crm.requisite.bankdetail.get](./crm-requisite-bank-detail-get.md) | Returns a bank detail by identifier ||
+|| [crm.requisite.bankdetail.get](./crm-requisite-bank-detail-get.md) | Returns the bank detail by identifier ||
 || [crm.requisite.bankdetail.list](./crm-requisite-bank-detail-list.md) | Returns a list of bank details by filter ||
 || [crm.requisite.bankdetail.delete](./crm-requisite-bank-detail-delete.md) | Deletes a bank detail ||
 || [crm.requisite.bankdetail.fields](./crm-requisite-bank-detail-fields.md) | Returns a formal description of bank detail fields ||

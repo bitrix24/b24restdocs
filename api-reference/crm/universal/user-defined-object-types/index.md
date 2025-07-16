@@ -4,7 +4,7 @@ A smart process is a versatile CRM object that can be customized to meet the nee
 
 > Quick navigation: [all methods and events](#all-methods)
 >
-> User documentation: [Smart Process Automation in CRM](https://helpdesk.bitrix24.com/open/19141012/)
+> User documentation: [Smart Processes in CRM](https://helpdesk.bitrix24.com/open/19141012/)
 
 ## Working with a Smart Process
 
@@ -14,55 +14,56 @@ A smart process is a versatile CRM object that can be customized to meet the nee
 4. Configure the item detail form — [crm.item.details.configuration.*](../item-details-configuration/index.md).
 5. Create the first items within the smart process — [crm.item.*](../index.md).
 
-A smart process can be transferred from the CRM section to the Automation section via [digital workplaces](../../automated-solution/index.md).
+The smart process can be transferred from the CRM section to the Automation section via [digital workplaces](../../automated-solution/index.md).
 
 ## Connections with Other Objects
 
 **CRM Objects.** A smart process can be [linked](./crm-type-add.md#relations) to leads, deals, and other CRM objects. The linked object will be accessible through the field `parentId{ID}`, where `{ID}` is the numeric identifier of the CRM object.
 
-**Client.** This field in the smart process detail form consists of the associated company and contacts. There is one company in the field; change the linked company through the `companyId` field. There can be multiple contacts in the "Client" field. Interaction with contacts is conducted through the `contactIds` field — pass an array of contact IDs into this field. Enable the field with the `isClientEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Client.** A field in the smart process detail form that consists of the associated company and contacts. There is one company in the field; change the linked company through the `companyId` field. There can be multiple contacts in the "Client" field. Interaction with contacts is conducted through the `contactIds` field — pass an array of contact IDs into the field. Enable the field with the option `isClientEnabled` in the method [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md).
 
-**Your Company Details.** Specify your company ID in the `mycompanyId` field so that its details are automatically used in documents. You can obtain your company ID using the [crm.item.list](../crm-item-list.md) method for the company object with a filter on the `isMyCompany` field. Enable the field with the `isMycompanyEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Your Company Details.** Specify your company ID in the `mycompanyId` field so that its details are automatically used in documents. You can obtain your company ID using the method [crm.item.list](../crm-item-list.md) for the company object with a filter on the `isMyCompany` field. Enable the field with the option `isMycompanyEnabled` in the method [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md).
 
-**Products.** To add, modify, or delete product items in the smart process, use the [crm.item.productrow.*](../product-rows/index.md) methods. Enable the products tab and the "Amount and Currency" field with the `isLinkWithProductsEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Products.** To add, modify, or delete product items in the smart process, use the methods [crm.item.productrow.*](../product-rows/index.md). Enable the products tab and the "Amount and Currency" field with the option `isLinkWithProductsEnabled` in the method [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md).
 
 **Users.** The smart process is linked to users by numeric identifiers in the fields:
-- `createdBy` — created by,
-- `updatedBy` — updated by,
+- `createdBy` — who created it,
+- `updatedBy` — who updated it,
 - `movedBy` — who changed the stage,
 - `assignedById` — responsible for the item,
-- `observers` — observers. Enable the field with the `isObserversEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+- `observers` — observers. Enable the field with the option `isObserversEnabled` in the method [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md).
 
-You can obtain the user identifier and data using the [user.get](../../../user/user-get.md) method.
+You can obtain the identifier and data of a user using the method [user.get](../../../user/user-get.md).
 
-**Documents.** To create a document from a template, upload a new template for the smart process, or configure the document numbering, use the [crm.documentgenerator.*](../../document-generator/index.md) methods. Enable document handling in the smart process with the `isDocumentsEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Documents.** To create a document from a template, upload a new template for the smart process, or configure the numbering for documents, use the methods [crm.documentgenerator.*](../../document-generator/index.md). Enable document handling in the smart process with the option `isDocumentsEnabled` in the method [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md).
 
-**Tasks.** Smart process items can be linked to tasks. To work with tasks, use the [tasks.task.*](../../../tasks/index.md) methods. To make the linking option available, enable and configure the `isUseInUserfieldEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Tasks.** Smart process items can be linked to tasks. To work with tasks, use the methods [tasks.task.*](../../../tasks/index.md). To make the linking option available, enable and configure the option `isUseInUserfieldEnabled` in the method [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md).
 
-**Calendar Events.** Smart process items can be linked to calendar events. To work with the calendar, use the [calendar.event.*](../../../calendar/calendar-event/index.md) methods. To make the linking option available, enable and configure the `isUseInUserfieldEnabled` option in the [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md) methods.
+**Calendar Events.** Smart process items can be linked to calendar events. To work with the calendar, use the methods [calendar.event.*](../../../calendar/calendar-event/index.md). To make the linking option available, enable and configure the option `isUseInUserfieldEnabled` in the method [crm.type.add](./crm-type-add.md) or [crm.type.update](./crm-type-update.md).
 
 {% note tip "User Documentation" %}
 
 - [How to attach a task to a smart process](../../../../tutorials/tasks/how-to-connect-task-to-spa.md)
 - [How to create a custom field in a smart process](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
 - [How to add a comment to the smart process timeline](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md)
+- [How to create a new funnel with stages in a smart process](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)  
 
 {% endnote %}
 
 ## Smart Process Item Detail Form
 
-The main workspace in a smart process is the "General" tab of the detail form. It consists of two parts:
+The main workspace in the smart process is the "General" tab of the detail form. It consists of two parts:
 
-- The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. Fields allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom fields in the smart process, use the group of methods [userfieldconfig.*](../userfieldconfig/userfieldconfig/index.md).
+- the left part, which contains fields with information. If the system fields are insufficient, you can create your own custom fields. Fields allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom fields in the smart process, use the group of methods [userfieldconfig.*](../userfieldconfig/userfieldconfig/index.md).
 
-- The right part contains the smart process timeline. Here, you can create, edit, filter, and delete CRM activities — a group of methods [crm.activity.*](../../timeline/activities/index), and timeline records — a group of methods [crm.timeline.*](../../timeline/index).
+- the right part, which contains the smart process timeline. In it, you can create, edit, filter, and delete CRM activities — a group of methods [crm.activity.*](../../timeline/activities/index), and timeline records — a group of methods [crm.timeline.*](../../timeline/index).
 
 You can manage the parameters of the smart process detail form through the group of methods [crm.item.details.configuration.*](../item-details-configuration/index.md).
 
 {% note tip "User Documentation" %}
 
-- [CRM item form features and settings](https://helpdesk.bitrix24.com/open/22879716/)
-- [Standard fields in CRM](https://helpdesk.bitrix24.com/open/18529390/)
+- [CRM Detail Form: Features and Settings](https://helpdesk.bitrix24.com/open/22879716/)
+- [System Fields in CRM](https://helpdesk.bitrix24.com/open/18529390/)
 - [Custom Fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
 - [Timeline in CRM Item](https://helpdesk.bitrix24.com/open/16767378/)
 
@@ -70,33 +71,33 @@ You can manage the parameters of the smart process detail form through the group
 
 ## Widgets
 
-You can embed an application into the smart process detail form. With embedding, you can use the application without leaving the item detail form.
+You can embed an application into the smart process detail form. Thanks to embedding, you can use the application without leaving the item detail form.
 
 There are two embedding scenarios:
 
-- Use special [embedding locations](../../../widgets/crm/index.md). For example, by creating your own tab.
+- use special [embedding locations](../../../widgets/crm/index.md). For example, by creating your own tab.
   
-- Create a [custom field](../../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md) where the interface of your application will be loaded.
+- create a [custom field](../../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md), where the interface of your application will be loaded.
   
 ### Smart Process Embedding Locations
 
-Replace `XXX` with the numeric identifier of the specific smart process, for example, `CRM_DYNAMIC_183_DOCUMENTGENERATOR_BUTTON`.
+Replace `XXX` with the numeric identifier of a specific smart process, for example `CRM_DYNAMIC_183_DOCUMENTGENERATOR_BUTTON`.
 
-- [`CRM_DYNAMIC_XXX_DETAIL_TAB`](../../../widgets/crm/detail-tab.md) — tab in the detail form of the CRM item
+- [`CRM_DYNAMIC_XXX_DETAIL_TAB`](../../../widgets/crm/detail-tab.md) — tab in the detailed CRM item form
 
-- [`CRM_DYNAMIC_XXX_DETAIL_ACTIVITY`](../../../widgets/crm/detail-activity.md) — button above the item detail form timeline
+- [`CRM_DYNAMIC_XXX_DETAIL_ACTIVITY`](../../../widgets/crm/detail-activity.md) — button above the item detail timeline
 
-- [`CRM_DYNAMIC_XXX_DETAIL_TOOLBAR`](../../../widgets/crm/detail-toolbar.md) — item in the dropdown menu of the top button of the detail form
+- [`CRM_DYNAMIC_XXX_DETAIL_TOOLBAR`](../../../widgets/crm/detail-toolbar.md) — dropdown menu item in the upper button of the detail form
 
-- [`CRM_DYNAMIC_XXX_DOCUMENTGENERATOR_BUTTON`](../../../widgets/crm/document-generator-button.md) — item in the dropdown menu of the document generator
+- [`CRM_DYNAMIC_XXX_DOCUMENTGENERATOR_BUTTON`](../../../widgets/crm/document-generator-button.md) — dropdown menu item for the document generator
 
-- [`CRM_DYNAMIC_XXX_LIST_MENU`](../../../widgets/crm/index.md) — item in the context menu in the list of items
+- [`CRM_DYNAMIC_XXX_LIST_MENU`](../../../widgets/crm/index.md) — context menu item in the list of items
 
-- [`CRM_DYNAMIC_XXX_LIST_TOOLBAR`](../../../widgets/crm/list-toolbar.md) — item in the dropdown menu above the list of items
+- [`CRM_DYNAMIC_XXX_LIST_TOOLBAR`](../../../widgets/crm/list-toolbar.md) — dropdown menu item above the list of items
 
-- [`CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU`](../../../widgets/crm/activity-timeline-menu.md) — item in the context menu of the activity in the item detail form
+- [`CRM_DYNAMIC_XXX_ACTIVITY_TIMELINE_MENU`](../../../widgets/crm/activity-timeline-menu.md) — context menu item for an activity in the item detail form
 
-- [`CRM_DYNAMIC_XXX_ROBOT_DESIGNER_TOOLBAR`](../../../widgets/crm/robot-designer-toolbar.md) — item in the dropdown menu of the top button of the robot designer
+- [`CRM_DYNAMIC_XXX_ROBOT_DESIGNER_TOOLBAR`](../../../widgets/crm/robot-designer-toolbar.md) — dropdown menu item in the upper button of the robot designer
 
 {% note tip "Typical use-cases and scenarios" %}
 
@@ -109,7 +110,7 @@ Replace `XXX` with the numeric identifier of the specific smart process, for exa
 
 Each smart process has four types of identifiers. Use the identifiers to apply a method to a specific smart process.
 
-1. Numeric identifier of type `130`. Obtainable via the [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) `ID` or [crm.type.list](./crm-type-list.md) `entityTypeId`.
+1. Numeric identifier of type `130`. Obtain it using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) `ID` or [crm.type.list](./crm-type-list.md) `entityTypeId`.
 
 1. Symbolic code of type `DYNAMIC_130` — [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) `SYMBOL_CODE`.
 
@@ -153,7 +154,7 @@ Each smart process has four types of identifiers. Use the identifiers to apply a
 
 ### Items
 
-The CRM object identifier **entityTypeId** — [numeric identifier type](#id), for example, `128`.
+The CRM object identifier **entityTypeId** — [numeric identifier type](#id), for example `128`.
 
 {% list tabs %}
 
@@ -175,14 +176,14 @@ The CRM object identifier **entityTypeId** — [numeric identifier type](#id), f
     || **Event** | **Triggered** ||
     || [onCrmDynamicItemAdd](../events/on-crm-dynamic-item-add.md) | When a smart process item is created ||
     || [onCrmDynamicItemDelete](../events/on-crm-dynamic-item-delete.md) | When a smart process item is deleted ||
-    || [onCrmDynamicItemUpdate](../events/on-crm-dynamic-item-update.md) | When a smart process item is updated ||
+    || [onCrmDynamicItemUpdate](../events/on-crm-dynamic-item-update.md) | When a smart process item is modified ||
     |#
 
 {% endlist %}
 
 ### Funnels
 
-The CRM object identifier **entityTypeId** — [numeric identifier type](#id), for example, `128`.
+The CRM object identifier **entityTypeId** — [numeric identifier type](#id), for example `128`.
 
 #|
 || **Method** | **Description** ||
@@ -196,33 +197,33 @@ The CRM object identifier **entityTypeId** — [numeric identifier type](#id), f
 
 ### Custom Fields
 
-The CRM object identifier **entityId** — [custom field object type](#id), for example, `CRM_1`.
+The CRM object identifier **entityId** — [custom field object type](#id), for example `CRM_1`.
 
 #|
 || **Method** | **Description** ||
 || [userfieldconfig.add](../userfieldconfig/userfieldconfig/userfieldconfig-add.md) | Creates a custom field ||
-|| [userfieldconfig.update](../userfieldconfig/userfieldconfig/userfieldconfig-update.md) | Modifies the field settings ||
-|| [userfieldconfig.get](../userfieldconfig/userfieldconfig/userfieldconfig-get.md) | Returns the settings of the custom field by identifier ||
+|| [userfieldconfig.update](../userfieldconfig/userfieldconfig/userfieldconfig-update.md) | Modifies field settings ||
+|| [userfieldconfig.get](../userfieldconfig/userfieldconfig/userfieldconfig-get.md) | Returns custom field settings by identifier ||
 || [userfieldconfig.getTypes](../userfieldconfig/userfieldconfig/userfieldconfig-get-types.md) | Returns the set of available custom field types for the module ||
 || [userfieldconfig.list](../userfieldconfig/userfieldconfig/userfieldconfig-list.md) | Returns a list of custom field settings ||
-|| [userfieldconfig.delete](../userfieldconfig/userfieldconfig/userfieldconfig-delete.md) | Deletes the custom field ||
+|| [userfieldconfig.delete](../userfieldconfig/userfieldconfig/userfieldconfig-delete.md) | Deletes a custom field ||
 |#
 
 ### Managing Detail Form Settings
 
-The CRM object identifier **entityTypeId** — [numeric identifier type](#id), for example, `128`.
+The CRM object identifier **entityTypeId** — [numeric identifier type](#id), for example `128`.
 
 #|
 || **Method** | **Description** ||
 || [crm.item.details.configuration.forceCommonScopeForAll](../item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md) | Sets a common detail form for all users ||
-|| [crm.item.details.configuration.get](../item-details-configuration/crm-item-details-configuration-get.md) | Retrieves the parameters of the item detail forms ||
-|| [crm.item.details.configuration.reset](../item-details-configuration/crm-item-details-configuration-reset.md) | Resets the parameters of the item detail forms ||
-|| [crm.item.details.configuration.set](../item-details-configuration/crm-item-details-configuration-set.md) | Sets the parameters of the item detail forms ||
+|| [crm.item.details.configuration.get](../item-details-configuration/crm-item-details-configuration-get.md) | Retrieves the parameters of item detail forms ||
+|| [crm.item.details.configuration.reset](../item-details-configuration/crm-item-details-configuration-reset.md) | Resets the parameters of item detail forms ||
+|| [crm.item.details.configuration.set](../item-details-configuration/crm-item-details-configuration-set.md) | Sets the parameters of item detail forms ||
 |#
 
 ### Product Items
 
-The CRM object identifier **ownerType** — [short symbolic code type](#id), for example, `T80`.
+The CRM object identifier **ownerType** — [short symbolic code type](#id), for example `T80`.
 
 #|
 || **Method** | **Description** ||

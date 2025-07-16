@@ -1,4 +1,4 @@
-# Get a List of Bank Details by Filter crm.requisite.bankdetail.list
+# Get a list of bank details by filter crm.requisite.bankdetail.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -12,7 +12,7 @@ The method returns a list of bank details based on the filter.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | The array contains a list of fields to select (see [bank detail fields](#fields)).
+[`array`](../../../data-types.md) | An array containing the list of fields to select (see [bank detail fields](#fields)).
 
 If the array is not provided or an empty array is passed, all available bank detail fields will be selected. ||
 || **filter**
@@ -27,19 +27,19 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal 
 ||
@@ -61,7 +61,7 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page 
+`start = (N-1) * 50`, where `N` — the desired page number 
 ||
 |#
 
@@ -71,91 +71,86 @@ The formula for calculating the `start` parameter value:
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the bank detail. Automatically created and unique within the account. ||
-|| **ENTITY_TYPE_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object's type. Can only be `Requisite` (value `8`).
-
-Object type identifiers are returned by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md)
-||
+[`integer`](../../../data-types.md) | Identifier of the bank detail. Created automatically and unique within the account. ||
 || **ENTITY_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object. Currently, it can only be the identifier of the requisite. 
+[`integer`](../../../data-types.md) | Identifier of the parent object. Currently, it can only be the identifier of the detail.
 
-Requisite identifiers can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) ||
+Identifiers of details can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md). ||
 || **COUNTRY_ID**
 [`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank detail fields (see the method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
 
-The country code of the bank detail matches the country code in the linked requisite template, the identifier of which is specified in the `ENTITY_ID` field. ||
+The country code of the bank detail matches the country code in the linked detail template, the identifier of which is specified in the `ENTITY_ID` field. ||
 || **DATE_CREATE**
-[`datetime`](../../../data-types.md) | Creation date ||
+[`datetime`](../../../data-types.md) | Creation date. ||
 || **DATE_MODIFY**
-[`datetime`](../../../data-types.md) | Modification date ||
+[`datetime`](../../../data-types.md) | Modification date. ||
 || **CREATED_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who created the requisite ||
+[`user`](../../../data-types.md) | Identifier of the user who created the detail. ||
 || **MODIFY_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who modified the requisite ||
+[`user`](../../../data-types.md) | Identifier of the user who modified the detail. ||
 || **NAME**
-[`string`](../../../data-types.md) | Name of the bank detail ||
+[`string`](../../../data-types.md) | Name of the bank detail. ||
 || **CODE**
-[`string`](../../../data-types.md) | Symbolic code of the requisite ||
+[`string`](../../../data-types.md) | Symbolic code of the detail. ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information database. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base.
 
-The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field. 
+The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field.
 
 It is recommended to use a unique prefix to avoid collisions with other applications. ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. 
+[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used.
 
 Currently, the field does not actually affect anything. ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting ||
+[`integer`](../../../data-types.md) | Sorting. ||
 || **RQ_BANK_NAME**
-[`string`](../../../data-types.md) | Bank name ||
+[`string`](../../../data-types.md) | Name of the bank. ||
 || **RQ_BANK_ADDR**
-[`string`](../../../data-types.md) | Bank address ||
+[`string`](../../../data-types.md) | Address of the bank. ||
 || **RQ_BANK_CODE**
-[`string`](../../../data-types.md) | Bank code (for country BR) ||
+[`string`](../../../data-types.md) | Bank code (for country BR). ||
 || **RQ_BANK_ROUTE_NUM**
-[`string`](../../../data-types.md) | Bank Routing Number ||
+[`string`](../../../data-types.md) | Bank Routing Number. ||
 || **RQ_BIK**
-[`string`](../../../data-types.md) | BIK ||
+[`string`](../../../data-types.md) | BIK. ||
 || **RQ_CODEB**
-[`string`](../../../data-types.md) | Code Banque (for country FR) ||
+[`string`](../../../data-types.md) | Code Banque (for country FR). ||
 || **RQ_CODEG**
-[`string`](../../../data-types.md) | Code Guichet (for country FR) ||
+[`string`](../../../data-types.md) | Code Guichet (for country FR). ||
 || **RQ_RIB**
-[`string`](../../../data-types.md) | Clé RIB (for country FR) ||
+[`string`](../../../data-types.md) | Clé RIB (for country FR). ||
 || **RQ_MFO**
-[`string`](../../../data-types.md) | MFO ||
+[`string`](../../../data-types.md) | MFO. ||
 || **RQ_ACC_NAME**
-[`string`](../../../data-types.md) | Bank Account Holder Name ||
+[`string`](../../../data-types.md) | Bank Account Holder Name. ||
 || **RQ_ACC_NUM**
-[`string`](../../../data-types.md) | Bank Account Number ||
+[`string`](../../../data-types.md) | Bank Account Number. ||
 || **RQ_ACC_TYPE**
-[`string`](../../../data-types.md) | Tipo da conta (for country BR) ||
+[`string`](../../../data-types.md) | Tipo da conta (for country BR). ||
 || **RQ_AGENCY_NAME**
-[`string`](../../../data-types.md) | Agência (for country BR) ||
+[`string`](../../../data-types.md) | Agência (for country BR). ||
 || **RQ_IIK**
-[`string`](../../../data-types.md) | IIK ||
+[`string`](../../../data-types.md) | IIK. ||
 || **RQ_ACC_CURRENCY**
-[`string`](../../../data-types.md) | Account currency ||
+[`string`](../../../data-types.md) | Account currency. ||
 || **RQ_COR_ACC_NUM**
-[`string`](../../../data-types.md) | Correspondent account ||
+[`string`](../../../data-types.md) | Correspondent account number. ||
 || **RQ_IBAN**
-[`string`](../../../data-types.md) | IBAN ||
+[`string`](../../../data-types.md) | IBAN. ||
 || **RQ_SWIFT**
-[`string`](../../../data-types.md) | SWIFT ||
+[`string`](../../../data-types.md) | SWIFT. ||
 || **RQ_BIC**
-[`string`](../../../data-types.md) | BIC ||
+[`string`](../../../data-types.md) | BIC. ||
 || **COMMENTS**
-[`string`](../../../data-types.md) | Comment ||
+[`string`](../../../data-types.md) | Comment. ||
 || **ORIGINATOR_ID**
-[`string`](../../../data-types.md) | Identifier of the external information database. The purpose of the field may change by the final developer ||
+[`string`](../../../data-types.md) | Identifier of the external information base. The purpose of the field may change by the final developer. ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -276,11 +271,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md)| An array of objects with information from the selected bank details. Each element contains the selected [bank detail fields](#fields) ||
+[`array`](../../../data-types.md)| An array of objects with information from the selected bank details. Each element contains the selected [bank detail fields](#fields). ||
 || **total**
-[`integer`](../../../data-types.md) | Total number of records found ||
+[`integer`](../../../data-types.md) | Total number of records found. ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the execution time of the request. ||
 |#
 
 ## Error Handling
@@ -300,7 +295,7 @@ HTTP status: **40x**, **50x**
 
 #|  
 || **Error Text** | **Description** ||
-|| `Access denied` | Insufficient access permissions to retrieve the list of bank details ||
+|| `Access denied` | Insufficient access permissions to retrieve the list of bank details. ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -19,5 +19,9 @@ items:
     href: calendar-meeting-status-get.md
   - name: Set Participation Status in Event for Current User
     href: calendar-meeting-status-set.md
-  - name: Get User Availability from List
+  - name: Get Users' Availability from List
     href: calendar-accessibility-get.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

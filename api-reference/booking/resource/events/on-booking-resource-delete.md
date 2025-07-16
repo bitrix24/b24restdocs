@@ -1,10 +1,10 @@
-# Event on Resource Deletion onBookingResourceDelete
+# Event onResourceDelete
 
 > Scope: [`booking`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGRESOURCEDELETE` will trigger when a resource is deleted manually or via the [booking.v1.resource.delete](../booking-v1-resource-delete.md) method.
+The event `ONBOOKINGRESOURCEDELETE` will trigger when a resource is deleted either manually or via the [booking.v1.resource.delete](../booking-v1-resource-delete.md) method.
 
 ## What the handler receives
 
@@ -37,7 +37,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic event code.
+[`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONBOOKINGRESOURCEDELETE` ||
 || **event_handler_id**

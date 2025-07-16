@@ -1,14 +1,14 @@
-# Event on Resource Update onBookingResourceUpdate
+# Event onResourceUpdate
 
 > Scope: [`booking`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The `ONBOOKINGRESOURCEUPDATE` event will trigger when a resource is updated manually or via the [booking.v1.resource.update](../booking-v1-resource-update.md) method.
+The event `ONBOOKINGRESOURCEUPDATE` will trigger when a resource is updated manually or via the [booking.v1.resource.update](../booking-v1-resource-update.md) method.
 
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 ```json
 {

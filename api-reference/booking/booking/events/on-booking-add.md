@@ -4,7 +4,7 @@
 >
 > Who can subscribe: any user
 
-The `ONBOOKINGADD` event will trigger when a new booking is created either manually or via the methods [booking.v1.booking.add](../booking-v1-booking-add.md), [booking.v1.booking.createfromwaitlist](../booking-v1-booking-createfromwaitlist.md).
+The event `ONBOOKINGADD` will trigger when a new booking is created either manually or through the methods [booking.v1.booking.add](../booking-v1-booking-add.md), [booking.v1.booking.createfromwaitlist](../booking-v1-booking-createfromwaitlist.md).
 
 ## What the handler receives
 

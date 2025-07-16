@@ -1,10 +1,10 @@
-# Event on updating resource type onBookingResourceTypeUpdate
+# Event onUpdating Resource Type onBookingResourceTypeUpdate
 
 > Scope: [`booking`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGRESOURCETYPEUPDATE` will trigger when the resource type is updated using the [booking.v1.resourcetype.update](../booking-v1-resourcetype-update.md) method.
+The event `ONBOOKINGRESOURCETYPEUPDATE` will trigger when the resource type is updated using the method [booking.v1.resourcetype.update](../booking-v1-resourcetype-update.md).
 
 ## What the handler receives
 

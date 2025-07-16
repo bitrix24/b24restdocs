@@ -4,8 +4,8 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- No content available
-- Replace the link
+- No content
+- Replace link
 
 {% endnote %}
 
@@ -15,7 +15,7 @@
 >
 > Who can execute the method: `any user`
 
-Methods for working with a "Comment" type CRM activity in the [timeline](https://helpdesk.bitrix24.com/open/16767378/)
+Methods for working with a "Comment" type deal in the [timeline](https://helpdesk.bitrix24.com/open/16767378/)
 
 #|
 || **Method** | **Description** ||
@@ -30,4 +30,4 @@ Methods for working with a "Comment" type CRM activity in the [timeline](https:/
 ## Additional Information
 
 - [Timeline in CRM entity](https://helpdesk.bitrix24.com/open/16767378/)
-- [CRM entity type](../../data-types.md#object_type) 
+- [CRM Entity Type](../../data-types.md#object_type) 

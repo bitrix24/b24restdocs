@@ -2,6 +2,15 @@
 
 ## 2025
 
+### July 16, 2025
+
+- Updated the main page of the [Resource Types](./api-reference/booking/resource/resource-type/index.md) section in Online Booking. Added introductory information and an overview of methods and relationships.
+- Updated the documentation for the methods of the directories [crm.status.*](./api-reference/crm/status/index.md) in CRM.
+- Updated the tutorial [How to add a template and create a document based on it](./tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md).
+- Updated the documentation for the VAT rate methods [crm.vat.*](./api-reference/crm/auxiliary/vat/index.md) in CRM.
+- Added a new tutorial [How to create a new funnel with stages in a SPA](./tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md).
+- Updated the main pages of events in the sections: [Calendar Events](./api-reference/calendar/calendar-event/events/index.md), [Calendar](./api-reference/calendar/events/index.md). Added introductory information and an overview of events.
+
 ### July 09, 2025
 
 - Added events for the Online Booking module: [onBooking*](./api-reference/booking/booking/events/index.md), [onBookingResource*](./api-reference/booking/resource/events/index.md), [onBookingResourceType*](./api-reference/booking/resource/resource-type/events/index.md), [onBookingWaitListItem*](./api-reference/booking/waitlist/events/index.md)

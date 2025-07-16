@@ -2,7 +2,7 @@
 
 The calendar helps users plan meetings, tasks, and events. Calendars can be managed using a group of methods [calendar.section.*](#base).
 
-Calendar events are scheduled deals or meetings. A group of methods [calendar.event.*](./calendar-event/index.md) is used to create, modify, retrieve, or delete events.
+Calendar events are scheduled activities or meetings. A group of methods [calendar.event.*](./calendar-event/index.md) is used to create, modify, retrieve, or delete events.
 
 > Quick navigation: [all methods and events](#all-methods) 
 > 
@@ -10,9 +10,9 @@ Calendar events are scheduled deals or meetings. A group of methods [calendar.ev
 
 ## Calendar Connection with Other Objects
 
-**User.** The calendar is linked to a user by the calendar owner's identifier `ownerId` for the calendar type `user`. The user identifier can be obtained using the method [user.get](../user/user-get.md).
+**User.** The calendar is linked to a user by the calendar owner's ID `ownerId` for the calendar type `user`. The user ID can be obtained using the method [user.get](../user/user-get.md).
 
-**Group.** The calendar is linked to a group by the calendar owner's identifier `ownerId` for the calendar type `group`. The identifier can be obtained through the [create new group](../sonet-group/sonet-group-create.md) method or the [get group list](../sonet-group/socialnetwork-api-workgroup-list.md) method.
+**Group.** The calendar is linked to a group by the calendar owner's ID `ownerId` for the calendar type `group`. The ID can be obtained by [creating a new group](../sonet-group/sonet-group-create.md) or by [getting the list of groups](../sonet-group/socialnetwork-api-workgroup-list.md).
 
 {% note tip "User Documentation" %}
 
@@ -34,11 +34,11 @@ In user settings, an employee can specify personal preferences, such as time zon
 
 ## Resource Booking
 
-In Bitrix24, resource booking is done through a CRM custom field of type `resourcebooking`. Such a field can be created in the [lead](../crm/leads/userfield/index.md) and [deal](../crm/deals/user-defined-fields/index.md) forms.
+In Bitrix24, resource booking is done through a custom CRM field of type `resourcebooking`. Such a field can be created in the [lead](../crm/leads/userfield/index.md) and [deal](../crm/deals/user-defined-fields/index.md) forms.
 
 Resource availability can be tracked in the CRM Calendar. Technically, a resource is a section of the calendar, and booking is a calendar event.
 
-The group of methods [calendar.resource.*](./resource/index.md) manages resources.
+The management of resources is handled by a group of methods [calendar.resource.*](./resource/index.md).
 
 {% note tip "User Documentation" %}
 
@@ -48,9 +48,9 @@ The group of methods [calendar.resource.*](./resource/index.md) manages resource
 
 ## **Widgets**
 
-An application can be embedded into the calendar. In the calendar view types list, there is a place for embedding `CALENDAR_GRIDVIEW`, where you can add [your item](../widgets/calendar.md).
+An application can be embedded into the calendar. In the list of calendar view types, there is a place for embedding `CALENDAR_GRIDVIEW`, where you can add [your item](../widgets/calendar.md).
 
-{% note tip "Typical Use-Cases and Scenarios" %}
+{% note tip "Typical use-cases and scenarios" %}
 
 -  [{#T}](../widgets/index.md)
 -  [{#T}](./calendar-grid-veiw.md)
@@ -69,7 +69,7 @@ An application can be embedded into the calendar. In the calendar view types lis
 
 - Methods
 
-    #| 
+    #|
     || **Method** | **Description** ||
     || [calendar.section.add](./calendar-section-add.md) | Add a new calendar ||
     || [calendar.section.update](./calendar-section-update.md) | Update a calendar ||
@@ -82,7 +82,7 @@ An application can be embedded into the calendar. In the calendar view types lis
 
 - Events
 
-    #| 
+    #|
     || **Event** | **Triggered** ||
     || [OnCalendarSectionAdd](./events/on-calendar-section-add.md) | When a calendar or resource section is added ||
     || [OnCalendarSectionUpdate](./events/on-calendar-section-update.md) | When a calendar or resource section is modified ||
@@ -97,7 +97,7 @@ An application can be embedded into the calendar. In the calendar view types lis
 
 - Methods
 
-    #| 
+    #|
     || **Method** | **Description** ||
     || [calendar.event.add](./calendar-event/calendar-event-add.md) | Add an event ||
     || [calendar.event.update](./calendar-event/calendar-event-update.md) | Update an event ||
@@ -112,18 +112,18 @@ An application can be embedded into the calendar. In the calendar view types lis
 
 - Events
 
-    #| 
+    #|
     || **Event** | **Triggered** ||
-    || [OnCalendarEntryAdd](./events/on-calendar-entry-add.md) | When an event is added ||
-    || [OnCalendarEntryUpdate](./events/on-calendar-entry-update.md) | When an event is modified ||
-    || [OnCalendarEntryDelete](./events/on-calendar-entry-delete.md) | When an event is deleted ||
+    || [OnCalendarEntryAdd](./calendar-event/events/on-calendar-entry-add.md) | When an event is added ||
+    || [OnCalendarEntryUpdate](./calendar-event/events/on-calendar-entry-update.md) | When an event is modified ||
+    || [OnCalendarEntryDelete](./calendar-event/events/on-calendar-entry-delete.md) | When an event is deleted ||
     |#
 
 {% endlist %}
 
 ## Resource Booking
 
-#| 
+#|
 || **Method** | **Description** ||
 || [calendar.resource.add](./resource/calendar-resource-add.md) | Add a resource ||
 || [calendar.resource.update](./resource/calendar-resource-update.md) | Update a resource ||

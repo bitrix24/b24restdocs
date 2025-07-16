@@ -1,4 +1,4 @@
-# Event on Deleting a Record from the Waitlist onBookingWaitListItemDelete
+# Event onDeletingRecordFromWaitList onBookingWaitListItemDelete
 
 > Scope: [`booking`](../../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 The event `ONBOOKINGWAITLISTITEMDELETE` will trigger when a record is deleted from the waitlist either manually or via the [booking.v1.waitlist.delete](../booking-v1-waitlist-delete.md) method.
 
-## What the Handler Receives
+## What the handler receives
 
 Data is sent as a POST request {.b24-info}
 
@@ -37,7 +37,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../data-types.md) | Symbolic event code.
 
 In this case — `ONBOOKINGWAITLISTITEMDELETE` ||
 || **event_handler_id**
@@ -51,7 +51,7 @@ Contains the key `ID` ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -60,7 +60,7 @@ The structure is described [below](#auth) ||
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Exploring
+## Continue exploring
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

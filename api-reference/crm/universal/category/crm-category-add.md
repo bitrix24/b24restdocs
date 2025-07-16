@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user with administrative access to the CRM section
 
-This method creates a new funnel (direction) for the CRM object type with the identifier `entityTypeId`.
+This method creates a new sales funnel (direction) for the CRM object type with the identifier `entityTypeId`.
 
 ## Method Parameters
 
@@ -14,9 +14,9 @@ This method creates a new funnel (direction) for the CRM object type with the id
 || **Name**
 `type` | **Description** ||
 || **entityTypeId*** 
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM entity for which a new funnel will be created ||
+[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM entity for which the new funnel will be created ||
 || **fields***
-[`object`][1]  | Field values (detailed description provided [below](#parametr-fields)) for adding a new funnel in the following structure:
+[`object`][1]  | Field values (detailed description provided [below](#parametr-fields)) for adding a new funnel in the form of a structure:
 
 ```js
 fields: {
@@ -46,7 +46,7 @@ Defaults to `-` ||
 || **sort**
 [`integer`][1] | Sort index. 
 
-Cannot be negative. If a value less than zero is passed to `sort`, it will be ignored and `sort` will be set to `0`.
+Cannot be negative. If a value less than zero is passed to `sort`, it will be ignored and set to `sort = 0`
 
 Defaults to `500` || 
 || **isDefault**
@@ -54,11 +54,18 @@ Defaults to `500` ||
 - `Y` — yes, it is
 - `N` — no
 
-Defaults to `N`
+Defaults to `N`.
 
-In deals, the `isDefault` field is not available for modification.
+In deals, the `isDefault` field is not available for modification. 
 
-You can check if the field is immutable using the method [`crm.category.fields`](./crm-category-fields.md). Immutable fields have the property `isReadonly = true` ||
+Restrictions on changing the `isDefault` field in SPAs:
+- the default direction cannot be deleted,
+- when creating a new direction and passing it the flag `isDefault: "Y"`, the old default direction will cease to be the default direction,
+- when changing the default direction, it cannot be made a non-default direction,
+- when changing a non-default direction and passing it the flag `isDefault: "Y"`, the old default direction will cease to be the default direction.
+
+If the display of directions in the interface is disabled for an existing SPA, working with directions via REST is still possible.
+||
 |#
 
 ## Code Examples
@@ -229,10 +236,10 @@ HTTP status: **160**, **400**
 || **Code** | **Description** | **Value** ||
 || `NOT_FOUND` | SPA not found | Occurs with incorrect values for `entityTypeId` ||
 || `ENTITY_TYPE_NOT_SUPPORTED` | Entity type `{entityTypeName}` is not supported | Occurs if the CRM object does not support funnels ||
-|| `ADDING_DISABLED` | Adding a system category is prohibited | Occurs when trying to create a system funnel in SPAs ||
+|| `ADDING_DISABLED` | Adding a system category is prohibited | Occurs when attempting to create a system funnel in SPAs ||
 || `ACCESS_DENIED` | Access denied | Occurs if the user does not have sufficient rights to add a funnel ||
 || `0` | Field 'NAME' is required | Occurs if the required field `name` is not provided ||
-|| `0` | Default client category does not support updating default state | Occurs when trying to create a default funnel for `contacts` or `companies` ||
+|| `0` | Default client category does not support updating default state | Occurs when attempting to create a default funnel for `contacts` or `companies` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -244,5 +251,6 @@ HTTP status: **160**, **400**
 - [{#T}](./crm-category-list.md)
 - [{#T}](./crm-category-delete.md)
 - [{#T}](./crm-category-fields.md)
+- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)
 
 [1]: ../../../data-types.md

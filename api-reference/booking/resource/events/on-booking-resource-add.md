@@ -1,14 +1,14 @@
-# Event on Resource Creation onBookingResourceAdd
+# Event when creating a resource onBookingResourceAdd
 
 > Scope: [`booking`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGRESOURCEADD` will trigger when a new resource is created either manually or via the [booking.v1.resource.add](../booking-v1-resource-add.md) method.
+The `ONBOOKINGRESOURCEADD` event will trigger when a new resource is created either manually or via the [booking.v1.resource.add](../booking-v1-resource-add.md) method.
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {

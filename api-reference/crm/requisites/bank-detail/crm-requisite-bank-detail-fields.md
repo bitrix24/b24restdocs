@@ -1,16 +1,16 @@
-# Get Description of Bank Details Fields crm.requisite.bankdetail.fields
+# Get the description of the fields of bank details crm.requisite.bankdetail.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns a formal description of the bank details fields.
+The method returns a formal description of the fields of bank details.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -69,7 +69,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -392,7 +392,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the field identifier and `value` is the object with [field attributes](#attributes) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ### Description of Bank Details Fields
@@ -402,31 +402,26 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the bank detail. Created automatically and unique within the account ||
-|| **ENTITY_TYPE_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object's type. Can only be `Requisite` (value `8`).
-
-Object type identifiers are returned by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) ||
 || **ENTITY_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object. Currently, it can only be the identifier of the requisite. 
+[`integer`](../../../data-types.md) | Identifier of the parent object. Currently, it can only be the identifier of the detail. 
 
-Requisite identifiers can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) ||
+Identifiers of details can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) ||
 || **COUNTRY_ID**
 [`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank detail fields (see the method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
 
-The country code of the bank detail matches the country code in the linked requisite template, the identifier of which is specified in the `ENTITY_ID` field 
-||
+The country code of the bank detail matches the country code in the linked detail template, the identifier of which is specified in the `ENTITY_ID` field ||
 || **DATE_CREATE**
 [`datetime`](../../../data-types.md) | Creation date ||
 || **DATE_MODIFY**
 [`datetime`](../../../data-types.md) | Modification date ||
 || **CREATED_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who created the requisite ||
+[`user`](../../../data-types.md) | Identifier of the user who created the detail ||
 || **MODIFY_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who modified the requisite ||
+[`user`](../../../data-types.md) | Identifier of the user who modified the detail ||
 || **NAME**
 [`string`](../../../data-types.md) | Name of the bank detail ||
 || **CODE**
-[`string`](../../../data-types.md) | Symbolic code of the requisite ||
+[`string`](../../../data-types.md) | Symbolic code of the detail ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
@@ -440,21 +435,21 @@ Currently, the field does not actually affect anything ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting ||
 || **RQ_BANK_NAME**
-[`string`](../../../data-types.md) | Name of the bank ||
+[`string`](../../../data-types.md) | Bank name ||
 || **RQ_BANK_ADDR**
-[`string`](../../../data-types.md) | Address of the bank ||
+[`string`](../../../data-types.md) | Bank address ||
 || **RQ_BANK_CODE**
-[`string`](../../../data-types.md) | Bank Code (for country BR) ||
+[`string`](../../../data-types.md) | Bank code (for country BR) ||
 || **RQ_BANK_ROUTE_NUM**
 [`string`](../../../data-types.md) | Bank Routing Number ||
 || **RQ_BIK**
 [`string`](../../../data-types.md) | BIK ||
 || **RQ_CODEB**
-[`string`](../../../data-types.md) | Code Banque (for country FR) ||
+[`string`](../../../data-types.md) | Bank Code (for country FR) ||
 || **RQ_CODEG**
-[`string`](../../../data-types.md) | Code Guichet (for country FR) ||
+[`string`](../../../data-types.md) | Branch Code (for country FR) ||
 || **RQ_RIB**
-[`string`](../../../data-types.md) | Clé RIB (for country FR) ||
+[`string`](../../../data-types.md) | RIB Key (for country FR) ||
 || **RQ_MFO**
 [`string`](../../../data-types.md) | MFO ||
 || **RQ_ACC_NAME**
@@ -462,9 +457,9 @@ Currently, the field does not actually affect anything ||
 || **RQ_ACC_NUM**
 [`string`](../../../data-types.md) | Bank Account Number ||
 || **RQ_ACC_TYPE**
-[`string`](../../../data-types.md) | Tipo da conta (for country BR) ||
+[`string`](../../../data-types.md) | Account Type (for country BR) ||
 || **RQ_AGENCY_NAME**
-[`string`](../../../data-types.md) | Agência (for country BR) ||
+[`string`](../../../data-types.md) | Agency (for country BR) ||
 || **RQ_IIK**
 [`string`](../../../data-types.md) | IIK ||
 || **RQ_ACC_CURRENCY**

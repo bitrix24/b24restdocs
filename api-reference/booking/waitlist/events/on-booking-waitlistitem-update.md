@@ -1,10 +1,10 @@
-# Event on updating a waitlist item onBookingWaitListItemUpdate
+# Event on updating a record in the waitlist onBookingWaitListItemUpdate
 
 > Scope: [`booking`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGWAITLISTITEMUPDATE` will trigger when an item in the waitlist is updated manually or via the method [booking.v1.waitlist.update](../booking-v1-waitlist-update.md).
+The event `ONBOOKINGWAITLISTITEMUPDATE` will trigger when a record in the waitlist is updated either manually or via the method [booking.v1.waitlist.update](../booking-v1-waitlist-update.md).
 
 ## What the handler receives
 
@@ -43,11 +43,11 @@ In this case — `ONBOOKINGWAITLISTITEMUPDATE` ||
 || **event_handler_id**
 [`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../data-types.md) | Object containing information about the updated waitlist item.
+[`object`](../../../data-types.md) | Object containing information about the updated record in the waitlist.
 
 Contains the key `ID` ||
 || **data.ID**
-[`integer`](../../../data-types.md) | Identifier of the updated waitlist item ||
+[`integer`](../../../data-types.md) | Identifier of the updated record in the waitlist ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**

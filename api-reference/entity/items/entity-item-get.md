@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -35,10 +35,10 @@ The user must have at least read access permission (**R**) to the storage.
 || **ENTITY^*^** | Required. String identifier of the storage. ||
 || **SORT** | Similar to the *arOrder* and *arFilter* parameters of the PHP method `CIBlockElement::GetList` (including filter operations and complex logic). ||
 || **FILTER** | Similar to the *arOrder* and *arFilter* parameters of the PHP method `CIBlockElement::GetList` (including filter operations and complex logic). ||
-|| **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
+|| **start** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -103,7 +103,7 @@ The user must have at least read access permission (**R**) to the storage.
 
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 ## Response in case of success
 
