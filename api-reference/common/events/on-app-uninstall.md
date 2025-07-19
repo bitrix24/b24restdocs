@@ -12,7 +12,7 @@ Data is sent as a POST request {.b24-info}
 
 ```
 {
-    "event": "ONAPPSUNINSTALL",
+    "event": "ONAPPUNINSTALL",
     "data": {
         "LANGUAGE_ID" => "en",
         "CLEAN": 1
@@ -36,7 +36,7 @@ Data is sent as a POST request {.b24-info}
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic event code — `ONAPPSUNINSTALL` ||
+[`string`](../../data-types.md) | Symbolic event code — `ONAPPUNINSTALL` ||
 || **data***
 [`array`](../../data-types.md) | Data about the uninstalled application.
 
