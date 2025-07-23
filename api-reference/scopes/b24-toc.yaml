@@ -1,7 +1,9 @@
 title: Scopes
 href: permissions.md
-items: 
-  - name: Access permissions for methods 
+items:
+  - name: Method permissions
+    href: index.md 
+  - name: Available scopes
     href: permissions.md
-  - name: Methods with confirmation
+  - name: Confirmation methods
     href: confirmation.md

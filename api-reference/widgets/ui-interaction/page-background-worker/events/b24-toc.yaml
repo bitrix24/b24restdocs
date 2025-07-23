@@ -1,37 +1,39 @@
 title: Events
 href: initialized.md
 items: 
-  - name: After creating a call detail form
+  - name: Overview of Events
+    href: index.md
+  - name: After creating the call card
     href: initialized.md
-  - name: When saving a comment in the call detail form
+  - name: When saving a comment in the call card
     href: add-comment-button-click.md
-  - name: When clicking the mute button
+  - name: When pressing the mute button
     href: mute-button-click.md
-  - name: When clicking the hold call button
+  - name: When pressing the hold call button
     href: hold-button-click.md
-  - name: When clicking the end call button
+  - name: When pressing the end call button
     href: close-button-click.md
   - name: When selecting the operator to whom the current operator wants to transfer the call
     href: transfer-button-click.md
-  - name: When clicking the "return to call" button
+  - name: When pressing the "return to call" button
     href: cancel-transfer-button-click.md
-  - name: When clicking the "redirect" button
+  - name: When pressing the "redirect" button
     href: complete-transfer-button-click.md
-  - name: When clicking the "hang up" button
+  - name: When pressing the "hang up" button
     href: hang-up-button-click.md
-  - name: When clicking the "next" button
+  - name: When pressing the "next" button
     href: next-button-click.md
-  - name: When clicking the "skip" button
+  - name: When pressing the "skip" button
     href: skip-button-click.md
-  - name: When clicking the "answer" button
+  - name: When pressing the "answer" button
     href: answer-button-click.md
   - name: In the call list when changing the current caller
     href: entity-changed.md
-  - name: When clicking the "call back" button
+  - name: When pressing the "call back" button
     href: make-call-button-click.md
-  - name: When evaluating call quality
+  - name: When assessing the call quality
     href: quality-meter-click.md
-  - name: When pressing one of the phone's numeric buttons
+  - name: When pressing one of the phone's digit buttons
     href: dialpad-button-click.md
-  - name: When clicking the "notify administrator" button
+  - name: When pressing the "notify admin" button
     href: notify-admin-button-click.md

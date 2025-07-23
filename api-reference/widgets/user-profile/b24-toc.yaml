@@ -1,5 +1,7 @@
 title: Widgets in User Profile
 items: 
+  - name: Widgets in User Profile
+    href: index.md
   - name: Context Menu Item in Profile 
     href: profile-menu.md
   - name: Context Menu Item in Profile Top Button

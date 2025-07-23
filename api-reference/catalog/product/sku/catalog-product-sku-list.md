@@ -1,10 +1,10 @@
-# Get a List of Parent Products catalog.product.sku.list
+# Get the list of parent products catalog.product.sku.list
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns a list of parent products based on the filter.
+The method returns a list of parent products based on the filter.
 
 ## Method Parameters
 
@@ -13,51 +13,49 @@ This method returns a list of parent products based on the filter.
 `type` | **Description** ||
 || **select**
 [`array`](../../../data-types.md) | 
-An array of fields to select (see fields of the object [catalog_product_sku](../../data-types.md#catalog_product_sku)).
+An array of fields to select (see the fields of the [catalog_product_sku](../../data-types.md#catalog_product_sku) object).
 
 Required fields: `id`, `iblockId`
 ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering the selected parent products in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the object [catalog_product_sku](../../data-types.md#catalog_product_sku). 
+Possible values for `field` correspond to the fields of the [catalog_product_sku](../../data-types.md#catalog_product_sku) object. 
 
 Required fields: `iblockId`.
 
-An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
+You can specify an additional prefix for the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN, an array is passed as the value
-- `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equals, exact match (used by default)
+- `=` — equals, exact match (used by default). For IN search, you can pass multiple values as an array 
 - `!=` — not equal
-- `!` — not equal ||
+- `!` — not equal. For NOT IN search, you can pass multiple values as an array ||
 || **order**
 [`object`](../../../data-types.md) | 
 An object for sorting the selected parent products in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the object [catalog_product_sku](../../data-types.md#catalog_product_sku).
+Possible values for `field` correspond to the fields of the [catalog_product_sku](../../data-types.md#catalog_product_sku) object.
 
 Possible values for `order`:
-- `asc` — ascending order
-- `desc` — descending order
+- `asc` — in ascending order
+- `desc` — in descending order
 ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../../../data-types.md) | This parameter is used for pagination control.
 
 The page size of results is always static — 50 records.
 
@@ -65,13 +63,13 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` — the number of the desired page
 ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -81,7 +79,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","iblockId","name","active","available","bundle","canBuyZero","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","height","iblockSectionId","length","measure","modifiedBy","previewPicture","previewText","previewTextType","purchasingCurrency","purchasingPrice","quantity","sort","subscribe","timestampX","type","vatId","vatIncluded","weight","width","xmlId","property258","property259"],"filter":{"iblockId":23,">id":10,"@vatId":[1,2]},"order":{"id":"desc"}}' \
+    -d '{"select":["id","iblockId","name","active","available","bundle","canBuyZero","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","height","iblockSectionId","length","measure","modifiedBy","previewPicture","previewText","previewTextType","purchasingCurrency","purchasingPrice","quantity","sort","subscribe","timestampX","type","vatId","vatIncluded","weight","width","xmlId","property258","property259"],"filter":{"iblockId":23,">id":10,"vatId":[1,2]},"order":{"id":"desc"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.sku.list
     ```
 
@@ -91,7 +89,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","iblockId","name","active","available","bundle","canBuyZero","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","height","iblockSectionId","length","measure","modifiedBy","previewPicture","previewText","previewTextType","purchasingCurrency","purchasingPrice","quantity","sort","subscribe","timestampX","type","vatId","vatIncluded","weight","width","xmlId","property258","property259"],"filter":{"iblockId":23,">id":10,"@vatId":[1,2]},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","iblockId","name","active","available","bundle","canBuyZero","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","height","iblockSectionId","length","measure","modifiedBy","previewPicture","previewText","previewTextType","purchasingCurrency","purchasingPrice","quantity","sort","subscribe","timestampX","type","vatId","vatIncluded","weight","width","xmlId","property258","property259"],"filter":{"iblockId":23,">id":10,"vatId":[1,2]},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.sku.list
     ```
 
@@ -142,7 +140,7 @@ The formula for calculating the `start` parameter value:
             "filter": {
                 "iblockId": 23,
                 ">id": 10,
-                "@vatId": [1, 2],
+                "vatId": [1, 2],
             },
             "order": {
                 "id": "desc",
@@ -208,7 +206,7 @@ The formula for calculating the `start` parameter value:
             'filter' => [
                 "iblockId" => 23,
                 ">id" => 10,
-                "@vatId" => [1, 2],
+                "vatId" => [1, 2],
             ],
             'order' => [
                 "id" => "desc",
@@ -238,9 +236,9 @@ HTTP status: **200**
                 "canBuyZero": "N",
                 "code": "product_sku",
                 "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-                "dateActiveTo": "2024-05-29T10:00:00+03:00",
-                "dateCreate": "2024-05-27T10:00:00+03:00",
+                "dateActiveFrom": "2024-05-28T10:00:00+02:00",
+                "dateActiveTo": "2024-05-29T10:00:00+02:00",
+                "dateCreate": "2024-05-27T10:00:00+02:00",
                 "detailPicture": {
                     "id": "6546",
                     "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6546\u0026fields%5BproductId%5D=1289",
@@ -282,7 +280,7 @@ HTTP status: **200**
                 "quantity": null,
                 "sort": 100,
                 "subscribe": "Y",
-                "timestampX": "2024-06-17T14:30:33+03:00",
+                "timestampX": "2024-06-17T14:30:33+02:00",
                 "type": 6,
                 "vatId": null,
                 "vatIncluded": "N",
@@ -298,8 +296,8 @@ HTTP status: **200**
         "finish": 1718631434.921837,
         "duration": 0.7707870006561279,
         "processing": 0.3575417995452881,
-        "date_start": "2024-06-17T16:37:14+03:00",
-        "date_finish": "2024-06-17T16:37:14+03:00"
+        "date_start": "2024-06-17T16:37:14+02:00",
+        "date_finish": "2024-06-17T16:37:14+02:00"
     }
 }
 ```
@@ -316,7 +314,7 @@ HTTP status: **200**
 || **total**
 [`integer`](../../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -336,7 +334,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog
+|| `200040300010` | Insufficient rights to read the trade catalog
 || 
 || `0` | Fields `id`, `iblockId` not specified in the selection fields
 || 

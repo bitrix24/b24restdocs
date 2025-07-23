@@ -1,24 +1,10 @@
-# Access Permissions for Methods
-
-Access permissions for executing specific REST API methods are regulated through a scope mechanism (SCOPE). When you add a mass-market solution in the Partner's area or an on-premise solution to your specific Bitrix24, you specify the list of necessary Bitrix24 scopes for the operation of that particular application.
-
-The binding to a specific scope is indicated in the description of each REST method at the very beginning. For example,
-
-> Scope: `CRM`
->
-> Who can execute the method: any user
-
-Also, pay attention to the note "Who can execute the method." Some methods can only be called on behalf of a user with administrative rights in a specific Bitrix24.
-
-Let's consider a specific situation where your solution integrates Bitrix24 with external telephony, and you are using the methods `telephony.externalcall.register` and `telephony.externalcall.finish`, which also add leads to the CRM, but do not explicitly call CRM methods like `crm.lead.add` and `crm.activity.add`. In this case, your application will require the telephony scope, while the crm scope will not be necessary.
-
-## Current Bitrix24 Scopes
+# Available Scopes in Bitrix24
 
 #|
 || **Scope Code** | **Scope Name**| **Bitrix24 Tool**||
-|| **ai_admin** | [Channel for registering a custom service for handling requests](../ai/index.md)| Copilot ||
+|| **ai_admin** | [Channel for registering a custom service for processing requests](../ai/index.md)| Copilot ||
 || **biconnector** | [BI Analytics Connector](../biconnector/index.md) | BIconnector ||
-|| **bizproc** | [Business Processes](../bizproc/index.md) | Business Processes, RPA, CRM Automation Rules ||
+|| **bizproc** | [Business Processes](../bizproc/index.md) | Business processes, RPA, CRM Automation rules ||
 || **booking** | [Online Booking](../booking/index.md) | Online Booking ||
 || **calendar** | [Calendar](../calendar/index.md) | Calendar ||
 || **call** | Telephony (making calls). The scope includes methods: [voximplant.infocall.startwithsound](../telephony/voximplant/voximplant-infocall-start-with-sound.md), [voximplant.infocall.startwithtext](../telephony/voximplant/voximplant-infocall-start-with-text.md)| Telephony ||
@@ -42,7 +28,7 @@ Let's consider a specific situation where your solution integrates Bitrix24 with
 || **pull** | [Pull&Push](../interactivity/push-and-pull/index.md) | Pull&Push ||
 || **rpa** | [Business Automation](../outdated/rpa/index.md) | Business Automation ||
 || **sale** | [Online Store](../sale/index.md) | Online Store ||
-|| **sign.b2e** | [e-Signature for HR + Government Key](../sign/index.md) | e-Signature, Signature ||
+|| **sign.b2e** | [e-Signature for HR + Government Key](../sign/index.md) | e-Signature for HR, Signature ||
 || **sonet_group, socialnetwork** | [Social Network Workgroups](../sonet-group/sonet-group-create.md) | Social Network Workgroups ||
 || **task** | [Tasks](../tasks/index.md) | Tasks ||
 || **telephony** | [Telephony](../telephony/index.md) | Telephony ||

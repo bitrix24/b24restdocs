@@ -1,7 +1,7 @@
 title: Working with CRM Vendors
 href: index.md
 items: 
-  - name: Working with CRM Vendors
+  - name: Overview of Methods
     href: index.md
   - name: Add Vendor Binding to Document
     href: catalog-documentcontractor-add.md

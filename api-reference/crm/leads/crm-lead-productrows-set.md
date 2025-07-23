@@ -1,8 +1,8 @@
-# Add Products to Lead crm.lead.productrows.set
+# Add products to lead crm.lead.productrows.set
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples (in other languages) are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 - link to the yet-to-be-created page is not provided
 
 {% endnote %}
@@ -30,7 +30,7 @@ The method `crm.lead.productrows.set` sets (creates or updates) the product item
 #|
 || **Parameter** | **Description** ||
 || **id** | Lead identifier. ||
-|| **rows** | Product items - an array of the form `array(array("field"=>"value"[, ...])[, ...])`, where "field" can take values from the method [crm.productrow.fields](.). The product items of the lead that exist before the method call will be replaced with the new ones. After saving, the lead's total will be recalculated. ||
+|| **rows** | Product items - an array of the form `array(array("field"=>"value"[, ...])[, ...])`, where "field" can take values from the method [crm.productrow.fields](../outdated/productrow-old/crm-productrow-fields.md). The product items of the lead that exist before the method call will be replaced with the new ones. After saving, the lead amount will be recalculated. ||
 |#
 
 ## Example
@@ -63,4 +63,4 @@ The method `crm.lead.productrows.set` sets (creates or updates) the product item
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

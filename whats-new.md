@@ -2,6 +2,11 @@
 
 ## 2025
 
+### July 23, 2025
+
+- Updated the main page of the [Slots](./api-reference/booking/resource/slots/index.md) section in Online Booking. Added introductory information and an overview of methods and relationships.
+- Updated the main page of the [Working with CRM Vendors](./api-reference/catalog/documentcontractor/index.md) section in the Trade Catalog. Added introductory information and an overview of methods and relationships.
+
 ### July 16, 2025
 
 - Updated the main page of the [Resource Types](./api-reference/booking/resource/resource-type/index.md) section in Online Booking. Added introductory information and an overview of methods and relationships.

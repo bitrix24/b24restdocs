@@ -1,27 +1,33 @@
-# Methods for Working with CRM Vendors
+# CRM Vendors: Overview of Methods
 
-{% note warning "We are still updating this page" %}
+{% note info "" %}
 
-Some data may be missing here — we will complete it soon.
+CRM vendors are available starting from version 23.0.0 of the Trade Catalog module and REST API 23.100.0.
 
 {% endnote %}
 
-New vendors are CRM entities. The mechanism for linking entities to inventory documents is used. Vendors are relevant only for incoming documents.
+Vendors are individuals and legal entities that supply goods. In CRM, they are added as contacts and companies, but they do not participate in deals, leads, or estimates. CRM vendor data is only indicated in stock receipt documents. Multiple contacts and one company can be attached to a single document.
 
-The service can only be used when working with vendors through CRM. Multiple vendor contacts (CRM entity Contact) can be attached to one incoming document, but no more than one vendor company (CRM entity Company).
+> Quick navigation: [all methods](#all-methods) 
+> 
+> User documentation: [Vendors](https://helpdesk.bitrix24.com/open/16764476/)
 
-The service is available starting from version **catalog 23.0.0** and **rest 23.100.0**.
+## Linking Vendors with Other Objects
+
+**Inventory Management.** Vendors are indicated in stock receipt documents. To work with documents, use the methods [catalog.document.\*](../document/index.md).
+
+**CRM.** Vendors are CRM entities. To work with them, use the universal methods [crm.item.\*](../../crm/universal/index.md).
+
+## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can perform the method: any user
-
-Service methods for working with CRM vendors:
+> Who can execute the method: any user
 
 #|
 || **Method** | **Description** ||
-|| [catalog.documentcontractor.add](./catalog-documentcontractor-add.md) | This method adds a link of a CRM entity (Contact/Company) to a document. ||
-|| [catalog.documentcontractor.delete](./catalog-documentcontractor-delete.md) | This method removes the link of a CRM entity (Contact/Company) to a document by the link identifier. ||
-|| [catalog.documentcontractor.getFields](./catalog-documentcontractor-get-fields.md) | This method returns an array of fields with links of CRM vendors to inventory documents. ||
-|| [catalog.documentcontractor.list](./catalog-documentcontractor-list.md) | This method retrieves a list of links of CRM entities (Contact/Company) to documents based on a filter. ||
+|| [catalog.documentcontractor.add](./catalog-documentcontractor-add.md) | Adds a vendor binding to the document ||
+|| [catalog.documentcontractor.delete](./catalog-documentcontractor-delete.md) | Removes the vendor binding from the document by binding ID ||
+|| [catalog.documentcontractor.getFields](./catalog-documentcontractor-get-fields.md) | Returns a list of vendor bindings to documents based on the filter ||
+|| [catalog.documentcontractor.list](./catalog-documentcontractor-list.md) | Returns fields with CRM vendor bindings to inventory documents ||
 |#

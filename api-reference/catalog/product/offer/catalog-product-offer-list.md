@@ -23,15 +23,13 @@ Required fields: `id`, `iblockId`
 Possible values for `field` correspond to the fields of the [catalog_product_offer](../../data-types.md#catalog_product_offer) object. 
 
 Required fields: `iblockId` — the identifier of the information block of the trade catalog for variations. 
-To obtain existing identifiers of information blocks of trade catalogs, you need to use [catalog.catalog.list](../../catalog/catalog-catalog-list.md). The variations information block has the `productIblockId` field filled.
+To obtain existing identifiers of trade catalog information blocks, you need to use [catalog.catalog.list](../../catalog/catalog-catalog-list.md). The variations information block has the `productIblockId` field filled.
 
-You can specify an additional prefix for the key to clarify the filter behavior. Possible prefix values:
+You can specify an additional prefix for the key that clarifies the behavior of the filter. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN, an array is passed as the value
-- `!@` — NOT IN, an array is passed as the value
 - `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
 - `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
@@ -44,9 +42,9 @@ You can specify an additional prefix for the key to clarify the filter behavior.
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default)
+- `=` — equal, exact match (used by default). For IN search, you can pass multiple values as an array 
 - `!=` — not equal
-- `!` — not equal ||
+- `!` — not equal. For NOT IN search, you can pass multiple values as an array ||
 || **order**
 [`object`](../../../data-types.md) | 
 An object for sorting the selected product variations in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
@@ -64,7 +62,7 @@ The page size of results is always static — 50 records.
 
 To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
 
-The formula for calculating the `start` parameter value:
+The formula for calculating the value of the `start` parameter:
 
 `start = (N-1) * 50`, where `N` — the number of the desired page
 ||
@@ -72,7 +70,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -82,7 +80,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","iblockId","name","active","available","barcodeMulti","bundle","canBuyZero","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","height","iblockSectionId","length","measure","modifiedBy","previewPicture","previewText","previewTextType","purchasingCurrency","purchasingPrice","quantity","quantityReserved","quantityTrace","recurSchemeLength","recurSchemeType","sort","subscribe","timestampX","trialPriceId","type","vatId","vatIncluded","weight","width","withoutOrder","xmlId","parentId","property258","property259"],"filter":{"iblockId":24,">id":10,"@vatId":[1,2]},"order":{"id":"desc"}}' \
+    -d '{"select":["id","iblockId","name","active","available","barcodeMulti","bundle","canBuyZero","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","height","iblockSectionId","length","measure","modifiedBy","previewPicture","previewText","previewTextType","purchasingCurrency","purchasingPrice","quantity","quantityReserved","quantityTrace","recurSchemeLength","recurSchemeType","sort","subscribe","timestampX","trialPriceId","type","vatId","vatIncluded","weight","width","withoutOrder","xmlId","parentId","property258","property259"],"filter":{"iblockId":24,">id":10,"vatId":[1,2]},"order":{"id":"desc"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.offer.list
     ```
 
@@ -92,7 +90,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","iblockId","name","active","available","barcodeMulti","bundle","canBuyZero","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","height","iblockSectionId","length","measure","modifiedBy","previewPicture","previewText","previewTextType","purchasingCurrency","purchasingPrice","quantity","quantityReserved","quantityTrace","recurSchemeLength","recurSchemeType","sort","subscribe","timestampX","trialPriceId","type","vatId","vatIncluded","weight","width","withoutOrder","xmlId","parentId","property258","property259"],"filter":{"iblockId":24,">id":10,"@vatId":[1,2]},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","iblockId","name","active","available","barcodeMulti","bundle","canBuyZero","code","createdBy","dateActiveFrom","dateActiveTo","dateCreate","detailPicture","detailText","detailTextType","height","iblockSectionId","length","measure","modifiedBy","previewPicture","previewText","previewTextType","purchasingCurrency","purchasingPrice","quantity","quantityReserved","quantityTrace","recurSchemeLength","recurSchemeType","sort","subscribe","timestampX","trialPriceId","type","vatId","vatIncluded","weight","width","withoutOrder","xmlId","parentId","property258","property259"],"filter":{"iblockId":24,">id":10,"vatId":[1,2]},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.offer.list
     ```
 
@@ -151,7 +149,7 @@ The formula for calculating the `start` parameter value:
             "filter": {
                 "iblockId": 24,
                 ">id": 10,
-                "@vatId": [1, 2],
+                "vatId": [1, 2],
             },
             "order": {
                 "id": "desc",
@@ -225,7 +223,7 @@ The formula for calculating the `start` parameter value:
             'filter' => [
                 "iblockId" => 24,
                 ">id" => 10,
-                "@vatId" => [1, 2],
+                "vatId" => [1, 2],
             ],
             'order' => [
                 "id" => "desc",
@@ -242,7 +240,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -330,12 +328,12 @@ HTTP status: **200**
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -352,7 +350,7 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `200040300010` | Insufficient rights to read the trade catalog
 || 
-|| `0` | Fields `id`, `iblockId` not specified in selection fields
+|| `0` | Fields `id`, `iblockId` not specified in the selection fields
 || 
 || `0` | Field `iblockId` not specified in the filter
 || 

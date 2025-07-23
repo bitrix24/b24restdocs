@@ -1,6 +1,8 @@
 title: Deprecated
 items: 
-  - name: To create a group/project topic 
+  - name: Deprecated methods
+    href: index.md
+  - name: To create a group/project topic
     href: on-sonet-group-subject-add.md
   - name: To update a group/project topic
     href: on-sonet-group-subject-update.md

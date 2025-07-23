@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -24,25 +24,23 @@ Some data may be missing — we will complete it soon.
 
 The method `im.dialog.get` retrieves information about a dialog.
 
+{% include [Footnote on parameters](../../_includes/required.md) %}
+
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **DIALOG_ID^*^**
-[`unknown`](../data-types.md) | `chat29`
+[`string`](../data-types.md) | `chat29`
 or
 `256` | Identifier of the dialog. Format:
 - **chatXXX** – chat of the recipient, if the message is for a chat
 - **XXX** – identifier of the recipient, if the message is for a private dialog | 24 ||
 |#
 
-{% include [Parameter Notes](../../_includes/required.md) %}
-
 ## Examples
 
+{% include [Footnote on examples](../../_includes/examples.md) %}
+
 {% list tabs %}
-
-- cURL
-
-    // example for cURL
 
 - JS
 
@@ -50,7 +48,7 @@ or
     BX24.callMethod(
         'im.dialog.get',
         {
-            DIALOG_ID: 'chat29'
+            DIALOG_ID: 'chat1'
         },
         function(result){
             if(result.error())
@@ -65,25 +63,36 @@ or
     );
     ```
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"DIALOG_ID":"chat1"}' https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.dialog.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"DIALOG_ID":"chat1","auth":"**put_access_token_here**"}' https://**put_your_bitrix24_address**/rest/im.dialog.get
+    ```
+
 - PHP
 
-    {% include [Explanation about restCommand](./_includes/rest-command.md) %}
-
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'im.dialog.get',
-        Array(
-            'DIALOG_ID' => 'chat29'
-        ),
-        $_REQUEST[
-            "auth"
+        [
+            'DIALOG_ID' => 'chat1'
         ]
     );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
-
-{% include [Example Notes](../../_includes/examples.md) %}
 
 ## Successful Response
 
@@ -110,19 +119,19 @@ or
 
 ### Key Descriptions
 
-- `id` – identifier of the chat
-- `title` – name of the chat
+- `id` – chat identifier
+- `title` – chat title
 - `owner` – identifier of the user who owns the chat
-- `extranet` – indicator of external extranet user participation in the chat (`true/false`)
-- `color` – color of the chat in hex format
-- `avatar` – link to the avatar (if empty, the avatar is not set)
-- `type` – type of chat (group chat, call chat, open line chat, etc.)
+- `extranet` – indicates whether an external extranet user is participating in the chat (`true/false`)
+- `color` – chat color in hex format
+- `avatar` – link to the avatar (if empty, it means no avatar is set)
+- `type` – type of chat (group chat, call chat, open channel chat, etc.)
 - `entity_type` – external code for the chat – type
 - `entity_id` – external code for the chat – identifier
 - `entity_data_1` – external data for the chat
 - `entity_data_2` – external data for the chat
 - `entity_data_3` – external data for the chat
-- `date_create` – creation date of the chat in ATOM format
+- `date_create` – chat creation date in ATOM format
 - `message_type` – type of chat messages
 
 ## Error Response
