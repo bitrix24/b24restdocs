@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's Workspace" section
 
 The method `biconnector.source.get` returns information about the source by its identifier.
 
@@ -26,7 +26,7 @@ The method `biconnector.source.get` returns information about the source by its 
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'biconnector.source.get',
         {
             id: 6,
@@ -146,7 +146,7 @@ HTTP Status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not provided ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `SOURCE_NOT_FOUND` | Source was not found. | Source not found ||
 |#

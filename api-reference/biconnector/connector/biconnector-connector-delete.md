@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's Workspace" section
 
 The method `biconnector.connector.delete` removes an existing connector.
 
@@ -10,7 +10,7 @@ A connector can be deleted if it has no sources.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,14 +21,14 @@ A connector can be deleted if it has no sources.
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'biconnector.connector.delete',
         {
             id: 4,
@@ -129,7 +129,7 @@ HTTP status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not provided ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `CONNECTOR_NOT_FOUND` | Connector was not found. | Connector not found ||
 || `CONNECTOR_DELETE_RESTRICTED` | Connector cannot be removed. Remove the connections related to the connector first. | Cannot delete connector while related connections exist ||

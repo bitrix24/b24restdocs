@@ -1,43 +1,42 @@
 # Get the list of methods and their description task.commentitem.getmanifest
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- examples are missing (there should be three examples - curl, js, php)
-- no response in case of error
-- no response in case of success
-- add a list of fields
-
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly
-
-{% endnote %}
-
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `task.commentitem.getmanifest` returns a list of methods of the form `task.commentitem.*` and their descriptions.
+The method `task.commentitem.getmanifest` retrieves up-to-date information about methods for working with task comments `task.commentitem.*`.
 
-The return value of this method is not intended for automated processing, as its format may change without notice.
+It is recommended to use it only as a reference, as the response structure of the method may change at any time.
 
-The method can be useful as reference information, as it always contains up-to-date information.
+## Method Parameters
 
-{% note info %}
+No parameters.
 
-Maintaining the order of parameters in the request is mandatory. If violated, the request will be executed with errors.
+## Code Examples
 
-{% endnote %}
-
-## Example
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.commentitem.getmanifest
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/task.commentitem.getmanifest
+    ```
 
 - JS
 
@@ -53,6 +52,263 @@ Maintaining the order of parameters in the request is mandatory. If violated, th
     );
     ```
 
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'task.commentitem.getmanifest',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": {
+        "Manifest version": "1.1",
+        "Warning": "don't rely on format of this manifest, it can be changed without any notification",
+        "REST: shortname alias to class": "commentitem",
+        "REST: writable commentitem data fields": [
+            "POST_MESSAGE",
+            "AUTHOR_ID",
+            "POST_DATE",
+            "UF_FORUM_MESSAGE_DOC"
+        ],
+        "REST: readable commentitem data fields": [
+            "POST_MESSAGE_HTML",
+            "ID",
+            "AUTHOR_ID",
+            "AUTHOR_NAME",
+            "AUTHOR_EMAIL",
+            "POST_DATE",
+            "POST_DATE",
+            "POST_MESSAGE",
+            "AUTHOR_ID",
+            "POST_DATE",
+            "UF_FORUM_MESSAGE_DOC",
+            "ATTACHED_OBJECTS"
+        ],
+        "REST: sortable commentitem data fields": [
+            "ID",
+            "AUTHOR_ID",
+            "AUTHOR_NAME",
+            "AUTHOR_EMAIL",
+            "POST_DATE"
+        ],
+        "REST: filterable commentitem data fields": [
+            "ID",
+            "AUTHOR_ID",
+            "AUTHOR_NAME",
+            "POST_DATE"
+        ],
+        "REST: date fields": [
+            "POST_DATE"
+        ],
+        "REST: available methods": {
+            "getmanifest": {
+                "staticMethod": true,
+                "params": []
+            },
+            "getlist": {
+                "staticMethod": true,
+                "mandatoryParamsCount": 1,
+                "params": [
+                    {
+                        "description": "taskId",
+                        "type": "integer"
+                    },
+                    {
+                        "description": "arOrder",
+                        "type": "array",
+                        "allowedKeys": [
+                            "ID",
+                            "AUTHOR_ID",
+                            "AUTHOR_NAME",
+                            "AUTHOR_EMAIL",
+                            "POST_DATE"
+                        ]
+                    },
+                    {
+                        "description": "arFilter",
+                        "type": "array",
+                        "allowedKeys": [
+                            "ID",
+                            "AUTHOR_ID",
+                            "AUTHOR_NAME",
+                            "POST_DATE"
+                        ],
+                        "allowedKeyPrefixes": [
+                            "!","<=","<",">=",
+                            ">"
+                        ]
+                    }
+                ],
+                "allowedKeysInReturnValue": [
+                    "POST_MESSAGE_HTML",
+                    "ID",
+                    "AUTHOR_ID",
+                    "AUTHOR_NAME",
+                    "AUTHOR_EMAIL",
+                    "POST_DATE",
+                    "POST_DATE",
+                    "POST_MESSAGE",
+                    "AUTHOR_ID",
+                    "POST_DATE",
+                    "UF_FORUM_MESSAGE_DOC",
+                    "ATTACHED_OBJECTS"
+                ],
+                "collectionInReturnValue": true
+            },
+            "get": {
+                "mandatoryParamsCount": 2,
+                "params": [
+                    {
+                        "description": "taskId",
+                        "type": "integer"
+                    },
+                    {
+                        "description": "itemId",
+                        "type": "integer"
+                    }
+                ],
+                "allowedKeysInReturnValue": [
+                    "POST_MESSAGE_HTML",
+                    "ID",
+                    "AUTHOR_ID",
+                    "AUTHOR_NAME",
+                    "AUTHOR_EMAIL",
+                    "POST_DATE",
+                    "POST_DATE",
+                    "POST_MESSAGE",
+                    "AUTHOR_ID",
+                    "POST_DATE",
+                    "UF_FORUM_MESSAGE_DOC",
+                    "ATTACHED_OBJECTS"
+                ]
+            },
+            "add": {
+                "staticMethod": true,
+                "mandatoryParamsCount": 2,
+                "params": [
+                    {
+                        "description": "taskId",
+                        "type": "integer"
+                    },
+                    {
+                        "description": "arFields",
+                        "type": "array",
+                        "allowedKeys": [
+                            "POST_MESSAGE",
+                            "AUTHOR_ID",
+                            "POST_DATE",
+                            "UF_FORUM_MESSAGE_DOC"
+                        ]
+                    }
+                ]
+            },
+            "update": {
+                "staticMethod": false,
+                "mandatoryParamsCount": 3,
+                "params": [
+                    {
+                        "description": "taskId",
+                        "type": "integer"
+                    },
+                    {
+                        "description": "itemId",
+                        "type": "integer"
+                    },
+                    {
+                        "description": "arFields",
+                        "type": "array",
+                        "allowedKeys": [
+                            "POST_MESSAGE",
+                            "AUTHOR_ID",
+                            "POST_DATE",
+                            "UF_FORUM_MESSAGE_DOC"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "staticMethod": false,
+                "mandatoryParamsCount": 2,
+                "params": [
+                    {
+                        "description": "taskId",
+                        "type": "integer"
+                    },
+                    {
+                        "description": "itemId",
+                        "type": "integer"
+                    }
+                ]
+            },
+            "isactionallowed": {
+                "staticMethod": false,
+                "mandatoryParamsCount": 3,
+                "params": [
+                    {
+                        "description": "taskId",
+                        "type": "integer"
+                    },
+                    {
+                        "description": "itemId",
+                        "type": "integer"
+                    },
+                    {
+                        "description": "actionId",
+                        "type": "integer"
+                    }
+                ]
+            }
+        }
+    },
+    "time": {
+        "start": 1753261350.76179,
+        "finish": 1753261350.816284,
+        "duration": 0.05449390411376953,
+        "processing": 0.002237081527709961,
+        "date_start": "2025-07-23T12:02:30+02:00",
+        "date_finish": "2025-07-23T12:02:30+02:00",
+        "operating_reset_at": 1753261950,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Description of methods `task.elapseditem.*` ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./index.md)
+- [{#T}](./task-comment-item-add.md)
+- [{#T}](./task-comment-item-update.md)
+- [{#T}](./task-comment-item-get.md)
+- [{#T}](./task-comment-item-get-list.md)
+- [{#T}](./task-comment-item-delete.md)
+- [{#T}](./task-comment-item-is-action-allowed.md)

@@ -8,7 +8,7 @@ The method `crm.contact.userfield.update` updates an existing custom contact fie
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -62,7 +62,7 @@ Only those fields that need to be changed should be passed in `fields` ||
 
 The field only overwrites the passed values ||
 || **LIST**
-[`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. This parameter is meaningless for custom fields of other types ||
+[`uf_enum_element[]`](#uf_enum_element) | List of possible values for a custom field of type `enumeration`. This parameter is meaningless for custom fields of other types ||
 || **SORT**
 [`integer`][1] | Sort index. Must be greater than zero ||
 || **SHOW_IN_LIST**
@@ -274,7 +274,7 @@ Each type of custom field has its own set of additional settings. This method su
     || **ENTITY_TYPE**
     [`string`][1] | Identifier of the reference type.
 
-    Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find possible values ||
+    Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find out possible values ||
     |#
 
 - crm
@@ -314,12 +314,12 @@ Each type of custom field has its own set of additional settings. This method su
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`string`][1] | Identifier of the list element. When passing this parameter, the corresponding list element will be modified; otherwise, a new list element will be added.
+[`string`][1] | Identifier of the list item. When passing this parameter, the corresponding list item will be changed; otherwise, a new list item will be added.
 
 The identifier can be obtained using the method [`crm.contact.userfield.get`](./crm-contact-userfield-get.md#uf_enum_element)
 ||
 || **DEL**
-[`boolean`][1] | Flag required to delete the list element. Makes sense only when passing `ID`. 
+[`boolean`][1] | Flag necessary for deleting a list item. Makes sense only when passing `ID`. 
 
 Possible values:
 `Y` — delete
@@ -328,22 +328,22 @@ Possible values:
 Default is `N`
 ||
 || **VALUE**
-[`string`][1] | Value of the list element ||
+[`string`][1] | Value of the list item ||
 || **SORT**
 [`integer`][1] | Sort index. Must be greater than or equal to 0 ||
 || **DEF**
-[`boolean`][1] | Is the list element the default value? Possible values:
+[`boolean`][1] | Is the list item the default value? Possible values:
 - `Y` — yes
 - `N` — no
 
-For multiple fields, several `DEF = Y` are allowed. For non-multiple fields, the first passed list element with `DEF = Y` will be considered the default value ||
+For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, the first passed list item with `DEF = Y` will be considered the default value ||
 || **XML_ID**
-[`string`][1] | External code of the value. Must be unique within the elements of the custom field ||
+[`string`][1] | External code of the value. Must be unique within the list items of the custom field ||
 |#
 
 ## Code Examples
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Example Notes](../../../../_includes/examples.md) %}
 
 ### Example of Updating a String Type Custom Field
 
@@ -500,7 +500,7 @@ For multiple fields, several `DEF = Y` are allowed. For non-multiple fields, the
 
 ### Example of Updating a List Type Custom Field
 
-Current list elements:
+Current list items:
 
 ```json
 [
@@ -537,10 +537,10 @@ Current list elements:
 
 Change it as follows:
 - remove list items with `ID = 115` and `ID = 116`
-- modify the list item with `ID  = 117`:
-    - `VALUE`: "List item #3" -> "List item #3 (changed)"
+- update the list item with `ID  = 117`:
+    - `VALUE`: “List item #3” -> “List item #3 (changed)”
     - `SORT`: 300 -> 50
-- add a new list item "List item #5"
+- add a new list item “List item #5”
 
 {% list tabs %}
 
@@ -567,7 +567,7 @@ Change it as follows:
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'crm.contact.userfield.update',
         {
             fields: {
@@ -658,7 +658,7 @@ Change it as follows:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -688,7 +688,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -709,7 +709,7 @@ HTTP status: **400**
 - the user does not have administrative rights
 - the user tries to delete a custom field not linked to contacts ||
 || `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the passed `id` does not exist ||
-|| `ERROR_CORE`               | List element with value XML_ID=`XML_ID` already exists | The passed `XML_ID` for the list element must be unique within the elements of a given custom field ||
+|| `ERROR_CORE`               | List item with value XML_ID=`XML_ID` already exists | The passed `XML_ID` for the list item must be unique within the list items of a given custom field ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

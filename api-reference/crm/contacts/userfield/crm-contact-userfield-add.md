@@ -54,8 +54,8 @@ An incorrect field in `fields` will be ignored ||
 - `address` — address
 - `enumeration` — list
 - `file` — file
-- `employee` — link to an employee
-- `crm_status` — link to the CRM directory
+- `employee` — link to employee
+- `crm_status` — link to CRM directory
 - `iblock_section` — link to information block sections
 - `iblock_element` — link to information block elements
 - `crm` — link to CRM elements
@@ -64,7 +64,7 @@ An incorrect field in `fields` will be ignored ||
 || **FIELD_NAME***
 [`string`][1] | Field code. Unique.
 
-The system limit for the field code is 20 characters. The custom field name always has the prefix `UF_CRM_`, meaning the actual length of the name is 13 characters.
+The system limit for the field code is 20 characters. The prefix `UF_CRM_` is always added to the custom field name, meaning the actual length of the name is 13 characters.
 
 Allowed characters: `A-Z`, `0-9`, and `_`
 ||
@@ -107,7 +107,7 @@ When a `lang_map` type value is provided, the value from `LABEL` will be set for
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **HELP_MESSAGE**
-[`string`][1]\|[`lang_map`](../../data-types.md) | Help message.
+[`string`][1]\|[`lang_map`](../../data-types.md) | Help.
 
 When a string is provided, it will be set for all language identifiers.
 
@@ -121,29 +121,29 @@ By default, the value passed in `LABEL` is set for all language identifiers ||
 
 Fields of type `boolean` cannot be multiple.
 
-By default, `N` ||
+By default `N` ||
 || **MANDATORY**
 [`boolean`][1] | Is the field mandatory. Possible values:
 - `Y` — yes
 - `N` — no
 
-By default, `N` ||
+By default `N` ||
 || **SHOW_FILTER**
 [`boolean`][1] | Show the field in the filter. Possible values:
 - `Y` — yes
 - `N` — no
 
-By default, `N` ||
+By default `N` ||
 || **SETTINGS**
 [`object`][1] | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, which are described [below](#settings) ||
 || **LIST**
 [`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. For custom fields of other types, this parameter is meaningless.
 
-By default, `[]` ||
+By default `[]` ||
 || **SORT**
 [`integer`][1] | Sort index. Must be greater than zero.
 
-By default, `100` ||
+By default `100` ||
 || **SHOW_IN_LIST**
 [`boolean`][1] | Show the custom field in the list.
 
@@ -153,13 +153,13 @@ Possible values:
 - `Y` — yes
 - `N` — no
 
-By default, `N` ||
+By default `N` ||
 || **EDIT_IN_LIST**
 [`boolean`][1] | Allow user editing. Possible values:
 - `Y` — yes
 - `N` — no
 
-By default, `Y` ||
+By default `Y` ||
 || **IS_SEARCHABLE**
 [`boolean`][1] | Are the field values included in the search.
 
@@ -169,7 +169,7 @@ Possible values:
 - `Y` — yes
 - `N` — no
 
-By default, `N` ||
+By default `N` ||
 |#
 
 ### Parameter SETTINGS {#settings}
@@ -285,7 +285,7 @@ Each type of custom field has its own set of additional settings. This method on
     - `DIALOG` — entity selection dialog
 
     By default `LIST` ||
-    || **LIST_HEIGHT** | List height. Must be greater than 0.
+    || **LIST_HEIGHT** | Height of the list. Must be greater than 0.
 
     Available only when `DISPLAY = LIST` or `DISPLAY = UI`.
 
@@ -318,11 +318,11 @@ Each type of custom field has its own set of additional settings. This method on
 
     By default `LIST` ||
     || **LIST_HEIGHT**
-    [`integer`][1] | List height. Must be greater than 0.
+    [`integer`][1] | Height of the list. Must be greater than 0.
 
     By default `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`][1] | Show elements with the active flag. Possible values:
+    [`boolean`][1] | Show elements with the active flag enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -383,30 +383,30 @@ Each type of custom field has its own set of additional settings. This method on
 || **Name**
 `type` | **Description** ||
 || **VALUE**
-[`string`][1] | Value of the list item.
+[`string`][1] | Value of the list element.
 
-List items with an empty or missing `VALUE` will be ignored ||
+List elements with an empty or missing `VALUE` will be ignored ||
 || **SORT**
 [`integer`][1] | Sort index. Must be greater than or equal to 0.
 
 By default `0` ||
 || **DEF**
-[`boolean`][1] | Is the list item the default value. Possible values:
+[`boolean`][1] | Is the list element the default value. Possible values:
 - `Y` — yes
 - `N` — no
 
-For multiple fields, several `DEF = Y` are allowed. For non-multiple fields, the first provided list item with `DEF = Y` will be considered the default value.
+For a multiple field, multiple `DEF = Y` are allowed. For a non-multiple field, the first provided list element with `DEF = Y` will be considered the default value.
 
 By default `N` ||
 || **XML_ID**
-[`string`][1] | External code of the value. Must be unique within the list items of the custom field ||
+[`string`][1] | External code of the value. Must be unique within the list elements of the custom field ||
 |#
 
 ## Code Examples
 
 {% include [Example Notes](../../../../_includes/examples.md) %}
 
-### Example of Creating a Custom Field of Type String
+### Example of Creating a String Type Custom Field
 
 {% list tabs %}
 
@@ -417,7 +417,7 @@ By default `N` ||
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"LABEL":"Field \'Hello, World!\'","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, World! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, World! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","de":"Hallo, Welt! Hilfe"}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.userfield.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.contact.userfield.add
     ```
 
 - cURL (OAuth)
@@ -561,7 +561,7 @@ By default `N` ||
 
 {% endlist %}
 
-### Example of Creating a Custom Field of Type List
+### Example of Creating a List Type Custom Field
 
 {% list tabs %}
 
@@ -572,7 +572,7 @@ By default `N` ||
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"LABEL":"Custom Field (list)","USER_TYPE_ID":"enumeration","FIELD_NAME":"ENUMERATION_EXAMPLE","MULTIPLE":"N","MANDATORY":"N","SHOW_FILTER":"Y","LIST":[{"VALUE":"List Item #1","DEF":"Y","XML_ID":"XML_ID_1","SORT":100},{"VALUE":"List Item #2","XML_ID":"XML_ID_2","SORT":200},{"VALUE":"List Item #3","XML_ID":"XML_ID_3","SORT":300},{"VALUE":"List Item #4","XML_ID":"XML_ID_4","SORT":400}],"SETTINGS":{"DISPLAY":"UI","LIST_HEIGHT":2},"SORT":2000}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.userfield.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.contact.userfield.add
     ```
 
 - cURL (OAuth)
@@ -588,7 +588,7 @@ By default `N` ||
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'crm.contact.userfield.add',
         {
             fields: {
@@ -693,7 +693,7 @@ By default `N` ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -723,7 +723,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 This method may return errors not immediately, but by collecting several and concatenating them into a string: `\n`.
 

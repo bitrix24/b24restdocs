@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: a user with access to the "Analyst Workspace" section
 
 The method `biconnector.dataset.delete` removes an existing dataset.
 
@@ -26,7 +26,7 @@ The method `biconnector.dataset.delete` removes an existing dataset.
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'biconnector.dataset.delete',
         {
             id: 4,

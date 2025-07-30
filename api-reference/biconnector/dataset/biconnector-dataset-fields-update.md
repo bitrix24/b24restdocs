@@ -28,7 +28,7 @@ The method `biconnector.dataset.fields.update` updates the fields of an existing
 
 - `type` — field type
 - `name` — field name
-- `externalCode` — external field code ||
+- `externalCode` — external code of the field ||
 || **update**
 [`object`](../../data-types.md) | An object containing an array of fields to be updated with the following structure:
 
@@ -39,8 +39,8 @@ The method `biconnector.dataset.fields.update` updates the fields of an existing
 },
 ```
 
-- `id` — Field identifier, can be obtained using the method [biconnector.dataset.get](./biconnector-dataset-get.md)
-- `visible` — field visibility ||
+- `id` — Identifier of the field, can be obtained using the method [biconnector.dataset.get](./biconnector-dataset-get.md)
+- `visible` — visibility of the field ||
 || **delete**
 [`int[]`](../../data-types.md) | An object containing an array of field identifiers for deletion. Field identifiers can be obtained using the method [biconnector.dataset.get](./biconnector-dataset-get.md) ||
 |#
@@ -54,7 +54,7 @@ The method `biconnector.dataset.fields.update` updates the fields of an existing
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'biconnector.dataset.fields.update',
         {
             id: 10,
@@ -238,7 +238,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -264,9 +264,9 @@ HTTP status: **200**
 || `DATASET_UPDATE_ERROR` | Error updating dataset. | Error updating dataset ||
 || `VALIDATION_DUPLICATE_FIELD_CODE` | Duplicate values found in the "code" parameter: #LIST_CODES# | Duplicates found in the `externalCode` parameter of dataset fields ||
 || `VALIDATION_DUPLICATE_FIELD_NAME` | Duplicate values found in the "name" parameter: #LIST_NAMES# | Duplicates found in the `name` parameter of dataset fields ||
-|| `VALIDATION_FIELD_NAME_INVALID_FORMAT` | Field "name" has to start with an uppercase Latin character. Possible entry includes uppercase Latin characters (A-Z), numbers (0-9) and underscores. | Incorrect field name format. The name must start with a letter, only uppercase Latin letters `(A-Z)`, digits, and `_` are allowed ||
+|| `VALIDATION_FIELD_NAME_INVALID_FORMAT` | Field "name" has to start with an uppercase Latin character. Possible entry includes uppercase Latin characters (A-Z), numbers (0-9) and underscores. | Incorrect field name format. The name must start with a letter, only uppercase Latin letters `(A-Z)`, digits, and the `_` sign are allowed ||
 || `VALIDATION_FIELD_NAME_TOO_LONG` | Field "name" must not exceed 32 characters. | Field name must not exceed 32 characters ||
-|| `VALIDATION_FIELD_INVALID_TYPE` | Invalid field type. | Invalid field type ||
+|| `VALIDATION_FIELD_INVALID_TYPE` | Invalid field type. | Incorrect field type ||
 || `VALIDATION_DUPLICATE_EXIST_CODE` | The following "externalCode" values already exist in the current fields: #LIST_CODES# | Fields with this `externalCode` parameter already exist ||
 || `VALIDATION_DUPLICATE_EXIST_NAME` | The following "name" values already exist in the current fields: #LIST_NAMES# | Fields with this `name` parameter already exist ||
 || `VALIDATION_FIELD_ADD_MISSING_REQUIRED_FIELDS` | Field to be added must include the required parameters: "name", "externalCode" and "type". | Field to be added must include the `name`, `externalCode`, and `type` parameters ||

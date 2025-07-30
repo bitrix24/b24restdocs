@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: a user with access to the "Analyst's workspace" section
 
 The method `biconnector.dataset.get` returns information about a dataset by its identifier.
 
@@ -24,7 +24,7 @@ The method `biconnector.dataset.get` returns information about a dataset by its 
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'biconnector.dataset.get',
         {
             id: 2,
@@ -144,7 +144,7 @@ HTTP status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not provided ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `DATASET_NOT_FOUND` | Dataset was not found. | Dataset not found ||
 |#

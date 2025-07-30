@@ -2,13 +2,13 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst's Workspace" section
+> Who can execute the method: a user with access to the "Analyst Workspace" section
 
 The method `biconnector.dataset.update` updates an existing dataset.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -47,14 +47,14 @@ To change the fields of the dataset, use the method [biconnector.dataset.fields.
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'biconnector.dataset.update',
         {
             id: 10,
@@ -147,9 +147,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` on success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

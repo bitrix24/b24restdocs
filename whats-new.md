@@ -2,6 +2,11 @@
 
 ## 2025
 
+### July 30, 2025
+
+- Added documentation for call list methods [crm.calllist.*](./api-reference/crm/call-list/index.md) in CRM.
+- Updated documentation for comment handling methods [task.commentitem.*](./api-reference/tasks/comment-item/index.md) in Tasks.
+
 ### July 23, 2025
 
 - Updated the main page of the [Slots](./api-reference/booking/resource/slots/index.md) section in Online Booking. Added introductory information and an overview of methods and relationships.

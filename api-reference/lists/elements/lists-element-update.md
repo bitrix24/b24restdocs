@@ -11,11 +11,11 @@ Some data may be missing — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-- links to pages that have not yet been created are not specified
+- parameter types not specified
+- examples missing
+- success response missing
+- error response missing
+- links to pages not yet created are not specified
 
 {% endnote %}
 
@@ -33,6 +33,7 @@ All fields of the element and their values must be passed in the request.
 
 {% endnote %}
 
+
 ## Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -41,7 +42,7 @@ All fields of the element and their values must be passed in the request.
 || **Name**
 `type` | **Description** ||
 || **IBLOCK_TYPE_ID***
-[`unknown`](../../data-types.md) | `id` of the information block:
+[`unknown`](../../data-types.md) | `id` of the information block type:
 - `lists` — list information block type
 - `bitrix_processes` — processes information block type
 - `lists_socnet` — group lists information block type ||
@@ -50,7 +51,7 @@ All fields of the element and their values must be passed in the request.
 || **ELEMENT_CODE/ELEMENT_ID***
 [`unknown`](../../data-types.md) | Code or `id` of the element ||
 || **FIELDS**
-[`unknown`](../../data-types.md) | Array of fields and values. For a field of type "File" `F`, pass the file in [Base64](../../files/how-to-update-files.md) format ||
+[`unknown`](../../data-types.md) | Array of fields and values. For the field type "File" `F`, pass the file in [Base64](../../files/how-to-update-files.md) format  ||
 || **SOCNET_GROUP_ID***
 [`unknown`](../../data-types.md) | `id` of the group. This parameter is required if the list is created for a group ||
 |#
@@ -254,7 +255,7 @@ Find out the ID of file values using the method [lists.element.get](./lists-elem
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'lists.element.get', {IBLOCK_TYPE_ID: 'bitrix_processes', IBLOCK_ID: 47}
     );
     ```
@@ -299,9 +300,9 @@ You will receive a response in the following format.
 ],
 ```
 
-Here, `PROPERTY_133` is a multiple field of type File. It represents an object where the key is the `ID` of the property value that you will need for deletion, and the value is the `ID` of the file.
+Here, `PROPERTY_133` is a multiple field of type File. It represents an object where the key is the `ID` of the property value needed for deletion, and the value is the `ID` of the file.
 
-To delete a property value, pass a field with the suffix `_DEL` to the method `lists.element.update`. Specify the list of values to be deleted. Use the `ID` of the property value as the key, and `"Y"` as the value.
+To delete a property value, pass a field with the suffix `_DEL` to the method `lists.element.update`. In it, specify the list of values to be deleted. Use the `ID` of the property value as the key and `"Y"` as the value.
 
 {% list tabs %}
 
@@ -328,7 +329,7 @@ To delete a property value, pass a field with the suffix `_DEL` to the method `l
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'lists.element.update', {
         IBLOCK_TYPE_ID: 'bitrix_processes',
         IBLOCK_ID: 47,

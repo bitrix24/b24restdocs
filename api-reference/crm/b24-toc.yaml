@@ -3,13 +3,13 @@ href: index.md
 items:
   - name: CRM Objects and Methods
     href: index.md
-  - name: Data Types and Object Structure in CRM REST API
+  - name: Data Types and Structure of Objects in the CRM REST API
     href: data-types.md 
   - name: Fields of Main CRM Objects
     href: main-entities-fields.md
   - name: Typical Use-Cases and Tutorials
     href: tutorials.md
-  - name: Determine Current CRM Operating Mode
+  - name: Determine the Current CRM Operating Mode
     href: crm-settings-mode-get.md
   - name: Universal CRM Methods
     include:
@@ -43,6 +43,10 @@ items:
     include:
       path: timeline/b24-toc.yaml
       mode: link
+  - name: Call Lists
+    include:
+      path: call-list/b24-toc.yaml
+      mode: link      
   - name: Search and Process Duplicates in CRM
     include:
       path: duplicates/b24-toc.yaml
@@ -71,7 +75,7 @@ items:
     include:
       path: auxiliary/b24-toc.yaml
       mode: link
-  - name: Deprecated CRM Methods
+  - name: Outdated CRM Methods
     include:
       path: outdated/b24-toc.yaml
       mode: link

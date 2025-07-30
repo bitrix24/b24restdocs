@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst's Workspace" section
+> Who can execute the method: user with access to the "Analyst Workspace" section
 
 The method `biconnector.connector.get` returns information about the connector by its identifier.
 
@@ -14,7 +14,7 @@ The method `biconnector.connector.get` returns information about the connector b
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | The identifier of the connector, which can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
+[`integer`](../../data-types.md) | Identifier of the connector, can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
 |#
 
 ## Code Examples
@@ -26,7 +26,7 @@ The method `biconnector.connector.get` returns information about the connector b
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'biconnector.connector.get',
         {
             id: 4,
@@ -131,7 +131,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`item`](../../data-types.md) | The root element of the response. Contains information about the connector fields. Field descriptions can be found in the article [Connector: Overview of Methods](./index.md#fields) ||
+[`item`](../../data-types.md) | Root element of the response. Contains information about the connector fields. Field descriptions can be found in the article [Connector: Overview of Methods](./index.md#fields) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#                                                                         
@@ -153,7 +153,7 @@ HTTP Status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not provided ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `CONNECTOR_NOT_FOUND` | Connector was not found. | Connector not found ||
 |#

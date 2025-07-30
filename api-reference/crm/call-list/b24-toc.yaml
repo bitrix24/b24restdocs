@@ -1,0 +1,17 @@
+title: Call Lists
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create a New Call List
+    href: crm-calllist-add.md
+  - name: Get Information About the Call List
+    href: crm-calllist-get.md
+  - name: Get Participants of the Call List
+    href: crm-calllist-items-get.md
+  - name: Get a List of All Call Lists
+    href: crm-calllist-list.md
+  - name: Get a List of Call List Statuses
+    href: crm-calllist-statuslist.md
+  - name: Update the Composition of the Call List
+    href: crm-calllist-update.md

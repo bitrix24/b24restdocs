@@ -27,7 +27,7 @@ If called before [BX24.init](../system-functions/bx24-init.md), the request exec
 || **params**
 [`object`](../../data-types.md) | Parameters passed to the method. Must match the expected parameters of the called method ||
 || **callback**
-[`function`](../../data-types.md) | Callback function that will be executed after receiving a response from the server ||
+[`function`](../../data-types.md) | The callback function that will be executed after receiving a response from the server ||
 |#
 
 ## Example
@@ -55,7 +55,7 @@ BX24.init(() => {
 
 {% note warning %}
 
-In on-premise versions, REST methods are called through the `BX.rest.callMethod()` method, not through `BX24.callMethod()`.
+In on-premise versions, REST methods are called using the method `BX.rest.callMethod()`, not `BX24.callMethod()`.
 
 {% endnote %}
 
@@ -67,7 +67,7 @@ The result handler of the request is a function. It receives an **ajaxResult** o
 - `error()` — returns an error object if an error is present, and `undefined` otherwise. The error object contains the fields `status` and `ex`, where `ex` includes `error` and `error_description`
 - `more()` — returns `true` if there is more data to load, and `false` otherwise. Applicable if the method returns a list of data
 - `total()` — returns the total number of available records. Applicable if the method returns a list of data
-- `time()` — returns an object with information about the request execution time. May return `undefined` if the information is unavailable.
+- `time()` — returns an object with information about the request execution time. It may return `undefined` if the information is unavailable.
 - `next(cb: Function)` — requests the next page of data. If a function `cb` is provided, it will be used as the result handler for the next request. Returns `false` if there is no more data to load, or an `XMLHttpRequest` object if the request was initiated.
 
 ## Example of retrieving a paginated list of users
@@ -93,7 +93,7 @@ BX24.init(() => {
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
-## Continue exploring
+## Continue your exploration
 
 - [{#T}](./bx24-call-bind.md)
 - [{#T}](./bx24-call-unbind.md)

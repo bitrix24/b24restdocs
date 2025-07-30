@@ -10,25 +10,25 @@ A connection can be deleted if it has no datasets.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the connection, can be obtained using the methods [biconnector.source.list](./biconnector-source-list.md) or [biconnector.source.add](./biconnector-source-add.md) ||
+[`integer`](../../data-types.md) | Identifier of the connection, which can be obtained using the methods [biconnector.source.list](./biconnector-source-list.md) or [biconnector.source.add](./biconnector-source-add.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'biconnector.source.delete',
         {
             id: 4,
@@ -80,7 +80,7 @@ A connection can be deleted if it has no datasets.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -109,7 +109,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {

@@ -1,26 +1,26 @@
-# Check Action Permission for task.elapseditem.isActionAllowed
+# Check Action Permission for task.elapseditem.isactionallowed
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method checks whether an action is allowed on a record: creation, modification, and deletion.
+This method checks whether an action is permitted on a record: creation, modification, and deletion.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **TASKID***
+|| **TASKID***  
 [`integer`](../../data-types.md) | Task identifier.
 
 The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method to get the list of tasks](../tasks-task-list.md) ||
-|| **ITEMID***
-[`integer`](../../data-types.md) | Identifier of the time spent record.
+|| **ITEMID***  
+[`integer`](../../data-types.md) | Identifier of the elapsed time record.
 
-It can be obtained when [creating a new record](./task-elapsed-item-add.md) or by using the [method to get the list of time spent records](./task-elapsed-item-get-list.md) ||
-|| **ACTIONID***
-[`integer`](../../data-types.md) | Action identifier:
+It can be obtained when [creating a new record](./task-elapsed-item-add.md) or by using the [method to get the list of elapsed time records](./task-elapsed-item-get-list.md) ||
+|| **ACTIONID***  
+[`integer`](../../data-types.md) | Identifier of the action:
 - **1** — add a new record (`ACTION_ELAPSED_TIME_ADD`)
 - **2** — modify a record (`ACTION_ELAPSED_TIME_MODIFY`)
 - **3** — delete a record (`ACTION_ELAPSED_TIME_REMOVE`) ||
@@ -28,7 +28,7 @@ It can be obtained when [creating a new record](./task-elapsed-item-add.md) or b
 
 {% note warning %}
 
-It is mandatory to follow the order of parameters specified in the table in the request. Otherwise, the request will be executed with errors.
+It is mandatory to follow the order of parameters in the request as specified in the table. Otherwise, the request will execute with errors.
 
 {% endnote %}
 
@@ -106,13 +106,13 @@ HTTP Status: **200**
 ```json
 {
     "result": true,
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -120,20 +120,18 @@ HTTP Status: **200**
 ### Returned Data
 
 #|
-|| **Name**
+|| **Name**  
 `type` | **Description** ||
-|| **result**
+|| **result**  
 [`boolean`](../../data-types.md) | Result of the permission check for the action:
-- `true` — allowed
-- `false` — not allowed
+- `true` — permitted
+- `false` — not permitted
  ||
-|| **time**
+|| **time**  
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
-
-{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

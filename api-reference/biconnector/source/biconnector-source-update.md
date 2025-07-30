@@ -1,8 +1,8 @@
-# Update biconnector.source.update
+# Change source biconnector.source.update
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst's workspace" section
+> Who can execute the method: a user with access to the "Analyst Workspace" section
 
 The method `biconnector.source.update` updates an existing source.
 
@@ -60,7 +60,7 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
 - JS
 
     ```js
-    BX.rest.callMethod(
+    BX24.callMethod(
         'biconnector.source.update',
         {
             id: 4,
