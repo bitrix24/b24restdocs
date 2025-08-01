@@ -59,10 +59,10 @@ This method retrieves a list of open channels.
     {
         var params = {
             PARAMS: {
-                select: {
+                select: [
                     'ID',
                     ...
-                },
+                ],
                 order: {
                     ID: 'ASC',
                     ...
