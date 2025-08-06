@@ -123,6 +123,7 @@ Optional. By default, it is sorted in descending order by task identifier.
 - **ONLY_ROOT_TASKS** - only tasks that are not subtasks (root tasks), as well as subtasks of the parent task to which the current user does not have access (Y\|N).
 - **STAGE_ID** - stage;
 - **UF_CRM_TASK** - CRM entities;
+- **TAG** - Tasks Tags;
 
 Before the filter field name, a filtering type can be specified:
 - "!" - not equal
