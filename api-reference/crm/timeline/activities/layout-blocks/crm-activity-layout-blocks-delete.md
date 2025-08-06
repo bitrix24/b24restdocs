@@ -2,11 +2,11 @@
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: REST Application
+> Who can execute the method: administrator
 
-This method allows a REST application to delete a set of additional content blocks that it has installed for an activity.
+The method `crm.activity.layout.blocks.delete` removes a set of additional content blocks for a activity.
 
-A REST application can only delete the set of additional content blocks that it has installed.
+Within the application, only the set of additional content blocks that was installed through this application can be deleted.
 
 ## Method Parameters
 
@@ -15,11 +15,11 @@ A REST application can only delete the set of additional content blocks that it 
 #|
 || **Name**
 `type` | **Description** ||
-|| **entityTypeId*** 
+|| **entityTypeId***  
 [`integer`](../../../../data-types.md) | Identifier of the CRM object type to which the activity is linked ||
-|| **entityId*** 
+|| **entityId***  
 [`integer`](../../../../data-types.md) | Identifier of the CRM object to which the activity is linked ||
-|| **activityId*** 
+|| **activityId***  
 [`integer`](../../../../data-types.md) | Identifier of the activity ||
 |#
 
@@ -94,7 +94,7 @@ Delete a set of additional content blocks in the activity with `id = 8`, linked 
 
 HTTP status: **200**
 
-Returns `{ success: true }` if the set of additional content blocks is successfully deleted, otherwise `null`.
+Returns `{ success: true }` in case of successful deletion of the set of additional content blocks, otherwise `null`.
 
 ```json
 {
@@ -120,7 +120,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a REST application ||
-|| `OWNER_NOT_FOUND` | The entity to which the activity is linked was not found ||
+|| `OWNER_NOT_FOUND` | The element to which the activity is linked was not found ||
 || `NOT_FOUND` | The activity was not found ||
 || `ACCESS_DENIED` | Access denied ||
 |#

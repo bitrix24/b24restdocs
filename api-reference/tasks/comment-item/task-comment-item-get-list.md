@@ -2,19 +2,19 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with read access permission for the task or higher
 
-The method `task.commentitem.getlist` retrieves a list of task comments.
+The method `task.commentitem.getlist` retrieves a list of comments for a task.
 
 ## Method Parameters
 
 {% note warning "" %}
 
-Please pass parameters in the request according to the order in the table. If the order is violated, the request will return an error.
+Pass parameters in the request according to the order in the table. If the order is violated, the request will return an error.
 
 {% endnote %}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ Please pass parameters in the request according to the order in the table. If th
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get list of tasks method](../tasks-task-list.md) ||
 || **ORDER**
 [`object`](../../data-types.md) | An object for sorting the result in the form `{"field": "sort value", ... }`.
 
@@ -59,7 +59,7 @@ By default, records are not filtered ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -195,7 +195,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array of objects. Each object contains a description of a comment ||
+[`array`](../../data-types.md) | An array of objects. Each object contains a description of the comment ||
 || **POST_MESSAGE_HTML**
 [`string`](../../data-types.md) | HTML code of the comment ||
 || **ID**
@@ -252,7 +252,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description**  | **Value** ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Action failed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED | An incorrect parameter value is specified or there are no access permissions to the task ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Action failed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED | An incorrect parameter value is specified or there are no access permissions for the task ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::getlist() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | An incorrect type of value is specified for the parameter, for example, for `TASKID` ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arOrder) for method ctaskcommentitem::getlist() must not contain key ">=POST_DATE".; 256/TE/WRONG_ARGUMENTS | Parameters are specified in the wrong order ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (arFilter) for method ctaskcommentitem::getlist() must not contain key "%POST_DATE".; 256/TE/WRONG_ARGUMENTS | The parameter name or prefix for filtering is incorrectly specified ||
@@ -267,5 +267,3 @@ HTTP status: **400**
 - [{#T}](./task-comment-item-update.md)
 - [{#T}](./task-comment-item-get.md)
 - [{#T}](./task-comment-item-delete.md)
-- [{#T}](./task-comment-item-is-action-allowed.md)
-- [{#T}](./task-comment-item-get-manifest.md)

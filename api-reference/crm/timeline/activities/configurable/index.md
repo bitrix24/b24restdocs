@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- No content available
+- No content
 - Replace the link
 
 {% endnote %}
@@ -28,7 +28,7 @@ Configurable activities are a type of activity that can only be created from the
 
 {% note warning %}
 
-The methods `crm.activity.configurable.add`, `crm.activity.configurable.update`, `crm.activity.configurable.get` can only be called in the context of a [Rest application](https://helpdesk.bitrix24.com/examples/app.zip).
+The methods `crm.activity.configurable.add`, `crm.activity.configurable.update`, `crm.activity.configurable.get` can only be called in the context of an [application](https://helpdesk.bitrix24.com/examples/app.zip).
 
 {% endnote %}
 

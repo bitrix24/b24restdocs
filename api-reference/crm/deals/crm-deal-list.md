@@ -1,4 +1,4 @@
-# Get a list of deals crm.deal.list
+# Get the list of deals crm.deal.list
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
@@ -18,7 +18,7 @@ You can use the following masks for selection:
 - `'*'` — to select all fields (excluding custom and multiple fields)
 - `'UF_*'` — to select all custom fields (excluding multiple fields)
 
-The list of available fields for selection can be found using the method [crm.deal.fields](./crm-deal-fields.md).
+You can find the list of available fields for selection using the method [crm.deal.fields](./crm-deal-fields.md).
 
 By default, all fields are taken — `'*'` + Custom fields — `'UF_*'`
 ||
@@ -38,7 +38,7 @@ where:
 - `field_n` — the name of the field by which the selection of elements will be filtered
 - `value_n` — the filter value
 
-You can add a prefix to the keys `field_n` to specify the filter operation.
+You can add a prefix to the keys `field_n` to clarify the filter operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -58,9 +58,9 @@ Possible prefix values:
 
 The LIKE filter does not work with fields of type `crm_status`, `crm_contact`, `crm_company` (deal type `TYPE_ID`, stage `STAGE_ID`, etc.).
 
-The list of available fields for filtering can be found using the method [crm.deal.fields](./crm-deal-fields.md). 
+You can find the list of available fields for filtering using the method [crm.deal.fields](./crm-deal-fields.md). 
 
-The filter does not support the field `CONTACT_IDS`, for filtering by contacts use the method [crm.item.list](../universal/crm-item-list.md)
+The filter does not support the `CONTACT_IDS` field; for filtering by contacts, use the method [crm.item.list](../universal/crm-item-list.md)
 ||
 || **order**
 [`object`](../../data-types.md) | Object format:
@@ -76,11 +76,11 @@ The filter does not support the field `CONTACT_IDS`, for filtering by contacts u
 
 where:
 - `field_n` — the name of the field by which the selection of deals will be sorted
-- `value_n` — a `string` value, equal to:
+- `value_n` — a `string` value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
-The list of available fields for sorting can be found using the method [crm.deal.fields](./crm-deal-fields.md)
+You can find the list of available fields for sorting using the method [crm.deal.fields](./crm-deal-fields.md)
 ||
 || **start**
 [`integer`](../../data-types.md)  | This parameter is used to manage pagination.
@@ -105,13 +105,13 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
 
 ## Code Examples
 
-{% include [Note about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Get a list of deals where:
-1. the funnel ID is `1`
-2. the deal type is `COMPLEX`
+1. the funnel ID equals `1`
+2. the deal type equals `COMPLEX`
 3. the title ends with `a`
-4. the stage is `C1:NEW`
+4. the stage equals `C1:NEW`
 5. the amount is greater than 10000 but less than or equal to 20000
 6. manual mode for amount calculation is enabled
 7. the responsible person is either the user with `id = 1` or the user with `id = 6`
@@ -139,7 +139,7 @@ For clarity, select only the necessary fields:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"SELECT":["ID","TITLE","TYPE_ID","CATEGORY_ID","STAGE_ID","OPPORTUNITY","IS_MANUAL_OPPORTUNITY","ASSIGNED_BY_ID","DATE_CREATE"],"FILTER":{"=%TITLE":"%a","CATEGORY_ID":1,"TYPE_ID":"COMPLEX","STAGE_ID":"C1:NEW",">OPPORTUNITY":10000,"<=OPPORTUNITY":20000,"IS_MANUAL_OPPORTUNITY":"Y","@ASSIGNED_BY_ID":[1,6],">DATE_CREATE":"'"$(date --date='-6 months' +%Y-%m-%d)"'"},"ORDER":{"TITLE":"ASC","OPPORTUNITY":"ASC"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.deal.list
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.list
     ```
 
 - cURL (OAuth)
@@ -337,9 +337,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`deal[]`](crm-deal-get.md#deal) | The root element of the response. Contains an array of objects with information about the deal fields. 
+[`deal[]`](crm-deal-get.md#deal) | The root element of the response. Contains an array of objects with information about the fields of deals. 
 
-Note that the structure of the fields may change due to the `select` parameter ||
+It should be noted that the structure of fields may change due to the `select` parameter ||
 || **total**
 [`integer`](../../data-types.md) | The total number of found elements ||
 || **next**
@@ -382,3 +382,4 @@ HTTP status: **400**
 - [{#T}](./crm-deal-get.md)
 - [{#T}](./crm-deal-delete.md)
 - [{#T}](./crm-deal-fields.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-objects-with-crm-mode.md)

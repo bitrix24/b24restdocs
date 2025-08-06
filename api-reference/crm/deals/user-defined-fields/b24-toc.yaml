@@ -1,13 +1,11 @@
 title: Custom Fields
 href: index.md
 items:
-  - name: Overview of Methods 
+  - name: Overview of Methods
     href: index.md
   - name: Add Custom Field
     href: crm-deal-userfield-add.md
-  - name: Custom Types 
-    href: crm-deal-user-defined-field-types.md
-  - name: Update Existing Custom Deal Field
+  - name: Update Existing Deal Custom Field
     href: crm-deal-userfield-update.md
   - name: Get Deal Custom Field by Id
     href: crm-deal-userfield-get.md

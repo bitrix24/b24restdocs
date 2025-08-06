@@ -1,33 +1,33 @@
-# Delete a set of additional content blocks for a timeline record crm.timeline.layout.blocks.delete
+# Delete a set of additional content blocks for the timeline record crm.timeline.layout.blocks.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: REST Application
+> Who can execute the method: administrator
 
-This method allows a REST application to delete a set of additional content blocks that it has previously set for a timeline record.
+The method `crm.timeline.layout.blocks.delete` removes a set of additional content blocks for a timeline record.
 
-A REST application can only delete the set of additional content blocks that it has established.
+Within the application, only the set of additional content blocks that was installed through this application can be deleted.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **entityTypeId***
+|| **entityTypeId*** 
 [`integer`](../../../data-types.md) | Identifier of the entity type to which the timeline record is linked ||
-|| **entityId***
+|| **entityId*** 
 [`integer`](../../../data-types.md) | Identifier of the entity to which the timeline record is linked ||
-|| **timelineId***
+|| **timelineId*** 
 [`integer`](../../../data-types.md) | Identifier of the timeline record ||
 |#
 
 ## Code Examples
 
-Delete a set of additional content blocks for a timeline record with `id = 8`, linked to a deal with `id = 4`:
+Delete a set of additional content blocks for the timeline record with `id = 8`, linked to the deal with `id = 4`:
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -95,7 +95,7 @@ Delete a set of additional content blocks for a timeline record with `id = 8`, l
 
 HTTP status: **200**
 
-Returns `{ success: true }` if the set of additional content blocks is successfully deleted; otherwise, it returns `null`.
+Returns `{ success: true }` in case of successful deletion of the set of additional content blocks, otherwise `null`.
 
 ```json
 {
@@ -121,9 +121,9 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a REST application ||
-|| `OWNER_NOT_FOUND` | The entity to which the timeline record is linked was not found ||
+|| `OWNER_NOT_FOUND` | The element to which the timeline record is linked was not found ||
 || `NOT_FOUND` | The timeline record or the set of additional content blocks was not found ||
-|| `ACCESS_DENIED` | Access is denied ||
+|| `ACCESS_DENIED` | Access denied ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

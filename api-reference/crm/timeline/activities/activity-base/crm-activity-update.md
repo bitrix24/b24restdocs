@@ -1,4 +1,4 @@
-# Update System Activity crm.activity.update
+# Update system activity crm.activity.update
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -12,7 +12,7 @@ The method `crm.activity.update` continues to function, but there is a more curr
 
 The method `crm.activity.update` updates an existing activity.
 
-## Method Parameters
+## Method parameters
 
 {% include [Note on required parameters](../../../../../_includes/required.md) %}
 
@@ -22,7 +22,7 @@ The method `crm.activity.update` updates an existing activity.
 || **id***
 [`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
 || **fields***
-[`array`](../../../../data-types.md) | Array of values [activity fields](#fields) in the form of a structure:
+[`array`](../../../../data-types.md) | Array of values for [activity fields](#fields) in the following structure:
 
 ```json
 fields:
@@ -53,7 +53,7 @@ fields:
 || **COMMUNICATIONS***
 [`crm_activity_communication`](../../../data-types.md) | [Description of the communication](./crm-activity-communication-fields.md) ||
 || **DEADLINE**
-[`datetime`](../../../data-types.md) | Date and time of the activity deadline. The field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
+[`datetime`](../../../data-types.md) | Date and time of the activity's deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
 || **DESCRIPTION**
 [`string`](../../../data-types.md) | Text description of the activity ||
 || **DESCRIPTION_TYPE**
@@ -61,7 +61,7 @@ fields:
 || **DIRECTION**
 [`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. Relevant for calls and e-mails, not used for meetings ||
 || **END_TIME**
-[`datetime`](../../../data-types.md) | End time of the activity | ||
+[`datetime`](../../../data-types.md) | Time of the activity's completion | ||
 || **FILES**
 [`diskfile`](../../../data-types.md) | Files added to the activity ||
 || **LOCATION**
@@ -71,7 +71,7 @@ fields:
 || **ORIGINATOR_ID**
 [`string`](../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
+[`string`](../../../data-types.md) | Identifier of the element in the data source, used only for linking to an external source ||
 || **ORIGIN_VERSION**
 [`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will overwrite the data ||
 || **PRIORITY**
@@ -91,7 +91,7 @@ fields:
 || **SETTINGS**
 [`object`](../../../data-types.md) | Additional settings ||
 || **START_TIME**
-[`datetime`](../../../data-types.md) | Start time of the activity ||
+[`datetime`](../../../data-types.md) | Time the activity starts ||
 || **STATUS**
 [`crm_enum_activitystatus`](../../../data-types.md) | Status of the activity ||
 || **SUBJECT**
@@ -102,7 +102,7 @@ fields:
 [`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
@@ -173,9 +173,9 @@ fields:
 
 {% endlist %}
 
-## Response Handling
+## Response handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -193,7 +193,7 @@ HTTP Status: **200**
 }
 ```
 
-### Returned Data
+### Returned data
 
 #|
 || **Name**
@@ -201,12 +201,12 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the activity was successfully changed, otherwise `false` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-## Error Handling
+## Error handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -217,7 +217,7 @@ HTTP Status: **400**
 
 {% include notitle [error handling](../../../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
@@ -226,17 +226,17 @@ HTTP Status: **400**
 || `The field RESPONSIBLE_ID is not defined or invalid` | The `RESPONSIBLE_ID` field is not set ||
 || `The field TYPE_ID is not defined or invalid` | The `TYPE_ID` field is not set ||
 || `The field COMMUNICATIONS is not defined or invalid` | The `COMMUNICATIONS` field is not set ||
-|| `The only one communication is allowed for activity of specified type` | More than one contact is allowed ||
-|| `Could not build binding. Please ensure that owner info and communications are defined correctly` | Bindings for the activity are not specified ||
+|| `The only one communication is allowed for activity of specified type` | More than one contact is not allowed ||
+|| `Could not build binding. Please ensure that owner info and communications are defined correctly` | Connections for the activity are not specified ||
 || `The custom activity without provider is not supported in current context` | The activity type is not supported in the given context ||
 || `Use crm.activity.configurable.update for this activity provider` | Incorrect method call for configurable activity ||
 || `Access denied` | No permission to update the entity in CRM ||
-|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the context of the application ||
+|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the application context ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue exploring 
 
 - [{#T}](./crm-activity-add.md)
 - [{#T}](./crm-activity-delete.md)

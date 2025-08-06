@@ -5,6 +5,8 @@ items:
     href: index.md
   - name: Add Lead
     href: how-to-add-lead.md
+  - name: Add Lead with Files
+    href: how-to-add-lead-with-files.md
   - name: Add Lead or Deal with Activity Considering CRM Mode
     href: how-to-add-objects-with-crm-mode.md
   - name: Add Repeat Lead
@@ -19,7 +21,7 @@ items:
     href: how-to-add-company-with-requisite.md
   - name: Add Deal and Company with Details
     href: how-to-add-deal-with-choice-of-requisite.md
-  - name: Add Calendar Event for Client Interaction
+  - name: Add Calendar Event for Working with Clients
     href: how-to-add-activity-to-contact.md
   - name: Add Template and Create Document Based on It
     href: how-to-generate-documents.md
@@ -29,7 +31,7 @@ items:
     href: how-to-add-comment-to-spa.md
   - name: Create Custom Field in Smart Process    
     href: how-to-add-user-field-to-spa.md
-  - name: Configure Rounding for Custom Field of Type "Number"
+  - name: Set Up Rounding for Custom Field of Type "Number"
     href: how-to-add-precision-to-user-field.md
   - name: How to Create a New Sales Funnel with Stages in Smart Process
     href: how-to-add-category-to-spa.md

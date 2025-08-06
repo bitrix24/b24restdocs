@@ -6,17 +6,17 @@
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- examples are missing (there should be three examples - **curl, js, php)
-- no error response
-- no success response
-
+- examples are missing (should include three examples - **curl, js, php)
+- no response in case of error
+- no response in case of success
+ 
 {% endnote %}
 
 {% endif %}
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -37,7 +37,7 @@ You must specify fields in `select`, as default fields may change in the future.
 || **taskId**
 [`unknown`](../data-types.md) | Task identifier. ||
 || **select**
-[`unknown`](../data-types.md) | Array of record fields that will be returned by the method. You can specify only the fields that are necessary.
+[`unknown`](../data-types.md) | Array of record fields that will be returned by the method. You can specify only the fields that are necessary. 
 
 The field can take the following values: 
 - **ID** — task identifier; 
@@ -53,15 +53,15 @@ The field can take the following values:
 - **MULTITASK** — multiple task; 
 - **NOT_VIEWED** — unviewed task; 
 - **REPLICATE** — recurring task; 
-- **GROUP_ID** — working group; 
+- **GROUP_ID** — workgroup; 
 - **STAGE_ID** — stage; 
 - **CREATED_BY** — creator; 
 - **CREATED_DATE** — creation date; 
-- **RESPONSIBLE_ID** — executor; 
-- **ACCOMPLICE** — participant identifier; 
-- **AUDITOR** — auditor identifier; 
-- **CHANGED_BY** — who changed the task; 
-- **CHANGED_DATE** — date of change; 
+- **RESPONSIBLE_ID** — assignee; 
+- **ACCOMPLICE** — co-assignee identifier; 
+- **AUDITOR** — observer identifier; 
+- **CHANGED_BY** — who modified the task; 
+- **CHANGED_DATE** — modification date; 
 - **STATUS_CHANGED_DATE** — who changed the status; 
 - **CLOSED_BY** — who closed the task; 
 - **CLOSED_DATE** — task closure date; 
@@ -82,9 +82,9 @@ The field can take the following values:
 - **FORUM_TOPIC_ID** — forum topic identifier; 
 - **FORUM_ID** — forum identifier; 
 - **SITE_ID** — site identifier; 
-- **SUBORDINATE** — subordinate task; 
+- **SUBORDINATE** — subordinate's task; 
 - **FAVORITE** — Favorites; 
-- **VIEWED_DATE** — date of last view; 
+- **VIEWED_DATE** — last viewed date; 
 - **SORTING** — sorting index; 
 - **DURATION_PLAN** — spent (planned); 
 - **DURATION_FACT** — spent (actual); 
@@ -119,23 +119,7 @@ To obtain custom fields and the binding field to CRM entities (`UF_CRM_TASK`), t
 
 {% endlist %}
 
-To get the tags of a specific task:
-
-{% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        'tasks.task.get',
-        {taskId:1367, select:['TAGS']},
-        function(res){console.log(res.answer.result);}
-    );
-    ```
-
-{% endlist %}
-
-Syntax for selecting all fields:
+Syntax for retrieving all fields:
 
 {% list tabs %}
 

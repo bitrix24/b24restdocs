@@ -63,7 +63,7 @@ This means that by setting in your links and processing the received GET paramet
 
 {% note tip "Typical Use-Cases and Scenarios" %}
 
-- [Viewing External Documents via Link](https://dev.1c-bitrix.com/learning/course/index.php?COURSE_ID=266&LESSON_ID=25550&LESSON_PATH=25398.25506.25530.25550)
+- [Embedding as a link](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&LESSON_ID=26030)
 
 {% endnote %}
 

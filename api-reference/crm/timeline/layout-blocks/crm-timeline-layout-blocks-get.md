@@ -1,12 +1,12 @@
-# Get a set of additional content blocks for the CRM timeline record crm.timeline.layout.blocks.get
+# Get a set of additional content blocks for the timeline record crm.timeline.layout.blocks.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: REST Application
+> Who can execute the method: administrator
 
-This method allows a REST application to retrieve the set of additional content blocks that it has established for the timeline record.
+The method `crm.timeline.layout.blocks.get` retrieves a set of additional content blocks for a timeline record.
 
-A REST application can only obtain the set of additional content blocks that it has set up.
+Within the application, you can only obtain the set of additional content blocks that has been installed through this application.
 
 ## Method Parameters
 
@@ -16,16 +16,16 @@ A REST application can only obtain the set of additional content blocks that it 
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the CRM object type associated with the timeline record ||
+[`integer`](../../../data-types.md) | Identifier of the CRM entity type to which the timeline record is linked ||
 || **entityId***
-[`integer`](../../../data-types.md) | Identifier of the CRM object associated with the timeline record ||
+[`integer`](../../../data-types.md) | Identifier of the CRM entity to which the timeline record is linked ||
 || **timelineId***
 [`integer`](../../../data-types.md) | Identifier of the timeline record ||
 |#
 
 ## Code Examples
 
-Retrieve the set of additional content blocks for the timeline record with `id = 8`, linked to the deal with `id = 4`:
+Get a set of additional content blocks for the timeline record with `id = 8`, linked to the deal with `id = 4`:
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -92,7 +92,7 @@ Retrieve the set of additional content blocks for the timeline record with `id =
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 Returns an `object` with the key `layout`, containing [RestAppLayoutDto](../activities/configurable/structure/rest-app-layout-dto.md).
 
@@ -145,12 +145,12 @@ Returns an `object` with the key `layout`, containing [RestAppLayoutDto](../acti
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "ERROR_WRONG_CONTEXT",
-    "error_description": "The method can only be called in the context of a REST application"
+    "error_description": "The method can only be called in the context of a rest application"
 }
 ```
 
@@ -160,7 +160,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a REST application ||
+|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a rest application ||
 || `OWNER_NOT_FOUND` | The entity to which the timeline record is linked was not found ||
 || `NOT_FOUND` | The timeline record was not found ||
 || `ACCESS_DENIED` | Access denied ||

@@ -251,7 +251,7 @@ In the case of methods `crm.contact.userfield.*`, the value `CRM_CONTACT` is aut
 - `enumeration` — list
 - `file` — file
 - `employee` — binding to an employee
-- `crm_status` — binding to a CRM directory
+- `crm_status` — binding to the CRM directory
 - `iblock_section` — binding to information block sections
 - `iblock_element` — binding to information block elements
 - `crm` — binding to CRM elements
@@ -262,24 +262,24 @@ In the case of methods `crm.contact.userfield.*`, the value `CRM_CONTACT` is aut
 || **SORT**
 [`integer`][1] | Sort index ||
 || **MULTIPLE**
-[`boolean`][1] | Whether the field is multiple. Possible values:
+[`boolean`][1] | Indicates whether the field is multiple. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **MANDATORY**
-[`boolean`][1] | Whether the field is mandatory. Possible values:
+[`boolean`][1] | Indicates whether the field is mandatory. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **SHOW_FILTER**
-[`boolean`][1] | Whether to show the field in the filter. Possible values:
+[`boolean`][1] | Indicates whether to show the field in the filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
 - `S` — substring
 ||
 || **SHOW_IN_LIST**
-[`boolean`][1] | Whether to show the custom field in the list.
+[`boolean`][1] | Indicates whether to show the custom field in the list.
 
 This parameter does not affect anything within `crm`.
 
@@ -288,12 +288,12 @@ Possible values:
 - `N` — no
 ||
 || **EDIT_IN_LIST**
-[`boolean`][1] | Allow user editing. Possible values:
+[`boolean`][1] | Allows user editing. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **IS_SEARCHABLE**
-[`boolean`][1] | Whether the field values participate in search.
+[`boolean`][1] | Indicates whether the field values participate in the search.
 
 This parameter does not affect anything within `crm`.
 
@@ -302,9 +302,9 @@ Possible values:
 - `N` — no
 ||
 || **SETTINGS**
-[`object`][1] | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, described [below](#settings) ||
+[`object`][1] | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, which are described [below](#settings) ||
 || **LIST**
-[`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. This parameter is meaningless for custom fields of other types ||
+[`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. For custom fields of other types, this parameter is not applicable ||
 || **EDIT_FORM_LABEL**
 [`lang_map`](../../data-types.md) | Label in the edit form ||
 || **LIST_COLUMN_LABEL**
@@ -316,7 +316,7 @@ Possible values:
 || **HELP_MESSAGE**
 [`lang_map`](../../data-types.md) | Help ||
 || **USER_TYPE_OWNER**
-[`string`][1] | `CLIENT_ID` of the REST application that services this field type.
+[`string`][1] | `CLIENT_ID` of the application that serves this field type.
 
 Returned when the field type is custom ||
 |#
@@ -348,7 +348,7 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`integer`][1] | Whether the default value. Possible values:
+    [`integer`][1] | Indicates whether it is the default value. Possible values:
     - `0` — no
     - `1` — yes ||
     || **DISPLAY**
@@ -384,7 +384,7 @@ Returned when the field type is custom ||
     - `TYPE` — type of default value:
         - `NONE` — absent
         - `NOW` — current date
-        - `FIXED` — date from `VALUE`
+        - `FIXED` — date from the `VALUE`
     - `VALUE` is of type `date` ||
     |#
 
@@ -422,7 +422,7 @@ Returned when the field type is custom ||
     - `TYPE` — type of default value:
         - `NONE` — absent
         - `NOW` — current date with time
-        - `FIXED` — date with time from `VALUE`
+        - `FIXED` — date with time from the `VALUE`
     - `VALUE` is of type `datetime` ||
     || **USE_SECOND**
     [`boolean`][1] | Whether to use seconds. Possible values:
@@ -467,7 +467,7 @@ Returned when the field type is custom ||
     || **LIST_HEIGHT**
     [`integer`][1] | List height ||
     || **CAPTION_NO_VALUE**
-    [`string`][1] | Label when no value ||
+    [`string`][1] | Label when no value is present ||
     || **SHOW_NO_VALUE**
     [`boolean`][1] | Whether to show empty value for mandatory field. Possible values:
     - `Y` — yes
@@ -528,7 +528,7 @@ Returned when the field type is custom ||
     || **DYNAMIC_...**
     [`boolean`][1] | Whether binding to a specific SPA is enabled.
 
-    Each such field has the form: `DYNAMIC_{entityTypeId}`, where `entityTypeId` is the identifier of the SPA type to which the binding is enabled ||
+    Each such field has the form: `DYNAMIC_{entityTypeId}`, where `entityTypeId` is the identifier of the SPA to which the binding is enabled ||
     |#
 
 - money
@@ -611,7 +611,7 @@ Returned when the field type is custom ||
 || **SORT**
 [`integer`][1] | Sort index ||
 || **DEF**
-[`boolean`][1] | Whether the list element is the default value. Possible values:
+[`boolean`][1] | Indicates whether the list element is the default value. Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -636,7 +636,7 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `-` | `Access denied` | Occurs when:
 - the user does not have administrative rights
-- the user tries to access a custom field not associated with contacts ||
+- the user tries to access a custom field not linked to contacts ||
 || `-` | `ID is not defined or invalid` | The provided `id` is less than or equal to zero, or is not provided at all ||
 || `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` was not found ||
 |#

@@ -6,8 +6,8 @@ The helper method groups include multiple fields, enumerations, and VAT rates.
 
 ## Multiple Fields
 
-The method [crm.multifield.fields](./multifield/crm-multifield-fields.md) returns information about the structure of multiple fields, such as phone numbers or e-mails. To fill a field with a value of [type](../data-types.md#crm_multifield), pass the data in the structure returned by the method. 
-Example of passing data to fill a phone number with the type mobile:
+The method [crm.multifield.fields](./multifield/crm-multifield-fields.md) returns information about the structure of multiple fields, such as phone numbers or e-mails. To populate a field with a value of [type](../data-types.md#crm_multifield), pass the data in the structure returned by the method. 
+Example of passing data to fill in a mobile phone number:
 
 ```js
 PHONE: [
@@ -27,18 +27,18 @@ PHONE: [
 
 ## Enumerations
 
-The group of enumeration methods [crm.enum.*](./enum/index.md) returns information about the name and identifier of CRM objects. For example, the method [crm.enum.ownertype](./enum/crm-enum-owner-type.md) returns identifiers for smart processes, while the method [crm.enum.addresstype](./enum/crm-enum-address-type.md) returns identifiers for address types: legal, physical, delivery address.
+The group of enumeration methods [crm.enum.*](./enum/index.md) returns information about the names and identifiers of CRM objects. For example, the method [crm.enum.ownertype](./enum/crm-enum-owner-type.md) returns identifiers for smart processes, while the method [crm.enum.addresstype](./enum/crm-enum-address-type.md) returns identifiers for address types: legal, physical, delivery address.
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [How to add a comment to the timeline of a smart process](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md)
+- [How to add a comment to the smart process timeline](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md)
 - [How to get a client's address from CRM](../../../tutorials/crm/how-to-get-lists/how-to-get-address.md)
 
 {% endnote %}
 
 ## VAT Rates 
 
-The group of methods [crm.vat.*](./vat/index.md) manages VAT rates. The methods allow you to [create](./vat/crm-vat-add.md), [delete](./vat/crm-vat-delete.md), [update](./vat/crm-vat-update.md), and [retrieve](./vat/crm-vat-list.md) VAT rate values.
+The group of methods [catalog.vat.*](../../catalog/vat/index.md) manages VAT rates. These methods allow you to [create](../../catalog/vat/catalog-vat-add.md), [delete](../../catalog/vat/catalog-vat-delete.md), [update](../../catalog/vat/catalog-vat-update.md), and [retrieve](../../catalog/vat/catalog-vat-list.md) VAT rate values.
 
 To set the VAT for a product in a deal or another CRM object, use the `taxRate` parameter from the group of methods [crm.item.productrow.*](../universal/product-rows/index.md).
 
@@ -48,7 +48,7 @@ To set the VAT for a product or service in the product catalog, use the `vatId` 
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can perform the methods: depending on the method
+> Who can perform methods: depending on the method
 
 ### Multiple Fields
 
@@ -72,16 +72,4 @@ To set the VAT for a product or service in the product catalog, use the `vatId` 
 || [crm.enum.activitynotifytype](./enum/outdated/crm-enum-activity-notify-type.md) | Returns the enumeration items "Activity Start Notification Type" for meetings and calls ||
 || [crm.enum.activitystatus](./enum/outdated/crm-enum-activity-status.md) | Returns the enumeration items "Status" ||
 || [crm.enum.contenttype](./enum/outdated/crm-enum-content-type.md) | Returns the enumeration items "Description Type" ||
-|#
-
-### VAT Rates
-
-#|
-|| **Method** | **Description** ||
-|| [crm.vat.add](./vat/crm-vat-add.md) | Creates a new VAT rate ||
-|| [crm.vat.delete](./vat/crm-vat-delete.md) | Deletes a VAT rate ||
-|| [crm.vat.get](./vat/crm-vat-get.md) | Returns the VAT rate by identifier ||
-|| [crm.vat.fields](./vat/crm-vat-fields.md) | Returns the description of VAT rate fields ||
-|| [crm.vat.list](./vat/crm-vat-list.md) | Returns a list of VAT rates ||
-|| [crm.vat.update](./vat/crm-vat-update.md) | Updates an existing VAT rate ||
 |#

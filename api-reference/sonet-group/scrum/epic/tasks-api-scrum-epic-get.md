@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- The structure of the parameter files relates to the Disk module, so it is not described here. A link should be made when the structure description appears in the documentation.
+- The structure of the parameter files relates to the Drive module, so it is not described here. A link should be made when the structure description appears in the documentation.
 
 {% endnote %}
 
@@ -23,10 +23,10 @@ The method retrieves the values of the epic fields by its identifier `id`.
 #|
 || **Name**
 `type` | **Description** ||
-|| **epicId***
-[`integer`](../../../data-types.md) | The identifier of the epic.
+|| **id***
+[`integer`](../../../data-types.md) | Epic identifier.
 
-You can obtain epic identifiers using the method [`tasks.api.scrum.epic.list`](./tasks-api-scrum-epic-list.md) ||
+Epic identifiers can be obtained using the [`tasks.api.scrum.epic.list`](./tasks-api-scrum-epic-list.md) method ||
 |#
 
 ## Code Examples
@@ -40,12 +40,9 @@ You can obtain epic identifiers using the method [`tasks.api.scrum.epic.list`](.
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -d '{
-    "fields": {
-      "id": "1"
-    }
-    }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.epic.get
+    -H "Accept: application/json" \
+    -d '{"id":1}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/tasks.api.scrum.epic.get
     ```
 
 - cURL (OAuth)
@@ -53,13 +50,9 @@ You can obtain epic identifiers using the method [`tasks.api.scrum.epic.list`](.
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -d '{
-    "fields": {
-      "id": "1"
-    },
-    auth=YOUR_ACCESS_TOKEN
-    }' \
-    https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.get
+    -H "Accept: application/json" \
+    -d '{"id":1,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/tasks.api.scrum.epic.get
     ```
 
 - JS
@@ -81,25 +74,18 @@ You can obtain epic identifiers using the method [`tasks.api.scrum.epic.list`](.
 - PHP
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php');
 
-    // executing a request to the REST API
     $result = CRest::call(
-    'tasks.api.scrum.epic.get',
-    [
-        'fields' => [
-            'id' => 1,
+        'tasks.api.scrum.epic.get',
+        [
+            'id' => 1
         ]
-    ]
     );
 
-    // Processing the response from Bitrix24
-    if ($result['error']) {
-        echo 'Error: '.$result['error_description'];
-    }
-    else {
-        print_r($result['result']);
-    }
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
@@ -138,7 +124,7 @@ HTTP Status: **200**
         "USER_TYPE": {
             "USER_TYPE_ID": "disk_file",
             "CLASS_NAME": "Bitrix\\Disk\\Uf\\FileUserType",
-            "DESCRIPTION": "File (Disk)",
+            "DESCRIPTION": "File (Drive)",
             "BASE_TYPE": "int",
             "TAG": [
                 "DISK FILE ID",
@@ -162,21 +148,21 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../../data-types.md) | The identifier of the epic ||
+[`integer`](../../../data-types.md) | Epic identifier ||
 || **groupId**
-[`integer`](../../../data-types.md) | The identifier of the group (scrum) to which the epic is attached ||
+[`integer`](../../../data-types.md) | Group identifier (scrum) to which the epic is attached ||
 || **name**
-[`string`](../../../data-types.md) | The name of the epic ||
+[`string`](../../../data-types.md) | Epic name ||
 || **description**
-[`string`](../../../data-types.md) | The description of the epic ||
+[`string`](../../../data-types.md) | Epic description ||
 || **createdBy**
-[`integer`](../../../data-types.md) | The identifier of the user who created the epic ||
+[`integer`](../../../data-types.md) | Identifier of the user who created the epic ||
 || **modifiedBy**
-[`integer`](../../../data-types.md) | The identifier of the user who last modified the epic ||
+[`integer`](../../../data-types.md) | Identifier of the user who last modified the epic ||
 || **color**
-[`string`](../../../data-types.md) | The color of the epic in HEX format ||
+[`string`](../../../data-types.md) | Epic color in HEX format ||
 || **files**
-[`object`](../../../data-types.md) | An object containing data about all files attached to the epic ||
+[`object`](../../../data-types.md) | Object containing data about all files attached to the epic ||
 |#
 
 ## Error Handling
@@ -197,7 +183,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description**  | **Value** ||
 || `0` | Access denied | No access to view epic data ||
-|| `0` | Epic not found | The epic does not exist ||
+|| `0` | Epic not found | Such an epic does not exist ||
 || `100` | Could not find value for parameter {id} | Incorrect parameter name or parameter not set ||
 || `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
 |#

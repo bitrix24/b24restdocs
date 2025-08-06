@@ -1,4 +1,4 @@
-# Add Client to Booking booking.v1.booking.client.set
+# Add Clients to Booking booking.v1.booking.client.set
 
 > Scope: [`booking`](../../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `booking.v1.booking.client.set` sets clients for the specified bookin
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -38,7 +38,7 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -132,7 +132,7 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -162,7 +162,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

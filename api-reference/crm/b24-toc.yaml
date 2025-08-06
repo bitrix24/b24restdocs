@@ -43,7 +43,7 @@ items:
     include:
       path: timeline/b24-toc.yaml
       mode: link
-  - name: Call Lists
+  - name: Call List
     include:
       path: call-list/b24-toc.yaml
       mode: link      

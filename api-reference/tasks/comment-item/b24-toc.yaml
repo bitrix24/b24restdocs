@@ -13,10 +13,6 @@ items:
     href: task-comment-item-get-list.md
   - name: Delete comment
     href: task-comment-item-delete.md
-  - name: Check if action is allowed
-    href: task-comment-item-is-action-allowed.md
-  - name: Get list of methods and their description
-    href: task-comment-item-get-manifest.md
   - name: Events
     include:
       path: events-comment/b24-toc.yaml

@@ -11,7 +11,3 @@ items:
     include:
       path: enum/b24-toc.yaml
       mode: link
-  - name: VAT Rates
-    include:
-      path: vat/b24-toc.yaml
-      mode: link

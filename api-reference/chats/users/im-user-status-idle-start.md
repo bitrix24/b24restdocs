@@ -8,12 +8,12 @@ Some data may be missing here — we will fill it in shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - parameter types not specified
 - examples missing
-- no response in case of error
+- response in case of error is absent
 
 {% endnote %}
 
@@ -23,7 +23,17 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `im.user.status.idle.start` sets the automatic status to "Away".
+The method `im.user.status.idle.start` sets the automatic status "Away".
+
+This method was designed for the previous version of the chat. In the current M1 chat version, it works, but the results are not displayed in the interface.
+
+{% note tip "User documentation" %}
+
+- [Bitrix24 Chat: new messenger](https://helpdesk.bitrix24.com/open/25661218/)
+
+{% endnote %}
+
+## Method Parameters
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -31,7 +41,7 @@ The method `im.user.status.idle.start` sets the automatic status to "Away".
 [`unknown`](../../data-types.md) | `10` | How many minutes ago the user went away | `18` ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -80,7 +90,7 @@ The method `im.user.status.idle.start` sets the automatic status to "Away".
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Example Response
 

@@ -16,11 +16,11 @@ The method `task.commentitem.isactionallowed` checks if an action is allowed for
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method to get the list of tasks](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Comment identifier.
 
-The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [method to get the list of comments](./task-comment-item-get-list.md) ||
+The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [get comment list method](./task-comment-item-get-list.md) ||
 || **ACTIONID***
 [`integer`](../../data-types.md) | Identifier of the action being checked:
 - `1` — add comment 
@@ -118,7 +118,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Result of the action permission check:
+[`object`](../../data-types.md) | Result of the action check:
 - `true` — allowed
 - `false` — not allowed
 
@@ -146,6 +146,7 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (actionId) expected by method ctaskcommentitem::isactionallowed(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not specified, for example, `ACTIONID` ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::isactionallowed() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type specified for the parameter, for example, for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION | The specified comment or task does not exist ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

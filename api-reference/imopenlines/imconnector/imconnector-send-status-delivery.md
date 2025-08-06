@@ -1,8 +1,8 @@
-# Update Status "Delivered" imconnector.send.status.delivery
+# Update the status "delivered" imconnector.send.status.delivery
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will complete it shortly.
 
 - parameter type is not specified
 - parameter requirement is not specified
-- examples are missing
+- examples are missing 
 - responses in case of success and error are not specified
 
 {% endnote %}
@@ -28,11 +28,11 @@ This method confirms the delivery of a message from OL to an external system.
 ## Parameters
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Parameter** | **Description** | **Available since** ||
 || **CONNECTOR**
 [`unknown`](../../data-types.md) | Connector ID (which was specified during the handler registration). | ||
 || **LINE**
-[`unknown`](../../data-types.md) | Open line ID. | ||
+[`unknown`](../../data-types.md) | ID of the open line. | ||
 || **MESSAGES**
 [`unknown`](../../data-types.md) | An array of messages, where messages are described by an array of the following format: 
 
@@ -45,7 +45,7 @@ This method confirms the delivery of a message from OL to an external system.
                     //value, even if there is only one ID.
             ),
             'chat' => array(
-                'id'//Chat ID in the external system.
+                'id'//ID of the chat in the external system.
             ),
         ),
         array(...),
@@ -54,4 +54,8 @@ This method confirms the delivery of a message from OL to an external system.
 | ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
+
+## Continue exploring 
+
+- [{#T}](../../../tutorials/openlines/example-connector.md)

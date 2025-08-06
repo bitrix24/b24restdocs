@@ -134,7 +134,7 @@ HTTP status: **200**
 || **NAME**
 [`string`](../../data-types.md) | Name ||
 || **SORT**
-[`integer`](../../data-types.md) | Sorting order ||
+[`integer`](../../data-types.md) | Sort order ||
 || **STATUS_ID**
 [`string`](../../data-types.md) | Status code, use in the method [crm.calllist.items.get](./crm-calllist-items-get.md) ||
 |#

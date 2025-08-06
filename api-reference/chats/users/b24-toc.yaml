@@ -5,12 +5,12 @@ items:
     href: index.md
   - name: Get User Data
     href: im-user-get.md
-  - name: Get Users Data
+  - name: Get User List Data
     href: im-user-list-get.md
-  - name: Get Information About User's Current Status
-    href: im-user-status-get.md
-  - name: Set User Status
+  - name: Set User Status in Chat
     href: im-user-status-set.md
+  - name: Get User Status Information
+    href: im-user-status-get.md
   - name: Set Automatic Status "Away"
     href: im-user-status-idle-start.md
   - name: Disable Automatic Status "Away"

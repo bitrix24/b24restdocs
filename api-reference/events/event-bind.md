@@ -1,13 +1,13 @@
-# Register a New Event Handler event.bind
+# Register a new event handler event.bind
 
 > Who can execute the method: any user
 
 The method `event.bind` registers a new event handler.
 
-The method works only in the context of [application](../app-installation/index.md) authorization. It can operate under a user with portal administration rights as well as under a regular user. The method for a user without administrator rights is available with limitations:
+The method works only in the context of [application](../app-installation/index.md) authorization. It can operate both under a user with portal administration rights and under a regular user. The method for a user without administrator rights is available with limitations:
 
 1. Offline events are not available; attempting to set them will raise an exception.
-2. Events are set on behalf of the current user (see the description of the `auth_type` parameter). Explicitly specifying an `auth_type` different from the current user's `ID` will also raise an exception.
+2. Events are set on behalf of the current user (see the description of the `auth_type` parameter). Explicitly specifying an `auth_type` different from the `ID` of the current user will also raise an exception.
 
 {% note info %}
 
@@ -19,7 +19,7 @@ The interface for this method is [BX24.callBind](../bx24-js-sdk/how-to-call-rest
 
 {% note info %}
 
-When an application is deleted or updated, its actions will be removed. Therefore, in the installer of each version, they need to be set from scratch.
+When deleting and updating the application, its actions will be removed. Therefore, in the installer of each version, they need to be set from scratch.
 
 {% endnote %}
 
@@ -143,7 +143,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ERROR_EVENT_NOT_FOUND` | Event not found | The event specified is incorrect ||
+|| `ERROR_EVENT_NOT_FOUND` | Event not found | Incorrect event specified ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -160,3 +160,4 @@ HTTP status: **400**
 - [{#T}](./event-offline-clear.md)
 - [{#T}](./event-offline-error.md)
 - [{#T}](./on-offline-event.md)
+- [{#T}](../../tutorials/openlines/example-connector.md)

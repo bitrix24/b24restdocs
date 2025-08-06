@@ -1,4 +1,4 @@
-# Get the list of open channels imopenlines.config.list.get
+# Get the list of open lines imopenlines.config.list.get
 
 {% note warning "We are still updating this page" %}
 
@@ -24,7 +24,7 @@ Some data may be missing — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-This method retrieves a list of open channels.
+This method retrieves a list of open lines.
 
 ## Method Parameters
 
@@ -121,7 +121,7 @@ HTTP status: **200**
             "WATCH_TYPING": "Y",
             "WELCOME_BOT_ENABLE": "N",
             "WELCOME_MESSAGE": "N",
-            "WELCOME_MESSAGE_TEXT": "Welcome to the Open channel [br]The first available operator will respond to you.",
+            "WELCOME_MESSAGE_TEXT": "Welcome to the Open Line [br]The first available operator will respond to you.",
             "VOTE_MESSAGE": "N",
             "VOTE_TIME_LIMIT": "0",
             "VOTE_BEFORE_FINISH": "Y",
@@ -158,7 +158,7 @@ HTTP status: **200**
             "WORKTIME_DAYOFF_RULE": "text",
             "WORKTIME_DAYOFF_FORM_ID": "0",
             "WORKTIME_DAYOFF_BOT_ID": "0",
-            "WORKTIME_DAYOFF_TEXT": "Welcome to the Open channel [br]Unfortunately, we cannot respond to you at this moment.[br][br]Please write your question and we will definitely get back to you during working hours.",
+            "WORKTIME_DAYOFF_TEXT": "Welcome to the Open Line [br]Unfortunately, we cannot respond to you at this moment.[br][br]Please write your question and we will definitely get back to you during working hours.",
             "CLOSE_RULE": "none",
             "CLOSE_FORM_ID": "0",
             "CLOSE_BOT_ID": "0",
@@ -185,11 +185,11 @@ HTTP status: **200**
             "KPI_FIRST_ANSWER_TIME": "0",
             "KPI_FIRST_ANSWER_ALERT": "N",
             "KPI_FIRST_ANSWER_LIST": false,
-            "KPI_FIRST_ANSWER_TEXT": "Employee #OPERATOR# exceeded the allowable response time to the client's first message. Dialog №#DIALOG#.",
+            "KPI_FIRST_ANSWER_TEXT": "Employee #OPERATOR# exceeded the allowable response time to the client for the first message. Dialog №#DIALOG#.",
             "KPI_FURTHER_ANSWER_TIME": "0",
             "KPI_FURTHER_ANSWER_ALERT": "N",
             "KPI_FURTHER_ANSWER_LIST": false,
-            "KPI_FURTHER_ANSWER_TEXT": "Employee #OPERATOR# exceeded the allowable response time to the client's message. Dialog №#DIALOG#.",
+            "KPI_FURTHER_ANSWER_TEXT": "Employee #OPERATOR# exceeded the allowable response time to the client for the message. Dialog №#DIALOG#.",
             "KPI_CHECK_OPERATOR_ACTIVITY": "N",
             "SEND_NOTIFICATION_EMPTY_QUEUE": "N",
             "USE_WELCOME_FORM": "N",

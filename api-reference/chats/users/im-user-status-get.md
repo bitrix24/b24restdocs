@@ -1,8 +1,8 @@
-# Get Information About the User's Status im.user.status.get
+# Get Information About the User's Set Status im.user.status.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -23,9 +23,9 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.user.status.get` retrieves information about the user's current status.
+The method `im.user.status.get` retrieves information about the user's set status.
 
-No parameters required.
+No parameters.
 
 ## Examples
 
@@ -85,3 +85,10 @@ No parameters required.
 - `online` – Online
 - `dnd` – Do Not Disturb
 - `away` – Away
+
+{% note info "" %}
+
+The status `away` was used in the previous version of the chat. In the current version of chat M1, it is not displayed in the interface.
+[Bitrix24 Chat: new messenger](https://helpdesk.bitrix24.com/open/25661218/)
+
+{% endnote %}

@@ -59,7 +59,7 @@ The method is suitable only for changing content. When modifying the manifest, t
 - SITE_TEMPLATE_ID – binding of the block to a specific template of the main module's site. **Only for on-premise versions!**
 
 Additional parameters:
-- RESET - if passed with the value Y, the system will automatically update all blocks added to the pages to the new layout. [Learn more...](https://dev.bitrix24.com/company/personal/user/3/blog/2091/) ||
+- RESET - if passed with the value Y, the system will automatically update all blocks added to the pages to the new layout. ||
 || **manifest**
 [`unknown`](../../data-types.md) | An array of the manifest describing the block. ||
 |#

@@ -1,20 +1,20 @@
-# Add a lead through a web form
+# Add Lead via Web Form
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with the permission to create leads in CRM
 
-You can place a form on the site to collect potential client data. When a client fills out the form, their data will be sent to CRM, and you will be able to process the request.
+You can place a form on your site to collect potential client data. When a client fills out the form, their information will be sent to CRM, and you will be able to process the request.
 
 Setting up the form consists of two steps.
 
-1. Place the form on an HTML page. It will send the data to the handler.
+1. Place the form on an HTML page. It will send data to the handler.
 
-2. Create a file to process the data. The handler will accept and prepare the data, and then create a lead using the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method.
+2. Create a file to process the data. The handler will accept and prepare the data, and then create a lead using the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md).
 
-## 1. Creating the web form
+## 1. Creating the Web Form
 
-In Bitrix24, you can automatically create a contact and a company from a lead. To make the form suitable for various cases, we will make it universal. For the contact, you need to specify the first name and last name, and for the company — the name. We will create a web form on the site page with five fields:
+In Bitrix24, you can automatically create a contact and company from a lead. To make the form suitable for various cases, we will make it universal. For the contact, you need to specify the first name and last name, and for the company — the name. We will create a web form on the site page with five fields:
 
 - `NAME` — first name, required,
 
@@ -40,7 +40,7 @@ When submitted, the form sends data to the handler `form.php`.
     <input type="text" name="EMAIL" placeholder="E-mail">
     <!-- Phone -->
     <input type="text" name="PHONE" placeholder="Phone">
-    <!-- Submit button -->
+    <!-- Submit Button -->
     <input type="submit" value="Submit">
 </form>
 
@@ -66,17 +66,17 @@ When submitted, the form sends data to the handler `form.php`.
 </script>
 ```
 
-## 2. Creating the form handler
+## 2. Creating the Form Handler
 
 To process the values from the form fields and add a lead to CRM, we will create the handler `form.php`.
 
-To add a lead, we will use the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method. In the `fields` object, we will pass the fields:
+To add a lead, we will use the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md). In the `fields` object, we will pass the fields:
 
-- `TITLE` — lead title (can be composed of first name and last name),
+- `TITLE` — lead title, which can be composed of the first name and last name,
 
-- `NAME` — lead first name,
+- `NAME` — lead's first name,
 
-- `LAST_NAME` — lead last name,
+- `LAST_NAME` — lead's last name,
 
 - `COMPANY_TITLE` — company name,
 
@@ -84,7 +84,7 @@ To add a lead, we will use the [crm.lead.add](../../../api-reference/crm/leads/c
 
 - `EMAIL` — e-mail.
 
-The values of the fields are obtained from the form. The system stores the phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
+The values for the fields are obtained from the form. The system stores the phone and email as an array of objects [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield), so they need to be formatted as an array.
 
 1. If a value exists, we add it as the first element `VALUE` in the array, and the second value specifies the type `VALUE_TYPE`, for example:
 
@@ -92,11 +92,11 @@ The values of the fields are obtained from the form. The system stores the phone
 
    -  `HOME` — for email.
 
-2. If no value exists, we pass an empty array.
+2. If no values exist, we pass an empty array.
 
 {% note warning "" %}
 
-Check which required fields are set for leads in your Bitrix24. All required fields must be passed to the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method.
+Check which required fields are set for leads in your Bitrix24. All required fields must be passed to the method [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md).
 
 {% endnote %}
 
@@ -116,7 +116,7 @@ $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => '
 $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
 
 // Create lead title from first name and last name
-$sTitle = 'From the site: ' . trim($sName . ' ' . $sLastName);
+$sTitle = 'From website: ' . trim($sName . ' ' . $sLastName);
 // If there is a company name — add it with a dash after the first name and last name
 if (!empty($sCompanyTitle)) {
     $sTitle .= ' — ' . $sCompanyTitle;
@@ -132,7 +132,7 @@ $result = CRest::call(
             'LAST_NAME' => $sLastName, // Last Name
             'COMPANY_TITLE' => $sCompanyTitle, // Company Name
             'PHONE' => $arPhone, // Phone
-            'EMAIL' => $arEmail, // E-mail
+            'EMAIL' => $arEmail, // Email
         ]
     ]
 );

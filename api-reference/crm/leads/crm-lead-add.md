@@ -1,4 +1,4 @@
-# Create a New Lead crm.lead.add
+# Create a new lead crm.lead.add
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
@@ -98,15 +98,15 @@ Contacts can be added or removed using the group of methods [crm.lead.contact.*]
 
 Used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source ||
+[`string`](../../data-types.md) | Identifier of the element in the data source. Used only for linking to an external source ||
 || **PHONE**
 [`crm_multifield`](../../data-types.md) | Phone. Multiple ||
 || **POST**
 [`string`](../../data-types.md) | Position ||
 || **SOURCE_DESCRIPTION**
-[`string`](../../data-types.md) | Description of the source ||
+[`string`](../../data-types.md) | Source description ||
 || **SOURCE_ID**
-[`crm_status`](../../data-types.md) | Identifier of the source. 
+[`crm_status`](../../data-types.md) | Source identifier. 
 Default values:
 
 #|
@@ -136,8 +136,8 @@ The list of all possible identifiers from the directory can be obtained using th
 ||NEW | Unprocessed||
 ||IN_PROCESS | In progress||
 ||PROCESSED | Processed||
-||JUNK | Poor quality lead||
-||CONVERTED | Quality lead||
+||JUNK | Low-quality lead||
+||CONVERTED | High-quality lead||
 |#
 
 The list of all possible stages from the directory can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=STATUS` ||
@@ -146,25 +146,25 @@ The list of all possible stages from the directory can be obtained using the met
 || **UTM_CAMPAIGN**
 [`string`](../../data-types.md) | Advertising campaign designation ||
 || **UTM_CONTENT**
-[`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
+[`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
 || **UTM_MEDIUM**
 [`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners) ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google-Adwords and others ||
+[`string`](../../data-types.md) | Advertising system. Google AdWords, and others ||
 || **UTM_TERM**
 [`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **WEB**
 [`crm_multifield`](../../data-types.md) | Website. Multiple ||
 || **UF_...** | Custom fields. For example, `UF_CRM_25534736`.  
 
-Depending on the account settings, leads may have a set of custom fields of defined types. 
+Depending on the portal settings, leads may have a set of custom fields of defined types. 
 
 To create, modify, or delete custom fields in leads, use the methods [crm.lead.userfield.*](./userfield/index.md) ||
 |#
 
 {% note info %}
 
-Additionally, to find out the required format of fields, you can execute the method [crm.lead.fields](crm-lead-fields.md) and check the format of the received values of these fields. 
+Additionally, to find out the required format of the fields, you can execute the method [crm.lead.fields](crm-lead-fields.md) and check the format of the incoming values of these fields. 
 
 {% endnote %}
 
@@ -283,7 +283,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
                     [
                         'VALUE' => 'www.mysite.com',
                         'VALUE_TYPE' => 'WORK',
-                    ],
+                    },
                 ],
             ],
             'params' => [
@@ -357,4 +357,6 @@ HTTP status: **200**
 - [{#T}](./crm-lead-delete.md)
 - [{#T}](./crm-lead-fields.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-lead.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-lead-with-files.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-repeat-lead.md)
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-objects-with-crm-mode.md)

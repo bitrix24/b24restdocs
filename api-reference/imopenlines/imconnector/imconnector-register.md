@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing — we will complete it soon.
 
 - parameter types are not specified
 - examples are missing
-- - these files were not in the structure, but there are links to them in the Note: imconnector.connector.data.set and cases/example_connector_chat
+- - these files were not in the structure, but there are links to them in the Notes: imconnector.connector.data.set and cases/example_connector_chat
 
 {% endnote %}
 
@@ -26,16 +26,16 @@ This method registers a new type of connector.
 
 {% note info "Note" %}
 
-If you want the connector to appear in the general list of connectors in the widget on the website, you need to use the method [imconnector.connector.data.set](./imconnector-connector-data-set.md). [Example of use](../../../tutorials/openlines/example-connector.md).
+If you want the connector to appear in the general list of connectors in the widget on the site, you need to use the method [imconnector.connector.data.set](./imconnector-connector-data-set.md). [Example usage](../../../tutorials/openlines/example-connector.md).
 
 {% endnote %}
 
 ## Parameters
 
 #|
-|| **Parameter** | **Description** | **Version** ||
+|| **Parameter** | **Description** | **Available from** ||
 || **ID^*^**
-[`unknown`](../../data-types.md) | A unique identifier for the connector. It is highly recommended to add your unique prefix at the beginning of the identifier to avoid conflicts with existing and potential future identifiers of other connectors. You can use: digits, **lowercase letters**, and underscores to form the identifier. | ||
+[`unknown`](../../data-types.md) | A unique identifier for the connector. It is highly recommended to add your unique prefix at the beginning of the identifier to avoid conflicts with current and potential future identifiers of other connectors. You can use: digits, **lowercase letters**, and underscores to form the identifier. | ||
 || **NAME^*^**
 [`unknown`](../../data-types.md) | The display name of the connector. | ||
 || **ICON^*^**
@@ -47,7 +47,7 @@ If you want the connector to appear in the general list of connectors in the wid
 - **POSITION** - SVG position. Example: `center`
  | ||
 || **PLACEMENT_HANDLER^*^**
-[`unknown`](../../data-types.md) | A link to the URL of the widget handler that will be called to show users the connector's setup interface in the slider. [More details](../../widgets/index.md) | ||
+[`unknown`](../../data-types.md) | A link to the URL of the embedding handler that will be called to show users the connector's setup interface in the slider. [More details](../../widgets/index.md) | ||
 || **ICON_DISABLED**
 [`unknown`](../../data-types.md) | An array describing the connector's icon for the **inactive** variant, where:
 - **DATA_IMAGE^*^** - DATA representation of the SVG icon. [Example](*key_example)
@@ -68,12 +68,16 @@ If you want the connector to appear in the general list of connectors in the wid
 || **NEED_SIGNATURE**
 [`unknown`](../../data-types.md) | Is it possible to send a signature in the message itself? Example: a line with the operator's name is added before the message text. Default: yes. | ||
 || **CHAT_GROUP**
-[`unknown`](../../data-types.md) | Y/N. Is the chat of this channel considered a group from the outside? Default: Y. By default, writing is not allowed. Leads and other CRM entities are also not created. | ||
+[`unknown`](../../data-types.md) | Y/N. Is the chat of this channel group from the external side? Default: Y. By default, writing is not allowed. Leads and other CRM entities are also not created.| ||
 || **COMMENT**
-[`unknown`](../../data-types.md) | Description for the widget handler (see the PLACEMENT_HANDLER parameter). | ||
+[`unknown`](../../data-types.md) | Description for the embedding handler (see parameter PLACEMENT_HANDLER). | ||
 |#
 
 {% include [Parameter notes](../../../_includes/required.md) %}
+
+## Continue exploring 
+
+- [{#T}](../../../tutorials/openlines/example-connector.md)
 
 [*key_example]: 
 ```

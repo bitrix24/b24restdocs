@@ -10,7 +10,6 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Article about reloadData https://dev.1c-bitrix.com/rest_help/application_embedding/application_embedding/js_interface.php needs to be thoroughly reviewed.
 - Edits are needed to meet writing standards.
 - Parameters or fields are missing.
 - Parameter types are not specified.

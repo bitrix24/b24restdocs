@@ -1,27 +1,27 @@
-# Get Lead by Id crm.lead.get
+# Get lead by Id crm.lead.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with read access permission for the requested lead
+> Who can execute the method: user with read access permission for the requested lead
 
 The method `crm.lead.get` returns a lead by its identifier.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** || 
 || **id***
-[`integer`](../../data-types.md) | The identifier of the lead.
+[`integer`](../../data-types.md) | Identifier of the lead.
 
 The identifier can be obtained using the methods [crm.lead.list](./crm-lead-list.md) or [crm.lead.add](./crm-lead-add.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -85,7 +85,7 @@ The identifier can be obtained using the methods [crm.lead.list](./crm-lead-list
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -177,7 +177,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`lead`](#lead) | The root element of the response. Contains information about the lead fields. The structure is described [below](#lead) ||
+[`lead`](#lead) | Root element of the response. Contains information about the lead fields. The structure is described [below](#lead) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -206,7 +206,7 @@ HTTP Status: **200**
 || **CONTACT_ID**
 [`crm_contact`](../../data-types.md) | Link of the lead to the contact ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Indicator of a returning lead. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of a returning lead. Allowed values Y or N ||
 || **BIRTHDATE**
 [`date`](../../data-types.md) | Date of birth ||
 || **SOURCE_ID**
@@ -222,44 +222,44 @@ HTTP Status: **200**
 || **COMMENTS**
 [`string`](../../data-types.md) | Comments ||
 || **CURRENCY_ID**
-[`crm_currency`](../../data-types.md) | Currency identifier ||
+[`crm_currency`](../../data-types.md) | Identifier of the currency ||
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Estimated amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicator of manual calculation of the amount. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of manual calculation of the amount. Allowed values Y or N ||
 || **HAS_PHONE**
-[`char`](../../data-types.md) | Indicator of whether the phone field is filled. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of whether the phone field is filled. Allowed values Y or N ||
 || **HAS_EMAIL**
-[`char`](../../data-types.md) | Indicator of whether the email field is filled. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of whether the email field is filled. Allowed values Y or N ||
 || **HAS_IMOL**
-[`char`](../../data-types.md) | Indicator of whether there is an attached open line. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of whether there is an attached open line. Allowed values Y or N ||
 || **ASSIGNED_BY_ID**
 [`user`](../../data-types.md) | Identifier of the user responsible for the lead ||
 || **CREATED_BY_ID**
 [`user`](../../data-types.md) | Identifier of the user who created the lead ||
 || **MODIFY_BY_ID**
-[`user`](../../data-types.md) | Identifier of the user who made the last modification ||
+[`user`](../../data-types.md) | Identifier of the user who made the last change ||
 || **MOVED_BY_ID**
 [`user`](../../data-types.md) | Identifier of the user who moved the item to the current stage ||
 || **DATE_CREATE**
-[`datetime`](../../data-types.md) | Creation date ||
+[`datetime`](../../data-types.md) | Date of creation ||
 || **DATE_MODIFY**
-[`datetime`](../../data-types.md) | Modification date ||
+[`datetime`](../../data-types.md) | Date of modification ||
 || **DATE_CLOSED**
-[`datetime`](../../data-types.md) | Closing date ||
+[`datetime`](../../data-types.md) | Date of closure ||
 || **STATUS_SEMANTIC_ID**
 [`string`](../../data-types.md) |
 - F (failed) – processed unsuccessfully
 - S (success) – processed successfully
 - P (processing) – lead is being processed ||
 || **OPENED**
-[`char`](../../data-types.md) | Indicator of whether the lead is available to everyone. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of whether the lead is available to everyone. Allowed values Y or N ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
 || **ORIGIN_ID**
 [`string`](../../data-types.md) | Identifier of the item in the data source. Used only for linking to an external source ||
 || **MOVED_TIME**
-[`datetime`](../../data-types.md) | Date the item was moved to the current stage ||
+[`datetime`](../../data-types.md) | Date of moving the item to the current stage ||
 || **ADDRESS**
 [`string`](../../data-types.md) | Contact's address ||
 || **ADDRESS_2**
@@ -277,19 +277,19 @@ HTTP Status: **200**
 || **ADDRESS_COUNTRY_CODE**
 [`string`](../../data-types.md) | Country code || 
 || **ADDRESS_LOC_ADDR_ID**
-[`string`](../../data-types.md) | Used for internal purposes ||
+[`string`](../../data-types.md) | Used for administrative purposes ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, etc. ||
+[`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, and others ||
 || **UTM_MEDIUM**
 [`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners) ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Designation of the advertising campaign ||
+[`string`](../../data-types.md) | Identifier of the advertising campaign ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
 [`string`](../../data-types.md) | Search term of the campaign. For example, keywords for contextual advertising ||
 || **LAST_ACTIVITY_BY**
-[`string`](../../data-types.md) | Identifier of the user responsible for the last activity in this lead (e.g., who created a new CRM activity in the lead) ||
+[`string`](../../data-types.md) | Identifier of the user responsible for the last activity in this lead (e.g., who created a new activity in the lead) ||
 || **LAST_ACTIVITY_TIME**
 [`datetime`](../../data-types.md) | Time of the last activity ||
 ||**UF_...** | Custom fields. For example, `UF_CRM_25534736`.  
@@ -319,10 +319,14 @@ To create, modify, or delete custom fields in leads, use the methods [crm.lead.u
 ### Possible Errors
 
 #|  
-|| **Error Text** | **Description** ||
-|| `ID is not defined or invalid` | The `id` parameter is either not provided or is not a positive integer ||
-|| `Not found`  | The lead with the specified `id` was not found ||
-|| `Access denied` | The user does not have permission to read the lead ||
+|| **Error Message** | **Description** ||
+|| `ID is not defined or invalid` |  The `id` parameter is either not provided or is not a positive integer ||
+|| `Not found`  | Lead with the specified `id` was not found ||
+|| `Access denied` | User does not have permission to read the lead ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-objects-with-crm-mode.md)

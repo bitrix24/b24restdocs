@@ -6,7 +6,7 @@
 
 The method `task.commentitem.getmanifest` retrieves up-to-date information about methods for working with task comments `task.commentitem.*`.
 
-It is recommended to use it only as a reference, as the response structure of the method may change at any time.
+It is recommended to use it only as a reference, as the response structure may change at any time without notice.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -149,7 +149,10 @@ HTTP status: **200**
                             "POST_DATE"
                         ],
                         "allowedKeyPrefixes": [
-                            "!","<=","<",">=",
+                            "!",
+                            "<=",
+                            "<",
+                            ">=",
                             ">"
                         ]
                     }
@@ -294,9 +297,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Description of methods `task.elapseditem.*` ||
+[`object`](../../data-types.md) | Description of methods `task.commentitem.*` ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

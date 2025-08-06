@@ -23,4 +23,4 @@ Some data may be missing here — we will complete it shortly.
 void BX24.getDomain()
 ```
 
-The method `BX24.getDomain` returns `window.location.host` of the parent window, i.e., it returns the address of the **Bitrix24** account. For example, the value might be: `dev.bitrix24.com`.
+The method `BX24.getDomain` returns `window.location.host` of the parent window, i.e., it returns the address of the **Bitrix24** account. For example, the value might be: `helpdesk.bitrix24.com`.

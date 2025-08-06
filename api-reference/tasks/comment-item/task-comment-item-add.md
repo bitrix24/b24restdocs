@@ -2,13 +2,13 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with read access permission to the task or higher
 
 The method `task.commentitem.add` adds a new comment to a task.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -16,14 +16,14 @@ The method `task.commentitem.add` adds a new comment to a task.
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list](../tasks-task-list.md) method ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [getting task list](../tasks-task-list.md) method ||
 || **FIELDS***
-[`object`](../../data-types.md) | An object with [comment fields](#fields) ||
+[`object`](../../data-types.md) | Object with [comment fields](#fields) ||
 |#
 
 ### FIELDS Parameter {#fields}
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,18 +33,26 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
 || **AUTHOR_ID**
 [`integer`](../../data-types.md) | Identifier of the user on behalf of whom the comment should be created.
 
-You can obtain the user identifier using the [user.get](../../user/user-get.md) method ||
+The user identifier can be obtained using the [user.get](../../user/user-get.md) method.
+
+{% note alert "" %}
+
+The method `task.commentitem.add` allows any user to add a comment on behalf of someone else
+
+{% endnote %}
+
+ ||
 || **POST_DATE**
 [`string`](../../data-types.md) | Message date ||
 || **UF_FORUM_MESSAGE_DOC**
-[`array`](../../data-types.md) | An array of file identifiers from Drive. Prefix each identifier with `n`, for example, `['n123', 'n456', ... ]`.
+[`array`](../../data-types.md) | Array with file identifiers from Drive. Prefix each identifier with `n`, for example, `['n123', 'n456', ... ]`.
 
-The comment author must have access to the attached files; otherwise, the method will return an error ||
+The author of the comment must have access to the attached files; otherwise, the method will return an error ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -54,7 +62,7 @@ The comment author must have access to the attached files; otherwise, the method
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":8017,"FIELDS":{"POST_MESSAGE":"Text of the new comment for the task","AUTHOR_ID":503,"POST_DATE":"2025-07-15T14:30:00+02:00","UF_FORUM_MESSAGE_DOC":["n4755","n4753"]}}' \
+    -d '{"TASKID":8017,"FIELDS":{"POST_MESSAGE":"Text of the new comment to the task","AUTHOR_ID":503,"POST_DATE":"2025-07-15T14:30:00+02:00","UF_FORUM_MESSAGE_DOC":["n4755","n4753"]}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.commentitem.add
     ```
 
@@ -64,7 +72,7 @@ The comment author must have access to the attached files; otherwise, the method
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":8017,"FIELDS":{"POST_MESSAGE":"Text of the new comment for the task","AUTHOR_ID":503,"POST_DATE":"2025-07-15T14:30:00+02:00","UF_FORUM_MESSAGE_DOC":["n4755","n4753"]},"auth":"**put_access_token_here**"}' \
+    -d '{"TASKID":8017,"FIELDS":{"POST_MESSAGE":"Text of the new comment to the task","AUTHOR_ID":503,"POST_DATE":"2025-07-15T14:30:00+02:00","UF_FORUM_MESSAGE_DOC":["n4755","n4753"]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/task.commentitem.add
     ```
 
@@ -76,7 +84,7 @@ The comment author must have access to the attached files; otherwise, the method
         {
             "TASKID": 8017,
             "FIELDS": {
-                "POST_MESSAGE": "Text of the new comment for the task",
+                "POST_MESSAGE": "Text of the new comment to the task",
                 "AUTHOR_ID": 503,
                 "POST_DATE": "2025-07-15T14:30:00+02:00",
                 "UF_FORUM_MESSAGE_DOC": ["n4755", "n4753"]
@@ -99,7 +107,7 @@ The comment author must have access to the attached files; otherwise, the method
         [
             'TASKID' => 8017,
             'FIELDS' => [
-                'POST_MESSAGE' => 'Text of the new comment for the task',
+                'POST_MESSAGE' => 'Text of the new comment to the task',
                 'AUTHOR_ID' => 503,
                 'POST_DATE' => '2025-07-15T14:30:00+02:00',
                 'UF_FORUM_MESSAGE_DOC' => ['n4755', 'n4753']
@@ -167,7 +175,7 @@ HTTP status: **400**
 || `ERROR_CORE` | Insufficient permissions to add a comment | No access permission to the task ||
 || `ERROR_CORE` | File not found | File from the `UF_FORUM_MESSAGE_DOC` parameter not found or the author does not have access to it ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arFields) for method ctaskcommentitem::add() must not contain key `<FIELD_NAME>`.; 256/TE/WRONG_ARGUMENTS | Field `<FIELD_NAME>` cannot be used in the method ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type for the parameter, for example, for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type specified for the parameter, for example, for `TASKID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -179,6 +187,4 @@ HTTP status: **400**
 - [{#T}](./task-comment-item-get.md)
 - [{#T}](./task-comment-item-get-list.md)
 - [{#T}](./task-comment-item-delete.md)
-- [{#T}](./task-comment-item-is-action-allowed.md)
-- [{#T}](./task-comment-item-get-manifest.md)
 - [{#T}](../../../tutorials/tasks/how-to-create-comment-with-file.md)

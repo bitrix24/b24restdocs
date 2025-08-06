@@ -1,10 +1,10 @@
-# Get Stage Movement History crm.stagehistory.list
+# Get Stage History with crm.stagehistory.list
 
 > Scope: [`crm`](../scopes/permissions.md)
 >
 > Who can execute the method: `any user`
 
-The method supports retrieving records from the stage movement history for leads, deals, and invoices.
+This method supports retrieving records from the stage history for leads, deals, and invoices.
 
 ## Method Parameters
 
@@ -38,7 +38,7 @@ The method supports retrieving records from the stage movement history for leads
 
 {% include [Examples Note](../../_includes/examples.md) %}
 
-Get stage movement history for the deal with `ID=1`
+Get stage history for the deal with `ID=1`
 
 {% list tabs %}
 
@@ -111,7 +111,7 @@ Get stage movement history for the deal with `ID=1`
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 The method will return an array of records from the history:
 
@@ -145,7 +145,7 @@ The method will return an array of records from the history:
 
 ### Returned Data
 
-Each element of the array is an array with keys.
+Each item in the array is an array with keys.
 
 #|
 || **Name**
@@ -160,7 +160,7 @@ Each element of the array is an array with keys.
 || **OWNER_ID**
 [`int`][1] | Identifier of the object in which the stage changed ||
 || **CREATED_TIME**
-[`datetime`][1] | Identifier of the created element ||
+[`datetime`][1] | Identifier of the created item ||
 |#
 
 In addition, there are specific fields for different object types:
@@ -171,12 +171,12 @@ In addition, there are specific fields for different object types:
 || **Name**
 `type` | **Description** ||
 || **STATUS_SEMANTIC_ID**
-[`int`][1] | Status semantics (stage):
+[`int`][1] | Status (stage) semantics:
   - `P` — intermediate stage
   - `S` — successful stage
   - `F` — failed stage ||
 || **STATUS_ID**
-[`int`][1] | Status identifier (stage) ||
+[`int`][1] | Status (stage) identifier ||
 |#
 
 - for deals
@@ -187,7 +187,7 @@ In addition, there are specific fields for different object types:
 || **CATEGORY_ID**
 [`int`][1] | Identifier of the direction (funnel) ||
 || **STAGE_SEMANTIC_ID**
-[`int`][1] | Status semantics (stage):
+[`int`][1] | Status (stage) semantics:
 - `P` — intermediate stage
 - `S` — successful stage
 - `F` — failed stage ||
@@ -197,7 +197,7 @@ In addition, there are specific fields for different object types:
 
 ## Error Handling
 
-HTTP Status: **401**, **400**
+HTTP status: **401**, **400**
 
 ```json
 {
@@ -212,9 +212,9 @@ HTTP Status: **401**, **400**
 
 #|
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
-|| `400`      | `0`                               | "`entity_name`" Object is not supported                         | Occurs when an invalid `entityTypeId` is passed                                              ||
-|| `400`      | `ACCESS_DENIED`                   | Access denied                                                    | The user does not have permission to add elements of type `entityTypeId`                             ||
-|| `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request                            | Incorrect user ID and/or code in the request path                                       ||
+|| `400`      | `0`                               | "`entity_name`" Object is not supported                             | Occurs when an invalid `entityTypeId` is passed                                              ||
+|| `400`      | `ACCESS_DENIED`                   | Access denied                                                        | The user does not have permission to add elements of type `entityTypeId`                     ||
+|| `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request                          | Incorrect user ID and/or code in the request path                                       ||
 |#
 
 {% include [system errors](./../../_includes/system-errors.md) %}

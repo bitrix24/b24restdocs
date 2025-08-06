@@ -1,4 +1,4 @@
-# Event on Application Uninstall onAppUninstall
+# Event on Application Uninstallation onAppUninstall
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
@@ -14,7 +14,7 @@ Data is sent as a POST request {.b24-info}
 {
     "event": "ONAPPUNINSTALL",
     "data": {
-        "LANGUAGE_ID" => "en",
+        "LANGUAGE_ID" => "de",
         "CLEAN": 1
     },
     "ts": "1466439714",
@@ -42,7 +42,7 @@ Data is sent as a POST request {.b24-info}
 
 The structure is described [below](#data) ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
+[`timestamp`](../../data-types.md) | Date and time the event was sent from the queue ||
 || **auth***
 [`array`](../../data-types.md) | Authorization and account data.
 
@@ -57,7 +57,7 @@ The structure is described [below](#auth) ||
 || **Name**
 `type` | **Description** ||
 || **LANGUAGE_ID***
-[`string`](../../data-types.md) | Set language: `en`, `de`, and others ||
+[`string`](../../data-types.md) | Set language: `de`, `en`, and others ||
 || **CLEAN***
 [`integer`](../../data-types.md) | Value of the "Clear application data" option set by the user when uninstalling the application. Values: `1` or `0` ||
 |#
@@ -72,13 +72,13 @@ The structure is described [below](#auth) ||
 || **domain***
 [`string`](../../data-types.md) | Bitrix24 account address ||
 || **server_endpoint***
-[`string`](../../data-types.md) | Authorization server address for token refresh ||
+[`string`](../../data-types.md) | Authorization server address for token renewal ||
 || **client_endpoint***
-[`string`](../../data-types.md) | Common path for API method calls ||
+[`string`](../../data-types.md) | General path for API method calls for the account ||
 || **member_id***
-[`string`](../../data-types.md) | Unique account identifier ||
+[`string`](../../data-types.md) | Unique identifier of the account ||
 || **application_token***
-[`string`](../../data-types.md) | Token for secure event handling ||
+[`string`](../../data-types.md) | Token for secure event processing ||
 |#
 
 {% note warning "" %}

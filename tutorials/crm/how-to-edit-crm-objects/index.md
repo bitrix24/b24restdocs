@@ -1,6 +1,5 @@
 # Editing Data
 
-- [{#T}](./how-to-upload-images-to-lead.md)
 - [{#T}](./how-to-generate-edit-form-for-lead.md)
 - [{#T}](./how-to-make-contact-edit-card.md)
 - [{#T}](./how-to-generate-edit-form-for-company.md)

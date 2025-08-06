@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to edit the CRM entity to which the activity is being added.
+> Who can execute the method: a user with edit access permission for the CRM entity to which the activity is being added.
 
 The method `crm.activity.todo.add` adds a universal activity to the timeline.
 
@@ -13,11 +13,11 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
 #|
 || **Name**
 `type` | **Description** ||
-|| **ownerTypeId***
+|| **ownerTypeId*** 
 [`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is linked, for example `2` for a deal ||
-|| **ownerId***
+|| **ownerId*** 
 [`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the activity is linked, for example, `1` ||
-|| **deadline***
+|| **deadline*** 
 [`datetime`](../../../../data-types.md) | Deadline for the activity, for example `2025-02-03T15:00:00` ||
 || **title**
 [`string`](../../../../data-types.md) | Title of the activity, default is an empty string ||
@@ -26,9 +26,9 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
 || **responsibleId**
 [`integer`](../../../../data-types.md) | Identifier of the user responsible for the activity, for example `1` ||
 || **parentActivityId**
-[`integer`](../../../../data-types.md) | Identifier of the activity in the timeline with which the created activity can be linked, for example `888` ||
+[`integer`](../../../../data-types.md) | Identifier of the activity in the timeline that can be linked to the created activity, for example `888` ||
 || **pingOffsets**
-[`array`](../../../../data-types.md) | An array containing integer values in minutes that allow you to set reminder times for the activity. For example, `[0, 15]` means that 2 reminders will be created, one 15 minutes before the deadline and one at the moment the deadline occurs. Default is an empty array, with no reminders ||
+[`array`](../../../../data-types.md) | An array containing integer values in minutes to set reminder times for the activity. For example, `[0, 15]` means that 2 reminders will be created, one 15 minutes before the deadline and one at the moment the deadline occurs. Default is an empty array, with no reminders ||
 || **colorId**
 [`integer`](../../../../data-types.md) | Identifier of the activity color in the timeline, for example `1`. There are 8 colors available, values from 1 to 7 and a default color if none is specified
 
@@ -160,7 +160,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields are missing ||
+|| `100` | Required fields not provided ||
 || `NOT_FOUND` | CRM entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
@@ -176,3 +176,4 @@ HTTP status: **400**
 - [{#T}](./crm-activity-todo-update-description.md)
 - [{#T}](./crm-activity-todo-update-color.md)
 - [{#T}](./crm-activity-todo-update-responsible-user.md)
+- [{#T}](../../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-objects-with-crm-mode.md)

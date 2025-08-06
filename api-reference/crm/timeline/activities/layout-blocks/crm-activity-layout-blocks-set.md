@@ -2,19 +2,19 @@
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: REST Application
+> Who can execute the method: administrator
 
-This method allows REST applications to set a set of additional content blocks in an activity.
+The method `crm.activity.layout.blocks.set` sets a set of additional content blocks for the activity.
 
-Setting a new set of additional content blocks in an activity will overwrite the previously added set within the same application.
+Setting a new set of additional content blocks in the activity will overwrite the previously added set within the same application.
 
 Setting a set of additional content blocks cannot be applied to:
-- Configurable activity
-- Activity whose type is deprecated
+- [configurable activity](../configurable/index.md),
+- a activity whose type is deprecated.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,14 +31,14 @@ Setting a set of additional content blocks cannot be applied to:
 
 ## Code Examples
 
-For the activity with `id = 8`, linked to the deal with `id = 4`, we will set the following set of additional content blocks:
+For the activity with `id = 8`, linked to the activity with `id = 4`, we will set the following set of additional content blocks:
 
 1. Text
 2. Long multiline text
 3. Link
 4. Block with a title
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -190,9 +190,9 @@ For the activity with `id = 8`, linked to the deal with `id = 4`, we will set th
 
 If the activity contains more than one set of additional content blocks, they will be displayed in the order they were added.
 
-In the HTML layout, it is explicitly indicated through data attributes which REST application added the set of additional content blocks:
-- `data-app-name`: name of the REST application
-- `data-rest-client-id`: identifier of the REST application
+In the HTML layout, it is explicitly highlighted with data attributes which application added the set of additional content blocks:
+- `data-app-name`: name of the application,
+- `data-rest-client-id`: identifier of the application.
 
 ## Response Handling
 
@@ -213,7 +213,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ERROR_WRONG_CONTEXT",
-    "error_description": "Method call is only possible in the context of a REST application"
+    "error_description": "The method can only be called in the context of a REST application"
 }
 ```
 
@@ -223,15 +223,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ERROR_WRONG_CONTEXT` | Method call is only possible in the context of a REST application ||
-|| `OWNER_NOT_FOUND` | The entity to which the activity is linked was not found ||
-|| `NOT_FOUND` | Activity not found ||
+|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a REST application ||
+|| `OWNER_NOT_FOUND` | The element to which the activity is linked was not found ||
+|| `NOT_FOUND` | The activity was not found ||
 || `ACCESS_DENIED` | Access denied ||
 || `UNSUITABLE_ACTIVITY_TYPE_ERROR` | The type of this activity is not suitable for adding a set of additional content blocks ||
 || `FIELD_IS_REQUIRED` | The `blocks` field in `RestAppLayoutDto` must be filled. ||
 |#
 
-The method also returns errors related to the incorrect structure of the set of content blocks. Details can be found in the error message.
+The method also returns errors related to incorrect structure of the set of content blocks. Details can be found in the error message.
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 

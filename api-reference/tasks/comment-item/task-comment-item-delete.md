@@ -2,7 +2,7 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator
 
 The method `task.commentitem.delete` removes a comment.
 
@@ -22,11 +22,11 @@ Pass parameters in the request according to the order in the table. If the order
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [getting task list method](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method for retrieving the list of tasks](../tasks-task-list.md) ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Comment identifier.
 
-The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [getting comment list method](./task-comment-item-get-list.md) ||
+The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [method for retrieving the list of comments](./task-comment-item-get-list.md) ||
 |#
 
 ## Code Examples
@@ -93,7 +93,7 @@ The comment identifier can be obtained when [adding a new comment](./task-commen
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -119,12 +119,12 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Returns `true` if the comment was successfully deleted ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -157,5 +157,3 @@ HTTP status: **400**
 - [{#T}](./task-comment-item-update.md)
 - [{#T}](./task-comment-item-get.md)
 - [{#T}](./task-comment-item-get-list.md)
-- [{#T}](./task-comment-item-is-action-allowed.md)
-- [{#T}](./task-comment-item-get-manifest.md)

@@ -20,7 +20,7 @@ Max batch length exceeded | The maximum length of parameters passed to the [batc
 || `401` | `NO_AUTH_FOUND`
 Wrong authorization data | Invalid [access token](/api-reference/oauth/index.html) or [webhook code](/local-integrations/local-webhooks.html). ||
 || `400` | `INVALID_REQUEST`
-Https required. | The HTTPS protocol is required for calling REST methods. ||
+Https required. | The methods must be called using the HTTPS protocol. ||
 || `503` | `OVERLOAD_LIMIT`
 REST API is blocked due to overload | The REST API is blocked due to overload. This is a manual individual block; to remove it, you need to contact [Bitrix24 technical support](../bitrix-support.md). ||
 || `403` | `ACCESS_DENIED`

@@ -37,7 +37,7 @@ The `entity.add` method creates a data storage. Before creating, you can check f
 [`string`](../../data-types.md) | Required. Name of the storage. ||
 || **ACCESS**
 [`unknown`](../../data-types.md) | Description of access permissions for the storage. 
-It should be in the form of an associative array, where the keys are the identifiers of access permissions, and the values are **R** (read), **W** (write), or **X** (manage). ||
+Should be in the form of an associative array, where the keys are the identifiers of access permissions, and the values are **R** (read), **W** (write), or **X** (manage). ||
 |#
 
 {% include [Note on parameters](../../../_includes/required.md) %}

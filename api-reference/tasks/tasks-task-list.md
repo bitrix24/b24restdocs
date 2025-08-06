@@ -4,10 +4,10 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
+- edits needed for writing standards
 - parameter types are not specified
-- required parameters are not indicated
-- curl examples are missing 
+- parameter requirements are not indicated
+- curl examples are missing
 - response in case of error is absent
  
 {% endnote %}
@@ -26,7 +26,7 @@ Some data may be missing here — we will fill it in shortly
 
 The method `tasks.task.list` returns an array of tasks, each containing an array of fields. Unlike [task.item.list](./deprecated/task-item/task-item-list.md), parameters in the `tasks.task.list` request can be specified in any order, and unnecessary parameters can be omitted.
 
-To retrieve data for all tasks, the user must have admin rights. A department head will only have access to tasks in their branch of the hierarchy.
+To retrieve data for all tasks, the user must have admin rights. A department head will only have access to tasks within their branch of the hierarchy.
 
 Tasks marked as "Favorite" can also be retrieved by setting the filter parameter `$filter[::SUBFILTER-PARAMS][FAVORITE]=Y`.
 
@@ -43,7 +43,7 @@ It is necessary to specify fields in `select`, as default fields may change in t
 The sorting field can take the following values: 
 - **ID** — Task identifier.
 - **TITLE** — Task title.
-- **TIME_SPENT_IN_LOGS** — Time spent, recorded in the change history.
+- **TIME_SPENT_IN_LOGS** — Time spent recorded in the change history.
 - **DATE_START** — Task start date.
 - **CREATED_DATE** — Task creation date.
 - **CHANGED_DATE** — Date of the last task modification.
@@ -63,10 +63,10 @@ The sorting field can take the following values:
 - **PRIORITY** — Task priority.
 - **MARK** — Rating for task completion.
 - **CREATED_BY_LAST_NAME** — Last name of the task creator.
-- **RESPONSIBLE_LAST_NAME** — Last name of the task performer.
-- **GROUP_ID** — Identifier of the working group.
+- **RESPONSIBLE_LAST_NAME** — Last name of the task assignee.
+- **GROUP_ID** — Identifier of the workgroup.
 - **TIME_ESTIMATE** — Time allocated for the task.
-- **ALLOW_CHANGE_DEADLINE** — Flag allowing the performer to change the deadline.
+- **ALLOW_CHANGE_DEADLINE** — Flag allowing the assignee to change the deadline.
 - **ALLOW_TIME_TRACKING** — Flag enabling time tracking for the task.
 - **MATCH_WORK_TIME** — Flag indicating the need to skip weekends.
 - **FAVORITE** — Flag indicating that the task has been added to favorites.
@@ -89,15 +89,14 @@ Optional. By default, it is sorted in descending order by task identifier.
 || **filter**
 [`unknown`](../data-types.md) | An array in the format `{"filter_field": "filter_value" [, ...]}`. The filter field can take the following values:
 - **ID** - task identifier;
-- **PARENT_ID** - identifier of the parent task;
-- **GROUP_ID** - identifier of the working group;
+- **PARENT_ID** - parent task identifier;
+- **GROUP_ID** - workgroup identifier;
 - **CREATED_BY** - creator;
 - **STATUS_CHANGED_BY** - user who last changed the task status;
 - **PRIORITY** - priority;
-- **FORUM_TOPIC_ID** - identifier of the forum topic;
-- **RESPONSIBLE_ID** - performer;
+- **FORUM_TOPIC_ID** - forum topic identifier;
+- **RESPONSIBLE_ID** - assignee;
 - **TITLE** - task title (can be searched using the pattern [\%_]);
-- **TAG** - tag;
 - **REAL_STATUS** - task status. Corresponds to the `status` field in the response. Constants reflecting task statuses:
     - STATE_NEW = 1;
     - STATE_PENDING = 2;
@@ -117,7 +116,7 @@ Optional. By default, it is sorted in descending order by task identifier.
 - **DEADLINE** - deadline;
 - **CREATED_DATE** - creation date;
 - **CLOSED_DATE** - completion date;
-- **CHANGED_DATE** - date of the last modification;
+- **CHANGED_DATE** - last modification date;
 - **ACCOMPLICE** - identifier of the participant;
 - **AUDITOR** - identifier of the auditor;
 - **DEPENDS_ON** - identifier of the previous task;
@@ -125,7 +124,7 @@ Optional. By default, it is sorted in descending order by task identifier.
 - **STAGE_ID** - stage;
 - **UF_CRM_TASK** - CRM entities;
 
-Before the name of the filter field, the type of filtering can be indicated:
+Before the filter field name, a filtering type can be specified:
 - "!" - not equal
 - "<" - less than
 - "<=" - less than or equal to
@@ -136,11 +135,11 @@ Before the name of the filter field, the type of filtering can be indicated:
 
 Optional. By default, records are not filtered. ||
 || **select**
-[`unknown`](../data-types.md) | An array of record fields that will be returned by the method. You can specify only the fields that are necessary.
+[`unknown`](../data-types.md) | An array of record fields that will be returned by the method. Only the necessary fields can be specified.
 
 Available fields: 
 - **ID** - task identifier;
-- **PARENT_ID** - identifier of the parent task;
+- **PARENT_ID** - parent task identifier;
 - **TITLE** - task title;
 - **DESCRIPTION** - description;
 - **MARK** - rating;
@@ -152,18 +151,18 @@ Available fields:
 - **MULTITASK** - multiple task;
 - **NOT_VIEWED** - unviewed task;
 - **REPLICATE** - recurring task;
-- **GROUP_ID** - working group;
+- **GROUP_ID** - workgroup;
 - **STAGE_ID** - stage;
 - **CREATED_BY** - creator;
 - **CREATED_DATE** - creation date;
-- **RESPONSIBLE_ID** - performer;
+- **RESPONSIBLE_ID** - assignee;
 - **ACCOMPLICES** - identifier of the participant;
 - **AUDITORS** - identifier of the auditor;
 - **CHANGED_BY** - who modified the task;
-- **CHANGED_DATE** - date of modification;
-- **STATUS_CHANGED_DATE** - date of status change;
+- **CHANGED_DATE** - modification date;
+- **STATUS_CHANGED_DATE** - status change date;
 - **CLOSED_BY** - who closed the task;
-- **CLOSED_DATE** - date of task closure;
+- **CLOSED_DATE** - task closure date;
 - **DATE_START** - start date;
 - **DEADLINE** - deadline;
 - **START_DATE_PLAN** - planned start;
@@ -178,22 +177,22 @@ Available fields:
 - **TIME_ESTIMATE** - time allocated for the task;
 - **TIME_SPENT_IN_LOGS** - time spent from the change history;
 - **MATCH_WORK_TIME** - skip weekends;
-- **FORUM_TOPIC_ID** - identifier of the forum topic;
-- **FORUM_ID** - identifier of the forum;
+- **FORUM_TOPIC_ID** - forum topic identifier;
+- **FORUM_ID** - forum identifier;
 - **SITE_ID** - site identifier;
-- **SUBORDINATE** - subordinate's task;
+- **SUBORDINATE** - subordinate task;
 - **FAVORITE** - Favorite;
 - **VIEWED_DATE** - date of last view;
 - **SORTING** - sorting index;
-- **DURATION_PLAN** - spent (planned);
-- **DURATION_FACT** - spent (actual);
-- **DURATION_TYPE** - type of measurement unit in planned duration: days, hours, or minutes.
+- **DURATION_PLAN** - time spent (planned);
+- **DURATION_FACT** - time spent (actual);
+- **DURATION_TYPE** - unit type in planned duration: days, hours, or minutes.
 
 By default, all **non-computed** fields of the main query table will be returned.
 
-The list of fields can be specified by sending a request to [tasks.task.getFields](tasks-task-get-fields.md). ||
+The list of fields can be clarified by sending a request to [tasks.task.getFields](tasks-task-get-fields.md). ||
 || **limit**
-[`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to retrieve more records than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in several requests of 50 records in response. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
+[`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to retrieve a number of records greater than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in several requests of 50 records each. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
 ```js
 start=0
 start=50
@@ -201,7 +200,7 @@ start=100
 ```
 ||
 || **start**
-[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, the value of this parameter must always be a multiple of 50. For example, with a value of 50, the 51st record and subsequent ones will be displayed in the result, while the first 50 records will be skipped.
+[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, the value of this parameter must always be a multiple of 50. For example, with a value of 50, the 51st record and subsequent ones will be displayed, while the first 50 records will be skipped.
 
 With a value of `-1`, the count will be disabled. 
 
@@ -439,7 +438,7 @@ Task filters by ID, date, status. For the filter `'=ID' => 3`, it is recommended
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Footnote on examples](../../_includes/examples.md) %}
 
 ## Continue your study
 

@@ -1,8 +1,8 @@
-# Change settings for the connector imconnector.connector.data.set
+# Change settings for the imconnector.connector.data.set
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing — we will complete it soon.
 
 - parameter types are not specified
 - parameter requirements are not specified
-- no success response
-- no error response
+- success response is missing
+- error response is missing
   
 {% endnote %}
 
@@ -133,3 +133,4 @@ This method sets data for the REST connector.
 - [{#T}](./imconnector-delete-messages.md)
 - [{#T}](./imconnector-send-status-delivery.md)
 - [{#T}](./imconnector-send-status-reading.md)
+- [{#T}](../../../tutorials/openlines/example-connector.md)

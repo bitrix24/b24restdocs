@@ -8,7 +8,7 @@ This method deletes a timeline log entry.
 
 {% note warning %}
 
-You can only delete a log entry in the context of the [Rest application](https://dev.quickbooks.com/docs/chm_files/app.zip) that created it.
+You can only delete a log entry in the context of the [application](https://dev.quickbooks.com/docs/chm_files/app.zip) that created it.
 
 This means that only the application that added the entry can delete it. This ensures data security and control.
 
@@ -115,7 +115,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Operation result. Returns:
+[`boolean`](../../../data-types.md) | Result of the operation. Returns:
 
 - `true` — on successful deletion
 - `null` — on error 

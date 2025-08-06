@@ -1,12 +1,12 @@
-# Get a set of additional content blocks in the activity crm.activity.layout.blocks.get
+# Get a Set of Additional Content Blocks in the activity crm.activity.layout.blocks.get
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: REST Application
+> Who can execute the method: administrator
 
-This method allows a REST application to retrieve a set of additional content blocks in the activity that it has set.
+The method `crm.activity.layout.blocks.get` retrieves a set of additional content blocks for a activity.
 
-The REST application can only obtain the set of additional content blocks that it has established.
+Within the application, you can only obtain the set of additional content blocks that has been installed through this application.
 
 ## Method Parameters
 
@@ -15,11 +15,11 @@ The REST application can only obtain the set of additional content blocks that i
 #|
 || **Name**
 `type` | **Description** ||
-|| **entityTypeId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM entity type to which the activity is linked ||
-|| **entityId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the activity is linked ||
-|| **activityId***
+|| **entityTypeId***  
+[`integer`](../../../../data-types.md) | Identifier of the CRM object type to which the activity is linked ||
+|| **entityId***  
+[`integer`](../../../../data-types.md) | Identifier of the CRM object to which the activity is linked ||
+|| **activityId***  
 [`integer`](../../../../data-types.md) | Identifier of the activity ||
 |#
 
@@ -150,7 +150,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ERROR_WRONG_CONTEXT",
-    "error_description": "The method can only be called in the context of a REST application"
+    "error_description": "The method can only be called in the context of a rest application"
 }
 ```
 
@@ -160,8 +160,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a REST application ||
-|| `OWNER_NOT_FOUND` | The entity to which the activity is linked was not found ||
+|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a rest application ||
+|| `OWNER_NOT_FOUND` | The element to which the activity is linked was not found ||
 || `NOT_FOUND` | The activity was not found ||
 || `ACCESS_DENIED` | Access denied ||
 |#

@@ -2,7 +2,7 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with read access permission for the task or higher
 
 The method `task.commentitem.get` retrieves a comment by its ID.
 
@@ -14,7 +14,7 @@ Pass parameters in the request according to the order in the table. If the order
 
 {% endnote %}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,7 +31,7 @@ The comment ID can be obtained when [adding a new comment](./task-comment-item-a
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -104,7 +104,7 @@ HTTP status: **200**
         "AUTHOR_NAME": "John Smith",
         "AUTHOR_EMAIL": "",
         "POST_DATE": "2025-07-15T14:30:00+02:00",
-        "POST_MESSAGE": "Text of the new comment on the task",
+        "POST_MESSAGE": "Text of the new comment for the task",
         "ATTACHED_OBJECTS": {
             "973": {
                 "ATTACHMENT_ID": "973",
@@ -155,7 +155,7 @@ HTTP status: **200**
 || **AUTHOR_EMAIL**
 [`string`](../../data-types.md) | Author email of the comment ||
 || **POST_DATE**
-[`string`](../../data-types.md) | Date and time the comment was created ||
+[`string`](../../data-types.md) | Date and time of comment creation ||
 || **POST_MESSAGE**
 [`string`](../../data-types.md) | Text of the comment ||
 || **ATTACHED_OBJECTS**
@@ -200,12 +200,12 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512/TE/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE | Error is returned in the following cases:
-- Incorrect parameter order in the method
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512/TE/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE | The error is returned in the following cases:
+- Incorrect order of parameters in the method
 - Task or comment with the specified ID not found
 - No access permission to the task ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::get() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type for the parameter, for example, for `TASKID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::get(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not specified, for example, `ITEMID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::get() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | An incorrect type of value was provided for the parameter, for example, for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::get(), but not given.; 256/TE/WRONG_ARGUMENTS | A required parameter was not provided, for example, `ITEMID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -217,6 +217,4 @@ HTTP status: **400**
 - [{#T}](./task-comment-item-update.md)
 - [{#T}](./task-comment-item-get-list.md)
 - [{#T}](./task-comment-item-delete.md)
-- [{#T}](./task-comment-item-is-action-allowed.md)
-- [{#T}](./task-comment-item-get-manifest.md)
 - [{#T}](../../../tutorials/tasks/how-to-create-comment-with-file.md)

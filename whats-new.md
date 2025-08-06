@@ -2,6 +2,16 @@
 
 ## 2025
 
+### August 6, 2025
+
+- Updated tutorial [Add a lead with files via web form](./tutorials/crm/how-to-add-crm-objects/how-to-add-lead-with-files.md)
+- Updated the main page of the [Booking Client](./api-reference/booking/booking/client/index.md) section in Online Booking. Added introductory information and an overview of methods and relationships.
+- Updated the main page of the [Users](./api-reference/chats/users/index.md) section in Chats. Added introductory information and an overview of methods and relationships.
+- Updated the main page of the [Call List](./api-reference/crm/call-list/index.md) section in CRM. Added introductory information and an overview of methods and relationships.
+- Updated the tutorial [How to create an open lines connector for chat on the site](./tutorials/openlines/example-connector.md)
+- Updated the tutorial [Add a lead or deal with an activity considering CRM mode](./tutorials/crm/how-to-add-crm-objects/how-to-add-objects-with-crm-mode.md)
+- Updated the documentation on deal user-defined field methods [crm.deal.userfield.*](./api-reference/crm/deals/user-defined-fields/index.md) in CRM.
+
 ### July 30, 2025
 
 - Added documentation for call list methods [crm.calllist.*](./api-reference/crm/call-list/index.md) in CRM.
@@ -17,7 +27,7 @@
 - Updated the main page of the [Resource Types](./api-reference/booking/resource/resource-type/index.md) section in Online Booking. Added introductory information and an overview of methods and relationships.
 - Updated the documentation for the methods of the directories [crm.status.*](./api-reference/crm/status/index.md) in CRM.
 - Updated the tutorial [How to add a template and create a document based on it](./tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md).
-- Updated the documentation for the VAT rate methods [crm.vat.*](./api-reference/crm/auxiliary/vat/index.md) in CRM.
+- Updated the documentation for the VAT rate methods [crm.vat.*](./api-reference/crm/outdated/vat/index.md) in CRM.
 - Added a new tutorial [How to create a new funnel with stages in a SPA](./tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md).
 - Updated the main pages of events in the sections: [Calendar Events](./api-reference/calendar/calendar-event/events/index.md), [Calendar](./api-reference/calendar/events/index.md). Added introductory information and an overview of events.
 
@@ -130,7 +140,7 @@
 
 ### March 26, 2025
 
-- Updated the main pages of the sections [VAT Rates in CRM](./api-reference/crm/auxiliary/vat/index.md), [Lead Communication with Contacts](./api-reference/crm/leads/management-communication/index.md). Added introductory information as well as an overview of methods and connections
+- Updated the main pages of the sections [VAT Rates in CRM](./api-reference/crm/outdated/vat/index.md), [Lead Communication with Contacts](./api-reference/crm/leads/management-communication/index.md). Added introductory information as well as an overview of methods and connections
 - Updated event pages when working with leads [onCrmLead*](./api-reference/crm/leads/events/index.md)
 - Added support for the `contactIds` field in the filter for the method [crm.item.list](./api-reference/crm/universal/crm-item-list.md)
 - Updated event pages when working with currency [onCrmCurrency*](./api-reference/crm/currency/events/index.md)

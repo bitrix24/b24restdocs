@@ -2,9 +2,10 @@
 
 In this section, you will find ready-made examples for solving typical tasks related to CRM.
 
-## How to create leads, deals, and other CRM objects?
+## How to create leads, deals, and other CRM objects
 
 - [{#T}](how-to-add-crm-objects/how-to-add-lead.md)
+- [{#T}](how-to-add-crm-objects/how-to-add-lead-with-files.md)
 - [{#T}](how-to-add-crm-objects/how-to-add-objects-with-crm-mode.md)
 - [{#T}](how-to-add-crm-objects/how-to-send-email.md)
 - [{#T}](how-to-add-crm-objects/how-to-add-repeat-lead.md)
@@ -19,9 +20,8 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [{#T}](how-to-add-crm-objects/how-to-add-precision-to-user-field.md)
 - [{#T}](how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
 
-## How to replace an outdated phone number for an existing client; how to update product information and other examples
+## How to replace an outdated phone number for an existing client, how to update product information, and other examples
 
-- [{#T}](how-to-edit-crm-objects/how-to-upload-images-to-lead.md)
 - [{#T}](how-to-edit-crm-objects/how-to-change-email-or-phone.md)
 - [{#T}](how-to-edit-crm-objects/how-to-change-date-in-activity.md)
 - [{#T}](how-to-edit-crm-objects/how-to-generate-edit-form-for-lead.md)
@@ -29,7 +29,7 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [{#T}](how-to-edit-crm-objects/how-to-generate-edit-form-for-company.md)
 - [{#T}](how-to-edit-crm-objects/how-to-generate-edit-form-for-deal.md)
 
-## How to find clients by phone; how to get all activities of a client and other examples of working with lists of entities
+## How to find clients by phone, how to get all activities of a client, and other examples of working with lists of entities
 
 - [{#T}](how-to-get-lists/search-by-phone-and-email.md)
 - [{#T}](how-to-get-lists/get-activity-list-by-contact.md)
@@ -38,12 +38,12 @@ In this section, you will find ready-made examples for solving typical tasks rel
 - [{#T}](how-to-get-lists/how-to-get-deal-funnels.md)
 - [{#T}](how-to-get-lists/how-to-get-address.md)
 
-## How to use Bitrix24's Sales Intelligence tools?
+## How to use Bitrix24 Sales Intelligence tools
 
 - [{#T}](how-to-use-analitycs/info-to-analitics.md)
 - [{#T}](how-to-use-analitycs/use-analitics-for-add-lead.md)
 - [{#T}](how-to-use-analitycs/use-analitics-for-add-contact.md)
 
-## How to add your tab to the deal card; how to add your buttons to the lead card and other examples of CRM widgets
+## How to add your tab to the deal detail form, how to add your buttons to the lead detail form, and other examples of CRM widgets
 
 - [{#T}](crm-widgets/widget-as-field-in-lead-page.md)
