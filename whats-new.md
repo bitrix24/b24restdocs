@@ -2,6 +2,12 @@
 
 ## 2025
 
+### August 13, 2025
+
+- Updated the method for retrieving stage movement history [crm.stagehistory.list](./api-reference/crm/crm-stage-history-list.md) in CRM. Added support for all CRM entities with stages and funnels.
+- Updated the main page of the [Users](./api-reference/user/index.md) section. Added introductory information and an overview of methods and relationships.
+- Updated the main event pages in the sections: [Telephony](./api-reference/telephony/events/index.md), [SIP and Built-in Telephony](./api-reference/telephony/voximplant/events/index.md), [Workgroups and Projects](./api-reference/sonet-group/events/index.md). Added introductory information and an overview of events.
+
 ### August 6, 2025
 
 - Updated tutorial [Add a lead with files via web form](./tutorials/crm/how-to-add-crm-objects/how-to-add-lead-with-files.md)

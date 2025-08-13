@@ -4,7 +4,7 @@
 >
 > Who can subscribe: any user
 
-The `OnAppInstall` event is triggered immediately after the successful installation of the application on Bitrix24. The `application_token` is passed to the handler, which is important to save. For more details, refer to the article [{#T}](../../events/safe-event-handlers.md).
+The `OnAppInstall` event is triggered immediately after the application is successfully installed on Bitrix24. The `application_token` is passed to the handler, which is important to save. For more details, refer to the article [{#T}](../../events/safe-event-handlers.md).
 
 ## What the handler receives
 
@@ -47,7 +47,7 @@ The structure is described [below](#data) ||
 || **ts***
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
 || **auth***
-[`object`](../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
+[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -70,7 +70,7 @@ Possible values:
 `Y` — active
 `N` — inactive ||
 || **INSTALLED***
-[`string`](../../data-types.md) | Whether the application is ready for use. 
+[`string`](../../data-types.md) | Is the application ready for use. 
 
 Possible values: 
 `Y` — ready
@@ -88,12 +88,19 @@ Possible values:
 [`string`](../../data-types.md) | Address of the Bitrix24 account ||
 || **server_endpoint***
 [`string`](../../data-types.md) | Address of the authorization server for token renewal ||
+|| **status***
+[`string`](/api-reference/data-types.html) | Status of the application that subscribed to this event:
+
+- `L` — local application
+- `F` — free mass-market application
+- `S` — subscription mass-market application
+||
 || **client_endpoint***
-[`string`](../../data-types.md) | General path for API method calls of the account ||
+[`string`](../../data-types.md) | General path for API method calls to the account ||
 || **member_id***
 [`string`](../../data-types.md) | Unique identifier of the account ||
 || **application_token***
-[`string`](../../data-types.md) | Token for secure event handling ||
+[`string`](../../data-types.md) | Token for secure event processing ||
 |#
 
 {% note warning "" %}

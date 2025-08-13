@@ -8,9 +8,9 @@ Detailed work with events is described in the article [Concept and Benefits of E
 
 ## How to Receive Events
 
-You can subscribe to connector events through the [application](../../../app-installation/index) and the [event.bind](../../../events/event-bind) method.
+You can subscribe to connector events through the [application](../../../app-installation/index.md) and the [event.bind](../../../events/event-bind.md) method.
 
-An example of a handler for the event is described in the article [How to Test Your Handler for Handling Bitrix24 Events](../../../events/test-handler).
+An example of a handler code for the event is described in the article [How to Test Your Handler for Handling Bitrix24 Events](../../../events/test-handler.md).
 
 ## Server Availability for Sending and Receiving Events
 

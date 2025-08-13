@@ -6,7 +6,7 @@
 
 The method `tasks.flow.Flow.create` creates a flow.
 
-The flow must be linked to a group. If a group ID is not provided when creating the flow, a new group will be automatically created, consisting of the creator, administrator, and the flow team.
+The flow must be associated with a group. If a group ID is not provided when creating the flow, a new group will be automatically created, consisting of the creator, the administrator, and the flow team.
 
 ## Method Parameters
 
@@ -15,8 +15,8 @@ The flow must be linked to a group. If a group ID is not provided when creating 
 #|
 || **Name**
 `type` | **Description** ||
-|| **flowData***
-[`object`](../../data-types.md) | Field values for creating a flow (detailed description below) ||
+|| **flowData*** 
+[`object`](../../data-types.md) | Field values for creating the flow (detailed description is provided below) ||
 |#
 
 ### Parameter flowData
@@ -47,7 +47,7 @@ If not specified, the creator will be the administrator of the flow ||
 || **distributionType*** 
 [`string`](../../data-types.md) | Type of distribution:
 - `manually` — manual distribution
-- `queue` — queue distribution
+- `queue` — distribution by queue
 - `himself` — self-distribution
 
 More about distribution types can be found in the article [{#T}](./index.md) ||
@@ -60,33 +60,33 @@ For self-distribution or queue distribution, specify the IDs of employees or dep
 
 ```js
 [
-    {
-        "department": 3
-    },
-    {
-        "department": "17:F"
-    }
+    [
+        'department','3'
+    ],
+    [
+        'department','17:F'
+    ]
 ]
 ``` 
 
 If you do not add the suffix `:F`, the system will select all sub-departments of the specified department according to the company structure ||
 || **taskCreators** 
-[`object`](../../data-types.md) | A list of users who can add tasks to the flow in the format `{"<entity-type>": "<entity-id>"}`. For example
+[`object`](../../data-types.md) | A list of users who can add tasks to the flow in the format `{"<entity-type>": "<entity-id>"}`. For example:
 
 ```js
 [
-    {
-        "user": 3
-    },
-    {
-        "department": "17:F"
-    }
+    [
+        'user','3'
+    ],
+    [
+        'department','17:F'
+    ]
 ]
 ```
 
 If you do not add the suffix `:F`, the system will select all sub-departments of the specified department according to the company structure.
 
-To allow all users to add tasks, specify the value `{"meta-user": "all-users"}`  ||
+To allow all users to add tasks, specify the value `{"meta-user": "all-users"}` ||
 || **matchWorkTime** 
 [`integer`](../../data-types.md) | Skip weekends and holidays when calculating the task deadline.
 
@@ -134,8 +134,8 @@ Default is `null`, meaning no notification ||
             "description": "Flow description",
             "plannedCompletionTime": 7200,
             "distributionType": "manually",
-            "responsibleList": [{"user":"3"}],
-            "taskCreators": [{"meta-user":"all-users"}],
+            "responsibleList": [["user","3"]],
+            "taskCreators": [["meta-user","all-users"]],
             "matchWorkTime": 1,
             "notifyAtHalfTime": 0
         }
@@ -155,8 +155,8 @@ Default is `null`, meaning no notification ||
             "description": "Flow description",
             "plannedCompletionTime": 7200,
             "distributionType": "manually",
-            "responsibleList": [{"user":"3"}],
-            "taskCreators": [{"meta-user":"all-users"}],
+            "responsibleList": [["user","3"]],
+            "taskCreators": [["meta-user","all-users"]],
             "matchWorkTime": 1,
             "notifyAtHalfTime": 0
         }
@@ -176,14 +176,14 @@ Default is `null`, meaning no notification ||
                 plannedCompletionTime: 7200,
                 distributionType: 'manually',
                 responsibleList: [
-                    {
-                        'user':'3'
-                    }
+                    [
+                        'user','3'
+                    ]
                 ],
                 taskCreators: [
-                    {
-                        'meta-user':'all-users'
-                    }
+                    [
+                        'meta-user','all-users'
+                    ]
                 ],
                 matchWorkTime: 1,
                 notifyAtHalfTime: 0
@@ -202,7 +202,7 @@ Default is `null`, meaning no notification ||
 - PHP
 
     ```php
-    require_once('crest.php'); // connect CRest PHP SDK
+    require_once('crest.php'); // connecting CRest PHP SDK
 
     $flowData = [
         "name" => "Unique Flow Name",
@@ -215,7 +215,7 @@ Default is `null`, meaning no notification ||
         "notifyAtHalfTime" => 0
     ];
 
-    // execute request to REST API
+    // executing the request to the REST API
     $result = CRest::call(
         'tasks.flow.Flow.create',
         [
@@ -223,7 +223,7 @@ Default is `null`, meaning no notification ||
         ]
     );
 
-    // Process the response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -315,7 +315,7 @@ HTTP status: **200**
 || **distributionType** 
 [`string`](../../data-types.md) | Type of task distribution in the flow ||
 || **responsibleList** 
-[`array`](../../data-types.md) | List of responsible persons for tasks in the flow. For manual distribution, this is the flow moderator ||
+[`array`](../../data-types.md) | List of those responsible for tasks in the flow. For manual distribution, this is the flow moderator ||
 || **demo** 
 [`boolean`](../../data-types.md) | Indicates whether the flow is a demo. System parameter. Read-only ||
 || **responsibleCanChangeDeadline** 
@@ -341,7 +341,7 @@ The element `{"meta-user": "all-users"}` means that all users can add tasks ||
 
 For manual distribution, this includes all project participants to which the flow is linked, except for the moderator. 
 
-For queue distribution and self-distribution, the team is the same as in `responsibleList` ||
+For queue and self-distribution, the team is the same as in `responsibleList` ||
 || **trialFeatureEnabled** 
 [`boolean`](../../data-types.md) | Indicates whether the trial period is enabled for the flow. System parameter. Read-only ||
 |#
@@ -362,7 +362,7 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Additional Information**||
+|| **Code** | **Description** | **Additional Information** ||
 || `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to create a flow ||
 || `0` | `Unknown error` | Unknown error ||
 || `0` | `'distributionType': field's value has an invalid value` | Invalid value for `distributionType` (similarly for other parameters) ||

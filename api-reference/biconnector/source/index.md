@@ -4,6 +4,12 @@ A source is a separate connection to an external system in the BIconnector modul
 
 > Quick navigation: [all methods](#all-methods) 
 
+{% note info "" %}
+
+Methods only work in the context of the [application](../../app-installation/index.md)
+
+{% endnote %}
+
 ## Connection of the Source with the Connector and Datasets
 
 The source is registered through the connector. In the hierarchy of the BIconnector module, sources occupy an intermediate level:
@@ -21,9 +27,9 @@ The source is registered through the connector. In the hierarchy of the BIconnec
 || **title**
 [`string`](../../data-types.md) | Name of the source | ✅ | ✅ ||
 || **type**
-[`string`](../../data-types.md) | Type of the source, the value is always `rest` | ✅ | ❌ ||
+[`string`](../../data-types.md) | Type of the source, value is always `rest` | ✅ | ❌ ||
 || **code**
-[`string`](../../data-types.md) | Source code, a system field | ✅ | ❌ ||
+[`string`](../../data-types.md) | Code of the source, system field | ✅ | ❌ ||
 || **description**
 [`string`](../../data-types.md) | Description of the source | ✅ | ✅ ||
 || **active**
@@ -50,7 +56,7 @@ The `settings` field contains a list of parameters for authorization through the
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the methods: a user with access to the "Analyst's Workspace" section
+> Who can execute the methods: a user with access to the "Analyst Workspace" section
 
 #|
 || **Method** | **Description** ||

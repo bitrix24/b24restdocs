@@ -1,8 +1,14 @@
 # Datasets: Overview of Methods
 
-A dataset is an object of the BIconnector module. Datasets are used to display and process information obtained from sources in Bitrix24.
+A dataset is an object of the BIconnector module. Datasets are used to display and process information in Bitrix24 obtained from sources.
 
 > Quick navigation: [all methods](#all-methods) 
+
+{% note info "" %}
+
+Methods work only in the context of the [application](../../app-installation/index.md)
+
+{% endnote %}
 
 ## Connection of Dataset with Connector and Sources
 
@@ -11,7 +17,7 @@ A dataset is the final level in the hierarchy of data handling in the BIconnecto
 - **Source** defines which specific data is available from the connected service.
 - **Dataset** forms the final set of data that can be used in reports and analytics.
 
-## Field Descriptions of the Dataset {#dataset}
+## Description of Dataset Fields {#dataset}
 
 #|
 || **Name**
@@ -42,7 +48,7 @@ A dataset is the final level in the hierarchy of data handling in the BIconnecto
 [`array`](../../data-types.md) | List of [fields](#fields) included in the dataset | ✅ | ✅ ||
 |#
 
-### Field Description of Fields {#fields}
+### Description of the Fields Field {#fields}
 
 #|
 || **Name**
@@ -59,7 +65,7 @@ A dataset is the final level in the hierarchy of data handling in the BIconnecto
 `date` — date, format `Y-m-d`
 `datetime` — date with time, format `Y-m-d H:i:s` | ✅ | ✅ ||
 || **name**
-[`string`](../../data-types.md) | Name of the field. The name must start with a letter, only uppercase Latin letters `A-Z`, digits, and the sign `_` can be used. Maximum length of the name is 32 characters | ✅ | ✅ ||
+[`string`](../../data-types.md) | Name of the field. The name must start with a letter and can only use uppercase Latin letters `A-Z`, digits, and the `_` sign. The maximum length of the name is 32 characters | ✅ | ✅ ||
 || **externalCode**
 [`string`](../../data-types.md) | External code of the field | ✅ | ✅ ||
 || **visible**
@@ -70,7 +76,7 @@ A dataset is the final level in the hierarchy of data handling in the BIconnecto
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can perform methods: a user with access to the "Analyst Workspace" section
+> Who can perform methods: a user with access to the "Analyst's Workspace" section
 
 #|
 || **Method** | **Description** ||

@@ -1,6 +1,8 @@
 title: Chats
-href: imopenlines-crm-chat-get.md
+href: index.md
 items: 
+  - name: Overview of methods
+    href: index.md
   - name: Get chat for CRM entity
     href: imopenlines-crm-chat-get.md
   - name: Get the Id of the last chat

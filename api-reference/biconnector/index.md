@@ -1,5 +1,11 @@
 # BIconnector: Overview of Methods
 
+{% note info "" %}
+
+Methods only work in the context of the [application](../app-installation/index.md)
+
+{% endnote %}
+
 > Scope: [`biconnector`](../scopes/permissions.md)
 >
 > Who can execute the methods: a user with access to the "Analyst Workspace" section

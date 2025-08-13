@@ -1,15 +1,17 @@
 title: Operators
 href: imopenlines-operator-answer.md
 items: 
-  - name: Take the conversation for yourself
+  - name: Overview of methods
+    href: index.md
+  - name: Take the dialogue for yourself
     href: imopenlines-operator-answer.md
-  - name: End your conversation
+  - name: Finish your dialogue
     href: imopenlines-operator-finish.md
-  - name: End another operator's conversation
+  - name: Finish another operator's dialogue
     href: imopenlines-operator-another-finish.md
-  - name: Skip the conversation
+  - name: Skip the dialogue
     href: imopenlines-operator-skip.md
-  - name: Mark the conversation as "spam"
+  - name: Mark the dialogue as "spam"
     href: imopenlines-operator-spam.md
-  - name: Transfer the conversation to another operator or line
+  - name: Transfer the dialogue to another operator or line
     href: imopenlines-operator-transfer.md
