@@ -4,7 +4,7 @@
 || **Scope Code** | **Scope Name**| **Bitrix24 Tool**||
 || **ai_admin** | [Channel for registering a custom service for processing requests](../ai/index.md)| Copilot ||
 || **biconnector** | [BI Analytics Connector](../biconnector/index.md) | BIconnector ||
-|| **bizproc** | [Business Processes](../bizproc/index.md) | Business processes, RPA, CRM Automation rules ||
+|| **bizproc** | [Business Processes](../bizproc/index.md) | Business Processes, RPA, CRM Automation Rules ||
 || **booking** | [Online Booking](../booking/index.md) | Online Booking ||
 || **calendar** | [Calendar](../calendar/index.md) | Calendar ||
 || **call** | Telephony (making calls). The scope includes methods: [voximplant.infocall.startwithsound](../telephony/voximplant/voximplant-infocall-start-with-sound.md), [voximplant.infocall.startwithtext](../telephony/voximplant/voximplant-infocall-start-with-text.md)| Telephony ||
@@ -40,6 +40,7 @@ Versions:
 || **user.userfield** | [User Custom Fields](../user/userfields/index.md) | User Custom Fields ||
 || **userfieldconfig** | [User Field Settings](../crm/universal/userfieldconfig/index.md) | User Field Settings ||
 || **userconsent** | [Working with Agreements](../user-consent/index.md) | Working with Agreements ||
+|| **vote** | [Polls, Votes](../vote/index.md) | Working with Polls, Votes ||
 |#
 
 [*key_task]: In addition, three deprecated scopes are available — tasks, tasks_extended, tasksmobile. They should not be used.

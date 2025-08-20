@@ -1,0 +1,24 @@
+title: Polls, Votes
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create and Send a Vote in Chat
+    href: vote.integration.im.send.md
+  - name: Vote in the Attached Vote
+    href: vote.attachedvote.vote.md
+  - name: Recall Your Vote
+    href: vote.attachedvote.recall.md
+  - name: Resume Voting
+    href: vote.attachedvote.resume.md
+  - name: Stop Voting
+    href: vote.attachedvote.stop.md
+  - name: Get Data of the Attached Vote
+    href: vote.attachedvote.get.md
+  - name: Get List of Voters for an Answer
+    href: vote.attachedvote.getAnswerVoted.md
+  - name: Get Multiple Votes
+    href: vote.attachedvote.getMany.md
+  - name: Get Voting Data with Voter Information
+    href: vote.attachedvote.getWithVoted.md    
+  - name: Download Voting Report
+    href: vote.attachedvote.download.md    

@@ -7,7 +7,7 @@ items:
     href: how-to-add-lead.md
   - name: Add Lead with Files
     href: how-to-add-lead-with-files.md
-  - name: Add Lead or Deal with Activity Considering CRM Mode
+  - name: Add Activity to New Lead or Deal Depending on CRM Mode
     href: how-to-add-objects-with-crm-mode.md
   - name: Add Repeat Lead
     href: how-to-add-repeat-lead.md
@@ -21,7 +21,7 @@ items:
     href: how-to-add-company-with-requisite.md
   - name: Add Deal and Company with Details
     href: how-to-add-deal-with-choice-of-requisite.md
-  - name: Add Calendar Event for Working with Clients
+  - name: Add Calendar Event for Client Work
     href: how-to-add-activity-to-contact.md
   - name: Add Template and Create Document Based on It
     href: how-to-generate-documents.md

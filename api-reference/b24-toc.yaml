@@ -113,6 +113,10 @@ items:
     include:
       path: booking/b24-toc.yaml
       mode: link
+  - name: Polls, Votes
+    include:
+      path: vote/b24-toc.yaml
+      mode: link      
   - name: Open Channels
     include:
       path: imopenlines/b24-toc.yaml
@@ -157,7 +161,7 @@ items:
     include:
       path: telephony/b24-toc.yaml
       mode: link
-  - name: Trade Catalog
+  - name: Product Catalog
     include:
       path: catalog/b24-toc.yaml
       mode: link

@@ -1,13 +1,13 @@
 title: Change Chat  
 href: index.md  
 items:  
-  - name: About Changing the Chat  
+  - name: Overview of Methods  
     href: index.md  
-  - name: Change Chat Title  
+  - name: Change Chat Owner  
+    href: im-chat-set-owner.md  
+  - name: Update Chat Title  
     href: im-chat-update-title.md  
-  - name: Change Chat Avatar  
+  - name: Update Chat Avatar  
     href: im-chat-update-avatar.md  
   - name: Change Chat Color  
     href: im-chat-update-color.md  
-  - name: Change Chat Owner  
-    href: im-chat-set-owner.md  

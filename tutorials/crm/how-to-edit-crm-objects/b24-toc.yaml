@@ -7,14 +7,12 @@ items:
     href: how-to-generate-edit-form-for-lead.md
   - name: How to Create Your Contact Edit Card
     href: how-to-make-contact-edit-card.md
-  - name: How to Create Your Company Edit Form
+  - name: How to Create Your Company Edit Card
     href: how-to-generate-edit-form-for-company.md
-  - name: How to Create Your Deal Edit Form
+  - name: How to Create Your Deal Edit Card
     href: how-to-generate-edit-form-for-deal.md
   - name: How to Change or Remove Phone Numbers and Email
     href: how-to-change-email-or-phone.md
-  - name: How to Change the Scheduled Activity Time
-    href: how-to-change-date-in-activity.md
   - name: How to Move an Activity Between Entities of the Same Type
     href: how-to-move-activity.md
   - name: How to Move an Activity from One Object Type to Another

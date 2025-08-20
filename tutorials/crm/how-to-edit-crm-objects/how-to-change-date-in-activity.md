@@ -1,5 +1,15 @@
 # How to Change the Scheduled Activity Time
 
+{% if build == 'dev' %}
+
+{% note alert "TO-DO _not exported to prod_" %}
+
+The tutorial has been removed from the menu. It needs to be redone, crm.activity.update is not relevant.
+
+{% endnote %}
+
+{% endif %}
+
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section

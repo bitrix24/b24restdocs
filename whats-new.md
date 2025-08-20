@@ -2,6 +2,14 @@
 
 ## 2025
 
+### August 20, 2025
+
+- Added methods for working with polls and votes [vote*](./api-reference/vote/index.md)
+- Updated documentation for the method [task.planner.getlist](./api-reference/tasks/planner/task-planner-get-list.md) in Tasks
+- Updated the main page of the [Daily Planner](./api-reference/tasks/planner/index.md) section in Tasks. Added introductory information and an overview of methods and relationships.
+- Updated the main page of the [Update Chat](./api-reference/chats/chat-update/index.md) section in Chats. Added introductory information and an overview of methods and relationships.
+- Added a new method for delegating tasks in the workflow [bizproc.task.delegate](./api-reference/bizproc/bizproc-task/bizproc-task-delegate.md)
+
 ### August 13, 2025
 
 - Updated the method for retrieving stage movement history [crm.stagehistory.list](./api-reference/crm/crm-stage-history-list.md) in CRM. Added support for all CRM entities with stages and funnels.

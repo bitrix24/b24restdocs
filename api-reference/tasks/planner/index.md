@@ -1,24 +1,18 @@
-# About the Daily Plan
+# Tasks in "Planner": Overview of Methods
 
-{% if build == 'dev' %}
+"Planner" is a list of tasks, activities, and meetings that you have scheduled for your workday.
 
-{% note alert "TO-DO _not exported to prod_" %}
+> Quick navigation: [all methods](#all-methods) 
+> 
+> User documentation: [Planner](https://helpdesk.bitrix24.com/open/24579864/) 
 
-- create an article about the daily work plan: where it is located, how it looks
+## Overview of Methods {#all-methods}
 
-{% endnote %}
+> Scope: [`task`](../../scopes/permissions.md)
+>
+> Who can execute the method: any user
 
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly
-
-{% endnote %}
-
-Assigned tasks can be added to the daily work plan.
-
-#|
+#| 
 || **Method** | **Description** ||
-|| [task.planer.getList](./task-planner-get-list.md) | Retrieves a list of tasks from the "Daily Plan" ||
+|| [task.planer.getList](./task-planner-get-list.md) | Retrieves a list of task identifiers from "Planner" for the user ||
 |#

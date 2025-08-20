@@ -41,7 +41,7 @@ items:
     href: tasks-task-history-list.md
   - name: Move task to "waiting for execution" status
     href: tasks-task-pause.md
-  - name: Resume task after completion
+  - name: Renew task after completion
     href: tasks-task-renew.md
   - name: Move task to "in progress" status
     href: tasks-task-start.md
@@ -85,7 +85,7 @@ items:
     include:
       path: stages/b24-toc.yaml
       mode: link
-  - name: Workday plan
+  - name: Tasks in "Daily Planner"
     include:
       path: planner/b24-toc.yaml
       mode: link

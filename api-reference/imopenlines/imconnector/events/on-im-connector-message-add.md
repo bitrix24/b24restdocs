@@ -21,7 +21,7 @@ Some data may be missing — we will complete it soon.
 >
 > Who can subscribe: any user
 
-This event marks a new message from Open Lines. The event is triggered for full-fledged connectors, such as Telegram or VKontakte. It does not work with the [widget or online chat](*widget_key), which are more like js-applications.
+This event marks a new message from Open Lines. The event is triggered for full-fledged connectors, such as Telegram. It does not work with the [widget or online chat](*widget_key), which are more like js-applications.
 
 It is essential to call the method [**imconnector.send.status.delivery**](../imconnector-send-status-delivery.md) in response; otherwise, the message will be marked as undelivered in the messenger.
 

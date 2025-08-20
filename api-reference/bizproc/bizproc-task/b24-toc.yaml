@@ -1,5 +1,5 @@
 title: Workflow Tasks  
-href: bizproc-task-list.md  
+href: index.md  
 items:  
   - name: Overview of Methods  
     href: index.md  
@@ -7,3 +7,5 @@ items:
     href: bizproc-task-list.md  
   - name: Complete Workflow Task  
     href: bizproc-task-complete.md  
+  - name: Delegate Workflow Task  
+    href: bizproc-task-delegate.md  

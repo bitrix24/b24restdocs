@@ -128,11 +128,11 @@ This method adds a new open channel.
 || **VOTE_MESSAGE_1_DISLIKE**
 [`unknown`](../../data-types.md) | Text for negative assessment in online chat and Bitrix24 Network ||
 || **VOTE_MESSAGE_2_TEXT**
-[`unknown`](../../data-types.md) | Text for the assessment request in other channels (Viber, Telegram, Facebook*, VKontakte, and others) ||
+[`unknown`](../../data-types.md) | Text for the assessment request in other channels (Viber, Telegram, Facebook and others) ||
 || **VOTE_MESSAGE_2_LIKE**
-[`unknown`](../../data-types.md) | Text for positive assessment in other channels (Viber, Telegram, Facebook*, VKontakte, and others) ||
+[`unknown`](../../data-types.md) | Text for positive assessment in other channels (Viber, Telegram, Facebook and others) ||
 || **VOTE_MESSAGE_2_DISLIKE**
-[`unknown`](../../data-types.md) | Text for negative assessment in other channels (Viber, Telegram, Facebook*, VKontakte, and others) ||
+[`unknown`](../../data-types.md) | Text for negative assessment in other channels (Viber, Telegram, Facebook and others) ||
 || **QUICK_ANSWERS_IBLOCK_ID**
 [`unknown`](../../data-types.md) | Identifier of the quick answers info block (default, 0) ||
 || **LANGUAGE_ID**
@@ -163,9 +163,6 @@ This method adds a new open channel.
   - AVATAR — link to avatar
   - AVATAR_ID — identifier of the avatar file on the account ||
 |#
-
-\* — *The social network is recognized as extremist and is banned in the United States.*
-
 
 ## Examples
 

@@ -106,7 +106,7 @@ If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` 
 || **UF_LINKEDIN**
 [`string`](../data-types.md) | LinkedIn ||
 || **UF_FACEBOOK**
-[`string`](../data-types.md) | Facebook** ||
+[`string`](../data-types.md) | Facebook ||
 || **UF_TWITTER**
 [`string`](../data-types.md) | Twitter ||
 || **UF_SKYPE**
@@ -116,12 +116,6 @@ If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` 
 || **UF_PHONE_INNER**
 [`string`](../data-types.md) | Internal phone ||
 |#
-
-{% note info "" %}
-
-**The social network is recognized as extremist and is banned in the United States.**
-
-{% endnote %}
 
 ## Code Examples
 
