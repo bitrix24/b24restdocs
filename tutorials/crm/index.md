@@ -31,18 +31,18 @@ In this section, you will find ready-made examples for solving typical tasks rel
 ## How to find clients by phone, how to get all activities of a client, and other examples of working with lists of entities
 
 - [{#T}](how-to-get-lists/search-by-phone-and-email.md)
-- [{#T}](how-to-get-lists/get-activity-list-by-contact.md)
+- [{#T}](how-to-get-lists/get-activity-list-by-deals.md)
 - [{#T}](how-to-get-lists/lead-statuses-with-semantics.md)
 - [{#T}](how-to-get-lists/quote-statuses-with-semantics.md)
 - [{#T}](how-to-get-lists/how-to-get-deal-funnels.md)
 - [{#T}](how-to-get-lists/how-to-get-address.md)
 
-## How to use Bitrix24's Sales Intelligence tools
+## How to use Bitrix24 Sales Intelligence tools
 
 - [{#T}](how-to-use-analitycs/info-to-analitics.md)
 - [{#T}](how-to-use-analitycs/use-analitics-for-add-lead.md)
 - [{#T}](how-to-use-analitycs/use-analitics-for-add-contact.md)
 
-## How to add your tab to the deal card, how to add your buttons to the lead card, and other examples of CRM widgets
+## How to add your tab to the deal detail form, how to add your buttons to the lead detail form, and other examples of CRM widgets
 
 - [{#T}](crm-widgets/widget-as-field-in-lead-page.md)
