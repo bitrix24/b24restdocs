@@ -1,22 +1,20 @@
-# Widget Handler Installation
+# Install Widget Handler placement.bind
 
-> Method Name: **placement.bind**
->
 > Scope: [`placement`, `depending on the placement location`](../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
 This method adds a handler for the widget placement.
 
-It can be called at any time during the application's operation; however, it is often more convenient to register your widgets during the [application installation](../app-installation/index.md).
+It can be called at any time during the application's operation; however, it is usually more convenient to register your widgets during the [application installation](../app-installation/index.md).
 
-It is important to note that while the application installation is not complete, the widgets you register will not be available to regular users in the Bitrix24 interface - they will only be visible to users with administrative rights.
+It is important to note that until the application installation is complete, the widgets you register will not be available to regular users in the Bitrix24 interface - they can only be seen by users with administrative rights.
 
 It is recommended to familiarize yourself with the principles of [application installation](../app-installation/index.md) in Bitrix24.
 
 ## Method Parameters {#params}
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,11 +24,11 @@ It is recommended to familiarize yourself with the principles of [application in
 || **HANDLER***
 [`string`](../data-types.md) | URL of the widget placement handler ||
 || **TITLE**
-[`string`](../data-types.md) | Name of the widget in the interface. Depending on the specific placement location, this may be the name of a tab in a form, the name of a menu item, etc. ||
+[`string`](../data-types.md) | Name of the widget in the interface. Depending on the specific placement location, this may be the name of a tab in a form, a menu item, etc. ||
 || **DESCRIPTION**
 [`string`](../data-types.md) | Description of the widget in the interface. Not used in practice ||
 || **GROUP_NAME**
-[`string`](../data-types.md) | Allows grouping UI elements for multiple handlers of the same type of widget. For example, several dropdown menu items in the [top button of the CRM detail form](./crm/detail-toolbar.md). Supported only by certain types of widgets ||
+[`string`](../data-types.md) | Allows grouping UI elements for multiple handlers of the same widget type into a group. For example, several dropdown menu items in the [top button of the CRM card](./crm/detail-toolbar.md). Supported only by certain types of widgets ||
 || **LANG_ALL**
 [`object`](../data-types.md) | Array of parameters `TITLE`, `DESCRIPTION`, and `GROUP_NAME` for specified languages. Users who have selected one of these languages in the Bitrix24 interface will see localized versions of `TITLE`, `DESCRIPTION`, and `GROUP_NAME`: 
 
@@ -42,11 +40,11 @@ It is recommended to familiarize yourself with the principles of [application in
             "DESCRIPTION": "description",
             "GROUP_NAME": "group"
         },
-		"de": {
-        	"TITLE": "Titel",
-        	"DESCRIPTION": "Beschreibung",
-        	"GROUP_NAME": "Gruppe"
-    	}
+        "de": {
+            "TITLE": "title",
+            "DESCRIPTION": "description",
+            "GROUP_NAME": "group"
+        }
     }
 
 ```
@@ -68,7 +66,7 @@ If you attempt to register a placement in other widgets, you will receive the er
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -78,7 +76,7 @@ If you attempt to register a placement in other widgets, you will receive the er
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"PLACEMENT":"PLACEMENT_CODE","HANDLER":"http://myapp.com/handler/?type=1","OPTIONS":{"errorHandlerUrl":"http://myapp.com/error/"},"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group","LANG_ALL":{"en":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"}}}' \
+    -d '{"PLACEMENT":"PLACEMENT_CODE","HANDLER":"http://myapp.com/handler/?type=1","OPTIONS":{"errorHandlerUrl":"http://myapp.com/error/"},"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group","LANG_ALL":{"en":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"},"de":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/placement.bind
     ```
 
@@ -88,11 +86,102 @@ If you attempt to register a placement in other widgets, you will receive the er
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"PLACEMENT":"PLACEMENT_CODE","HANDLER":"http://myapp.com/handler/?type=1","OPTIONS":{"errorHandlerUrl":"http://myapp.com/error/"},"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group","LANG_ALL":{"en":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"}},"auth":"**put_access_token_here**"}' \
+    -d '{"PLACEMENT":"PLACEMENT_CODE","HANDLER":"http://myapp.com/handler/?type=1","OPTIONS":{"errorHandlerUrl":"http://myapp.com/error/"},"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group","LANG_ALL":{"en":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"},"de":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/placement.bind
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"placement.bind",
+    		{ 
+    			"PLACEMENT": "PLACEMENT_CODE",
+    			"HANDLER": "http://myapp.com/handler/?type=1",
+    			"OPTIONS": {
+    				"errorHandlerUrl": "http://myapp.com/error/"
+    			},
+    			"TITLE": "title",
+    			"DESCRIPTION": "description",
+    			"GROUP_NAME": "group",
+    			"LANG_ALL": {
+    				"en": {
+    					"TITLE": "title",
+    					"DESCRIPTION": "description",
+    					"GROUP_NAME": "group",
+    				},
+    				"de": {
+    					"TITLE": "title",
+    					"DESCRIPTION": "description",
+    					"GROUP_NAME": "group",
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.info(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.bind',
+                [
+                    'PLACEMENT' => 'PLACEMENT_CODE',
+                    'HANDLER' => 'http://myapp.com/handler/?type=1',
+                    'OPTIONS' => [
+                        'errorHandlerUrl' => 'http://myapp.com/error/'
+                    ],
+                    'TITLE' => 'title',
+                    'DESCRIPTION' => 'description',
+                    'GROUP_NAME' => 'group',
+                    'LANG_ALL' => [
+                        'en' => [
+                            'TITLE' => 'title',
+                            'DESCRIPTION' => 'description',
+                            'GROUP_NAME' => 'group',
+                        ],
+                        'de' => [
+                            'TITLE' => 'title',
+                            'DESCRIPTION' => 'description',
+                            'GROUP_NAME' => 'group',
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error binding placement: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -112,11 +201,11 @@ If you attempt to register a placement in other widgets, you will receive the er
                     "DESCRIPTION": "description",
                     "GROUP_NAME": "group",
                 },
-				"de": {
-        			"TITLE": "Titel",
-       			 	"DESCRIPTION": "Beschreibung",
-       				"GROUP_NAME": "Gruppe"
-    			}
+                "de": {
+                    "TITLE": "title",
+                    "DESCRIPTION": "description",
+                    "GROUP_NAME": "group",
+                }
             }
         },
         function(result)
@@ -129,7 +218,7 @@ If you attempt to register a placement in other widgets, you will receive the er
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -151,11 +240,11 @@ If you attempt to register a placement in other widgets, you will receive the er
                     'DESCRIPTION' => 'description',
                     'GROUP_NAME' => 'group'
                 ],
-				'de' => [
-        			'TITLE' => 'Titel',
-       			 	'DESCRIPTION' => 'Beschreibung',
-        			'GROUP_NAME' => 'Gruppe'
-    			]
+                'de' => [
+                    'TITLE' => 'title',
+                    'DESCRIPTION' => 'description',
+                    'GROUP_NAME' => 'group'
+                ]
             ]
         ]
     );
@@ -176,7 +265,7 @@ If you attempt to register a placement in other widgets, you will receive the er
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -211,7 +300,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**, **200**
+HTTP status: **400**, **403**, **200**
 
 ```json
 {
@@ -221,17 +310,17 @@ HTTP Status: **400**, **403**, **200**
 }
 ```
 
-{% include notitle [Error Handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Status** ||
 || `ERROR_PLACEMENT_MAX_COUNT` | Attempted to re-register the handler for the `PAGE_BACKGROUND_WORKER` widget | 200 ||
-|| `ERROR_ARGUMENT` | Required field value is not specified. The code of the required field is returned in `argument`| 200 ||
+|| `ERROR_ARGUMENT` | The value of a required field is not specified. The code of the required field is returned in `argument`| 200 ||
 |#
 
-{% include [System Errors](../../_includes/system-errors.md) %}
+{% include [system errors](../../_includes/system-errors.md) %}
 
 ## Widget Handler
 
@@ -239,11 +328,11 @@ Thus, a successful call to the `placement.bind` method allowed you to register t
 
 {% note warning "Important" %}
 
-The handler URL must be **accessible** from the external network. Links to localhost, local domains, and similar methods of accessing a local web server are not acceptable. Check the availability of the URL you specified using special services that monitor website accessibility!
+The handler URL **must** be accessible from the external network. Links to localhost, local domains, and similar ways of accessing a local web server are not acceptable. Check the availability of the URL you specified using special services that monitor website accessibility!
 
 {% endnote %}
 
-When accessing your handler, Bitrix24 will send a POST message containing information about the widget context, such as the deal identifier if the widget is embedded in the deal card in CRM, etc.
+When calling your handler, Bitrix24 will send a POST message containing information about the widget context, such as the deal identifier if the widget is embedded in the deal card in CRM, etc.
 
 You can find examples of such data in the descriptions of [specific widget placement locations](./placements.md).
 

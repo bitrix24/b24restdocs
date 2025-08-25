@@ -1,16 +1,16 @@
-# Do This (Brief Summary of the Method Operation)
+# Do this (brief essence of the method operation)
 
-> Method Name: **crm.xxx**
+> Method name: **crm.xxx**
 >
 > Scope: [`crm`](../scopes/permissions.md)
 >
 > Who can execute the method: administrator / any user
 
-This method performs the following actions
+The method does this
 
-## Method Parameters
+## Method parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -20,7 +20,7 @@ This method performs the following actions
 || **NAME***
 [`crm_item`](data-types.md) | Description of the parameter. The type refers to the page with data types of the current scope ||
 || **SETTINGS***
-[`array`](../../data-types.md) | Example of a parameter with a complex nested structure. At this level, we describe it in general terms, without all the details - just giving an overall idea. Because later, individual keys like CONFIG or ITEMS will be described in subsequent tables with separate subheadings.
+[`array`](../../data-types.md) | Example of a parameter with a complex nested structure. At this level, we describe it in general terms, but without all the details - just to give an overall idea. Because later, individual keys like CONFIG or ITEMS will be described in subsequent tables with separate subheadings.
 
 ```json
 {
@@ -57,9 +57,9 @@ This method performs the following actions
  ||
 |#
 
-### SETTINGS Parameter
+### SETTINGS parameter
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -69,7 +69,7 @@ This method performs the following actions
 || **HTTP_VERSION***
 [`http_status`](data-types.md) | Description of the parameter. The type refers to the page with data types of the current scope ||
 || **CONFIG***
-[`array`](../../data-types.md) | Description of the parameter with a complex structure. Continuing from the previous table. Again, we provide a general overview, knowing that details about ITEMS will be below (we won't include ITEMS in the template anymore, the principle is understood)
+[`array`](../../data-types.md) | Description of the parameter with a complex structure. Continuing from the previous table. Again, we provide a general overview, knowing that details about ITEMS will be below (we won't include ITEMS in the template anymore, the principle is clear)
 
 ```json
 "section_key_1": {
@@ -89,7 +89,7 @@ This method performs the following actions
 
 ||
 || **TYPE***
-[`string`](../../data-types.md) | Description of the parameter as a list of values (the same story for fields with `Y`/`N`). Possible values:
+[`string`](../../data-types.md) | Description of the parameter as a list of values (the same story about fields with `Y`/`N`). Possible values:
 
 - `STRING` — string
 - `NUMBER` — floating-point number
@@ -101,21 +101,155 @@ Default value: `STRING`
 ||
 |#
 
-## Code Examples
+## Code examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
-    Here we will insert the necessary code, regenerated from your example in JS
+    Here we will insert the necessary code, regenerated from your JS example
 
 - cURL (OAuth)
 
-    Here we will insert the necessary code, regenerated from your example in JS
+    Here we will insert the necessary code, regenerated from your JS example
 
 - JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            "sale.cashbox.handler.add",
+            {
+                "CODE": "restcashbox01",
+                "NAME": "REST-Cash Register 01",
+                "SORT": 100,
+                "SUPPORTS_FFD105": "Y",
+                "SETTINGS":
+                {
+                    "PRINT_URL": "http://example.com/rest_print.php",
+                    "CHECK_URL": "http://example.com/rest_check.php",
+                    "HTTP_VERSION": "1.1",
+                    "CONFIG":
+                    {
+                        "AUTH": {
+                            "LABEL": "Authorization",
+                            "ITEMS": {
+                                "KEYWORD": {
+                                    "TYPE": "STRING",
+                                    "LABEL": "Password"
+                                },
+                                "PREFERENCE": {
+                                    "TYPE": "ENUM",
+                                    "LABEL": "Multiple Choice",
+                                    "REQUIRED": "Y",
+                                    "OPTIONS": {
+                                        "FIRST": "First",
+                                        "SECOND": "Second",
+                                        "THIRD": "Third",
+                                    }
+                                }
+                            }
+                        },
+                        "INTERACTION": {
+                            "LABEL": "Cash Register Interaction Settings",
+                            "ITEMS": {
+                                "MODE": {
+                                    "TYPE": "ENUM",
+                                    "LABEL": "Cash Register Operating Mode",
+                                    "OPTIONS": {
+                                        "ACTIVE": "active",
+                                        "TEST": "test"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
+    }
+    catch(error)
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.cashbox.handler.add',
+                [
+                    'CODE'          => 'restcashbox01',
+                    'NAME'          => 'REST-Cash Register 01',
+                    'SORT'          => 100,
+                    'SUPPORTS_FFD105' => 'Y',
+                    'SETTINGS'      => [
+                        'PRINT_URL'    => 'http://example.com/rest_print.php',
+                        'CHECK_URL'    => 'http://example.com/rest_check.php',
+                        'HTTP_VERSION' => '1.1',
+                        'CONFIG'       => [
+                            'AUTH'       => [
+                                'LABEL' => 'Authorization',
+                                'ITEMS' => [
+                                    'KEYWORD'    => [
+                                        'TYPE'  => 'STRING',
+                                        'LABEL' => 'Password',
+                                    ],
+                                    'PREFERENCE' => [
+                                        'TYPE'     => 'ENUM',
+                                        'LABEL'    => 'Multiple Choice',
+                                        'REQUIRED' => 'Y',
+                                        'OPTIONS'  => [
+                                            'FIRST'  => 'First',
+                                            'SECOND' => 'Second',
+                                            'THIRD'  => 'Third',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'INTERACTION' => [
+                                'LABEL' => 'Cash Register Interaction Settings',
+                                'ITEMS' => [
+                                    'MODE' => [
+                                        'TYPE'    => 'ENUM',
+                                        'LABEL'   => 'Cash Register Operating Mode',
+                                        'OPTIONS' => [
+                                            'ACTIVE' => 'active',
+                                            'TEST'   => 'test',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding cash register handler: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -158,7 +292,7 @@ Default value: `STRING`
                                 "TYPE": "ENUM",
                                 "LABEL": "Cash Register Operating Mode",
                                 "OPTIONS": {
-                                    "ACTIVE": "live",
+                                    "ACTIVE": "active",
                                     "TEST": "test"
                                 }
                             }
@@ -177,21 +311,21 @@ Default value: `STRING`
     );
     ```
 
-- PHP
+- PHP CRest
 
-    Here we will insert the necessary code, regenerated from your example in JS
+    Here we will insert the necessary code, regenerated from your JS example
 
 {% endlist %}
 
-{% note tip "Typical Use-Cases and Scenarios" %}
+{% note tip "Typical use-cases and scenarios" %}
 
-We will fill in the content of this block later. Or we will remove the block if unnecessary.
+We will fill this block later. Or we will remove the block if unnecessary.
 
 {% endnote %}
 
-## Response Handling
+## Response handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -209,13 +343,13 @@ HTTP Status: **200**
 }
 ```
 
-### Returned Data
+### Returned data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | Description of the returned value. A link either to the root reference of types or to the data types within the scope ||
+[`integer`](../../data-types.md) | Description of the returned value. A link either to the root reference of types or to data types within the scope ||
 || **time**
 [`array`](../../data-types.md) | Information about the execution time of the request ||
 || **start**
@@ -225,18 +359,18 @@ HTTP Status: **200**
 || **duration**
 [`double`](../../data-types.md) | How long in milliseconds the request took (finish — start) ||
 || **date_start**
-[`string`](../../data-types.md) | String representation of the date and time when the request was initialized ||
+[`string`](../../data-types.md) | String representation of the date and time of the moment the request was initialized ||
 || **date_finish**
-[`double`](../../data-types.md) | String representation of the date and time when the request execution was completed ||
+[`double`](../../data-types.md) | String representation of the date and time of the moment the request execution was completed ||
 || **operating_reset_at**
-[`timestamp`](../../data-types.md) | Timestamp of the moment when the REST API resource limit will be reset. Read more in the article [operation limit](../../../limits.md) ||
+[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limit](../../../limits.md) ||
 || **operating**
-[`double`](../../data-types.md) | In how many milliseconds the REST API resource limit will be reset. Read more in the article [operation limit](../../../limits.md) ||
+[`double`](../../data-types.md) | In how many milliseconds the limit on REST API resources will be reset. Read more in the article [operation limit](../../../limits.md) ||
 |#
 
-## Error Handling
+## Error handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -247,7 +381,7 @@ HTTP Status: **400**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
@@ -257,6 +391,6 @@ HTTP Status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Exploring
+## Continue exploring
 
-We will fill in this block later, but if you have recommendations on which methods or documentation pages should be mentioned here, we would appreciate it.
+We will fill this block later, but if you have recommendations on which methods or documentation pages should be mentioned here, we would appreciate it.

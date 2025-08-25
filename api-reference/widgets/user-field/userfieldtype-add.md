@@ -1,6 +1,6 @@
-# Register a New User Field Type userfieldtype.add
+# Register a new user field type userfieldtype.add
 
-> Scope: [`depending on the integration point`](../../scopes/permissions.md)
+> Scope: [`depending on the embedding location`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
@@ -27,7 +27,7 @@ The method `userfieldtype.add` registers a new user field type. It returns `true
 [`string`](../../data-types.md) | Text description of the type. Will be displayed in the administrative interface for user field settings | ||
 || **OPTIONS**
 [`array`](../../data-types.md) | Additional settings. Currently, one key is available: `height` — specifies the height of the user field in pixels. Any positive value will apply.
-Default is `0`. If `0` is specified, the standard height for displaying this integration will be used | ||
+Default is `0`. If `0` is specified, the standard height for displaying this embedding will be used | ||
 |#
 
 ## Code Examples
@@ -46,7 +46,7 @@ Default is `0`. If `0` is specified, the standard height for displaying this int
         "USER_TYPE_ID": "test_type",
         "HANDLER": "https://www.myapplication.com/handler/",
         "TITLE": "Updated test type",
-        "DESCRIPTION": "Test user field type for documentation with updated description",
+        "DESCRIPTION": "Test userfield type for documentation with updated description",
         "OPTIONS": {
             "height": 60
         }
@@ -64,7 +64,7 @@ Default is `0`. If `0` is specified, the standard height for displaying this int
         "USER_TYPE_ID": "test_type",
         "HANDLER": "https://www.myapplication.com/handler/",
         "TITLE": "Updated test type",
-        "DESCRIPTION": "Test user field type for documentation with updated description",
+        "DESCRIPTION": "Test userfield type for documentation with updated description",
         "OPTIONS": {
             "height": 60
         },
@@ -76,13 +76,75 @@ Default is `0`. If `0` is specified, the standard height for displaying this int
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'userfieldtype.add',
+    		{
+    			USER_TYPE_ID: 'test_type',
+    			HANDLER: 'https://www.myapplication.com/handler/',
+    			TITLE: 'Updated test type',
+    			DESCRIPTION: 'Test userfield type for documentation with updated description',
+    			OPTIONS: {
+    				height: 60,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'userfieldtype.add',
+                [
+                    'USER_TYPE_ID' => 'test_type',
+                    'HANDLER'      => 'https://www.myapplication.com/handler/',
+                    'TITLE'        => 'Updated test type',
+                    'DESCRIPTION'  => 'Test userfield type for documentation with updated description',
+                    'OPTIONS'      => [
+                        'height' => 60,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding user field type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'userfieldtype.add',
         {
             USER_TYPE_ID: 'test_type',
             HANDLER: 'https://www.myapplication.com/handler/',
             TITLE: 'Updated test type',
-            DESCRIPTION: 'Test user field type for documentation with updated description',
+            DESCRIPTION: 'Test userfield type for documentation with updated description',
             OPTIONS: {
                 height: 60,
             },
@@ -97,7 +159,7 @@ Default is `0`. If `0` is specified, the standard height for displaying this int
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -108,7 +170,7 @@ Default is `0`. If `0` is specified, the standard height for displaying this int
             'USER_TYPE_ID' => 'test_type',
             'HANDLER' => 'https://www.myapplication.com/handler/',
             'TITLE' => 'Updated test type',
-            'DESCRIPTION' => 'Test user field type for documentation with updated description',
+            'DESCRIPTION' => 'Test userfield type for documentation with updated description',
             'OPTIONS' => [
                 'height' => 60
             ]
@@ -148,7 +210,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Result of registering the new user field type ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

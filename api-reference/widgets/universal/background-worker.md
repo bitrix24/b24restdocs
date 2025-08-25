@@ -2,9 +2,9 @@
 
 > Scope: [`placement`](../../scopes/permissions.md)
 
-You can add an "invisible" widget that will be displayed on all pages of Bitrix24. This widget enables the implementation of scenarios with an external [WebRTC client](../ui-interaction/page-background-worker/index.md) in telephony integrations, but this is not the only possible use case.
+You can add an "invisible" widget that will be displayed on all Bitrix24 pages. This widget allows you to implement a scenario with an external [WebRTC client](../ui-interaction/page-background-worker/index.md) in telephony integrations, but this is not the only possible use case.
 
-For example, using the [interactive interaction](../../interactivity/index.md) mechanism between the backend and frontend applications, you can send a "signal" to the `PAGE_BACKGROUND_WORKER` widget, and upon receiving the "signal," open the application slider using the [openApplication](../open-application.md) method.
+For instance, using the [interactive interaction](../../interactivity/index.md) mechanism between backend and frontend applications, you can send a "signal" to the `PAGE_BACKGROUND_WORKER` widget, and upon receiving the "signal," open the application slider using the [openApplication](../open-application.md) method.
 
 The widget embedding code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -12,9 +12,9 @@ The widget embedding code is specified in the `PLACEMENT` parameter of the [plac
 
 Unlike other types of widgets, for `PAGE_BACKGROUND_WORKER`, the application can register only one handler.
 
-Since this widget loads on all pages, a handler that takes longer than 3-5 seconds to load may cause delays in rendering the Bitrix24 user interface. If this occurs more than 10 times within a day on the same Bitrix24, the handler will be automatically disabled.
+Since this widget loads on all pages, a handler that takes longer than 3-5 seconds to load can cause delays in rendering the Bitrix24 user interface. If this occurs more than 10 times within a day on the same Bitrix24, the handler will be automatically disabled.
 
-Bitrix24 will notify the application about the handler's disablement. To do this, in the [placement.bind](../placement-bind.md) method, you need to specify the URL in the `OPTIONS[errorHandlerUrl]` parameter. Bitrix24 will call this URL in case the `PAGE_BACKGROUND_WORKER` widget handler is disabled.
+Bitrix24 will inform the application about the handler's disconnection. To do this, in the [placement.bind](../placement-bind.md) method, you need to specify the URL in the `OPTIONS[errorHandlerUrl]` parameter. Bitrix24 will call this URL in case the `PAGE_BACKGROUND_WORKER` widget handler is disabled.
 
 {% list tabs %}
 
@@ -41,6 +41,67 @@ Bitrix24 will notify the application about the handler's disablement. To do this
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"placement.bind",
+    		{ 
+    			PLACEMENT: "PAGE_BACKGROUND_WORKER",
+    			HANDLER: "http://myapp.com/handler/?type=1",
+    			OPTIONS: {
+    				errorHandlerUrl: "http://myapp.com/error/"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.info(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.bind',
+                [
+                    'PLACEMENT' => 'PAGE_BACKGROUND_WORKER',
+                    'HANDLER'   => 'http://myapp.com/handler/?type=1',
+                    'OPTIONS'   => [
+                        'errorHandlerUrl' => 'http://myapp.com/error/'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error binding placement: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "placement.bind",
         { 
@@ -60,7 +121,7 @@ Bitrix24 will notify the application about the handler's disablement. To do this
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -94,7 +155,7 @@ Array
     [handler] => 1
     [DOMAIN] => restapi.bitrix24.com
     [PROTOCOL] => 1
-    [LANG] => en
+    [LANG] => de
     [APP_SID] => 588b8a98e848778a4ffb38fbcf70f2b9
     [AUTH_ID] => 4172bb6600705a0700005a4b00000001f0f107c42ca5bd5f61030c5d9c3e4d60d11b5a
     [AUTH_EXPIRES] => 3600
@@ -107,24 +168,24 @@ Array
 
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
 || **ID***
-[`string`](../../data-types.md) | Always equals `PAGE_BACKGROUND_WORKER` and is used for internal purposes
+[`string`](../../data-types.md) | Always equals `PAGE_BACKGROUND_WORKER` and is used for internal purposes.
 
 ||
 || **URI***
-[`string`](../../data-types.md) | URL-encoded address of the current page where the widget was opened.
+[`string`](../../data-types.md) | The URL-encoded address of the current page where the widget was opened.
 
 ||
 |#

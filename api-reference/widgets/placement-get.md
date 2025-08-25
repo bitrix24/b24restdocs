@@ -1,12 +1,10 @@
-# Retrieving a List of Registered Placement Handlers
+# Get a list of registered widget placement handlers placement.get
 
-> Method name: **placement.get**
->
 > Scope: [`placement`, `depending on the placement`](../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of registered handlers for widget placements.
+This method retrieves a list of registered widget placement handlers.
 
 ## Method Parameters
 
@@ -14,7 +12,7 @@ The method has no parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -41,7 +39,53 @@ The method has no parameters.
 - JS
 
     ```js
-    BX24.callMethod(
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"placement.get",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.get',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting placements: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+ 	BX24.callMethod(
         "placement.get",
         {},
         function(result)
@@ -54,7 +98,7 @@ The method has no parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -86,7 +130,7 @@ HTTP status: **200**
             "title": "Add invoice",
             "description": "",
             "langAll": {
-                "en": {
+                "de": {
                     "TITLE": "Add invoice",
                     "DESCRIPTION": "",
                     "GROUP_NAME": "Documents"
@@ -101,7 +145,7 @@ HTTP status: **200**
             "title": "Import invoice",
             "description": "",
             "langAll": {
-                "en": {
+                "de": {
                     "TITLE": "Import invoice",
                     "DESCRIPTION": "",
                     "GROUP_NAME": "Documents"
@@ -120,7 +164,7 @@ HTTP status: **200**
             "title": "My App 1",
             "description": "",
             "langAll": {
-                "en": {
+                "de": {
                     "TITLE": "My App 1",
                     "DESCRIPTION": "",
                     "GROUP_NAME": ""
@@ -137,7 +181,7 @@ HTTP status: **200**
             "title": "My App 2",
             "description": "",
             "langAll": {
-                "en": {
+                "de": {
                     "TITLE": "My App 2",
                     "DESCRIPTION": "",
                     "GROUP_NAME": ""
@@ -168,7 +212,7 @@ HTTP status: **200**
 
 ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

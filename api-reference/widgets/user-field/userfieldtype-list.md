@@ -1,10 +1,10 @@
-# Get a list of registered custom field types userfieldtype.list
+# Get a list of registered user field types userfieldtype.list
 
 > Scope: [`depending on the embedding location`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method retrieves a list of custom field types registered by the application. It returns a list of field types with pagination.
+The method retrieves a list of user field types registered by the application. It returns a list of field types with pagination.
 
 No parameters.
 
@@ -37,35 +37,43 @@ No parameters.
 - JS
 
     ```js
-    BX24.callMethod(
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
         'userfieldtype.list',
         {},
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.log(result.data());
-        }
-    );
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('userfieldtype.list', {}, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('userfieldtype.list', {}, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'userfieldtype.list',
-        []
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -80,6 +88,37 @@ No parameters.
     } catch (Throwable $e) {
         print("Error: " . $e->getMessage());
     }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'userfieldtype.list',
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'userfieldtype.list',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
@@ -111,14 +150,14 @@ HTTP status: **200**
         }
     ],
     "total": 3,
-    "time":{
-        "start":1724423274.842117,
-        "finish":1724423275.558021,
-        "duration":0.7159039974212646,
-        "processing":0.0018908977508544922,
-        "date_start":"2024-08-23T16:27:54+02:00",
-        "date_finish":"2024-08-23T16:27:55+02:00",
-        "operating":0
+    "time": {
+        "start": 1724423274.842117,
+        "finish": 1724423275.558021,
+        "duration": 0.7159039974212646,
+        "processing": 0.0018908977508544922,
+        "date_start": "2024-08-23T16:27:54+02:00",
+        "date_finish": "2024-08-23T16:27:55+02:00",
+        "operating": 0
     }
 }
 ```
@@ -133,7 +172,7 @@ HTTP status: **200**
 || **total**
 [`integer`](../../data-types.md) | Number of processed records ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Continue Learning
