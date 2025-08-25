@@ -1,4 +1,4 @@
-# Set the Selected Line as the Default Outgoing Line voximplant.line.outgoing.set
+# Set the selected line as the default outgoing line voximplant.line.outgoing.set
 
 {% note warning "We are still updating this page" %}
 
@@ -13,7 +13,7 @@ Some data may be missing here — we will complete it shortly.
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing
-- response in case of error is absent
+- error response is absent
 
 {% endnote %}
 
@@ -35,6 +35,63 @@ The method `voximplant.line.outgoing.set` sets the selected line as the default 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"voximplant.line.outgoing.set",
+    		{
+    			"LINE_ID": 55,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'voximplant.line.outgoing.set',
+                [
+                    'LINE_ID' => 55,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting outgoing line: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "voximplant.line.outgoing.set",
         {
@@ -54,6 +111,6 @@ The method `voximplant.line.outgoing.set` sets the selected line as the default 
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}
 
-## Response on Success
+## Response on success
 
-Returns 1 upon successful execution.
+Returns 1 on successful execution.

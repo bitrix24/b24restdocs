@@ -23,24 +23,83 @@ Some data may be missing — we will complete it shortly.
 The method `voximplant.sip.update` updates an existing SIP line (created by the application). This method is available to the holder of the [access permissions](https://helpdesk.bitrix24.com/open/18216960/) `Manage numbers - change - any`.
 
 #| 
-|| **Parameter** | **Description** || 
-|| **CONFIG_ID**^*^ | Identifier of the SIP line configuration. || 
-|| **TYPE** | Type of PBX, list of PBX types, optional parameter, default - `Cloud PBX`. || 
-|| **TITLE** | Name of the connection (optional field). || 
-|| **SERVER** | Address of the SIP registration server (optional field). || 
-|| **LOGIN** | Login for the server (optional field). || 
-|| **PASSWORD** | Password for the server (optional field). || 
+|| **Parameter** | **Description** ||
+|| **CONFIG_ID**^*^ | Identifier of the SIP line configuration. ||
+|| **TYPE** | Type of PBX, a list of PBX types, optional parameter, defaults to `Cloud PBX`. ||
+|| **TITLE** | Name of the connection (optional field). ||
+|| **SERVER** | Address of the SIP registration server (optional field). ||
+|| **LOGIN** | Login for the server (optional field). ||
+|| **PASSWORD** | Password for the server (optional field). ||
 |#
 
 {% include [Footnote on parameters](../../../../_includes/required.md) %}
 
-For a successful call, at least one of the following fields must be present: `TITLE`, `SERVER`, `LOGIN`, `PASSWORD`.
+To successfully call, at least one of the fields must be present: `TITLE`, `SERVER`, `LOGIN`, `PASSWORD`.
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"voximplant.sip.update",
+    		{
+    			"CONFIG_ID": 69,
+    			"TITLE": "line name",
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'voximplant.sip.update',
+                [
+                    'CONFIG_ID' => 69,
+                    'TITLE'     => 'line name',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating SIP line: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -70,6 +129,6 @@ Returns 1 on successful execution or an exception.
 ## Specific Error Codes
 
 #| 
-|| **Code** | **Description** || 
-|| TITLE_EXISTS | A line with this name already exists. || 
+|| **Code** | **Description** ||
+|| TITLE_EXISTS | A line with this name already exists. ||
 |#

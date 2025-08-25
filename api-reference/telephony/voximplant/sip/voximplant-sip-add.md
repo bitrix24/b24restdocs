@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing here — we will complete it shortly.
 
 - parameter types are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ The method `voximplant.sip.add` creates a new SIP line linked to the application
 
 #|
 || **Parameter** | **Description** ||
-|| **TYPE** | PBX type. Possible values:
+|| **TYPE** | Type of PBX. Possible values:
 - `cloud` — cloud PBX
 - `office` — office PBX
 
@@ -36,13 +36,78 @@ Default is `cloud` ||
 || **PASSWORD**^*^ | Server password. ||
 |#
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'voximplant.sip.add',
+    		{
+    			"TYPE": "cloud",
+    			"TITLE": "sipnet",
+    			"SERVER": "sipnet.com",
+    			"LOGIN": "YYYYY",
+    			"PASSWORD": "ZZZZZ"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'voximplant.sip.add',
+                [
+                    'TYPE'     => 'cloud',
+                    'TITLE'    => 'sipnet',
+                    'SERVER'   => 'sipnet.com',
+                    'LOGIN'    => 'YYYYY',
+                    'PASSWORD' => 'ZZZZZ',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding SIP: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -66,14 +131,14 @@ Default is `cloud` ||
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
-## Returned data
+## Returned Data
 
 #|
 || **Field** | **Description** ||
-|| **CONFIG_ID** | SIP line configuration identifier. ||
-|| **TYPE** | PBX type. Possible values:
+|| **CONFIG_ID** | Identifier of the SIP line configuration. ||
+|| **TYPE** | Type of PBX. Possible values:
 - `cloud` — cloud PBX
 - `office` — office PBX ||
 || **TITLE** | Connection name. ||
@@ -86,7 +151,7 @@ Default is `cloud` ||
 || **INCOMING_PASSWORD** | Password for connection (only for Cloud PBX). ||
 |#
 
-## Specific error codes
+## Specific Error Codes
 
 #|
 || **Code** | **Description** ||

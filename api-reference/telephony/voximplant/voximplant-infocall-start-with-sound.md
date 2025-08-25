@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
@@ -40,11 +40,72 @@ To access the method, the application must request the access permission `Making
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'voximplant.infocall.startwithsound',
+    		{
+    			"FROM_LINE": "reg1332",
+    			"TO_NUMBER": "+17911xxxxxxx",
+    			"URL": "http://your.domain/path/file.mp3",
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'voximplant.infocall.startwithsound',
+                [
+                    'FROM_LINE' => 'reg1332',
+                    'TO_NUMBER' => '+17911xxxxxxx',
+                    'URL'       => 'http://your.domain/path/file.mp3',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error starting info call with sound: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'voximplant.infocall.startwithsound',
         {
             "FROM_LINE": "reg1332",
-            "TO_NUMBER": "+1911xxxxxxx",
+            "TO_NUMBER": "+17911xxxxxxx",
             "URL": "http://your.domain/path/file.mp3",
         },
         function(result)

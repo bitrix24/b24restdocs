@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing here — we will fill it in shortly.
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing
-- response in case of error is absent
+- error response is absent
 
 {% endnote %}
 
@@ -35,6 +35,63 @@ The method `voximplant.line.outgoing.sip.set` sets the selected SIP line as the 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"voximplant.line.outgoing.sip.set",
+    		{
+    			"CONFIG_ID": 57,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'voximplant.line.outgoing.sip.set',
+                [
+                    'CONFIG_ID' => 57,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting outgoing SIP line: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "voximplant.line.outgoing.sip.set",
         {
@@ -52,8 +109,8 @@ The method `voximplant.line.outgoing.sip.set` sets the selected SIP line as the 
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 ## Response on success
 
-Returns 1 on successful execution.
+Returns 1 upon successful execution.

@@ -11,10 +11,10 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -38,6 +38,63 @@ The method `voximplant.sip.get` returns a list of all SIP lines created by the a
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'voximplant.sip.get',
+    		{
+    			"FILTER": {"CONFIG_ID":12},
+    			"SORT": "CONFIG_ID",
+    			"ORDER": "DESC",
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.info(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'voximplant.sip.get',
+                [
+                    'FILTER' => ['CONFIG_ID' => 12],
+                    'SORT'   => 'CONFIG_ID',
+                    'ORDER'  => 'DESC',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting SIP data: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'voximplant.sip.get',
         {
@@ -59,7 +116,7 @@ The method `voximplant.sip.get` returns a list of all SIP lines created by the a
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}
 
-## Returned data
+## Returned Data
 
 #|
 || **Field** | **Description** ||

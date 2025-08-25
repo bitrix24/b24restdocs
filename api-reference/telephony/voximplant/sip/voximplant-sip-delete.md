@@ -1,4 +1,4 @@
-# Delete Existing SIP Line voximplant.sip.delete
+# Delete existing sip line voximplant.sip.delete
 
 {% note warning "We are still updating this page" %}
 
@@ -11,9 +11,9 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- error response is absent
+- response in case of error is missing
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ The method `voximplant.sip.delete` removes an existing SIP line (created by the 
 
 #|
 || **Parameter** | **Description** ||
-|| **CONFIG_ID** | Identifier of the SIP line configuration. ||
+|| **CONFIG_ID** | Identifier of the sip line configuration. ||
 |#
 
 ## Example
@@ -33,6 +33,63 @@ The method `voximplant.sip.delete` removes an existing SIP line (created by the 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'voximplant.sip.delete',
+    		{
+    			'CONFIG_ID': 87,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'voximplant.sip.delete',
+                [
+                    'CONFIG_ID' => 87,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting SIP configuration: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -52,8 +109,8 @@ The method `voximplant.sip.delete` removes an existing SIP line (created by the 
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
-## Response on Success
+## Response on success
 
 Returns 1 on successful execution or an exception.
