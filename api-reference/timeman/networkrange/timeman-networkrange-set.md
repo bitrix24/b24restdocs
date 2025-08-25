@@ -48,7 +48,7 @@ The range can contain:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"ranges":[{"ip_range":"10.0.0.0-10.255.255.255","name":"Office Network 10.x.x.x"},{"ip_range":"172.16.0.0-172.31.255.255","name":"Office Network 172.x.x.x"},{"ip_range":"192.168.0.0-192.168.255.255","name":"Office Network 192.168.x.x"}]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/timeman.networkrange.set
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/timeman.networkrange.set
     ```
 
 - cURL (OAuth)
@@ -62,6 +62,78 @@ The range can contain:
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'timeman.networkrange.set',
+    		{
+    			ranges: [
+    				{
+    					"ip_range": "10.0.0.0-10.255.255.255",
+    					"name": "Office Network 10.x.x.x"
+    				},
+    				{
+    					"ip_range": "172.16.0.0-172.31.255.255",
+    					"name": "Office Network 172.x.x.x"
+    				},
+    				{
+    					"ip_range": "192.168.0.0-192.168.255.255",
+    					"name": "Office Network 192.168.x.x"
+    				}
+    			]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'timeman.networkrange.set',
+                [
+                    'ranges' => [
+                        [
+                            "ip_range" => "10.0.0.0-10.255.255.255",
+                            "name"     => "Office Network 10.x.x.x"
+                        ],
+                        [
+                            "ip_range" => "172.16.0.0-172.31.255.255",
+                            "name"     => "Office Network 172.x.x.x"
+                        ],
+                        [
+                            "ip_range" => "192.168.0.0-192.168.255.255",
+                            "name"     => "Office Network 192.168.x.x"
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting network ranges: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -95,7 +167,7 @@ The range can contain:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -129,7 +201,7 @@ The range can contain:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -151,7 +223,7 @@ HTTP status: **200**
 
 ### In case of range parsing error
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -184,12 +256,12 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../data-types.md) | Root element of the response. Can have values:
-- `true` — all ranges were successfully set
+- `true` — all ranges successfully set
 - `false` — there are ranges with errors ||
 || **error_range**
  [`array`](../../data-types.md) | Array of [ranges](#ip_range) where errors were found ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Range Object {#ip_range}
@@ -205,7 +277,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -220,7 +292,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_ERROR` | You don't have access to use this method | The method is available only to the administrator ||
+|| `ACCESS_ERROR` | You don't have access to use this method | Method is available only to the administrator ||
 || `INVALID_FORMAT` | A wrong format for the RANGES field is passed | An incorrect format was provided in the `RANGES` parameter ||
 |#
 

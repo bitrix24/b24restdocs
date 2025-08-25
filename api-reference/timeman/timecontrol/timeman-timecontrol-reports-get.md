@@ -1,4 +1,4 @@
-# Get a report on identified absences timeman.timecontrol.reports.get
+# Get Report on Identified Absences timeman.timecontrol.reports.get
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
@@ -8,13 +8,13 @@ The method `timeman.timecontrol.reports.get` retrieves a report on identified ab
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **USER_ID***
-[`integer`](../../data-types.md) | The identifier of the user for whom the reports are requested.
+[`integer`](../../data-types.md) | User ID for whom the reports are requested.
 
 You can obtain the user ID using the [user.get](../../user/user-get.md) method. ||
 || **MONTH***
@@ -35,7 +35,7 @@ Default is 8 hours. ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,6 +62,61 @@ Default is 8 hours. ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'timeman.timecontrol.reports.get',
+    		{
+    			'USER_ID': 3,
+    			'MONTH': 5,
+    			'YEAR': 2025,
+    			'IDLE_MINUTES': 15,
+    			'WORKDAY_HOURS': 8
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'timeman.timecontrol.reports.get',
+                [
+                    'USER_ID'       => 3,
+                    'MONTH'         => 5,
+                    'YEAR'          => 2025,
+                    'IDLE_MINUTES'  => 15,
+                    'WORKDAY_HOURS' => 8
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        echo 'Info: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting time control reports: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'timeman.timecontrol.reports.get',
         {
@@ -81,7 +136,7 @@ Default is 8 hours. ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -106,7 +161,7 @@ Default is 8 hours. ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -184,7 +239,7 @@ HTTP status: **200**
 ### If the response has empty days
 
 If the method returns an empty array `days`, configure the time control tool.
-1. Execute the method [timeman.timecontrol.settings.set](./timeman-timecontrol-settings-set.md) as an administrator with the parameters:
+1. Execute the method [timeman.timecontrol.settings.set](./timeman-timecontrol-settings-set.md) under an administrator with the following parameters:
 
     ```js
     BX24.callMethod(
@@ -249,11 +304,11 @@ If the method returns an empty array `days`, configure the time control tool.
 || **workday_date_finish**
 [`datetime`](../../data-types.md) | End date of the workday in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format.
 
-If `workday_complete = false`, the date is indicated at the time of report generation. ||
+If `workday_complete = false`, the date is indicated at the moment of report generation. ||
 || **workday_complete**
 [`boolean`](../../data-types.md) | Workday completed ||
 || **workday_time_leaks_user**
-[`integer`](../../data-types.md) | Duration of the break in seconds ||
+[`integer`](../../data-types.md) | Duration of break in seconds ||
 || **workday_time_leaks_final**
 [`integer`](../../data-types.md) | Duration of time in seconds that the user underworked or overworked. 
 - Positive number — amount of underworked time in seconds
@@ -262,9 +317,9 @@ If `workday_complete = false`, the date is indicated at the time of report gener
 [`integer`](../../data-types.md) | Duration of the workday according to the schedule in seconds, including breaks ||
 || **workday_duration_final**
 [`integer`](../../data-types.md) | Duration of the workday according to actual output in seconds. Includes:
-- break
+- breaks
 - unconfirmed absences
-- absences for personal matters ||
+- absences for personal matters. ||
 || **workday_duration_config**
 [`integer`](../../data-types.md) | Required duration of the workday in seconds ||
 || **reports**
@@ -272,7 +327,7 @@ If `workday_complete = false`, the date is indicated at the time of report gener
 
 Values are displayed in full detail of the report and for the manager. ||
 || **workday_time_leaks_real**
-[`integer`](../../data-types.md) | Duration of the break set by the automatic recording system. Contains unconfirmed absences and absences for personal matters. ||
+[`integer`](../../data-types.md) | Duration of break established by the automatic recording system. Contains unconfirmed absences and absences for personal matters. ||
 |#
 
 #### Objects reports {#reports}
@@ -281,17 +336,17 @@ Values are displayed in full detail of the report and for the manager. ||
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Record identifier ||
+[`string`](../../data-types.md) | Record ID ||
 || **user_id**
-[`string`](../../data-types.md) | User identifier ||
+[`string`](../../data-types.md) | User ID ||
 || **type**
 [`string`](../../data-types.md) | Record type. Possible values:
 
 - `IDLE` — stepped away, recorded using the desktop application
 - `OFFLINE` — offline
-- `DESKTOP_ONLINE` — started the application. For manager only
+- `DESKTOP_ONLINE` — launched the application. For manager only
 - `DESKTOP_OFFLINE` — turned off the application. For manager only
-- `DESKTOP_START` — started the application. For manager only
+- `DESKTOP_START` — launched the application. For manager only
 - `TM_START` — started the workday
 - `TM_PAUSE` — went on break
 - `TM_CONTINUE` — continued the day
@@ -301,13 +356,13 @@ Values are displayed in full detail of the report and for the manager. ||
 || **date_finish**
 [`datetime`](../../data-types.md) | End date of the recording in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format.
 
-If `active = true`, the field contains the date at the time of report generation. ||
+If `active = true`, the field contains the date at the moment of report generation. ||
 || **duration**
 [`integer`](../../data-types.md) | Duration ||
 || **active**
 [`boolean`](../../data-types.md) | Activity of the record ||
 || **entry_id**
-[`string`](../../data-types.md) | Time record identifier ||
+[`string`](../../data-types.md) | Time record ID ||
 || **report_type**
 [`string`](../../data-types.md) | Absence type. Possible values:
 - `work` — for work matters
@@ -322,9 +377,9 @@ If `active = true`, the field contains the date at the time of report generation
 
 - `ONLINE_EVENT` — user authorization event
 - `OFFLINE_AGENT` — agent that sets the Offline status
-- `DESKTOP_OFFLINE_AGENT` — agent that sets the indicator of the turned-off application
-- `DESKTOP_ONLINE_EVENT` — event that sets the indicator of the turned-on application
-- `DESKTOP_START_EVENT` — event that sets the indicator of the turned-on application
+- `DESKTOP_OFFLINE_AGENT` — agent that sets the application off status
+- `DESKTOP_ONLINE_EVENT` — event that sets the application on status
+- `DESKTOP_START_EVENT` — event that sets the application on status
 - `IDLE_EVENT` — event changing the status to Stepped Away. Recorded by the application
 - `TM_EVENT` — event changing the workday: start, break, end. ||
 || **source_finish**
@@ -332,9 +387,9 @@ If `active = true`, the field contains the date at the time of report generation
 
 - `ONLINE_EVENT` — user authorization event
 - `OFFLINE_AGENT` — agent that sets the Offline status
-- `DESKTOP_OFFLINE_AGENT` — agent that sets the indicator of the turned-off application
-- `DESKTOP_ONLINE_EVENT` — event that sets the indicator of the turned-on application
-- `DESKTOP_START_EVENT` — event that sets the indicator of the turned-on application
+- `DESKTOP_OFFLINE_AGENT` — agent that sets the application off status
+- `DESKTOP_ONLINE_EVENT` — event that sets the application on status
+- `DESKTOP_START_EVENT` — event that sets the application on status
 - `IDLE_EVENT` — event changing the status to Stepped Away. Recorded by the application
 - `TM_EVENT` — event changing the workday: start, break, end. ||
 || **ip_start**
@@ -370,7 +425,7 @@ For manager only ||
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | User identifier ||
+[`integer`](../../data-types.md) | User ID ||
 || **active**
 [`boolean`](../../data-types.md) | Activity ||
 || **name**
@@ -382,18 +437,18 @@ For manager only ||
 || **work_position**
 [`string`](../../data-types.md) | Position ||
 || **avatar**
-[`string`](../../data-types.md) | URL of the user's avatar.
+[`string`](../../data-types.md) | User's avatar URL.
 
 If the value is empty, the user has no avatar. ||
 || **personal_gender**
 [`string`](../../data-types.md) | User's gender ||
 || **last_activity_date**
-[`datetime`](../../data-types.md) | Date of the user's last activity in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format ||
+[`datetime`](../../data-types.md) | Date of the user's last action in [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -408,8 +463,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_ERROR` | You don't have access to this method | You do not have access to this method. ||
-|| `USER_ACCESS_ERROR` | You don't have access to report for this user | You do not have access to this user's reports. ||
+|| `ACCESS_ERROR` | You don't have access to this method | You do not have access to this method ||
+|| `USER_ACCESS_ERROR` | You don't have access to report for this user | You do not have access to this user's reports ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

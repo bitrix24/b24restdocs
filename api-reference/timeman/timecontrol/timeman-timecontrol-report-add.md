@@ -10,7 +10,7 @@ By default, a user can only send a report for themselves. A portal administrator
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,11 +18,11 @@ By default, a user can only send a report for themselves. A portal administrator
 || **REPORT_ID*** \| **ID***
 [`integer`](../../data-types.md) | Identifier of the absence record.
 
-You can obtain record IDs using the [timeman.timecontrol.reports.get](./timeman-timecontrol-reports-get.md#reports) method ||
+You can obtain record identifiers using the [timeman.timecontrol.reports.get](./timeman-timecontrol-reports-get.md#reports) method ||
 || **USER_ID**
 [`integer`](../../data-types.md) | User identifier. Can only be specified by an administrator.
 
-You can obtain the user ID using the [user.get](../../user/user-get.md) method ||
+You can obtain the user identifier using the [user.get](../../user/user-get.md) method ||
 || **TEXT***
 [`string`](../../data-types.md) | Report text ||
 || **TYPE**
@@ -41,7 +41,7 @@ Default value is `Y` ||
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -68,6 +68,60 @@ Default value is `Y` ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'timeman.timecontrol.report.add',
+    		{
+    			'REPORT_ID': 123,
+    			'TEXT': 'Worked on the project',
+    			'TYPE': 'WORK',
+    			'CALENDAR': 'Y'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'timeman.timecontrol.report.add',
+                [
+                    'REPORT_ID' => 123,
+                    'TEXT'      => 'Worked on the project',
+                    'TYPE'      => 'WORK',
+                    'CALENDAR'  => 'Y',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding time control report: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'timeman.timecontrol.report.add',
         {
@@ -86,7 +140,7 @@ Default value is `Y` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

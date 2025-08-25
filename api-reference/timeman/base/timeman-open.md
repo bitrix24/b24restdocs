@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `timeman.open` starts a new workday or resumes the workday after a break or completion.
+The method `timeman.open` starts a new workday or continues the workday after a break or completion.
 
 ## Method Parameters
 
@@ -37,7 +37,7 @@ Required under the conditions:
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -64,6 +64,31 @@ Required under the conditions:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'timeman.open',
+    		{
+    			'USER_ID' : 503,
+    			'TIME': '2025-03-27T08:00:01+00:00',
+    			'REPORT': 'I forgot to start the workday',
+    			'LAT': 53.548841, 
+    			'LON': 9.987274
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'timeman.open',
         {
@@ -83,7 +108,7 @@ Required under the conditions:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -109,7 +134,7 @@ Required under the conditions:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -167,11 +192,11 @@ The time zone corresponds to the time zone of the start of the workday ||
 
 Returns `null` for an unfinished workday ||
 || **DURATION**
-[`string`](../../data-types.md) | Duration of the workday in the format `HH:MM:SS`.
+[`string`](../../data-types.md) | Duration of the workday in the `HH:MM:SS` format.
 
 Returns `00:00:00` for an unfinished workday ||
 || **TIME_LEAKS**
-[`string`](../../data-types.md) | Total duration of breaks during the day in the format `HH:MM:SS` ||
+[`string`](../../data-types.md) | Total duration of breaks during the day in the `HH:MM:SS` format ||
 || **ACTIVE**
 [`boolean`](../../data-types.md) | Confirmation of the workday.
 
@@ -204,7 +229,7 @@ Displayed only for workdays in the expired status `EXPIRED` ||
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

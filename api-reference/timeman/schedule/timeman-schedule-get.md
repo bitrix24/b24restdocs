@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `timeman.schedule.get` retrieves the work schedule by its identifier. If no schedule with the specified identifier exists, it will return an empty array.
+The method `timeman.schedule.get` retrieves the work schedule by its identifier. If no schedule exists with the specified identifier, it will return an empty array.
 
 ## Method Parameters
 
@@ -46,6 +46,62 @@ You can find the schedule identifier in the list of schedules on the *Employees 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"timeman.schedule.get",
+    		{
+    			id: 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    	if(response.more())
+    		response.next();
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'timeman.schedule.get',
+                [
+                    'id' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            var_dump($result->data());
+            if ($result->more()) {
+                $result->next();
+            }
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting schedule: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "timeman.schedule.get",
         {
@@ -65,7 +121,7 @@ You can find the schedule identifier in the list of schedules on the *Employees 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -189,13 +245,13 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response.
 
-Contains an object describing the work schedule of employees ||
+Contains an object with the description of the employees' work schedule ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the work schedule ||
 || **NAME**
 [`string`](../../data-types.md) | Name of the work schedule || 
 || **SCHEDULE_TYPE**
-[`string`](../../data-types.md) | Type of work schedule.
+[`string`](../../data-types.md) | Type of the work schedule.
 
 Possible values:
 - `FIXED` — fixed
@@ -210,13 +266,13 @@ Possible values:
 - `TWO_WEEKS` — two weeks
 - `QUARTER`  — quarter ||
 || **REPORT_PERIOD_OPTIONS**
-[`object`](../../data-types.md) | Object describing [additional settings](#report_period_options) for report generation period.
+[`object`](../../data-types.md) | Object with the description of [additional settings](#report_period_options) for report generation period.
 
 Only for `REPORT_PERIOD` with values `WEEK` and `TWO_WEEKS` ||
 || **CALENDAR_ID**
 [`integer`](../../data-types.md) | Identifier of the calendar associated with the work schedule ||
 || **ALLOWED_DEVICES**
-[`object`](../../data-types.md) | Object describing [allowed devices](#allowed_devices) for time tracking ||
+[`object`](../../data-types.md) | Object with the description of [allowed devices](#allowed_devices) for time tracking ||
 || **DELETED**
 [`string`](../../data-types.md) | Flag indicating if the work schedule is deleted.
 
@@ -236,11 +292,11 @@ Contains an array of strings with restriction rules ||
 || **DELETED_BY**
 [`integer`](../../data-types.md) | Identifier of the user who deleted the work schedule.
 
-Value `0` indicates that the schedule was not deleted ||
+Value `0` indicates that the schedule has not been deleted ||
 || **DELETED_AT**
 [`string`](../../data-types.md) | Date and time of deletion of the work schedule.
 
-An empty string means the schedule was not deleted ||
+An empty string means that the schedule has not been deleted ||
 || **CREATED_BY**
 [`integer`](../../data-types.md) | Identifier of the user who created the work schedule.
 
@@ -252,9 +308,9 @@ Value `0` indicates system creation ||
 || **CALENDAR**
 [`object`](../../data-types.md) | Object with information about the [calendar](#calendar) associated with the work schedule ||
 || **SCHEDULE_VIOLATION_RULES**
-[`object`](../../data-types.md) | Object describing [schedule violation rules](#schedule_violation_rules) ||
+[`object`](../../data-types.md) | Object with the description of [schedule violation rules](#schedule_violation_rules) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Object REPORT_PERIOD_OPTIONS {#report_period_options}
@@ -358,11 +414,11 @@ Value `-1` means no restriction is set ||
 
 Value `-1` means no restriction is set ||
 || **RELATIVE_START_FROM**
-[`integer`](../../data-types.md) | Relative start of the workday (relative to planned time).
+[`integer`](../../data-types.md) | Relative start of the workday (relative to the planned time).
 
 Value `-1` means no restriction is set ||
 || **RELATIVE_START_TO**
-[`integer`](../../data-types.md) | Relative end of the workday (relative to planned time).
+[`integer`](../../data-types.md) | Relative end of the workday (relative to the planned time).
 
 Value `-1` means no restriction is set ||
 || **RELATIVE_END_FROM**
@@ -378,9 +434,9 @@ Value `-1` means no restriction is set ||
 || **MAX_ALLOWED_TO_EDIT_WORK_TIME**
 [`integer`](../../data-types.md) | Maximum time allowed to edit work time in seconds ||
 || **MAX_WORK_TIME_LACK_FOR_PERIOD**
-[`integer`](../../data-types.md) | Maximum time deficit for the period in seconds ||
+[`integer`](../../data-types.md) | Maximum time of underwork for the period in seconds ||
 || **PERIOD_TIME_LACK_AGENT_ID**
-[`integer`](../../data-types.md) | Identifier of the agent checking the deficit for the period ||
+[`integer`](../../data-types.md) | Identifier of the agent checking underwork for the period ||
 || **MAX_SHIFT_START_DELAY**
 [`integer`](../../data-types.md) | Maximum delay for the start of the shift in seconds.
 
@@ -390,7 +446,7 @@ Value `-1` means no restriction is set ||
 
 Value `0` means no missed start was recorded ||
 || **USERS_TO_NOTIFY**
-[`object`](../../data-types.md) | Object describing users for [notification of schedule violations](#users_to_notify) ||
+[`object`](../../data-types.md) | Object with the description of users for [notifying about schedule violations](#users_to_notify) ||
 |#
 
 #### Object USERS_TO_NOTIFY {#users_to_notify}

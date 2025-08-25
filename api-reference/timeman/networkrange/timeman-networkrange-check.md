@@ -21,7 +21,7 @@ If not specified, the check will be performed for the current IP address ||
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,6 +48,56 @@ If not specified, the check will be performed for the current IP address ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'timeman.networkrange.check',
+    		{
+    			'IP': '10.10.255.255'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'timeman.networkrange.check',
+                [
+                    'IP' => '10.10.255.255'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error checking network range: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'timeman.networkrange.check',
         {
@@ -66,7 +116,7 @@ If not specified, the check will be performed for the current IP address ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -137,7 +187,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_ERROR",
-    "error_description": "You don't have access to user this method"
+    "error_description": "You don't have access to use this method"
 }
 ```
 
@@ -147,7 +197,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_ERROR` | You don't have access to user this method | The method is only available to administrators ||
+|| `ACCESS_ERROR` | You don't have access to use this method | The method is only available to administrators ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `timeman.settings` retrieves the work time settings for a user.
+The method `timeman.settings` retrieves the user's work time settings.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ The method `timeman.settings` retrieves the work time settings for a user.
 || **USER_ID**
 [`integer`](../../data-types.md) | User identifier.
 
-By default — the identifier of the current user ||
+By default — identifier of the current user ||
 |#
 
 ## Code Examples
@@ -46,6 +46,56 @@ By default — the identifier of the current user ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'timeman.settings',
+    		{
+    			'USER_ID' : 503
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'timeman.settings',
+                [
+                    'USER_ID' => 503
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching timeman settings: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'timeman.settings',
         {
@@ -61,7 +111,7 @@ By default — the identifier of the current user ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -116,15 +166,15 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response.
 
-Contains an object with the description of the user's work time settings ||
+Contains an object with the user's work time settings ||
 || **UF_TIMEMAN**
 [`boolean`](../../data-types.md) | Whether work time tracking is enabled for the user.
 
-Has a value of `true` if enabled ||
+Returns `true` if enabled ||
 || **UF_TM_FREE**
 [`boolean`](../../data-types.md) | Whether the user has a flexible work schedule.
 
-Has a value of `true` if enabled.
+Returns `true` if enabled.
 
 A user with a flexible schedule does not need to confirm changes to work time with a supervisor or provide reasons for changes ||
 || **UF_TM_MAX_START**
@@ -132,9 +182,9 @@ A user with a flexible schedule does not need to confirm changes to work time wi
 
 Starting the workday later than the set time is considered a violation ||
 || **UF_TM_MIN_FINISH**
-[`string`](../../data-types.md) | Minimum finish time of the workday in `HH:MM:SS` format.
+[`string`](../../data-types.md) | Minimum end time of the workday in `HH:MM:SS` format.
 
-Finishing the workday earlier than the set time is considered a violation ||
+Ending the workday earlier than the set time is considered a violation ||
 || **UF_TM_MIN_DURATION**
 [`string`](../../data-types.md) | Minimum duration of the workday in `HH:MM:SS` format.
 
@@ -146,7 +196,7 @@ Changing the workday by a period shorter than the set time does not require supe
 || **ADMIN**
 [`boolean`](../../data-types.md) | Whether the user can manage the workdays of other employees. Returned only for the current user.
 
-Has a value of `true` if permissions are granted ||
+Returns `true` if permissions are granted ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

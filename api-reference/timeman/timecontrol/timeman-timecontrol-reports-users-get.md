@@ -7,9 +7,9 @@
 The method `timeman.timecontrol.reports.users.get` retrieves the list of users in the department.
 
 The data returned by the method depends on the role:
-- An employee will receive only their own data,
-- A manager will receive data for their department,
-- An administrator will receive data for any department.
+- an employee will receive only their own data,
+- a manager will receive data for their department,
+- an administrator will receive data for any department.
 
 ## Method Parameters
 
@@ -19,7 +19,7 @@ The data returned by the method depends on the role:
 || **DEPARTMENT_ID**
 [`integer`](../../data-types.md) | The identifier of the department. This parameter should only be specified by a manager or administrator.
 
-The department identifier can be obtained using the [get department list](../../departments/department-get.md) method ||
+The department identifier can be obtained using the [get department list](../../departments/department-get.md) method. ||
 |#
 
 ## Code Examples
@@ -51,6 +51,54 @@ The department identifier can be obtained using the [get department list](../../
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'timeman.timecontrol.reports.users.get',
+    		{
+    			'DEPARTMENT_ID': 15
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'timeman.timecontrol.reports.users.get',
+                [
+                    'DEPARTMENT_ID' => 15
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting time control reports: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'timeman.timecontrol.reports.users.get',
         {
@@ -66,7 +114,7 @@ The department identifier can be obtained using the [get department list](../../
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -87,7 +135,7 @@ The department identifier can be obtained using the [get department list](../../
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -136,7 +184,7 @@ HTTP status: **200**
 || **avatar**
 [`string`](../../data-types.md) | URL of the user's avatar.
 
-If the value is empty, the user does not have an avatar ||
+If the value is empty, the user does not have an avatar. ||
 || **personal_gender**
 [`string`](../../data-types.md) | Gender ||
 || **last_activity_date**

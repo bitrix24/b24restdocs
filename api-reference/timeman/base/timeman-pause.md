@@ -21,7 +21,7 @@ By default — the identifier of the current user ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,6 +48,53 @@ By default — the identifier of the current user ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'timeman.pause',
+    		{
+    			'USER_ID' : 503
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'timeman.pause',
+                [
+                    'USER_ID' => 503
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        echo 'Info: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling timeman.pause: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'timeman.pause',
         {
@@ -63,7 +110,7 @@ By default — the identifier of the current user ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -136,9 +183,9 @@ Contains an object with the description of the workday ||
 || **TIME_START**
 [`datetime`](../../data-types.md) | Date and time when the workday started.
 
-The time zone corresponds to the time zone of the start of the workday ||
+The timezone corresponds to the timezone of the start of the workday ||
 || **TIME_FINISH**
-[`datetime`](../../data-types.md) | Date and time when the workday was completed.
+[`datetime`](../../data-types.md) | Date and time when the workday ended.
 
 Returns `null` for an unfinished workday ||
 || **DURATION**
@@ -152,9 +199,9 @@ Returns `00:00:00` for an unfinished workday ||
 
 A value of `false` means that the change to the workday is awaiting confirmation from the supervisor ||
 || **IP_OPEN**
-[`string`](../../data-types.md) | IP address from which the workday was started ||
+[`string`](../../data-types.md) | IP address from which the workday started ||
 || **IP_CLOSE**
-[`string`](../../data-types.md) | IP address from which the workday was completed.
+[`string`](../../data-types.md) | IP address from which the workday ended.
 
 Returns `null` for an unfinished workday ||
 || **LAT_OPEN**
@@ -162,19 +209,19 @@ Returns `null` for an unfinished workday ||
 || **LON_OPEN**
 [`double`](../../data-types.md) | Geographical longitude of the point where the workday started ||
 || **LAT_CLOSE**
-[`double`](../../data-types.md) | Geographical latitude of the point where the workday was completed ||
+[`double`](../../data-types.md) | Geographical latitude of the point where the workday ended ||
 || **LON_CLOSE**
-[`double`](../../data-types.md) | Geographical longitude of the point where the workday was completed ||
+[`double`](../../data-types.md) | Geographical longitude of the point where the workday ended ||
 || **TZ_OFFSET**
-[`integer`](../../data-types.md) | Time zone offset of the employee in which the workday was started.
+[`integer`](../../data-types.md) | Timezone offset of the employee in which the workday started.
 
-The completion time of the workday is adjusted to the time zone of the start of the day ||
+The end time of the workday is adjusted to the timezone of the start of the day ||
 || **TIME_FINISH_DEFAULT**
 [`datetime`](../../data-types.md) | Recommended value for the end of the day, which can be displayed to the user as a default value.
 
-Displayed only for workdays in the expired status `EXPIRED` ||
+Displayed only for workdays with the status expired `EXPIRED` ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the time taken to process the request ||
 |#
 
 ## Error Handling

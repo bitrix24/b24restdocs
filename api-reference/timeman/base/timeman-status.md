@@ -1,4 +1,4 @@
-# Get Information About the Current Workday timeman.status
+# Get information about the current workday timeman.status
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 The method `timeman.status` retrieves information about the current workday.
 
-## Method Parameters
+## Method parameters
 
 #|
 || **Name**
@@ -17,7 +17,7 @@ The method `timeman.status` retrieves information about the current workday.
 By default — the identifier of the current user ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
@@ -46,6 +46,57 @@ By default — the identifier of the current user ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'timeman.status',
+    		{
+    			'USER_ID' : 503
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'timeman.status',
+                [
+                    'USER_ID' => 503
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling timeman.status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'timeman.status',
         {
@@ -61,7 +112,7 @@ By default — the identifier of the current user ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -80,7 +131,7 @@ By default — the identifier of the current user ||
 
 {% endlist %}
 
-## Response Handling
+## Response handling
 
 HTTP status: **200**
 
@@ -115,7 +166,7 @@ HTTP status: **200**
 }
 ```
 
-### Returned Data
+### Returned data
 
 #|
 || **Name**
@@ -133,11 +184,11 @@ Contains an object with the description of the workday ||
 - `PAUSED` — paused
 - `EXPIRED` — expired, meaning opened before the start of the current calendar day and not closed ||
 || **TIME_START**
-[`datetime`](../../data-types.md) | Date and time when the workday started.
+[`datetime`](../../data-types.md) | Date and time when the workday starts.
 
 The time zone corresponds to the time zone at the start of the workday ||
 || **TIME_FINISH**
-[`datetime`](../../data-types.md) | Date and time when the workday ended.
+[`datetime`](../../data-types.md) | Date and time when the workday ends.
 
 Returns `null` for an unfinished workday ||
 || **DURATION**
@@ -165,18 +216,18 @@ Returns `null` for an unfinished workday ||
 || **LON_CLOSE**
 [`double`](../../data-types.md) | Geographical longitude of the point where the workday ended ||
 || **TZ_OFFSET**
-[`integer`](../../data-types.md) | Time zone offset of the employee in which the workday started.
+[`integer`](../../data-types.md) | Time zone offset of the employee where the workday started.
 
 The end time of the workday is adjusted to the time zone at the start of the day ||
 || **TIME_FINISH_DEFAULT**
 [`datetime`](../../data-types.md) | Recommended value for the end of the day, which can be displayed to the user as a default value.
 
-Displayed only for workdays in the expired status `EXPIRED` ||
+Displayed only for workdays with the status expired `EXPIRED` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the time taken to process the request ||
 |#
 
-## Error Handling
+## Error handling
 
 HTTP status: **400**
 
@@ -189,14 +240,14 @@ HTTP status: **400**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || empty string | User not found | User with the specified `USER_ID` not found ||
 |#
 
-## Continue Learning 
+## Continue exploring 
 
 - [{#T}](./index.md)
 - [{#T}](./timeman-open.md)
