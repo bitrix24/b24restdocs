@@ -48,9 +48,9 @@ If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` 
 || **PERSONAL_CITY**
 [`string`](../data-types.md) | City of residence ||
 || **PERSONAL_STATE**
-[`string`](../data-types.md) | State ||
+[`string`](../data-types.md) | State/Region ||
 || **PERSONAL_ZIP**
-[`string`](../data-types.md) | Zip code ||
+[`string`](../data-types.md) | Postal code ||
 || **PERSONAL_COUNTRY**
 [`string`](../data-types.md) | Country ||
 || **PERSONAL_MAILBOX**
@@ -153,6 +153,58 @@ If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'user.add',
+    		{
+    			'EMAIL': 'newuser1@example.com',
+    			'UF_DEPARTMENT': [1]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.add',
+                [
+                    'EMAIL'        => 'newuser1@example.com',
+                    'UF_DEPARTMENT' => [1],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding user: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "user.add",
         {
@@ -169,7 +221,7 @@ If you need to add an extranet user, you must provide the fields: `EXTRANET: Y` 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -216,7 +268,7 @@ HTTP Status: **200**
 || **result**
 [`integer`](../data-types.md) | Identifier of the new user ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -242,8 +294,8 @@ HTTP Status: **400**
 || `ERROR_CORE` | access_denied | The user does not have permission to call the method ||
 || `ERROR_ARGUMENT` | user_count_exceeded | The number of users has been exceeded ||
 || `ERROR_GROUPID` | Group code not specified | Group code not specified when adding a user to the extranet ||
-|| `ERROR_NO_GROUP` | Group specified incorrectly | The group specified is incorrect when adding a user ||
-|| `ERROR_ARGUMENT` | no_extranet_field | The method call does not specify which group the user should belong to ||
+|| `ERROR_NO_GROUP` | Group specified incorrectly | Incorrect group specified when adding a user ||
+|| `ERROR_ARGUMENT` | no_extranet_field | The method call did not specify which group the user should belong to ||
 || `ERROR_CORE` |  | Error updating user fields ||
 |#
 

@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `user.fields` allows you to retrieve a list of user field names. The method returns a standard list of fields, and the use of custom fields is not supported.
+The `user.fields` method allows you to retrieve a list of user field names. The method returns a standard list of fields, and the use of custom fields is not supported.
 
 {% note info "" %}
 
@@ -43,6 +43,59 @@ Without parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"user.fields",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching user fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "user.fields",
         {},
@@ -56,7 +109,7 @@ Without parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -105,8 +158,8 @@ HTTP Status: **200**
             "PERSONAL_MOBILE": "Personal Mobile",
             "PERSONAL_PAGER": "Pager",
             "PERSONAL_STREET": "Street Address",
-            "PERSONAL_CITY": "City",
-            "PERSONAL_STATE": "State / Region",
+            "PERSONAL_CITY": "City of Residence",
+            "PERSONAL_STATE": "Region / Territory",
             "PERSONAL_ZIP": "Postal Code",
             "PERSONAL_COUNTRY": "Country",
             "PERSONAL_MAILBOX": "Mailbox",

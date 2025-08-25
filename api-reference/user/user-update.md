@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-The method `user.update` updates user data. It can only be executed on behalf of a user with the permission to invite users.
+The `user.update` method updates user data. It can only be executed on behalf of a user with user invitation rights.
 
 ## Method Parameters
 
@@ -32,7 +32,7 @@ The method `user.update` updates user data. It can only be executed on behalf of
 || **PERSONAL_BIRTHDAY**
 [`string`](../data-types.md) | Date of birth ||
 || **PERSONAL_PHOTO**
-[`array`](../data-types.md) | Photograph ||
+[`array`](../data-types.md) | Photo ||
 || **PERSONAL_ICQ**
 [`string`](../data-types.md) | ICQ ||
 || **PERSONAL_PHONE**
@@ -48,9 +48,9 @@ The method `user.update` updates user data. It can only be executed on behalf of
 || **PERSONAL_CITY**
 [`string`](../data-types.md) | City of residence ||
 || **PERSONAL_STATE**
-[`string`](../data-types.md) | State ||
+[`string`](../data-types.md) | State/Region ||
 || **PERSONAL_ZIP**
-[`string`](../data-types.md) | Zip code ||
+[`string`](../data-types.md) | Postal code ||
 || **PERSONAL_COUNTRY**
 [`string`](../data-types.md) | Country ||
 || **PERSONAL_MAILBOX**
@@ -155,6 +155,67 @@ The method `user.update` updates user data. It can only be executed on behalf of
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"user.update",
+    		{
+    			"ID": 1,
+    			"NAME": "Administrator",
+    			"LAST_NAME": "SomeLastName"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.update',
+                [
+                    'ID'       => 1,
+                    'NAME'     => 'Administrator',
+                    'LAST_NAME' => 'SomeLastName',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating user: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "user.update",
         {
@@ -172,7 +233,7 @@ The method `user.update` updates user data. It can only be executed on behalf of
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -195,7 +256,7 @@ The method `user.update` updates user data. It can only be executed on behalf of
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
     {
@@ -225,7 +286,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

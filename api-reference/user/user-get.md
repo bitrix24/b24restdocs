@@ -4,11 +4,11 @@
 >
 > Who can execute the method: any user
 
-The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except: bots, email users, users for Open Channels, and Replica users.
+The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except for: bots, email users, users for Open Channels, and Replica users.
 
 {% note info "" %}
 
-The method does not return Bitrix24 Partners. The list of user fields returned as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
+The method does not return Bitrix24 Partners. The list of user fields in Bitrix24 that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
 
 {% endnote %}
 
@@ -26,10 +26,10 @@ The method does not return Bitrix24 Partners. The list of user fields returned a
 - `ASC` — ascending
 - `DESC` — descending ||
 || **FILTER**
-[`string`](../data-types.md) | You can additionally specify any parameters from [user.add](./user-add.md) for filtering by their values. In addition to the main fields, the following additional fields are available:
+[`string`](../data-types.md) | You can additionally specify any parameters from [user.add](./user-add.md) for filtering by their values. In addition to the main fields, additional ones are available:
 - `UF_DEPARTMENT` — company structure affiliation;
 - `UF_PHONE_INNER` — internal phone number;
-- `IS_ONLINE` — [Y\|N] allows you to show only authorized users or not.
+- `IS_ONLINE` — [Y\|N] allows showing only authorized users or not.
 - `NAME_SEARCH` — quick search by personal data.
 - `USER_TYPE` — user type. Can take the following values: 
     - `employee` — employee, 
@@ -38,7 +38,7 @@ The method does not return Bitrix24 Partners. The list of user fields returned a
 - `ACTIVE` — when set to *true* excludes dismissed users.
   
 Filtering parameters can take array values.
-An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
+An additional prefix can be assigned to the key, specifying the filter's behavior. Possible prefix values:
 
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -46,24 +46,24 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `<` — less than
 - `@` — IN (an array is passed as a value)
 - `!@`— NOT IN (an array is passed as a value)
-- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for a substring at any position in the string.
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string.
 - `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"
     - "%mol" — searching for values ending with "mol"
-    - "%mol%" — searching for values where "mol" can be at any position.
+    - "%mol%" — searching for values where "mol" can be in any position
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
 
 - `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values not starting with "mol"
     - "%mol" — searching for values not ending with "mol"
-    - "%mol%" — searching for values where the substring "mol" is not present at any position.
+    - "%mol%" — searching for values where the substring "mol" is not in any position
 
 - `!%=` — NOT LIKE (see description above)
 
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` - not equal
 - `!` — not equal
 
@@ -71,7 +71,7 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 || **ADMIN_MODE**
 [`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to obtain data about any users ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used to control pagination.
+[`integer`](../data-types.md) | This parameter is used for managing pagination.
 
 The page size of results is always static: 50 records.
 
@@ -79,7 +79,7 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page ||
+`start = (N-1) * 50`, where `N` — the desired page number ||
 |#
 
 ## Code Examples
@@ -122,6 +122,62 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'user.get',
+    		{
+    			'UF_DEPARTMENT': 1,
+    			'SORT': 'ID',
+    			'ORDER': 'asc',
+    			'start': 10
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.get',
+                [
+                    'UF_DEPARTMENT' => 1,
+                    'SORT'         => 'ID',
+                    'ORDER'        => 'asc',
+                    'start'        => 10,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting users: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "user.get",
         {
@@ -140,7 +196,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -188,6 +244,56 @@ The formula for calculating the `start` parameter value:
 
 - JS
 
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'user.get',
+    		{
+    			filter: {
+    				"NAME": "Iva%"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.get',
+                [
+                    'filter' => [
+                        'NAME' => 'Iva%'
+                    ]
+                }
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching user data: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         "user.get",
@@ -206,7 +312,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -253,6 +359,56 @@ The formula for calculating the `start` parameter value:
 
 - JS
 
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"user.get",
+    		{
+    			filter: {
+    				"!%LAST_NAME": "ov"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.get',
+                [
+                    'filter' => [
+                        '!%LAST_NAME' => 'ov',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting users: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         "user.get",
@@ -271,7 +427,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -317,7 +473,57 @@ The formula for calculating the `start` parameter value:
     ```
 
 - JS
-  
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'user.get',
+    		{
+    			filter: {
+    				'@PERSONAL_CITY': ['New York', 'Los Angeles']
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.get',
+                [
+                    'filter' => [
+                        '@PERSONAL_CITY' => ['New York', 'Los Angeles']
+                    ]
+                }
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting users: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         "user.get",
@@ -336,7 +542,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -450,5 +656,6 @@ HTTP Status: **200**
 - [{#T}](./user-fields.md)
 - [{#T}](../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
 - [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-send-email.md)
+- [{#T}](../../tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)
 
 [*key_Key for operation]: `'ADMIN_MODE': 'True'`

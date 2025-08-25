@@ -4,11 +4,11 @@ To ensure the security of employee data, different versions of the `User` scope 
 
 - `user_brief` provides access to user information without contact details. This is sufficient for scenarios where displaying the user's full name in a third-party application's interface is required.
 - `user_basic` opens basic information and contact details of users. This is necessary for scenarios related to making calls or sending e-mails.
-- `user` grants full access to user information, the ability to invite new users, and modify existing data.
+- `user` grants full access to user information, the ability to invite new users, and modify existing user data.
 
-To access user fields, add the `user.userfield` scope to the application.
+To access custom fields, add the `user.userfield` scope to the application.
 
-## Limited User Scope Versions
+## Limited user scope versions
 
 In these scopes, adding and updating users is not allowed: the methods [user.add](./user-add.md) and [user.update](./user-update.md) are not available. In all other methods for retrieving user information, only the listed fields are accessible.
 
@@ -78,11 +78,11 @@ In these scopes, adding and updating users is not allowed: the methods [user.add
 | UF_SKILLS | |
 | UF_INTERESTS | |
 
-## Full User Scope Version
+## Full user scope version
 
 {% note info " " %}
 
-This is the maximum level of access to personal information, and it should be requested very responsibly.
+This is the highest level of access to personal information, and it should be requested very responsibly.
 
 {% endnote %}
 

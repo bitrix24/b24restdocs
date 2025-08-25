@@ -1,10 +1,10 @@
-# Delete Custom Field user.userfield.delete
+# Delete User Field user.userfield.delete
 
 > Scope: [`user.userfield`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `user.userfield.delete` removes a custom field.
+The method `user.userfield.delete` removes a user field.
 
 ## Method Parameters
 
@@ -14,9 +14,9 @@ The method `user.userfield.delete` removes a custom field.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../data-types.md)| Identifier of the custom field.
+[`integer`](../../data-types.md)| Identifier of the user field.
 
-To obtain the identifiers of custom fields, use the method [user.userfield.list](./user-userfield-list.md)
+To obtain the identifiers of user fields, use the method [user.userfield.list](./user-userfield-list.md)
  ||
 |#
 
@@ -49,6 +49,54 @@ To obtain the identifiers of custom fields, use the method [user.userfield.list]
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'user.userfield.delete',
+    		{
+    			id: 123,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.userfield.delete',
+                [
+                    'id' => 123,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'user.userfield.delete',
         {
@@ -64,7 +112,7 @@ To obtain the identifiers of custom fields, use the method [user.userfield.list]
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -108,9 +156,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the custom field deletion ||
+[`boolean`](../../data-types.md) | Result of deleting the user field ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -131,7 +179,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || Empty string | Access denied. | A field with such `id` does not exist or access is denied ||
-|| Empty string | ID is not defined or invalid | The `id` is not specified or is incorrect ||
+|| Empty string | ID is not defined or invalid | `id` is not specified or is incorrect ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

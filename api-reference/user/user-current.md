@@ -43,6 +43,52 @@ The method has no parameters. However, by making a REST request using data from 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"user.current",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.current',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Current user data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting current user data: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "user.current",
         {},
@@ -56,7 +102,7 @@ The method has no parameters. However, by making a REST request using data from 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -129,5 +175,6 @@ HTTP Status: **200**
 - [{#T}](./user-get.md)
 - [{#T}](./user-search.md)
 - [{#T}](./user-fields.md)
+- [{#T}](../../tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)
 
-[*current_key]: The one whose token you used when calling REST. If you use a saved admin token, the administrator will be displayed. If you use a token that comes in the POST request within the application frame, it will be the user who logged into the application.
+[*current_key]: The one whose token you used when calling REST. If you use a saved admin token, the administrator will be displayed. If you use the token that comes in the POST request in the application frame, it will be the user who logged into the application.

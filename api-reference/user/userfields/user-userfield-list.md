@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-The method `user.userfield.list` retrieves a list of custom fields based on a filter.
+The method `user.userfield.list` retrieves a list of custom fields based on the filter.
 
 ## Method Parameters
 
@@ -36,23 +36,23 @@ Possible values for `order_N`:
 || **filter** 
 [`array`](../../data-types.md)| Filter for the selected custom fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field_N` are similar to the fields in sorting.
+Possible values for `field_N` are similar to those in sorting.
 
-A key can have an additional prefix that specifies the behavior of the filter. Possible prefix values:
+An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN (an array is passed as a value)
-- `!@` — NOT IN (an array is passed as a value)
-- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
+- `@` — IN (an array is passed as the value)
+- `!@` — NOT IN (an array is passed as the value)
+- `%` — LIKE, substring search. The `%` symbol should not be passed in the filter value. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
   - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol should not be passed in the filter value. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
   - `"%mol%"` — searching for values where the substring "mol" is not present in any position
@@ -65,7 +65,7 @@ A key can have an additional prefix that specifies the behavior of the filter. P
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -92,6 +92,98 @@ A key can have an additional prefix that specifies the behavior of the filter. P
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'user.userfield.list',
+        {
+          order: {
+            id: 'desc',
+          },
+          filter: {
+            id: 13
+          },
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('user.userfield.list', {
+        order: {
+          id: 'desc',
+        },
+        filter: {
+          id: 13
+        },
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('user.userfield.list', {
+        order: {
+          id: 'desc',
+        },
+        filter: {
+          id: 13
+        },
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.userfield.list',
+                [
+                    'order' => [
+                        'id' => 'desc',
+                    ],
+                    'filter' => [
+                        'id' => 13
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching user fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "user.userfield.list",
         {
@@ -112,7 +204,7 @@ A key can have an additional prefix that specifies the behavior of the filter. P
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -156,7 +248,7 @@ HTTP status: **200**
             "SHOW_IN_LIST":"Y",
             "EDIT_IN_LIST":"Y",
             "IS_SEARCHABLE":"N",
-            "SETTINGS":{
+            "SETTINGS": {
                 "DISPLAY":"UI",
                 "LIST_HEIGHT":1,
                 "CAPTION_NO_VALUE":"",
@@ -199,13 +291,13 @@ HTTP status: **200**
             "SHOW_IN_LIST":"Y",
             "EDIT_IN_LIST":"Y",
             "IS_SEARCHABLE":"N",
-            "SETTINGS":{
+            "SETTINGS": {
                 "DEFAULT_VALUE":""
             }
         }
     ],
     "total":2,
-    "time":{
+    "time": {
         "start":1747313326.788124,
         "finish":1747313328.641663,
         "duration":1.853538990020752,

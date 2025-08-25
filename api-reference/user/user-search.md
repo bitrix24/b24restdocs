@@ -1,14 +1,14 @@
-# Get a list of users with a search by personal data user.search
+# Get a list of users with search by personal data user.search
 
 > Scope: [`user`](../scopes/permissions.md), [`user_brief`](../scopes/permissions.md), [`user_basic`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The `user.search` method allows you to retrieve a list of users with accelerated searching through personal data (first name, last name, middle name, department name, job title). It operates in two modes: quickly using **Fulltext Index** and a slower option through [right LIKE](*key_right LIKE) (support is determined automatically).
+The `user.search` method allows you to retrieve a list of users with accelerated search by personal data (first name, last name, middle name, department name, job title). It operates in two modes: quickly using **Fulltext Index** and a slower option through [right LIKE](*key_right LIKE) (support is determined automatically).
 
 {% note info "" %}
 
-The list of user fields in Bitrix24 that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in the [article](index.md).
+The list of user fields in Bitrix24 that will be obtained as a result of executing the method depends on the application's/webhook's scope. Details about accessing user data can be found in [the article](index.md).
 
 {% endnote %}
 
@@ -32,7 +32,7 @@ The method inherits the behavior of the [user.get](./user-get.md) method, and al
     - `extranet` — extranet user
     - `email` — email user
 
-Or `FIND` — the field that will search across all listed fields.
+Or `FIND` — the field that will search in all listed fields.
 
 {% note info "" %}
 
@@ -48,7 +48,7 @@ The method can work either with filtering using the FIND key or with all other f
 || **ADMIN_MODE**
 [`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to obtain data about any users ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../data-types.md) | The parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 
@@ -56,7 +56,7 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number ||
+`start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
 ## Code Examples
@@ -99,6 +99,62 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'user.search',
+    		{
+    			'UF_DEPARTMENT': 1,
+    			'SORT': 'ID',
+    			'ORDER': 'asc',
+    			'start': 10
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.search',
+                [
+                    'UF_DEPARTMENT' => 1,
+                    'SORT'         => 'ID',
+                    'ORDER'        => 'asc',
+                    'start'        => 10,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error searching for users: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "user.search",
         {
@@ -117,7 +173,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -231,4 +287,4 @@ HTTP status: **200**
 - [{#T}](./user-current.md)
 - [{#T}](./user-fields.md)
 
-[*key_right LIKE]: USER_NAME LIKE "Text%" - this is called right like, when the search is performed only on text that starts with the specified phrase but can have different endings - this search is significantly faster than two-way like "%text%" or left-sided "%text" - due to the architecture of storing indexed fields in the database.
+[*key_right LIKE]: USER_NAME LIKE "Text%" - this is called right like, when the search is performed only on text that starts with the specified phrase but can contain different endings - this search is significantly faster than two-way like "%text%" or left-sided "%text" - due to the architecture of storing indexed fields in the database.
