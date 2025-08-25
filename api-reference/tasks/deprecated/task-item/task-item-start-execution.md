@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method changes the status of the task to "in progress".
+This method changes the task status to "in progress".
 
 {% note warning %}
 
@@ -13,16 +13,16 @@ The method is deprecated and not supported. It is recommended to use the methods
 {% endnote %}
 
 
-## Method Parameters
+## Method parameters
 
 #|
 || **Name** | **Description** ||
 || **TASKID** | Task identifier ||
 |#
 
-## Code Examples
+## Code examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -49,6 +49,51 @@ The method is deprecated and not supported. It is recommended to use the methods
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.startexecution',
+    		[3]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.startexecution',
+                [3]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error starting task execution: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.startexecution',
         [3],
@@ -60,7 +105,7 @@ The method is deprecated and not supported. It is recommended to use the methods
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

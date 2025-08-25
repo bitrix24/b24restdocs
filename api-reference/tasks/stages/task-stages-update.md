@@ -1,14 +1,14 @@
-# Update the stage of the kanban or "Planner" task.stages.update
+# Update the stage of the kanban or "My Planner" task.stages.update
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for "Planner" stages
+> - any user for "My Planner" stages
 > - any user with access to the group for kanban stages
 
-The method updates the stages of the kanban or "Planner".
+The method updates the stages of the kanban or "My Planner".
 
-The method is also used to move a stage from one position to another. To do this, simply provide the desired `AFTER_ID`.
+The method is also used to move a stage from one position to another. To do this, simply pass the required `AFTER_ID`.
 
 ## Method Parameters
 
@@ -20,7 +20,7 @@ The method is also used to move a stage from one position to another. To do this
 || **id***
 [`integer`](../../data-types.md) | Identifier of the stage ||
 || **fields***
-[`array`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the kanban or "Planner" stage ||
+[`array`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the kanban or "My Planner" stage ||
 || **isAdmin**
 [`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided that the requester is an administrator of the account ||
 |#
@@ -81,6 +81,61 @@ When updating a group stage with insufficient permission level, an access error 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.stages.update',
+    		{
+    			id: stageId,
+    			fields: fields
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $stageId = 5;
+        $fields = [
+            'TITLE' => "New Stage",
+            'SORT' => 200,
+            'COLOR' => "FF5733"
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.stages.update',
+                [
+                    'id' => $stageId,
+                    'fields' => $fields
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating task stage: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const stageId = 5;
     const fields = {
         TITLE: "New Stage",
@@ -100,10 +155,10 @@ When updating a group stage with insufficient permission level, an access error 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // connect CRest PHP SDK
 
     $stageId = 5;
     $fields = [
@@ -112,7 +167,7 @@ When updating a group stage with insufficient permission level, an access error 
         "COLOR" => "FF5733"
     ];
 
-    // executing the request to the REST API
+    // execute request to REST API
     $result = CRest::call(
         'task.stages.update',
         [
@@ -121,7 +176,7 @@ When updating a group stage with insufficient permission level, an access error 
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Process the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {

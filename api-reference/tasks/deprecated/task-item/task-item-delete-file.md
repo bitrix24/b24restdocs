@@ -1,4 +1,4 @@
-# Delete File Attachment from Task task.item.deletefile
+# Delete file attachment from task task.item.deletefile
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 This method removes the file attachment from a task.
 
-## Method Parameters
+## Method parameters
 
 #|
 || **Name** | **Description** ||
@@ -15,9 +15,9 @@ This method removes the file attachment from a task.
 || **ATTACHMENT_ID** | Identifier of the attached file ||
 |#
 
-## Code Examples
+## Code examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -44,6 +44,58 @@ This method removes the file attachment from a task.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.deletefile',
+    		{
+    			TASK_ID: 3,
+    			ATTACHMENT_ID: 28
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.deletefile',
+                [
+                    'TASK_ID'       => 3,
+                    'ATTACHMENT_ID' => 28
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting file: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.deletefile',
         {
@@ -59,7 +111,7 @@ This method removes the file attachment from a task.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

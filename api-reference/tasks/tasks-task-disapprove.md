@@ -16,13 +16,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
 > Scope: [`task`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can perform the method: any user
 
 The method `tasks.task.disapprove` allows you to disapprove a task.
 
@@ -38,6 +38,52 @@ The method `tasks.task.disapprove` allows you to disapprove a task.
 
 - JS
 
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.disapprove',
+    		{taskId: 1}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.disapprove',
+                [
+                    'taskId' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . $result['answer']['result'];
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error disapproving task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'tasks.task.disapprove',
@@ -48,4 +94,4 @@ The method `tasks.task.disapprove` allows you to disapprove a task.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Footnote on examples](../../_includes/examples.md) %}

@@ -1,14 +1,14 @@
-# Translate a pending control task to "completed" status task.item.approve
+# Translate a task awaiting approval to "completed" status task.item.approve
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can perform the method: any user
 
-This method changes the status of a pending control task to "completed".
+The method changes the status of a task awaiting approval to "completed".
 
 {% note warning %}
 
-This method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ This method is deprecated and not supported. It is recommended to use the method
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,6 +48,51 @@ This method is deprecated and not supported. It is recommended to use the method
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.approve',
+    		[13]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.approve',
+                [13]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error approving task item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.approve',
         [13],
@@ -59,7 +104,7 @@ This method is deprecated and not supported. It is recommended to use the method
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

@@ -4,12 +4,12 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - curl examples are missing
 - response in case of error is absent
- 
+
 {% endnote %}
 
 {% endif %}
@@ -24,9 +24,9 @@ Some data may be missing here — we will fill it in shortly
 >
 > Who can execute the method: any user
 
-The method `tasks.task.list` returns an array of tasks, each containing an array of fields. Unlike [task.item.list](./deprecated/task-item/task-item-list.md), parameters in the `tasks.task.list` request can be specified in any order, and unnecessary parameters can be omitted.
+The method `tasks.task.list` returns an array of tasks, each containing an array of fields. Unlike [task.item.list](./deprecated/task-item/task-item-list.md), parameters in the request for `tasks.task.list` can be specified in any order, and unnecessary parameters can be omitted.
 
-To retrieve data for all tasks, the user must have admin rights. A department head will only have access to tasks within their branch of the hierarchy.
+To retrieve data for all tasks, the user must have admin rights. A department head will only have access to tasks in their branch of the hierarchy.
 
 Tasks marked as "Favorite" can also be retrieved by setting the filter parameter `$filter[::SUBFILTER-PARAMS][FAVORITE]=Y`.
 
@@ -64,14 +64,14 @@ The sorting field can take the following values:
 - **MARK** — Rating for task completion.
 - **CREATED_BY_LAST_NAME** — Last name of the task creator.
 - **RESPONSIBLE_LAST_NAME** — Last name of the task assignee.
-- **GROUP_ID** — Identifier of the workgroup.
+- **GROUP_ID** — Workgroup identifier.
 - **TIME_ESTIMATE** — Time allocated for the task.
 - **ALLOW_CHANGE_DEADLINE** — Flag allowing the assignee to change the deadline.
 - **ALLOW_TIME_TRACKING** — Flag enabling time tracking for the task.
 - **MATCH_WORK_TIME** — Flag indicating the need to skip weekends.
 - **FAVORITE** — Flag indicating that the task has been added to favorites.
 - **SORTING** — Sorting index.
-- **MESSAGE_ID** — Identifier of the search index.
+- **MESSAGE_ID** — Search index identifier.
 
 {% note info %}
 
@@ -117,14 +117,14 @@ Optional. By default, it is sorted in descending order by task identifier.
 - **CREATED_DATE** - creation date;
 - **CLOSED_DATE** - completion date;
 - **CHANGED_DATE** - last modification date;
-- **ACCOMPLICE** - identifier of the participant;
-- **AUDITOR** - identifier of the auditor;
+- **ACCOMPLICE** - co-assignee identifier;
+- **AUDITOR** - auditor identifier;
 - **DEPENDS_ON** - identifier of the previous task;
 - **ONLY_ROOT_TASKS** - only tasks that are not subtasks (root tasks), as well as subtasks of the parent task to which the current user does not have access (Y\|N).
 - **STAGE_ID** - stage;
 - **UF_CRM_TASK** - CRM entities;
 
-Before the filter field name, a filtering type can be specified:
+Before the filter field name, the type of filtering can be specified:
 - "!" - not equal
 - "<" - less than
 - "<=" - less than or equal to
@@ -156,8 +156,8 @@ Available fields:
 - **CREATED_BY** - creator;
 - **CREATED_DATE** - creation date;
 - **RESPONSIBLE_ID** - assignee;
-- **ACCOMPLICES** - identifier of the participant;
-- **AUDITORS** - identifier of the auditor;
+- **ACCOMPLICES** - co-assignee identifier;
+- **AUDITORS** - auditor identifier;
 - **CHANGED_BY** - who modified the task;
 - **CHANGED_DATE** - modification date;
 - **STATUS_CHANGED_DATE** - status change date;
@@ -182,7 +182,7 @@ Available fields:
 - **SITE_ID** - site identifier;
 - **SUBORDINATE** - subordinate task;
 - **FAVORITE** - Favorite;
-- **VIEWED_DATE** - date of last view;
+- **VIEWED_DATE** - last viewed date;
 - **SORTING** - sorting index;
 - **DURATION_PLAN** - time spent (planned);
 - **DURATION_FACT** - time spent (actual);
@@ -190,9 +190,9 @@ Available fields:
 
 By default, all **non-computed** fields of the main query table will be returned.
 
-The list of fields can be clarified by sending a request to [tasks.task.getFields](tasks-task-get-fields.md). ||
+The list of fields can be specified by sending a request to [tasks.task.getFields](tasks-task-get-fields.md). ||
 || **limit**
-[`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to retrieve a number of records greater than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in several requests of 50 records each. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
+[`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to retrieve more records than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in several requests of 50 records each. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
 ```js
 start=0
 start=50
@@ -200,7 +200,7 @@ start=100
 ```
 ||
 || **start**
-[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, the value of this parameter must always be a multiple of 50. For example, with a value of 50, the 51st record and subsequent ones will be displayed, while the first 50 records will be skipped.
+[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, the value of this parameter must always be a multiple of 50. For example, with a value of 50, the 51st record and subsequent ones will be displayed in the result, while the first 50 records will be skipped.
 
 With a value of `-1`, the count will be disabled. 
 
@@ -218,6 +218,104 @@ Output all unique tasks added to "Favorites" with a status greater than 2:
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'tasks.task.list',
+        {
+          filter: {
+            '>STATUS': 2,
+            'REPLICATE': 'N',
+            '::SUBFILTER-PARAMS': {
+              FAVORITE: 'Y'
+            }
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData().result || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('tasks.task.list', {
+        filter: {
+          '>STATUS': 2,
+          'REPLICATE': 'N',
+          '::SUBFILTER-PARAMS': {
+            FAVORITE: 'Y'
+          }
+        }
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('tasks.task.list', {
+        filter: {
+          '>STATUS': 2,
+          'REPLICATE': 'N',
+          '::SUBFILTER-PARAMS': {
+            FAVORITE: 'Y'
+          }
+        }
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.list',
+                [
+                    'filter' => [
+                        '>STATUS'           => 2,
+                        'REPLICATE'         => 'N',
+                        '::SUBFILTER-PARAMS' => [
+                            'FAVORITE' => 'Y',
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching task list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -345,6 +443,76 @@ Output all tasks with the title "task for test", filtering by fields `ID`, `TITL
 
 - JS
 
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'tasks.task.list',
+        {filter:{TITLE:'task for test'}, select: ['ID','TITLE','STATUS'], order:{ID:'asc'}},
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('tasks.task.list', {filter:{TITLE:'task for test'}, select: ['ID','TITLE','STATUS'], order:{ID:'asc'}}, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('tasks.task.list', {filter:{TITLE:'task for test'}, select: ['ID','TITLE','STATUS'], order:{ID:'asc'}}, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.list',
+                [
+                    'filter' => ['TITLE' => 'task for test'],
+                    'select' => ['ID', 'TITLE', 'STATUS'],
+                    'order'  => ['ID' => 'asc'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching task list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'tasks.task.list',
@@ -355,13 +523,14 @@ Output all tasks with the title "task for test", filtering by fields `ID`, `TITL
 
 {% endlist %}
 
+
 ## Example 3
 
 Example of disabling pagination:
 
 {% list tabs %}
 
-- PHP
+- PHP CRest
 
     ```php
     $result = CRest::call(
@@ -385,7 +554,7 @@ Task filters by ID, date, status. For the filter `'=ID' => 3`, it is recommended
 
 {% list tabs %}
 
-- PHP
+- PHP CRest
 
     ```php
     $filter = [];
@@ -438,7 +607,7 @@ Task filters by ID, date, status. For the filter `'=ID' => 3`, it is recommended
 
 {% endlist %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 ## Continue your study
 

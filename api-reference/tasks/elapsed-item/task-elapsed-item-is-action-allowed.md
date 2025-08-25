@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method checks whether an action is permitted on a record: creation, modification, and deletion.
+This method checks whether an action is allowed on a record: creation, modification, and deletion.
 
 ## Method Parameters
 
@@ -16,11 +16,11 @@ This method checks whether an action is permitted on a record: creation, modific
 
 The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method to get the list of tasks](../tasks-task-list.md) ||
 || **ITEMID***  
-[`integer`](../../data-types.md) | Identifier of the elapsed time record.
+[`integer`](../../data-types.md) | Identifier of the time spent record.
 
-It can be obtained when [creating a new record](./task-elapsed-item-add.md) or by using the [method to get the list of elapsed time records](./task-elapsed-item-get-list.md) ||
+It can be obtained when [creating a new record](./task-elapsed-item-add.md) or by using the [method to get the list of time spent records](./task-elapsed-item-get-list.md) ||
 || **ACTIONID***  
-[`integer`](../../data-types.md) | Identifier of the action:
+[`integer`](../../data-types.md) | Action identifier:
 - **1** — add a new record (`ACTION_ELAPSED_TIME_ADD`)
 - **2** — modify a record (`ACTION_ELAPSED_TIME_MODIFY`)
 - **3** — delete a record (`ACTION_ELAPSED_TIME_REMOVE`) ||
@@ -28,7 +28,7 @@ It can be obtained when [creating a new record](./task-elapsed-item-add.md) or b
 
 {% note warning %}
 
-It is mandatory to follow the order of parameters in the request as specified in the table. Otherwise, the request will execute with errors.
+It is mandatory to follow the order of parameters specified in the table in the request. Otherwise, the request will execute with errors.
 
 {% endnote %}
 
@@ -61,6 +61,60 @@ It is mandatory to follow the order of parameters in the request as specified in
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.elapseditem.isActionAllowed',
+    		{
+    			"TASKID" : 691,
+    			"ITEMID": 5,
+    			"ACTIONID": 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.elapseditem.isActionAllowed',
+                [
+                    'TASKID'   => 691,
+                    'ITEMID'   => 5,
+                    'ACTIONID' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error checking if action is allowed: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.elapseditem.isActionAllowed',
         {
@@ -78,7 +132,7 @@ It is mandatory to follow the order of parameters in the request as specified in
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -101,7 +155,7 @@ It is mandatory to follow the order of parameters in the request as specified in
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -120,14 +174,14 @@ HTTP Status: **200**
 ### Returned Data
 
 #|
-|| **Name**  
+|| **Name**
 `type` | **Description** ||
-|| **result**  
-[`boolean`](../../data-types.md) | Result of the permission check for the action:
-- `true` — permitted
-- `false` — not permitted
+|| **result**
+[`boolean`](../../data-types.md) | Result of the action permission check:
+- `true` — allowed
+- `false` — not allowed
  ||
-|| **time**  
+|| **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 

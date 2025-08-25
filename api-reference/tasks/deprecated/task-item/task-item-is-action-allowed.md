@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method returns `true` if the action is allowed. Otherwise, it will return `false`.
+The method returns `true` if the action is permitted. Otherwise, it will return `false`.
 
 {% note warning %}
 
@@ -51,6 +51,51 @@ It is mandatory to follow the order of parameters in the request. If this order 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.isactionallowed',
+    		[13, 6]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.isactionallowed',
+                [13, 6]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error checking if action is allowed: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.isactionallowed',
         [13, 6],
@@ -62,7 +107,7 @@ It is mandatory to follow the order of parameters in the request. If this order 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

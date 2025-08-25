@@ -1,12 +1,12 @@
-# Get a list of methods and their descriptions task.checklistitem.getmanifest
+# Get the list of methods and their descriptions task.checklistitem.getmanifest
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
 - missing examples (there should be three examples - curl, js, php)
-- no response in case of success
-- no response in case of error
+- no success response
+- no error response
 
 {% endnote %}
 
@@ -41,6 +41,51 @@ Maintaining the order of parameters in the request is mandatory. If violated, th
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.checklistitem.getmanifest',
+    		[]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.checklistitem.getmanifest',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting checklist item manifest: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.checklistitem.getmanifest',
         [],
@@ -54,4 +99,4 @@ Maintaining the order of parameters in the request is mandatory. If violated, th
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}

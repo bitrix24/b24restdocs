@@ -54,7 +54,7 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
 
 {% note warning %}
 
-It is mandatory to follow the specified order of parameters in the request as shown in the tables. Otherwise, the request will be executed with errors.
+It is mandatory to follow the order of parameters in the request as specified in the tables. Otherwise, the request will execute with errors.
 
 {% endnote %}
 
@@ -87,6 +87,62 @@ It is mandatory to follow the specified order of parameters in the request as sh
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.elapseditem.add',
+    		{
+    			"TASKID" : 691,
+    			"ARFIELDS": {
+    				"SECONDS": 113, 
+    				"COMMENT_TEXT": "comment text",
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.elapseditem.add',
+                [
+                    'TASKID'   => 691,
+                    'ARFIELDS' => [
+                        'SECONDS'      => 113,
+                        'COMMENT_TEXT' => 'comment text',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding elapsed item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.elapseditem.add',
         {
@@ -106,7 +162,7 @@ It is mandatory to follow the specified order of parameters in the request as sh
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -138,13 +194,13 @@ In case of a successful request, the server will return the identifier of the ne
 ```json
 {
     "result": 5,
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -166,8 +222,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"ERROR_CODE",
-    "error_description":"ACTION_NOT_ALLOWED"
+    "error": "ERROR_CODE",
+    "error_description": "ACTION_NOT_ALLOWED"
 }
 ```
 

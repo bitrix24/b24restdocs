@@ -2,7 +2,7 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: flow team; user who can assign tasks to the flow
+> Who can execute the method: flow team; user who can assign tasks in the flow
 
 The method `tasks.flow.Flow.get` returns flow data by its identifier.
 
@@ -13,7 +13,7 @@ The method `tasks.flow.Flow.get` returns flow data by its identifier.
 #|
 || **Name**
 `type` | **Description** ||
-|| **flowId*** [`integer`](../../data-types.md) | Identifier of the flow whose data needs to be retrieved.
+|| **flowId*** [`integer`](../../data-types.md) | The identifier of the flow whose data needs to be retrieved.
 
 You can obtain the identifier by creating a new flow using the method [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task using the method [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
@@ -50,6 +50,54 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.flow.Flow.get',
+    		{
+    			flowId: 517
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.flow.Flow.get',
+                [
+                    'flowId' => 517
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting flow: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.flow.Flow.get',
         {
@@ -65,14 +113,14 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
     $flowId = 517;
 
-    // executing the request to the REST API
+    // executing request to REST API
     $result = CRest::call(
         'tasks.flow.Flow.get',
         [
@@ -80,7 +128,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
         ]
     );
 
-    // Processing the response from Bitrix24
+    // Processing response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -146,9 +194,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`object`](../../data-types.md) | Object containing flow data ||
+[`object`](../../data-types.md) | Object with flow data ||
 || **id** 
-[`integer`](../../data-types.md) | Identifier of the flow ||
+[`integer`](../../data-types.md) | Flow identifier ||
 || **creatorId** 
 [`integer`](../../data-types.md) | Identifier of the flow creator. Read-only ||
 || **ownerId** 
@@ -158,23 +206,23 @@ HTTP status: **200**
 || **templateId** 
 [`integer`](../../data-types.md) | Identifier of the template used to create tasks in the flow ||
 || **efficiency** 
-[`integer`](../../data-types.md) | Efficiency of the flow in percentage. Read-only ||
+[`integer`](../../data-types.md) | Flow efficiency in percentage. Read-only ||
 || **active** 
-[`boolean`](../../data-types.md) | Status of the flow's activity ||
+[`boolean`](../../data-types.md) | Flow active status ||
 || **plannedCompletionTime** 
-[`integer`](../../data-types.md) | Planned time to complete the task in seconds ||
+[`integer`](../../data-types.md) | Planned task completion time in seconds ||
 || **activity** 
 [`string`](../../data-types.md) | Date and time of the last activity in the flow. Read-only ||
 || **name** 
-[`string`](../../data-types.md) | Name of the flow ||
+[`string`](../../data-types.md) | Flow name ||
 || **description** 
-[`string`](../../data-types.md) | Description of the flow ||
+[`string`](../../data-types.md) | Flow description ||
 || **distributionType** 
 [`string`](../../data-types.md) | Type of task distribution in the flow ||
 || **responsibleList**
-[`array`](../../data-types.md) | List of responsible persons for tasks in the flow. For manual distribution, this is the moderator of the flow ||
+[`array`](../../data-types.md) | List of responsible persons for tasks in the flow. For manual distribution, this is the flow moderator ||
 || **demo** 
-[`boolean`](../../data-types.md) | Indicates whether the flow is a demo. System parameter. Read-only ||
+[`boolean`](../../data-types.md) | Indicates if the flow is a demo. System parameter. Read-only ||
 || **responsibleCanChangeDeadline** 
 [`boolean`](../../data-types.md) | Can the responsible person change the task deadline ||
 || **matchWorkTime** 
@@ -184,9 +232,9 @@ HTTP status: **200**
 || **notifyAtHalfTime** 
 [`boolean`](../../data-types.md) | Should the assignee be notified at half the task deadline ||
 || **notifyOnQueueOverflow** 
-[`integer`](../../data-types.md) | Number of tasks in the queue, exceeding which will send a notification to the flow administrator (if `null`, notifications are disabled) ||
+[`integer`](../../data-types.md) | Number of tasks in the queue, exceeding which a notification will be sent to the flow administrator (if `null`, notifications are disabled) ||
 || **notifyOnTasksInProgressOverflow** 
-[`integer`](../../data-types.md) | Number of tasks in progress, exceeding which will send a notification to the flow administrator (if `null`, notifications are disabled) ||
+[`integer`](../../data-types.md) | Number of tasks in progress, exceeding which a notification will be sent to the flow administrator (if `null`, notifications are disabled) ||
 || **notifyWhenEfficiencyDecreases** 
 [`integer`](../../data-types.md) | Efficiency in percentage, below which a notification will be sent to the flow administrator (if `null`, notifications are disabled) ||
 || **taskCreators** 
@@ -194,13 +242,13 @@ HTTP status: **200**
 
 The element `{"meta-user": "all-users"}` means that all users can add tasks ||
 || **team**
-[`object`](../../data-types.md) | Team of the flow.
+[`object`](../../data-types.md) | Flow team.
 
 For manual distribution, this includes all project participants linked to the flow, except for the moderator. 
 
 For queue distribution and self-distribution, the team is the same as in `responsibleList` ||
 || **trialFeatureEnabled** 
-[`boolean`](../../data-types.md) | Indicates whether the trial period is enabled for the flow. System parameter. Read-only ||
+[`boolean`](../../data-types.md) | Indicates if the trial period is enabled for the flow. System parameter. Read-only ||
 |#
 
 ## Error Handling

@@ -8,7 +8,7 @@ The method returns a list of methods in the form of `task.item.*` along with the
 
 The return value of this method is not intended for automated processing, as its format may change without notice.
 
-This method can be useful as reference information, as it always contains up-to-date information.
+The method can be useful as reference information, as it always contains up-to-date information.
 
 {% note warning %}
 
@@ -45,6 +45,51 @@ The method is deprecated and not supported. It is recommended to use the methods
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.getmanifest',
+    		[]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.getmanifest',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task manifest: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.getmanifest',
         [],
@@ -56,7 +101,7 @@ The method is deprecated and not supported. It is recommended to use the methods
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

@@ -1,4 +1,4 @@
-# Get a List of Actions for the Task task.item.getallowedactions
+# Get a list of actions for the task task.item.getallowedactions
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -19,7 +19,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 || **TASKID** | Task identifier ||
 |#
 
-## Table of Identifiers and Allowed Actions for the Task
+## Table of identifiers and allowed actions for the task
 
 #|
 || **Identifier** | **Description** ||
@@ -45,7 +45,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -72,6 +72,51 @@ The method is deprecated and not supported. It is recommended to use the methods
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.getallowedactions',
+    		[13]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.getallowedactions',
+                [13]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting allowed actions: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.getallowedactions',
         [13],
@@ -83,7 +128,7 @@ The method is deprecated and not supported. It is recommended to use the methods
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

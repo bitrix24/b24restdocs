@@ -34,7 +34,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 || **PARAMS** | The parameter contains the key `AFFECT_CHILDREN`. It indicates whether to add the subtasks of this task to Favorites ||
 |#
 
-It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
+It is mandatory to follow the order of parameters in the request. If violated, the request will be executed with errors.
 
 ## Code Examples
 
@@ -65,6 +65,62 @@ It is mandatory to follow the order of parameters in the request. If this order 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"task.item.addtofavorite",
+    		{
+    			TASK_ID: 10,
+    			PARAMS: {
+    				AFFECT_CHILDREN: "Y"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.addtofavorite',
+                [
+                    'TASK_ID' => 10,
+                    'PARAMS'  => [
+                        'AFFECT_CHILDREN' => 'Y',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding task to favorites: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "task.item.addtofavorite",
         {
@@ -82,7 +138,7 @@ It is mandatory to follow the order of parameters in the request. If this order 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

@@ -6,7 +6,7 @@
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no response in case of an error
+- no response in case of error
 
 {% endnote %}
 
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `tasks.task.history.list` retrieves the history of a task.
+The method `tasks.task.history.list` retrieves the task history.
 
 It returns an array of data (see examples below).
 
@@ -33,21 +33,21 @@ You can filter and sort by all fields (see [tasks.task.list](./tasks-task-list.m
 || **taskId**
 [`unknown`](../data-types.md) | Task identifier. ||
 || **start**
-[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, the value of this parameter must always be a multiple of 50. For example, with a value of 50, the result will display the 51st record and subsequent ones, while the first 50 records will be skipped.
+[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, this parameter's value must always be a multiple of 50. For example, with a value of 50, the result will display the 51st record and subsequent ones, while the first 50 records will be skipped.
 
-With a value of -1, the count will be disabled.
+Setting the value to -1 will disable the count.
 
-Works for https requests.||
+Works for HTTPS requests.||
 |#
 
 ## Example 1
 
-Output the history of a specific task using the filter `NEW` (i.e., when the task was created):
+Output the history of a specific task using the `NEW` filter (i.e., when the task was created):
 ```js
 BX24.callMethod('tasks.task.history.list', {taskId: 119, filter:{FIELD:'NEW'}}, (res)=>{console.log(res.answer.result);});
 ```
 
-## Response on Success
+## Successful Response
 
 > 200 OK
 
@@ -93,6 +93,70 @@ Output the history of a specific task without using filters:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'task.planner.getlist',
+        {},
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('task.planner.getlist', {}, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('task.planner.getlist', {}, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.planner.getlist',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task planner list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.planner.getlist',
         [],
@@ -106,4 +170,6 @@ Output the history of a specific task without using filters:
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+![Result](_images/tasks_task_history_list-2.png =865x)
+
+{% include [Examples Note](../../_includes/examples.md) %}

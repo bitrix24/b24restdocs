@@ -20,11 +20,11 @@ You can check the permission to modify using the special method [task.elapsedite
 || **Name**
 `type` | **Description** ||
 || **TASKID***
-[`integer`](../../data-types.md) | Identifier of the task.
+[`integer`](../../data-types.md) | Task identifier.
 
 The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
 || **ITEMID***
-[`integer`](../../data-types.md) | Identifier of the time entry.
+[`integer`](../../data-types.md) | Time entry identifier.
 
 It can be obtained when [creating a new entry](./task-elapsed-item-add.md) or by using the [get time entry list method](./task-elapsed-item-get-list.md) ||
 || **ARFIELDS***
@@ -58,7 +58,7 @@ It can be obtained when [creating a new entry](./task-elapsed-item-add.md) or by
 
 {% note warning %}
 
-It is mandatory to follow the specified order of parameters in the request as shown in the tables. Otherwise, the request will execute with errors.
+It is mandatory to follow the specified order of parameters in the request as shown in the tables. Otherwise, the request will be executed with errors.
 
 {% endnote %}
 
@@ -91,6 +91,64 @@ It is mandatory to follow the specified order of parameters in the request as sh
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.elapseditem.update',
+    		{
+    			"TASKID": 691,
+    			"ITEMID": 5,
+    			"ARFIELDS": {
+    				"SECONDS": 113, 
+    				"COMMENT_TEXT": "comment text",
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.elapseditem.update',
+                [
+                    'TASKID'   => 691,
+                    'ITEMID'   => 5,
+                    'ARFIELDS' => [
+                        'SECONDS'      => 113,
+                        'COMMENT_TEXT' => 'comment text',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating elapsed item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.elapseditem.update',
         {
@@ -111,7 +169,7 @@ It is mandatory to follow the specified order of parameters in the request as sh
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -139,18 +197,18 @@ It is mandatory to follow the specified order of parameters in the request as sh
 
 HTTP status: **200**
 
-In case of successful execution of the request, the server will return `result:null`
+In case of a successful request, the server will return `result:null`
 
 ```json
 {
     "result": null,
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -161,8 +219,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"ERROR_CORE",
-    "error_description":"ACTION_NOT_ALLOWED"
+    "error": "ERROR_CORE",
+    "error_description": "ACTION_NOT_ALLOWED"
 }
 ```
 

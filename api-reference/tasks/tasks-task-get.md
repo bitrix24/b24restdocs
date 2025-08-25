@@ -6,9 +6,9 @@
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- examples are missing (should include three examples - **curl, js, php)
-- no response in case of error
-- no response in case of success
+- examples are missing (there should be three examples - **curl, js, php)
+- no error response is provided
+- no success response is provided
  
 {% endnote %}
 
@@ -37,7 +37,7 @@ You must specify fields in `select`, as default fields may change in the future.
 || **taskId**
 [`unknown`](../data-types.md) | Task identifier. ||
 || **select**
-[`unknown`](../data-types.md) | Array of record fields that will be returned by the method. You can specify only the fields that are necessary. 
+[`unknown`](../data-types.md) | Array of fields of records that will be returned by the method. You can specify only the fields that are necessary. 
 
 The field can take the following values: 
 - **ID** — task identifier; 
@@ -60,11 +60,11 @@ The field can take the following values:
 - **RESPONSIBLE_ID** — assignee; 
 - **ACCOMPLICE** — co-assignee identifier; 
 - **AUDITOR** — observer identifier; 
-- **CHANGED_BY** — who modified the task; 
-- **CHANGED_DATE** — modification date; 
+- **CHANGED_BY** — who changed the task; 
+- **CHANGED_DATE** — date of change; 
 - **STATUS_CHANGED_DATE** — who changed the status; 
 - **CLOSED_BY** — who closed the task; 
-- **CLOSED_DATE** — task closure date; 
+- **CLOSED_DATE** — task closing date; 
 - **DATE_START** — start date; 
 - **DEADLINE** — deadline; 
 - **START_DATE_PLAN** — planned start; 
@@ -109,6 +109,55 @@ To obtain custom fields and the binding field to CRM entities (`UF_CRM_TASK`), t
 
 - JS
 
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.get',
+    		{taskId: 1, select: ['ID', 'TITLE']}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.get',
+                [
+                    'taskId' => 1,
+                    'select' => ['ID', 'TITLE'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'tasks.task.get',
@@ -119,11 +168,58 @@ To obtain custom fields and the binding field to CRM entities (`UF_CRM_TASK`), t
 
 {% endlist %}
 
-Syntax for retrieving all fields:
+Syntax for selecting all fields:
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.get',
+    		{taskId:1367, select:['*']}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.get',
+                [
+                    'taskId' => 1367,
+                    'select' => ['*'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo $result;
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -140,4 +236,4 @@ Syntax for retrieving all fields:
 - [{#T}](../../tutorials/tasks/how-to-create-task-with-file.md)
 - [{#T}](../../tutorials/tasks/how-to-connect-task-to-spa.md)
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}

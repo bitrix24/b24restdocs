@@ -1,4 +1,4 @@
-# Delete User Field `task.item.userfield.delete`
+# Delete User Field task.item.userfield.delete
 
 {% if build == 'dev' %}
 
@@ -6,9 +6,9 @@
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- one example is missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
+- missing 1 example (should be three examples - curl, js, php)
+- no response in case of error
+- no response in case of success
 
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -40,20 +40,60 @@ The method `task.item.userfield.delete` removes a property.
 
 {% list tabs %}
 
-- cURL
-
-    ```http
-    $appParams = array(
-        'auth' => 'q21g8vhcqmxdrbhqlbd2wh6ev1debppa',
-        'ID' => 77
-    );
-    ```
-
-    ```http
-    $request = 'http://your-domain.com/rest/task.item.userfield.delete.xml?' . http_build_query($appParams);
-    ```
-
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.userfield.delete',
+    		{
+    			'auth': 'q21g8vhcqmxdrbhqlbd2wh6ev1debppa',
+    			'ID': 77
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.userfield.delete',
+                [
+                    'auth' => 'q21g8vhcqmxdrbhqlbd2wh6ev1debppa',
+                    'ID'   => 77
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -71,6 +111,19 @@ The method `task.item.userfield.delete` removes a property.
     );
     ```
 
+- cURL
+
+    ```http
+    $appParams = array(
+        'auth' => 'q21g8vhcqmxdrbhqlbd2wh6ev1debppa',
+        'ID' => 77
+    );
+    ```
+
+    ```http
+    $request = 'http://your-domain.com/rest/task.item.userfield.delete.xml?' . http_build_query($appParams);
+    ```
+
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}

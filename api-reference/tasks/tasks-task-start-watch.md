@@ -1,4 +1,4 @@
-# Enable Task Monitoring tasks.task.startwatch
+# Enable Task Watching tasks.task.startwatch
 
 {% if build == 'dev' %}
 
@@ -7,8 +7,8 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- no response in case of error
-- no response in case of success
+- no error response is provided
+- no success response is provided
  
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `tasks.task.startwatch` allows monitoring a task.
+The method `tasks.task.startwatch` allows you to watch a task.
 
 #|
 || **Parameter** / **Type** | **Description** ||
@@ -37,6 +37,52 @@ The method `tasks.task.startwatch` allows monitoring a task.
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.startwatch',
+    		{taskId: 1}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.startwatch',
+                [
+                    'taskId' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo $result['answer']['result'];
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error starting watch on task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

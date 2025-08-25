@@ -4,12 +4,12 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Additional example needed with explanation on linking the task to CRM
+- An additional example is needed with an explanation on linking a task to CRM
 - Parameter types are not specified
 - Required parameters are not indicated
-- Missing examples (should include three examples - curl, js, php)
-- Missing response in case of error
-- Missing response in case of success
+- Examples are missing (there should be three examples - curl, js, php)
+- Response in case of error is missing
+- Response in case of success is missing
  
 {% endnote %}
 
@@ -17,7 +17,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -61,6 +61,82 @@ The method `tasks.task.update` updates a task.
 
 - JS
 
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"tasks.task.update",
+    		{
+    			taskId: 11, // Task identifier you want to update
+    			fields: {
+    				// Example of passing multiple values in the UF_CRM_TASK field
+    				UF_CRM_TASK: [
+    					"L_4", // Link to lead with id 4
+    					"C_7", // Link to contact with id 7
+    					"CO_5", // Link to company with id 5
+    					"D_10" // Link to deal with id 10
+    				],
+    				// Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
+    				UF_TASK_WEBDAV_FILES: [
+    					"n12345", // Identifier of the first disk file
+    					"n67890" // Identifier of the second disk file
+    				],
+    				RESPONSIBLE_ID: 123 // Identifier of the new assignee
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info("Task successfully updated");
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.update',
+                [
+                    'taskId' => 11, // Task identifier you want to update
+                    'fields' => [
+                        // Example of passing multiple values in the UF_CRM_TASK field
+                        'UF_CRM_TASK' => [
+                            'L_4', // Link to lead with id 4
+                            'C_7', // Link to contact with id 7
+                            'CO_5', // Link to company with id 5
+                            'D_10' // Link to deal with id 10
+                        ],
+                        // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
+                        'UF_TASK_WEBDAV_FILES' => [
+                            'n12345', // Identifier of the first disk file
+                            'n67890' // Identifier of the second disk file
+                        ],
+                        'RESPONSIBLE_ID' => 123 // Identifier of the new assignee
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Task successfully updated';
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
    ```javascript
     BX24.callMethod(
         "tasks.task.update",
@@ -79,7 +155,7 @@ The method `tasks.task.update` updates a task.
                     "n12345", // Identifier of the first disk file
                     "n67890" // Identifier of the second disk file
                 ],
-                RESPONSIBLE_ID: 123 // Identifier of the new executor
+                RESPONSIBLE_ID: 123 // Identifier of the new assignee
             }
         },
         function(result) {
@@ -92,7 +168,7 @@ The method `tasks.task.update` updates a task.
     );
     ```
 
-- PHP 
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -114,7 +190,7 @@ The method `tasks.task.update` updates a task.
                     'n12345', // Identifier of the first disk file
                     'n67890' // Identifier of the second disk file
                 ],
-                'RESPONSIBLE_ID' => 123 // Identifier of the new executor
+                'RESPONSIBLE_ID' => 123 // Identifier of the new assignee
             ]
         ]
     );
@@ -126,7 +202,7 @@ The method `tasks.task.update` updates a task.
     }
     ```
 
-- HTTP 
+- HTTP
 
     ```bash
     POST /rest/tasks.task.update.json
@@ -146,7 +222,7 @@ The method `tasks.task.update` updates a task.
 
 {% endlist %}
 
-Method parameters for attaching a file to the task from the disk:
+Method parameters for attaching a file to a task from the disk:
 
 ```json
 {"taskId": "77", "fields": {"UF_TASK_WEBDAV_FILES": ["n111"]}}
@@ -165,6 +241,84 @@ You need to add the letter `n` at the beginning.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.add',
+    		{
+    			data: {
+    				fields: {
+    					"TITLE": 'REST',
+    					"RESPONSIBLE_ID": 1,
+    					"SE_PARAMETER": [
+    						{
+    							'VALUE': 'Y',
+    							'CODE': 3
+    						},
+    						{
+    							'VALUE': 'Y',
+    							'CODE': 2
+    						},
+    					]
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.add',
+                [
+                    'data' => [
+                        'fields' => [
+                            'TITLE'          => 'REST',
+                            'RESPONSIBLE_ID' => 1,
+                            'SE_PARAMETER'   => [
+                                [
+                                    'VALUE' => 'Y',
+                                    'CODE'  => 3
+                                ],
+                                [
+                                    'VALUE' => 'Y',
+                                    'CODE'  => 2
+                                ],
+                            ]
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX.ajax.runAction("tasks.task.add", {
@@ -195,7 +349,7 @@ Code values:
 2. automatically complete the task when subtasks are completed (and vice versa)
 3. mandatory report upon task completion
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Examples Note](../../_includes/examples.md) %}
 
 ## Continue Learning
 

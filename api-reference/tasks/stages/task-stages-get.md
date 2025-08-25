@@ -6,7 +6,7 @@
 > - any user for "My Planner" stages
 > - any user with access to the group for Kanban stages
 
-This method retrieves the stages of the Kanban or "My Planner".
+The method retrieves the stages of the Kanban or "My Planner".
 
 ## Method Parameters
 
@@ -19,9 +19,9 @@ This method retrieves the stages of the Kanban or "My Planner".
 [`integer`](../../data-types.md) | Identifier of the object.
 
 Possible values:
-- `ID` of the group — the method will retrieve the Kanban stages of the group. An access error will be returned if the permission level is insufficient.
+- `ID` of the group — the method will retrieve the stages of the group's Kanban. An access error will be returned if the permission level is insufficient.
 - `0` — the method will retrieve the stages of "My Planner" for the current user. ||
-|| **isAdmin** 
+|| **isAdmin**
 [`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided that the requester is an administrator of the account. ||
 |#
 
@@ -57,6 +57,52 @@ Possible values:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.stages.get',
+    		{
+    			entityId: entityId,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.stages.get',
+                [
+                    'entityId' => $entityId,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task stages: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const entityId = 0;
     BX24.callMethod(
         'task.stages.get',
@@ -70,7 +116,7 @@ Possible values:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
@@ -116,7 +162,7 @@ HTTP Status: **200**
         },
         "6": {
          "ID": "6",
-         "TITLE": "Will Do This Week",
+         "TITLE": "I will do it this week",
          "SORT": "200",
          "COLOR": "47D1E2",
          "SYSTEM_TYPE": null,
@@ -162,7 +208,7 @@ System parameter. Always has the value of an empty array. ||
 || **TO_UPDATE_ACCESS** 
 `null` | Functions applied to the task when moving to this stage.
 
-System parameter. Always has the value of `null`. ||
+System parameter. Always has the value `null`. ||
 |#
 
 ## Error Handling

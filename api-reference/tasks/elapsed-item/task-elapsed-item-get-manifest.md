@@ -1,18 +1,18 @@
-# Get a List of Methods and Their Descriptions task.elapseditem.getmanifest
+# Get a list of methods and their descriptions task.elapseditem.getmanifest
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns a list of methods in the form of `task.elapseditem.*` along with their descriptions.
+The method returns a list of methods in the form of `task.elapseditem.*` and their descriptions.
 
 The return value of this method is not intended for automated processing, as its format may change without notice.
 
-This method can be useful as reference information, as it always contains up-to-date information.
+The method can be useful as reference information, as it always contains up-to-date information.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -39,6 +39,50 @@ This method can be useful as reference information, as it always contains up-to-
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.elapseditem.getmanifest',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.elapseditem.getmanifest',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting manifest: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.elapseditem.getmanifest',
         {},
@@ -52,7 +96,7 @@ This method can be useful as reference information, as it always contains up-to-
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -71,11 +115,11 @@ This method can be useful as reference information, as it always contains up-to-
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
+    "result": {
         "Manifest version": "1.2",
         "Manifest change date": "22 Feb 2018",
         "Warning": "Don't rely on the format of this manifest, it can be changed without any notifications!",
@@ -334,13 +378,13 @@ HTTP Status: **200**
             }
         }
     },
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -351,7 +395,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Descriptions of the methods `task.elapseditem.*` ||
+[`object`](../../data-types.md) | Description of methods `task.elapseditem.*` ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#

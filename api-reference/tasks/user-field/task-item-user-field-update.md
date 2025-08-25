@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -35,28 +35,67 @@ The method `task.item.userfield.update` is used to edit the properties' paramete
 || **ID**
 [`unknown`](../../data-types.md) | Identifier of the user field. ||
 || **DATA**
-[`unknown`](../../data-types.md) | Array `array('field'=>'value', ...)`. Contains the values of the parameters being edited. ||
+[`unknown`](../../data-types.md) | Array `array('field'=>'value', ...)`. Contains values of the parameters to be edited. ||
 |#
 
 ## Examples
 
 {% list tabs %}
 
-- cURL
-
-    ```http
-    $appParams = array(
-        'auth' => 'q21g8vhcqmxdrbhqlbd2wh6ev1debppa',
-        'ID' => 77,
-        'DATA' => array('XML_ID' => 'new_external_id')
-    );
-    ```
-
-    ```http
-    $request = 'http://your-domain.com/rest/task.item.userfield.update.xml?' . http_build_query($appParams);
-    ```
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.userfield.update',
+    		{
+    			'auth': 'q21g8vhcqmxdrbhqlbd2wh6ev1debppa',
+    			'ID': 77,
+    			'DATA': {'XML_ID': 'new_external_id'}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.userfield.update',
+                [
+                    'auth' => 'q21g8vhcqmxdrbhqlbd2wh6ev1debppa',
+                    'ID' => 77,
+                    'DATA' => ['XML_ID' => 'new_external_id']
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -73,6 +112,20 @@ The method `task.item.userfield.update` is used to edit the properties' paramete
             console.log(result);
         }
     );
+    ```
+
+- cURL
+
+    ```http
+    $appParams = array(
+        'auth' => 'q21g8vhcqmxdrbhqlbd2wh6ev1debppa',
+        'ID' => 77,
+        'DATA' => array('XML_ID' => 'new_external_id')
+    );
+    ```
+
+    ```http
+    $request = 'http://your-domain.com/rest/task.item.userfield.update.xml?' . http_build_query($appParams);
     ```
 
 {% endlist %}

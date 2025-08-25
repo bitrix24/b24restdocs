@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
 || **auth**
 [`unknown`](../../data-types.md) | Authorization token. ||
 || **PARAMS**
-[`unknown`](../../data-types.md) | Array with property parameters in the form `array("parameter": 'value' [, ...])`, containing the following parameters: 
+[`unknown`](../../data-types.md) | An array with property parameters of the form `array("parameter": 'value' [, ...])`, containing the following parameters: 
 - `USER_TYPE_ID` - data type of the custom field. Allowed values: 
   - `string` — string
   - `double` — number
@@ -54,7 +54,7 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
 - cURL (Webhook)
 
     ```bash
-    curl -X POST "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.item.userfield.add" \
+    curl -X POST "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/task.item.userfield.add" \
         -H "Content-Type: application/json" \
         -d '{
             "PARAMS": {
@@ -73,7 +73,7 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
 - cURL (OAuth)
 
     ```bash
-    curl -X POST "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.item.userfield.add" \
+    curl -X POST "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/task.item.userfield.add" \
         -H "Content-Type: application/json" \
         -d '{
             "PARAMS": {
@@ -91,6 +91,68 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.userfield.add',
+    		{
+    			PARAMS:
+    			{
+    				'USER_TYPE_ID' : 'string',
+    				'FIELD_NAME' : 'NEW_TASKS_FIELD',
+    				'XML_ID' : 'MY_TASK_FIELD',
+    				'EDIT_FORM_LABEL' : {'en':'New task field', 'de':'Neues Aufgabenfeld'},
+    				'LABEL' : 'New task field'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.userfield.add',
+                [
+                    'PARAMS' => [
+                        'USER_TYPE_ID'    => 'string',
+                        'FIELD_NAME'      => 'NEW_TASKS_FIELD',
+                        'XML_ID'          => 'MY_TASK_FIELD',
+                        'EDIT_FORM_LABEL' => ['en' => 'New task field', 'de' => 'Neues Aufgabenfeld'],
+                        'LABEL'           => 'New task field',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -113,7 +175,7 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -141,4 +203,4 @@ When creating a custom field, the field name `FIELD_NAME` must use the prefix `U
 
 {% endlist %}
 
-{% include [Examples note](../../../_includes/examples.md) %}
+{% include [Note about examples](../../../_includes/examples.md) %}

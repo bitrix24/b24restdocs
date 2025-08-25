@@ -8,7 +8,7 @@ The method `task.commentitem.isactionallowed` checks if an action is allowed for
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -16,11 +16,11 @@ The method `task.commentitem.isactionallowed` checks if an action is allowed for
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method to get the list of tasks](../tasks-task-list.md) ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Comment identifier.
 
-The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [get comment list method](./task-comment-item-get-list.md) ||
+The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [method to get the list of comments](./task-comment-item-get-list.md) ||
 || **ACTIONID***
 [`integer`](../../data-types.md) | Identifier of the action being checked:
 - `1` — add comment 
@@ -30,7 +30,7 @@ The comment identifier can be obtained when [adding a new comment](./task-commen
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -57,6 +57,59 @@ The comment identifier can be obtained when [adding a new comment](./task-commen
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.commentitem.isactionallowed',
+    		{
+    			"TASKID": 8017,
+    			"ITEMID": 3157,
+    			"ACTIONID": 2
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.commentitem.isactionallowed',
+                [
+                    'TASKID'   => 8017,
+                    'ITEMID'   => 3157,
+                    'ACTIONID' => 2,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error checking if action is allowed: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.commentitem.isactionallowed',
         {
@@ -71,7 +124,7 @@ The comment identifier can be obtained when [adding a new comment](./task-commen
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -118,11 +171,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Result of the action check:
+[`object`](../../data-types.md) | Result of the action permission check:
 - `true` — allowed
 - `false` — not allowed
 
-Also returns `false` if non-existent identifiers are specified in the parameters. For example, if a task with `ID` = `95623` does not exist in the system  ||
+Also returns `false` if non-existent identifiers are specified in the parameters. For example, if a task with `ID` = `95623` does not exist in the system ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

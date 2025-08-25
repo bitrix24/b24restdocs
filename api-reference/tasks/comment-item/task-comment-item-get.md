@@ -22,11 +22,11 @@ Pass parameters in the request according to the order in the table. If the order
 || **TASKID***
 [`integer`](../../data-types.md) | Task ID.
 
-The task ID can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
+The task ID can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method for retrieving the list of tasks](../tasks-task-list.md) ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Comment ID.
 
-The comment ID can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [get comment list method](./task-comment-item-get-list.md) ||
+The comment ID can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [method for retrieving the list of comments](./task-comment-item-get-list.md) ||
 |#
 
 ## Code Examples
@@ -58,6 +58,57 @@ The comment ID can be obtained when [adding a new comment](./task-comment-item-a
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.commentitem.get',
+    		{
+    			"TASKID": 8017,
+    			"ITEMID": 3157
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.commentitem.get',
+                [
+                    'TASKID' => 8017,
+                    'ITEMID' => 3157
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task comments: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.commentitem.get',
         {
@@ -71,7 +122,7 @@ The comment ID can be obtained when [adding a new comment](./task-comment-item-a
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -93,7 +144,7 @@ The comment ID can be obtained when [adding a new comment](./task-comment-item-a
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -104,7 +155,7 @@ HTTP status: **200**
         "AUTHOR_NAME": "John Smith",
         "AUTHOR_EMAIL": "",
         "POST_DATE": "2025-07-15T14:30:00+02:00",
-        "POST_MESSAGE": "Text of the new comment for the task",
+        "POST_MESSAGE": "Text of the new comment on the task",
         "ATTACHED_OBJECTS": {
             "973": {
                 "ATTACHMENT_ID": "973",
@@ -151,9 +202,9 @@ HTTP status: **200**
 || **AUTHOR_ID**
 [`string`](../../data-types.md) | Author ID of the comment ||
 || **AUTHOR_NAME**
-[`string`](../../data-types.md) | Author name of the comment ||
+[`string`](../../data-types.md) | Name of the comment author ||
 || **AUTHOR_EMAIL**
-[`string`](../../data-types.md) | Author email of the comment ||
+[`string`](../../data-types.md) | Email of the comment author ||
 || **POST_DATE**
 [`string`](../../data-types.md) | Date and time of comment creation ||
 || **POST_MESSAGE**
@@ -178,14 +229,14 @@ HTTP status: **200**
 || **FILE_ID**
 [`string`](../../data-types.md) | File ID on Drive ||
 || **DOWNLOAD_URL**
-[`string`](../../data-types.md) | URL to download the file ||
+[`string`](../../data-types.md) | URL for downloading the file ||
 || **VIEW_URL**
-[`string`](../../data-types.md) | URL to view the file ||
+[`string`](../../data-types.md) | URL for viewing the file ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

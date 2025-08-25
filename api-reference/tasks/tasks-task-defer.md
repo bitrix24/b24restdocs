@@ -5,7 +5,7 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing (there should be three examples - curl, js, php)
 - response in case of error is missing
 - response in case of success is missing
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `tasks.task.defer` changes the task status to "deferred".
+The method `tasks.task.defer` changes the status of a task to "deferred".
 
 #|
 || **Parameter** / **Type** | **Description** ||
@@ -37,6 +37,52 @@ The method `tasks.task.defer` changes the task status to "deferred".
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.defer',
+    		{taskId: 1}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.defer',
+                [
+                    'taskId' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . $result['answer']['result'];
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deferring task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

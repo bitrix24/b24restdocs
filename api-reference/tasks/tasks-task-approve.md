@@ -7,8 +7,8 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of error is missing
-- response in case of success is missing
+- no response in case of error
+- no response in case of success
  
 {% endnote %}
 
@@ -16,13 +16,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
 > Scope: [`task`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can perform the method: any user
 
 The method `tasks.task.approve` allows you to approve a task.
 
@@ -38,6 +38,52 @@ The method `tasks.task.approve` allows you to approve a task.
 
 - JS
 
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.approve',
+    		{taskId: 1}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.approve',
+                [
+                    'taskId' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo $result['answer']['result'];
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error approving task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'tasks.task.approve',
@@ -48,4 +94,4 @@ The method `tasks.task.approve` allows you to approve a task.
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Footnote on examples](../../_includes/examples.md) %}

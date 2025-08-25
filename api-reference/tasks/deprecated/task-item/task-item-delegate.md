@@ -17,7 +17,7 @@ This method is deprecated and not supported. It is recommended to use the method
 #|
 || **Name** | **Description** ||
 || **TASKID** | Task identifier ||
-|| **USERID** | Identifier of the new assignee (responsible) ||
+|| **USERID** | Identifier of the new Assignee (responsible) ||
 |#
 
 It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
@@ -51,6 +51,51 @@ It is mandatory to follow the order of parameters in the request. If this order 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.delegate',
+    		[13, 3]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.delegate',
+                [13, 3]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error delegating task item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.delegate',
         [13, 3],
@@ -62,7 +107,7 @@ It is mandatory to follow the order of parameters in the request. If this order 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

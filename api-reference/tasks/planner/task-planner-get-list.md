@@ -12,7 +12,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -60,8 +60,8 @@ No parameters.
         console.error("Request failed", error);
     }
 
-    // fetchListMethod is preferred when working with large datasets.
-    // The method implements iterative fetching using a generator, which
+    // fetchListMethod is preferable when working with large datasets.
+    // The method implements iterative selection using a generator, which
     // allows processing data in parts and efficiently using memory.
 
     try {
@@ -76,7 +76,7 @@ No parameters.
     }
 
     // callMethod provides manual control over the pagination
-    // of data retrieval through the start parameter. It is suitable for scenarios where
+    // data retrieval process through the start parameter. It is suitable for scenarios where
     // precise control over request batches is required. However, with large
     // volumes of data, it may be less efficient compared to
     // fetchListMethod.
@@ -113,6 +113,69 @@ No parameters.
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching task planner list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'task.planner.getlist',
+        {},
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, which allows processing data in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('task.planner.getlist', {}, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination data retrieval process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('task.planner.getlist', {}, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.planner.getlist',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result->data(), true);
+        echo 'Full Result: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task planner list: ' . $e->getMessage();
     }
     ```
 

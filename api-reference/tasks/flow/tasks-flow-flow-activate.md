@@ -2,9 +2,9 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: creator or administrator of the flow
+> Who can execute the method: flow creator or administrator
 
-The method `tasks.flow.Flow.activate` turns the flow on or off based on its identifier. If the flow is off, it turns it on. If it is on, it turns it off.
+The method `tasks.flow.Flow.activate` turns a flow on or off by its identifier. If the flow is off, it turns it on. If it is on, it turns it off.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ The method `tasks.flow.Flow.activate` turns the flow on or off based on its iden
 || **Name**
 `type` | **Description** ||
 || **flowId*** 
-[`integer`](../../data-types.md) | The identifier of the flow to be activated or deactivated. 
+[`integer`](../../data-types.md) | The identifier of the flow to be turned on or off. 
 
 You can obtain the identifier by creating a new flow using the method [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task using the method [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
@@ -26,7 +26,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
 {% list tabs %}
 
 - cURL (Webhook)
-  
+
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
@@ -51,6 +51,56 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.flow.Flow.activate',
+    		{
+    			flowId: 517
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.flow.Flow.activate',
+                [
+                    'flowId' => 517
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error activating flow: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.flow.Flow.activate',
         {
@@ -66,7 +116,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK

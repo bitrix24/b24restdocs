@@ -6,7 +6,7 @@
 
 The method `task.commentitem.getmanifest` retrieves up-to-date information about methods for working with task comments `task.commentitem.*`.
 
-It is recommended to use it only as a reference, as the response structure may change at any time without notice.
+It is recommended to use it only as a reference, as the response structure of the method can be changed by the developer at any time.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -41,6 +41,50 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.commentitem.getmanifest',
+    		[]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.commentitem.getmanifest',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result->data(), true);
+        echo 'Full Result: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task comment item manifest: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.commentitem.getmanifest',
         [],
@@ -52,7 +96,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- missing examples (should include three examples - curl, js, php)
+- missing examples (should have three examples - curl, js, php)
 - missing success response
 - missing error response
 
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -35,6 +35,51 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.userfield.getfields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.userfield.getfields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting user fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.userfield.getfields',
         {},
@@ -48,7 +93,7 @@ No parameters.
 
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}
 
 ## List of Fields
 
@@ -91,5 +136,5 @@ No parameters.
 || **LIST**
 [`uf_enum_element`](../../data-types.md) | List elements | Multiple ||
 || **SETTINGS**
-[`object`](../../data-types.md) | Additional settings (dependent on type) ||
+[`object`](../../data-types.md) | Additional settings (depend on type) ||
 |#

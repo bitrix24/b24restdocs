@@ -1,10 +1,10 @@
-# Get Time Entry by ID task.elapseditem.get
+# Get elapsed time record by identifier task.elapseditem.get
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns a time entry by its ID.
+The method returns a record of elapsed time by its identifier.
 
 ## Method Parameters
 
@@ -14,13 +14,13 @@ The method returns a time entry by its ID.
 || **Name**
 `type` | **Description** ||
 || **TASKID***
-[`integer`](../../data-types.md) | Task ID.
+[`integer`](../../data-types.md) | Identifier of the task.
 
-The task ID can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [getting task list method](../tasks-task-list.md) ||
 || **ITEMID***
-[`integer`](../../data-types.md) | Time entry ID.
+[`integer`](../../data-types.md) | Identifier of the elapsed time record.
 
-It can be obtained when [creating a new entry](./task-elapsed-item-add.md) or by using the [get time entry list method](./task-elapsed-item-get-list.md) ||
+It can be obtained when [creating a new record](./task-elapsed-item-add.md) or by using the [getting elapsed time records list method](./task-elapsed-item-get-list.md) ||
 |#
 
 {% note warning %}
@@ -58,6 +58,58 @@ It is mandatory to follow the order of parameters in the request as specified in
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.elapseditem.get',
+    		{
+    			"TASKID": 691,
+    			"ITEMID": 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.elapseditem.get',
+                [
+                    'TASKID' => 691,
+                    'ITEMID' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting elapsed item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.elapseditem.get',
         {
@@ -74,7 +126,7 @@ It is mandatory to follow the order of parameters in the request as specified in
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -96,7 +148,7 @@ It is mandatory to follow the order of parameters in the request as specified in
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -131,14 +183,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Information about the time entry ||
+[`object`](../../data-types.md) | Information about the elapsed time record ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

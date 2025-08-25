@@ -4,19 +4,19 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for standard writing
+- edits needed for standard writing
 - parameter types not specified
 - parameter requirements not indicated
 - examples missing (should include three examples - curl, js, php)
 - no error response provided
- 
+
 {% endnote %}
 
 {% endif %}
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -38,12 +38,12 @@ You can filter by:
 || **groupId**
 [`unknown`](../data-types.md) | User group identifier. ||
 || **type**
-[`unknown`](../data-types.md) | Counter roles: 
+[`unknown`](../data-types.md) |Counter roles: 
 - **view_all** - all roles; 
-- **view_role_responsible** - "Responsible" role; 
-- **view_role_accomplice** - "Accomplice" role; 
-- **view_role_auditor** - "Auditor" role; 
-- **view_role_originator** - "Originator" role. 
+- **view_role_responsible** - "Doing" role; 
+- **view_role_accomplice** - "Helping" role; 
+- **view_role_auditor** - "Observing" role; 
+- **view_role_originator** - "Assigned" role. 
 ||
 |#
 
@@ -52,6 +52,52 @@ You can filter by:
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.counters.get',
+    		{userId: 1, groupId: 0, type: 'view_all'}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.counters.get',
+                [
+                    'userId' => 1,
+                    'groupId' => 0,
+                    'type'    => 'view_all',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result['answer']['result'], true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task counters: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod('tasks.task.counters.get', {userId:1, groupId:0, type:'view_all'}, (res)=>{console.log(res.answer.result);});

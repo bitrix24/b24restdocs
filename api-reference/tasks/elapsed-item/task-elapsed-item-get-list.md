@@ -1,4 +1,4 @@
-# Get a List of Time Spent Records task.elapseditem.getlist
+# Get a list of time spent records task.elapseditem.getlist
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
@@ -16,20 +16,20 @@ The method returns a list of time spent records for a task.
 
 The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
 || **ORDER**
-[`object`](../../data-types.md) | An object for sorting the result (detailed description provided below) ||
+[`object`](../../data-types.md) | Object for sorting the result (detailed description provided below) ||
 || **FILTER**
-[`object`](../../data-types.md) | An object for filtering the result (detailed description provided below) ||
+[`object`](../../data-types.md) | Object for filtering the result (detailed description provided below) ||
 || **SELECT**
-[`array`](../../data-types.md) | An array of fields from the records that will be returned by the method. You can specify only the fields you need. If the array contains the value `"*"`, all available fields will be returned.
+[`array`](../../data-types.md) | Array of fields of records that will be returned by the method. You can specify only the fields that are necessary. If the array contains the value `"*"`, all available fields will be returned.
 
-By default, all fields from the main query table will be returned ||
+By default, all fields of the main query table will be returned ||
 || **PARAMS**
-[`object`](../../data-types.md) | An object for call options. The element is an object `NAV_PARAMS` of the form `{'call option': 'value' [, ...]}` (detailed description provided below) in the form of a structure ||
+[`object`](../../data-types.md) | Object for call options. The element is an object `NAV_PARAMS` of the form `{'call option': 'value' [, ...]}` (detailed description provided below) in the structure ||
 |#
 
 {% note warning %}
 
-It is mandatory to follow the specified order of parameters in the request as shown in the table. Otherwise, the request will execute with errors.
+It is mandatory to follow the order of parameters specified in the table in the request. Otherwise, the request will execute with errors.
 
 {% endnote %}
 
@@ -101,7 +101,7 @@ Before the name of the filtered field, you can specify the type of filtering:
 - ">" — greater than
 - ">=" — greater than or equal to
 
-*'filter values'* — a single value or an array
+*'filter values'* — single value or array
 
 {% endnote %}
 
@@ -118,7 +118,7 @@ Before the name of the filtered field, you can specify the type of filtering:
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -144,9 +144,112 @@ Before the name of the filtered field, you can specify the type of filtering:
 
 - JS
 
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'task.elapseditem.getlist',
+        [
+          1, 
+          {'ID': 'desc'},
+          {'<ID': 50}
+        ],
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('task.elapseditem.getlist', [{'ID': 'desc'}, {'>=CREATED_DATE': '2024-02-16'}, ['ID', 'TASK_ID'], {"NAV_PARAMS":{"nPageSize":2}}], 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('task.elapseditem.getlist', [{'ID': 'desc'}, {'>=CREATED_DATE': '2024-02-16'}, ['ID', 'TASK_ID'], {"NAV_PARAMS":{"nPageSize":2}}], 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        // Get all time spent records sorted by ID in descending order.
+        // Only records with ID less than 50 will be filtered.
+        $response1 = $b24Service
+            ->core
+            ->call(
+                'task.elapseditem.getlist',
+                [
+                    1,
+                    ['ID' => 'desc'],
+                    ['<ID' => 50],
+                ]
+            );
+    
+        $result1 = $response1
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result1, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting elapsed time records: ' . $e->getMessage();
+    }
+    
+    try {
+        // Retrieve a sample of time spent based on general filtering conditions. For example, select data on labor costs from a specified date:
+        $response2 = $b24Service
+            ->core
+            ->call(
+                'task.elapseditem.getlist',
+                [
+                    ['ID' => 'desc'],
+                    ['>=CREATED_DATE' => '2024-02-16'],
+                    ['ID', 'TASK_ID'],
+                    [
+                        'NAV_PARAMS' => [
+                            'nPageSize' => 2,
+                        ],
+                    ],
+                ]
+            );
+    
+        $result2 = $response2
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result2, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting elapsed time records: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     // Get all time spent records sorted by ID in descending order.
-    // Only records with ID values less than 50 will be filtered.
+    // Only records with ID less than 50 will be filtered.
     BX24.callMethod(
         'task.elapseditem.getlist',
         [
@@ -184,7 +287,7 @@ Before the name of the filtered field, you can specify the type of filtering:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -212,7 +315,7 @@ Before the name of the filtered field, you can specify the type of filtering:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -231,13 +334,13 @@ HTTP Status: **200**
         }
     ],
     "total": 1,
-    "time": {
-        "start": 1712137817.343984,
-        "finish": 1712137817.605804,
-        "duration": 0.26182007789611816,
-        "processing": 0.018325090408325195,
-        "date_start": "2024-04-03T12:50:17+02:00",
-        "date_finish": "2024-04-03T12:50:17+02:00"
+    "time":{
+        "start":1712137817.343984,
+        "finish":1712137817.605804,
+        "duration":0.26182007789611816,
+        "processing":0.018325090408325195,
+        "date_start":"2024-04-03T12:50:17+02:00",
+        "date_finish":"2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -248,7 +351,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array of objects with information about time spent records for the task ||
+[`array`](../../data-types.md) | Array of objects with information about time spent records for the task ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
@@ -257,12 +360,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error": "ERROR_CORE",
-    "error_description": "ACTION_NOT_ALLOWED"
+    "error":"ERROR_CORE",
+    "error_description":"ACTION_NOT_ALLOWED"
 }
 ```
 

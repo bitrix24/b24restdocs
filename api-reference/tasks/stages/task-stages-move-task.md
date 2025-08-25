@@ -6,11 +6,11 @@
 > - any user for stages in "My Planner"
 > - any user with access to the group for kanban stages
 
-The method moves a task from one stage to another and allows changing the position of the task within the group's kanban or "My Planner".
+The method moves a task from one stage to another and allows changing the position of the task within the kanban of the group or "My Planner".
 
 The method works as follows:
-- If a group stage is provided, the move occurs within the group's kanban
-- If "My Planner" stage is provided, the move occurs within it
+- If a group stage is provided, the movement occurs within the group's kanban.
+- If "My Planner" stage is provided, the movement occurs within it.
 
 ## Method Parameters
 
@@ -33,7 +33,7 @@ The method works as follows:
 
 The `before` and `after` parameters are mutually exclusive. You must specify either one or the other.
 
-If both parameters are not filled, the task is added to the stage column according to the project or "My Planner" settings.
+If both parameters are not filled, the task is added to the column of the stage according to the project settings or "My Planner".
 
 {% endnote %}
 
@@ -73,6 +73,60 @@ If both parameters are not filled, the task is added to the stage column accordi
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.stages.movetask',
+    		{
+    			id: taskId,
+    			stageId: stageId,
+    			before: 3,
+    			after: 4
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.stages.movetask',
+                [
+                    'id'     => $taskId,
+                    'stageId' => $stageId,
+                    'before' => 3,
+                    'after'  => 4
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error moving task stage: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const taskId = 1;
     const stageId = 2;
     BX24.callMethod(
@@ -90,15 +144,15 @@ If both parameters are not filled, the task is added to the stage column accordi
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // include CRest PHP SDK
 
     $taskId = 1;
     $stageId = 2;
 
-    // executing request to REST API
+    // execute request to REST API
     $result = CRest::call(
         'task.stages.movetask',
         [
@@ -109,7 +163,7 @@ If both parameters are not filled, the task is added to the stage column accordi
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Process response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -135,7 +189,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`boolean`](../../data-types.md) | Returns `true` if the stage move was successful
+[`boolean`](../../data-types.md) | Returns `true` if the stage was successfully moved
 ||
 |#
 
@@ -157,7 +211,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED_MOVE` | You cannot move this task ||
-|| `TASK_NOT_FOUND` | Task not found or access denied ||
+|| `TASK_NOT_FOUND` | Task not found or access to it is denied ||
 || `NOT_FOUND` | Stage not found ||
 |#
 

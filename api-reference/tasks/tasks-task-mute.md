@@ -1,4 +1,4 @@
-# Enable "Mute" Mode tasks.task.mute
+# Enable "Mute" mode tasks.task.mute
 
 {% if build == 'dev' %}
 
@@ -31,9 +31,9 @@ The method `tasks.task.mute` enables "Mute" mode.
 [`unknown`](../data-types.md) | Task identifier. ||
 |#
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
-## Return Value
+## Return value
 
 Returns a json array of task data (similar to the method [`tasks.task.get`](./tasks-task-get.md)).
 
@@ -43,10 +43,57 @@ Returns a json array of task data (similar to the method [`tasks.task.get`](./ta
 
 - JS
 
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.mute',
+    		{
+    			id: 1223
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.mute',
+                [
+                    'id' => 1223,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error muting task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod('tasks.task.mute', {id: 1223})
     ```
 
 {% endlist %}
 
-{% include [Example Notes](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}

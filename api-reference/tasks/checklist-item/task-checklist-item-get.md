@@ -6,8 +6,8 @@
 
 - parameter types are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- no response in case of success
-- no response in case of error
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -35,11 +35,11 @@ The method `task.checklistitem.get` returns a checklist item by its ID.
 [`unknown`](../../data-types.md) | Checklist item ID. ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 {% note info %}
 
-The order of parameters in the request must be followed. If violated, the request will be executed with errors.
+The order of parameters in the request is mandatory. If violated, the request will be executed with errors.
 
 {% endnote %}
 
@@ -48,6 +48,51 @@ The order of parameters in the request must be followed. If violated, the reques
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.checklistitem.get',
+    		[13, 20]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.checklistitem.get',
+                [13, 20]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting checklist items: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -62,4 +107,4 @@ The order of parameters in the request must be followed. If violated, the reques
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

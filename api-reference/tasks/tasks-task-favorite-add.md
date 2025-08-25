@@ -7,7 +7,7 @@
 - parameter types are not specified
 - parameter requirements are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- no error response provided
+- response in case of error is missing
  
 {% endnote %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it shortly
 
 The method `tasks.task.favorite.add` adds a task to Favorites.
 
-Upon successful execution, it returns the parameter `true` (otherwise `false`).
+In case of successful execution, it returns the parameter `true` (otherwise `false`).
 
 #|
 || **Parameter** / **Type** | **Description** ||
@@ -40,14 +40,58 @@ Upon successful execution, it returns the parameter `true` (otherwise `false`).
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.favorite.add',
+    		{taskId: 119}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.favorite.add',
+                [
+                    'taskId' => 119,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo $result['answer']['result'];
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding task to favorites: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod('tasks.task.favorite.add', {taskId: 119}, (res)=>{console.log(res.answer.result);});
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Footnote on examples](../../_includes/examples.md) %}
 
-## Response on Success
+## Response in case of success
 
 > 200 OK
 

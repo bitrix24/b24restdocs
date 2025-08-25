@@ -2,7 +2,7 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: creator or administrator of the flow
+> Who can execute the method: the creator or administrator of the flow
 
 The method `tasks.flow.Flow.delete` removes a flow by its identifier.
 
@@ -14,11 +14,11 @@ The method `tasks.flow.Flow.delete` removes a flow by its identifier.
 || **Name**
 `type` | **Description** ||
 || **flowData*** 
-[`object`](../../data-types.md) | Object containing data for deleting the flow ||
+[`object`](../../data-types.md) | Object containing data to delete the flow ||
 || **flowData.id*** 
 [`integer`](../../data-types.md) | Identifier of the flow to be deleted. 
 
-You can obtain the identifier using the method for creating a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
+You can obtain the identifier by creating a new flow using the method [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task using the method [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
@@ -57,6 +57,60 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.flow.Flow.delete',
+    		{
+    			flowData: {
+    				id: 517
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.flow.Flow.delete',
+                [
+                    'flowData' => [
+                        'id' => 517
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting flow: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.flow.Flow.delete',
         {
@@ -74,7 +128,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
@@ -103,7 +157,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -126,7 +180,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

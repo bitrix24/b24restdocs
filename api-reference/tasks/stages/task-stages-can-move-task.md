@@ -6,7 +6,7 @@
 > - any user for stages of "My Planner"
 > - any user with access to the group for kanban stages
 
-The method checks if the current user can move tasks in the specified object.
+The method checks whether the current user can move tasks in the specified object.
 
 ## Method Parameters
 
@@ -59,6 +59,57 @@ In the case of `U` ("My Planner") — the value `true` will be returned only if 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.stages.canmovetask',
+    		{
+    			entityId: entityId,
+    			entityType: entityType
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $entityId = 1;
+        $entityType = 'U';
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.stages.canmovetask',
+                [
+                    'entityId' => $entityId,
+                    'entityType' => $entityType
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling task.stages.canmovetask: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const entityId = 1;
     const entityType = 'U';
     BX24.callMethod(
@@ -74,15 +125,15 @@ In the case of `U` ("My Planner") — the value `true` will be returned only if 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // include CRest PHP SDK
 
     $entityId = 1;
     $entityType = 'U';
 
-    // executing request to REST API
+    // execute request to REST API
     $result = CRest::call(
         'task.stages.canmovetask',
         [
@@ -91,7 +142,7 @@ In the case of `U` ("My Planner") — the value `true` will be returned only if 
         ]
     );
 
-    // Processing the response from Bitrix24
+    // Process the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -120,7 +171,7 @@ HTTP Status: **200**
 [`boolean`](../../data-types.md) | Returns `true` if the current user can move the task.
 
 Otherwise — `false`
-|| 
+||
 |#
 
 ## Error Handling

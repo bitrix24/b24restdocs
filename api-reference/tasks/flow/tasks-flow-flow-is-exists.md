@@ -1,10 +1,10 @@
-# Check for the existence of the flow tasks.flow.Flow.isExists
+# Check the existence of the Flow tasks.flow.Flow.isExists
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.flow.Flow.isExists` checks if a flow with the specified name exists. If an `id` is provided, it checks if there are flows with the same name, excluding the specified one.
+The method `tasks.flow.Flow.isExists` checks whether a flow with the specified name exists. If an `id` is provided, it checks for flows with the same name, excluding the specified one.
 
 ## Method Parameters
 
@@ -14,13 +14,13 @@ The method `tasks.flow.Flow.isExists` checks if a flow with the specified name e
 || **Name**
 `type` | **Description** ||
 || **flowData*** 
-[`object`](../../data-types.md) | Object containing data to check for the existence of the flow ||
+[`object`](../../data-types.md) | Object containing data to check the existence of the flow ||
 || **name*** 
 [`string`](../../data-types.md) | The name of the flow to check ||
 || **id** 
 [`integer`](../../data-types.md) | The identifier of the flow to exclude from the check (optional). 
 
-You can obtain the identifier using the method to create a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or the method to get a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
+You can obtain the identifier using the method to create a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
 |#
 
 ## Code Examples
@@ -59,6 +59,60 @@ You can obtain the identifier using the method to create a new flow [tasks.flow.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.flow.Flow.isExists',
+    		{
+    			flowData: {
+    				name: 'Flow Name'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.flow.Flow.isExists',
+                [
+                    'flowData' => [
+                        'name' => 'Flow Name'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error checking flow existence: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.flow.Flow.isExists',
         {
@@ -76,7 +130,7 @@ You can obtain the identifier using the method to create a new flow [tasks.flow.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
@@ -144,7 +198,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Additional Information** ||
 || `0` | Access denied or flow not found | The account plan does not allow working with flows or the user does not have permission to perform the check ||
-|| `0` | `Unknown error` | Unknown error ||
+|| `0` | `Unknown error` | An unknown error occurred ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -1,14 +1,14 @@
-# Translate a pending control task to "not completed" status task.item.disapprove
+# Translate a task awaiting control to the "not completed" status task.item.disapprove
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method changes the status of a pending control task to "not completed".
+The method changes the status of a task awaiting control to "not completed".
 
 {% note warning %}
 
-This method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
 
 {% endnote %}
 
@@ -48,6 +48,51 @@ This method is deprecated and not supported. It is recommended to use the method
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.disapprove',
+    		[13]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.disapprove',
+                [13]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error disapproving task item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.disapprove',
         [13],
@@ -59,7 +104,7 @@ This method is deprecated and not supported. It is recommended to use the method
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

@@ -2,7 +2,7 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with read access permission to the task or higher
+> Who can execute the method: any user with read access permission for the task or higher
 
 The method `task.commentitem.add` adds a new comment to a task.
 
@@ -47,7 +47,7 @@ The method `task.commentitem.add` allows any user to add a comment on behalf of 
 || **UF_FORUM_MESSAGE_DOC**
 [`array`](../../data-types.md) | Array with file identifiers from Drive. Prefix each identifier with `n`, for example, `['n123', 'n456', ... ]`.
 
-The author of the comment must have access to the attached files; otherwise, the method will return an error ||
+The comment author must have access to the attached files; otherwise, the method will return an error ||
 |#
 
 ## Code Examples
@@ -79,6 +79,67 @@ The author of the comment must have access to the attached files; otherwise, the
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.commentitem.add',
+    		{
+    			"TASKID": 8017,
+    			"FIELDS": {
+    				"POST_MESSAGE": "Text of the new comment to the task",
+    				"AUTHOR_ID": 503,
+    				"POST_DATE": "2025-07-15T14:30:00+02:00",
+    				"UF_FORUM_MESSAGE_DOC": ["n4755", "n4753"]
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.commentitem.add',
+                [
+                    'TASKID' => 8017,
+                    'FIELDS' => [
+                        'POST_MESSAGE'         => 'Text of the new comment to the task',
+                        'AUTHOR_ID'            => 503,
+                        'POST_DATE'            => '2025-07-15T14:30:00+02:00',
+                        'UF_FORUM_MESSAGE_DOC' => ['n4755', 'n4753'],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding task comment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.commentitem.add',
         {
@@ -97,7 +158,7 @@ The author of the comment must have access to the attached files; otherwise, the
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -153,7 +214,6 @@ HTTP status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-
 ## Error Handling
 
 HTTP status: **400**
@@ -173,9 +233,9 @@ HTTP status: **400**
 || **Code** | **Description** | **Value**  ||
 || `ERROR_CORE` | Comment text not specified | Required parameter `POST_MESSAGE` not provided or is empty ||
 || `ERROR_CORE` | Insufficient permissions to add a comment | No access permission to the task ||
-|| `ERROR_CORE` | File not found | File from the `UF_FORUM_MESSAGE_DOC` parameter not found or the author does not have access to it ||
+|| `ERROR_CORE` | File not found | File from parameter `UF_FORUM_MESSAGE_DOC` not found or the author does not have access to it ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arFields) for method ctaskcommentitem::add() must not contain key `<FIELD_NAME>`.; 256/TE/WRONG_ARGUMENTS | Field `<FIELD_NAME>` cannot be used in the method ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type specified for the parameter, for example, for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type provided for the parameter, for example, for `TASKID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

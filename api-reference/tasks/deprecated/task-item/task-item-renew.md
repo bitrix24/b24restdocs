@@ -1,14 +1,14 @@
-# Change Task Status to "Not Completed" task.item.renew
+# Translate task to "not completed" status task.item.renew
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method changes the task status to "Not Completed". It is applicable for tasks with the status [Completed](./task-item-complete.md).
+The method changes the status of a task to "not completed." It is applicable for tasks in the [Completed](./task-item-complete.md) status.
 
 {% note warning %}
 
-This method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+The method is deprecated and not supported. It is recommended to use the [tasks.task.*](../../index.md) methods.
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ This method is deprecated and not supported. It is recommended to use the method
 
 ## Code Examples
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,6 +48,51 @@ This method is deprecated and not supported. It is recommended to use the method
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.renew',
+    		[13]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.renew',
+                [13]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error renewing task item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.renew',
         [13],
@@ -59,7 +104,7 @@ This method is deprecated and not supported. It is recommended to use the method
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

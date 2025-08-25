@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method changes the status of a task to "completed" or "conditionally completed (awaiting executor control)".
+The method changes the task status to "completed" or "conditionally completed (awaiting the Assignee's control)".
 
 {% note warning %}
 
@@ -48,6 +48,53 @@ The method is deprecated and not supported. It is recommended to use the methods
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.complete',
+    		[13]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.complete',
+                [
+                    13
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error completing task item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.complete',
         [13],
@@ -59,7 +106,7 @@ The method is deprecated and not supported. It is recommended to use the methods
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

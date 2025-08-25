@@ -1,10 +1,10 @@
-# Get Task List task.items.getlist
+# Get the list of tasks task.items.getlist
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method returns an array of tasks, each containing an array of fields (similar to the array returned by [task.item.getdata](task-item/task-item-get-data.md)).
+The method returns an array of tasks, each containing an array of fields (similar to the array returned by [task.item.getdata](task-item/task-item-get-data.md)).
 
 {% note warning %}
 
@@ -12,7 +12,7 @@ Instead of this method, it is recommended to use the methods [`task.item.*`](tas
 
 {% endnote %}
 
-## Method Parameters
+## Method parameters
 
 #|
 || **Name**
@@ -26,13 +26,13 @@ Instead of this method, it is recommended to use the methods [`task.item.*`](tas
 - `PRIORITY` — priority 
 - `MARK` — rating 
 - `CREATED_BY` — creator 
-- `RESPONSIBLE_ID` — executor 
-- `GROUP_ID` — working group 
+- `RESPONSIBLE_ID` — assignee 
+- `GROUP_ID` — workgroup 
 
 The sorting direction can take the following values: 
 - `asc` — ascending 
 - `desc` — descending 
-  
+   
 Optional parameter. By default, it is sorted in descending order by task ID. 
 
 Sorting by custom fields is allowed 
@@ -41,13 +41,13 @@ Sorting by custom fields is allowed
 [`object`](../../data-types.md) | An array in the format `{'filter_field': "filter_value" [, ...]}`. The filter field can take the following values: 
 - `ID` — task ID
 - `PARENT_ID` — parent task ID
-- `GROUP_ID` — working group ID
+- `GROUP_ID` — workgroup ID
 - `CREATED_BY` — creator
 - `STATUS_CHANGED_BY` — user who last changed the task status
 - `PRIORITY` — priority
 - `FORUM_TOPIC_ID` — forum topic ID
-- `RESPONSIBLE_ID` — executor
-- `TITLE` — task title (can search using the pattern `[%_]`)
+- `RESPONSIBLE_ID` — assignee
+- `TITLE` — task title (can be searched using the pattern `[%_]`)
 - `TAG` — tag
 - `REAL_STATUS` — task status with possible values:
     - `STATE_NEW` = 1
@@ -68,16 +68,16 @@ Sorting by custom fields is allowed
 - `DEADLINE` — deadline
 - `CREATED_DATE` — creation date
 - `CLOSED_DATE` — completion date
-- `CHANGED_DATE` — last modified date
+- `CHANGED_DATE` — last modification date
 - `ACCOMPLICE` — participant ID
 - `AUDITOR` — auditor ID
-- `DEPENDS_ON` — ID of the previous task
-- `ONLY_ROOT_TASKS` — only tasks that are not subtasks (root tasks), as well as subtasks of the parent task that the current user does not have access to (Y\|N)
+- `DEPENDS_ON` — previous task ID
+- `ONLY_ROOT_TASKS` — only tasks that are not subtasks (root tasks), as well as subtasks of the parent task to which the current user does not have access (Y\|N)
 - `SUBORDINATE_TASKS` — tasks of the current user and their subordinates (Y\|N)
 - `OVERDUED` — were overdue (Y\|N)
 - `DEPARTMENT_ID` — department ID
 
-Before the filter field name, you can specify the type of filtering:
+Before the filter field name, you can specify the filtering type:
 - `!` — not equal
 - `<` — less than
 - `<=` — less than or equal to
@@ -90,12 +90,12 @@ Optional parameter. By default, records are not filtered ||
 || **TASKDATA**
 [`array`](../../data-types.md) | Array of returned task fields ||
 || **NAV_PARAMS**
-[`array`](../../data-types.md) | Pagination. The option `iNumPage` is available — page number ||
+[`array`](../../data-types.md) | Pagination. The option `iNumPage` — page number is available ||
 |#
 
 The order of parameters in the request must be followed. If violated, the request will be executed with errors.
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -126,6 +126,70 @@ Get a list of all tasks (by default, pagination will be applied with 50 items pe
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'task.items.getlist',
+        {},
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('task.items.getlist', {}, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('task.items.getlist', {}, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.items.getlist',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task items list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.items.getlist',
         [],
@@ -137,7 +201,7 @@ Get a list of all tasks (by default, pagination will be applied with 50 items pe
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -181,6 +245,106 @@ Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` an
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'task.items.getlist',
+        [
+          {ID: 'desc'},        // Sorting by ID — descending.
+          {ID: [1, 2, 3, 4, 5, 6]},    // Filter
+          ['ID', 'TITLE'],    // Selected fields
+          {
+            NAV_PARAMS: {        // pagination
+              iNumPage: 2        // page number 2
+            }
+          }
+        ],
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('task.items.getlist', [
+        {ID: 'desc'},        // Sorting by ID — descending.
+        {ID: [1, 2, 3, 4, 5, 6]},    // Filter
+        ['ID', 'TITLE'],    // Selected fields
+        {
+          NAV_PARAMS: {        // pagination
+            iNumPage: 2        // page number 2
+          }
+        }
+      ], 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('task.items.getlist', [
+        {ID: 'desc'},        // Sorting by ID — descending.
+        {ID: [1, 2, 3, 4, 5, 6]},    // Filter
+        ['ID', 'TITLE'],    // Selected fields
+        {
+          NAV_PARAMS: {        // pagination
+            iNumPage: 2        // page number 2
+          }
+        }
+      ], 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.items.getlist',
+                [
+                    ['ID' => 'desc'], // Sorting by ID — descending.
+                    ['ID' => [1, 2, 3, 4, 5, 6]], // Filter
+                    ['ID', 'TITLE'], // Selected fields
+                    [
+                        'NAV_PARAMS' => [ // pagination
+                            'iNumPage' => 2 // page number 2
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task items list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.items.getlist',
         [
@@ -201,7 +365,7 @@ Get a list of tasks with IDs 1, 2, 3, 4, 5, 6, selecting only the fields `ID` an
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

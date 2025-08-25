@@ -1,4 +1,4 @@
-# Get a List of Action Names and Their Allowability task.item.getallowedtaskactionsasstrings
+# Get a list of action names and their availability task.item.getallowedtaskactionsasstrings
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -21,7 +21,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,6 +48,51 @@ The method is deprecated and not supported. It is recommended to use the methods
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.getallowedtaskactionsasstrings',
+    		[13]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.getallowedtaskactionsasstrings',
+                [13]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting allowed task actions: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.getallowedtaskactionsasstrings',
         [13],
@@ -59,7 +104,7 @@ The method is deprecated and not supported. It is recommended to use the methods
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

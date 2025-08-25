@@ -4,7 +4,7 @@
 >
 > Who can execute the method:
 > - any user for "My Planner" stages
-> - any user with access to the group for Kanban stages
+> - any user with group access for Kanban stages
 
 This method deletes a Kanban or "My Planner" stage.
 
@@ -17,7 +17,7 @@ It takes the `id` of the stage as input. The stage is checked for sufficient acc
 #|
 || **Name**
 `type` | **Description** ||
-|| **id*** 
+|| **id***
 [`integer`](../../data-types.md) | Identifier of the stage to be deleted ||
 || **isAdmin**
 [`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an account administrator ||
@@ -51,7 +51,57 @@ It takes the `id` of the stage as input. The stage is checked for sufficient acc
     }' \
     https://your-domain.bitrix24.com/rest/task.stages.delete
     ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.stages.delete',
+    		{
+    			id: stageId,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $stageId = 5;
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.stages.delete',
+                [
+                    'id' => $stageId,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting task stage: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     const stageId = 5;
@@ -67,14 +117,14 @@ It takes the `id` of the stage as input. The stage is checked for sufficient acc
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // include CRest PHP SDK
 
     $stageId = 5;
 
-    // executing the request to the REST API
+    // execute request to REST API
     $result = CRest::call(
         'task.stages.delete',
         [
@@ -82,7 +132,7 @@ It takes the `id` of the stage as input. The stage is checked for sufficient acc
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Handle response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -137,7 +187,7 @@ HTTP Status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Learning 
 
 - [{#T}](./index.md)
 - [{#T}](./task-stages-add.md)

@@ -19,7 +19,7 @@ The method is deprecated and not supported. It is recommended to use the methods
 || **TASKID** | Task identifier ||
 || **FORMAT** | Acceptable values:
 - `1` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_RAW`) — the description will be returned in the format it is stored in the database (HTML or BB-code), no sanitization will be performed
-- `2` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_HTML`) — the description will be returned in HTML format, sanitized (if enabled in task module settings)
+- `2` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_HTML`) — the description will be returned in HTML format, it will be sanitized beforehand (if this is enabled in the task module settings)
 - `3` (corresponds to PHP constant `CTaskItem::DESCR_FORMAT_PLAIN_TEXT`) — the description will be returned as "plain" text (without HTML tags) ||
 |#
 
@@ -54,6 +54,51 @@ It is mandatory to follow the order of parameters in the request. If this order 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.item.getdescription',
+    		[13, 1]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.item.getdescription',
+                [13, 1]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task description: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.item.getdescription',
         [13, 1],
@@ -65,7 +110,7 @@ It is mandatory to follow the order of parameters in the request. If this order 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

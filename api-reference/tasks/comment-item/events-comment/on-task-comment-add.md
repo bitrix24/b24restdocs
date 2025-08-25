@@ -1,4 +1,4 @@
-# Event on Comment Addition OnTaskCommentAdd
+# Event on adding a comment OnTaskCommentAdd
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -41,7 +41,7 @@ array(
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic event code, in this case `OnTaskAdd`||
+[`string`](../../../data-types.md) | Symbolic code of the event, in this case `OnTaskAdd`||
 || **data***
 [`array`](../../../data-types.md) | Array with data of the new task comment ||
 || **ts***
@@ -104,7 +104,7 @@ array(
 [`string`](../../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
-- `undefined` — not defined or check not performed ||
+- `undefined` — not defined or check was not performed ||
   |#
 
 ### Field IS_ACCESSIBLE_AFTER {#is_accessible_after}
@@ -118,16 +118,68 @@ array(
 [`string`](../../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
-- `undefined` — not defined or check not performed ||
+- `undefined` — not defined or check was not performed ||
   |#
 
-## Code Examples
+## Code examples
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'event.bind',
+    		{
+    			"event": "OnTaskCommentAdd",
+    			"handler": "https://example.com/handler.php"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'event.bind',
+                [
+                    'event'   => 'OnTaskCommentAdd',
+                    'handler' => 'https://example.com/handler.php',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error binding event: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -146,7 +198,7 @@ array(
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -166,7 +218,7 @@ array(
 
 {% endlist %}
 
-## Continue Learning
+## Continue learning
 
 - [{#T}](./index.md)
 - [{#T}](./on-task-comment-update.md)

@@ -4,9 +4,9 @@
 >
 > Who can execute the method:
 > - any user for "My Planner" stages
-> - any user with access to the group for Kanban stages
+> - any user with group access for Kanban stages
 
-This method adds a Kanban or "My Planner" stage.
+The method adds a Kanban or "My Planner" stage.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ This method adds a Kanban or "My Planner" stage.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a new stage ||
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new stage ||
 || **isAdmin**
 [`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an account administrator ||
 |#
@@ -37,7 +37,7 @@ This method adds a Kanban or "My Planner" stage.
 
 If not specified or equal to `0`, it will be added at the beginning ||
 || **ENTITY_ID**
-[`integer`](../../data-types.md)| Identifier of the object.
+[`integer`](../../data-types.md)| Object identifier.
 
 Can equal the `ID` of the group, in which case the stage will be added to the group's Kanban.
 
@@ -90,6 +90,66 @@ An access permission error will be displayed if the permission level is insuffic
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.stages.add',
+    		{
+    			fields: {
+    				TITLE: 'Stage Title',
+    				COLOR: '#FFAAEE',
+    				AFTER_ID: 1,
+    				ENTITY_ID: 1
+    			},
+    			isAdmin: false,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.stages.add',
+                [
+                    'fields' => [
+                        'TITLE'    => 'Stage Title',
+                        'COLOR'    => '#FFAAEE',
+                        'AFTER_ID' => 1,
+                        'ENTITY_ID' => 1
+                    ],
+                    'isAdmin' => false,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding task stage: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.stages.add',
         {
@@ -111,10 +171,10 @@ An access permission error will be displayed if the permission level is insuffic
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // include CRest PHP SDK
 
     $fields = [
         "TITLE" => "Stage Title",
@@ -123,7 +183,7 @@ An access permission error will be displayed if the permission level is insuffic
         "ENTITY_ID" => 1
     ];
 
-    // executing the request to the REST API
+    // execute request to REST API
     $result = CRest::call(
         'task.stages.add',
         [
@@ -132,7 +192,7 @@ An access permission error will be displayed if the permission level is insuffic
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Process response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     } else {

@@ -1,4 +1,4 @@
-# Delete the dependency between tasks task.dependence.delete
+# Delete the link between tasks task.dependence.delete
 
 > Scope: [`task`](../scopes/permissions.md)
 >
@@ -14,9 +14,9 @@ This method removes the dependency of one task on another.
 || **Name**
 `type` | **Description** ||
 || **taskIdFrom***
-[`integer`](../data-types.md) | The identifier of the task from which the dependency is being removed. The task identifier is returned by the [method for creating a new task](./tasks-task-add.md) ||
+[`integer`](../data-types.md) | The identifier of the task from which the dependency is removed. The task identifier is returned by the [method for creating a new task](./tasks-task-add.md) ||
 || **taskIdTo***
-[`integer`](../data-types.md) | The identifier of the task for which the dependency is being removed ||
+[`integer`](../data-types.md) | The identifier of the task for which the dependency is removed ||
 |#
 
 The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [method for retrieving the list of tasks](./tasks-task-list.md).
@@ -50,6 +50,57 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.dependence.delete', {
+    			"taskIdFrom": 100,
+    			"taskIdTo": 101,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.dependence.delete',
+                [
+                    'taskIdFrom' => 100,
+                    'taskIdTo'   => 101,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting task dependence: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.dependence.delete', {
             "taskIdFrom":100,
@@ -65,7 +116,7 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -93,16 +144,16 @@ Example of a successfully executed request
 
 ```json
 {
-    "result":{
+    "result": {
         []
     },
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -124,8 +175,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"ILLEGAL_NEW_LINK",
-    "error_description":"The dependency between tasks does not exist"
+    "error": "ILLEGAL_NEW_LINK",
+    "error_description": "The link between tasks does not exist"
 }
 ```
 
@@ -135,8 +186,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ILLEGAL_NEW_LINK` | The dependency between tasks does not exist ||
-|| `ACTION_NOT_ALLOWED` | It is not possible to delete the dependency between tasks ||
+|| `ILLEGAL_NEW_LINK` | The link between tasks does not exist ||
+|| `ACTION_NOT_ALLOWED` | It is not possible to delete the link between tasks ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

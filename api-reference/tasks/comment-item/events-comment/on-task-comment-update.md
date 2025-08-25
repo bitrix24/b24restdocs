@@ -1,10 +1,10 @@
-# Event on Comment Update OnTaskCommentUpdate
+# Event on Comment Change OnTaskCommentUpdate
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event triggers after a comment is updated in a task. The following data is passed to the handler:
+The event triggers after a comment is changed in a task. The following data is passed to the handler:
 
 ## What the handler receives
 
@@ -45,7 +45,7 @@ array(
 || **data***
 [`array`](../../../data-types.md) | Array with task comment data ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of event sending from the [event queue](../../../events/index.md) ||
 || **auth***
 [`array`](../../../data-types.md) | Authorization parameters and data about the account where the event occurred ||
 |#
@@ -131,6 +131,58 @@ array(
 
 - JS
 
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'event.bind',
+    		{
+    			"event": "OnTaskCommentUpdate",
+    			"handler": "https://example.com/handler.php"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'event.bind',
+                [
+                    'event'   => 'OnTaskCommentUpdate',
+                    'handler' => 'https://example.com/handler.php',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error binding event: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'event.bind',
@@ -148,7 +200,7 @@ array(
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

@@ -8,7 +8,7 @@
 - examples are missing (there should be three examples - curl, js, php)
 - success response is missing
 - error response is missing
-- add a description with hints on how to check access permission using a special method
+- add a description with hints on how to check the permission to modify using a special method
 
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -54,8 +54,59 @@ The order of parameters in the request is mandatory. If violated, the request wi
 
 - JS
 
+
     ```js
-    // Updating the item with ID=25 to set its status to "not completed" and text to "Item not completed"
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.checklistitem.update',
+    		[13, 25, {'TITLE': 'Item not completed', 'IS_COMPLETE': 'N'}]
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.checklistitem.update',
+                [
+                    13,
+                    25,
+                    ['TITLE' => 'Item not completed', 'IS_COMPLETE' => 'N'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating checklist item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    // Updating the item with ID=25 to "not completed" and text to "Item not completed"
     BX24.callMethod(
         'task.checklistitem.update',
         [13, 25, {'TITLE': 'Item not completed', 'IS_COMPLETE': 'N'}],

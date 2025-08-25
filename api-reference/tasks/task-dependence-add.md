@@ -1,4 +1,4 @@
-# Create a Dependency Between Tasks task.dependence.add
+# Create a link between tasks task.dependence.add
 
 > Scope: [`task`](../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ This method creates a dependency of one task on another.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,11 +26,11 @@ This method creates a dependency of one task on another.
 ||
 |#
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [method to get the list of tasks](./tasks-task-list.md).
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [getting the list of tasks](./tasks-task-list.md) method.
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -57,6 +57,57 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.dependence.add', {
+    			"taskIdFrom": 100,
+    			"taskIdTo": 101,
+    			"linkType": 0
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.dependence.add',
+                [
+                    'taskIdFrom' => 100,
+                    'taskIdTo'   => 101,
+                    'linkType'   => 0,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding task dependence: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.dependence.add', {
             "taskIdFrom":100,
@@ -73,7 +124,7 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -93,22 +144,22 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 Example of a successfully executed request
 
 ```json
 {
-    "result":{
+    "result": {
         []
     },
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -126,12 +177,12 @@ Example of a successfully executed request
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":"ILLEGAL_NEW_LINK",
-    "error_description":"The link between tasks already exists"
+    "error": "ILLEGAL_NEW_LINK",
+    "error_description": "A link between tasks already exists"
 }
 ```
 
@@ -141,8 +192,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ILLEGAL_NEW_LINK` | The link between tasks already exists ||
-|| `ACTION_NOT_ALLOWED` | It is not possible to add a link between tasks ||
+|| `ILLEGAL_NEW_LINK` | A link between tasks already exists ||
+|| `ACTION_NOT_ALLOWED` | Unable to add a link between tasks ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

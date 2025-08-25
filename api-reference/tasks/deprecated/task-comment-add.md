@@ -1,4 +1,4 @@
-# Add Comment to Task task.comment.add
+# Add a comment to the task task.comment.add
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
@@ -12,7 +12,7 @@ Instead of this method, you should use the methods [`task.commentitem.*`](../com
 
 {% endnote %}
 
-## Method Parameters
+## Method parameters
 
 #|
 || **Name** | **Description** ||
@@ -20,11 +20,11 @@ Instead of this method, you should use the methods [`task.commentitem.*`](../com
 || **COMMENTTEXT** | Comment ||
 |#
 
-It is essential to maintain the order of parameters in the request. If this order is violated, the request will be executed with errors.
+It is mandatory to follow the order of parameters in the request. If this order is violated, the request will be executed with errors.
 
-## Code Examples
+## Code examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -51,6 +51,54 @@ It is essential to maintain the order of parameters in the request. If this orde
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'task.comment.add',
+    		[1, 'comment text']
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.comment.add',
+                [
+                    1,
+                    'comment text',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding task comment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.comment.add',
         [1, 'comment text'],
@@ -62,7 +110,7 @@ It is essential to maintain the order of parameters in the request. If this orde
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

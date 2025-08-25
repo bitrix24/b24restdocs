@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -24,14 +24,14 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `tasks.task.files.attach` is used to attach an uploaded file from the disk to a task.
+The method `tasks.task.files.attach` is used to attach a file uploaded to the drive to a task.
 
 #|
 || **Parameter** / **Type** | **Description** ||
 || **taskId**
 [`unknown`](../data-types.md) | Task identifier. ||
 || **fileId**
-[`unknown`](../data-types.md) | Identifier of the uploaded file on disk. ||
+[`unknown`](../data-types.md) | Identifier of the file uploaded to the drive. ||
 || **params**
 [`unknown`](../data-types.md) | Array of additional parameters, empty by default. Currently not used. ||
 |#
@@ -41,6 +41,56 @@ The method `tasks.task.files.attach` is used to attach an uploaded file from the
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.files.attach',
+    		{
+    			taskId: 1,
+    			fileId: 1065,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.files.attach',
+                [
+                    'taskId' => 1,
+                    'fileId' => 1065,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . $result['answer']['result'];
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error attaching file to task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

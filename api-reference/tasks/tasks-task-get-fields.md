@@ -4,9 +4,9 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- missing examples (should be three examples - curl, js, php)
-- no response in case of error
-- no response in case of success
+- missing examples (there should be three examples - curl, js, php)
+- missing response in case of error
+- missing response in case of success
  
 {% endnote %}
 
@@ -32,6 +32,52 @@ Without parameters.
 
 - JS
 
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.task.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.task.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result->data(), true);
+        echo 'Full Result: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'tasks.task.getFields',
@@ -46,7 +92,7 @@ Without parameters.
 
 {% endlist %}
 
-{% include [Note about examples](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 ## List of fields
 
@@ -179,9 +225,9 @@ Default - No. ||
 || **SORTING**
 [`double`](../data-types.md) | Sorting index | ||
 || **DURATION_PLAN**
-[`integer`](../data-types.md) | Time spent (planned) | ||
+[`integer`](../data-types.md) | Planned duration | ||
 || **DURATION_FACT**
-[`integer`](../data-types.md) | Time spent (actual) | ||
+[`integer`](../data-types.md) | Actual duration | ||
 || **CHECKLIST**
 [`array`](../data-types.md) | Checklist | ||
 || **DURATION_TYPE**
@@ -194,8 +240,8 @@ Default - No. ||
 \[6\] => years.
 Default - 3 ||
 || **UF_CRM_TASK**
-[`array` of `string`](../data-types.md) | Links to CRM entities. The array values are string consisting of 
-[Short symbolic code of the type](../crm/data-types.md#object_type) concatenated with the ID of the entity with a `_` in between. | L_XX - lead,
+[`crm`](../data-types.md) | Link to CRM entities. The value consists of 
+[Short symbolic code of the type](../crm/data-types.md#object_type) and ID of the entity | L_XX - lead,
 C_XX - contact,
 D_XX - deal, 
 TXX_XX - SPA ||
@@ -219,4 +265,4 @@ Default - No. ||
 [`integer`](../data-types.md) | SERVICE_COMMENTS_COUNT | ||
 |#
 
-{% include [Note about parameters](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}

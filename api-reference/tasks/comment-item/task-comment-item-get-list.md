@@ -2,7 +2,7 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with read access permission for the task or higher
+> Who can execute the method: any user with read access permission to the task or higher
 
 The method `task.commentitem.getlist` retrieves a list of comments for a task.
 
@@ -14,7 +14,7 @@ Pass parameters in the request according to the order in the table. If the order
 
 {% endnote %}
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ Pass parameters in the request according to the order in the table. If the order
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get list of tasks method](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
 || **ORDER**
 [`object`](../../data-types.md) | An object for sorting the result in the form `{"field": "sort value", ... }`.
 
@@ -59,7 +59,7 @@ By default, records are not filtered ||
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -86,6 +86,106 @@ By default, records are not filtered ||
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'task.commentitem.getlist',
+        {
+          "TASKID": 8017,
+          "ORDER": {
+            "POST_DATE": "asc",
+          },
+          "FILTER": {
+            "AUTHOR_ID": 503,
+            ">=POST_DATE": "2025-01-01",
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in chunks and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('task.commentitem.getlist', {
+        "TASKID": 8017,
+        "ORDER": {
+          "POST_DATE": "asc",
+        },
+        "FILTER": {
+          "AUTHOR_ID": 503,
+          ">=POST_DATE": "2025-01-01",
+        }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('task.commentitem.getlist', {
+        "TASKID": 8017,
+        "ORDER": {
+          "POST_DATE": "asc",
+        },
+        "FILTER": {
+          "AUTHOR_ID": 503,
+          ">=POST_DATE": "2025-01-01",
+        }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'task.commentitem.getlist',
+                [
+                    'TASKID' => 8017,
+                    'ORDER' => [
+                        'POST_DATE' => 'asc',
+                    ],
+                    'FILTER' => [
+                        'AUTHOR_ID' => 503,
+                        '>=POST_DATE' => '2025-01-01',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task comments: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'task.commentitem.getlist',
         {
@@ -105,7 +205,7 @@ By default, records are not filtered ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -133,7 +233,7 @@ By default, records are not filtered ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -195,7 +295,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array of objects. Each object contains a description of the comment ||
+[`array`](../../data-types.md) | An array of objects. Each object contains a description of a comment ||
 || **POST_MESSAGE_HTML**
 [`string`](../../data-types.md) | HTML code of the comment ||
 || **ID**
@@ -209,7 +309,7 @@ HTTP status: **200**
 || **POST_DATE**
 [`string`](../../data-types.md) | Date and time of comment creation ||
 || **POST_MESSAGE**
-[`string`](../../data-types.md) | Comment text ||
+[`string`](../../data-types.md) | Text of the comment ||
 || **ATTACHED_OBJECTS**
 [`object`](../../data-types.md) | An object containing information about attachments. The key of the object is the attachment identifier, and the value is an object with [file description](#attached-objects) ||
 || **time**
@@ -237,7 +337,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -252,7 +352,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description**  | **Value** ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Action failed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED | An incorrect parameter value is specified or there are no access permissions for the task ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Action failed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED | An incorrect parameter value is specified or there are no access permissions to the task ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::getlist() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | An incorrect type of value is specified for the parameter, for example, for `TASKID` ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arOrder) for method ctaskcommentitem::getlist() must not contain key ">=POST_DATE".; 256/TE/WRONG_ARGUMENTS | Parameters are specified in the wrong order ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (arFilter) for method ctaskcommentitem::getlist() must not contain key "%POST_DATE".; 256/TE/WRONG_ARGUMENTS | The parameter name or prefix for filtering is incorrectly specified ||
