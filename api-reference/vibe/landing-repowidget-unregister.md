@@ -26,6 +26,58 @@ The method `landing.repowidget.unregister` removes the widget for Start page: th
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.repowidget.unregister', {
+    			code: 'my_widget'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.info(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.repowidget.unregister',
+                [
+                    'code' => 'my_widget'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unregistering repowidget: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'landing.repowidget.unregister', {
             code: 'my_widget'
@@ -40,7 +92,7 @@ The method `landing.repowidget.unregister` removes the widget for Start page: th
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

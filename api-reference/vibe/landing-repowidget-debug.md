@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.debug` enables debug mode for all widgets of the current application. In this case, the vue application will report more errors in the js console for developer convenience. By default, this mode is disabled.
+The method `landing.repowidget.debug` enables debug mode for all widgets of the current application. In this case, the vue application will report more errors in the js console for developer convenience. By default, the mode is disabled.
 
 ## Method Parameters
 
@@ -26,6 +26,58 @@ The method `landing.repowidget.debug` enables debug mode for all widgets of the 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.repowidget.debug', {
+    			enable: true,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.info(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.repowidget.debug',
+                [
+                    'enable' => true,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling landing repowidget debug: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'landing.repowidget.debug', {
             enable: true,
@@ -40,7 +92,7 @@ The method `landing.repowidget.debug` enables debug mode for all widgets of the 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -61,7 +113,7 @@ The method `landing.repowidget.debug` enables debug mode for all widgets of the 
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -91,7 +143,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -106,7 +158,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `APP_NOT_FOUND` | REST application not found. Occurs when there are issues with the authorization of the rest application on the account ||
+|| `APP_NOT_FOUND` | REST application not found. Occurs when there are issues with the authorization of the REST application on the account ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

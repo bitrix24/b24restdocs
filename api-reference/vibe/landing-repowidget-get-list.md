@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.getlist` returns a list of widgets for the current application, filtered according to the specified criteria.
+The method `landing.repowidget.getlist` returns a list of widgets for the current application, filtered by the specified criteria.
 
 ## Method Parameters
 
@@ -29,28 +29,28 @@ The method `landing.repowidget.getlist` returns a list of widgets for the curren
 
 If not provided or an empty array is passed, all available widgets will be selected ||
 || **filter**
-[`object`](../data-types.md) | Object for filtering selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../data-types.md) | Object for filtering the selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` can be found [in the table below](#anchor-field).
 
-An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol must be included in the value. Examples:
     - "mol%" — searching for values starting with "mol"
     - "%mol" — searching for values ending with "mol"
     - "%mol%" — searching for values where "mol" can be in any position
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides.
 
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The `%` symbol must be included in the value. Examples:
     - "mol%" — searching for values not starting with "mol"
     - "%mol" — searching for values not ending with "mol"
     - "%mol%" — searching for values where the substring "mol" is not present in any position
@@ -61,9 +61,9 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `!=` - not equal
 - `!` — not equal ||
 || **group**
-[`array`](../data-types.md) | Array for grouping widgets. Widgets can be grouped [by fields](#anchor-field) ||
+[`array`](../data-types.md) | Array for grouping widgets. Grouping can be done [by fields](#anchor-field) of the widget ||
 || **order**
-[`object`](../data-types.md) | Object for sorting selected records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../data-types.md) | Object for sorting the selected records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` can be found [in the table below](#anchor-field).
 
@@ -102,7 +102,7 @@ Fields of the widget object. Present in the request and response.
 || **WIDGET_PARAMS**
 [`object`](../data-types.md) | [Parameters](./landing-repowidget-register.md#anchor-widget-params) for the Vue template engine ||
 || **CONTENT**
-[`string`](../data-types.md) | Widget layout using Vue constructs ||
+[`string`](../data-types.md) | Widget markup using Vue constructs ||
 || **MANIFEST**
 [`object`](../data-types.md) | Widget manifest ||
 || **CREATED_BY_ID**
@@ -124,6 +124,110 @@ Fields of the widget object. Present in the request and response.
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'landing.repowidget.getlist',
+        {
+          params: {
+            select: [
+              'ID', 'NAME'
+            ],
+            filter: {
+              '>ID': '1'
+            }
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('landing.repowidget.getlist', {
+        params: {
+          select: [
+            'ID', 'NAME'
+          ],
+          filter: {
+            '>ID': '1'
+          }
+        }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('landing.repowidget.getlist', {
+        params: {
+          select: [
+            'ID', 'NAME'
+          ],
+          filter: {
+            '>ID': '1'
+          }
+        }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.repowidget.getlist',
+                [
+                    'params' => [
+                        'select' => [
+                            'ID', 'NAME'
+                        ],
+                        'filter' => [
+                            '>ID' => '1'
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting repowidget list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -148,7 +252,7 @@ Fields of the widget object. Present in the request and response.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

@@ -1,12 +1,12 @@
-# Add Widget to the Homepage: our vibe landing.repowidget.register
+# Add Widget to Start Page: the Vibe landing.repowidget.register
 
 > Scope: [`landing`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.register` adds a widget for the Homepage: our vibe. It returns an error or the `ID` of the added widget.
+The method `landing.repowidget.register` adds a widget for the Start page: the Vibe. It returns an error or the `ID` of the added widget.
 
-During the addition, a check is performed. If a widget with the code `code` has already been registered previously, its content will be updated. Widgets that are already placed on the vibes will be automatically updated in case of content changes.
+During the addition, a check is performed. If a widget with the code `code` has already been registered previously, its content will be updated. Widgets already placed on the Vibe will be automatically updated in case of content changes.
 
 ## Method Parameters
 
@@ -29,11 +29,11 @@ During the addition, a check is performed. If a widget with the code `code` has 
 || **Name**
 `type` | **Description** ||
 || **NAME**
-[`string`](../data-types.md) | Name of the widget ||
+[`string`](../data-types.md) | Widget name ||
 || **PREVIEW**
 [`string`](../data-types.md) | URL of the widget cover image for the widget selection slider ||
 || **DESCRIPTION**
-[`string`](../data-types.md) | Description of the widget ||
+[`string`](../data-types.md) | Widget description ||
 || **CONTENT**
 [`string`](../data-types.md) | Widget markup using Vue constructs ||
 || **SECTIONS**
@@ -56,7 +56,7 @@ During the addition, a check is performed. If a widget with the code `code` has 
 || **WIDGET_PARAMS**
 [`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue templater. If absent, the block will remain as regular HTML code with `{{}}` ||
 || **ACTIVE**
-[`char`](../data-types.md) | Activity status of the widget. Accepts values: 
+[`char`](../data-types.md) | Widget activity. Accepts values: 
 
 - `Y` - widget is active and available
 - `N` - widget is inactive and unavailable ||
@@ -72,7 +72,7 @@ During the addition, a check is performed. If a widget with the code `code` has 
 || **Name**
 `type` | **Description** ||
 || **rootNode***
-[`string`](../data-types.md) | Selector for the root element in the markup that will be turned into a Vue component. The root element must be the only element in the provided template; all other markup will be cleared ||
+[`string`](../data-types.md) | Selector for the root element in the markup that will be turned into a Vue component. The root element must be the only element in the passed template; all other markup will be cleared ||
 || **lang**
 [`string`](../data-types.md) | Array of language phrases used in constructs `{{$Bitrix.Loc.getMessage('W_EMPTY')}}` ||
 || **handler***
@@ -82,13 +82,13 @@ During the addition, a check is performed. If a widget with the code `code` has 
 
  ||
 || **style**
-[`string`](../data-types.md) | Address of styles for the widget. Styles can also be set inline in the markup via binding `:style="{borderBottom: '1px solid red'}"` ||
+[`string`](../data-types.md) | Address of styles for the widget. Styles can also be set inline in the markup via the binding `:style="{borderBottom: '1px solid red'}"` ||
 || **demoData***
-[`object`](../data-types.md) | Demo data for the widget that will be used to showcase the widget in the vibes templates in [Bitrix24 Marketplace](../../market/index.md).
+[`object`](../data-types.md) | Demo data for the widget that will be used to showcase the widget in the Vibe templates in [Bitrix24 Marketplace](../../market/index.md).
 
-If you are developing a widget for a specific Bitrix24 and do not plan to publish it in the Marketplace, you can specify any array as the value of the parameter; it will not be used anyway.
+If you are developing a widget for a specific Bitrix24 and do not plan to publish it in the Marketplace, you can specify any array as the parameter value; it will not be used anyway.
 
-However, if you are preparing a mass-market solution with a widget, pay maximum attention to the demo data — they will be displayed in the preview slider of the vibe template! Obviously, the structure of the demo data should match what your handler `handler` would return in normal widget usage
+However, if you are preparing a mass-market solution with a widget, pay maximum attention to the demo data — they will be displayed in the preview slider of the Vibe template! Obviously, the structure of the demo data should match what your `handler` would return in normal widget usage
  ||
 |#
 
@@ -100,8 +100,93 @@ However, if you are preparing a mass-market solution with a widget, pay maximum 
 
 - JS
 
+
     ```js
-    const content = ` 
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.repowidget.register',
+    		data
+    	);
+    	
+    	const result = response.getData().result;
+    	
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    		return;
+    	}
+    	
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.repowidget.register',
+                [
+                    'code'    => 'my_widget',
+                    'fields'  => [
+                        'NAME'         => 'My widget',
+                        'PREVIEW'      => 'https://my-app.com/vibe_preview.jpg',
+                        'CONTENT'      => $content,
+                        'SECTIONS'     => 'widgets_company_life',
+                        'WIDGET_PARAMS' => [
+                            'rootNode' => '.my-app-w-container',
+                            'lang'     => [
+                                'de' => [
+                                    'W_TITLE' => 'People and their ages',
+                                    'W_EMPTY' => 'Empty',
+                                ],
+                                'en' => [
+                                    'W_TITLE' => 'People and their ages',
+                                    'W_EMPTY' => 'Empty',
+                                },
+                            ],
+                            'handler'   => 'https://my-app.com/vibe.php',
+                            'style'     => 'https://my-app.com/vibe.css',
+                            'demoData'  => [
+                                'desc'    => 'Just a test widget',
+                                'count'   => 420,
+                                'persons' => [
+                                    ['name' => 'Person 1', 'age' => 21],
+                                    ['name' => 'Person 2', 'age' => 42],
+                                    ['name' => 'Person 3', 'age' => 123],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error registering repowidget: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    const content = `
         <div class="my-app-w-container">
             <h2 class="w-title" :style="{borderBottom: '1px solid red'}">
                 {{$Bitrix.Loc.getMessage('W_TITLE')}}
@@ -127,7 +212,7 @@ However, if you are preparing a mass-market solution with a widget, pay maximum 
                 <button @click="fetch({param: 'a'})">Data for parameter 'a'</button>
                 <button @click="fetch({param: 'b'})">Data for parameter 'b'</button>
                 <button @click="openApplication({param1: '1', param2: 'false'})">Open application</button>
-                <button @click="openPath('/crm')">Open local address in the slider</button>
+                <button @click="openPath('/crm')">Open local address in slider</button>
             </div>
         </div>
     `;
@@ -183,7 +268,7 @@ However, if you are preparing a mass-market solution with a widget, pay maximum 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -214,7 +299,7 @@ However, if you are preparing a mass-market solution with a widget, pay maximum 
                 <button @click="fetch({param: 'a'})">Data for parameter 'a'</button>
                 <button @click="fetch({param: 'b'})">Data for parameter 'b'</button>
                 <button @click="openApplication({param1: '1', param2: 'false'})">Open application</button>
-                <button @click="openPath('/crm')">Open local address in the slider</button>
+                <button @click="openPath('/crm')">Open local address in slider</button>
             </div>
         </div>
     HTML;
@@ -224,7 +309,7 @@ However, if you are preparing a mass-market solution with a widget, pay maximum 
         'fields' => [
             'NAME' => 'My widget', 
             'PREVIEW' => 'https://my-app.com/vibe_preview.jpg', 
-            'CONTENT' => $content,  // Vue markup extracted to a separate variable for convenience
+            'CONTENT' => $content,  // Vue markup extracted into a separate variable for convenience
             'SECTIONS' => 'widgets_company_life', 
             'WIDGET_PARAMS' => [
                 'rootNode' => '.my-app-w-container',
