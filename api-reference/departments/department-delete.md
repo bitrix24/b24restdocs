@@ -1,4 +1,4 @@
-# Delete Department department.delete
+# Delete department.department.delete
 
 > Scope: [`department`](../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `department.delete` removes a department from the company structure.
 
 ## Method Parameters
 
-{% include [Footnote about required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ The method `department.delete` removes a department from the company structure.
 
 ## Code Examples
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,53 @@ The method `department.delete` removes a department from the company structure.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"department.delete", {
+    			"ID": 18
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'department.delete',
+                [
+                    'ID' => 18
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting department: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "department.delete", {
             "ID": 18
@@ -58,7 +105,7 @@ The method `department.delete` removes a department from the company structure.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -102,7 +149,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Result of the department removal from the company structure ||
+[`boolean`](../data-types.md) | Result of the department deletion in the company structure ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#

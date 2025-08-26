@@ -4,7 +4,7 @@
 >
 > Who can execute the method: user with permissions to modify the structure
 
-The method `department.update` modifies the department data within the company's structure.
+The method `department.update` modifies the department data in the company structure.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ The method `department.update` modifies the department data within the company's
 || **NAME**
 [`string`](../data-types.md) | Name of the department ||
 || **SORT**
-[`int`](../data-types.md) | Sorting field for the department ||
+[`int`](../data-types.md) | Sorting field of the department ||
 || **PARENT**
 [`int`](../data-types.md) | Identifier of the parent department ||
 || **UF_HEAD**
@@ -67,6 +67,64 @@ The method `department.update` modifies the department data within the company's
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'department.update',
+    		{
+    			"ID": 18,
+    			"NAME": "Department of Secrets",
+    			"SORT": 500,
+    			"UF_HEAD": 1,
+    			"PARENT": 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'department.update',
+                [
+                    'ID'     => 18,
+                    'NAME'   => 'Department of Secrets',
+                    'SORT'   => 500,
+                    'UF_HEAD' => 1,
+                    'PARENT' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating department: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'department.update',
         {
@@ -86,7 +144,7 @@ The method `department.update` modifies the department data within the company's
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -111,7 +169,7 @@ The method `department.update` modifies the department data within the company's
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -134,14 +192,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Result of the department update in the company's structure ||
+[`boolean`](../data-types.md) | Result of the department update in the company structure ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

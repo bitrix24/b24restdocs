@@ -19,7 +19,7 @@ The `department.get` method is designed to retrieve a list of departments.
 - `NAME` — department name
 - `SORT` — sorting order
 - `PARENT` — parent department identifier
-- `UF_HEAD` — identifier of the department head ||
+- `UF_HEAD` — department head user identifier ||
 || **order**
 [`string`](../data-types.md) | Sorting direction:
 - `ASC` — ascending
@@ -27,7 +27,7 @@ The `department.get` method is designed to retrieve a list of departments.
 || **ID**
 [`int`](../data-types.md) | Filter by department identifier ||
 || **NAME**
-[`string`](../data-types.md) | Filter by department name. The full name of the department must be specified ||
+[`string`](../data-types.md) | Filter by department name. The full name of the department should be specified ||
 || **SORT**
 [`int`](../data-types.md) | Filter by sorting field ||
 || **PARENT**
@@ -35,15 +35,15 @@ The `department.get` method is designed to retrieve a list of departments.
 || **UF_HEAD**
 [`int`](../data-types.md) | Filter by department head identifier ||
 || **START**
-[`integer`](../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../data-types.md) | This parameter is used for pagination control.
 
-The page size for results is always static: 50 records.
+The page size of results is always static: 50 records.
 
-To select the second page of results, you must pass the value `50`. To select the third page of results — the value `100`, and so on.
+To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number.
+`start = (N-1) * 50`, where `N` — the desired page number.
 
 Details in the article [{#T}](../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
@@ -86,6 +86,57 @@ Details in the article [{#T}](../how-to-call-rest-api/list-methods-pecularities.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"department.get", {
+    			"sort": "NAME",
+    			"order": "DESC",
+    			"PARENT": 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'department.get',
+                [
+                    'sort'   => 'NAME',
+                    'order'  => 'DESC',
+                    'PARENT' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting departments: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "department.get", {
             "sort": "NAME",
@@ -102,7 +153,7 @@ Details in the article [{#T}](../how-to-call-rest-api/list-methods-pecularities.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -187,7 +238,7 @@ HTTP status: **200**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
-### Structure of department {#st_department}
+### Structure department {#st_department}
 
 ```json
     {

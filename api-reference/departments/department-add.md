@@ -14,9 +14,9 @@ The method `department.add` adds a new department to the company's structure.
 || **Name**
 `type` | **Description** ||
 || **NAME***
-[`string`](../data-types.md) | Name of the department ||
+[`string`](../data-types.md) | Department name ||
 || **SORT**
-[`int`](../data-types.md) | Sorting field for the department ||
+[`int`](../data-types.md) | Department sorting field ||
 || **PARENT***
 [`int`](../data-types.md) | Identifier of the parent department ||
 || **UF_HEAD**
@@ -41,7 +41,7 @@ The method `department.add` adds a new department to the company's structure.
         "UF_HEAD": 1,
         "PARENT": 15
     }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/department.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/department.add
     ```
 
 - cURL (OAuth)
@@ -63,6 +63,62 @@ The method `department.add` adds a new department to the company's structure.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'department.add',
+    		{
+    			"NAME": "Muggle Studies Department",
+    			"SORT": 450,
+    			"UF_HEAD": 1,
+    			"PARENT": 15
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'department.add',
+                [
+                    'NAME'   => 'Muggle Studies Department',
+                    'SORT'   => 450,
+                    'UF_HEAD' => 1,
+                    'PARENT' => 15,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding department: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'department.add',
         {
@@ -81,7 +137,7 @@ The method `department.add` adds a new department to the company's structure.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -140,7 +196,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "The department name is not provided.\u003Cbr\u003E"
+    "error_description": "Department name not provided.\u003Cbr\u003E"
 }
 ```
 
@@ -150,8 +206,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ERROR_CORE` | The department name is not provided.\u003Cbr\u003E | The required parameter `NAME` is missing ||
-|| `ERROR_CORE` | There can only be one top-level department in the company structure | The `PARENT` parameter is incorrectly specified ||
+|| `ERROR_CORE` | Department name not provided.\u003Cbr\u003E | Required parameter `NAME` is missing ||
+|| `ERROR_CORE` | There can only be one top-level department in the company structure | Incorrect `PARENT` parameter specified ||
 || `ERROR_CORE` | Access denied | Insufficient rights to add a department ||
 |#
 
