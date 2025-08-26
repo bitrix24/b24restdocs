@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing — we will complete it shortly.
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no error response is provided
-- examples in other languages are missing
+- no response in case of error
+- no examples in other languages
 - the description needs a link to the user documentation on important messages
 
 {% endnote %}
@@ -31,13 +31,61 @@ Returns an array of user IDs who have read the specified important message.
 || **POST_ID** | ID of the news feed message that is an important message. ||
 |#
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'log.blogpost.getusers.important',
+    		{
+    			POST_ID: 345
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'log.blogpost.getusers.important',
+                [
+                    'POST_ID' => 345
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting important blog post users: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -54,7 +102,7 @@ Returns an array of user IDs who have read the specified important message.
 
 {% endlist %}
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 ## Request:
 

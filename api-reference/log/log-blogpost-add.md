@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will complete it shortly.
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no response in case of error
+- no error response is provided
 - No examples in other languages
 
 {% endnote %}
@@ -44,16 +44,16 @@ https://my.bitrix24.com/rest/log.blogpost.add.json?POST_MESSAGE=Hello%2C%20world
 #|
 || **Parameter** | **Description** ||
 || **USER_ID** | ID of the message author (optional, defaults to the current user, other values are available only to the administrator in the on-premise version). ||
-|| **POST_MESSAGE** | The text of the message. ||
-|| **POST_TITLE** | The title of the message. ||
-|| **DEST** | A list of recipients who will have the right to view the message. Possible values for array elements:
+|| **POST_MESSAGE** | Message text. ||
+|| **POST_TITLE** | Message title. ||
+|| **DEST** | List of recipients who will have the right to view the message. Possible values for array elements:
 
 {% include notitle [message recipients](./_includes/log-recepients.md) %}
 
 Default value - `['UA']` ||
-|| **SPERM** | A list of recipients who will have the right to view the message (deprecated). Similar to `DEST` ||
-|| **FILES** | Files, an array of values described by [rules](../files/how-to-upload-files.md). ||
-|| **IMPORTANT** | Defaults to N. The feed message is published as "important." ||
+|| **SPERM** | List of recipients who will have the right to view the message (deprecated). Similar to `DEST` ||
+|| **FILES** | Files, an array of values described by [rules](../files/how-to-upload-files.md).||
+|| **IMPORTANT** | Defaults to N. The feed message is published as "important". ||
 || **IMPORTANT_DATE_END** | Specifies the date/time value until which the message will be considered important. ||
 |#
 
@@ -64,6 +64,59 @@ Default value - `['UA']` ||
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'log.blogpost.add',
+    		{
+    			POST_TITLE: 'Title',
+    			POST_MESSAGE: 'Text',
+    			DEST: ['SG1', 'U2']
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	alert('OK!');
+    }
+    catch( error )
+    {
+    	console.log(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'log.blogpost.add',
+                [
+                    'POST_TITLE'   => 'Title',
+                    'POST_MESSAGE' => 'Text',
+                    'DEST'         => ['SG1', 'U2']
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        alert('OK!');
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding blog post: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod('log.blogpost.add', {
