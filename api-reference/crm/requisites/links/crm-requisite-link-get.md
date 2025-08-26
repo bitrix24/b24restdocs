@@ -1,10 +1,10 @@
-# Get Requisite Link with CRM Object crm.requisite.link.get
+# Get the link of the requisite with the object crm.requisite.link.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns the link between requisites and an object.
+The method returns the link of the requisites with the object.
 
 ## Method Parameters
 
@@ -22,14 +22,14 @@ The following types can be used:
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (to get possible values, refer to the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
 
-Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
+Identifiers of CRM object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **entityId***
 [`integer`](../../../data-types.md) | Identifier of the object to which the link belongs. 
 
-Object identifiers can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md). ||
+Identifiers of objects can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md). ||
 |#
 
 ## Code Examples
@@ -48,7 +48,7 @@ Object identifiers can be obtained using the following methods: [crm.deal.list](
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.link.get
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -59,6 +59,57 @@ Object identifiers can be obtained using the following methods: [crm.deal.list](
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.link.get", {
+    			entityTypeId: 31,        // Identifier of the type (Invoice)
+    			entityId: 315,             // Identifier of the invoice
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.link.get',
+                [
+                    'entityTypeId' => 31,
+                    'entityId'     => 315,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting requisite link: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -76,7 +127,7 @@ Object identifiers can be obtained using the following methods: [crm.deal.list](
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -98,7 +149,7 @@ Object identifiers can be obtained using the following methods: [crm.deal.list](
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -130,10 +181,10 @@ HTTP Status: **200**
 || **result**
 `Object`| An object containing the values of the requisite link fields ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
-### Description of Requisite Link Fields with CRM Object
+### Description of the requisite link fields with the CRM object
 
 #|
 || **Name**
@@ -146,35 +197,35 @@ The following types can be used:
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (to get possible values, refer to the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
 
-Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
+Identifiers of CRM object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **ENTITY_ID**
 [`integer`](../../../data-types.md) | Identifier of the object to which the link belongs. 
 
-Object identifiers can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
+Identifiers of objects can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
 || **REQUISITE_ID**
 [`integer`](../../../data-types.md) | Identifier of the client's requisite selected for the object. 
 
-Requisite identifiers can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md) ||
+Identifiers of requisites can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md) ||
 || **BANK_DETAIL_ID**
 [`integer`](../../../data-types.md) | Identifier of the client's bank requisite selected for the object.
 
-Bank requisite identifiers can be obtained using the method [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) ||
+Identifiers of bank requisites can be obtained using the method [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) ||
 || **MC_REQUISITE_ID**
 [`integer`](../../../data-types.md) | Identifier of my company's requisite selected for the object. 
 
-Requisite identifiers can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md) ||
+Identifiers of requisites can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md) ||
 || **MC_BANK_DETAIL_ID**
 [`integer`](../../../data-types.md) | Identifier of my company's bank requisite selected for the object. 
 
-Bank requisite identifiers can be obtained using the method [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) ||
+Identifiers of bank requisites can be obtained using the method [crm.requisite.bankdetail.list](../bank-detail/crm-requisite-bank-detail-list.md) ||
 |#
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {

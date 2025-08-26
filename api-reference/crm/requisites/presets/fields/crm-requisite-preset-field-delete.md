@@ -4,11 +4,11 @@
 >
 > Who can execute the method: any user
 
-This method removes a custom field from the requisite template.
+This method deletes a custom field from the requisite template.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,14 +18,14 @@ This method removes a custom field from the requisite template.
 
 Identifiers of custom fields in the requisite template can be obtained using the [crm.requisite.preset.field.list](./crm-requisite-preset-field-list.md) method. ||
 || **preset***
-[`object`](../../../../data-types.md) | An object containing the identifier of the template from which the custom field is being removed (e.g., `{"ID": 27}`).
+[`object`](../../../../data-types.md) | An object containing the identifier of the template from which the custom field is being deleted (for example, `{"ID": 27}`).
 
 Template identifiers can be obtained using the [crm.requisite.preset.list](../crm-requisite-preset-list.md) method. ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -39,7 +39,7 @@ Template identifiers can be obtained using the [crm.requisite.preset.list](../cr
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.field.delete
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -50,6 +50,70 @@ Template identifiers can be obtained using the [crm.requisite.preset.list](../cr
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.preset.field.delete",
+    		{
+    			ID: 27,
+    			preset:
+    			{
+    				"ID": 1
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.preset.field.delete',
+                [
+                    'ID'     => 27,
+                    'preset' => [
+                        'ID' => 1,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting preset field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -71,7 +135,7 @@ Template identifiers can be obtained using the [crm.requisite.preset.list](../cr
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -93,7 +157,7 @@ Template identifiers can be obtained using the [crm.requisite.preset.list](../cr
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -116,17 +180,17 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of removing the custom field from the template:
+[`boolean`](../../../../data-types.md) | Result of deleting the custom field from the template:
 - `true` — deleted
 - `false` — not deleted 
 ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -135,7 +199,7 @@ HTTP Status: **40x**, **50x**
 }
 ```
 
-{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -147,7 +211,7 @@ HTTP Status: **40x**, **50x**
 || `Access denied` | Insufficient access permissions to delete the field from the requisite template. ||
 |#
 
-{% include [System Errors](../../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -1,16 +1,16 @@
-# Get the description of the fields of bank details crm.requisite.bankdetail.fields
+# Get Description of Bank Details Fields crm.requisite.bankdetail.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method returns a formal description of the fields of bank details.
+The method returns a formal description of the bank details fields.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -24,7 +24,7 @@ No parameters.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.bankdetail.fields
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -35,6 +35,52 @@ No parameters.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.requisite.bankdetail.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.bankdetail.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching bank detail fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -50,7 +96,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -69,7 +115,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -392,7 +438,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the field identifier and `value` is the object with [field attributes](#attributes) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ### Description of Bank Details Fields
@@ -435,11 +481,11 @@ Currently, the field does not actually affect anything ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting ||
 || **RQ_BANK_NAME**
-[`string`](../../../data-types.md) | Bank name ||
+[`string`](../../../data-types.md) | Name of the bank ||
 || **RQ_BANK_ADDR**
-[`string`](../../../data-types.md) | Bank address ||
+[`string`](../../../data-types.md) | Address of the bank ||
 || **RQ_BANK_CODE**
-[`string`](../../../data-types.md) | Bank code (for country BR) ||
+[`string`](../../../data-types.md) | Bank Code (for country BR) ||
 || **RQ_BANK_ROUTE_NUM**
 [`string`](../../../data-types.md) | Bank Routing Number ||
 || **RQ_BIK**

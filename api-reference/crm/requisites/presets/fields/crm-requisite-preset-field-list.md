@@ -33,7 +33,7 @@ The method returns a list of all customizable fields for a specific requisites t
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.field.list
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -44,6 +44,87 @@ The method returns a list of all customizable fields for a specific requisites t
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.requisite.preset.field.list',
+        {
+          preset: {
+            "ID": 27
+          }
+        }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.requisite.preset.field.list', {
+        preset: {
+          "ID": 27
+        }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('crm.requisite.preset.field.list', {
+        preset: {
+          "ID": 27
+        }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.preset.field.list',
+                [
+                    'preset' => [
+                        'ID' => 27
+                    ]
+                }
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching preset field list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -64,7 +145,7 @@ The method returns a list of all customizable fields for a specific requisites t
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,7 +166,7 @@ The method returns a list of all customizable fields for a specific requisites t
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -216,7 +297,7 @@ HTTP status: **200**
 || **result**
 [`array`](../../../../data-types.md)| An array of objects describing the customizable fields of the requisites template. Each element contains [fields](#fields) of the customizable field template ||
 || **total**
-[`integer`](../../../../data-types.md) | Total number of records found ||
+[`integer`](../../../../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -227,23 +308,23 @@ HTTP status: **200**
 ||  **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the field. Created automatically and unique within the template ||
+[`integer`](../../../../data-types.md) | The identifier of the field. Created automatically and unique within the template ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Name of the field ||
+[`string`](../../../../data-types.md) | The name of the field ||
 || **FIELD_TITLE**
-[`string`](../../../../data-types.md) | Alternative name of the field for the requisite.
+[`string`](../../../../data-types.md) | An alternative name for the field for the requisite.
 
 The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used 
 ||
 || **SORT**
-[`integer`](../../../../data-types.md) | Sorting. Order in the list of template fields || 
+[`integer`](../../../../data-types.md) | Sorting. The order in the list of template fields || 
 || **IN_SHORT_LIST**
 [`char`](../../../../data-types.md) | Show in the short list. Deprecated field, currently not used. Retained for backward compatibility. Can take values `Y` or `N` ||
 |#
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP Status: **40x**, **50x**
 
 ```json
 {

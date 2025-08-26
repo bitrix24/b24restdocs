@@ -1,20 +1,20 @@
-# Get Fields Available for Addition to the CRM Requisite Template crm.requisite.preset.field.availabletoadd
+# Get Fields Available for Addition to the Requisite Template crm.requisite.preset.field.availabletoadd
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method returns the fields that can be added to the specified requisite template.
+The method returns fields available for addition to the specified requisite template.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **preset***
-[`object`](../../../../data-types.md) | An object containing the identifier value of the template for which you want to get the list of available customizable fields. 
+[`object`](../../../../data-types.md) | An object containing the identifier of the template for which to retrieve the list of available customizable fields. 
 
 Template identifiers can be obtained using the [crm.requisite.preset.list](../crm-requisite-preset-list.md) method. 
 
@@ -23,7 +23,7 @@ Fields with the prefix `UF_` in the response are custom fields (see [methods](..
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,7 +37,7 @@ Fields with the prefix `UF_` in the response are custom fields (see [methods](..
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.field.availabletoadd
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -48,6 +48,68 @@ Fields with the prefix `UF_` in the response are custom fields (see [methods](..
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.preset.field.availabletoadd",
+    		{
+    			preset:
+    			{
+    				"ID": 27
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.preset.field.availabletoadd',
+                [
+                    'preset' => [
+                        'ID' => 27
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error checking available fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -68,7 +130,7 @@ Fields with the prefix `UF_` in the response are custom fields (see [methods](..
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -140,9 +202,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | An array of field names that can be added to the specified requisite template ||
+[`array`](../../../../data-types.md) | An array with the names of fields that can be added to the specified requisite template ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ### Field Descriptions
@@ -151,23 +213,23 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **RQ_FIRST_NAME**
-[`string`](../../../../data-types.md) | First Name ||
+[`string`](../../../../data-types.md) | First name ||
 || **RQ_LAST_NAME**
-[`string`](../../../../data-types.md) | Last Name ||
+[`string`](../../../../data-types.md) | Last name ||
 || **RQ_SECOND_NAME**
-[`string`](../../../../data-types.md) | Middle Name ||
+[`string`](../../../../data-types.md) | Middle name ||
 || **RQ_COMPANY_NAME**
-[`string`](../../../../data-types.md) | Short Name of the Organization ||
+[`string`](../../../../data-types.md) | Short name of the organization ||
 || **RQ_COMPANY_FULL_NAME**
-[`string`](../../../../data-types.md) | Full Name of the Organization ||
+[`string`](../../../../data-types.md) | Full name of the organization ||
 || **RQ_COMPANY_REG_DATE**
-[`string`](../../../../data-types.md) | Date of State Registration ||
+[`string`](../../../../data-types.md) | Date of state registration ||
 || **RQ_DIRECTOR**
-[`string`](../../../../data-types.md) | General Director ||
+[`string`](../../../../data-types.md) | General director ||
 || **RQ_ACCOUNTANT**
-[`string`](../../../../data-types.md) | Chief Accountant ||
+[`string`](../../../../data-types.md) | Chief accountant ||
 || **RQ_CONTACT**
-[`string`](../../../../data-types.md) | Contact Person ||
+[`string`](../../../../data-types.md) | Contact person ||
 || **RQ_EMAIL**
 [`string`](../../../../data-types.md) | E-Mail ||
 || **RQ_PHONE**
@@ -175,17 +237,17 @@ HTTP Status: **200**
 || **RQ_FAX**
 [`string`](../../../../data-types.md) | Fax ||
 || **RQ_IDENT_DOC**
-[`string`](../../../../data-types.md) | Document Type ||
+[`string`](../../../../data-types.md) | Type of document ||
 || **RQ_IDENT_DOC_SER**
 [`string`](../../../../data-types.md) | Series ||
 || **RQ_IDENT_DOC_NUM**
 [`string`](../../../../data-types.md) | Number ||
 || **RQ_IDENT_DOC_DATE**
-[`string`](../../../../data-types.md) | Issue Date ||
+[`string`](../../../../data-types.md) | Date of issue ||
 || **RQ_IDENT_DOC_ISSUED_BY**
-[`string`](../../../../data-types.md) | Issued By ||
+[`string`](../../../../data-types.md) | Issued by ||
 || **RQ_IDENT_DOC_DEP_CODE**
-[`string`](../../../../data-types.md) | Department Code ||
+[`string`](../../../../data-types.md) | Department code ||
 || **RQ_INN**
 [`string`](../../../../data-types.md) | Tax Identification Number ||
 || **RQ_KPP**
@@ -235,7 +297,7 @@ HTTP Status: **40x**, **50x**
 
 #|  
 || **Code** | **Description** ||
-|| `Template not found` | The template for which the list of fields available for addition could not be found ||
+|| `Template not found` | The template for which to retrieve the list of available fields was not found ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}

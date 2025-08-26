@@ -12,7 +12,7 @@ The method returns a list of bank details based on the filter.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array containing the list of fields to select (see [bank detail fields](#fields)).
+[`array`](../../../data-types.md) | The array contains a list of fields to select (see [bank detail fields](#fields)).
 
 If the array is not provided or an empty array is passed, all available bank detail fields will be selected. ||
 || **filter**
@@ -27,13 +27,13 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for the substring in any position of the string
+- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for the substring in any position of the string.
 - `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides
+- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides.
 - `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
@@ -53,7 +53,7 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../../../data-types.md) | The parameter is used for managing pagination.
 
 The page size of results is always static: 50 records.
 
@@ -61,7 +61,7 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number 
+`start = (N-1) * 50`, where `N` — the number of the desired page 
 ||
 |#
 
@@ -71,9 +71,9 @@ The formula for calculating the `start` parameter value:
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the bank detail. Created automatically and unique within the account. ||
+[`integer`](../../../data-types.md) | Identifier of the bank detail. Automatically created and unique within the account. ||
 || **ENTITY_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object. Currently, it can only be the identifier of the detail.
+[`integer`](../../../data-types.md) | Identifier of the parent object. Currently, it can only be the identifier of the detail. 
 
 Identifiers of details can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md). ||
 || **COUNTRY_ID**
@@ -93,13 +93,13 @@ The country code of the bank detail matches the country code in the linked detai
 || **CODE**
 [`string`](../../../data-types.md) | Symbolic code of the detail. ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base.
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
-The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field.
+The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field. 
 
 It is recommended to use a unique prefix to avoid collisions with other applications. ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used.
+[`char`](../../../data-types.md) | Activity indicator. Values `Y` or `N` are used. 
 
 Currently, the field does not actually affect anything. ||
 || **SORT**
@@ -109,7 +109,7 @@ Currently, the field does not actually affect anything. ||
 || **RQ_BANK_ADDR**
 [`string`](../../../data-types.md) | Address of the bank. ||
 || **RQ_BANK_CODE**
-[`string`](../../../data-types.md) | Bank code (for country BR). ||
+[`string`](../../../data-types.md) | Bank Code (for country BR). ||
 || **RQ_BANK_ROUTE_NUM**
 [`string`](../../../data-types.md) | Bank Routing Number. ||
 || **RQ_BIK**
@@ -133,9 +133,9 @@ Currently, the field does not actually affect anything. ||
 || **RQ_IIK**
 [`string`](../../../data-types.md) | IIK. ||
 || **RQ_ACC_CURRENCY**
-[`string`](../../../data-types.md) | Account currency. ||
+[`string`](../../../data-types.md) | Account Currency. ||
 || **RQ_COR_ACC_NUM**
-[`string`](../../../data-types.md) | Correspondent account number. ||
+[`string`](../../../data-types.md) | Correspondent Account Number. ||
 || **RQ_IBAN**
 [`string`](../../../data-types.md) | IBAN. ||
 || **RQ_SWIFT**
@@ -150,7 +150,7 @@ Currently, the field does not actually affect anything. ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -164,7 +164,7 @@ Currently, the field does not actually affect anything. ||
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.bankdetail.list
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -175,6 +175,88 @@ Currently, the field does not actually affect anything. ||
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.requisite.bankdetail.list',
+        {
+          order: { "DATE_CREATE": "ASC" },
+          filter: { "COUNTRY_ID": "1" },
+          select: [ "ENTITY_ID", "ID", "NAME" ]
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.requisite.bankdetail.list', {
+        order: { "DATE_CREATE": "ASC" },
+        filter: { "COUNTRY_ID": "1" },
+        select: [ "ENTITY_ID", "ID", "NAME" ]
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.requisite.bankdetail.list', {
+        order: { "DATE_CREATE": "ASC" },
+        filter: { "COUNTRY_ID": "1" },
+        select: [ "ENTITY_ID", "ID", "NAME" ]
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.bankdetail.list',
+                [
+                    'order'  => ['DATE_CREATE' => 'ASC'],
+                    'filter' => ['COUNTRY_ID' => '1'],
+                    'select' => ['ENTITY_ID', 'ID', 'NAME'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+        if ($result->more()) {
+            $result->next();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing bank details: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -198,7 +280,7 @@ Currently, the field does not actually affect anything. ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -221,7 +303,7 @@ Currently, the field does not actually affect anything. ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -234,22 +316,22 @@ HTTP status: **200**
         {
             "ENTITY_ID": "30",
             "ID": "15",
-            "NAME": "AO \"ALPHA-BANK\""
+            "NAME": "ALPHA-BANK JSC"
         },
         {
             "ENTITY_ID": "30",
             "ID": "16",
-            "NAME": "AO \"Tinkoff Bank\""
+            "NAME": "Tinkoff Bank JSC"
         },
         {
             "ENTITY_ID": "45",
             "ID": "17",
-            "NAME": "AO \"Tinkoff Bank\""
+            "NAME": "Tinkoff Bank JSC"
         },
         {
             "ENTITY_ID": "45",
             "ID": "18",
-            "NAME": "AO \"ALPHA-BANK\""
+            "NAME": "ALPHA-BANK JSC"
         }
     ],
     "total": 5,
@@ -280,7 +362,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP Status: **40x**, **50x**
 
 ```json
 {

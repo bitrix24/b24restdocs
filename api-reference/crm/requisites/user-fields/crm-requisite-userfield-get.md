@@ -1,10 +1,10 @@
-# Get Custom Field by ID crm.requisite.userfield.get
+# Get User Field by ID crm.requisite.userfield.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method returns a custom field of the requisite by its identifier.
+The method returns the user field of the requisite by its identifier.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method returns a custom field of the requisite by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field. It can be obtained using the method [crm.requisite.userfield.list](./crm-requisite-userfield-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the user field. Can be obtained using the method [crm.requisite.userfield.list](./crm-requisite-userfield-list.md) ||
 |#
 
 ## Code Examples
@@ -33,7 +33,7 @@ This method returns a custom field of the requisite by its identifier.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.userfield.get
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -44,6 +44,63 @@ This method returns a custom field of the requisite by its identifier.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.requisite.userfield.get',
+    		{
+    			id: 235
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.userfield.get',
+                [
+                    'id' => 235
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -61,7 +118,7 @@ This method returns a custom field of the requisite by its identifier.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -109,23 +166,23 @@ HTTP status: **200**
         },
         "EDIT_FORM_LABEL": {
             "en": "PP - String",
-            "ru": "PP - String"
+            "de": "PP - String"
         },
         "LIST_COLUMN_LABEL": {
             "en": "PP - String",
-            "ru": "PP - String"
+            "de": "PP - String"
         },
         "LIST_FILTER_LABEL": {
             "en": "PP - String",
-            "ru": "PP - String"
+            "de": "PP - String"
         },
         "ERROR_MESSAGE": {
             "en": "UF_CRM_NEWTECH_V1_STRING",
-            "ru": "UF_CRM_NEWTECH_V1_STRING"
+            "de": "UF_CRM_NEWTECH_V1_STRING"
         },
         "HELP_MESSAGE": {
             "en": "UF_CRM_NEWTECH_V1_STRING",
-            "ru": "UF_CRM_NEWTECH_V1_STRING"
+            "de": "UF_CRM_NEWTECH_V1_STRING"
         }
     },
     "time": {
@@ -146,20 +203,20 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | An object containing field values that describe the custom field of the requisite ||
+[`object`](../../../data-types.md) | Object containing field values describing the user field of the requisite ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
-### Description of the Fields of the Custom Field of the Requisite
+### Description of User Field of the Requisite
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`int`](../../../data-types.md) | Identifier of the custom field ||
+[`int`](../../../data-types.md) | Identifier of the user field ||
 || **ENTITY_ID**
-[`string`](../../../data-types.md) | Identifier of the entity to which the custom field belongs. For requisites, this is always `CRM_REQUISITE` ||
+[`string`](../../../data-types.md) | Identifier of the entity to which the user field belongs. For requisites, this is always `CRM_REQUISITE` ||
 || **FIELD_NAME**
 [`string`](../../../data-types.md) | Symbolic code. For requisites, it always starts with the prefix `UF_CRM_` ||
 || **USER_TYPE_ID**
@@ -198,7 +255,7 @@ The purpose of the field may change by the final developer ||
 - `N` — no 
 ||
 || **IS_SEARCHABLE**
-[`char`](../../../data-types.md) | Whether the field values are included in the search. Possible values:
+[`char`](../../../data-types.md) | Whether the field values participate in search. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -213,9 +270,9 @@ The purpose of the field may change by the final developer ||
 || **HELP_MESSAGE**
 [`string`](../../../data-types.md) | Help ||
 || **LIST**
-[`uf_enum_element`](../../../data-types.md) | List elements. For more details, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
+[`uf_enum_element`](../../../data-types.md) | List elements. For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings (dependent on type). For more details, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
+[`object`](../../../data-types.md) | Additional settings (dependent on type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
 |#
 
 ## Error Handling
@@ -235,9 +292,9 @@ HTTP status: **40x**, **50x**
 
 #|  
 || **Code** | **Error Text** | **Description** ||
-|| Empty string | `ID is not defined or invalid` | The identifier of the custom field is not set or has an invalid value ||
-|| `ERROR_NOT_FOUND` | `The entity with ID '235' is not found` | The custom field with the specified identifier was not found ||
-|| Empty string | `Access denied` | Insufficient access permissions to retrieve the custom field ||
+|| Empty string | `ID is not defined or invalid` | The identifier of the user field is not set or has an invalid value ||
+|| `ERROR_NOT_FOUND` | `The entity with ID '235' is not found` | The user field with the specified identifier was not found ||
+|| Empty string | `Access denied` | Insufficient access permissions to retrieve the user field ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

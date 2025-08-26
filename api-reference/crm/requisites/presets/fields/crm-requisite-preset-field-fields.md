@@ -1,16 +1,16 @@
-# Get Description of Custom Fields for the CRM Requisite Template crm.requisite.preset.field.fields
+# Get Description of Custom Fields for the Requisite Template crm.requisite.preset.field.fields
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method returns a formal description of the fields that define the customizable field of the requisite template.
+This method returns a formal description of the fields that describe the customizable field of the requisite template.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -24,7 +24,7 @@ No parameters.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.field.fields
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -35,6 +35,52 @@ No parameters.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.requisite.preset.field.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.preset.field.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching preset field fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -50,7 +96,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -99,7 +145,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Template Title"
+            "title": "Title in Template"
         },
         "SORT": {
             "type": "integer",
@@ -138,12 +184,12 @@ HTTP Status: **200**
 || **Title**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the field identifier and `value` is the object with [field attributes](#attribute) ||
+[`object`](../../../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the field identifier, and `value` is the object with [field attributes](#attribute) ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Description of Fields Defining the Customizable Field of the Requisite Template
+### Description of Fields Describing the Customizable Field of the Requisite Template
 
 #|
 ||  **Title**
@@ -153,7 +199,7 @@ HTTP Status: **200**
 || **FIELD_NAME**
 [`string`](../../../../data-types.md) | Field name ||
 || **FIELD_TITLE**
-[`string`](../../../../data-types.md) | Alternative name for the field in the requisite.
+[`string`](../../../../data-types.md) | Alternative field name for the requisite.
 
 The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used 
 ||

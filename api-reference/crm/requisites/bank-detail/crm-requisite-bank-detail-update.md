@@ -13,14 +13,14 @@ This method updates an existing bank detail.
 #|
 || **Parameter** | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the bank detail.
+[`integer`](../../../data-types.md) | Identifier of the bank detail. 
 
-Identifiers for bank details can be obtained using the [`crm.requisite.bankdetail.list`](./crm-requisite-bank-detail-list.md) method. ||
+Bank detail identifiers can be obtained using the [`crm.requisite.bankdetail.list`](./crm-requisite-bank-detail-list.md) method. ||
 || **fields***
-[`object`](../../../data-types.md) | Set of fields for the bank detail — an object of the form `{"field": "value"[, ...]}`, where the values need to be updated. ||
+[`object`](../../../data-types.md) | Set of bank detail fields — an object of the form `{"field": "value"[, ...]}`, the values of which need to be changed. ||
 |#
 
-### fields Parameter
+### Parameter fields
 
 #|
 || **Name**
@@ -30,13 +30,13 @@ Identifiers for bank details can be obtained using the [`crm.requisite.bankdetai
 || **CODE**
 [`string`](../../../data-types.md) | Symbolic code of the detail. ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base.
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
 
-The purpose of this field may change by the final developer. Each application ensures the uniqueness of values in this field.
+The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field. 
 
 It is recommended to use a unique prefix to avoid collisions with other applications. ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used.
+[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. 
 
 Currently, this field does not affect anything. ||
 || **SORT**
@@ -72,7 +72,7 @@ Currently, this field does not affect anything. ||
 || **RQ_ACC_CURRENCY**
 [`string`](../../../data-types.md) | Account Currency. ||
 || **RQ_COR_ACC_NUM**
-[`string`](../../../data-types.md) | Correspondent Account. ||
+[`string`](../../../data-types.md) | Correspondent Account Number. ||
 || **RQ_IBAN**
 [`string`](../../../data-types.md) | IBAN. ||
 || **RQ_SWIFT**
@@ -82,7 +82,7 @@ Currently, this field does not affect anything. ||
 || **COMMENTS**
 [`string`](../../../data-types.md) | Comment. ||
 || **ORIGINATOR_ID**
-[`string`](../../../data-types.md) | Identifier of the external information base. The purpose of this field may change by the final developer. ||
+[`string`](../../../data-types.md) | Identifier of the external information base. The purpose of the field may change by the final developer. ||
 |#
 
 ## Code Examples
@@ -97,21 +97,84 @@ Currently, this field does not affect anything. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":357,"fields":{"NAME":"Superbank PJSC (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"}}' \
+    -d '{"id":357,"fields":{"NAME":"Superbank Ltd. (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.bankdetail.update
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":357,"fields":{"NAME":"Superbank PJSC (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":357,"fields":{"NAME":"Superbank Ltd. (do not use)","COMMENTS":"Outdated","SORT":10000,"ACTIVE":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.bankdetail.update
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.bankdetail.update",
+    		{
+    			id: 357,
+    			fields:
+    			{
+    				"NAME": "Superbank Ltd. (do not use)",
+    				"COMMENTS": "Outdated",
+    				"SORT" : 10000,
+    				"ACTIVE": "N"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.bankdetail.update',
+                [
+                    'id'     => 357,
+                    'fields' => [
+                        'NAME'     => 'Superbank Ltd. (do not use)',
+                        'COMMENTS' => 'Outdated',
+                        'SORT'     => 10000,
+                        'ACTIVE'   => 'N',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating bank detail: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -120,7 +183,7 @@ Currently, this field does not affect anything. ||
             id: 357,
             fields:
             {
-                "NAME": "Superbank PJSC (do not use)",
+                "NAME": "Superbank Ltd. (do not use)",
                 "COMMENTS": "Outdated",
                 "SORT" : 10000,
                 "ACTIVE": "N"
@@ -138,7 +201,7 @@ Currently, this field does not affect anything. ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -148,7 +211,7 @@ Currently, this field does not affect anything. ||
         [
             'id' => 357,
             'fields' => [
-                'NAME' => 'Superbank PJSC (do not use)',
+                'NAME' => 'Superbank Ltd. (do not use)',
                 'COMMENTS' => 'Outdated',
                 'SORT' => 10000,
                 'ACTIVE' => 'N'
@@ -188,7 +251,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the bank detail update:
+[`boolean`](../../../data-types.md) | Result of updating the bank detail:
 - true — updated
 - false — not updated 
 ||
@@ -212,7 +275,7 @@ HTTP status: **40x**, **50x**
 ### Possible Errors
 
 #|  
-|| **Error Message** | **Description** ||
+|| **Error Text** | **Description** ||
 || `ID is not defined or invalid` | The identifier of the bank detail is not specified or has an invalid value. ||
 || `The Requisite with ID '357' is not found` | The bank detail with the specified identifier was not found. ||
 || `Access denied` | Insufficient access permissions to update the bank detail. ||

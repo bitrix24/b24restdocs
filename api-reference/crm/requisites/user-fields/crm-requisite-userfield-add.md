@@ -6,15 +6,15 @@
 
 This method creates a new custom field for the requisite.
 
-{% note info "Limitations for the Symbolic Code of the Custom Field" %}
+{% note info "Limitations for the custom field symbolic code" %}
 
-The system limit for the field name is 20 characters. The custom field name always has the prefix `UF_CRM_`, meaning the actual length of the name is 13 characters.
+The system limitation for the field name is 20 characters. The custom field name always has the prefix `UF_CRM_`, meaning the actual length of the name is 13 characters.
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,19 +25,19 @@ The system limit for the field name is 20 characters. The custom field name alwa
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ENTITY_ID***
-[`string`](../../../data-types.md) | Identifier of the entity to which the custom field belongs. For requisites, this is always `CRM_REQUISITE` ||
+[`string`](../../../data-types.md) | The identifier of the entity to which the custom field belongs. For requisites, this is always `CRM_REQUISITE` ||
 || **FIELD_NAME***
 [`string`](../../../data-types.md) | Symbolic code. For requisites, it always starts with the prefix `UF_CRM_` ||
 || **USER_TYPE_ID***
 [`string`](../../../data-types.md) | Data type ([`string`](../../universal/user-defined-fields/crm-userfield-types.md), [`boolean`](../../universal/user-defined-fields/crm-userfield-types.md), [`double`](../../universal/user-defined-fields/crm-userfield-types.md), or [`datetime`](../../universal/user-defined-fields/crm-userfield-types.md)) ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
 
 The purpose of the field may change by the final developer ||
 || **SORT**
@@ -57,7 +57,7 @@ Defaults to `N`
 Defaults to `N`
 ||
 || **SHOW_FILTER**
-[`char`](../../../data-types.md) | Show in the list filter. Possible values:
+[`char`](../../../data-types.md) | Whether to show in the list filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
@@ -66,21 +66,21 @@ Defaults to `N`
 Defaults to `N` 
 ||
 || **SHOW_IN_LIST**
-[`char`](../../../data-types.md) | Show in the list. Possible values:
+[`char`](../../../data-types.md) | Whether to show in the list. Possible values:
 - `Y` — yes
 - `N` — no
 
 Defaults to `Y` 
 ||
 || **EDIT_IN_LIST**
-[`char`](../../../data-types.md) | Allow user editing. Possible values:
+[`char`](../../../data-types.md) | Whether to allow editing by the user. Possible values:
 - `Y` — yes
 - `N` — no
 
 Defaults to `Y` 
 ||
 || **IS_SEARCHABLE**
-[`char`](../../../data-types.md) | Are the field values searchable? Possible values:
+[`char`](../../../data-types.md) | Whether the field values participate in the search. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -99,12 +99,12 @@ Defaults to `N`
 || **LIST**
 [`uf_enum_element`](../../../data-types.md) | List elements. For more details, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings (dependent on type). For more details, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
+[`object`](../../../data-types.md) | Additional settings (dependent on the type). For more details, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -118,7 +118,7 @@ Defaults to `N`
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.userfield.add
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -129,6 +129,77 @@ Defaults to `N`
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.userfield.add",
+    		{
+    			fields:
+    			{
+    				"USER_TYPE_ID": "string",
+    				"ENTITY_ID": "CRM_REQUISITE",
+    				"SORT": 100,
+    				"MULTIPLE": "N",
+    				"MANDATORY": "N",
+    				"SHOW_FILTER": "E",
+    				"SHOW_IN_LIST": "Y",
+    				"EDIT_FORM_LABEL": "PP - String",
+    				"LIST_COLUMN_LABEL": "PP - String",
+    				"LIST_FILTER_LABEL": "PP - String",
+    				"FIELD_NAME": "NEWTECH_v1_STRING"
+    			}
+    		}
+    	);
+    
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.userfield.add',
+                [
+                    'fields' => [
+                        'USER_TYPE_ID'      => 'string',
+                        'ENTITY_ID'         => 'CRM_REQUISITE',
+                        'SORT'              => 100,
+                        'MULTIPLE'          => 'N',
+                        'MANDATORY'         => 'N',
+                        'SHOW_FILTER'       => 'E',
+                        'SHOW_IN_LIST'      => 'Y',
+                        'EDIT_FORM_LABEL'   => 'PP - String',
+                        'LIST_COLUMN_LABEL' => 'PP - String',
+                        'LIST_FILTER_LABEL' => 'PP - String',
+                        'FIELD_NAME'        => 'NEWTECH_v1_STRING',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -159,7 +230,7 @@ Defaults to `N`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -192,7 +263,7 @@ Defaults to `N`
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -222,30 +293,30 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "Field UF_CRM_NEWTECH_V1_STRING for the object CRM_REQUISITE already exists."
+    "error_description": "Field UF_CRM_NEWTECH_V1_STRING for object CRM_REQUISITE already exists."
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
 #|  
 || **Code** | **Error Text** | **Description** ||
-|| `ERROR_CORE` | `Field UF_CRM_NEWTECH_V1_STRING for the object CRM_REQUISITE already exists` | Attempt to recreate a custom field with the same symbolic code ||
-|| Empty string | `The 'USER_TYPE_ID' field is not found` | Data type for the custom field is not specified ||
-|| Empty string | `The 'FIELD_NAME' field is not found` | Symbolic code for the custom field is not specified ||
+|| `ERROR_CORE` | `Field UF_CRM_NEWTECH_V1_STRING for object CRM_REQUISITE already exists` | Attempt to recreate a custom field with the same symbolic code ||
+|| Empty string | `The 'USER_TYPE_ID' field is not found` | Data type for the custom field not specified ||
+|| Empty string | `The 'FIELD_NAME' field is not found` | Symbolic code for the custom field not specified ||
 || Empty string | `Access denied` | Insufficient access permissions to add a custom field ||
 || `ERROR_CORE` | `Fail to create new user field` | Failed to create a custom field ||
 || `ERROR_CORE` | `Fail to save enumeration field values` | Failed to save values for the custom list-type field (e.g., when there is a duplication of the external key of one of the values) ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -14,7 +14,7 @@ This method updates an existing requisite.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the requisite, can be obtained using the [crm.requisite.list](./crm-requisite-list.md) method ||
+[`integer`](../../../data-types.md) | Identifier of the requisite, can be obtained using the method [crm.requisite.list](./crm-requisite-list.md) ||
 || **fields***
 [`object`](../../../data-types.md) | Set of requisite fields — an object of the form `"field": "value"[, ...]}`, the values of which need to be changed ||
 |#
@@ -33,7 +33,7 @@ This method updates an existing requisite.
 || **XML_ID**
 [`string`](../../../data-types.md) | External key, used for exchange operations.
 
-Identifier of the object in the external information base.
+Identifier of the external information base object.
 
 The purpose of the field may change by the final developer ||
 || **ORIGINATOR_ID**
@@ -47,7 +47,7 @@ Values `Y` or `N` are used.
 
 Currently, the field does not actually affect anything ||
 || **ADDRESS_ONLY**
-[`char`](../../../data-types.md) | Status indicating that the requisite is used only for storing the address.
+[`char`](../../../data-types.md) | Status indicator when the requisite is used only for storing the address.
 
 Values `Y` or `N` are used. When set to `Y`, the requisites are not displayed in the entity card, but the address is shown ||
 || **SORT**
@@ -151,7 +151,7 @@ Values `Y` or `N` are used ||
 || **RQ_RESIDENCE_COUNTRY**
 [`string`](../../../data-types.md) | Country of residence ||
 || **RQ_BASE_DOC**
-[`string`](../../../data-types.md) | Basis for the action ||
+[`string`](../../../data-types.md) | Basis for action ||
 || **RQ_REGON**
 [`string`](../../../data-types.md) | REGON (for country PL) ||
 || **RQ_KRS**
@@ -180,7 +180,7 @@ Values `Y` or `N` are used ||
 
 Requisites can have a set of custom fields with types: `string`, `boolean`, `double`, `datetime`.
 
-You can add a custom field to requisites using the [crm.requisite.userfield.add](../user-fields/crm-requisite-userfield-add.md) method ||
+You can add a custom field to requisites using the method [crm.requisite.userfield.add](../user-fields/crm-requisite-userfield-add.md) ||
 |#
 
 ## Code Examples
@@ -212,6 +212,69 @@ You can add a custom field to requisites using the [crm.requisite.userfield.add]
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.update",
+    		{
+    			id: 27,
+    			fields:
+    			{
+    				"RQ_OKPO": "80715150",
+    				"RQ_OKTMO": "45381000000",
+    				"UF_CRM_1707997209": "78",
+    				"UF_CRM_1708012333": "Category 3"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.update',
+                [
+                    'id' => 27,
+                    'fields' => [
+                        'RQ_OKPO'         => '80715150',
+                        'RQ_OKTMO'        => '45381000000',
+                        'UF_CRM_1707997209' => '78',
+                        'UF_CRM_1708012333' => 'Category 3',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating requisite: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.requisite.update",
         {
@@ -236,7 +299,7 @@ You can add a custom field to requisites using the [crm.requisite.userfield.add]
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -261,7 +324,7 @@ You can add a custom field to requisites using the [crm.requisite.userfield.add]
 
 {% endlist %}
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -296,7 +359,7 @@ HTTP status: **200**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-## Error Response
+## Response on Error
 
 HTTP status: **400**
 

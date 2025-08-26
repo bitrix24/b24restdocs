@@ -24,7 +24,7 @@ No parameters.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.address.fields
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -35,6 +35,59 @@ No parameters.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.address.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.address.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching CRM address fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -50,7 +103,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -223,7 +276,7 @@ HTTP Status: **200**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Address Field Descriptions
+### Description of Address Fields
 
 #|
 || **Name**
@@ -231,7 +284,7 @@ HTTP Status: **200**
 || **TYPE_ID**
 [`integer`](../../../data-types.md) | Identifier of the address type. Enumeration element "Address Type".
 
-Enumeration elements for "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
+Enumeration elements "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
 ||
 || **ENTITY_TYPE_ID**
 [`integer`](../../../data-types.md) | Identifier of the parent object type.
@@ -240,7 +293,7 @@ Object type identifiers can be obtained using the method [crm.enum.ownertype](..
 
 Addresses can only be linked to Requisites (and requisites to companies or contacts) or Leads.
 
-For backward compatibility, the ability to link Addresses to Contacts or Companies is retained. However, this link is only possible on some older accounts where the old address handling mode was specifically enabled by support.
+For backward compatibility, the ability to link Addresses to Contacts or Companies has been retained. However, this link is only possible on some old accounts where the old address handling mode has been specifically enabled by support.
 ||
 || **ENTITY_ID**
 [`string`](../../../data-types.md) | Identifier of the parent object ||
@@ -279,16 +332,16 @@ This field is for internal use. The value is automatically filled when adding an
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-This field contains the identifier of the parent object type of the requisite (company or contact) if the address is linked to the requisite. If the address is linked to a lead, this value will be the lead type identifier.
+This field contains the identifier of the parent object type of the requisite (company or contact) if the address is linked to a requisite. If the address is linked to a lead, this value will be the lead type identifier.
 ||
 || **ANCHOR_ID**
 [`integer`](../../../data-types.md) | This field is for internal use. The value is automatically filled when adding an address.
 
-This field contains the identifier of the parent object of the requisite (company or contact) if the address is linked to the requisite. If the address is linked to a lead, this value will be the lead identifier.
+This field contains the identifier of the parent object of the requisite (company or contact) if the address is linked to a requisite. If the address is linked to a lead, this value will be the lead identifier.
 ||
 |#
 
-### Attribute Descriptions {#attributes}
+### Description of Attributes {#attributes}
 
 #|
 || **Name**

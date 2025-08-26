@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method retrieves a requisite by its identifier `id`.
+This method retrieves the requisite by its identifier `id`.
 
 ## Method Parameters
 
@@ -48,6 +48,63 @@ The identifier can be obtained using the [crm.requisite.list](./crm-requisite-li
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.get",
+    		{
+    			id: 27
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.get',
+                [
+                    'id' => 27
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting requisite: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.requisite.get",
         {
@@ -63,7 +120,7 @@ The identifier can be obtained using the [crm.requisite.list](./crm-requisite-li
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -109,9 +166,9 @@ HTTP Status: **200**
         "RQ_LAST_NAME": null,
         "RQ_SECOND_NAME": null,
         "RQ_COMPANY_ID": null,
-        "RQ_COMPANY_NAME": "LLC \"1C-BITRIX\"",
-        "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"1C-BITRIX\"",
-        "RQ_COMPANY_REG_DATE": "04.06.2007",
+        "RQ_COMPANY_NAME": "Ltd. \"QuickBooks and other similar platforms\"",
+        "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
+        "RQ_COMPANY_REG_DATE": "06.04.2007",
         "RQ_DIRECTOR": "RYZHIKOV SERGEY VLADIMIROVICH",
         "RQ_ACCOUNTANT": null,
         "RQ_CEO_NAME": null,
@@ -185,7 +242,7 @@ HTTP Status: **200**
 || **result**
 `Object`| An object containing the values of [requisite fields](./index.md#fields) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Response
@@ -204,7 +261,7 @@ HTTP Status: **400**
 ### Possible Errors
 
 #|  
-|| **Code** | **Error Message** | **Description** ||
+|| **Code** | **Error Text** | **Description** ||
 || Empty string | The Requisite with ID '27' is not found | The requisite with the specified identifier was not found ||
 || Empty string | Access denied. | Insufficient access permissions to retrieve the requisite ||
 |#

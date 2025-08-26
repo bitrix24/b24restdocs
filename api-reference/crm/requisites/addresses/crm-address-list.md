@@ -6,9 +6,9 @@
 
 The method returns a list of addresses based on the filter.
 
-Addresses are moved to the attributes. In the CRM card, they are displayed as a separate field.
+Addresses are moved to the details. In the CRM card, they are displayed as a separate field.
 
-Multiple attributes can be linked to a CRM object. Within an attribute, there can be several addresses (each of a different type).
+Multiple details can be linked to a CRM object. Within a detail, there can be several addresses (each of a different type).
 
 ## Method Parameters
 
@@ -24,7 +24,7 @@ If the array is not provided or an empty array is passed, all available address 
 
 Possible values for `field` correspond to [address fields](#fields).
 
-An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -43,7 +43,7 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default)
+- `=` — equals, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal ||
 || **order**
@@ -56,7 +56,7 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used for pagination control.
+[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 
@@ -64,7 +64,7 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number 
+`start = (N-1) * 50`, where `N` is the desired page number 
 ||
 |#
 
@@ -79,13 +79,13 @@ The formula for calculating the `start` parameter value:
 Enumeration elements for "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md)
 ||
 || **ENTITY_TYPE_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object type.
+[`integer`](../../../data-types.md) | Identifier of the parent object's type.
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Attributes (and attributes to companies or contacts) or Leads.
+Addresses can only be linked to Details (and details to companies or contacts) or Leads.
 
-For backward compatibility, the ability to link Addresses to Contacts or Companies has been retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by support.
+For backward compatibility, the ability to link Addresses to Contacts or Companies is retained. However, this link is only possible on some older accounts where the old address handling mode was specifically enabled by support.
 ||
 || **ENTITY_ID**
 [`string`](../../../data-types.md) | Identifier of the parent object ||
@@ -106,38 +106,38 @@ For backward compatibility, the ability to link Addresses to Contacts or Compani
 || **COUNTRY_CODE**
 [`string`](../../../data-types.md) | Country code.
 
-Not used, retained for backward compatibility. An empty string can be specified as the value.
+Not used, retained for backward compatibility. An empty string can be specified as a value.
 ||
 || **LOC_ADDR_ID**
 [`integer`](../../../data-types.md) | Identifier of the location address.
 
-This field contains the identifier of the address object in the `Location` module, linked to the CRM address object. Each CRM address corresponds to an address object in the location module. This can be used to copy an existing address into CRM with location information that is not present in the CRM address fields.
+This field contains the identifier of the address object in the `Location` module, linked to the CRM address object. Each CRM address corresponds to an address object in the `location` module. This can be used to copy an existing address into CRM with location information that is not present in the CRM address fields.
 
-If the identifier of the location module address is specified when creating an address, a copy of the location address is created and linked to the created CRM address. If no values are specified for the string address fields in this case, they will be filled from the location address.
+If the identifier of the `location` module address is specified when creating an address, a copy of the `location` address is created and linked to the created CRM address. If no values are specified for the string fields of the address in this case, they will be filled from the location address.
 
-If at least one string field is specified, only the specified fields will be saved in the CRM address, and their values will overwrite the corresponding values in the location address object. The same behavior will occur when updating the address.
+If at least one string field was specified, only the specified fields will be saved in the CRM address, and their values will overwrite the corresponding values in the location address object. The same behavior will occur when updating the address.
 ||
 || **ANCHOR_TYPE_ID**
-[`integer`](../../../data-types.md) | Identifier of the main parent object type.
+[`integer`](../../../data-types.md) | Identifier of the main parent object's type.
 
 This field is for internal use. The value is automatically filled when adding an address.
 
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-This field contains the identifier of the parent object type of the attribute (company or contact) if the address is linked to the attribute. If the address is linked to a lead, this value will be the lead type identifier.
+This field contains the identifier of the parent object's type of the detail (company or contact) if the address is linked to the detail. If the address is linked to a lead, this value will be the lead type identifier.
 ||
 || **ANCHOR_ID**
 [`integer`](../../../data-types.md) | This field is for internal use. The value is automatically filled when adding an address.
 
-This field contains the identifier of the parent object of the attribute (company or contact) if the address is linked to the attribute. If the address is linked to a lead, this value will be the lead identifier.
+This field contains the identifier of the parent object of the detail (company or contact) if the address is linked to the detail. If the address is linked to a lead, this value will be the lead identifier.
 ||
 |#
 
 ## Code Examples
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
-Searching for addresses linked to the Attribute type:
+Searching for addresses linked to the Detail type:
 
 {% list tabs %}
 
@@ -151,7 +151,7 @@ Searching for addresses linked to the Attribute type:
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.address.list
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -162,6 +162,80 @@ Searching for addresses linked to the Attribute type:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.address.list',
+        {
+          order: { "TYPE_ID": "asc"},
+          filter: { "ENTITY_TYPE_ID": 8, "ENTITY_ID": 7335},
+          limit: 10
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.address.list', { order: { "TYPE_ID": "asc"}, filter: { "ENTITY_TYPE_ID": 8, "ENTITY_ID": 7335}, limit: 10 }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.address.list', { order: { "TYPE_ID": "asc"}, filter: { "ENTITY_TYPE_ID": 8, "ENTITY_ID": 7335}, limit: 10 }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.address.list',
+                [
+                    'order' => ['TYPE_ID' => 'asc'],
+                    'filter' => ['ENTITY_TYPE_ID' => 8, 'ENTITY_ID' => 7335],
+                    'limit' => 10,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+        if ($result->more()) {
+            $result->next();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching address list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -185,7 +259,7 @@ Searching for addresses linked to the Attribute type:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -245,7 +319,7 @@ HTTP Status: **200**
 
 {% endlist %}
 
-If a contact has 2 different attributes linked to addresses:
+If a contact has 2 different details to which addresses are linked:
 
 HTTP Status: **200**
 
@@ -314,7 +388,7 @@ The **ANCHOR_TYPE_ID** and **ANCHOR_ID** fields in the two examples above are th
 || **result**
 [`array`](../../../data-types.md) | An array of objects with information about the selected addresses. Each element contains the selected [address fields](#fields) ||
 || **total**
-[`integer`](../../../data-types.md) | Total number of records found ||
+[`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#

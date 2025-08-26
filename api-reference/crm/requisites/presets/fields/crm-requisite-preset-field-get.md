@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method returns the description of a custom field of the requisite template by its identifier.
+The method returns the description of the custom field of the requisite template by its identifier.
 
 ## Method Parameters
 
@@ -14,13 +14,13 @@ This method returns the description of a custom field of the requisite template 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the custom field. 
+[`integer`](../../../../data-types.md) | Identifier of the custom field.
 
-Identifiers of custom fields of the requisite template can be obtained using the [crm.requisite.preset.field.list](./crm-requisite-preset-field-list.md) method. ||
+Identifiers of custom fields of the requisite template can be obtained using the [crm.requisite.preset.field.list](./crm-requisite-preset-field-list.md) method ||
 || **preset***
-[`object`](../../../../data-types.md) | An object containing the identifier of the template from which the information about the custom field is extracted (for example, `{"ID": 27}`). 
+[`object`](../../../../data-types.md) | An object containing the identifier of the template from which the information about the custom field is extracted (for example, `{"ID": 27}`).
 
-Template identifiers can be obtained using the [crm.requisite.preset.list](../crm-requisite-preset-list.md) method. ||
+Template identifiers can be obtained using the [crm.requisite.preset.list](../crm-requisite-preset-list.md) method ||
 |#
 
 ## Code Examples
@@ -39,7 +39,7 @@ Template identifiers can be obtained using the [crm.requisite.preset.list](../cr
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.field.get
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -50,6 +50,70 @@ Template identifiers can be obtained using the [crm.requisite.preset.list](../cr
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.preset.field.get",
+    		{
+    			ID: 1,          // Identifier of the custom field
+    			preset:
+    			{
+    				"ID": 27    // Identifier of the requisite template
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.preset.field.get',
+                [
+                    'ID'     => 1,
+                    'preset' => [
+                        'ID' => 27,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting preset field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -71,7 +135,7 @@ Template identifiers can be obtained using the [crm.requisite.preset.list](../cr
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -122,9 +186,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | An object containing fields that describe the custom field of the requisite template. ||
+[`object`](../../../../data-types.md) | An object containing fields that describe the custom field of the requisite template ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request. ||
+[`time`](../../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ### Fields Describing the Custom Field of the Requisite Template
@@ -133,17 +197,17 @@ HTTP status: **200**
 ||  **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the field. Created automatically and unique within the template. 
+[`integer`](../../../../data-types.md) | Identifier of the field. Created automatically and unique within the template 
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Name of the field. 
+[`string`](../../../../data-types.md) | Name of the field 
 || **FIELD_TITLE**
 [`string`](../../../../data-types.md) | Alternative name of the field for the requisite.
 
-The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used. 
+The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used 
 || **SORT**
-[`integer`](../../../../data-types.md) | Sorting. Order in the list of template fields. 
+[`integer`](../../../../data-types.md) | Sorting. Order in the list of template fields 
 || **IN_SHORT_LIST**
-[`char`](../../../../data-types.md) | Show in the short list. Deprecated field, currently not used. Retained for backward compatibility. Can take values `Y` or `N`. 
+[`char`](../../../../data-types.md) | Show in the short list. Deprecated field, currently not used. Retained for backward compatibility. Can take values `Y` or `N` 
 |#
 
 ## Error Handling
@@ -153,7 +217,7 @@ HTTP status: **40x**, **50x**
 ```json
 {
     "error": "",
-    "error_description": "The PresetField with ID '1' is not found."
+    "error_description": "The PresetField with ID '1' is not found"
 }
 ```
 
@@ -163,9 +227,9 @@ HTTP status: **40x**, **50x**
 
 #|  
 || **Code** | **Description** ||
-|| `The PresetField with ID '1' is not found.` | The custom field of the template with the specified identifier was not found. ||
-|| `The Preset with ID '27' is not found.` | The template with the specified identifier was not found. ||
-|| `Access denied.` | Insufficient access permissions to retrieve the custom field of the template. ||
+|| `The PresetField with ID '1' is not found` | The custom field of the template with the specified identifier was not found ||
+|| `The Preset with ID '27' is not found` | The template with the specified identifier was not found ||
+|| `Access denied` | Insufficient access permissions to retrieve the custom field of the template ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}

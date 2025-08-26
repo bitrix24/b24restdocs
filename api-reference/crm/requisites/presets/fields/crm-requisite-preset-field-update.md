@@ -1,4 +1,4 @@
-# Update Custom Field of a Given CRM Requisite Template
+# Update Custom Field of a Given Requisite Template crm.requisite.preset.field.update
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ This method updates a custom field in the requisite template.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,14 +22,14 @@ Identifiers of custom fields in the requisite template can be obtained using the
 
 Template identifiers can be obtained using the [crm.requisite.preset.list](../crm-requisite-preset-list.md) method. ||
 || **fields***
-[`object`](../../../../data-types.md) | An object with fields and their values that need to be updated. The [crm.requisite.preset.field.fields](./crm-requisite-preset-field-fields.md) method allows you to get a description of the fields that can be modified. 
+[`object`](../../../../data-types.md) | An object with fields and their values that need to be updated. The [crm.requisite.preset.field.fields](./crm-requisite-preset-field-fields.md) method allows you to get the description of the fields that can be modified. 
 
 The API requires a value to be specified in the **FIELD_NAME** field. If it does not need to be changed, the current value can be specified. ||
 |#
 
-### Fields Parameter
+### Parameter fields
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 ||  **Name**
@@ -39,7 +39,7 @@ The API requires a value to be specified in the **FIELD_NAME** field. If it does
 
 The API requires a value to be specified in this field. If it does not need to be changed, the current value can be specified. ||
 || **FIELD_TITLE**
-[`string`](../../../../data-types.md) | Alternative name for the requisite field.
+[`string`](../../../../data-types.md) | Alternative name of the field for the requisite.
 
 The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used. ||
 || **SORT**
@@ -50,7 +50,7 @@ The alternative name is displayed in various forms for filling out requisites. D
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -64,7 +64,7 @@ The alternative name is displayed in various forms for filling out requisites. D
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.field.update
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -75,6 +75,72 @@ The alternative name is displayed in various forms for filling out requisites. D
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.preset.field.update",
+    		{
+    			ID: 1,
+    			preset:
+    			{
+    				"ID": 27
+    			},
+    			fields:
+    			{
+    				"FIELD_NAME": "RQ_NAME",
+    				"FIELD_TITLE": "Name",
+    				"IN_SHORT_LIST": "Y",
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.preset.field.update',
+                [
+                    'ID'     => 1,
+                    'preset' => [
+                        'ID' => 27,
+                    ],
+                    'fields' => [
+                        'FIELD_NAME'    => 'RQ_NAME',
+                        'FIELD_TITLE'   => 'Name',
+                        'IN_SHORT_LIST' => 'Y',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating preset field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -105,7 +171,7 @@ The alternative name is displayed in various forms for filling out requisites. D
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -160,7 +226,7 @@ HTTP Status: **200**
 - `false` — not updated 
 ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time. ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -174,7 +240,7 @@ HTTP Status: **40x**, **50x**
 }
 ```
 
-{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -186,7 +252,7 @@ HTTP Status: **40x**, **50x**
 || `Access denied` | Insufficient access permissions to delete the field from the requisite template. ||
 |#
 
-{% include [System Errors](../../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

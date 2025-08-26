@@ -1,25 +1,25 @@
-# Delete Custom Field of Requisite crm.requisite.userfield.delete
+# Delete User Field of Requisite crm.requisite.userfield.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method deletes a custom field of the requisite.
+This method deletes a user field of the requisite.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field. Can be obtained using the method [crm.requisite.userfield.list](./crm-requisite-userfield-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the user field. Can be obtained using the method [crm.requisite.userfield.list](./crm-requisite-userfield-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -33,7 +33,7 @@ This method deletes a custom field of the requisite.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.userfield.delete
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -44,6 +44,63 @@ This method deletes a custom field of the requisite.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.requisite.userfield.delete',
+    		{
+    			id: 235
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.userfield.delete',
+                [
+                    'id' => 235,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -61,7 +118,7 @@ This method deletes a custom field of the requisite.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -82,7 +139,7 @@ This method deletes a custom field of the requisite.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -105,7 +162,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of deleting the custom field:
+[`boolean`](../../../data-types.md) | Result of deleting the user field:
 - true — deleted
 - false — not deleted
 ||
@@ -115,7 +172,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -124,19 +181,19 @@ HTTP Status: **40x**, **50x**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
 #|  
-|| **Code** | **Error Text** | **Description** ||
-|| Empty string | `The entity with ID '235' is not found` | Custom field with the specified identifier not found ||
-|| Empty string | `ID is not defined or invalid` | Identifier of the custom field is not specified or has an invalid value ||
-|| Empty string | `Access denied` | Insufficient access permissions to delete the custom field ||
-|| `ERROR_CORE` | `Fail to delete user field` | Failed to delete the custom field ||
+|| **Code** | **Error Message** | **Description** ||
+|| Empty string | `The entity with ID '235' is not found` | The user field with the specified identifier was not found ||
+|| Empty string | `ID is not defined or invalid` | The identifier of the user field is not specified or has an invalid value ||
+|| Empty string | `Access denied` | Insufficient access permissions to delete the user field ||
+|| `ERROR_CORE` | `Fail to delete user field` |  Failed to delete the user field ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

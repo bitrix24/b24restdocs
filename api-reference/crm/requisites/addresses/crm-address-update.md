@@ -16,7 +16,7 @@ This method updates the address for a contact or lead.
 || **fields***
 [`object`](../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` to update the address.
 
-Values for the fields **TYPE_ID**, **ENTITY_TYPE_ID**, **ENTITY_ID** must be specified as they identify the address being modified. Other fields are specified if their values need to be changed. ||
+Values for the fields **TYPE_ID**, **ENTITY_TYPE_ID**, **ENTITY_ID** must be specified as they identify the address being modified. Other fields are specified if their values need to be changed ||
 |#
 
 ### Parameter fields
@@ -27,16 +27,16 @@ Values for the fields **TYPE_ID**, **ENTITY_TYPE_ID**, **ENTITY_ID** must be spe
 || **Name**
 `type` | **Description** ||
 || **TYPE_ID***
-[`integer`](../../../data-types.md) | Identifier for the address type. An enumeration element "Address Type".
+[`integer`](../../../data-types.md) | Identifier for the address type. Enumeration element "Address Type".
 
-Enumeration elements for "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md)
+Enumeration elements for "Address Type" can be retrieved using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md)
 ||
 || **ENTITY_TYPE_ID***
-[`integer`](../../../data-types.md) | Identifier for the parent object's type.
+[`integer`](../../../data-types.md) | Identifier for the parent object type.
 
-Identifiers for object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
+Object type identifiers can be retrieved using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Contacts (and contacts can be linked to companies or leads).
+Addresses can only be linked to Contacts (which are linked to companies or contacts) or Leads.
 
 For backward compatibility, the ability to link Addresses to Contacts or Companies has been retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by support.
 ||
@@ -51,9 +51,9 @@ For backward compatibility, the ability to link Addresses to Contacts or Compani
 || **POSTAL_CODE**
 [`string`](../../../data-types.md) | Postal code ||
 || **REGION**
-[`string`](../../../data-types.md) | Region ||
+[`string`](../../../data-types.md) | District ||
 || **PROVINCE**
-[`string`](../../../data-types.md) | Province ||
+[`string`](../../../data-types.md) | State ||
 || **COUNTRY**
 [`string`](../../../data-types.md) | Country ||
 || **COUNTRY_CODE**
@@ -67,7 +67,7 @@ Identifier for the location address.
 
 This field contains the identifier of the address object in the `Location` module, linked to the CRM address object. Each CRM address corresponds to an address object in the `location` module. This can be used to copy an existing address into CRM with location information that is not present in the CRM address fields.
 
-If the identifier of the `location` module address is specified when creating an address, a copy of the `location` address is created and linked to the created CRM address. If no values are specified for the string address fields in this case, they will be filled from the location address.
+If the identifier of the `location` module address is specified when creating an address, a copy of the `location` address is created and linked to the newly created CRM address. If no values are specified for the string address fields in this case, they will be filled from the location address.
 
 If at least one string field is specified, only the specified fields will be saved in the CRM address, and their values will overwrite the corresponding values in the location address object. The same behavior will occur when updating the address.
 ||
@@ -89,7 +89,7 @@ If at least one string field is specified, only the specified fields will be sav
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.address.update
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -100,6 +100,66 @@ If at least one string field is specified, only the specified fields will be sav
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.address.update",
+    		{
+    			fields:
+    			{
+    				"TYPE_ID": 1,           //
+    				"ENTITY_TYPE_ID": 3,    // - Identifying fields.
+    				"ENTITY_ID": 1,         //
+    				"ADDRESS_1": "Moscow Avenue, 261", // - Fields whose values are changing.
+    				"CITY": "Kaliningrad"                    //
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.address.update',
+                [
+                    'fields' => [
+                        'TYPE_ID'        => 1,
+                        'ENTITY_TYPE_ID' => 3,
+                        'ENTITY_ID'      => 1,
+                        'ADDRESS_1'      => 'Moscow Avenue, 261',
+                        'CITY'           => 'Kaliningrad',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating address: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -122,7 +182,7 @@ If at least one string field is specified, only the specified fields will be sav
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -149,7 +209,7 @@ If at least one string field is specified, only the specified fields will be sav
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -159,8 +219,8 @@ HTTP Status: **200**
         "finish": 1712922623.393783,
         "duration": 2.6689260005950928,
         "processing": 2.210068941116333,
-        "date_start": "2024-04-12T14:50:20+03:00",
-        "date_finish": "2024-04-12T14:50:23+03:00"
+        "date_start": "2024-04-12T14:50:20+02:00",
+        "date_finish": "2024-04-12T14:50:23+02:00"
     }
 }
 ```
@@ -181,7 +241,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -196,11 +256,11 @@ HTTP Status: **40x**, **50x**
 
 #|  
 || **Code** | **Description** ||
-|| `TYPE_ID is not defined or invalid` | Address type identifier is not specified or has an invalid value. ||
+|| `TYPE_ID is not defined or invalid` | Address type identifier is not specified or has an invalid value ||
 || `ENTITY_TYPE_ID is not defined or invalid` | Parent object type identifier is not specified or has an invalid value. ||
 || `ENTITY_ID is not defined or invalid` | Parent object identifier is not specified or has an invalid value. ||
-|| `TypeAddress not found` | Address not found. ||
-|| `Access denied` | Insufficient access permissions to update the address. ||
+|| `TypeAddress not found` | Address not found ||
+|| `Access denied` | Insufficient access permissions to update the address ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -33,7 +33,7 @@ This method returns the requisite template by its identifier.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.get
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -44,6 +44,54 @@ This method returns the requisite template by its identifier.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.preset.get",
+    		{ id: 347 }    // Identifier of the requisite template.
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.preset.get',
+                [
+                    'id' => 347,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting requisite preset: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -59,7 +107,7 @@ This method returns the requisite template by its identifier.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -80,7 +128,7 @@ This method returns the requisite template by its identifier.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -117,7 +165,7 @@ HTTP Status: **200**
 || **result**
 `object`| An object containing the values of the template fields ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ### Description of Requisite Template Fields
@@ -126,18 +174,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the requisite. Created automatically and unique within the account ||
+[`integer`](../../../data-types.md) | Identifier of the requisite. Automatically created and unique within the account ||
 || **ENTITY_TYPE_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent object's type.
+[`integer`](../../../data-types.md) | Identifier of the parent object type.
 
 The identifiers of CRM object types are provided by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **COUNTRY_ID**
-[`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of template fields (to get available values, see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)) ||
+[`integer`](../../../data-types.md) | Identifier of the country corresponding to the requisite template field set (for available values see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)) ||
 || **DATE_CREATE**
 [`datetime`](../../../data-types.md) | Creation date ||
 || **DATE_MODIFY**
-[`datetime`](../../../data-types.md) | Modification date. Contains an empty string if the template has not been modified since creation ||
+[`datetime`](../../../data-types.md) | Modification date. Contains an empty string if the template has not been changed since creation ||
 || **CREATED_BY_ID**
 [`user`](../../../data-types.md) | Identifier of the user who created the requisite ||
 || **MODIFY_BY_ID**
@@ -151,7 +199,7 @@ The purpose of the field may change by the final developer.
 
 Each application ensures the uniqueness of values in this field. It is recommended to use a unique prefix to avoid collisions with other applications. 
 
-Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for identifying templates that are used by default. These identifiers should not be used for your purposes, as this may disrupt logic ||
+Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for identifying templates that are used by default. These identifiers should not be used for your purposes, as this may lead to logic violations ||
 || **ACTIVE**
 [`char`](../../../data-types.md) | Activity status. Uses values `Y` or `N`. Determines the availability of the template in the selection list when adding requisites ||
 || **SORT**
@@ -160,7 +208,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {

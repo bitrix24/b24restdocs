@@ -10,7 +10,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -36,6 +36,59 @@ No parameters.
 
 - JS
 
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.requisite.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching requisite fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         "crm.requisite.fields",
@@ -50,7 +103,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -207,7 +260,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Sorting"
+            "title": "Sort Order"
         },
         "RQ_NAME": {
             "type": "string",
@@ -261,7 +314,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Short Company Name"
+            "title": "Abbreviated Organization Name"
         },
         "RQ_COMPANY_FULL_NAME": {
             "type": "string",
@@ -270,7 +323,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Full Company Name"
+            "title": "Full Organization Name"
         },
         "RQ_COMPANY_REG_DATE": {
             "type": "string",
@@ -579,7 +632,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Certificate Date of State Registration"
+            "title": "Date of State Registration Certificate"
         },
         "RQ_VAT_PAYER": {
             "type": "char",
@@ -856,7 +909,6 @@ HTTP Status: **200**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
-
 ### Attribute Descriptions {#attributes}
 #|
 || Attribute Purpose | Description ||
@@ -881,7 +933,7 @@ HTTP Status: **200**
 
 ||
 || isMultiple
-[`boolean`](../../../data-types.md) | Multiple attribute
+[`boolean`](../../../data-types.md) | Multi-field attribute
 - `true` — yes
 - `false` — no
 

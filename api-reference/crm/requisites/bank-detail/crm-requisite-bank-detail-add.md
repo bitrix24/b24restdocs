@@ -1,4 +1,4 @@
-# Create a New Bank Detail crm.requisite.bankdetail.add
+# Create a new bank detail crm.requisite.bankdetail.add
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -14,7 +14,7 @@ This method creates a new bank detail.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` for adding the bank detail ||
+[`object`](../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` for adding a bank detail ||
 |#
 
 ### Parameter fields
@@ -41,17 +41,17 @@ The purpose of the field may change by the final developer. Each application ens
 
 It is recommended to use a unique prefix to avoid collisions with other applications ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity indicator. Values `Y` or `N` are used. 
+[`char`](../../../data-types.md) | Activity status. Values `Y` or `N` are used. 
 
 Currently, the field does not actually affect anything ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting ||
 || **RQ_BANK_NAME**
-[`string`](../../../data-types.md) | Name of the bank ||
+[`string`](../../../data-types.md) | Bank name ||
 || **RQ_BANK_ADDR**
-[`string`](../../../data-types.md) | Address of the bank ||
+[`string`](../../../data-types.md) | Bank address ||
 || **RQ_BANK_CODE**
-[`string`](../../../data-types.md) | Bank Code (for country BR) ||
+[`string`](../../../data-types.md) | Bank code (for country BR) ||
 || **RQ_BANK_ROUTE_NUM**
 [`string`](../../../data-types.md) | Bank Routing Number ||
 || **RQ_BIK**
@@ -75,9 +75,9 @@ Currently, the field does not actually affect anything ||
 || **RQ_IIK**
 [`string`](../../../data-types.md) | IIK ||
 || **RQ_ACC_CURRENCY**
-[`string`](../../../data-types.md) | Account Currency ||
+[`string`](../../../data-types.md) | Account currency ||
 || **RQ_COR_ACC_NUM**
-[`string`](../../../data-types.md) | Correspondent Account ||
+[`string`](../../../data-types.md) | Correspondent account ||
 || **RQ_IBAN**
 [`string`](../../../data-types.md) | IBAN ||
 || **RQ_SWIFT**
@@ -102,21 +102,94 @@ Currently, the field does not actually affect anything ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Superbank","RQ_BANK_NAME":"PAO Superbank","RQ_BANK_ADDR":"117312, City of New York, Vavilova Street, House 19","RQ_BIK":"044525225","RQ_ACC_NUM":"40702810938000060473","RQ_ACC_CURRENCY":"USD","RQ_COR_ACC_NUM":"30101810400000000225","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600}}' \
+    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Superbank","RQ_BANK_NAME":"Ltd. Superbank","RQ_BANK_ADDR":"117312, New York, 19 Vavilova St.","RQ_BIK":"044525225","RQ_ACC_NUM":"40702810938000060473","RQ_ACC_CURRENCY":"USD","RQ_COR_ACC_NUM":"30101810400000000225","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.bankdetail.add
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Superbank","RQ_BANK_NAME":"PAO Superbank","RQ_BANK_ADDR":"117312, City of New York, Vavilova Street, House 19","RQ_BIK":"044525225","RQ_ACC_NUM":"40702810938000060473","RQ_ACC_CURRENCY":"USD","RQ_COR_ACC_NUM":"30101810400000000225","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Superbank","RQ_BANK_NAME":"Ltd. Superbank","RQ_BANK_ADDR":"117312, New York, 19 Vavilova St.","RQ_BIK":"044525225","RQ_ACC_NUM":"40702810938000060473","RQ_ACC_CURRENCY":"USD","RQ_COR_ACC_NUM":"30101810400000000225","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.bankdetail.add
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.bankdetail.add",
+    		{
+    			fields:
+    			{
+    				"ENTITY_ID": 27,                 // Identifier of the detail
+    				"COUNTRY_ID": 1,                 // Country code (USA)
+    				"NAME": "Superbank",              // Name of the bank detail
+    				"RQ_BANK_NAME": "Ltd. Superbank",  // Bank name
+    				"RQ_BANK_ADDR": "117312, New York, 19 Vavilova St.",
+    				"RQ_BIK": "044525225",
+    				"RQ_ACC_NUM": "40702810938000060473",
+    				"RQ_ACC_CURRENCY": "USD",
+    				"RQ_COR_ACC_NUM": "30101810400000000225",
+    				"XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008",
+    				"ACTIVE":"Y",
+    				"SORT":600
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info("Created bank detail with ID " + result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.bankdetail.add',
+                [
+                    'fields' => [
+                        'ENTITY_ID'       => 27,
+                        'COUNTRY_ID'      => 1,
+                        'NAME'            => 'Superbank',
+                        'RQ_BANK_NAME'    => 'Ltd. Superbank',
+                        'RQ_BANK_ADDR'    => '117312, New York, 19 Vavilova St.',
+                        'RQ_BIK'          => '044525225',
+                        'RQ_ACC_NUM'      => '40702810938000060473',
+                        'RQ_ACC_CURRENCY' => 'USD',
+                        'RQ_COR_ACC_NUM'  => '30101810400000000225',
+                        'XML_ID'          => '1e4641fd-2dd9-31e6-b2f2-105056c00008',
+                        'ACTIVE'          => 'Y',
+                        'SORT'            => 600,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Created bank detail with ID ' . $result;
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating bank detail: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -127,8 +200,8 @@ Currently, the field does not actually affect anything ||
                 "ENTITY_ID": 27,                 // Identifier of the detail
                 "COUNTRY_ID": 1,                 // Country code (USA)
                 "NAME": "Superbank",              // Name of the bank detail
-                "RQ_BANK_NAME": "PAO Superbank",  // Name of the bank
-                "RQ_BANK_ADDR": "117312, City of New York, Vavilova Street, House 19",
+                "RQ_BANK_NAME": "Ltd. Superbank",  // Bank name
+                "RQ_BANK_ADDR": "117312, New York, 19 Vavilova St.",
                 "RQ_BIK": "044525225",
                 "RQ_ACC_NUM": "40702810938000060473",
                 "RQ_ACC_CURRENCY": "USD",
@@ -148,7 +221,7 @@ Currently, the field does not actually affect anything ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -160,8 +233,8 @@ Currently, the field does not actually affect anything ||
                 'ENTITY_ID' => 27,
                 'COUNTRY_ID' => 1,
                 'NAME' => 'Superbank',
-                'RQ_BANK_NAME' => 'PAO Superbank',
-                'RQ_BANK_ADDR' => '117312, City of New York, Vavilova Street, House 19',
+                'RQ_BANK_NAME' => 'Ltd. Superbank',
+                'RQ_BANK_ADDR' => '117312, New York, 19 Vavilova St.',
                 'RQ_BIK' => '044525225',
                 'RQ_ACC_NUM' => '40702810938000060473',
                 'RQ_ACC_CURRENCY' => 'USD',
@@ -207,7 +280,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the created bank detail ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -228,7 +301,7 @@ HTTP status: **40x**, **50x**
 #|  
 || **Error Text** | **Description** ||
 || `ENTITY_ID is not defined or invalid` | The identifier of the detail is not defined or has an invalid value ||
-|| `Access denied` | Insufficient access permissions to add the bank detail ||
+|| `Access denied` | Insufficient access permissions to add a bank detail ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -1,10 +1,10 @@
-# Get Bank Details by ID crm.requisite.bankdetail.get
+# Get bank details by id crm.requisite.bankdetail.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method returns bank details by identifier.
+The method returns bank details by identifier.
 
 ## Method Parameters
 
@@ -14,9 +14,9 @@ This method returns bank details by identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the bank details.
+[`integer`](../../../data-types.md) | Identifier of the bank details. 
 
-Identifiers for bank details can be obtained using the method [`crm.requisite.bankdetail.list`](./crm-requisite-bank-detail-list.md) ||
+Identifiers of bank details can be obtained using the method [`crm.requisite.bankdetail.list`](./crm-requisite-bank-detail-list.md) ||
 |#
 
 ## Code Examples
@@ -35,7 +35,7 @@ Identifiers for bank details can be obtained using the method [`crm.requisite.ba
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.bankdetail.get
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -46,6 +46,61 @@ Identifiers for bank details can be obtained using the method [`crm.requisite.ba
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.requisite.bankdetail.get',
+    		{ id: 357 }
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.bankdetail.get',
+                [
+                    'id' => 357,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting bank detail: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -61,7 +116,7 @@ Identifiers for bank details can be obtained using the method [`crm.requisite.ba
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -80,7 +135,7 @@ Identifiers for bank details can be obtained using the method [`crm.requisite.ba
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -92,15 +147,15 @@ HTTP Status: **200**
         "DATE_MODIFY": "",
         "CREATED_BY_ID": "1",
         "MODIFY_BY_ID": null,
-        "NAME": "Public Joint Stock Company Superbank",
+        "NAME": "Ltd. Superbank",
         "CODE": null,
         "XML_ID": "1e4641fd-2dd9-31e6-b2f2-105056c00008",
         "ORIGINATOR_ID": null,
         "ACTIVE": "Y",
         "SORT": "600",
-        "RQ_BANK_NAME": "Public Joint Stock Company Superbank",
+        "RQ_BANK_NAME": "Ltd. Superbank",
         "RQ_BANK_CODE": null,
-        "RQ_BANK_ADDR": "117312, City of New York, Vavilova Street, House 19",
+        "RQ_BANK_ADDR": "117312, New York, Vavilova Street, House 19",
         "RQ_BANK_ROUTE_NUM": null,
         "RQ_BIK": "044525225",
         "RQ_MFO": null,
@@ -152,12 +207,12 @@ HTTP Status: **200**
 || **ENTITY_TYPE_ID**
 [`integer`](../../../data-types.md) | Identifier of the parent object's type. Can only be `Requisite` (value `8`).
 
-Object type identifiers are returned by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
+Identifiers of object types are returned by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **ENTITY_ID**
 [`integer`](../../../data-types.md) | Identifier of the parent object. Currently can only be the identifier of the requisite. 
 
-Identifiers for requisites can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) ||
+Identifiers of requisites can be obtained using the method [`crm.requisite.list`](../universal/crm-requisite-list.md) ||
 || **COUNTRY_ID**
 [`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of bank details fields (see method [crm.requisite.preset.countries](../presets/crm-requisite-preset-countries.md) for available values).
 
@@ -176,14 +231,14 @@ The country code of the bank details matches the country code in the linked requ
 || **CODE**
 [`string`](../../../data-types.md) | Symbolic code of the requisite ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the object in the external information base. 
 
 The purpose of the field may change by the final developer. Each application ensures the uniqueness of values in this field. 
 
 It is recommended to use a unique prefix to avoid collisions with other applications 
 ||
 || **ACTIVE**
-[`char`](../../../data-types.md) | Activity status. Uses values `Y` or `N`. 
+[`char`](../../../data-types.md) | Activity indicator. Uses values `Y` or `N`. 
 
 Currently, the field does not actually affect anything ||
 || **SORT**
@@ -217,7 +272,7 @@ Currently, the field does not actually affect anything ||
 || **RQ_IIK**
 [`string`](../../../data-types.md) | IIK ||
 || **RQ_ACC_CURRENCY**
-[`string`](../../../data-types.md) | Account currency ||
+[`string`](../../../data-types.md) | Currency of the account ||
 || **RQ_COR_ACC_NUM**
 [`string`](../../../data-types.md) | Correspondent account ||
 || **RQ_IBAN**
@@ -234,7 +289,7 @@ Currently, the field does not actually affect anything ||
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -251,7 +306,7 @@ HTTP Status: **40x**, **50x**
 || **Error Text** | **Description** ||
 || `ID is not defined or invalid` | The identifier of the bank details is not defined or has an invalid value ||
 || `The RequisiteBankDetail with ID '357' is not found` | The bank details with the specified identifier were not found ||
-|| `Access denied` | Insufficient access permissions to retrieve the bank details ||
+|| `Access denied` | Insufficient access permissions to retrieve bank details ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

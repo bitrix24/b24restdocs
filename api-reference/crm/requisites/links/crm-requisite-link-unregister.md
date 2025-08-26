@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method removes the link between requisites and an object.
+This method removes the link between requisites and the object.
 
 ## Method Parameters
 
@@ -14,21 +14,21 @@ This method removes the link between requisites and an object.
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the object type to which the link pertains.
+[`integer`](../../../data-types.md) | Identifier of the object type to which the link belongs.
 
 The following types can be used:
 - deal (value `2`)
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (to get possible values, refer to the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
 
-Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
+Identifiers of CRM object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **entityId***
-[`integer`](../../../data-types.md) | Identifier of the object to which the link pertains. 
+[`integer`](../../../data-types.md) | Identifier of the object to which the link belongs. 
 
-Object identifiers can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
+Identifiers of objects can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
 |#
 
 ## Code Examples
@@ -47,7 +47,7 @@ Object identifiers can be obtained using the following methods: [crm.deal.list](
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.link.unregister
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -58,6 +58,64 @@ Object identifiers can be obtained using the following methods: [crm.deal.list](
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.link.unregister", {
+    			entityTypeId: 31,
+    			entityId: 315
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.link.unregister',
+                [
+                    'entityTypeId' => 31,
+                    'entityId'     => 315,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unregistering requisite link: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -75,7 +133,7 @@ Object identifiers can be obtained using the following methods: [crm.deal.list](
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -120,7 +178,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of unlinking:
+[`boolean`](../../../data-types.md) | Result of the link removal:
 - `true` — link removed
 - `false` — link not removed
 ||

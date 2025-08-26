@@ -6,7 +6,7 @@
 
 This method registers a link between requisites and an object.
 
-For successful registration, the identifiers of the requisites must belong to the client and the seller selected in the linked object. If a requisite is missing, its identifier is passed as `0`. You can even specify all requisite identifiers as zero. In this case, it is considered that the requisites are not linked to the object.
+For successful registration, the requisite IDs must belong to the client and seller selected in the linked object. If a requisite is not available, its ID is passed as `0`. You can even specify all requisite IDs as zero. In this case, it is considered that the requisites are not linked to the object.
 
 ## Method Parameters
 
@@ -27,19 +27,19 @@ For successful registration, the identifiers of the requisites must belong to th
 || **Name**
 `type` | **Description** ||
 || **ENTITY_TYPE_ID***
-[`integer`](../../../data-types.md) | Identifier of the object type to which the link relates.
+[`integer`](../../../data-types.md) | Identifier of the object type to which the link belongs.
 
 The following types can be used:
 - deal (value `2`)
 - old invoice (value `5`)
 - estimate (value `7`)
 - new invoice (value `31`)
-- other dynamic objects (to get possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
+- other dynamic objects (for possible values, see the method [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md)).
 
-You can obtain the identifiers of CRM object types using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
+You can obtain CRM object type identifiers using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **ENTITY_ID***
-[`integer`](../../../data-types.md) | Identifier of the object to which the link relates. 
+[`integer`](../../../data-types.md) | Identifier of the object to which the link belongs. 
 
 Object identifiers can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
 || **REQUISITE_ID***
@@ -76,7 +76,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.link.register
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -89,13 +89,72 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.link.register", {
+    			fields: {
+    				ENTITY_TYPE_ID: 31,
+    				ENTITY_ID: 315,
+    				REQUISITE_ID: 60,
+    				BANK_DETAIL_ID: 24,
+    				MC_REQUISITE_ID: 2,
+    				MC_BANK_DETAIL_ID: 2
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.link.register',
+                [
+                    'fields' => [
+                        'ENTITY_TYPE_ID'  => 31,
+                        'ENTITY_ID'       => 315,
+                        'REQUISITE_ID'    => 60,
+                        'BANK_DETAIL_ID'  => 24,
+                        'MC_REQUISITE_ID' => 2,
+                        'MC_BANK_DETAIL_ID' => 2,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error registering requisite link: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.requisite.link.register", {
             fields: {
                 ENTITY_TYPE_ID: 31,
                 ENTITY_ID: 315,
-                REQUISITE_ID: 60,       // Identifier of the requisite belonging to the client
-                BANK_DETAIL_ID: 24,     // Identifier of the bank requisite belonging to the client
+                REQUISITE_ID: 60,       // Identifier of the requisite belonging to the buyer
+                BANK_DETAIL_ID: 24,     // Identifier of the bank requisite belonging to the buyer
                 MC_REQUISITE_ID: 2,     // Identifier of the requisite belonging to the selling company
                 MC_BANK_DETAIL_ID: 2    // Identifier of the bank requisite belonging to the selling company
             }
@@ -110,7 +169,7 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -189,18 +248,18 @@ HTTP status: **40x**, **50x**
 || **Code** | **Description** ||
 || `ENTITY_TYPE_ID is not defined or invalid` | Object type identifier is not set or has an invalid value ||
 || `ENTITY_ID is not defined or invalid` | Object identifier is not set or has an invalid value ||
-|| `REQUISITE_ID is not defined or invalid` | Client's requisite identifier is not set or has an invalid value ||
-|| `BANK_DETAIL_ID is not defined or invalid` | Client's bank requisite identifier is not set or has an invalid value ||
-|| `MC_REQUISITE_ID is not defined or invalid` | My company's requisite identifier is not set or has an invalid value ||
-|| `MC_BANK_DETAIL_ID is not defined or invalid` | My company's bank requisite identifier is not set or has an invalid value ||
-|| `The Requisite with ID '60' is not found` | Client's requisite with the specified identifier is not found ||
-|| `The Requisite with ID '60' is not assigned to Company with ID '5'` | Client's requisite with the specified identifier does not belong to the company specified in the object ||
-|| `The BankDetail with ID '24' is not found` | Client's bank requisite with the specified identifier is not found ||
-|| `The BankDetail with ID '24' is not assigned to Requisite with ID '60'` | Client's bank requisite with the specified identifier does not belong to the specified requisite ||
-|| `The Requisite of your company with ID '2' is not found` | My company's requisite with the specified identifier is not found ||
-|| `The Requisite with ID '2' is not assigned to your company with ID '3010'` | My company's requisite with the specified identifier does not belong to my company specified in the object ||
-|| `The BankDetail of your company with ID '2' is not found` | My company's bank requisite with the specified identifier is not found ||
-|| `The BankDetail of your company with ID '2' is not assigned to Requisite of your company with ID '2'` | My company's bank requisite with the specified identifier does not belong to the specified requisite ||
+|| `REQUISITE_ID is not defined or invalid` | Client requisite identifier is not set or has an invalid value ||
+|| `BANK_DETAIL_ID is not defined or invalid` | Client bank requisite identifier is not set or has an invalid value ||
+|| `MC_REQUISITE_ID is not defined or invalid` | My company requisite identifier is not set or has an invalid value ||
+|| `MC_BANK_DETAIL_ID is not defined or invalid` | My company bank requisite identifier is not set or has an invalid value ||
+|| `The Requisite with ID '60' is not found` | Client requisite with the specified identifier not found ||
+|| `The Requisite with ID '60' is not assigned to Company with ID '5'` | Client requisite with the specified identifier does not belong to the company specified in the object ||
+|| `The BankDetail with ID '24' is not found` | Client bank requisite with the specified identifier not found ||
+|| `The BankDetail with ID '24' is not assigned to Requisite with ID '60'` | Client bank requisite with the specified identifier does not belong to the specified requisite ||
+|| `The Requisite of your company with ID '2' is not found` | My company requisite with the specified identifier not found ||
+|| `The Requisite with ID '2' is not assigned to your company with ID '3010'` | My company requisite with the specified identifier does not belong to my company specified in the object ||
+|| `The BankDetail of your company with ID '2' is not found` | My company bank requisite with the specified identifier not found ||
+|| `The BankDetail of your company with ID '2' is not assigned to Requisite of your company with ID '2'` | My company bank requisite with the specified identifier does not belong to the specified requisite ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

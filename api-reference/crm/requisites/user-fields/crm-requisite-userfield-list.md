@@ -1,4 +1,4 @@
-# Get a List of Custom Fields of the Requisite by Filter crm.requisite.userfield.list
+# Get a list of custom fields of the requisite by filter crm.requisite.userfield.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -8,13 +8,13 @@ The method returns a list of custom fields of the requisite based on the filter.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **order**
-[`object`](../../../data-types.md) | An object for sorting the selected custom fields in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../../data-types.md) | Object for sorting the selected custom fields in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field`:
 - ID
@@ -29,7 +29,7 @@ Possible values for `order`:
 - desc — in descending order
 ||
 || **filter**
-[`object`](../../../data-types.md) | An object for filtering the selected requisites in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. This method's filter only supports simple value comparisons.
+[`object`](../../../data-types.md) | Object for filtering the selected requisites in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. This method's filter only supports simple value comparisons.
 
 Possible values for `field`:
 - ID
@@ -52,7 +52,7 @@ Possible values for `value` correspond to [field descriptions](#fields-descripti
 ||
 |#
 
-### Description of Custom Field of the Requisite {#fields-description}
+### Description of custom field of requisite {#fields-description}
 
 #|
 || **Name**
@@ -82,24 +82,24 @@ The purpose of the field may change by the final developer ||
 - `N` — no 
 ||
 || **SHOW_FILTER**
-[`char`](../../../data-types.md) | Whether to show in the list filter. Possible values:
+[`char`](../../../data-types.md) | Show in the list filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
 - `S` — substring 
 ||
 || **SHOW_IN_LIST**
-[`char`](../../../data-types.md) | Whether to show in the list. Possible values:
+[`char`](../../../data-types.md) | Show in the list. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
 || **EDIT_IN_LIST**
-[`char`](../../../data-types.md) | Whether to allow editing by the user. Possible values:
+[`char`](../../../data-types.md) | Allow user editing. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
 || **IS_SEARCHABLE**
-[`char`](../../../data-types.md) | Whether the field values participate in the search. Possible values:
+[`char`](../../../data-types.md) | Are field values included in search. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -116,12 +116,12 @@ The purpose of the field may change by the final developer ||
 || **LIST**
 [`uf_enum_element`](../../../data-types.md) | List elements. For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings (dependent on type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
+[`object`](../../../data-types.md) | Additional settings (depend on type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -135,7 +135,7 @@ The purpose of the field may change by the final developer ||
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.userfield.list
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -146,6 +146,78 @@ The purpose of the field may change by the final developer ||
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.requisite.userfield.list',
+        {
+          order: { "SORT": "ASC" },
+          filter: { "MANDATORY": "N", "LANG": "en" }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large data sets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.requisite.userfield.list', { order: { "SORT": "ASC" }, filter: { "MANDATORY": "N", "LANG": "en" } }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.requisite.userfield.list', { order: { "SORT": "ASC" }, filter: { "MANDATORY": "N", "LANG": "en" } }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.userfield.list',
+                [
+                    'order' => ['SORT' => 'ASC'],
+                    'filter' => ['MANDATORY' => 'N', 'LANG' => 'en']
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+        if ($result->more()) {
+            $result->next();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing requisite user fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -168,7 +240,7 @@ The purpose of the field may change by the final developer ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -177,7 +249,7 @@ The purpose of the field may change by the final developer ||
         'crm.requisite.userfield.list',
         [
             'order' => ['SORT' => 'ASC'],
-            'filter' => ['MANDATORY' => 'N', 'LANG' => 'en']
+            'filter' => ['MANDATORY' => 'N', 'LANG': 'en']
         ]
     );
 
@@ -190,7 +262,7 @@ The purpose of the field may change by the final developer ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -270,9 +342,9 @@ HTTP Status: **200**
             "MAX_VALUE": 0,
             "DEFAULT_VALUE": null
         },
-        "EDIT_FORM_LABEL": "UF - Number",
-        "LIST_COLUMN_LABEL": "UF - Number",
-        "LIST_FILTER_LABEL": "UF - Number",
+        "EDIT_FORM_LABEL": "PP - Number",
+        "LIST_COLUMN_LABEL": "PP - Number",
+        "LIST_FILTER_LABEL": "PP - Number",
         "ERROR_MESSAGE": null,
         "HELP_MESSAGE": null
         },
@@ -297,9 +369,9 @@ HTTP Status: **200**
             "MAX_LENGTH": 0,
             "DEFAULT_VALUE": ""
         },
-        "EDIT_FORM_LABEL": "UF - String",
-        "LIST_COLUMN_LABEL": "UF - String",
-        "LIST_FILTER_LABEL": "UF - String",
+        "EDIT_FORM_LABEL": "PP - String",
+        "LIST_COLUMN_LABEL": "PP - String",
+        "LIST_FILTER_LABEL": "PP - String",
         "ERROR_MESSAGE": "UF_CRM_NEWTECH_V1_STRING",
         "HELP_MESSAGE": "UF_CRM_NEWTECH_V1_STRING"
         }
@@ -323,7 +395,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md)| An array of objects containing information from the selected custom fields. Each element contains the selected [fields describing the custom field of the requisite](#fields-description) ||
+[`array`](../../../data-types.md)| Array of objects with information from the selected custom fields. Each element contains the selected [fields describing the custom field of the requisite](#fields-description) ||
 || **total**
 [`integer`](../../../data-types.md) | Total number of records found ||
 || **time**
@@ -332,7 +404,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {

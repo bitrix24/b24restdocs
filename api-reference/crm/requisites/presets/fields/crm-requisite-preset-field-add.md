@@ -4,28 +4,28 @@
 >
 > Who can execute the method: any user
 
-This method adds a custom field to the requisite template. You can use the method [crm.requisite.preset.field.availabletoadd](./crm-requisite-preset-field-available-to-add.md) to retrieve fields available for addition to the template.
+This method adds a custom field to the requisite template. You can use the method [crm.requisite.preset.field.availabletoadd](./crm-requisite-preset-field-available-to-add.md) to retrieve the fields available for addition to the template.
 
-Before adding a user-defined field `UF_...` to the template, it must be created using the method [crm.requisite.userfield.add](../../user-fields/crm-requisite-userfield-add.md) or you need to ensure that it already exists.
+Before adding a user-defined field `UF_...` to the template, it must be created using the method [crm.requisite.userfield.add](../../user-fields/crm-requisite-userfield-add.md) or ensure that it already exists.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **preset***
-[`object`](../../../../data-types.md) | An object containing the identifier of the template to which the custom field is being added (e.g., `{"ID": 27}`).
+[`object`](../../../../data-types.md) | An object containing the identifier of the template to which the custom field is added (e.g., `{"ID": 27}`).
 
 Template identifiers can be obtained using the method [crm.requisite.preset.list](../crm-requisite-preset-list.md) ||
 || **fields***
 [`object`](../../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` for adding the custom field to the template ||
 |#
 
-### fields Parameter
+### Fields Parameter
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 ||  **Name**
@@ -35,16 +35,17 @@ Template identifiers can be obtained using the method [crm.requisite.preset.list
 || **FIELD_TITLE**
 [`string`](../../../../data-types.md) | An alternative name for the field in the requisite.
 
-The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used. ||
+The alternative name is displayed in various forms for filling out requisites. Depending on the specific form, the alternative name may or may not be used
+||
 || **SORT**
-[`integer`](../../../../data-types.md) | Sorting. The order in the list of template fields. ||
+[`integer`](../../../../data-types.md) | Sorting. The order in the list of template fields ||
 || **IN_SHORT_LIST**
-[`char`](../../../../data-types.md) | Show in the short list. Deprecated field, currently not used. Retained for backward compatibility. Can take values `Y` or `N`. ||
+[`char`](../../../../data-types.md) | Show in the short list. Deprecated field, currently not used. Retained for backward compatibility. Can take values `Y` or `N` ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -58,7 +59,7 @@ The alternative name is displayed in various forms for filling out requisites. D
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.field.add
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -69,6 +70,70 @@ The alternative name is displayed in various forms for filling out requisites. D
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.preset.field.add",
+    		{
+    			preset:
+    			{
+    				"ID": 27    // Template identifier
+    			},
+    			fields:        // Object describing the custom field
+    			{
+    				"FIELD_NAME": "RQ_NAME",
+    				"FIELD_TITLE": "TEST",
+    				"IN_SHORT_LIST": "N",
+    				"SORT": 580
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info("Custom field with ID " + result + " added to the template");
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.preset.field.add',
+                [
+                    'preset' => [
+                        'ID' => 27, // Template identifier
+                    ],
+                    'fields' => [ // Object describing the custom field
+                        'FIELD_NAME'    => 'RQ_NAME',
+                        'FIELD_TITLE'   => 'TEST',
+                        'IN_SHORT_LIST' => 'N',
+                        'SORT'          => 580,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Custom field with ID ' . $result . ' added to the template';
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding custom field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -91,12 +156,12 @@ The alternative name is displayed in various forms for filling out requisites. D
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Custom field added to the template with ID " + result.data());
+                console.info("Custom field with ID " + result.data() + " added to the template");
         }
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -146,9 +211,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../../../data-types.md) | The identifier of the added field. ||
+[`integer`](../../../../data-types.md) | Identifier of the added field ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request. ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -162,18 +227,18 @@ HTTP Status: **40x**, **50x**
 }
 ```
 
-{% include notitle [Error Handling](../../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|  
 || **Code** | **Description** ||
-|| `The field 'RQ_NAME' cannot be added` | The field cannot be added. The field may already exist in the template or it is not available for the country to which the template belongs. ||
-|| `The Preset with ID '27' is not found` | The template with the specified identifier was not found. ||
-|| `Access denied` | Insufficient access permissions to add the custom field to the requisite template. ||
+|| `The field 'RQ_NAME' cannot be added` | The field cannot be added. The field may already exist in the template or it is not available for the country to which the template belongs ||
+|| `The Preset with ID '27' is not found` | Template with the specified identifier not found ||
+|| `Access denied` | Insufficient access permissions to add the custom field to the requisite template ||
 |#
 
-{% include [System Errors](../../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

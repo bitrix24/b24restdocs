@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user
 
-The method returns a formal description of the link fields for requisites.
+The method returns a formal description of the requisite link fields.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -24,7 +24,7 @@ No parameters.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.link.fields
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -35,6 +35,52 @@ No parameters.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.requisite.link.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.link.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.requisite.link.fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -50,7 +96,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -69,7 +115,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -152,13 +198,13 @@ HTTP status: **200**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Description of Requisite Link Fields to CRM Object
+### Description of Requisite Link Fields with CRM Object
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ENTITY_TYPE_ID**
-[`integer`](../../../data-types.md) | Identifier of the object type to which the link pertains.
+[`integer`](../../../data-types.md) | Identifier of the object type to which the link belongs.
 
 The following types can be used:
 - deal (value `2`)
@@ -170,7 +216,7 @@ The following types can be used:
 Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) 
 ||
 || **ENTITY_ID**
-[`integer`](../../../data-types.md) | Identifier of the object to which the link pertains. 
+[`integer`](../../../data-types.md) | Identifier of the object to which the link belongs. 
 
 Object identifiers can be obtained using the following methods: [crm.deal.list](../../deals/crm-deal-list.md), [crm.quote.list](../../quote/crm-quote-list.md), [crm.item.list](../../universal/crm-item-list.md) ||
 || **REQUISITE_ID**

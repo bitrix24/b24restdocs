@@ -14,7 +14,7 @@ This method adds a new requisite.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | A set of fields — an object of the form `{"field": "value"[, ...]}` for adding a requisite ||
+[`object`](../../../data-types.md) | Set of fields — an object of the form `{"field": "value"[, ...]}` for adding the requisite ||
 |#
 
 ## Parameter fields
@@ -31,7 +31,7 @@ Currently, this can only be:
 - `3` — contact
 - `4` — company
 
-Identifiers for all CRM entity types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md)
+Identifiers for all CRM entity types can be retrieved using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md)
 ||
 || **ENTITY_ID***
 [`integer`](../../../data-types.md) | Identifier of the parent entity (contact or company).
@@ -48,11 +48,11 @@ Template identifiers can be obtained using the method [crm.requisite.preset.list
 || **XML_ID**
 [`string`](../../../data-types.md) | External key, used for exchange operations.
 
-Identifier of the external information base object.
+Identifier of the external information database.
 
 The purpose of the field may change by the final developer ||
 || **ORIGINATOR_ID**
-[`string`](../../../data-types.md) | Identifier of the external information base.
+[`string`](../../../data-types.md) | Identifier of the external information database.
 
 The purpose of the field may change by the final developer ||
 || **ACTIVE**
@@ -60,7 +60,7 @@ The purpose of the field may change by the final developer ||
 
 Values `Y` or `N` are used.
 
-Currently, the field does not actually affect anything ||
+Currently, the field does not affect anything ||
 || **ADDRESS_ONLY**
 [`char`](../../../data-types.md) | Status indicator when the requisite is used only for storing the address.
 
@@ -68,7 +68,7 @@ Values `Y` or `N` are used. When set to `Y`, the requisites are not displayed in
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting.
 
-Order in the list of entity requisites when there are multiple ||
+Order in the list of requisites of the entity when there are multiple ||
 || **RQ_NAME**
 [`string`](../../../data-types.md) | Full name ||
 || **RQ_FIRST_NAME**
@@ -102,7 +102,7 @@ Order in the list of entity requisites when there are multiple ||
 || **RQ_FAX**
 [`string`](../../../data-types.md) | Fax ||
 || **RQ_IDENT_TYPE**
-[`crm_status`](../../../data-types.md) | Identification method ||
+[`crm_status`](../../../data-types.md) | Method of identification ||
 || **RQ_IDENT_DOC**
 [`string`](../../../data-types.md) | Type of document ||
 || **RQ_IDENT_DOC_SER**
@@ -156,7 +156,7 @@ Order in the list of entity requisites when there are multiple ||
 
 Values `Y` or `N` are used ||
 || **RQ_VAT_ID**
-[`string`](../../../data-types.md) | VAT ID (identification number of the VAT payer) ||
+[`string`](../../../data-types.md) | VAT ID (identification number of VAT payer) ||
 || **RQ_VAT_CERT_SER**
 [`string`](../../../data-types.md) | Series of the VAT certificate ||
 || **RQ_VAT_CERT_NUM**
@@ -166,7 +166,7 @@ Values `Y` or `N` are used ||
 || **RQ_RESIDENCE_COUNTRY**
 [`string`](../../../data-types.md) | Country of residence ||
 || **RQ_BASE_DOC**
-[`string`](../../../data-types.md) | Basis for the action ||
+[`string`](../../../data-types.md) | Basis for action ||
 || **RQ_REGON**
 [`string`](../../../data-types.md) | REGON (for country PL) ||
 || **RQ_KRS**
@@ -195,12 +195,12 @@ Values `Y` or `N` are used ||
 
 Requisites can have a set of custom fields with types: `string`, `boolean`, `double`, `datetime`.
 
-A custom field for requisites can be added using the method [crm.requisite.userfield.add](../user-fields/crm-requisite-userfield-add.md) ||
+You can add a custom field to requisites using the method [crm.requisite.userfield.add](../user-fields/crm-requisite-userfield-add.md) ||
 |#
 
 {% note info "Which fields with the prefix `RQ_` can be specified?" %}
 
-When creating a requisite, only those fields with the prefix `RQ_` that are present in the requisite template associated with the created requisite (see the `PRESET_ID` field) should be specified. The values of other fields will be saved but will not be visible to the user.
+When creating a requisite, only those fields with the prefix `RQ_` that are present in the requisite template linked to the created requisite (see the field `PRESET_ID`) should be specified. The values of other fields will be saved but will not be visible to the user.
 
 {% endnote %}
 
@@ -231,6 +231,89 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.add",
+    		{
+    			fields:
+    			{
+    				"ENTITY_TYPE_ID": 4,
+    				"ENTITY_ID": 1,
+    				"PRESET_ID": 1,
+    				"NAME": "Organization",
+    				"ACTIVE": "Y",
+    				"ADDRESS_ONLY": "N",
+    				"SORT": 500,
+                    "RQ_COMPANY_NAME": "Ltd. \"QuickBooks and other similar platforms\"",
+                    "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
+                    "RQ_COMPANY_REG_DATE": "06.04.2007",
+                    "RQ_DIRECTOR": "SMITH JOHN",
+    				"RQ_INN": "7717586110",
+    				"RQ_KPP": "770501001",
+    				"RQ_OGRN": "5077746476209",
+    				"UF_CRM_1707997209": "56",
+    				"UF_CRM_1708012333": "Category 1",
+    				"XML_ID": "5e4641fd-1dd9-11e6-b2f2-005056c00008"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info("Requisite created with ID " + result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.add',
+                [
+                    'fields' => [
+                        'ENTITY_TYPE_ID'        => 4,
+                        'ENTITY_ID'             => 1,
+                        'PRESET_ID'             => 1,
+                        'NAME'                  => 'Organization',
+                        'ACTIVE'                => 'Y',
+                        'ADDRESS_ONLY'          => 'N',
+                        'SORT'                  => 500,
+                        "RQ_COMPANY_NAME" => "Ltd. \"QuickBooks and other similar platforms\"",
+                        "RQ_COMPANY_FULL_NAME" => "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
+                        "RQ_COMPANY_REG_DATE" => "06.04.2007",
+                        "RQ_DIRECTOR" => "SMITH JOHN",
+                        'RQ_INN'                => '7717586110',
+                        'RQ_KPP'                => '770501001',
+                        'RQ_OGRN'               => '5077746476209',
+                        'UF_CRM_1707997209'     => '56',
+                        'UF_CRM_1708012333'     => 'Category 1',
+                        'XML_ID'                => '5e4641fd-1dd9-11e6-b2f2-005056c00008',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Requisite created with ID ' . $result;
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating requisite: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -267,7 +350,7 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -305,7 +388,7 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
 {% endlist %}
 
 
-## Successful Response
+## Response on Success
 
 HTTP status: **200**
 
@@ -332,10 +415,10 @@ HTTP status: **200**
 || **result**
 [`integer`](../../../data-types.md) | Identifier of the created requisite ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
-## Error Response
+## Response on Error
 
 HTTP status: **400**
 
@@ -352,9 +435,9 @@ HTTP status: **400**
 
 #|  
 || **Code** | **Error Text** | **Description** ||
-|| Empty string | ENTITY_TYPE_ID is not defined or invalid. | The identifier of the parent entity type is not defined or has an invalid value ||
-|| Empty string | ENTITY_ID is not defined or invalid. | The identifier of the parent entity is not defined or has an invalid value ||
-|| Empty string | PRESET_ID is not defined or invalid. | The identifier of the requisite template is not defined or has an invalid value ||
+|| Empty string | ENTITY_TYPE_ID is not defined or invalid. | Identifier of the parent entity type is not defined or has an invalid value ||
+|| Empty string | ENTITY_ID is not defined or invalid. | Identifier of the parent entity is not defined or has an invalid value ||
+|| Empty string | PRESET_ID is not defined or invalid. | Identifier of the requisite template is not defined or has an invalid value ||
 || Empty string | Entity not found. | The entity for which the requisite is being created was not found ||
 || Empty string | Access denied. | Insufficient access permissions to add the requisite ||
 |#

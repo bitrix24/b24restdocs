@@ -1,4 +1,4 @@
-# Update the Requisite Template crm.requisite.preset.update
+# Update Requisite Template crm.requisite.preset.update
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -14,12 +14,12 @@ This method updates the requisite template.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the requisite template that needs to be updated. Can be obtained using the method [`crm.requisite.preset.list`](./crm-requisite-preset-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the requisite template to be updated. Can be obtained using the method [`crm.requisite.preset.list`](./crm-requisite-preset-list.md) ||
 || **fields***
 [`array`](../../../data-types.md) | Set of template fields — an object of the form `{"field": "value"[, ...]}`, the values of which need to be changed ||
 |#
 
-### Parameter fields
+### fields Parameter
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -29,13 +29,13 @@ This method updates the requisite template.
 || **NAME***
 [`string`](../../../data-types.md) | Name of the requisite ||
 || **XML_ID**
-[`string`](../../../data-types.md) | External key. Used for data exchange operations. Identifier of the external information base object. 
+[`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
 
 The purpose of the field may change by the final developer. 
 
 Each application ensures the uniqueness of values in this field. It is recommended to use a unique prefix to avoid collisions with other applications. 
 
-Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for identifying templates that are used by default. These identifiers should not be used for your purposes, as it may lead to logic violations. ||
+Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for identifying templates that are used by default. These identifiers should not be used for your purposes, as this may lead to logic violations ||
 || **ACTIVE**
 [`char`](../../../data-types.md) | Activity status. Uses values `Y` or `N`. Determines the availability of the template in the selection list when adding requisites ||
 || **SORT**
@@ -58,7 +58,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.update
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -71,10 +71,69 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.preset.update",
+    		{
+    			id: 347,    // Identifier of the template to be updated.
+    			fields:
+    			{
+    				"NAME": "IP (archive)",
+    				"ACTIVE": "N"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.preset.update',
+                [
+                    'id' => 347,
+                    'fields' => [
+                        'NAME' => 'IP (archive)',
+                        'ACTIVE' => 'N',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating requisite preset: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.requisite.preset.update",
         {
-            id: 347,    // Identifier of the template that needs to be updated.
+            id: 347,    // Identifier of the template to be updated.
             fields:
             {
                 "NAME": "IP (archive)",
@@ -93,7 +152,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -147,7 +206,7 @@ HTTP status: **200**
 - `false` — template not updated
 ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

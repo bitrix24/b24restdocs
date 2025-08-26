@@ -4,24 +4,24 @@
 >
 > Who can execute the method: any user
 
-This method deletes a requisite and all related objects (connections with other entities, addresses, bank details).
+This method deletes a requisite and all associated objects (links to other entities, addresses, bank details).
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the requisite. 
+[`integer`](../../../data-types.md) | Identifier of the requisite.
 
-The identifier can be obtained using the [crm.requisite.list](./crm-requisite-list.md) method. ||
+The identifier can be obtained using the [crm.requisite.list](./crm-requisite-list.md) method ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,6 +48,63 @@ The identifier can be obtained using the [crm.requisite.list](./crm-requisite-li
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.requisite.delete',
+    		{
+    			id: 27
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.delete',
+                [
+                    'id' => 27
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting requisite: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.requisite.delete",
         {
@@ -63,7 +120,7 @@ The identifier can be obtained using the [crm.requisite.list](./crm-requisite-li
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -84,7 +141,7 @@ The identifier can be obtained using the [crm.requisite.list](./crm-requisite-li
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -114,12 +171,12 @@ HTTP Status: **200**
 
 ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Response
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -128,7 +185,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Errors
 
@@ -139,7 +196,7 @@ HTTP Status: **400**
 || Empty string | Access denied. | Insufficient access permissions to delete the requisite ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

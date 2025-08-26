@@ -1,16 +1,16 @@
-# Get a List of Countries for the Template crm.requisite.preset.countries
+# Get a list of countries for the template crm.requisite.preset.countries
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method returns a possible list of countries for [requisite templates](./index.md). Country identifiers are used as values for the `COUNTRY_ID` field in the template.
+The method returns a possible list of countries for [requisite templates](./index.md). Country identifiers are used as values for the `COUNTRY_ID` field of the template.
 
 No parameters required.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -24,7 +24,7 @@ No parameters required.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.preset.countries
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -35,6 +35,52 @@ No parameters required.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.requisite.preset.countries',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.preset.countries',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching countries: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -50,7 +96,7 @@ No parameters required.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -76,8 +122,8 @@ HTTP Status: **200**
     "result": [
         {
             "ID": 1,
-            "CODE": "RU",
-            "TITLE": "Russia"
+            "CODE": "US",
+            "TITLE": "United States"
         },
         {
             "ID": 4,
@@ -117,7 +163,7 @@ HTTP Status: **200**
         {
             "ID": 122,
             "CODE": "US",
-            "TITLE": "USA"
+            "TITLE": "United States"
         },
         {
             "ID": 132,
@@ -148,7 +194,7 @@ HTTP Status: **200**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Fields of the Object Describing a Country
+### Fields of the country object
 
 #|
 || **Name**

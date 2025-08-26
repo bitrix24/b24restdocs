@@ -1,4 +1,4 @@
-# Delete Bank Detail crm.requisite.bankdetail.delete
+# Delete bank detail crm.requisite.bankdetail.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -14,7 +14,7 @@ This method deletes a bank detail.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the bank detail. Identifiers of bank details can be obtained using the [`crm.requisite.bankdetail.list`](./crm-requisite-bank-detail-list.md) method ||
+[`integer`](../../../data-types.md) | Identifier of the bank detail. Bank detail identifiers can be obtained using the method [`crm.requisite.bankdetail.list`](./crm-requisite-bank-detail-list.md) ||
 |#
 
 ## Code Examples
@@ -33,7 +33,7 @@ This method deletes a bank detail.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.bankdetail.delete
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -44,6 +44,61 @@ This method deletes a bank detail.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.requisite.bankdetail.delete',
+    		{ id: 357 }
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.bankdetail.delete',
+                [
+                    'id' => 357,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting bank detail: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -59,7 +114,7 @@ This method deletes a bank detail.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -125,7 +180,7 @@ HTTP status: **40x**, **50x**
 ### Possible Errors
 
 #|  
-|| **Error Message** | **Description** ||
+|| **Error Text** | **Description** ||
 || `ID is not defined or invalid` | The identifier of the bank detail is not specified or has an invalid value ||
 || `The RequisiteBankDetail with ID '357' is not found` | The bank detail with the specified identifier was not found ||
 || `Access denied` | Insufficient access permissions to delete the bank detail ||

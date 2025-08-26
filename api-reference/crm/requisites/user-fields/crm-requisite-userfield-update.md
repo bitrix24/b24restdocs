@@ -1,10 +1,10 @@
-# Update Custom Field of crm.requisite.userfield.update
+# Update Custom Field of Requisite crm.requisite.userfield.update
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method updates an existing custom field of the requisites.
+This method updates an existing custom field of a requisite.
 
 ## Method Parameters
 
@@ -41,14 +41,14 @@ The purpose of the field may change by the final developer ||
 - `N` — no 
 ||
 || **SHOW_FILTER**
-[`char`](../../../data-types.md) | Whether to show in the list filter. Possible values:
+[`char`](../../../data-types.md) | Show in the list filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
 - `S` — substring 
 ||
 || **SHOW_IN_LIST**
-[`char`](../../../data-types.md) | Whether to show in the list. Possible values:
+[`char`](../../../data-types.md) | Show in the list. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -58,7 +58,7 @@ The purpose of the field may change by the final developer ||
 - `N` — no 
 ||
 || **IS_SEARCHABLE**
-[`char`](../../../data-types.md) | Whether the field values participate in search. Possible values:
+[`char`](../../../data-types.md) | Are the field values included in the search. Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -75,7 +75,7 @@ The purpose of the field may change by the final developer ||
 || **LIST**
 [`uf_enum_element`](../../../data-types.md) | List elements. For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings (dependent on type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
+[`object`](../../../data-types.md) | Additional settings (depend on the type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
 |#
 
 ## Code Examples
@@ -94,7 +94,7 @@ The purpose of the field may change by the final developer ||
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.userfield.update
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -105,6 +105,69 @@ The purpose of the field may change by the final developer ||
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.requisite.userfield.update",
+    		{
+    			id: 235,
+    			fields:
+    			{
+    				"EDIT_FORM_LABEL": title,
+    				"LIST_COLUMN_LABEL": title,
+    				"LIST_FILTER_LABEL": title
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $title = "Category";
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.userfield.update',
+                [
+                    'id' => 235,
+                    'fields' => [
+                        'EDIT_FORM_LABEL'   => $title,
+                        'LIST_COLUMN_LABEL' => $title,
+                        'LIST_FILTER_LABEL' => $title
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     const title = "Category";
@@ -131,7 +194,7 @@ The purpose of the field may change by the final developer ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -160,7 +223,7 @@ The purpose of the field may change by the final developer ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -183,17 +246,17 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of updating the custom field of the requisites:
+[`boolean`](../../../data-types.md) | Result of updating the custom field of the requisite:
 - true — updated
 - false — not updated 
 ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -213,7 +276,7 @@ HTTP Status: **40x**, **50x**
 || Empty string | `ID is not defined or invalid` | Identifier of the custom field is not specified or has an invalid value ||
 || Empty string | `Access denied` | Insufficient access permissions to modify the custom field ||
 || `ERROR_CORE` | `Fail to update user field` |  Failed to update the custom field ||
-|| `ERROR_CORE` | `Fail to save enumeration field values` | Failed to save values of the enumeration type custom field (e.g., when there is a duplication of the external key of one of the values) ||
+|| `ERROR_CORE` | `Fail to save enumeration field values` | Failed to save values of the custom list-type field (e.g., when a duplicate external key of one of the values occurred) ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -29,16 +29,16 @@ Multiple addresses of different [types](../../auxiliary/enum/crm-enum-address-ty
 || **TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the address type. Enumeration element "Address Type".
 
-Enumeration elements for "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
+Elements of the enumeration "Address Type" can be obtained using the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) 
 ||
 || **ENTITY_TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the parent object's type.
 
-Object type identifiers can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
+Identifiers of object types can be obtained using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
 Addresses can only be linked to Requisites (and requisites are linked to companies or contacts) or Leads.
 
-For backward compatibility, the ability to link Addresses to Contacts or Companies has been retained. However, this linkage is only possible on some older accounts where the old address handling mode has been specifically enabled by technical support.
+For backward compatibility, the ability to link Addresses with Contacts or Companies is retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by technical support.
 ||
 || **ENTITY_ID***
 [`string`](../../../data-types.md) | Identifier of the parent object ([requisite](../universal/index.md) or [lead](../../leads/index.md)) ||
@@ -64,7 +64,7 @@ Not used, retained for backward compatibility. An empty string can be specified 
 || **LOC_ADDR_ID**
 [`integer`](../../../data-types.md) | Identifier of the location address.
 
-This field contains the identifier of the address object in the `Location` module, linked to the CRM address object. Each CRM address corresponds to an address object in the `location` module. This can be used to copy an existing address into CRM with location information that is not present in the CRM address fields.
+This field contains the identifier of the address object in the `Location` module, linked to the CRM address object. Each CRM address corresponds to an address object in the `location` module. This can be used to copy an existing address in CRM with location information that is not in the CRM address fields.
 
 If the identifier of the `location` module address is specified when creating the address, a copy of the `location` address is created and linked to the created CRM address. If no values are specified for the string address fields in this case, they will be filled from the location address.
 
@@ -88,7 +88,7 @@ If at least one string field is specified, only the specified fields will be sav
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.address.add
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -99,6 +99,74 @@ If at least one string field is specified, only the specified fields will be sav
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.address.add",
+    		{
+    			fields:
+    			{
+    				"TYPE_ID": 1,            // Address type, see crm.enum.addresstype
+    				"ENTITY_TYPE_ID": 8,     // Object type (requisite or lead)
+    				"ENTITY_ID": 1,          // Identifier of the requisite
+                    "ADDRESS_1": "4 Peace Avenue",
+                    "ADDRESS_2": "Drama Theater",
+                    "CITY": "City",
+                    "POSTAL_CODE": "00000",
+                    "REGION": "Urban District",
+                    "PROVINCE": "Region",
+                    "COUNTRY": "USA",
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.address.add',
+                [
+                    'fields' => [
+                        'TYPE_ID'        => 1,
+                        'ENTITY_TYPE_ID' => 8,
+                        'ENTITY_ID'      => 1,
+                        'ADDRESS_1' => '4 Peace Avenue',
+                        'ADDRESS_2' => 'Drama Theater',
+                        'CITY' => 'City',
+                        'POSTAL_CODE' => '00000',
+                        'REGION' => 'Urban District',
+                        'PROVINCE' => 'Region',
+                        'COUNTRY' => 'USA',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding address: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -126,7 +194,7 @@ If at least one string field is specified, only the specified fields will be sav
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -208,7 +276,7 @@ HTTP status: **40x**, **50x**
 || `TYPE_ID is not defined or invalid` | Address type identifier is not specified or has an invalid value ||
 || `ENTITY_TYPE_ID is not defined or invalid` | Parent object type identifier is not specified or has an invalid value. ||
 || `ENTITY_ID is not defined or invalid` | Parent object identifier is not specified or has an invalid value ||
-|| `TypeAddress exists` | An address with this type already exists for the specified parent object ||
+|| `TypeAddress exists` | An address of this type already exists for the specified parent object ||
 || `Access denied` | Insufficient access permissions to add the address ||
 |#
 
