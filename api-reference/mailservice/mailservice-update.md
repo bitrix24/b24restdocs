@@ -1,10 +1,10 @@
-# Change Mail Service Parameters mailservice.update
+# Change parameters of the mail service mailservice.update
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- missing parameter type descriptions
+- missing descriptions of parameter types
 - no response examples
 - parameter versions not specified
 
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -52,13 +52,77 @@ The method `mailservice.update` updates the parameters of the mail service.
 
 - JS
 
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"mailservice.update",
+    		{
+    			'ID': 5,
+    			'ACTIVE': 'N',
+    			'NAME': 'Mail service Yandex',
+    			'SERVER': 'imap.yandex.com',
+    			'PORT': '993',
+    			'ENCRYPTION': 'Y',
+    			'LINK': 'https://mail.yandex.com/',
+    			'SORT': '666'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'mailservice.update',
+                [
+                    'ID'        => 5,
+                    'ACTIVE'    => 'N',
+                    'NAME'      => 'Mail service Yandex',
+                    'SERVER'    => 'imap.yandex.com',
+                    'PORT'      => '993',
+                    'ENCRYPTION' => 'Y',
+                    'LINK'      => 'https://mail.yandex.com/',
+                    'SORT'      => '666',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating mail service: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         "mailservice.update",
         {
             'ID': 5,
             'ACTIVE': 'N',
-            'NAME': 'Mail Service Yandex',
+            'NAME': 'Mail service Yandex',
             'SERVER': 'imap.yandex.com',
             'PORT': '993',
             'ENCRYPTION': 'Y',
@@ -81,4 +145,4 @@ The method `mailservice.update` updates the parameters of the mail service.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}

@@ -21,12 +21,12 @@ Some data may be missing here — we will complete it shortly
 >
 > Who can execute the method: any user
 
-The method `mailservice.delete` removes a mail service.
+The method `mailservice.delete` removes the mail service.
 
 ## Parameters
 
 #|
-||  **Parameter** / **Type**| **Description** | **Available from** ||
+||  **Parameter** / **Type**| **Description** | **Available since** ||
 || **ID**
 [`unknown`](../data-types.md) | Identifier of the mail service | ||
 |#
@@ -36,6 +36,56 @@ The method `mailservice.delete` removes a mail service.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"mailservice.delete",
+    		{
+    			'ID': 8
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'mailservice.delete',
+                [
+                    'ID' => 8
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting mail service: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -59,4 +109,4 @@ The method `mailservice.delete` removes a mail service.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}

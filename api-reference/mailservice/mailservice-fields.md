@@ -1,4 +1,4 @@
-# Get Mail Service Fields mailservice.fields
+# Get fields of the mail service mailservice.fields
 
 {% if build == 'dev' %}
 
@@ -20,7 +20,7 @@ Some data may be missing here — we will fill it in shortly
 >
 > Who can execute the method: any user
 
-The method `mailservice.fields` returns a description of the mail service fields.
+The method `mailservice.fields` returns a description of the fields of the mail service.
 
 ## Parameters
 
@@ -31,6 +31,50 @@ No parameters.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"mailservice.fields",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'mailservice.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling mailservice.fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

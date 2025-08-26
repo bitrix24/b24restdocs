@@ -2,7 +2,7 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - missing parameter type descriptions
 - no response examples
@@ -14,7 +14,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -27,7 +27,7 @@ The method `mailservice.add` adds a new mail service.
 ## Parameters
 
 #|
-||  **Parameter** / **Type**| **Description** | **Available from** ||
+||  **Parameter** / **Type**| **Description** | **Available since** ||
 || **ACTIVE**
 [`unknown`](../data-types.md) | Service activity (Y / N) | ||
 || **NAME**
@@ -50,12 +50,74 @@ The method `mailservice.add` adds a new mail service.
 
 - JS
 
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"mailservice.add",
+    		{
+    			'ACTIVE': 'Y',
+    			'NAME': 'My mail service',
+    			'SERVER': 'imap.my-mail.com',
+    			'PORT': '993',
+    			'ENCRYPTION': 'Y',
+    			'LINK': 'https://mail.my-mail.com/',
+    			'SORT': '500'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'mailservice.add',
+                [
+                    'ACTIVE'     => 'Y',
+                    'NAME'       => 'My mail service',
+                    'SERVER'     => 'imap.my-mail.com',
+                    'PORT'       => '993',
+                    'ENCRYPTION' => 'Y',
+                    'LINK'       => 'https://mail.my-mail.com/',
+                    'SORT'       => '500',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding mail service: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         "mailservice.add",
         {
             'ACTIVE': 'Y',
-            'NAME': 'My Mail Service',
+            'NAME': 'My mail service',
             'SERVER': 'imap.my-mail.com',
             'PORT': '993',
             'ENCRYPTION': 'Y',
@@ -78,4 +140,4 @@ The method `mailservice.add` adds a new mail service.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Examples note](../../_includes/examples.md) %}
