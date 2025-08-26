@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.site.unbindingFromMenu` removes the Knowledge Base binding from the menu. The Knowledge Base must have read access.
+The method `landing.site.unbindingFromMenu` removes the Knowledge Base binding from the menu. Read access to the Knowledge Base is required.
 
 ## Parameters
 
@@ -41,6 +41,59 @@ The method `landing.site.unbindingFromMenu` removes the Knowledge Base binding f
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.site.unbindingFromMenu',
+    		{
+    			id: 31,
+    			menuCode: 'crm_switcher:deal'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.site.unbindingFromMenu',
+                [
+                    'id'       => 31,
+                    'menuCode' => 'crm_switcher:deal',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unbinding site from menu: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

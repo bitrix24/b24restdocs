@@ -12,10 +12,10 @@ Some data may be missing here — we will fill it in shortly.
 
 - edits needed for writing standards
 - parameter types not specified
-- parameter requirements not indicated
+- parameter requirements not specified
 - examples missing
-- success response not provided
-- error response not provided
+- success response missing
+- error response missing
 - links to yet-to-be-created pages not specified (1 link)
 
 {% endnote %}
@@ -32,7 +32,7 @@ The method `landing.landing.favoriteBlock` saves the existing block on the page 
 
 {% note info %}
 
-This method may be useful when removing a block from saved items.
+This method may be useful when deleting a block from saved ones.
 
 {% endnote %}
 
@@ -41,14 +41,14 @@ This method may be useful when removing a block from saved items.
 #|
 || **Method** | **Description** ||
 || **lid**
-[`unknown`](../../../data-types.md) | Page identifier. ||
+[`unknown`](../../../data-types.md) | Identifier of the page. ||
 || **block**
-[`unknown`](../../../data-types.md) | Block identifier. ||
+[`unknown`](../../../data-types.md) | Identifier of the block. ||
 || **meta**
-[`unknown`](../../../data-types.md) | Information object for saving the block. Contains fields:
-- **name** – block name;
+[`unknown`](../../../data-types.md) | Object containing information to save the block. Contains fields:
+- **name** – name of the block;
 - **section** – array of [categories](../../block/manifest.md) to save the block to;
-- **preview** – block image. ||
+- **preview** – image of the block. ||
 |#
 
 ## Examples
@@ -56,6 +56,66 @@ This method may be useful when removing a block from saved items.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.landing.favoriteBlock',
+    		{
+    			lid: 11262,
+    			block: 81827,
+    			meta: {
+    				name: 'My Block',
+    				section: ['text', 'text_image'],
+    				preview: 'https://mycdn.com/pic/1.jpg'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.landing.favoriteBlock',
+                [
+                    'lid'   => 11262,
+                    'block' => 81827,
+                    'meta'  => [
+                        'name'    => 'My Block',
+                        'section' => ['text', 'text_image'],
+                        'preview' => 'https://mycdn.com/pic/1.jpg'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error favorite block: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -85,4 +145,4 @@ This method may be useful when removing a block from saved items.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

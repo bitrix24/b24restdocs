@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -30,7 +30,7 @@ The method `landing.demos.register` registers a template in the site and page cr
 
 {% note info %}
 
-To distribute the created site, it is sufficient to obtain an export to a file on the source account and distribute its application by calling this method during installation.
+To distribute the created site, it is sufficient to obtain an export to a file from the source account and distribute its application by calling this method during installation.
 
 {% endnote %}
 
@@ -58,19 +58,141 @@ Note that the example uses the result of the method [landing.site.fullExport](..
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.site.fullExport',
+    		{
+    			id: 326,
+    			params: {
+    				edit_mode: 'Y',
+    				code: 'myfirstsite',
+    				name: 'Auto Repair Shop Website',
+    				description: 'Website for your auto service. Under the hood, everything you need.',
+    				preview_url: 'http://sample.landing.mycompany.com/',
+    				preview: 'http://site.com/preview.jpg',
+    				preview2x: 'http://site.com/preview.jpg',
+    				preview3x: 'http://site.com/preview.jpg',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    	
+    	const data = result.data();
+    	const response2 = await $b24.callMethod(
+    		'landing.demos.register',
+    		{
+    			data: data,
+    			params: {
+    				site_template_id: '',
+    				//lang: {
+    				//	en: {
+    				//		'Phrase 1': 'Translate en 1',
+    				//		'Phrase 2': 'Translate en 2'
+    				//	},
+    				//	de: {
+    				//		'Phrase 1': 'Translate de 1',
+    				//		'Phrase 2': 'Translate de 2'
+    				//	}
+    				//},
+    				//lang_original: 'ru'
+    			}
+    		}
+    	);
+    	
+    	const result2 = response2.getData().result;
+    	console.info(result2);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.site.fullExport',
+                [
+                    'id'     => 326,
+                    'params' => [
+                        'edit_mode'    => 'Y',
+                        'code'         => 'myfirstsite',
+                        'name'         => 'Auto Repair Shop Website',
+                        'description'  => 'Website for your auto service. Under the hood, everything you need.',
+                        'preview_url'  => 'http://sample.landing.mycompany.com/',
+                        'preview'      => 'http://site.com/preview.jpg',
+                        'preview2x'    => 'http://site.com/preview.jpg',
+                        'preview3x'    => 'http://site.com/preview.jpg',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        $data = $result;
+    
+        $response2 = $b24Service
+            ->core
+            ->call(
+                'landing.demos.register',
+                [
+                    'data'   => $data,
+                    'params' => [
+                        'site_template_id' => '',
+                        //localization array and original language
+                        /*'lang' => [
+                            'en' => [
+                                'Phrase 1' => 'Translate en 1',
+                                'Phrase 2' => 'Translate en 2'
+                            ],
+                            'de' => [
+                                'Phrase 1' => 'Translate de 1',
+                                'Phrase 2' => 'Translate de 2'
+                            ]
+                        ],
+                        'lang_original' => 'ru'*/
+                    ],
+                ]
+            );
+    
+        $result2 = $response2
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result2, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'landing.site.fullExport',
         {
             id: 326,
             params: {
                 edit_mode: 'Y',
-                code: 'myfirstsite', //symbolic code of site
-                name: 'Auto Repair Shop Website', // name of the site (page)
-                description: 'Website for your auto service. Everything you need under the hood.', // description of the site
-                preview_url: 'http://sample.landing.mycompany.com/', // preview URL
-                preview: 'http://site.com/preview.jpg', // main preview image for the template list (recommended 280x115)
-                preview2x: 'http://site.com/preview.jpg', // enlarged preview image (recommended 560x230)
-                preview3x: 'http://site.com/preview.jpg', // retina-sized preview image (recommended 845x345)
+                code: 'myfirstsite',//symbolic code of site
+                name: 'Auto Repair Shop Website',// name of the site (page)
+                description: 'Website for your auto service. Under the hood, everything you need.',//description of the site
+                preview_url: 'http://sample.landing.mycompany.com/',//preview URL
+                preview: 'http://site.com/preview.jpg',//main preview image for the template list (recommended 280x115)
+                preview2x: 'http://site.com/preview.jpg',//enlarged preview image (recommended 560x230)
+                preview3x: 'http://site.com/preview.jpg',//retina-size preview image (recommended 845x345)
             }
         },
         function(result)
@@ -88,8 +210,8 @@ Note that the example uses the result of the method [landing.site.fullExport](..
                     {
                         data: data,
                         params: {
-                            site_template_id: '', // pass the template value if you are registering for your template (only on-premise!)
-                            // localization array and original language
+                            site_template_id: '',//provide the template value if you are registering for your template (only on-premise!)
+                            //localization array and original language
                             /*lang: {
                                 en: {
                                     'Phrase 1': 'Translate en 1',

@@ -1,4 +1,4 @@
-# Delete All Special Pages landing.syspage.deleteForSite
+# Delete all special pages landing.syspage.deleteForSite
 
 {% note warning "We are still updating this page" %}
 
@@ -12,10 +12,10 @@ Some data may be missing here — we will complete it shortly.
 
 - missing parameters or fields
 - parameter types not specified
-- required parameters not indicated
-- examples missing
-- success response missing
-- error response missing
+- parameter requirements not specified
+- examples are missing
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -32,6 +32,59 @@ The method `landing.syspage.deleteForSite` deletes all special pages of the site
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.syspage.deleteForSite',
+    		{
+    			id: 1391 // Site ID
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.syspage.deleteForSite',
+                [
+                    'id' => 1391, // Site ID
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting syspage for site: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -55,4 +108,4 @@ The method `landing.syspage.deleteForSite` deletes all special pages of the site
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

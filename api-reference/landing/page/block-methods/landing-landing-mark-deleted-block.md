@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -33,9 +33,9 @@ The method `landing.landing.markdeletedblock` marks a block as deleted but does 
 #|
 || **Method** | **Description** ||
 || **lid**
-[`unknown`](../../../data-types.md) | Identifier of the page. ||
+[`unknown`](../../../data-types.md) | Page identifier. ||
 || **block**
-[`unknown`](../../../data-types.md) | Identifier of the block. ||
+[`unknown`](../../../data-types.md) | Block identifier. ||
 |#
 
 ## Examples
@@ -43,6 +43,56 @@ The method `landing.landing.markdeletedblock` marks a block as deleted but does 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.landing.markdeletedblock',
+    		{
+    			lid: 627,
+    			block: 11923
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.landing.markdeletedblock',
+                [
+                    'lid'   => 627,
+                    'block' => 11923,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error marking block as deleted: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

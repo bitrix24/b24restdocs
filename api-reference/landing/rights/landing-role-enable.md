@@ -1,4 +1,4 @@
-# Switch Models landing.role.enable
+# Switch landing.role.enable Models
 
 {% note warning "We are still updating this page" %}
 
@@ -32,6 +32,56 @@ The method `landing.role.enable` switches between the extended and role-based mo
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.role.enable',
+    		{
+    			mode: 1 // 1 – to enable the role-based model, 0 – to disable (enable the extended model)
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.role.enable',
+                [
+                    'mode' => 1, // 1 – to enable the role-based model, 0 – to disable (enable the extended model)
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error enabling landing role: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'landing.role.enable',
         {
@@ -53,6 +103,4 @@ The method `landing.role.enable` switches between the extended and role-based mo
 
 {% endlist %}
 
-
-
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

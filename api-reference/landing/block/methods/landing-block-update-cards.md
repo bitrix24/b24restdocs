@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.block.updateCards` is used for mass updating cards in the block. It will return _true_ on success or an error.
+The method `landing.block.updateCards` is used for mass updating cards in the block. It will return _true_ on success, or an error.
 
 {% note warning %}
 
@@ -39,6 +39,98 @@ Note that selectors are formed similarly to the method used in _landing.block.up
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.block.updateCards',
+    		{
+    			lid: 2856,
+    			block: 25458,
+    			data: {
+    				//affecting this card selector
+    				// (other selectors can be passed simultaneously)
+    				'.landing-block-card': {
+    					//only this number of cards will remain, which
+    					//will have only the specified nodes changed;
+    					//the first card will be used for cloning
+    					'values': [
+    						{
+    							'.landing-block-node-title': 'New title 0'
+    						},
+    						{
+    							'.landing-block-node-title': 'New title 1'
+    						},
+    						{
+    							'.landing-block-node-title': 'New title 2'
+    						}
+    					],
+    					//optionally, you can apply card presets (key - card number starting from 0)
+    					'presets': {
+    						'1': 'preset_h2'
+    					}
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.updateCards',
+                [
+                    'lid'   => 2856,
+                    'block' => 25458,
+                    'data'  => [
+                        '.landing-block-card' => [
+                            'values'  => [
+                                [
+                                    '.landing-block-node-title' => 'New title 0'
+                                ],
+                                [
+                                    '.landing-block-node-title' => 'New title 1'
+                                ],
+                                [
+                                    '.landing-block-node-title' => 'New title 2'
+                                ]
+                            ],
+                            'presets' => [
+                                '1' => 'preset_h2'
+                            ]
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating landing block cards: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'landing.block.updateCards',
         {
@@ -48,8 +140,8 @@ Note that selectors are formed similarly to the method used in _landing.block.up
                 //affecting this card selector
                 // (other selectors can be passed simultaneously)
                 '.landing-block-card': {
-                    //only this number of cards will remain, 
-                    //where only the specified nodes will be changed;
+                    //only this number of cards will remain, which
+                    //will have only the specified nodes changed;
                     //the first card will be used for cloning
                     'values': [
                         {
@@ -85,4 +177,4 @@ Note that selectors are formed similarly to the method used in _landing.block.up
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

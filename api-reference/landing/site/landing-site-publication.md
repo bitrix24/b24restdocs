@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -41,6 +41,57 @@ The method `landing.site.publication` publishes the site (and all its pages).
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.site.publication',
+    		{
+    			id: 1688
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.site.publication',
+                [
+                    'id' => 1688
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling landing.site.publication: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'landing.site.publication',
         {
@@ -61,7 +112,5 @@ The method `landing.site.publication` publishes the site (and all its pages).
     ```
 
 {% endlist %}
-
-
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}

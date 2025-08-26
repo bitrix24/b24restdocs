@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,11 +11,11 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- response on success is missing
-- response on error is missing
+- parameter types not specified
+- parameter requirements not specified
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.template.getSiteRef` retrieves a list of included areas for the site. The keys of the returned array are the identifiers of the included areas, and the values are the identifiers of the pages.
+The method `landing.template.getSiteRef` retrieves a list of included areas for the site. The keys of the returned array are the identifiers of the included areas, and the values are the page identifiers.
 
 ## Parameters
 
@@ -40,6 +40,54 @@ The method `landing.template.getSiteRef` retrieves a list of included areas for 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.template.getSiteRef',
+    		{
+    			id: 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.template.getSiteRef',
+                [
+                    'id' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting site reference: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -63,4 +111,4 @@ The method `landing.template.getSiteRef` retrieves a list of included areas for 
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

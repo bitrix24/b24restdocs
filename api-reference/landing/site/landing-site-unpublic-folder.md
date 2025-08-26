@@ -1,8 +1,8 @@
-# Unpublish Site Folder landing.site.unPublicFolder
+# Unpublish the site folder landing.site.unPublicFolder
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -31,7 +31,7 @@ The method `landing.site.unPublicFolder` unpublishes a site folder. Permissions 
 #|
 || **Parameter** | **Description** | **Version** ||
 || **folderId**
-[`unknown`](../../data-types.md) | Folder identifier. | ||
+[`unknown`](../../data-types.md) | Identifier of the folder. | ||
 |#
 
 ## Example
@@ -39,6 +39,56 @@ The method `landing.site.unPublicFolder` unpublishes a site folder. Permissions 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.site.unPublicFolder',
+    		{
+    			id: 737
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.site.unPublicFolder',
+                [
+                    'id' => 737
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error un-publishing folder: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -62,4 +112,4 @@ The method `landing.site.unPublicFolder` unpublishes a site folder. Permissions 
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

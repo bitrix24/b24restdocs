@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,13 +10,13 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - parameter types not specified
 - parameter requirements not indicated
-- examples are missing
-- success response is absent
-- error response is absent
-- links to pages that have not yet been created are not specified (3 links in the Sites section)
+- examples missing
+- success response not provided
+- error response not provided
+- links to yet-to-be-created pages are not specified (3 links in the Sites section)
 
 {% endnote %}
 
@@ -35,12 +35,12 @@ The method `landing.landing.addblock` adds a new block to the page. It returns t
 #|
 || **Method** | **Description** ||
 || **lid**
-[`unknown`](../../../data-types.md) | Identifier of the page ||
+[`unknown`](../../../data-types.md) | Page identifier ||
 || **fields**
 [`unknown`](../../../data-types.md) | Array of block fields, where currently only the following values are supported:
 - **CODE** - symbolic code of the block. The block code can be obtained from the method [landing.block.getrepository](.). If a block registered by a partner through [landing.repo.register](.) is being added, the value for CODE must be passed as `repo_<ID>`, where `<ID>` is the identifier of that block.
 - **AFTER_ID** - after which block (its ID) the new block should be added (if not specified, the block will be added at the beginning)
-- **ACTIVE** - activity status of the block (Y/N)
+- **ACTIVE** - block activity (Y/N)
 - **CONTENT** - entirely different content of the block (see notes for the method [landing.block.updatecontent](.)) ||
 |#
 
@@ -49,6 +49,60 @@ The method `landing.landing.addblock` adds a new block to the page. It returns t
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.landing.addblock',
+    		{
+    			lid: 351,
+    			fields: {
+    				CODE: '15.social'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.landing.addblock',
+                [
+                    'lid' => 351,
+                    'fields' => [
+                        'CODE' => '15.social'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding block: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -75,4 +129,4 @@ The method `landing.landing.addblock` adds a new block to the page. It returns t
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- corrections needed for standard writing
+- edits needed for standard writing
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -30,20 +30,50 @@ The method `landing.block.getlist` retrieves a list of page blocks. It returns a
 ## Parameters
 
 #|
-|| **Method** | **Description** | **Available since** ||
+|| **Method** | **Description** | **Version** ||
 || **lid**
-[`unknown`](../../../data-types.md) | Page identifier, or an array of identifiers. | ||
+[`unknown`](../../../data-types.md) | Identifier of the page, or an array of identifiers. | ||
 || **params**
 [`unknown`](../../../data-types.md) | Parameters:
-- **edit_mode** - Editing mode (1) or not (0 - default), will return a different set of blocks. Note that if you have not [published the page](../../page/methods/landing-landing-publication.md) yet, nothing will be returned in mode 0.
-- **deleted** - deleted (1) or not (0) blocks, by default all non-deleted blocks are displayed. In `edit_mode=0`, there can be no deleted blocks. | ||
+- **edit_mode** - Editing mode (1) or not (0 - default), will return a different set of blocks. Note that if you have not [published the page](../../page/methods/landing-landing-publication.md), nothing will be returned in mode 0.
+- **deleted** - deleted (1) or not (0) blocks, by default all non-deleted blocks are displayed. In `edit_mode=0`, there cannot be any deleted blocks. | ||
 |#
 
 ## Examples
 
 {% list tabs %}
 
-- JS
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.getlist',
+                [
+                    'lid' => 313,
+                    'params' => [
+                        'edit_mode' => 0
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting block list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

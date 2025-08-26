@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for standard writing
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
+- edits needed for writing standards
+- parameter types not specified
+- required parameters not indicated
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.block.uploadfile` uploads an image and attaches it to the specified block. On success, it returns a pair: the direct path to the uploaded file and the id of the saved file. From this point, the image will only be deleted when the entire block, the page containing the block, is deleted, or through the call of the method [landing.landing.removeEntities](../../page/methods/landing-landing-remove-entities.md).
+The method `landing.block.uploadfile` uploads an image and attaches it to the specified block. On success, it returns a pair: the direct path to the uploaded file and the id of the saved file. From this point on, the image will only be deleted when the entire block, the page containing the block, is deleted, or through the call of the method [landing.landing.removeEntities](../../page/methods/landing-landing-remove-entities.md).
 
 ## Parameters
 
@@ -52,6 +52,57 @@ The method `landing.block.uploadfile` uploads an image and attaches it to the sp
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.block.uploadfile',
+    		{
+    			block: 12294,
+    			picture: 'https://site.com/******.jpg'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.uploadfile',
+                [
+                    'block'   => 12294,
+                    'picture' => 'https://site.com/******.jpg',
+                    // 'picture' => document.getElementById('file')
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error uploading file: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

@@ -10,12 +10,12 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for standard writing
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
+- edits needed for writing standards
+- parameter types not specified
+- parameter requirements not specified
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -33,11 +33,11 @@ Permissions are independent and can be granted selectively. For example, a user 
 
 The following values can be used as keys:
 
-- `SG<X>` - workgroup, for example SG1 - workgroup with identifier 2;
-- `U<X>` - user, for example U45 - user with identifier 45;
-- `DR<X>` - department, including subdivisions, for example DR23 - section with identifier 23;
-- `UA` - all authorized users.
-- `G<X>` - user group, for example G2 - user group with identifier 2.
+- **SG<X>** - workgroup, for example SG1 - workgroup with identifier 2;
+- **U<X>** - user, for example U45 - user with identifier 45;
+- **DR<X>** - department, including subdivisions, for example DR23 - section with identifier 23;
+- **UA** - all authorized users.
+- **G<X>** - user group, for example G2 - user group with identifier 2.
 
 ## Parameters
 
@@ -54,6 +54,60 @@ The following values can be used as keys:
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.role.setAccessCodes',
+    		{
+    			id: 11,
+    			codes: [
+    				'SG3_A', 'G4'
+    			]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.role.setAccessCodes',
+                [
+                    'id'    => 11,
+                    'codes' => [
+                        'SG3_A', 'G4'
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting access codes: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

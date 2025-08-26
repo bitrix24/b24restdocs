@@ -1,4 +1,4 @@
-# Get Block Manifest from Repository landing.block.getmanifestfile
+# Get the block manifest from the repository landing.block.getmanifestfile
 
 {% note warning "We are still updating this page" %}
 
@@ -8,9 +8,9 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
-- edits needed for writing standards
+- adjustments needed for writing standards
 - parameter types not specified
 - parameter requirements not indicated
 - examples are missing
@@ -42,6 +42,54 @@ The method `landing.block.getmanifestfile` retrieves the block manifest from the
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.block.getmanifestfile',
+    		{
+    			code: '01.big_with_text'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.getmanifestfile',
+                [
+                    'code' => '01.big_with_text'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting manifest file: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'landing.block.getmanifestfile',
         {
@@ -63,4 +111,4 @@ The method `landing.block.getmanifestfile` retrieves the block manifest from the
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

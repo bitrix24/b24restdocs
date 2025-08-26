@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not specified
@@ -35,7 +35,7 @@ You cannot influence the fields of the created page; for that, you can use [land
 || **siteId**
 [`unknown`](../../../data-types.md) | `ID` of the site where the page needs to be created. ||
 || **code**
-[`unknown`](../../../data-types.md) | Template identifier for creation. You can get the list of templates using the method [landing.demos.getPageList](../../demos/landing-demos-get-page-list.md). ||
+[`unknown`](../../../data-types.md) | Identifier of the template to be used for creation. You can get the list of templates using the method [landing.demos.getPageList](../../demos/landing-demos-get-page-list.md). ||
 || **fields**
 [`unknown`](../../../data-types.md) | Optional. You can pass an array of fields for the created page. Currently, only the keys TITLE and DESCRIPTION are supported. ||
 |#
@@ -45,6 +45,73 @@ You cannot influence the fields of the created page; for that, you can use [land
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.landing.addByTemplate',
+    		{
+    			siteId: 870,
+    			code: 'agency',
+    			fields: {
+    				TITLE: 'Page Title',
+    				DESCRIPTION: 'Page Description'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.landing.addByTemplate',
+                [
+                    'siteId' => 870,
+                    'code' => 'agency',
+                    'fields' => [
+                        'TITLE' => 'Page Title',
+                        'DESCRIPTION' => 'Page Description'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding landing by template: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -69,4 +136,4 @@ You cannot influence the fields of the created page; for that, you can use [land
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

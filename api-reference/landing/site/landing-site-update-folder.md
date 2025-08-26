@@ -8,14 +8,14 @@ Some data may be missing here — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- parameter requirements not specified
-- examples missing
-- success response missing
-- error response missing
+- parameter types are not specified
+- parameter requirements are not indicated
+- examples are missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -32,7 +32,7 @@ The method `landing.site.updateFolder` changes the folder in the site.
 #|
 || **Parameter** | **Description** | **Available since** ||
 || **siteId**
-[`unknown`](../../data-types.md) | Site identifier.
+[`unknown`](../../data-types.md) | Identifier of the site.
 
 {% note warning %}
 
@@ -42,10 +42,10 @@ Write permissions are required for the specified site.
 
  | ||
 || **folderId**
-[`unknown`](../../data-types.md) | Folder identifier in the site. | ||
+[`unknown`](../../data-types.md) | Identifier of the folder in the site. | ||
 || **fields**
 [`unknown`](../../data-types.md) | Folder fields: 
-- ACTIVE – folder activity (Y/N). By default, it is created as inactive;
+- ACTIVE – folder activity (Y/N). By default, it is created inactive;
 - TITLE – title (name) of the folder;
 - INDEX_ID – identifier of the page within the folder that needs to be set as the index page of the folder;
 - CODE – symbolic code of the folder (part of the folder page URL). By default, it is transliterated from the folder name. | ||
@@ -56,6 +56,64 @@ Write permissions are required for the specified site.
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.site.updateFolder',
+    		{
+    			siteId: 1817,
+    			folderId: 736,
+    			fields: {
+    				TITLE: 'Updated Folder'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.site.updateFolder',
+                [
+                    'siteId'  => 1817,
+                    'folderId' => 736,
+                    'fields'  => [
+                        'TITLE' => 'Updated Folder'
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating folder: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

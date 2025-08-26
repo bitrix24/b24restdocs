@@ -1,4 +1,4 @@
-# Get the web address of landing.landing.getpublicurl
+# Get the web address of the page landing.landing.getpublicurl
 
 {% note warning "We are still updating this page" %}
 
@@ -41,6 +41,57 @@ The method `landing.landing.getpublicurl` returns the web address of the page or
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.landing.getpublicurl',
+    		{
+    			lid: 351
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.landing.getpublicurl',
+                [
+                    'lid' => 351
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Public URL: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting public URL: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'landing.landing.getpublicurl',
         {
@@ -62,4 +113,4 @@ The method `landing.landing.getpublicurl` returns the web address of the page or
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../_includes/examples.md) %}

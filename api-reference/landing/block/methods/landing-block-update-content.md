@@ -1,16 +1,16 @@
-# Change the content of the landing.block.updatecontent block
+# Update Content of the Block landing.block.updatecontent
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- edits are needed for standard writing
+- edits needed for standard writing
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing
@@ -29,7 +29,7 @@ The method `landing.block.updatecontent` updates the content of an already place
 
 {% note warning %}
 
-- If the new block markup does not match its current manifest, the block may become non-editable.
+- If the new block markup does not align with its current manifest, the block may become non-editable.
 - Content is passed through a sanitizer, which may remove some suspicious attributes and tags.
 
 {% endnote %}
@@ -37,7 +37,7 @@ The method `landing.block.updatecontent` updates the content of an already place
 ## Parameters
 
 #|
-|| **Method** | **Description** | **Since** ||
+|| **Method** | **Description** | **Available since** ||
 || **lid**
 [`unknown`](../../../data-types.md) | Page identifier | ||
 || **block**
@@ -59,6 +59,58 @@ The **style** attribute may be stripped by the built-in sanitizer. To bypass thi
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.block.updatecontent',
+    		{
+    			lid: 625,
+    			block: 11883,
+    			content: '<h3>My super content</h3>'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.updatecontent',
+                [
+                    'lid'     => 625,
+                    'block'   => 11883,
+                    'content' => '<h3>My super content</h3>',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating block content: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -84,4 +136,4 @@ The **style** attribute may be stripped by the built-in sanitizer. To bypass thi
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Example Notes](../../../../_includes/examples.md) %}

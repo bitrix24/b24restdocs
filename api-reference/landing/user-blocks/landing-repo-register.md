@@ -1,8 +1,8 @@
-# Add a Custom Block to the Repository landing.repo.register
+# Add a custom block to the repository landing.repo.register
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits are needed to meet writing standards
+- edits needed for writing standards
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -27,9 +27,9 @@ Some data may be missing here — we will complete it shortly.
 
 The method `landing.repo.register` adds a block to the repository. It returns an error or the `ID` of the added block. This `ID` is used to add the block to programmatically created landing pages.
 
-When adding, a check is performed. If a block with the given code already exists in the system, it will be removed.
+When adding, a check is performed. If a block with this code already exists in the system, it will be removed.
 
-The method may return an error about dangerous content in the block. In this case, it is necessary to first check the content being registered using the method [landing.repo.checkContent](./landing-repo-check-content.md).
+The method may return an error about dangerous content in the block. In this case, it is necessary to first check the registered content using the method [landing.repo.checkContent](./landing-repo-check-content.md).
 
 When developing a new block or modifying an existing one, it may be necessary to see changes faster than re-adding the block or using the RESET flag allows. It is recommended to use the method [landing.block.updatecontent](../block/methods/landing-block-update-content.md) for these purposes. This method sends arbitrary content to the block and displays changes almost "on the fly." Once development is complete, the developer can finalize the registration.
 
@@ -40,12 +40,12 @@ The method is suitable only for changing content. When modifying the manifest, t
 #|
 || **Method** | **Description** | **Version** ||
 || **code**
-[`unknown`](../../data-types.md) | Unique code for your block, which will be used for its removal if necessary. ||
+[`unknown`](../../data-types.md) | Unique code for your block, which will be used to remove the block if necessary. ||
 || **fields**
 [`unknown`](../../data-types.md) | An array of fields describing your block, consisting of keys:
 - NAME - block name
 - DESCRIPTION - block description
-- SECTIONS - categories where the block should appear, separated by commas.
+- SECTIONS - categories in which the block should appear, separated by commas.
 
   {% note info %}
   
@@ -56,10 +56,10 @@ The method is suitable only for changing content. When modifying the manifest, t
 - PREVIEW - URL of the block's cover image
 - CONTENT - HTML content of the block
 - ACTIVE - block activity (Y / N)
-- SITE_TEMPLATE_ID – binding of the block to a specific template of the main module's site. **Only for on-premise versions!**
+- SITE_TEMPLATE_ID – binding the block to a specific template of the main module's site. **Only for on-premise versions!**
 
 Additional parameters:
-- RESET - if passed with the value Y, the system will automatically update all blocks added to the pages to the new layout. ||
+- RESET - if passed with the value Y, the system will automatically update all blocks added to the pages to the new layout. [Learn more...](https://dev.bitrix24.com/company/personal/user/3/blog/2091/) ||
 || **manifest**
 [`unknown`](../../data-types.md) | An array of the manifest describing the block. ||
 |#
@@ -77,9 +77,125 @@ The **style** attribute may be stripped by the built-in sanitizer. To bypass thi
 
 - JS
 
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.repo.register',
+    		<?= \CUtil::PhpToJSObject($data) ?>
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.repo.register',
+                [
+                    'code' => 'myblockx',
+                    'fields' => [
+                        'NAME'        => 'Test block',
+                        'DESCRIPTION' => 'Just try!',
+                        'SECTIONS'    => 'cover,about',
+                        'PREVIEW'     => 'https://www.bitrix24.com/images/b24_screen.png',
+                        'CONTENT'     => '
+        <section class="landing-block">
+            <div class="text-center g-color-gray-dark-v3 g-pa-10">
+                <div class="g-width-600 mx-auto">
+                    <div class="landing-block-node-text g-font-size-12 ">
+                        <p>© 2017 All rights reserved. Developed by
+                        <a href="#" class="landing-block-node-link g-color-primary">Bitrix24</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>'
+                    ],
+                    'manifest' => [
+                        'assets' => [
+                            'css' => [
+                                'https://site.com/aaa.css'
+                            ],
+                            'js'  => [
+                                'https://site.com/aaa.js'
+                            ]
+                        ],
+                        'nodes'  => [
+                            '.landing-block-node-text' => [
+                                'name' => 'Text',
+                                'type' => 'text',
+                            ],
+                            '.landing-block-node-link' => [
+                                'name' => 'Link',
+                                'type' => 'link',
+                            ],
+                        ],
+                        'style'  => [
+                            '.landing-block-node-text' => [
+                                'name' => 'Text',
+                                'type' => 'typo',
+                            ],
+                            '.landing-block-node-link' => [
+                                'name' => 'Link',
+                                'type' => 'typo',
+                            ],
+                        ],
+                        'attrs'  => [
+                            '.landing-block-node-text' => [
+                                'name'      => 'Copyright settings',
+                                'type'      => 'dropdown',
+                                'attribute' => 'data-copy',
+                                'items'     => [
+                                    'val1' => 'Value 1',
+                                    'val2' => 'Value 2'
+                                ]
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling landing.repo.register: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     <?php
-    //for clarity, we will pass a PHP array to JS
+    //for clarity, we will pass a PHP array to JS execution
     $data = array(
         'code' => 'myblockx',
         'fields' => array(
@@ -167,4 +283,4 @@ The **style** attribute may be stripped by the built-in sanitizer. To bypass thi
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}

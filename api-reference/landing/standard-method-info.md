@@ -1,4 +1,4 @@
-# Do This (Brief Overview of the Method Operation)
+# Do This (Brief Essence of the Method Operation)
 
 > Method Name: **tasks.xxx.xxx**
 >
@@ -6,11 +6,11 @@
 >
 > Who can execute the method: administrator / any user
 
-This method performs the following actions
+The method does the following
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -20,7 +20,7 @@ This method performs the following actions
 || **NAME***
 [`crm_item`](data-types.md) | Description of the parameter. The type refers to the page with data types of the current scope ||
 || **SETTINGS***
-[`array`](../../data-types.md) | Example of a parameter with a complex nested structure. At this level, we describe it in general terms, without all the details - just to give an overall idea. Because later, individual keys like CONFIG or ITEMS will be described in subsequent tables with separate subheadings.
+[`array`](../../data-types.md) | Example of a parameter with a complex nested structure. At this level, we describe it in general terms, but without all the details - just to give an overall idea. Because later, individual keys like CONFIG or ITEMS will be described in subsequent tables with separate subheadings.
 
 ```json
 {
@@ -30,7 +30,7 @@ This method performs the following actions
     "CONFIG":
     {
         "section_key_1": {
-            "LABEL": "section name 1",
+            "LABEL": "section_name_1",
             "ITEMS": {
                 "setting_1-1": {
                     "TYPE": "value",
@@ -45,7 +45,7 @@ This method performs the following actions
         },
         ...
         "section_key_N": {
-            "LABEL": "section name N",
+            "LABEL": "section_name_N",
             "ITEMS": {
                 ...
             }
@@ -59,7 +59,7 @@ This method performs the following actions
 
 ### SETTINGS Parameter
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -73,7 +73,7 @@ This method performs the following actions
 
 ```json
 "section_key_1": {
-    "LABEL": "section name 1",
+    "LABEL": "section_name_1",
     "ITEMS": {
         "setting_1-1": {
             ...
@@ -103,19 +103,152 @@ Default value: `STRING`
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
-    Here we will insert the necessary code, regenerated from your JS example
+    Here we will insert the necessary code, regenerated from your JS example.
 
 - cURL (OAuth)
 
-    Here we will insert the necessary code, regenerated from your JS example
+    Here we will insert the necessary code, regenerated from your JS example.
 
 - JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            "sale.cashbox.handler.add",
+            {
+                "CODE": "restcashbox01",
+                "NAME": "REST-Cash Register 01",
+                "SORT": 100,
+                "SUPPORTS_FFD105": "Y",
+                "SETTINGS":
+                {
+                    "PRINT_URL": "http://example.com/rest_print.php",
+                    "CHECK_URL": "http://example.com/rest_check.php",
+                    "HTTP_VERSION": "1.1",
+                    "CONFIG":
+                    {
+                        "AUTH": {
+                            "LABEL": "Authorization",
+                            "ITEMS": {
+                                "KEYWORD": {
+                                    "TYPE": "STRING",
+                                    "LABEL": "Password"
+                                },
+                                "PREFERENCE": {
+                                    "TYPE": "ENUM",
+                                    "LABEL": "Multiple Choice",
+                                    "REQUIRED": "Y",
+                                    "OPTIONS": {
+                                        "FIRST": "First",
+                                        "SECOND": "Second",
+                                        "THIRD": "Third",
+                                    }
+                                }
+                            }
+                        },
+                        "INTERACTION": {
+                            "LABEL": "Interaction Settings with Cash Register",
+                            "ITEMS": {
+                                "MODE": {
+                                    "TYPE": "ENUM",
+                                    "LABEL": "Cash Register Operating Mode",
+                                    "OPTIONS": {
+                                        "ACTIVE": "active",
+                                        "TEST": "test"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.cashbox.handler.add',
+                [
+                    'CODE'          => 'restcashbox01',
+                    'NAME'          => 'REST-Cash Register 01',
+                    'SORT'          => 100,
+                    'SUPPORTS_FFD105' => 'Y',
+                    'SETTINGS'      => [
+                        'PRINT_URL'    => 'http://example.com/rest_print.php',
+                        'CHECK_URL'    => 'http://example.com/rest_check.php',
+                        'HTTP_VERSION' => '1.1',
+                        'CONFIG'       => [
+                            'AUTH'       => [
+                                'LABEL' => 'Authorization',
+                                'ITEMS' => [
+                                    'KEYWORD'    => [
+                                        'TYPE'  => 'STRING',
+                                        'LABEL' => 'Password',
+                                    ],
+                                    'PREFERENCE' => [
+                                        'TYPE'     => 'ENUM',
+                                        'LABEL'    => 'Multiple Choice',
+                                        'REQUIRED' => 'Y',
+                                        'OPTIONS'  => [
+                                            'FIRST'  => 'First',
+                                            'SECOND' => 'Second',
+                                            'THIRD'  => 'Third',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'INTERACTION' => [
+                                'LABEL' => 'Interaction Settings with Cash Register',
+                                'ITEMS' => [
+                                    'MODE' => [
+                                        'TYPE'    => 'ENUM',
+                                        'LABEL'   => 'Cash Register Operating Mode',
+                                        'OPTIONS' => [
+                                            'ACTIVE' => 'active',
+                                            'TEST'   => 'test',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        console.dir($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding cash register handler: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -152,13 +285,13 @@ Default value: `STRING`
                         }
                     },
                     "INTERACTION": {
-                        "LABEL": "Cash Register Interaction Settings",
+                        "LABEL": "Interaction Settings with Cash Register",
                         "ITEMS": {
                             "MODE": {
                                 "TYPE": "ENUM",
                                 "LABEL": "Cash Register Operating Mode",
                                 "OPTIONS": {
-                                    "ACTIVE": "live",
+                                    "ACTIVE": "active",
                                     "TEST": "test"
                                 }
                             }
@@ -177,15 +310,15 @@ Default value: `STRING`
     );
     ```
 
-- PHP
+- PHP CRest
 
-    Here we will insert the necessary code, regenerated from your JS example
+    Here we will insert the necessary code, regenerated from your JS example.
 
 {% endlist %}
 
-{% note tip "Typical Use-Cases and Scenarios" %}
+{% note tip "Typical use-cases and scenarios" %}
 
-We will fill in the content of this block later. Or we will remove the block if it's unnecessary.
+We will fill in the content of this block later. Or we will remove the block if unnecessary.
 
 {% endnote %}
 
@@ -225,9 +358,9 @@ HTTP Status: **200**
 || **duration**
 [`double`](../../data-types.md) | How long in milliseconds the request took (finish — start) ||
 || **date_start**
-[`string`](../../data-types.md) | String representation of the date and time when the request was initialized ||
+[`string`](../../data-types.md) | String representation of the date and time of the moment the request was initialized ||
 || **date_finish**
-[`double`](../../data-types.md) | String representation of the date and time when the request was completed ||
+[`double`](../../data-types.md) | String representation of the date and time of the moment the request execution was completed ||
 || **operating_reset_at**
 [`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limits](../../../limits.md) ||
 || **operating**

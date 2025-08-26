@@ -34,6 +34,58 @@ The method `landing.syspage.set` sets a special page for the site. If the **lid*
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.syspage.set',
+    		{
+    			id: 1390,// Site ID
+    			type: 'personal',// Page type
+    			lid: 8593// Page ID that will be considered of this type within the site
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.syspage.set',
+                [
+                    'id'   => 1390, // Site ID
+                    'type' => 'personal', // Page type
+                    'lid'  => 8593 // Page ID that will be considered of this type within the site
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting system page: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'landing.syspage.set',
         {

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -38,11 +38,11 @@ The method `landing.block.updateStyles` changes the styles of the block. It retu
 || **data**
 [`unknown`](../../../data-types.md) | This parameter passes an array of key-value pairs, where the key is the selector, and each value specifies two arrays:
 - **classList** - which classes to add to the modified selector.
-- **affect** - styles that need to be reset for all child nodes are passed. For example, if a class that colors the element (color) is passed, then in affect, an array [color] should be passed to reset all colors for the children. Otherwise, there will be a situation where the parent's color is red, but the text inside remains unchanged.
+- **affect** - styles that need to be reset for all child nodes are passed. For example, if a class that colors an element (color) is passed, then the affect array should include [color] to reset all colors for the children. Otherwise, if the parent color is red, the text inside will remain unchanged.
 
 The selector can be passed without specifying a position (for example, .landing-block-node-text), in which case all cards matching this selector will be modified. It can also be passed with a position specified (for example, .landing-block-node-text@2), in which case only the card at the specified position (zero-based) will be modified.
 
-The selector can be passed as `#wrapper`, in which case the influence will occur on the styles of the block (its shell). | ||
+The selector can be passed as `#wrapper`, in which case the influence will occur on the styles of the block (its wrapper). | ||
 |#
 
 ## Example
@@ -58,6 +58,70 @@ Classes such as landing-block-node-text are system classes in the manifest. If y
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.block.updateStyles',
+    		{
+    			lid: 311,
+    			block: 6058,
+    			data: {
+    				'.landing-block-node-text': {
+    					classList: ['landing-block-node-text', 'g-color-gray-light-v2', 'text-right'],
+    					affect: ['text-align']
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.updateStyles',
+                [
+                    'lid'   => 311,
+                    'block' => 6058,
+                    'data'  => [
+                        '.landing-block-node-text' => [
+                            'classList' => ['landing-block-node-text', 'g-color-gray-light-v2', 'text-right'],
+                            'affect'    => ['text-align']
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating block styles: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

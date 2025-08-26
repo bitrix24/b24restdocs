@@ -31,9 +31,9 @@ The method `landing.template.setLandingRef` sets the included areas for the page
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Page identifier. ||
+[`unknown`](../../data-types.md) | Identifier of the page. ||
 || **data**
-[`unknown`](../../data-types.md) | Array of data to set (if the array is empty or not provided, the included areas will be reset). The keys of the array are the area identifiers, and the values are the page identifiers that need to be set as the area. ||
+[`unknown`](../../data-types.md) | Array of data to set (if the array is empty or not provided, the included areas will be reset). The keys of the array are the identifiers of the areas, and the values are the identifiers of the pages that need to be set as the area. ||
 |#
 
 ## Examples
@@ -41,6 +41,64 @@ The method `landing.template.setLandingRef` sets the included areas for the page
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.template.setLandingRef',
+    		{
+    			id: 557,
+    			data: {
+    				1: 614,
+    				2: 615,
+    				3: 616
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.template.setLandingRef',
+                [
+                    'id' => 557,
+                    'data' => [
+                        1 => 614,
+                        2 => 615,
+                        3 => 616
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting landing reference: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will fill it in shortly.
 
 - missing parameters or fields
 - parameter types not specified
-- required parameters not indicated
+- parameter requirements not specified
 - examples are missing
 - success response is missing
 - error response is missing
@@ -30,6 +30,64 @@ The method `landing.syspage.getSpecialPage` returns the address of a special pag
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.syspage.getSpecialPage',
+    		{
+    			siteId: 1391,// Site ID
+    			type: 'personal',// Type of special page
+    			additional: {// Optional array of additional parameters to be added to the URL
+    				SECTION: 'private'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.syspage.getSpecialPage',
+                [
+                    'siteId' => 1391, // Site ID
+                    'type' => 'personal', // Type of special page
+                    'additional' => [ // Optional array of additional parameters to be added to the URL
+                        'SECTION' => 'private'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting special page: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

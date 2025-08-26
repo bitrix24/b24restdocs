@@ -10,12 +10,12 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- corrections needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -25,11 +25,11 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.landing.removeEntities` removes related entities of the landing page - blocks and images of the blocks.
+The method `landing.landing.removeEntities` removes related entities of the landing - blocks and block images.
 
 {% note warning %}
 
-When blocks are deleted, the associated images are removed in any case. However, there may be situations where it is necessary to delete images independently of the block to clean up junk. Use this method in such cases.
+When blocks are deleted, the associated images are removed in any case. However, there may be situations where it is necessary to delete images independently of the blocks to clean up junk. Use this method in that case.
 
 {% endnote %}
 
@@ -38,9 +38,9 @@ When blocks are deleted, the associated images are removed in any case. However,
 #|
 || **Parameters** | **Description** | **Available since** ||
 || **lid**
-[`unknown`](../../../data-types.md) | Identifier of the landing page. ||
+[`unknown`](../../../data-types.md) | Identifier of the landing. ||
 || **data**
-[`unknown`](../../../data-types.md) | Associative array where the key **blocks** contains the blocks to be deleted, and the key **images** contains block-image pairs for which images need to be deleted (the blocks are not deleted in this case). ||
+[`unknown`](../../../data-types.md) | Associative array where the key **blocks** contains the blocks to be deleted, and the key **images** contains block-image pairs for which images need to be deleted (blocks are not deleted in this case). ||
 |#
 
 ## Example
@@ -48,6 +48,78 @@ When blocks are deleted, the associated images are removed in any case. However,
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.landing.removeEntities',
+    		{
+    			lid: 648,
+    			data: {
+    				blocks: [12167, 123],
+    				images: [
+    					{
+    						block: 12269,
+    						image: 6866
+    					},
+    					{
+    						block: 12268,
+    						image: 6861
+    					}
+    				]
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.landing.removeEntities',
+                [
+                    'lid' => 648,
+                    'data' => [
+                        'blocks' => [12167, 123],
+                        'images' => [
+                            [
+                                'block' => 12269,
+                                'image' => 6866
+                            ],
+                            [
+                                'block' => 12268,
+                                'image' => 6861
+                            ]
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error removing entities: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -80,8 +152,8 @@ When blocks are deleted, the associated images are removed in any case. However,
             }
         }
     );
-    // In this example, we are deleting blocks with IDs 12167, 123, as well as image 6866 (from block 12269) and image 6861 (from block 12268).
-    // All entities are located in landing page 648.
+    // In this example, we are removing blocks with IDs 12167, 123, as well as image 6866 (from block 12269) and image 6861 (from block 12268).
+    // All entities are located in landing 648.
     ```
 
 {% endlist %}

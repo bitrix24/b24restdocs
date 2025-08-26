@@ -1,8 +1,8 @@
-# Embed in the menu landing.site.bindingToMenu
+# Embed in menu landing.site.bindingToMenu
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly
 >
 > Who can execute the method: any user
 
-The method `landing.site.bindingToMenu` binds the Knowledge Base to the specified menu. Read access to the Knowledge Base is required.
+The method `landing.site.bindingToMenu` binds the Knowledge Base to the specified menu. The Knowledge Base must have read access.
 
 ## Parameters
 
@@ -41,6 +41,61 @@ The method `landing.site.bindingToMenu` binds the Knowledge Base to the specifie
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.site.bindingToMenu',
+    		{
+    			id: 31,
+    			menuCode: 'crm_switcher:deal'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.site.bindingToMenu',
+                [
+                    'id'       => 31,
+                    'menuCode' => 'crm_switcher:deal',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error binding site to menu: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -65,4 +120,4 @@ The method `landing.site.bindingToMenu` binds the Knowledge Base to the specifie
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

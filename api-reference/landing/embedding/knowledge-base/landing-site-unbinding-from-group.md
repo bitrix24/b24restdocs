@@ -29,7 +29,7 @@ The method `landing.site.unbindingFromGroup` unbinds a specific Knowledge Base f
 ## Parameters
 
 #|
-|| **Parameter** | **Description** | **Available since** ||
+|| **Parameter** | **Description** | **Version** ||
 || **id**
 [`unknown`](../../../data-types.md) | Identifier of the Knowledge Base. | ||
 || **groupId**
@@ -41,6 +41,58 @@ The method `landing.site.unbindingFromGroup` unbinds a specific Knowledge Base f
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.site.unbindingFromGroup',
+    		{
+    			id: 32,
+    			groupId: 174
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.site.unbindingFromGroup',
+                [
+                    'id'      => 32,
+                    'groupId' => 174,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unbinding site from group: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -65,4 +117,4 @@ The method `landing.site.unbindingFromGroup` unbinds a specific Knowledge Base f
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

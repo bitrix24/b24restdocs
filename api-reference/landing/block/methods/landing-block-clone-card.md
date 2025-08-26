@@ -12,10 +12,10 @@ Some data may be missing here — we will complete it shortly.
 
 - edits needed for standard writing
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.block.clonecard` clones the card of a block. It returns _true_ or an error.
+The method `landing.block.clonecard` clones a block card. It returns _true_ or an error.
 
 ## Parameters
 
@@ -36,8 +36,8 @@ The method `landing.block.clonecard` clones the card of a block. It returns _tru
 || **block**
 [`unknown`](../../../data-types.md) | Block identifier | ||
 || **selector**
-[`unknown`](../../../data-types.md) | [Card selector](../manifest.md#key-cards) taken from the manifest, with the added card identifier.
-For example: '.landing-block-card@0'. The 0 at the end indicates that we are affecting the first card in order. If the @ sign and the number following it are absent, the insertion will be made at the beginning of the parent container of the cards. | ||
+[`unknown`](../../../data-types.md) | [Card selector](../manifest.md#key-cards) taken from the manifest, with the card identifier added.
+For example: '.landing-block-card@0'. The 0 at the end means that we are affecting the first card in order. If the @ sign and the number following it are absent, the insertion will be made at the beginning of the parent container of the cards. | ||
 |#
 
 {% note warning %}
@@ -51,6 +51,58 @@ Please note that once you have cloned the card, their counters have changed.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.block.cloneCard',
+    		{
+    			lid: 311,
+    			block: 6057,
+    			selector: '.landing-block-card@0'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.cloneCard',
+                [
+                    'lid'      => 311,
+                    'block'    => 6057,
+                    'selector' => '.landing-block-card@0',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error cloning landing block card: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

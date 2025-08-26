@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - parameter types are not specified
 - parameter requirements are not specified
 - examples are missing
@@ -30,7 +30,7 @@ The method `landing.block.getcontent` retrieves the content of a block. It retur
 ## Parameters
 
 #|
-|| **Method** | **Description** | **Available since** ||
+|| **Method** | **Description** | **Available from** ||
 || **lid**
 [`unknown`](../../../data-types.md) | Page identifier | ||
 || **block**
@@ -46,6 +46,64 @@ The method `landing.block.getcontent` retrieves the content of a block. It retur
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.block.getContent',
+    		{
+    			lid: 4858,
+    			block: 39556,
+    			editMode: 1,
+    			params: {
+    				wrapper_show: 0
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.getContent',
+                [
+                    'lid'      => 4858,
+                    'block'    => 39556,
+                    'editMode' => 1,
+                    'params'   => [
+                        'wrapper_show' => 0
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting landing block content: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

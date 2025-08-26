@@ -1,8 +1,8 @@
-# Change Attributes of the Node in landing.block.updateattrs
+# Change Attributes of the Node `landing.block.updateattrs`
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - parameter types are not specified
 - parameter requirements are not specified
 - examples are missing
@@ -36,16 +36,16 @@ The method `landing.block.updateattrs` changes the attributes of the block node.
 || **block**
 [`unknown`](../../../data-types.md) | Block identifier | ||
 || **data**
-[`unknown`](../../../data-types.md) | An array of selectors and new values for data attributes.
+[`unknown`](../../../data-types.md) | Array of selectors and new values for data attributes.
 For example, `data: {'.bitrix24forms': {'data-b24form': 'tratrata'}}`.
 The manifest must contain the [attributes](../manifest.md#key-attrs) you want to change in this way. | ||
 |#
 
-If the attribute pertains to a card (meaning it can have different content from card to card), the selector must be passed with the separator @:
+If the attribute pertains to a card (meaning it can have different content from card to card), the selector must be passed with a separator @:
 
 ```http
 data: {
-    '.container-fluid@1': {//the effect will occur on the attribute of the second card (counting from zero)
+    '.container-fluid@1': {//the change will affect the attribute of the second card (counting from zero)
         'data-test-checkbox': [1, 2, 3]
     }
 }
@@ -63,7 +63,7 @@ data: {
 }
 ```
 
-Specific notes for the **checkbox** and **multiselect** types: to save a new value, you need to send the values of the selected elements:
+Specific notes for the **checkbox** and **multiselect** types: to save a new value, you must send the values of the selected elements:
 
 ```http
 data: {
@@ -80,6 +80,66 @@ Editing parameters of dynamic blocks is done through the method [landing.block.u
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.block.updateattrs',
+    		{
+    			lid: 313,
+    			block: 6134,
+    			data: {
+    				'.bitrix24forms': {
+    					'data-b24form': 'tratrata'
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.updateattrs',
+                [
+                    'lid'   => 313,
+                    'block' => 6134,
+                    'data'  => [
+                        '.bitrix24forms' => [
+                            'data-b24form' => 'tratrata'
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating block attributes: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -109,4 +169,4 @@ Editing parameters of dynamic blocks is done through the method [landing.block.u
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

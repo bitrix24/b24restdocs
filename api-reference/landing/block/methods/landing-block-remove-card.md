@@ -1,4 +1,4 @@
-# Remove Card of Block landing.block.removecard
+# Remove Card Method landing.block.removecard
 
 {% note warning "We are still updating this page" %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
-- parameter types are not specified
-- parameter requirements are not specified
-- examples are missing
-- success response is missing
-- error response is missing
+- revisions needed for standard writing
+- parameter types not specified
+- parameter requirements not specified
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -25,12 +25,12 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.block.removecard` removes the card of the block. It returns *_true_* or an error.
+The method `landing.block.removecard` removes a block card. It returns *_true_* or an error.
 
 ## Parameters
 
 #|
-|| **Method** | **Description** | **Version** ||
+|| **Method** | **Description** | **Available since** ||
 || **lid**
 [`unknown`](../../../data-types.md) | Page identifier | ||
 || **block**
@@ -42,7 +42,7 @@ For example: '.landing-block-card@0'. The 0 at the end indicates that we are aff
 
 {% note warning %}
 
-Please note that once you have removed the card, their counters have changed.
+Please note that once you have removed a card, their counters have changed.
 
 {% endnote %}
 
@@ -51,6 +51,58 @@ Please note that once you have removed the card, their counters have changed.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.block.removecard',
+    		{
+    			lid: 311,
+    			block: 6057,
+    			selector: '.landing-block-card@0'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.removecard',
+                [
+                    'lid'      => 311,
+                    'block'    => 6057,
+                    'selector' => '.landing-block-card@0',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error removing card: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -76,4 +128,4 @@ Please note that once you have removed the card, their counters have changed.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

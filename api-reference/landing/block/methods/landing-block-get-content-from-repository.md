@@ -8,14 +8,14 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing
-- success response is absent
-- error response is absent
+- revisions needed for writing standards
+- parameter types not specified
+- required parameters not indicated
+- examples missing
+- success response not provided
+- error response not provided
 
 {% endnote %}
 
@@ -42,6 +42,56 @@ The method `landing.block.getContentFromRepository` retrieves the block content 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.block.getContentFromRepository',
+    		{
+    			code: '28.6.team_4_cols'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.block.getContentFromRepository',
+                [
+                    'code' => '28.6.team_4_cols'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting content from repository: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'landing.block.getContentFromRepository',
         {
@@ -59,4 +109,4 @@ The method `landing.block.getContentFromRepository` retrieves the block content 
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -33,15 +33,15 @@ The method `landing.demos.getList` retrieves a list of available partner templat
 #|
 || **Parameter** | **Description** ||
 || **params**
-[`unknown`](../../data-types.md) | An optional array with optional keys:
+[`unknown`](../../data-types.md) | Optional array with optional keys:
 - select
 - filter
 - order
 - group
-which contain values from the main fields table of the entity. The table is provided below. ||
+that contain values from the main fields table of the entity. The table is provided below. ||
 |#
 
-## Entity Fields
+## Entity fields
 
 #|
 || **Field** | **Description** ||
@@ -66,7 +66,7 @@ which contain values from the main fields table of the entity. The table is prov
 || **MANIFEST**
 [`unknown`](../../data-types.md) | Manifest. ||
 || **SHOW_IN_LIST**
-[`unknown`](../../data-types.md) | Show in the list of templates. ||
+[`unknown`](../../data-types.md) | Whether to show in the list of templates. ||
 || **PREVIEW / PREVIEW2X / PREVIEW3X**
 [`unknown`](../../data-types.md) | Various sizes of previews. ||
 || **CREATED_BY_ID**
@@ -84,6 +84,110 @@ which contain values from the main fields table of the entity. The table is prov
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the number of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'landing.demos.getList',
+        {
+          params: {
+            select: [
+              'ID', 'TITLE', 'MANIFEST'
+            ],
+            filter: {
+              '>ID': '1'
+            }
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in chunks and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('landing.demos.getList', {
+        params: {
+          select: [
+            'ID', 'TITLE', 'MANIFEST'
+          ],
+          filter: {
+            '>ID': '1'
+          }
+        }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('landing.demos.getList', {
+        params: {
+          select: [
+            'ID', 'TITLE', 'MANIFEST'
+          ],
+          filter: {
+            '>ID': '1'
+          }
+        }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.demos.getList',
+                [
+                    'params' => [
+                        'select' => [
+                            'ID', 'TITLE', 'MANIFEST'
+                        ],
+                        'filter' => [
+                            '>ID' => '1'
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting list of demos: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -110,4 +214,4 @@ which contain values from the main fields table of the entity. The table is prov
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}

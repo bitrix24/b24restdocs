@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will complete it soon.
 
 - missing parameters or fields
 - parameter types not specified
-- required parameters not indicated
+- parameter requirements not specified
 - examples missing
 - success response missing
 - error response missing
@@ -32,6 +32,56 @@ The method `landing.syspage.get` returns a list of site pages that are set as sp
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.syspage.get',
+    		{
+    			id: 1390,// Site ID
+    			active: true// If true, only active site pages will be returned (default is all)
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.syspage.get',
+                [
+                    'id'     => 1390, // Site ID
+                    'active' => true, // If true, only active site pages will be returned (default is all)
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting syspage: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

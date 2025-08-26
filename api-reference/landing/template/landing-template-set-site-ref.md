@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.template.setSiteRef` sets included areas for the site within a specific template (the site or page must already be linked to the template via the TPL_ID field). It will return *true* on success or an error.
+The method `landing.template.setSiteRef` sets the included areas for the site within a specific template (the site or page must already be linked to the template via the TPL_ID field). It will return *true* on success or an error.
 
 ## Parameters
 
@@ -33,7 +33,7 @@ The method `landing.template.setSiteRef` sets included areas for the site within
 || **id**
 [`unknown`](../../data-types.md) | Site identifier. ||
 || **data**
-[`unknown`](../../data-types.md) | Array of data to set (if the array is empty or not provided, the included areas will be reset). The keys of the array are the area identifiers, and the values are the identifiers of the pages to be set as the area. ||
+[`unknown`](../../data-types.md) | Array of data to set (if the array is empty or not provided, the included areas will be reset). The keys of the array are the area identifiers, and the values are the identifiers of the pages that need to be set as the area. ||
 |#
 
 ## Examples
@@ -41,6 +41,64 @@ The method `landing.template.setSiteRef` sets included areas for the site within
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.template.setSiteRef',
+    		{
+    			id: 557,
+    			data: {
+    				1: 614,
+    				2: 615,
+    				3: 616
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.template.setSiteRef',
+                [
+                    'id' => 557,
+                    'data' => [
+                        1 => 614,
+                        2 => 615,
+                        3 => 616
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting site reference: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -69,4 +127,4 @@ The method `landing.template.setSiteRef` sets included areas for the site within
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}

@@ -1,4 +1,4 @@
-# Restore Folder from Trash landing.site.markFolderUnDelete
+# Restore folder from trash landing.site.markFolderUnDelete
 
 {% note warning "We are still updating this page" %}
 
@@ -11,10 +11,10 @@ Some data may be missing here — we will fill it in shortly.
 {% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `landing.site.markFolderUnDelete` marks a folder as not deleted (restores it from the trash).
+The method `landing.site.markFolderUnDelete` marks a folder as undeleted (restores it from the trash).
 
 ## Parameters
 
@@ -39,6 +39,56 @@ The method `landing.site.markFolderUnDelete` marks a folder as not deleted (rest
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'landing.site.markFolderUnDelete',
+    		{
+    			id: 737
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'landing.site.markFolderUnDelete',
+                [
+                    'id' => 737,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error marking folder as undeleted: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -62,4 +112,4 @@ The method `landing.site.markFolderUnDelete` marks a folder as not deleted (rest
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
