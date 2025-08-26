@@ -1,14 +1,14 @@
-# Update Product Row of CRM Object crm.item.productrow.update
+# Update the product row of a CRM object crm.item.productrow.update
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires permission to modify the CRM object whose product row is being updated.
+> Who can execute the method: requires access permission to modify the CRM object whose product row is being updated.
 
 This method updates the product row of a CRM object.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -16,7 +16,7 @@ This method updates the product row of a CRM object.
 || **id***
 [`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product row ||
 || **fields***
-[`object`](../../../data-types.md) | Object containing field values to update the product row of the CRM object ||
+[`object`](../../../data-types.md) | Object containing field values for updating the product row of the CRM object ||
 |#
 
 ### Parameter fields
@@ -29,7 +29,7 @@ This method updates the product row of a CRM object.
 || **productName**
 [`string`](../../../data-types.md) | Name of the product in the product row ||
 || **price**
-[`double`](../../../data-types.md) | Price per unit of the product row including discounts and taxes ||
+[`double`](../../../data-types.md) | Price per unit of the product row, including discounts and taxes ||
 || **quantity**
 [`double`](../../../data-types.md) | Quantity of the product ||
 || **discountTypeId**
@@ -38,9 +38,9 @@ Possible values:
 - `1` — absolute value
 - `2` — percentage value ||
 || **discountRate**
-[`double`](../../../data-types.md) | Discount value in percentage (if using percentage discount type) ||
+[`double`](../../../data-types.md) | Discount value in percentage (if using the percentage discount type) ||
 || **discountSum**
-[`double`](../../../data-types.md) | Absolute discount value (if using absolute discount type) ||
+[`double`](../../../data-types.md) | Absolute discount value (if using the absolute discount type) ||
 || **taxRate**
 [`double`](../../../data-types.md) | Tax rate in percentage ||
 || **taxIncluded**
@@ -56,7 +56,7 @@ Possible values:
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -81,6 +81,73 @@ Possible values:
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.productrow.update', {
+    			id: 17648,
+    			fields: {
+    				productId: 9621,
+    				price: 90000.000000,
+    				quantity: 3,
+    				discountTypeId: 2,
+    				discountRate: 10,
+    				taxRate: 10,
+    				taxIncluded: 'Y',
+    				measureCode: 796,
+    				sort: 20,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.productrow.update',
+                [
+                    'id' => 17648,
+                    'fields' => [
+                        'productId'      => 9621,
+                        'price'          => 90000.000000,
+                        'quantity'       => 3,
+                        'discountTypeId' => 2,
+                        'discountRate'   => 10,
+                        'taxRate'        => 10,
+                        'taxIncluded'    => 'Y',
+                        'measureCode'    => 796,
+                        'sort'           => 20,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating product row: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -108,7 +175,7 @@ Possible values:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -140,7 +207,7 @@ Possible values:
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -175,8 +242,8 @@ HTTP Status: **200**
       "finish":1716890010.275307,
       "duration":1.5610928535461426,
       "processing":1.3967258930206299,
-      "date_start":"2024-05-28T12:53:28+03:00",
-      "date_finish":"2024-05-28T12:53:30+03:00"
+      "date_start":"2024-05-28T12:53:28+02:00",
+      "date_finish":"2024-05-28T12:53:30+02:00"
    }
 }
 ```
@@ -196,7 +263,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -205,13 +272,13 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of objects is not supported ||
+|| `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of object is not supported ||
 || `ACCESS_DENIED` | Access denied ||
 || `NOT_FOUND` | Product row not found ||
 || `INVALID_ARG_VALUE` | Unknown field or the provided field is not available for update ||
@@ -219,7 +286,7 @@ HTTP Status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [System Errors](../../../../_includes/system-errors.md) %}
+{% include notitle [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

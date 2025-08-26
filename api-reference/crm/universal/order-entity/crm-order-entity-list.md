@@ -1,10 +1,10 @@
-# Get a List of Order Bindings to CRM Entities crm.orderentity.list
+# Get a list of order bindings to CRM entities crm.orderentity.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: online store manager
 
-This method returns a list of order bindings to CRM entities.
+The method returns a list of order bindings to CRM entities.
 
 ## Method Parameters
 
@@ -28,30 +28,30 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` character should not be passed in the filter value. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` character must be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character should not be passed in the filter value. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` character must be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal 
 ||
 || **order**
-[`object`](../../../data-types.md) | An object for sorting records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`, where `field_N` is the identifier of the field [crm_orderentity](../../data-types.md#crm_orderentity).
+[`object`](../../../data-types.md) | An object for sorting records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`, where `field_N` is the identifier of the [crm_orderentity](../../data-types.md#crm_orderentity) field.
 
 Possible values for `order_N`:
 - `asc` — in ascending order
 - `desc` — in descending order
 
-If the object is not provided or an empty object is passed, sorting will be in ascending order of the field [crm_orderentity.OWNER_ID](../../data-types.md#crm_orderentity).
+If the object is not provided or an empty object is passed, sorting will be in ascending order of the [crm_orderentity.OWNER_ID](../../data-types.md#crm_orderentity) field.
 ||
 || **start**
 [`integer`](../../../data-types.md) | This parameter is used for pagination control.
@@ -70,7 +70,7 @@ If you specify the value `-1`, all records that meet the filter conditions will 
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Get the IDs of orders linked to three deals:
 
@@ -86,7 +86,7 @@ Get the IDs of orders linked to three deals:
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.orderentity.list
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -97,6 +97,118 @@ Get the IDs of orders linked to three deals:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.orderentity.list',
+        {
+          select: [
+            'orderId',
+            'ownerId',
+          ],
+          filter: {
+            '=ownerTypeId': 2,
+            '@ownerId': [6938, 6937, 6933],
+          },
+          order: {
+            orderId: 'asc'
+          },
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.orderentity.list', {
+        select: [
+          'orderId',
+          'ownerId',
+        ],
+        filter: {
+          '=ownerTypeId': 2,
+          '@ownerId': [6938,6937,6933],
+        },
+        order: {
+          orderId: 'asc'
+        },
+      }, 'orderId');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.orderentity.list', {
+        select: [
+          'orderId',
+          'ownerId',
+        ],
+        filter: {
+          '=ownerTypeId': 2,
+          '@ownerId': [6938, 6937, 6933],
+        },
+        order: {
+          orderId: 'asc'
+        },
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.orderentity.list',
+                [
+                    'select' => [
+                        'orderId',
+                        'ownerId',
+                    ],
+                    'filter' => [
+                        '=ownerTypeId' => 2,
+                        '@ownerId'    => [6938, 6937, 6933],
+                    ],
+                    'order'  => [
+                        'orderId' => 'asc',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching order entities: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -133,7 +245,7 @@ Get the IDs of orders linked to three deals:
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -164,7 +276,7 @@ Get the IDs of orders linked to three deals:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -203,18 +315,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
+[`object`](../../../data-types.md) | The root element of the response ||
 || **orderEntity**
-[`crm_orderentity[]`](../../data-types.md#crm_orderentity) | An array of objects containing information about the selected orders ||
+[`crm_orderentity[]`](../../data-types.md#crm_orderentity) | An array of objects with information about the selected orders ||
 || **total**
-[`integer`](../../../data-types.md) | Total number of selected records ||
+[`integer`](../../../data-types.md) | The total number of selected records ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

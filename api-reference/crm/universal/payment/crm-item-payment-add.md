@@ -35,7 +35,7 @@ This method creates a payment for a CRM object.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.payment.add
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```http
     curl -X POST \
@@ -46,6 +46,53 @@ This method creates a payment for a CRM object.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.payment.add', {
+    			entityId: 13123,
+    			entityTypeId: 2
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.add',
+                [
+                    'entityId'     => 13123,
+                    'entityTypeId' => 2,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding payment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -63,7 +110,7 @@ This method creates a payment for a CRM object.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -95,8 +142,8 @@ HTTP status: **200**
         "finish": 1716193065.656833,
         "duration": 0.90767502784729,
         "processing": 0.6450831890106201,
-        "date_start": "2024-05-20T11:17:44+03:00",
-        "date_finish": "2024-05-20T11:17:45+03:00"
+        "date_start": "2024-05-20T11:17:44+02:00",
+        "date_finish": "2024-05-20T11:17:45+02:00"
     }
 }
 ```
@@ -130,8 +177,8 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `0` | Access denied ||
-|| `0` | Invalid CRM object type ||
-|| `0` | The specified CRM object was not found ||
+|| `0` | Invalid CRM object type  ||
+|| `0` | The provided CRM object was not found ||
 || `100` | Required fields were not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

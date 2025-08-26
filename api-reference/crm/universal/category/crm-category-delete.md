@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user with administrative access to the CRM section
 
-This method deletes a sales funnel (direction) with the identifier `id`.
+This method deletes a funnel (direction) with the identifier `id`.
 
 {% note warning "Cannot delete:" %}
 
@@ -23,12 +23,12 @@ This method deletes a sales funnel (direction) with the identifier `id`.
 || **entityTypeId***
 [`integer`][1] | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of the CRM entity from which the funnel will be deleted   ||
 || **id***
-[`integer`][1] | Identifier of the funnel to be deleted. Can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel using the [`crm.category.add`](./crm-category-add.md) method ||
+[`integer`][1] | Identifier of the funnel to be deleted. Can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel with the [`crm.category.add`](./crm-category-add.md) method ||
 |#
 
 ## Code Examples
 
-Delete the funnel with `id = 5` that is in deals.
+Delete the funnel with `id = 5`, located in deals.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -56,6 +56,58 @@ Delete the funnel with `id = 5` that is in deals.
 
 - JS
 
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.category.delete',
+    		{
+    			entityTypeId: 2,
+    			id: 5,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.category.delete',
+                [
+                    'entityTypeId' => 2,
+                    'id'          => 5,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting category: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         "crm.category.delete",
@@ -77,7 +129,7 @@ Delete the funnel with `id = 5` that is in deals.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

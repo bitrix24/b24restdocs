@@ -4,7 +4,7 @@
 >
 > Who can execute the method: requires read access permission for the CRM object from which payments are selected.
 
-This method retrieves a list of payments for a specific CRM entity.
+The method retrieves a list of payments for a specific CRM object.
 
 ## Method Parameters
 
@@ -14,12 +14,11 @@ This method retrieves a list of payments for a specific CRM entity.
 || **Name**
 `type` | **Description** ||
 || **entityId***
-[`integer`](../../../../api-reference/data-types.md) | Identifier of the CRM entity ||
+[`integer`](../../../../api-reference/data-types.md) | Identifier of the CRM object ||
 || **entityTypeId***
-[`integer`](../../../../api-reference/data-types.md) | Identifier of the [`CRM entity type`](../../data-types.md#object_type)  ||
+[`integer`](../../../../api-reference/data-types.md) | Identifier of the [`CRM object type`](../../data-types.md#object_type) ||
 || **filter**
-[`object`](../../../../api-reference/data-types.md) | Additional filter for cases when you need to retrieve not all payments of the entity, but based on a more specific filter.
-The format description is provided in the **filter** parameter of the [`sale.payment.list`](../../../sale/payment/sale-payment-list.md) method  ||
+[`object`](../../../../api-reference/data-types.md) | Additional filter for cases when you need to get not all payments of the entity, but based on a more specific filter. The format description is provided in the **filter** parameter of the [`sale.payment.list`](../../../sale/payment/sale-payment-list.md) method ||
 || **order**
 [`object`](../../../../api-reference/data-types.md) | The format description is provided in the **order** parameter of the [`sale.payment.list`](../../../sale/payment/sale-payment-list.md) method ||
 |#
@@ -40,7 +39,7 @@ The format description is provided in the **filter** parameter of the [`sale.pay
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.payment.list
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```http
     curl -X POST \
@@ -51,6 +50,92 @@ The format description is provided in the **filter** parameter of the [`sale.pay
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.item.payment.list',
+        {
+          entityId: 13123,
+          entityTypeId: 2,
+          filter: {
+            "@id": [1036, 1037]
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.item.payment.list', {
+        entityId: 13123,
+        entityTypeId: 2,
+        filter: {
+          "@id": [1036, 1037]
+        }
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('crm.item.payment.list', {
+        entityId: 13123,
+        entityTypeId: 2,
+        filter: {
+          "@id": [1036, 1037]
+        }
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.list',
+                [
+                    'entityId'     => 13123,
+                    'entityTypeId' => 2,
+                    'filter'       => [
+                        "@id" => [1036, 1037]
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching payment list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -71,7 +156,7 @@ The format description is provided in the **filter** parameter of the [`sale.pay
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -141,7 +226,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_order_payment_crm_simple[]`](crm-item-payment-get.md#sale_order_payment_crm_simple) | Array of objects containing brief information about the selected payments  ||
+[`sale_order_payment_crm_simple[]`](crm-item-payment-get.md#sale_order_payment_crm_simple) | Array of objects containing brief information about the selected payments ||
 || **time**
 [`time`](../../../../api-reference/data-types.md) | Information about the execution time of the request ||
 |#

@@ -1,8 +1,8 @@
-# Delete CRM Item
+# Delete CRM Item crm.item.delete
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with the "delete" permission for CRM entity items
+> Who can execute the method: any user with "delete" access permission for CRM entity items
 
 This method deletes a CRM entity item by its item ID and entity type ID.
 
@@ -18,14 +18,14 @@ This method deletes a CRM entity item by its item ID and entity type ID.
 || **id***
 [`integer`][1] | The ID of the item to be deleted.
 
-This can be obtained using the [`crm.item.list`](./crm-item-list.md) method or when creating the item with [`crm.item.add`](./crm-item-add.md) ||
+This can be obtained using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
 |#
 
 ## Code Examples
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-Deleting an item with `id = 1`, belonging to the SPA with `entityTypeId = 1268`
+Deleting an item with `id = 1`, belonging to a smart process with `entityTypeId = 1268`
 
 {% list tabs %}
 
@@ -52,6 +52,59 @@ Deleting an item with `id = 1`, belonging to the SPA with `entityTypeId = 1268`
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.delete',
+    		{
+    			entityTypeId: 1268,
+    			id: 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.delete',
+                [
+                    'entityTypeId' => 1268,
+                    'id'           => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            return;
+        }
+    
+        echo 'Success: ' . print_r($result->data(), true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
         BX24.callMethod(
             'crm.item.delete',
             {
@@ -71,7 +124,7 @@ Deleting an item with `id = 1`, belonging to the SPA with `entityTypeId = 1268`
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -118,7 +171,7 @@ HTTP Status: **200**
 || **result**
 [`array`][1] | The root element of the response.
 
-Returns an empty array `[]` on success ||
+Returns an empty array `[]` in case of success ||
 || **time**
 [`time`][1] | Information about the request execution time ||
 |#
@@ -141,9 +194,9 @@ HTTP Status: **400**, **403**
 #|
 || **Code**                          | **Description**                                     | **Value**                                                      ||
 || `allowed_only_intranet_user`     | Action allowed only for intranet users            | User is not an intranet user                                   ||
-|| `NOT_FOUND`                      | SPA not found                                      | Occurs when an invalid `entityTypeId` is passed              ||
-|| `NOT_FOUND`                      | Item not found                                    | An item with the given `id` of type `entityTypeId` does not exist ||
-|| `ACCESS_DENIED`                  | Access denied                                      | User does not have permission to delete items of type `entityTypeId` ||
+|| `NOT_FOUND`                      | Smart process not found                             | Occurs when an invalid `entityTypeId` is passed               ||
+|| `NOT_FOUND`                      | Item not found                                     | An item with the given `id` of type `entityTypeId` does not exist ||
+|| `ACCESS_DENIED`                  | Access denied                                       | User does not have permission to delete items of type `entityTypeId` ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

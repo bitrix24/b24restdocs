@@ -14,26 +14,26 @@ Items belonging to different types of CRM objects will have different sets of fi
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [custom type](./user-defined-object-types/index.md) whose fields we want to retrieve ||
+[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose fields we want to retrieve ||
 || **useOriginalUfNames**
-[`boolean`][1] | This parameter controls the format of custom field names in the response.   
+[`boolean`][1] | This parameter controls the format of user-defined field names in the response.   
 Possible values:
 
-- `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
-- `N` — custom field names in camelCase, e.g., `ufCrm2_1639669411830`
+- `Y` — original names of user-defined fields, e.g., `UF_CRM_2_1639669411830`
+- `N` — user-defined field names in camelCase, e.g., `ufCrm2_1639669411830`
 
 Default is `N` ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Retrieve the list of fields for items in the SPA with `entityTypeId = 1268`.
 
@@ -62,6 +62,59 @@ Retrieve the list of fields for items in the SPA with `entityTypeId = 1268`.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.fields',
+    		{
+    			entityTypeId: 1268,
+    			useOriginalUfNames: 'N',
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.fields',
+                [
+                    'entityTypeId'      => 1268,
+                    'useOriginalUfNames' => 'N',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            return;
+        }
+    
+        echo 'Success: ' . print_r($result->data(), true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching CRM item fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
         BX24.callMethod(
             'crm.item.fields',
             {
@@ -81,7 +134,7 @@ Retrieve the list of fields for items in the SPA with `entityTypeId = 1268`.
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -126,7 +179,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Title",
+                "title": "Name",
                 "upperName": "TITLE"
             },
             "xmlId": {
@@ -490,9 +543,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | The root element of the response. Contains a single key `fields` ||
+[`object`][1] | Root element of the response. Contains a single key `fields` ||
 || **fields**
-[`object`][1] | An object in the format:
+[`object`][1] | Object in the format:
 ```
 {
     field_1: value_1,
@@ -513,8 +566,8 @@ where:
 
 {% note info " " %}
 
-By default, custom field names are returned in camelCase, e.g., `ufCrm2_1639669411830`. 
-When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
+By default, user-defined field names are returned in camelCase, e.g., `ufCrm2_1639669411830`.
+When passing the parameter `useOriginalUfNames` with the value `Y`, user-defined fields will be returned with original names, e.g., `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -530,6 +583,7 @@ HTTP Status: **400**, **403**
 ```
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
+
 
 ### Possible Error Codes
 

@@ -8,7 +8,7 @@ This method changes the payment status to "Unpaid".
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method changes the payment status to "Unpaid".
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -33,7 +33,7 @@ This method changes the payment status to "Unpaid".
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.payment.unpay
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```http
     curl -X POST \
@@ -44,6 +44,51 @@ This method changes the payment status to "Unpaid".
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.payment.unpay', {
+    			id: 1038
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.unpay',
+                [
+                    'id' => 1038
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unpaying payment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -60,7 +105,7 @@ This method changes the payment status to "Unpaid".
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -91,8 +136,8 @@ HTTP status: **200**
       "finish":1716209826.931873,
       "duration":1.0318090915679932,
       "processing":0.7891800403594971,
-      "date_start":"2024-05-20T15:57:05+03:00",
-      "date_finish":"2024-05-20T15:57:06+03:00"
+      "date_start":"2024-05-20T15:57:05+02:00",
+      "date_finish":"2024-05-20T15:57:06+02:00"
    }
 }
 ```

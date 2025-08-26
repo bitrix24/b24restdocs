@@ -4,7 +4,7 @@
 >
 > Who can execute the method: online store manager
 
-This method returns a list of available order binding fields. Each field is described as a field settings structure [crm_rest_field_description](../../data-types.md#crm_rest_field_description).
+The method returns a list of available order binding fields. Each field is described as a field settings structure [crm_rest_field_description](../../data-types.md#crm_rest_field_description).
 
 No parameters.
 
@@ -24,7 +24,7 @@ No parameters.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.orderentity.getFields
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -35,6 +35,52 @@ No parameters.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.orderentity.getFields",
+    		{}
+    	);
+    
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.orderentity.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting order entity fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -60,7 +106,7 @@ No parameters.
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -79,7 +125,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -132,7 +178,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -149,7 +195,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200040300010` | `Access Denied` 
 Insufficient access permissions
-||
+|| 
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

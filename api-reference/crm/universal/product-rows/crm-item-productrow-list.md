@@ -25,7 +25,7 @@ Possible values for `field` correspond to the fields of the [`crm_item_product_r
 
 In `=ownerType`, pass the [Short symbolic code of the type](../../data-types.md#object_type).
 
-The key can have an additional prefix that clarifies the behavior of the filter. Possible prefix values:
+The key may have an additional prefix that specifies the behavior of the filter. Possible prefix values:
 
 - `=` — equals (works with arrays as well)
 - `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
@@ -55,7 +55,7 @@ Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
-||
+ ||
 || **start**
 [`integer`](../../../data-types.md) | Parameter used for managing pagination.
 
@@ -66,7 +66,7 @@ To select the second page of results, you need to pass the value `50`. To select
 The formula for calculating the value of the `start` parameter:
 
 `start = (N-1) * 50`, where `N` — the number of the desired page
-||
+ ||
 |#
 
 ## Code Examples
@@ -98,6 +98,104 @@ The formula for calculating the value of the `start` parameter:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.item.productrow.list',
+        {
+          filter: {
+            "=ownerType": 'D',
+            "=ownerId": 13142,
+            ">price": 5000,
+          },
+          order: {
+            price: "desc"
+          },
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.item.productrow.list', {
+        filter: {
+          "=ownerType": 'D',
+          "=ownerId": 13142,
+          ">price": 5000,
+        },
+        order: {
+          price: "desc"
+        },
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.item.productrow.list', {
+        filter: {
+          "=ownerType": 'D',
+          "=ownerId": 13142,
+          ">price": 5000,
+        },
+        order: {
+          price: "desc"
+        },
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.productrow.list',
+                [
+                    'filter' => [
+                        "=ownerType" => 'D',
+                        "=ownerId"   => 13142,
+                        ">price"     => 5000,
+                    ],
+                    'order'  => [
+                        'price' => "desc"
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing product rows: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.productrow.list', {
             filter: {
@@ -119,7 +217,7 @@ The formula for calculating the value of the `start` parameter:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

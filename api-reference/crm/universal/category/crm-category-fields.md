@@ -1,10 +1,10 @@
-# Get Fields of Sales Funnel crm.category.fields
+# Get Fields of the Sales Funnel crm.category.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method retrieves information about the fields of the sales funnels (directions) of the CRM entity.
+The method retrieves information about the fields of the sales funnels (directions) of the CRM object.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method retrieves information about the fields of the sales funnels (directi
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM entities for which to retrieve information about the fields of the funnel ||
+[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM objects for which to retrieve information about the funnel fields ||
 |#
 
 ## Code Examples
@@ -45,7 +45,57 @@ This method retrieves information about the fields of the sales funnels (directi
 
 - JS
 
-	```js
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.category.fields",
+    		{
+    			entityTypeId: 2,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.category.fields',
+                [
+                    'entityTypeId' => 2,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.category.fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.category.fields",
         {
@@ -62,9 +112,9 @@ This method retrieves information about the fields of the sales funnels (directi
             }
         },
     );
-	```
+    ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,7 +135,7 @@ This method retrieves information about the fields of the sales funnels (directi
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -181,7 +231,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | An object containing a list of available fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field_N` is the identifier of the [entity field](#fields), and `value` is an object of type [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
+[`object`](../../data-types.md) | Object containing a list of available fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field_N` is the identifier of the [object field](#fields), and `value` is an object of type [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -221,7 +271,7 @@ Exists only in SPAs ||
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -236,7 +286,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `NOT_FOUND` | SPA not found | Occurs when `entityTypeId` has incorrect values ||
+|| `NOT_FOUND` | SPA not found | Occurs with incorrect values for `entityTypeId` ||
 || `ENTITY_TYPE_NOT_SUPPORTED` |  Entity type `{entityTypeName}` is not supported | Occurs if the CRM entity does not support funnels ||
 |#
 

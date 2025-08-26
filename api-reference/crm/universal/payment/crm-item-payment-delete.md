@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: access permission to modify the payment order is required
+> Who can execute the method: requires access permission to modify the payment order
 
 This method deletes a payment.
 
@@ -33,7 +33,7 @@ This method deletes a payment.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.payment.delete
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```http
     curl -X POST \
@@ -44,6 +44,51 @@ This method deletes a payment.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.payment.delete', {
+    			id: 1035,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.delete',
+                [
+                    'id' => 1035,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting payment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -60,7 +105,7 @@ This method deletes a payment.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -103,7 +148,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../api-reference/data-types.md) | Result of the payment deletion  ||
+[`boolean`](../../../../api-reference/data-types.md) | Result of payment deletion  ||
 || **time**
 [`time`](../../../../api-reference/data-types.md) | Information about the request execution time ||
 |#

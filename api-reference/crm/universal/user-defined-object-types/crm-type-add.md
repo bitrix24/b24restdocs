@@ -1,4 +1,4 @@
-# Create a New Custom Type crm.type.add
+# Create a new custom type crm.type.add
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ This method creates a new SPA.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method creates a new SPA.
 
 ### Parameter fields
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,8 +29,8 @@ This method creates a new SPA.
 || **entityTypeId**
 [`integer`][1] | Identifier of the created SPA. If this field is not provided, it will be generated automatically.
 
-It is important to note that:
-1. This parameter is unique. You cannot create two SPAs with the same `entityTypeId`.
+It should be noted that:
+1. This parameter is unique. It is not possible to create two SPAs with the same `entityTypeId`
 2. The value of `entityTypeId` must be within one of two ranges:
    - an even integer that is greater than or equal to 1030
    - in the range from 128 to 192
@@ -42,11 +42,11 @@ It is important to note that:
 || **linkedUserFields** 
 [`object`][1]  | A set of user fields in which this SPA should be displayed. The structure is described [below](#linkedUserFields) | `{}` ||
 || **isAutomationEnabled**
-[`boolean`][1] | Are automation rules and triggers enabled | `N` ||
+[`boolean`][1] | Are Automation rules and triggers enabled | `N` ||
 || **isBeginCloseDatesEnabled**
 [`boolean`][1] | Are the **Start Date** and **End Date** fields enabled | `N` ||
 || **isBizProcEnabled**
-[`boolean`][1] | Is the use of the business process designer enabled | `N` ||
+[`boolean`][1] | Is the business process designer enabled | `N` ||
 || **isCategoriesEnabled**
 [`boolean`][1] | Are custom sales funnels and tunnels enabled | `N` ||
 || **isClientEnabled**
@@ -66,7 +66,7 @@ It is important to note that:
 || **isSourceEnabled** 
 [`boolean`][1] | Are the **Source** and **Additional Information about Source** fields enabled | `N` ||
 || **isStagesEnabled**
-[`boolean`][1] | Is the use of custom stages and Kanban enabled | `N` ||
+[`boolean`][1] | Is the use of custom stages and kanban enabled | `N` ||
 || **isExternal**
 [`boolean`][1] | Is the SPA external to the CRM (linked to a digital workplace)
 
@@ -94,7 +94,7 @@ This parameter is deprecated. For working with digital workplaces, use the metho
 
 #### One relation relation {#relation}
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -102,12 +102,12 @@ This parameter is deprecated. For working with digital workplaces, use the metho
 || **entityTypeId***
 [`integer`][1] | Identifier of the [system](../index.md) or [custom type](./index.md) of the CRM entity | `-` ||
 || **isChildrenListEnabled**
-[`boolean`][1] | Should the linked element be added to the detail form. 
+[`boolean`][1] | Should the linked element be added to the card. 
 
 Values `Y` and `N` do not work. You must pass `"true"` or `"false"` | `"false"` ||
 |#
 
-### Binding to User Fields {#linkedUserFields}
+### Binding to user fields {#linkedUserFields}
 
 `linkedUserFields` — a set of fields in which this SPA should be displayed.
 This setting will only be considered if `isUseInUserfieldEnabled = 'Y'` is passed.
@@ -127,12 +127,12 @@ These parameters do not support passing values `Y` and `N`. Use `"true"` or `"fa
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 Let's create an SPA with the following conditions:
 * The most complete set of enabled settings
-* Link `Leads`, `Deals`, `Invoices` to the created SPA. Each link is added to the detail form of this SPA
-* Link the created SPA to `Contacts` and `Companies`. The link to `Contacts` is added to the detail form
+* Link `Leads`, `Deals`, `Invoices` to the created SPA. Each link is added to the card of the elements of this SPA
+* Link the created SPA to `Contacts` and `Companies`. The link to `Contacts` is added to the card
 * The SPA should be displayed in the following fields: `Calendar Event`, `Tasks`
 
 {% list tabs %}
@@ -158,6 +158,145 @@ Let's create an SPA with the following conditions:
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.type.add',
+    		{
+    			fields: {
+    				title: "SPA",
+    				entityTypeId: 2024,
+    				isAutomationEnabled: "Y",
+    				isBeginCloseDatesEnabled: "Y",
+    				isBizProcEnabled: "Y",
+    				isCategoriesEnabled: "Y",
+    				isClientEnabled: "Y",
+    				isDocumentsEnabled: "Y",
+    				isLinkWithProductsEnabled: "Y",
+    				isMycompanyEnabled: "Y",
+    				isObserversEnabled: "Y",
+    				isRecyclebinEnabled: "Y",
+    				isSetOpenPermissions: "Y",
+    				isSourceEnabled: "Y",
+    				isStagesEnabled: "Y",
+    				isUseInUserfieldEnabled: "Y",
+    				linkedUserFields: {
+    					"CALENDAR_EVENT|UF_CRM_CAL_EVENT": "true",
+    					"TASKS_TASK|UF_CRM_TASK": "true",
+    				},
+    				relations: {
+    					parent: [
+    						{
+    							entityTypeId: 1,
+    							isChildrenListEnabled: "true",
+    						},
+    						{
+    							entityTypeId: 2,
+    							isChildrenListEnabled: "true",
+    						},
+    						{
+    							entityTypeId: 31,
+    							isChildrenListEnabled: "true",
+    							
+    						},
+    					],
+    					child: [
+    						{
+    							entityTypeId: 3,
+    							isChildrenListEnabled: "true",
+    						},
+    						{
+    							entityTypeId: 4,
+    						},
+    					],
+    				},
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.type.add',
+                [
+                    'fields' => [
+                        'title'                     => "SPA",
+                        'entityTypeId'              => 2024,
+                        'isAutomationEnabled'       => "Y",
+                        'isBeginCloseDatesEnabled'  => "Y",
+                        'isBizProcEnabled'          => "Y",
+                        'isCategoriesEnabled'       => "Y",
+                        'isClientEnabled'           => "Y",
+                        'isDocumentsEnabled'        => "Y",
+                        'isLinkWithProductsEnabled' => "Y",
+                        'isMycompanyEnabled'        => "Y",
+                        'isObserversEnabled'        => "Y",
+                        'isRecyclebinEnabled'       => "Y",
+                        'isSetOpenPermissions'      => "Y",
+                        'isSourceEnabled'           => "Y",
+                        'isStagesEnabled'           => "Y",
+                        'isUseInUserfieldEnabled'   => "Y",
+                        'linkedUserFields'          => [
+                            "CALENDAR_EVENT|UF_CRM_CAL_EVENT" => "true",
+                            "TASKS_TASK|UF_CRM_TASK"          => "true",
+                        ],
+                        'relations'                 => [
+                            'parent' => [
+                                [
+                                    'entityTypeId'           => 1,
+                                    'isChildrenListEnabled'  => "true",
+                                ],
+                                [
+                                    'entityTypeId'           => 2,
+                                    'isChildrenListEnabled'  => "true",
+                                ],
+                                [
+                                    'entityTypeId'           => 31,
+                                    'isChildrenListEnabled'  => "true",
+                                ],
+                            ],
+                            'child'  => [
+                                [
+                                    'entityTypeId'           => 3,
+                                    'isChildrenListEnabled'  => "true",
+                                ],
+                                [
+                                    'entityTypeId'           => 4,
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding CRM type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -225,7 +364,7 @@ Let's create an SPA with the following conditions:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -292,7 +431,7 @@ Let's create an SPA with the following conditions:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -393,12 +532,12 @@ HTTP Status: **200**
 || **type**
 [`type`](../../data-types.md#type) | Information about the created SPA ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`][1] | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -414,10 +553,10 @@ HTTP Status: **400**, **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `INVALID_ARG_VALUE` | entityTypeId is out of allowed range | Occurs when an invalid `entityTypeId` is passed ||
-|| `400` | `ACCESS_DENIED` | Access denied | Occurs when the user does not have administrative rights in CRM ||
-|| `403` | `allowed_only_intranet_user` | Action allowed only for intranet users | Occurs when the user is not an intranet user ||
-|| `400` | `100` | Could not find value for parameter {fields} | Occurs when the required parameter `fields` is not passed ||
-|| `400` | `0` | Select a workplace where the SPA will be located | When `isExternal = 'true'`, but `customSectionId` is empty ||
+|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have administrative rights in CRM ||
+|| `403` | `allowed_only_intranet_user` | Action allowed only for intranet users | Occurs if the user is not an intranet user ||
+|| `400` | `100` | Could not find value for parameter {fields} | Occurs if the required parameter `fields` is not passed ||
+|| `400` | `0` | Select a workplace where the SPA will be located | Occurs when `isExternal = 'true'`, but `customSectionId` is empty ||
 || `400` | `CREATE_DYNAMIC_TYPE_RESTRICTED` | Maximum number of SPAs exceeded | Creating an SPA is restricted due to the plan ||
 |#
 
@@ -428,6 +567,7 @@ HTTP Status: **400**, **403**
 - [{#T}](./index.md)
 - [{#T}](./crm-type-update.md)
 - [{#T}](./crm-type-get.md)
+- [{#T}](./crm-type-get-by-entity-type-id.md)
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
 - [{#T}](./crm-type-fields.md)

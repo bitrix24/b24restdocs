@@ -2,27 +2,27 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM object elements
+> Who can execute the method: any user with "read" access permission for CRM entity elements
 
-The method retrieves a list of elements of a specific type of CRM object.
+This method retrieves a list of elements of a specific type of CRM entity.
 
-CRM object elements will not be included in the final selection if the user does not have "read" access permission for these elements.  
+CRM entity elements will not be included in the final selection if the user does not have "read" access permission for these elements.  
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [custom type](./user-defined-object-types/index.md) whose elements need to be retrieved ||
+[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose elements need to be retrieved ||
 || **select**
-[`array`][1] | List of fields that should be populated for the elements in the selection.
+[`array`][1] | List of fields that must be populated in the selected elements.
 
 Can contain only field names or `'*'`.
 
-The list of available fields for selection can be obtained via the [`crm.item.fields`](./crm-item-fields.md) method
+The list of available fields for selection can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method
 ||
 || **filter**
 [`object`][1] |
@@ -42,14 +42,14 @@ where
 The filter can have unlimited nesting and number of conditions.
 By default, all conditions are combined with `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
 
-You can add a prefix to the `field_n` keys to clarify the filter operation.
+You can add a prefix to the keys `field_n` to specify the filter operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN, an array is passed as a value
-- `!@` — NOT IN, an array is passed as a value
+- `@` — IN, an array is passed as the value
+- `!@` — NOT IN, an array is passed as the value
 - `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for a substring in any position of the string
 - `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
@@ -62,11 +62,11 @@ Possible prefix values:
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
 
-The list of available fields for filtering can be obtained via the [`crm.item.fields`](./crm-item-fields.md) method
+The list of available fields for filtering can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method
 ||
 || **order**
 [`object`][1] |
@@ -82,10 +82,10 @@ Object format:
 where
 - `field_n` — name of the field by which the selection of elements will be sorted
 - `value_n` — value of type `string` equal to:
-  - `ASC` — ascending sort
-  - `DESC` — descending sort
+  - `ASC` — ascending order
+  - `DESC` — descending order
 
-The list of available fields for sorting can be obtained via the [`crm.item.fields`](./crm-item-fields.md) method
+The list of available fields for sorting can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method
 ||
 || **start**
 [`integer`][1] | This parameter is used to manage pagination.
@@ -96,16 +96,16 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` — the number of the desired page
 ||
 || **useOriginalUfNames**
-[`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
+[`boolean`][1] | Parameter to control the format of user field names in the request and response.   
 Possible values:
 
-- `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
-- `N` — names of custom fields in camelCase, e.g., `ufCrm2_1639669411830`
+- `Y` — original user field names, e.g., `UF_CRM_2_1639669411830`
+- `N` — user field names in camelCase, e.g., `ufCrm2_1639669411830`
 
-Default is `N` ||
+Default — `N` ||
 |#
 
 ## Code Examples
@@ -115,13 +115,13 @@ Default is `N` ||
 2. They are in the status "In Progress" or "Unprocessed".
 3. They came from sources "Advertising" or "Website".
 4. They are assigned to managers with identifiers 1 or 6.
-5. They have a deal amount between 5000 and 20000.
+5. They have a deal amount from 5000 to 20000.
 6. The calculation mode for the amount is manual.
 
 **Set the following sort order for this selection:**
 * First name and last name in ascending order.
 
-**For clarity, we will select only the fields we need:**
+**For clarity, we will choose only the fields we need:**
 * Identifier `id`
 * Title `title`
 * First name `name`
@@ -155,6 +155,175 @@ Default is `N` ||
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 elements). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.item.list',
+        {
+          entityTypeId: 1,
+          select: [
+            "id",
+            "title",
+            "lastName",
+            "name",
+            "stageId",
+            "sourceId",
+            "assignedById",
+            "opportunity",
+            "isManualOpportunity",
+          ],
+          filter: {
+            "0": {
+              logic: "OR",
+              "0": {
+                "!=name": "",
+              },
+              "1": {
+                "!=lastName": "",
+              },
+            },
+            "@stageId": ["NEW", "IN_PROCESS"],
+            "@sourceId": ['WEB', "ADVERTISING"],
+            "@assignedById": [1, 6],
+            ">=opportunity": 5000,
+            "<=opportunity": 20000,
+            "isManualOpportunity": "Y",
+          },
+          order: {
+            lastName: 'ASC',
+            name: 'ASC',
+          },
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large data sets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.item.list', {
+        entityTypeId: 1,
+        select: [
+          "id",
+          "title",
+          "lastName",
+          "name",
+          "stageId",
+          "sourceId",
+          "assignedById",
+          "opportunity",
+          "isManualOpportunity",
+        ],
+        filter: {
+          "0": {
+            logic: "OR",
+            "0": {
+              "!=name": "",
+            },
+            "1": {
+              "!=lastName": "",
+            },
+          },
+          "@stageId": ["NEW", "IN_PROCESS"],
+          "@sourceId": ['WEB', "ADVERTISING"],
+          "@assignedById": [1, 6],
+          ">=opportunity": 5000,
+          "<=opportunity": 20000,
+          "isManualOpportunity": "Y",
+        },
+        order: {
+          lastName: 'ASC',
+          name: 'ASC',
+        },
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.item.list', {
+        entityTypeId: 1,
+        select: [
+          "id",
+          "title",
+          "lastName",
+          "name",
+          "stageId",
+          "sourceId",
+          "assignedById",
+          "opportunity",
+          "isManualOpportunity",
+        ],
+        filter: {
+          "0": {
+            logic: "OR",
+            "0": {
+              "!=name": "",
+            },
+            "1": {
+              "!=lastName": "",
+            },
+          },
+          "@stageId": ["NEW", "IN_PROCESS"],
+          "@sourceId": ['WEB', "ADVERTISING"],
+          "@assignedById": [1, 6],
+          ">=opportunity": 5000,
+          "<=opportunity": 20000,
+          "isManualOpportunity": "Y",
+        },
+        order: {
+          lastName: 'ASC',
+          name: 'ASC',
+        },
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php        
+    try {
+        $entityTypeId = 1; // Replace with actual entity type ID
+        $order = []; // Replace with actual order array
+        $filter = []; // Replace with actual filter array
+        $select = []; // Replace with actual select array
+        $startItem = 0; // Optional, can be adjusted as needed
+        $itemsResult = $serviceBuilder
+            ->getCRMScope()
+            ->item()
+            ->list($entityTypeId, $order, $filter, $select, $startItem);
+        foreach ($itemsResult->getItems() as $item) {
+            print("ID: " . $item->id . PHP_EOL);
+            print("XML ID: " . $item->xmlId . PHP_EOL);
+            print("Title: " . $item->title . PHP_EOL);
+            print("Created By: " . $item->createdBy . PHP_EOL);
+            print("Updated By: " . $item->updatedBy . PHP_EOL);
+            print("Created Time: " . $item->createdTime->format(DATE_ATOM) . PHP_EOL);
+            print("Updated Time: " . $item->updatedTime->format(DATE_ATOM) . PHP_EOL);
+            // Add more fields as necessary
+        }
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage() . PHP_EOL);
+    }
+    ```
+
+- BX24.js
 
     ```js
         BX24.callMethod(
@@ -207,7 +376,7 @@ Default is `N` ||
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -254,34 +423,6 @@ Default is `N` ||
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
-  
-    ```php        
-    try {
-        $entityTypeId = 1; // Replace with actual entity type ID
-        $order = []; // Replace with actual order array
-        $filter = []; // Replace with actual filter array
-        $select = []; // Replace with actual select array
-        $startItem = 0; // Optional, can be adjusted as needed
-        $itemsResult = $serviceBuilder
-            ->getCRMScope()
-            ->item()
-            ->list($entityTypeId, $order, $filter, $select, $startItem);
-        foreach ($itemsResult->getItems() as $item) {
-            print("ID: " . $item->id . PHP_EOL);
-            print("XML ID: " . $item->xmlId . PHP_EOL);
-            print("Title: " . $item->title . PHP_EOL);
-            print("Created By: " . $item->createdBy . PHP_EOL);
-            print("Updated By: " . $item->updatedBy . PHP_EOL);
-            print("Created Time: " . $item->createdTime->format(DATE_ATOM) . PHP_EOL);
-            print("Updated Time: " . $item->updatedTime->format(DATE_ATOM) . PHP_EOL);
-            // Add more fields as necessary
-        }
-    } catch (Throwable $e) {
-        print("Error: " . $e->getMessage() . PHP_EOL);
-    }
     ```
 
 {% endlist %}
@@ -376,8 +517,8 @@ The `next` parameter appears in the response if the number of elements matching 
 
 {% note info " " %}
 
-By default, custom field names are passed and returned in camelCase, for example `ufCrm2_1639669411830`.
-When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
+By default, user field names are passed and returned in camelCase, e.g., `ufCrm2_1639669411830`.
+When passing the `useOriginalUfNames` parameter with the value `Y`, user fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -403,7 +544,7 @@ HTTP status: **400**, **403**
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' is not allowed in filter | The field `field` passed in `filter` is not available for filtering ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' has invalid value        | The value passed for the field `field` in `filter` is incorrect ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid order: field '`field`' is not allowed in order   | The field `field` passed in `order` is not available for sorting ||
-|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: allowed sort directions are `ASC, DESC`. But got '`orderValue`' for field '`field`' | The value `orderValue` for the field `field` in the `order` parameter is incorrect ||
+|| `400`      | `INVALID_ARG_VALUE`              | Invalid order: allowed sort directions are `ASC, DESC`. But got '`orderValue`' for field '`field`' | The value `orderValue` passed for the field `field` in the `order` parameter is incorrect ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
@@ -417,5 +558,6 @@ HTTP status: **400**, **403**
 - [{#T}](crm-item-fields.md)
 - [{#T}](../../../tutorials/tasks/how-to-connect-task-to-spa.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
+- [{#T}](../../../tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)
 
 [1]: ../data-types.md

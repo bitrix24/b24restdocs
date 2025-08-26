@@ -98,7 +98,65 @@ Create a new default funnel in the SPA with `entityTypeId = 1152`.
 
 - JS
 
-	```js
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.category.add',
+    		{
+    			entityTypeId: 1152,
+    			fields: {
+    				name: 'New Default Funnel',
+    				sort: 50,
+    				isDefault: 'Y',
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.category.add',
+                [
+                    'entityTypeId' => 1152,
+                    'fields' => [
+                        'name'     => 'New Default Funnel',
+                        'sort'     => 50,
+                        'isDefault' => 'Y',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding category: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.category.add",
         {
@@ -121,9 +179,9 @@ Create a new default funnel in the SPA with `entityTypeId = 1152`.
             }
         }
     );
-	```
+    ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -149,7 +207,7 @@ Create a new default funnel in the SPA with `entityTypeId = 1152`.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -219,7 +277,7 @@ Exists only in SPAs ||
 
 ## Error Handling
 
-HTTP status: **160**, **400**
+HTTP Status: **160**, **400**
 
 ```json
 {

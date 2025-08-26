@@ -1,33 +1,33 @@
-# Get a List of Deliveries for a CRM Object crm.item.delivery.list
+# Get the list of deliveries for a CRM entity crm.item.delivery.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires read access permission for the crm object from which deliveries are selected.
+> Who can execute the method: requires read access permission for the crm entity from which deliveries are selected.
 
-This method retrieves a list of deliveries for a specific crm object.
+This method retrieves the list of deliveries for a specific crm entity.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityId***
-[`integer`](../../../data-types.md) | Identifier of the crm object ||
+[`integer`](../../../data-types.md) | Identifier of the crm entity ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the [`crm object type`](../../data-types.md#crm-object-type) ||
+[`integer`](../../../data-types.md) | Identifier of the [`crm entity type`](../../data-types.md#crm-entity-type)  ||
 || **filter**
-[`object`](../../../data-types.md) | Additional filter for cases when you need to retrieve not all deliveries of the crm object, but based on a more specific filter. 
-The format of the `filter` parameter corresponds to that described in the [`sale.shipment.list`](../../../sale/shipment/sale-shipment-list.md) method. ||
+[`object`](../../../data-types.md) | Additional filter for cases when you need to get not all deliveries of the crm entity, but based on a more specific filter. 
+The format of the `filter` parameter corresponds to what is described in the [`sale.shipment.list`](../../../sale/shipment/sale-shipment-list.md) method ||
 || **order**
-[`object`](../../../data-types.md) | The format of the `order` parameter corresponds to that described in the [`sale.shipment.list`](../../../sale/shipment/sale-shipment-list.md) method. ||
+[`object`](../../../data-types.md) | The format of the `order` parameter corresponds to what is described in the [`sale.shipment.list`](../../../sale/shipment/sale-shipment-list.md) method ||
 
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -54,6 +54,92 @@ The format of the `filter` parameter corresponds to that described in the [`sale
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.item.delivery.list',
+        {
+          entityId: 13127,
+          entityTypeId: 2,
+          filter: {
+            "@id": [4077, 4078]
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.item.delivery.list', {
+        entityId: 13127,
+        entityTypeId: 2,
+        filter: {
+          "@id": [4077, 4078]
+        }
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('crm.item.delivery.list', {
+        entityId: 13127,
+        entityTypeId: 2,
+        filter: {
+          "@id": [4077, 4078]
+        }
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.delivery.list',
+                [
+                    'entityId'     => 13127,
+                    'entityTypeId' => 2,
+                    'filter'       => [
+                        '@id' => [4077, 4078]
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching delivery list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.delivery.list', {
             entityId: 13127,
@@ -72,7 +158,7 @@ The format of the `filter` parameter corresponds to that described in the [`sale
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -97,7 +183,7 @@ The format of the `filter` parameter corresponds to that described in the [`sale
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -128,8 +214,8 @@ HTTP Status: **200**
       "finish":1716369036.734466,
       "duration":0.4876110553741455,
       "processing":0.18442106246948242,
-      "date_start":"2024-05-22T12:10:36+03:00",
-      "date_finish":"2024-05-22T12:10:36+03:00"
+      "date_start":"2024-05-22T12:10:36+02:00",
+      "date_finish":"2024-05-22T12:10:36+02:00"
    }
 }
 ```
@@ -147,7 +233,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -156,7 +242,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -167,7 +253,7 @@ HTTP Status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include notitle [System Errors](../../../../_includes/system-errors.md) %}
+{% include notitle [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

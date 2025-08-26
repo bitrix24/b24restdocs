@@ -54,6 +54,77 @@ Get the list of funnels for deals.
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.category.list',
+        {
+          entityTypeId: 2,
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.category.list', { entityTypeId: 2 }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.category.list', { entityTypeId: 2 }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.category.list',
+                [
+                    'entityTypeId' => 2,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching category list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.category.list",
         {
@@ -73,7 +144,7 @@ Get the list of funnels for deals.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -94,7 +165,7 @@ Get the list of funnels for deals.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -155,21 +226,21 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. Contains a single element with the key `categories`, which represents an array of funnels. The structure of an individual funnel corresponds to the [`category`](./crm-category-add.md#category) object ||
+[`object`](../../data-types.md) | The root element of the response. Contains a single element with the key `categories`, which represents an array of funnels. The structure of an individual funnel corresponds to the [`category`](./crm-category-add.md#category) object ||
 || **total**
-[`integer`][1] | Total number of funnels belonging to the specified `entityTypeId` ||
+[`integer`][1] | The total number of funnels belonging to a specific `entityTypeId` ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "SPA not found"
+    "error_description": "Smart process not found"
 }
 ```
 
@@ -179,7 +250,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `NOT_FOUND` | SPA not found | Occurs when invalid values for `entityTypeId` are provided ||
+|| `NOT_FOUND` | Smart process not found | Occurs when invalid values for `entityTypeId` are provided ||
 || `ENTITY_TYPE_NOT_SUPPORTED` | Entity type `{entityTypeName}` is not supported | Occurs if the CRM object does not support funnels ||
 |#
 

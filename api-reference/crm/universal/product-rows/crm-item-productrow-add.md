@@ -1,10 +1,10 @@
-# Add Product Item to CRM Object crm.item.productrow.add
+# Add Product Row to CRM Object crm.item.productrow.add
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the CRM object to which the product item is being added.
+> Who can execute the method: requires access permission to modify the CRM object to which the product row is being added.
 
-This method adds a product item to a CRM object.
+This method adds a product row to a CRM object.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method adds a product item to a CRM object.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Object containing field values for adding the product item to the CRM object ||
+[`object`](../../../data-types.md) | Object containing field values for adding the product row to the CRM object ||
 |#
 
 ### Parameter fields
@@ -29,16 +29,13 @@ This method adds a product item to a CRM object.
 || **productId**
 [`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog ||
 || **productName**
-[`string`](../../../data-types.md) | Name of the product in the product item.
-If not provided, but `productId` is given, the product name from the product catalog is used ||
+[`string`](../../../data-types.md) | Name of the product in the product row. If not provided, but `productId` is given, the product name from the product catalog is used ||
 || **price**
-[`double`](../../../data-types.md) | Price per unit of the product item, including discounts and taxes ||
+[`double`](../../../data-types.md) | Price per unit of the product row, including discounts and taxes ||
 || **quantity**
-[`double`](../../../data-types.md) | Quantity of the product. 
-Default is 1 ||
+[`double`](../../../data-types.md) | Quantity of the product. Default is 1 ||
 || **discountTypeId**
-[`integer`](../../../data-types.md) | Type of discount.
-Possible values:
+[`integer`](../../../data-types.md) | Type of discount. Possible values:
 - `1` — absolute value
 - `2` — percentage value
 Default is 2 ||
@@ -49,14 +46,12 @@ Default is 2 ||
 || **taxRate**
 [`double`](../../../data-types.md) | Tax rate in percentage ||
 || **taxIncluded**
-[`string`](../../../data-types.md) | Indicator of whether tax is included in the price.
-Possible values:
+[`string`](../../../data-types.md) | Indicator of whether the tax is included in the price. Possible values:
 - `Y` – tax included
 - `N` – tax not included
 Default is N ||
 || **measureCode**
-[`catalog_measure.code`](../../../data-types.md#catalog_measure) | Unit of measure code
-If not provided and `productId` is given, the unit of measure from the product catalog is used ||
+[`catalog_measure.code`](../../../catalog/data-types.md#catalog_measure) | Unit of measure code. If not provided and `productId` is given, the unit of measure from the product catalog is used ||
 || **sort**
 [`integer`](../../../data-types.md) | Sorting ||
 |#
@@ -90,6 +85,75 @@ If not provided and `productId` is given, the unit of measure from the product c
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.productrow.add', {
+    			fields: {
+    				ownerId: 13142,
+    				ownerType: 'D',
+    				productId: 9621,
+    				price: 80000.000000,
+    				quantity: 2,
+    				discountTypeId: 2,
+    				discountRate: 20,
+    				taxRate: 20,
+    				taxIncluded: 'Y',
+    				measureCode: 796,
+    				sort: 10,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.productrow.add',
+                [
+                    'fields' => [
+                        'ownerId'        => 13142,
+                        'ownerType'      => 'D',
+                        'productId'      => 9621,
+                        'price'          => 80000.000000,
+                        'quantity'       => 2,
+                        'discountTypeId' => 2,
+                        'discountRate'   => 20,
+                        'taxRate'        => 20,
+                        'taxIncluded'    => 'Y',
+                        'measureCode'    => 796,
+                        'sort'           => 10,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding product row: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.productrow.add', {
             fields: {
@@ -116,7 +180,7 @@ If not provided and `productId` is given, the unit of measure from the product c
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -149,7 +213,7 @@ If not provided and `productId` is given, the unit of measure from the product c
 
 ## Successful Response
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -198,14 +262,14 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **productRow**
-[`crm_item_product_row`](../../data-types.md#crm_item_product_row) | Object containing information about the added product item ||
+[`crm_item_product_row`](../../data-types.md#crm_item_product_row) | Object containing information about the added product row ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

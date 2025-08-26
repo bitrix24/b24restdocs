@@ -16,7 +16,7 @@ A maximum of 20 items can be imported in a single request.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,20 +24,20 @@ A maximum of 20 items can be imported in a single request.
 || **entityTypeId***
 [`integer`][1] | Identifier of the system or [user-defined type](../user-defined-object-types/index.md) for which the item needs to be created ||
 || **data***
-[`array`][1] | An array of field values for the items. It can be viewed as an array where each element contains a set of fields `fields`, as described in the [crm.item.import](crm-item-import.md) method ||
+[`array`][1] | An array of field values for the items. It can be viewed as an array where each element contains a set of `fields` described in the [crm.item.import](crm-item-import.md) method ||
 || **useOriginalUfNames**
-[`boolean`][1] | A parameter to control the format of user field names in the request and response.   
+[`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
-- `Y` — original names of user fields, e.g., `UF_CRM_2_1639669411830`
-- `N` — user field names in camelCase, e.g., `ufCrm2_1639669411830`
+- `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
+- `N` — custom field names in camelCase, e.g., `ufCrm2_1639669411830`
 
 Default is `N` ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 1. How to import deals
 
@@ -49,7 +49,7 @@ Default is `N` ||
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"entityTypeId":2,"data":[{"title":"New Deal (specifically for REST method example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":[1,2]},{"title":"New Deal (specifically for REST method example)","typeId":"SERVICE","categoryId":4,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":[1,2]}]}' \
+        -d '{"entityTypeId":2,"data":[{"title":"New Deal (specifically for the REST methods example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2},{"title":"New Deal (specifically for the REST methods example)","typeId":"SERVICE","categoryId":4,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2}]}' \
         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.batchImport
         ```
 
@@ -59,11 +59,11 @@ Default is `N` ||
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"entityTypeId":2,"data":[{"title":"New Deal (specifically for REST method example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":[1,2]},{"title":"New Deal (specifically for REST method example)","typeId":"SERVICE","categoryId":4,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":[1,2]}],"auth":"**put_access_token_here**"}' \
+        -d '{"entityTypeId":2,"data":[{"title":"New Deal (specifically for the REST methods example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2},{"title":"New Deal (specifically for the REST methods example)","typeId":"SERVICE","categoryId":4,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2}],"auth":"**put_access_token_here**"}' \
         https://**put_your_bitrix24_address**/rest/crm.item.batchImport
         ```
 
-    - JS
+    - BX24.js
 
         ```js
         const formatDate = (date) => {
@@ -77,7 +77,7 @@ Default is `N` ||
         const monthAgo = new Date(now.getTime() - 30 * day);
 
         const commentsExample = `
-        Example comment within the deal
+        Example comment inside the deal
 
         [B]Bold text[/B]
         [I]Italic[/I]
@@ -99,7 +99,7 @@ Default is `N` ||
         `;
       
         const deal = {
-            title: "New Deal (specifically for REST method example)",
+            title: "New Deal (specifically for the REST methods example)",
             typeId: "SERVICE",
             categoryId: 9,
             stageId: "C9:UC_KN8KFI",
@@ -126,14 +126,11 @@ Default is `N` ||
             utmSource: "google",
             utmMedium: "CPC",
             ufCrm_1721244707107: 1111.1,
-            parentId1220: [
-                1,
-                2,
-            ],
+            parentId1220: 2,
         };
 
         const secondDeal = {
-            title: "New Deal (specifically for REST method example)",
+            title: "New Deal (specifically for the REST methods example)",
             typeId: "SERVICE",
             categoryId: 4,
             stageId: "C9:UC_KN8KFI",
@@ -160,10 +157,7 @@ Default is `N` ||
             utmSource: "google",
             utmMedium: "CPC",
             ufCrm_1721244707107: 1111.1,
-            parentId1220: [
-                1,
-                2,
-            ],
+            parentId1220: 2,
         };
 
         BX24.callMethod(
@@ -185,13 +179,13 @@ Default is `N` ||
         );
         ```
 
-    - PHP
+    - PHP CRest
 
         ```php
         require_once('crest.php');
         
         $deal = [
-            'title' => "New Deal (specifically for REST method example)",
+            'title' => "New Deal (specifically for the REST methods example)",
             'typeId' => "SERVICE",
             'categoryId' => 9,
             'stageId' => "C9:UC_KN8KFI",
@@ -218,14 +212,11 @@ Default is `N` ||
             'utmSource' => "google",
             'utmMedium' => "CPC",
             'ufCrm_1721244707107' => 1111.1,
-            'parentId1220' => [
-                1,
-                2,
-            ]
+            'parentId1220' => 2
         ];
         
         $secondDeal = [
-            'title' => "New Deal (specifically for REST method example)",
+            'title' => "New Deal (specifically for the REST methods example)",
             'typeId' => "SERVICE",
             'categoryId' => 4,
             'stageId' => "C9:UC_KN8KFI",
@@ -252,12 +243,8 @@ Default is `N` ||
             'utmSource' => "google",
             'utmMedium' => "CPC",
             'ufCrm_1721244707107' => 1111.1,
-            'parentId1220' => [
-                1,
-                2,
-            ]
+            'parentId1220' => 2
         ];
-        
         $result = CRest::call(
             'crm.item.batchImport',
             [
@@ -277,11 +264,11 @@ Default is `N` ||
     {% endlist %}
 
 
-2. How to create an SPA element with a set of user fields
+2. How to create an SPA element with a set of custom fields
 
-    {% cut "User fields involved in the example" %}
+    {% cut "Custom fields involved in the example" %}
 
-    {% include [Set of user fields](../../_include/user-fields-for-examples-cut.md) %}
+    {% include [Set of custom fields](../../_include/user-fields-for-examples-cut.md) %}
 
     {% endcut %}
 
@@ -296,7 +283,7 @@ Default is `N` ||
         -d '{
             "entityTypeId": 1302,
             "data": [{
-                "ufCrm44_1721812760630": "String for user field of type String",
+                "ufCrm44_1721812760630": "String for custom field of type String",
                 "ufCrm44_1721812814433": 81,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -311,7 +298,7 @@ Default is `N` ||
                 "ufCrm44_1721812935209": "Y",
                 "ufCrm44_1721812948498": 9999.9
             },{
-                "ufCrm44_1721812760630": "String for user field of type String",
+                "ufCrm44_1721812760630": "String for custom field of type String",
                 "ufCrm44_1721812814433": 45,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -339,7 +326,7 @@ Default is `N` ||
         -d '{
             "entityTypeId": 1302,
             "data": [{
-                "ufCrm44_1721812760630": "String for user field of type String",
+                "ufCrm44_1721812760630": "String for custom field of type String",
                 "ufCrm44_1721812814433": 81,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -354,7 +341,7 @@ Default is `N` ||
                 "ufCrm44_1721812935209": "Y",
                 "ufCrm44_1721812948498": 9999.9
             },{
-                "ufCrm44_1721812760630": "String for user field of type String",
+                "ufCrm44_1721812760630": "String for custom field of type String",
                 "ufCrm44_1721812814433": 45,
                 "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
                 "ufCrm44_1721812885588": [
@@ -374,7 +361,7 @@ Default is `N` ||
         https://**put_your_bitrix24_address**/rest/crm.item.batchImport
         ```
 
-    - JS
+    - BX24.js
 
         ```js
         const greenPixelInBase64 = "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg==";
@@ -385,7 +372,7 @@ Default is `N` ||
                 entityTypeId: 1302,
                 data: [
                     {
-                        ufCrm44_1721812760630: "String for user field of type String",
+                        ufCrm44_1721812760630: "String for custom field of type String",
                         ufCrm44_1721812814433: 81,
                         ufCrm44_1721812853419: (new Date()).toISOString().slice(0, 10),
                         ufCrm44_1721812885588: [
@@ -401,7 +388,7 @@ Default is `N` ||
                         ufCrm44_1721812948498: 9999.9,
                     },
                     {
-                        ufCrm44_1721812760630: "String for user field of type String",
+                        ufCrm44_1721812760630: "String for custom field of type String",
                         ufCrm44_1721812814433: 45,
                         ufCrm44_1721812853419: (new Date()).toISOString().slice(0, 10),
                         ufCrm44_1721812885588: [
@@ -428,7 +415,7 @@ Default is `N` ||
         );
         ```
 
-    - PHP
+    - PHP CRest
 
         ```php
         require_once('crest.php');
@@ -439,7 +426,7 @@ Default is `N` ||
                 'entityTypeId' => 1302,
                 'data' => [
                     [
-                        'ufCrm44_1721812760630' => "String for user field of type String",
+                        'ufCrm44_1721812760630' => "String for custom field of type String",
                         'ufCrm44_1721812814433' => 81,
                         'ufCrm44_1721812853419' => date('Y-m-d'),
                         'ufCrm44_1721812885588' => [
@@ -455,7 +442,7 @@ Default is `N` ||
                         'ufCrm44_1721812948498' => 9999.9,
                     ],
                     [
-                        'ufCrm44_1721812760630' => "String for user field of type String",
+                        'ufCrm44_1721812760630' => "String for custom field of type String",
                         'ufCrm44_1721812814433' => 45,
                         'ufCrm44_1721812853419' => date('Y-m-d'),
                         'ufCrm44_1721812885588' => [
@@ -521,7 +508,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | The root element of the response.
+[`object`][1] | Root element of the response.
 
 Contains a single key `item` ||
 || **items**
@@ -538,8 +525,8 @@ Contains a single key `id` ||
 
 {% note info " " %}
 
-By default, user field names are passed and returned in camelCase, e.g., `ufCrm2_1639669411830`.
-When passing the parameter `useOriginalUfNames` with the value `Y`, user fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
+By default, custom field names are passed and returned in camelCase, e.g., `ufCrm2_1639669411830`.
+When the parameter `useOriginalUfNames` is passed with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -550,7 +537,7 @@ HTTP status: **401**, **400**, **403**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "SPA not found"
+    "error_description": "Smart process not found"
 }
 ```
 
@@ -560,12 +547,12 @@ HTTP status: **401**, **400**, **403**
 
 #|
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
-|| `400`      | `NOT_FOUND`                       | SPA not found                                                       | Occurs when an invalid `entityTypeId` is passed                                              ||
-|| `400`      | `ACCESS_DENIED`                   | Access denied                                                     | The user does not have permission to add items of type `entityTypeId`                             ||
-|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the field `field` was passed.
+|| `400`      | `NOT_FOUND`                       | Smart process not found                                            | Occurs when an invalid `entityTypeId` is passed                                              ||
+|| `400`      | `ACCESS_DENIED`                   | Access denied                                                    | The user does not have permission to add items of type `entityTypeId`                             ||
+|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the `field` was passed.
 
 For system fields of type `createdTime`, if the request is not from an administrator ||
-|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | One of the multiple fields received a value of type `type`, while an iterable type was expected. This can also occur with an incorrect request (incorrect JSON or request headers) ||
+|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | One of the multiple fields received a value of type `type`, while an iterable type was expected. This can also occur with an incorrect request (invalid JSON or request headers) ||
 || `400`      | `CREATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot create a new item due to your plan restrictions | Plan restrictions do not allow creating SPA items                              ||
 || `400`      | `MAX_IMPORT_BATCH_SIZE_EXCEEDED`  | You cannot import more than 20 items                     | Occurs when more than 20 items are passed during import                                        ||
 || `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request                            | Incorrect `user ID` and/or code in the request path                                       ||
@@ -574,7 +561,7 @@ For system fields of type `createdTime`, if the request is not from an administr
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 ## Continue Learning 
 

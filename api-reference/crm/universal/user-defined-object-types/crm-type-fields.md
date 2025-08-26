@@ -1,4 +1,4 @@
-# Get Custom Fields of crm.type.fields
+# Get Custom Type Fields crm.type.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -10,7 +10,7 @@ No parameters.
 
 ## Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 Get information about the smart process fields
 
@@ -39,6 +39,53 @@ Get information about the smart process fields
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.type.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.type.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            return;
+        }
+    
+        echo 'Success: ' . print_r($result->data(), true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching CRM type fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.type.fields',
         {},
@@ -55,7 +102,7 @@ Get information about the smart process fields
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -74,7 +121,7 @@ Get information about the smart process fields
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -127,7 +174,7 @@ HTTP Status: **200**
                 "isImmutable": true,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Entity Type ID",
+                "title": "Type Identifier",
                 "upperName": "ENTITY_TYPE_ID"
             },
             "customSectionId": {
@@ -257,7 +304,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Use automation rules and triggers in the smart process",
+                "title": "Use Automation rules and triggers in the smart process",
                 "upperName": "IS_AUTOMATION_ENABLED"
             },
             "isBizProcEnabled": {
@@ -307,7 +354,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Updated By",
+                "title": "Modified By",
                 "upperName": "UPDATED_BY"
             }
         }
@@ -332,14 +379,14 @@ HTTP Status: **200**
 || **result**
 [`object`][1] | Root element of the response. Contains an object with a single key `fields` ||
 || **fields**
-[`object`][1] | An object in the format: `{ field_1: value_1, field_2: value_2, ... , field_n: value_n }`, where `field_n` — fields of the smart process settings, and `value_n` — an object of type [`crm_rest_field_description`](../../data-types.md#crm_rest_field_description) ||
+[`object`][1] | Object in the format: `{ field_1: value_1, field_2: value_2, ... , field_n: value_n }`, where `field_n` — fields of the smart process settings, and `value_n` — object of type [`crm_rest_field_description`](../../data-types.md#crm_rest_field_description) ||
 || **time**
-[`time`][1] | An object containing information about the request execution time  ||
+[`time`][1] | Object containing information about the request execution time  ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -366,6 +413,7 @@ HTTP Status: **400**, **403**
 - [{#T}](./crm-type-add.md)
 - [{#T}](./crm-type-update.md)
 - [{#T}](./crm-type-get.md)
+- [{#T}](./crm-type-get-by-entity-type-id.md)
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
 

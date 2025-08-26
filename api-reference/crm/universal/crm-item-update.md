@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "edit" access permission for CRM object items.
+> Who can execute the method: any user with "edit" access permission for CRM object items
 
 This method updates an item of a specific type in the CRM object by assigning new values from the `fields` parameter.
 
@@ -10,26 +10,26 @@ When updating an item, a standard series of checks, modifications, and automatic
 - access permissions are verified
 - required fields are checked for completeness if the item's stage has changed within the same direction
 - dependent required fields are checked for completeness if the item's stage has changed within the same direction
-- field values are validated for correctness
+- the correctness of field entries is verified
 - default values are assigned to fields
 - if it turns out that no field values have been changed before saving, the save **is not performed**
 - automation rules are triggered after saving
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose item we want to change ||
+[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) of the item we want to change ||
 || **id^*^**
 [`integer`][1] | Identifier of the item we want to change.
 
 Can be obtained using the [`crm.item.list`](crm-item-list.md) or [`crm.item.add`](crm-item-add.md) methods ||
 || **fields***
-[`object`][1] | Object in the format
+[`object`][1] | Object format
 ```
 {
     field_1: value_1,
@@ -42,9 +42,9 @@ where
 - `field_n` — field name
 - `value_n` — new field value
 
-Each CRM entity type has its own set of fields. This means that the set of fields for updating a Lead does not have to match the set of fields for updating a Contact or SPA.
+Each type of CRM entity has its own set of fields. This means that the set of fields for changing a Lead does not have to match the set of fields for changing a Contact or SPA.
 
-The list of available fields for each entity type is described [below](#parametr-fields).
+The list of available fields for each type of entity is described [below](#parametr-fields).
 
 An incorrect field in `fields` will be ignored.
 
@@ -59,7 +59,7 @@ Only those fields that need to be changed should be passed in `fields`
 [`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
-- `Y` — original custom field names, e.g., `UF_CRM_2_1639669411830`
+- `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
 - `N` — custom field names in camelCase, e.g., `ufCrm2_1639669411830`
 
 Default is `N` ||
@@ -67,7 +67,7 @@ Default is `N` ||
 
 ### Parameter fields
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 {% list tabs %}
 
@@ -82,9 +82,9 @@ Default is `N` ||
   [`string`][1] | Item title 
   ||
   || **honorific**
-  [`crm_status`][1] | String identifier for the lead's salutation (e.g., `'HNR_EN_1' = 'Mr.'`).
+  [`crm_status`][1] | String identifier for the lead's salutation (e.g., `'HNR_RU_1' = 'Mr.'`).
 
-  The list of available salutations can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONORIFIC" }` ||
+  The list of available salutations can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONOFIRIC" }` ||
   || **name**
   [`string`][1] | First name ||
   || **secondName**
@@ -116,7 +116,7 @@ Default is `N` ||
   || **currencyId**
   [`crm_currency`][1] | Identifier of the item's currency  ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Opportunity amount calculation mode. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -152,11 +152,11 @@ Default is `N` ||
   || **webformId**
   [`integer`][1] | Identifier of the CRM Form ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
+  [`user[]`][1] | Array of identifiers of users who will be Observers in the item ||
   || **utmSource**
   [`string`][1] | Advertising system. For example: Google Ads, Bing Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Type of traffic. Possible values:
+  [`string`][1] | Traffic type. Possible values:
   
   - CPC — ads
   - CPM — banners ||
@@ -173,7 +173,7 @@ Default is `N` ||
   
   Values of multiple fields are passed as an array.
   
-  To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+  To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the file content encoded in [base64](../../files/how-to-update-files.md).
   ||
   || **parentId...**
   [`crm_entity`][1] | Parent field. An item of another type of CRM object that is linked to this item.
@@ -189,7 +189,7 @@ Default is `N` ||
 
   - `id` — Unique identifier of the multifield. If no multifield with this id exists, a new multifield will be created
   - `typeId` — Type of the multifield
-  - `valueType` — Type of value
+  - `valueType` — Type of the value
   - `value` — Value
 
   Example:
@@ -251,7 +251,7 @@ Default is `N` ||
   || **currencyId**
   [`crm_currency`][1] | Identifier of the item's currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Opportunity amount calculation mode. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -305,13 +305,13 @@ Default is `N` ||
   || **originId**
   [`string`][1] | Identifier of the item in the external source ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
+  [`user[]`][1] | Array of identifiers of users who will be Observers in the item ||
   || **locationId**
   [`location`][1] | Identifier of the location. Service field  ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Type of traffic.  Possible values:
+  [`string`][1] | Traffic type.  Possible values:
   
   - CPC — ads
   - CPM — banners ||
@@ -324,7 +324,7 @@ Default is `N` ||
   [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md)
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the file content encoded in [base64](../../files/how-to-update-files.md).
   
   ||
   || **parentId...**
@@ -345,9 +345,9 @@ Default is `N` ||
   || **honorific**
   [`crm_status`][1] | String identifier for the contact's salutation. 
   
-  For example, `'HNR_EN_1' = 'Mr.'`.
+  For example, `'HNR_RU_1' = 'Mr.'`.
 
-  The list of available salutations can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONORIFIC" }` ||
+  The list of available salutations can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONOFIRIC" }` ||
   || **name**
   [`string`][1] | First name ||
   || **secondName**
@@ -401,11 +401,11 @@ Default is `N` ||
   || **originVersion**
   [`string`][1]          | Version of the original ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
+  [`user[]`][1] | Array of identifiers of users who will be Observers in the item ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Type of traffic. Possible values:
+  [`string`][1] | Traffic type. Possible values:
   
   - CPC — ads
   - CPM — banners ||
@@ -419,13 +419,13 @@ Default is `N` ||
   [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md)
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the file content encoded in [base64](../../files/how-to-update-files.md).
 
   ||
   || **parentId...**
   [`crm_entity`][1] | Parent field. An item of another type of CRM object that is linked to this item.
 
-  Each such field has the code `parentId + {parentEntityTypeId}` 
+  Each such field has the code `parentId + {parentEntityTypeId}`
   ||
   || **fm**
   [`multifield[]`][1] | Array of multifields.
@@ -436,7 +436,7 @@ Default is `N` ||
 
     - `id` — Unique identifier of the multifield. If no multifield with this id exists, a new multifield will be created
     - `typeId` — Type of the multifield
-    - `valueType` — Type of value
+    - `valueType` — Type of the value
     - `value` — Value
 
   Example:
@@ -494,7 +494,7 @@ Default is `N` ||
   || **currencyId**
   [`crm_currency`][1] | Identifier of the item's currency ||
   || **revenue**
-  [`double`][1] | Annual turnover ||
+  [`double`][1] | Annual revenue ||
   || **opened**
   [`boolean`][1] | Is the item available to everyone. Possible values:
 
@@ -520,11 +520,11 @@ Default is `N` ||
   || **originVersion**
   [`string`][1] | Version of the original ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
+  [`user[]`][1] | Array of identifiers of users who will be Observers in the item ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Type of traffic. Possible values:
+  [`string`][1] | Traffic type. Possible values:
   - CPC — ads
   - CPM — banners ||
   || **utmCampaign**
@@ -537,13 +537,13 @@ Default is `N` ||
   [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md)
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md)
+    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the file content encoded in [base64](../../files/how-to-update-files.md)
 
   ||
   || **parentId...**
   [`crm_entity`][1] | Parent field. An item of another type of CRM object that is linked to this item.
 
-  Each such field has the code `parentId + {parentEntityTypeId}` 
+  Each such field has the code `parentId + {parentEntityTypeId}`
   ||
   || **fm**
   [`multifield[]`][1] | Array of multifields.
@@ -554,7 +554,7 @@ Default is `N` ||
 
     - `id` — Unique identifier of the multifield. If no multifield with this id exists, a new multifield will be created
     - `typeId` — Type of the multifield
-    - `valueType` — Type of value
+    - `valueType` — Type of the value
     - `value` — Value
 
   Example:
@@ -606,10 +606,10 @@ Default is `N` ||
   || **leadId**
   [`crm_lead`][1] | Identifier of the lead based on which the item is created ||
   || **storageTypeId**
-  [`integer`][1] | Identifier of the storage type. Possible values:
+  [`integer`][1] | Identifier of the storage type Possible values:
   - `1` — file
   - `2` — WebDAV
-  - `3` — Drive
+  - `3` — drive
   ||
   || **storageElementIds**
   [`integer`][1] | Array of files ||
@@ -632,7 +632,7 @@ Default is `N` ||
   || **currencyId**
   [`crm_currency`][1] | Identifier of the item's currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode.
+  [`boolean`][1] | Opportunity amount calculation mode.
 
   - `Y` — manual
   - `N` — automatic
@@ -658,7 +658,7 @@ Default is `N` ||
   || **utmSource**
   [`string`][1] | Advertising system. Google Ads, Bing Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Type of traffic.
+  [`string`][1] | Traffic type.
   
   - CPC — ads
   - CPM — banners ||
@@ -672,13 +672,14 @@ Default is `N` ||
   [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
   - Values of multiple fields are passed as an array
-  - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+  - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the file content encoded in [base64](../../files/how-to-update-files.md).
 
   ||
   || **parentId...**
   [`crm_entity`][1] | Parent field. An item of another type of CRM object that is linked to this item.
 
-  Each such field has the code `parentId + {parentEntityTypeId}` ||
+  Each such field has the code `parentId + {parentEntityTypeId}`
+  ||
   |#
 
 
@@ -721,14 +722,14 @@ Default is `N` ||
 
   The list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method with `entityTypeId = 3` ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item ||
+  [`user[]`][1] | Array of identifiers of users who will be Observers in the item ||
   || **stageId**
   [`crm_status`][1] | String identifier for the item's stage. 
   
   For example, `'DT31_13:N' = 'New'`.
 
   The list of available stages can be obtained using [`crm.status.list`][2] with the filter: `{ ENTITY_ID: "SMART_INVOICE_STAGE_{categoryId}" }`, where
-  `categoryId` — identifier of the default invoice funnel. It can be obtained using [`crm.category.list`](category/crm-category-list.md) with `entityTypeId = 31` ||
+  `categoryId` is the identifier of the default invoice funnel. It can be obtained using [`crm.category.list`](category/crm-category-list.md) with `entityTypeId = 31` ||
   || **sourceId**
   [`crm_status`][1] | String identifier for the source.
   
@@ -740,7 +741,7 @@ Default is `N` ||
   || **currencyId**
   [`crm_currency`][1] | Identifier of the item's currency ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Opportunity amount calculation mode. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -759,19 +760,20 @@ Default is `N` ||
   [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the file content encoded in [base64](../../files/how-to-update-files.md).
 
   ||
   || **parentId...**
   [`crm_entity`][1] | Parent field. An item of another type of CRM object that is linked to this item.
 
-  Each such field has the code `parentId + {parentEntityTypeId}` ||
+  Each such field has the code `parentId + {parentEntityTypeId}`
+  ||
   |#
 
 
 - SPA
 
-  CRM object identifier **entityTypeId:** can be obtained using the [`crm.type.list`](user-defined-object-types/crm-type-list.md) method or created using the [`crm.type.add`](user-defined-object-types/crm-type-add.md) method.
+  CRM object identifier **entityTypeId:** can be obtained using the [`crm.type.list`](user-defined-object-types/crm-type-list.md) method or created using the [`crm.type.add`](user-defined-object-types/crm-type-add.md) method
 
   #|
   || **Name**
@@ -818,11 +820,11 @@ Default is `N` ||
 
   Available only when the `isClientEnabled` setting is enabled for the corresponding SPA ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be observers in the item.
+  [`user[]`][1] | Array of identifiers of users who will be Observers in the item.
 
   Available only when the `isObserversEnabled` setting is enabled for the corresponding SPA ||
   || **categoryId**
-  [`crm_category`][1] | Identifier of the funnel for the SPA item. 
+  [`crm_category`][1] | Identifier of the funnel of the SPA item. 
 
   If the identifier is not specified, the SPA will be moved to the main funnel.
 
@@ -854,7 +856,7 @@ Default is `N` ||
 
   Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA  ||
   || **isManualOpportunity**
-  [`boolean`][1] | Opportunity calculation mode. Possible values:
+  [`boolean`][1] | Opportunity amount calculation mode. Possible values:
 
   - `Y` — manual
   - `N` — automatic
@@ -876,13 +878,14 @@ Default is `N` ||
   [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md).
 
     - Values of multiple fields are passed as an array
-    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the content of the file encoded in [base64](../../files/how-to-update-files.md).
+    - To upload a file, the value of the custom field must be an array where the first element is the file name and the second is the file content encoded in [base64](../../files/how-to-update-files.md).
 
   ||
   || **parentId...**
   [`crm_entity`][1] | Parent field. An item of another type of CRM object that is linked to this item.
 
-  Each such field has the code `parentId + {parentEntityTypeId}` ||
+  Each such field has the code `parentId + {parentEntityTypeId}`
+  ||
   |#
 
   {% note info "SPA Settings" %}
@@ -893,7 +896,7 @@ Default is `N` ||
 
 {% endlist %}
 
-## How to Update a Custom Field of Type File
+## How to Update a File Type Custom Field
 
 1. Upload a new file instead of the old one (non-multiple field)
 
@@ -910,15 +913,15 @@ Default is `N` ||
     }
     ```
 
-2. Remove the value of the custom field of type file
+2. Remove the value of the file type custom field
 
     To do this, simply pass an empty string (`''`) instead of the value.
 
-3. Leave the value of the non-multiple field of type file unchanged
+3. Leave the value of the non-multiple file type field unchanged
 
     The simplest option is not to add a key with this field in `fields`.
     
-    But if you need to pass it and not change it, then the value should be passed as a list where the key `id` will be the identifier of the file.
+    But if you need to pass it and not change it, then the value should be passed as a list where the key `id` will be the file identifier.
 
     ```json
     {
@@ -936,13 +939,13 @@ Default is `N` ||
     
     {% endnote %}
 
-4. Working with a multiple field of type file
+4. Working with a multiple file type field
 
     The value of a multiple field is an array. Each element of the array is subject to the same rules as for non-multiple values.
 
-    **How to Partially Overwrite Values of a Multiple Field of Type File**
+    **How to Partially Overwrite Values of a Multiple File Type Field**
 
-    For example, currently, the multiple field of type file contains values `[12, 255, 44]`.
+    For example, currently, the multiple file type field contains values `[12, 255, 44]`.
 
     You need to keep files `12` and `44`, and upload a new one instead of `255`.
 
@@ -979,7 +982,7 @@ Update a deal with `id = 351`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":2,"id":351,"fields":{"title":"REST Deal #1","stageId":"C9:UC_NYL06U","assignedById":6,"observers":[1,2,3],"opened":"N","typeId":"SERVICE","opportunity":10000,"currencyId":"USD","additionalInfo":"Updating deal via REST","isManualOpportunity":"N","utmSource":"google","ufCrm_1721244707107":200.05,"parentId1220":[2,1]}}' \
+    -d '{"entityTypeId":2,"id":351,"fields":{"title":"REST Deal #1","stageId":"C9:UC_NYL06U","assignedById":6,"observers":[1,2,3],"opened":"N","typeId":"SERVICE","opportunity":10000,"currencyId":"USD","additionalInfo":"Updating deal via REST","isManualOpportunity":"N","utmSource":"google","ufCrm_1721244707107":200.05,"parentId1220":2}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.update
     ```
 
@@ -989,11 +992,11 @@ Update a deal with `id = 351`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":2,"id":351,"fields":{"title":"REST Deal #1","stageId":"C9:UC_NYL06U","assignedById":6,"observers":[1,2,3],"opened":"N","typeId":"SERVICE","opportunity":10000,"currencyId":"USD","additionalInfo":"Updating deal via REST","isManualOpportunity":"N","utmSource":"google","ufCrm_1721244707107":200.05,"parentId1220":[2,1]},"auth":"**put_access_token_here**"}' \
+    -d '{"entityTypeId":2,"id":351,"fields":{"title":"REST Deal #1","stageId":"C9:UC_NYL06U","assignedById":6,"observers":[1,2,3],"opened":"N","typeId":"SERVICE","opportunity":10000,"currencyId":"USD","additionalInfo":"Updating deal via REST","isManualOpportunity":"N","utmSource":"google","ufCrm_1721244707107":200.05,"parentId1220":2},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.item.update
     ```
 
-- JS
+- BX24.js
 
     ```js
         BX24.callMethod(
@@ -1014,7 +1017,7 @@ Update a deal with `id = 351`
                     isManualOpportunity: "N",
                     utmSource: "google",
                     ufCrm_1721244707107: 200.05,
-                    parentId1220: [2, 1],
+                    parentId1220: 2,
                 },
             },
             (result) => {
@@ -1030,7 +1033,7 @@ Update a deal with `id = 351`
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -1053,7 +1056,7 @@ Update a deal with `id = 351`
                 'isManualOpportunity' => "N",
                 'utmSource' => "google",
                 'ufCrm_1721244707107' => 200.05,
-                'parentId1220' => [2, 1],
+                'parentId1220' => 2,
             ]
         ]
     );
@@ -1063,7 +1066,7 @@ Update a deal with `id = 351`
     echo '</PRE>';
     ```
 
-- PHP (B24PhpSdk)
+- PHP 
 
     ```php
     try {
@@ -1092,7 +1095,7 @@ Update a deal with `id = 351`
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -1143,7 +1146,7 @@ HTTP Status: **200**
             "originatorId": null,
             "originId": null,
             "additionalInfo": "Updating deal via REST",
-            "searchContent": "351 Deal #351 10200.00 US Dollar Not Invented Invented Sale Title2134234233 07/23/2024 07/31/2024",
+            "searchContent": "351 Deal #351 10200.00 US Dollar No Did Not Invent Sale Title2134234233 07/23/2024 07/31/2024",
             "orderStage": null,
             "movedBy": 1,
             "movedTime": "2024-07-23T18:19:21+02:00",
@@ -1156,10 +1159,7 @@ HTTP Status: **200**
             "lostAmount": null,
             "hasProducts": null,
             "ufCrm_1721244707107": 200.05,
-            "parentId1220": [
-                "2",
-                "1"
-            ],
+            "parentId1220": 2,
             "utmSource": "google",
             "utmMedium": null,
             "utmCampaign": null,
@@ -1202,13 +1202,13 @@ HTTP Status: **200**
 {% note info " " %}
 
 By default, custom field names are passed and returned in camelCase, for example, `ufCrm2_1639669411830`.
-When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, for example, `UF_CRM_2_1639669411830`.
+When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with original names, for example, `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -1223,13 +1223,13 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
-|| `403`      | `allowed_only_intranet_user`      | Action allowed only for intranet users                               | User is not an intranet user                                                               ||
-|| `400`      | `NOT_FOUND`                       | SPA not found                                                        | Occurs when an invalid `entityTypeId` is passed                                          ||
-|| `400`      | `ACCESS_DENIED`                   | Access denied                                                        | User does not have permission to edit items of type `entityTypeId`                        ||
-|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the field `field` was passed                                       ||
+|| `403`      | `allowed_only_intranet_user`      | Action is allowed only for intranet users                            | User is not an intranet user                                                                ||
+|| `400`      | `NOT_FOUND`                       | SPA not found                                                        | Occurs when an invalid `entityTypeId` is passed                                           ||
+|| `400`      | `ACCESS_DENIED`                   | Access denied                                                        | User does not have permission to modify items of type `entityTypeId`                       ||
+|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                    | An incorrect value for the field `field` was passed                                        ||
 || `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | A value of type `type` was passed to one of the multiple fields, while an iterable type was expected ||
-|| `400`      | `-`                               | Insufficient rights to change the stage                              | If a user tries to change the stage of an item without sufficient rights                  ||
-|| `400`      | `UPDATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot change the item due to restrictions of your plan         | Plan restrictions do not allow changing SPA items                                          ||
+|| `400`      | `-`                               | Insufficient rights to change the stage                              | If a user tries to change the stage of an item without sufficient rights                   ||
+|| `400`      | `UPDATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot change the item due to restrictions of your plan        | Plan restrictions do not allow changing SPA items                                           ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

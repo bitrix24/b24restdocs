@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires read access permission for the delivery order
+> Who can execute the method: read access permission for the delivery order is required
 
 This method retrieves brief information about the delivery.
 
@@ -46,6 +46,51 @@ This method retrieves brief information about the delivery.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.delivery.get', {
+    			id: 4077,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.delivery.get',
+                [
+                    'id' => 4077,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting delivery item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.delivery.get', {
             id: 4077,
@@ -60,7 +105,7 @@ This method retrieves brief information about the delivery.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,23 +130,23 @@ HTTP Status: **200**
 
 ```json
 {
-   "result":{
-      "id":4077,
-      "accountNumber":"3657\/2",
-      "priceDelivery":79.99,
-      "currency":"USD",
-      "deducted":"N",
-      "dateDeducted":null,
-      "deliveryId":228,
-      "deliveryName":"Uber Taxi (Cargo)"
+   "result": {
+      "id": 4077,
+      "accountNumber": "3657/2",
+      "priceDelivery": 79.99,
+      "currency": "USD",
+      "deducted": "N",
+      "dateDeducted": null,
+      "deliveryId": 228,
+      "deliveryName": "Uber Taxi (Cargo)"
    },
-   "time":{
-      "start":1716369295.614557,
-      "finish":1716369296.143089,
-      "duration":0.5285320281982422,
-      "processing":0.2371680736541748,
-      "date_start":"2024-05-22T12:14:55+03:00",
-      "date_finish":"2024-05-22T12:14:56+03:00"
+   "time": {
+      "start": 1716369295.614557,
+      "finish": 1716369296.143089,
+      "duration": 0.5285320281982422,
+      "processing": 0.2371680736541748,
+      "date_start": "2024-05-22T12:14:55+02:00",
+      "date_finish": "2024-05-22T12:14:56+02:00"
    }
 }
 ```
@@ -126,7 +171,7 @@ HTTP Status: **200**
 || **id**
 [`sale_order_shipment.id`](../../../data-types.md#sale_order_shipment) | Delivery identifier ||
 || **accountNumber**
-[`string`](../../../data-types.md) | System number of the delivery  ||
+[`string`](../../../data-types.md) | System delivery number ||
 || **deducted**
 [`string`](../../../data-types.md) | Indicates whether the delivery has been shipped.
 Possible values:
@@ -134,7 +179,7 @@ Possible values:
 - `N` — no (not shipped)
  ||
 || **dateDeducted**
-[`datetime`](../../../data-types.md)  | Date of the shipment's shipped status change ||
+[`datetime`](../../../data-types.md)  | Date of the shipped flag change ||
 || **priceDelivery**
 [`double`](../../../data-types.md)  | Delivery cost ||
 || **currency**
@@ -142,7 +187,7 @@ Possible values:
 || **deliveryId**
 [`sale_delivery_service.ID`](../../../data-types.md#sale_delivery_service)  | Delivery service identifier ||
 || **deliveryName**
-[`string`](../../../data-types.md)  | Name of the delivery service ||
+[`string`](../../../data-types.md)  | Delivery service name ||
 |#
 
 ## Error Handling
@@ -151,8 +196,8 @@ HTTP Status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Insufficient permissions"
+   "error": 0,
+   "error_description": "Insufficient permissions"
 }
 ```
 

@@ -1,8 +1,8 @@
-# Get the description of the settings fields for the custom field type crm.userfield.settings.fields
+# Get the field settings description for the custom field type crm.userfield.settings.fields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `crm.userfield.settings.fields` returns the description of the settings fields for the custom field type.
+The method `crm.userfield.settings.fields` returns the field settings description for the custom field type.
 
 ## Parameters
 
@@ -30,14 +30,85 @@ The method `crm.userfield.settings.fields` returns the description of the settin
 || **type** | The type of the custom field. Value from the list returned by the method [crm.userfield.types](crm-userfield-types.md).  ||
 |#
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
+- CURL (webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"type":"string"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.userfield.settings.fields
+    ```
+
+- CURL (oauth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"type":"string"}' \
+    https://**put_your_bitrix24_address**/rest/crm.userfield.settings.fields?auth=**put_access_token_here**
+    ```
+
 - JS
-  
+
+    ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.userfield.settings.fields",
+    		{
+    			type: "string"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = $_POST['id'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.userfield.settings.fields',
+                [
+                    'type' => 'string'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     var id = prompt("Enter ID");
     BX24.callMethod(
@@ -55,8 +126,8 @@ The method `crm.userfield.settings.fields` returns the description of the settin
     );
     ```
 
-- PHP
-  
+- PHP CRest
+
     ```php
     require_once('crest.php');
 
@@ -72,29 +143,9 @@ The method `crm.userfield.settings.fields` returns the description of the settin
     echo '</PRE>';
     ```
 
-- CURL (oauth)
-
-    ```
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"type":"string"}' \
-    https://**put_your_bitrix24_address**/rest/crm.userfield.settings.fields?auth=**put_access_token_here**
-    ```
-
-- CURL (webhook)
-
-    ```
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"type":"string"}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.userfield.settings.fields
-    ```
-
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 ## Continue exploring
 

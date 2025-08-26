@@ -1,10 +1,10 @@
-# Get Custom Type by ID crm.type.get
+# Get the user type by id crm.type.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with administrative access to the SPA, or a user with read access permission to the SPA
+> Who can execute the method: any user with administrative access to the SPA, or a user with read access to the SPA
 
-This method retrieves information about the SPA with the identifier `id`.
+The method retrieves information about the SPA with the identifier `id`.
 
 ## Method Parameters
 
@@ -19,7 +19,7 @@ This method retrieves information about the SPA with the identifier `id`.
 
 ## Code Examples
 
-Retrieve information about the SPA with `id = 16`.
+Get information about the SPA with `id = 16`.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -48,6 +48,57 @@ Retrieve information about the SPA with `id = 16`.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.type.get',
+    		{
+    			id: 16,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.type.get',
+                [
+                    'id' => 16,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            return;
+        }
+    
+        echo 'Success: ' . print_r($result->data(), true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting CRM type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.type.get',
         {
@@ -66,7 +117,7 @@ Retrieve information about the SPA with `id = 16`.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -87,7 +138,7 @@ Retrieve information about the SPA with `id = 16`.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -185,14 +236,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response containing the [`type`](../../data-types.md#type) object with information about the SPA ||
+[`object`][1] | Root element of the response containing the object [`type`](../../data-types.md#type) with information about the SPA ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -207,8 +258,8 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `allowed_only_intranet_user` | Action allowed only for intranet users | Occurs if the user is not an intranet user ||
-|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have administrative rights in CRM or does not have read access permission to the SPA ||
-|| `400` | `0` | SPA not found | SPA with the provided `id` was not found ||
+|| `400` | `ACCESS_DENIED` | Access denied | Occurs if the user does not have administrative rights in CRM or does not have read access to the SPA ||
+|| `400` | `0` | SPA not found | SPA with the provided `id` not found ||
 |#
 
 {% include [system errors](./../../../../_includes/system-errors.md) %}

@@ -51,7 +51,7 @@ Possible values:
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.payment.update
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```http
     curl -X POST \
@@ -62,6 +62,59 @@ Possible values:
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.payment.update', {
+    			id: 1036,
+    			fields: {
+    				paid: "Y",
+    				paySystemId: 110,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.update',
+                [
+                    'id' => 1036,
+                    'fields' => [
+                        'paid' => "Y",
+                        'paySystemId' => 110,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating payment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -82,7 +135,7 @@ Possible values:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -117,8 +170,8 @@ HTTP status: **200**
       "finish":1716212944.578154,
       "duration":0.9266471862792969,
       "processing":0.6742370128631592,
-      "date_start":"2024-05-20T16:49:03+03:00",
-      "date_finish":"2024-05-20T16:49:04+03:00"
+      "date_start":"2024-05-20T16:49:03+02:00",
+      "date_finish":"2024-05-20T16:49:04+02:00"
    }
 }
 ```

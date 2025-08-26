@@ -1,14 +1,14 @@
-# Remove Product Item from Payment crm.item.payment.product.delete
+# Remove product item from payment crm.item.payment.product.delete
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: requires permission to modify the order from which the product item is being removed.
+> Who can execute the method: requires access permission to modify the order from which the product item is removed.
 
-This method removes a product item from the payment.
+The method removes a product item from the payment.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universa
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,6 +48,51 @@ Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universa
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.payment.product.delete', {
+    			id: 1194,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.product.delete',
+                [
+                    'id' => 1194,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting payment product: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.payment.product.delete', {
             id: 1194,
@@ -62,7 +107,7 @@ Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universa
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -83,7 +128,7 @@ Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universa
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -112,7 +157,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

@@ -1267,8 +1267,8 @@ Default is `N` ||
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"entityTypeId":2,"fields":{"title":"New deal (specifically for the REST methods example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":[1,2]}}' \
-        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.item.add
+        -d '{"entityTypeId":2,"fields":{"title":"New deal (specifically for the REST methods example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2}}' \
+        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.add
         ```
 
     - cURL (OAuth)
@@ -1277,11 +1277,11 @@ Default is `N` ||
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"entityTypeId":2,"fields":{"title":"New deal (specifically for the REST methods example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":[1,2]},"auth":"**put_access_token_here**"}' \
+        -d '{"entityTypeId":2,"fields":{"title":"New deal (specifically for the REST methods example)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2},"auth":"**put_access_token_here**"}' \
         https://**put_your_bitrix24_address**/rest/crm.item.add
         ```
 
-    - JS
+    - BX24.js
 
         ```js
         const formatDate = (date) => {
@@ -1349,10 +1349,7 @@ Default is `N` ||
                     utmSource: "google",
                     utmMedium: "CPC",
                     ufCrm_1721244707107: 1111.1,
-                    parentId1220: [
-                        1,
-                        2,
-                    ],
+                    parentId1220: 2,
                 },
             },
             (result) => 
@@ -1365,7 +1362,7 @@ Default is `N` ||
         );
         ```
 
-    - PHP
+    - PHP CRest
 
         ```php
         require_once('crest.php');
@@ -1402,10 +1399,7 @@ Default is `N` ||
                     'utmSource' => "google",
                     'utmMedium' => "CPC",
                     'ufCrm_1721244707107' => 1111.1,
-                    'parentId1220' => [
-                        1,
-                        2,
-                    ],
+                    'parentId1220' => 2,
                 ],
             ]
         );
@@ -1415,7 +1409,7 @@ Default is `N` ||
         echo '</PRE>';
         ```
 
-   - PHP (B24PhpSdk)
+   - PHP
 
         ```php
        try {
@@ -1681,7 +1675,7 @@ Default is `N` ||
                 "ufCrm44_1721812948498": 9999.9
             }
         }' \
-        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.item.add
+        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.add
         ```
 
     - cURL (OAuth)
@@ -1713,7 +1707,7 @@ Default is `N` ||
         https://**put_your_bitrix24_address**/rest/crm.item.add
         ```
 
-    - JS
+    - BX24.js
 
         ```js
         const greenPixelInBase64 = "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg==";
@@ -1749,7 +1743,7 @@ Default is `N` ||
         );
         ```
 
-    - PHP
+    - PHP CRest
 
         ```php
         require_once('crest.php');
@@ -1783,6 +1777,7 @@ Default is `N` ||
         ```
 
     {% endlist %}
+
 ## Response Processing
 
 HTTP Status: **200**

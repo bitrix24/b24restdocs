@@ -1,10 +1,10 @@
-# Get Smart Process Type by entityTypeId crm.type.getByEntityTypeId
+# Get the user type by entityTypeId crm.type.getByEntityTypeId
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user with administrative access to the SPA, or a user with read access to the SPA
 
-This method retrieves information about the SPA with the smart process type identifier `entityTypeId`.
+The method retrieves information about the SPA with the smart process type identifier `entityTypeId`.
 
 ## Method Parameters
 
@@ -19,7 +19,7 @@ This method retrieves information about the SPA with the smart process type iden
 
 ## Code Examples
 
-Retrieve information about the SPA with `entityTypeId = 2024`.
+Retrieve information about the smart process with `entityTypeId = 2024`.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -48,6 +48,57 @@ Retrieve information about the SPA with `entityTypeId = 2024`.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.type.getByEntityTypeId',
+    		{
+    			entityTypeId: 2024,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.type.getByEntityTypeId',
+                [
+                    'entityTypeId' => 2024,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            return;
+        }
+    
+        echo 'Success: ' . print_r($result->data(), true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting entity types: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.type.getByEntityTypeId',
         {
@@ -66,7 +117,7 @@ Retrieve information about the SPA with `entityTypeId = 2024`.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

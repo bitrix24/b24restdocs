@@ -2,9 +2,9 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to read the object to which the product items are linked
+> Who can execute the method: requires read access permission for the object to which the product items are linked
 
-The method retrieves information about a product item in the CRM.
+This method retrieves information about a product item in the CRM.
 
 ## Method Parameters
 
@@ -46,6 +46,51 @@ The method retrieves information about a product item in the CRM.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.productrow.get', {
+    			id: 17622,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.productrow.get',
+                [
+                    'id' => 17622,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product row: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.productrow.get', {
             id: 17622,
@@ -60,7 +105,7 @@ The method retrieves information about a product item in the CRM.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,40 +130,40 @@ HTTP status: **200**
 
 ```json
 {
-   "result": {
-      "productRow": {
-         "id": 17622,
-         "ownerId": 13141,
-         "ownerType": "D",
-         "productId": 9621,
-         "productName": "iphone 14",
-         "price": 79999,
-         "priceAccount": 79999,
-         "priceExclusive": 79999,
-         "priceNetto": 79999,
-         "priceBrutto": 79999,
-         "quantity": 11,
-         "discountTypeId": 2,
-         "discountRate": 0,
-         "discountSum": 0,
-         "taxRate": null,
-         "taxIncluded": "Y",
-         "customized": "Y",
-         "measureCode": 796,
-         "measureName": "pcs",
-         "sort": 10,
-         "xmlId": "sale_basket_8145",
-         "type": 4,
+   "result":{
+      "productRow":{
+         "id":17622,
+         "ownerId":13141,
+         "ownerType":"D",
+         "productId":9621,
+         "productName":"iphone 14",
+         "price":79999,
+         "priceAccount":79999,
+         "priceExclusive":79999,
+         "priceNetto":79999,
+         "priceBrutto":79999,
+         "quantity":11,
+         "discountTypeId":2,
+         "discountRate":0,
+         "discountSum":0,
+         "taxRate":null,
+         "taxIncluded":"Y",
+         "customized":"Y",
+         "measureCode":796,
+         "measureName":"pcs",
+         "sort":10,
+         "xmlId":"sale_basket_8145",
+         "type":4,
          "storeId": 19
       }
    },
-   "time": {
-      "start": 1716821358.26828,
-      "finish": 1716821358.701454,
-      "duration": 0.43317389488220215,
-      "processing": 0.240645170211792,
-      "date_start": "2024-05-27T17:49:18+02:00",
-      "date_finish": "2024-05-27T17:49:18+02:00"
+   "time":{
+      "start":1716821358.26828,
+      "finish":1716821358.701454,
+      "duration":0.43317389488220215,
+      "processing":0.240645170211792,
+      "date_start":"2024-05-27T17:49:18+02:00",
+      "date_finish":"2024-05-27T17:49:18+02:00"
    }
 }
 ```
@@ -133,7 +178,7 @@ HTTP status: **200**
 || **productRow**
 [`crm_item_product_row`](../../data-types.md#crm_item_product_row) | Object containing information about the product item ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -142,8 +187,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error": "NOT_FOUND",
-   "error_description": "Item not found"
+   "error":"NOT_FOUND",
+   "error_description":"Element not found"
 }
 ```
 

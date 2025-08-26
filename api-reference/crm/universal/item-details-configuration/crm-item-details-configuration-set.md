@@ -1,14 +1,14 @@
-# Set Parameters for CRM Item Detail Card Configuration
+# Set Parameters for CRM Item Card crm.item.details.configuration.set
 
 > Method name: **crm.item.details.configuration.set**
 >
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: permission checks during method execution depend on the provided data:
->   - Any user has the right to set their personal settings
+> Who can execute the method: access permission checks depend on the provided data:
+>   - Any user can set their personal settings
 >   - A user can set common and others' settings only if they are an administrator
 
-The method sets the settings for the detail card of a specific CRM object. It records personal settings for the specified user or common settings for all users.
+The method sets the settings for the card of a specific CRM object. It records personal settings for the specified user or common settings for all users.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}
 
@@ -75,7 +75,7 @@ Configuration of a specific field within the section.
 || **name***
 [`string`][1] | Field identifier. The list of available fields can be found using [`crm.item.fields`](../crm-item-fields.md) ||
 || **optionFlags**
-[`integer`][1] | Should the field always be displayed:
+[`integer`][1] | Should the field always be shown:
 - `1` — yes
 - `0` — no
 
@@ -96,19 +96,19 @@ By default, the value is `0` ||
 `CLIENT`
 `COMPANY`
 `CONTACT`
-`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters. For example `"US"`              | `Computed` ||
+`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters. For example, `"GB"`              | `Computed` ||
 || **isPayButtonVisible**
-[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Is the payment acceptance button visible.
+[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Is the payment acceptance button shown.
 
 Possible values:
-- `'true'` — visible
+- `'true'` — shown
 - `'false'` — hidden 
 | `'true'` ||
 || **isPaymentDocumentsVisible**
-[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Is the "Payment and Delivery" block visible.
+[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Is the "Payment and Delivery" block shown.
 
 Possible values: 
-- `'true'` — visible
+- `'true'` — shown
 - `'false'` — hidden 
 | `'true'` ||
 |#
@@ -119,7 +119,7 @@ The `extras` parameter depends on the CRM object.
 
 #|
 || **CRM Object** | **Name** | **Description** ||
-|| **SPA** | `categoryId` | Identifier of the SPA Sales Funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
+|| **SPA** | `categoryId` | Identifier of the SPA funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
 If not specified, the default funnel identifier for this SPA will be used ||
 || **Deal** | `dealCategoryId` | Identifier of the deal funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
@@ -137,20 +137,20 @@ Possible values:
 
 {% include [Examples Notice](../../../../_includes/examples.md) %}
 
-For a user with `id = 1` in contacts, set the following configuration for the item card:
+For the user with `id = 1`, set the following configuration for the item card
 
 - Section 1 - **Personal Data**
     - **First Name**
-        - Always show
+        - Show always
     - **Last Name**
-        - Always show
+        - Show always
     - **Middle Name**
     - **Date of Birth**
     - **Phone**
-        - Always show
-        - Default country: **United Kingdom(+1)**
+        - Show always
+        - Default country: **United Kingdom(+44)**
     - **Address**
-        - Always show
+        - Show always
         - Default address type: **Registration Address** (see [`crm.enum.addresstype`][2])
 - Section 2 - **Basic Information**
     - **Contact Type**
@@ -184,6 +184,168 @@ For a user with `id = 1` in contacts, set the following configuration for the it
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.details.configuration.set',
+    		{
+    			entityTypeId: 3,
+    			userId: 1,
+    			data: [
+    				{
+    					name: "section_1",
+    					title: "Personal Data",
+    					type: "section",
+    					elements: [
+    						{
+    							name: "NAME",
+    							optionFlags: 1,
+    						},
+    						{
+    							name: "LAST_NAME",
+    							optionFlags: 1,
+    						},
+    						{
+    							name: "SECOND_NAME",
+    						},
+    						{
+    							name: "BIRTHDATE",
+    						},
+    						{
+    							name: "PHONE",
+    							optionFlags: 1,
+    							options: {
+    								defaultCountry: "GB",
+    							},
+    						},
+    						{
+    							name: "ADDRESS",
+    							optionFlags: 1,
+    							options: {
+    								defaultAddressType: 4,
+    							},
+    						},
+    					],
+    				},
+    				{
+    					name: "section_2",
+    					title: "Basic Information",
+    					type: "section",
+    					elements: [
+    						{ name: "TYPE_ID" },
+    						{ name: "SOURCE_ID" },
+    						{ name: "POST" },
+    					],
+    				},
+    				{
+    					name: "section_3",
+    					title: "Additional Information",
+    					type: "section",
+    					elements: [
+    						{ name: "PHOTO" },
+    						{ name: "COMMENTS" },
+    						{ name: "UF_CRM_1720697698689" },
+    					],
+    				},
+    			],
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.details.configuration.set',
+                [
+                    'entityTypeId' => 3,
+                    'userId'       => 1,
+                    'data'         => [
+                        [
+                            'name'     => "section_1",
+                            'title'    => "Personal Data",
+                            'type'     => "section",
+                            'elements' => [
+                                [
+                                    'name'        => "NAME",
+                                    'optionFlags' => 1,
+                                ],
+                                [
+                                    'name'        => "LAST_NAME",
+                                    'optionFlags' => 1,
+                                ],
+                                [
+                                    'name' => "SECOND_NAME",
+                                ],
+                                [
+                                    'name' => "BIRTHDATE",
+                                ],
+                                [
+                                    'name'     => "PHONE",
+                                    'optionFlags' => 1,
+                                    'options'  => [
+                                        'defaultCountry' => "GB",
+                                    ],
+                                ],
+                                [
+                                    'name'     => "ADDRESS",
+                                    'optionFlags' => 1,
+                                    'options'  => [
+                                        'defaultAddressType' => 4,
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'name'     => "section_2",
+                            'title'    => "Basic Information",
+                            'type'     => "section",
+                            'elements' => [
+                                ['name' => "TYPE_ID"],
+                                ['name' => "SOURCE_ID"],
+                                ['name' => "POST"],
+                            ],
+                        ],
+                        [
+                            'name'     => "section_3",
+                            'title'    => "Additional Information",
+                            'type'     => "section",
+                            'elements' => [
+                                ['name' => "PHOTO"],
+                                ['name' => "COMMENTS"],
+                                ['name' => "UF_CRM_1720697698689"],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting details configuration: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
         BX24.callMethod(
@@ -262,7 +424,7 @@ For a user with `id = 1` in contacts, set the following configuration for the it
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -341,7 +503,7 @@ For a user with `id = 1` in contacts, set the following configuration for the it
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -371,7 +533,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -386,16 +548,16 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeID' is not defined | Required parameter `entityTypeId` is not provided ||
+|| Empty value | Parameter 'entityTypeID' is not defined | Required parameter `entityTypeId` not provided ||
 || Empty value | The entity type '`entityTypeName`' is not supported in the current context. | The method does not support this entity type ||
 || Empty value | Access denied. | The user does not have administrative rights ||
-|| Empty value | Parameter 'data' must be an array. | `data` is not an array ||
-|| Empty value | The data must be an indexed array. | `data` is not an indexed array ||
-|| Empty value | There are no data to write. | An empty array is provided in `data` ||
+|| Empty value | Parameter 'data' must be an array. | A non-array was provided in `data` ||
+|| Empty value | The data must be an indexed array. | A non-indexed array was provided in `data` ||
+|| Empty value | There are no data to write. | An empty array was provided in `data` ||
 || Empty value | Section at index `i` has type `data[i].type`. The expected type is 'section'. | The value in `data[i].type` is different from `'section'` || 
-|| Empty value | Section at index `i` does not have a name. | An empty value is provided in `data[i].name` ||
-|| Empty value | Section at index `i` does not have a title. | An empty value is provided in `data[i].title` ||
-|| Empty value | Element at index `j` in section at index `i` does not have a name. | An empty value is provided in `data[i].elements[j].name` ||
+|| Empty value | Section at index `i` does not have a name. | An empty value was provided in `data[i].name` ||
+|| Empty value | Section at index `i` does not have a title. | An empty value was provided in `data[i].title` ||
+|| Empty value | Element at index `j` in section at index `i` does not have a name. | An empty value was provided in `data[i].elements[j].name` ||
 |#
 
 {% include [System Errors](./../../../../_includes/system-errors.md) %}

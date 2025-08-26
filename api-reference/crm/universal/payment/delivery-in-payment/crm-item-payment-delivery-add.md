@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: requires permission to modify the order to which the delivery item is added
+> Who can execute the method: requires access permission to modify the order to which the delivery item is added.
 
 This method adds a delivery item to the payment.
 
@@ -37,7 +37,7 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.payment.delivery.add
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```http
     curl -X POST \
@@ -48,6 +48,53 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.payment.delivery.add', {
+    			paymentId: 1039,
+    			deliveryId: 4072
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.delivery.add',
+                [
+                    'paymentId'  => 1039,
+                    'deliveryId' => 4072,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding payment delivery: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -65,7 +112,7 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -97,8 +144,8 @@ HTTP status: **200**
       "finish":1716295804.17372,
       "duration":1.3357298374176025,
       "processing":0.8379831314086914,
-      "date_start":"2024-05-21T15:50:02+03:00",
-      "date_finish":"2024-05-21T15:50:04+03:00"
+      "date_start":"2024-05-21T15:50:02+02:00",
+      "date_finish":"2024-05-21T15:50:04+02:00"
    }
 }
 ```
@@ -111,7 +158,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

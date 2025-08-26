@@ -1,10 +1,10 @@
-# Get a List of Payment Product Items crm.item.payment.product.list
+# Get a list of payment product items crm.item.payment.product.list
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: read access permission for the payment order is required
 
-This method retrieves a list of product items (goods or services) associated with a specific payment.
+This method retrieves a list of product items (goods or services) for a specific payment.
 
 ## Method Parameters
 
@@ -14,11 +14,11 @@ This method retrieves a list of product items (goods or services) associated wit
 || **Name**
 `type` | **Description** ||
 || **paymentId***
-[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment.
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Payment identifier.
 Can be obtained using the [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) method ||
 || **filter***
 [`object`](../../../../data-types.md) | Object for filtering selected payment product items in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
- 
+
 Possible values for `field`:
 - `id`
 - `quantity`
@@ -26,19 +26,19 @@ Possible values for `field`:
 An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
 
 - `=` — equals, exact match (used by default)
-- `%` — LIKE, substring search. The % symbol should not be included in the filter value. The search looks for the substring in any position of the string.
+- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol should not be included in the filter value. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol should be included in the value. Examples: 
+- `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples: 
     - `"mol%"` — searching for values starting with "mol"
     - `"%mol"` — searching for values ending with "mol"
     - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol should be included in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The % symbol needs to be passed in the value. Examples:
     - `"mol%"` — searching for values not starting with "mol"
     - `"%mol"` — searching for values not ending with "mol"
     - `"%mol%"` — searching for values where the substring "mol" is not present in any position
@@ -46,16 +46,16 @@ An additional prefix can be specified for the key to clarify the filter behavior
 ||
 || **order**
 [`object`](../../../../data-types.md) | Object for sorting selected payment product items in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
- 
+
 Possible values for `field`:
 - `id`
 - `quantity`
- 
+
 Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
- ||
+||
 |#
 
 ## Code Examples
@@ -87,6 +87,92 @@ Possible values for `order`:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.item.payment.product.list',
+        {
+          paymentId: 1039,
+          filter: {
+            ">=quantity": 2,
+            "@id": [1195, 1196],
+          },
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.item.payment.product.list', {
+        paymentId: 1039,
+        filter: {
+          ">=quantity": 2,
+          "@id": [1195, 1196],
+        },
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.item.payment.product.list', {
+        paymentId: 1039,
+        filter: {
+          ">=quantity": 2,
+          "@id": [1195, 1196],
+        },
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.product.list',
+                [
+                    'paymentId' => 1039,
+                    'filter'    => [
+                        '>=quantity' => 2,
+                        '@id'        => [1195, 1196],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching payment product list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.payment.product.list', {
             paymentId: 1039,
@@ -105,7 +191,7 @@ Possible values for `order`:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -130,7 +216,7 @@ Possible values for `order`:
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -153,8 +239,8 @@ HTTP Status: **200**
       "finish":1716286140.802505,
       "duration":0.3125889301300049,
       "processing":0.053195953369140625,
-      "date_start":"2024-05-21T13:09:00+03:00",
-      "date_finish":"2024-05-21T13:09:00+03:00"
+      "date_start":"2024-05-21T13:09:00+02:00",
+      "date_finish":"2024-05-21T13:09:00+02:00"
    }
 }
 ```
@@ -178,7 +264,7 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../../../data-types.md) | Identifier of the product item in the payment ||
 || **paymentId**
-[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment ||
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Payment identifier ||
 || **quantity**
 [`double`](../../../../data-types.md) | Quantity of the product ||
 || **rowId**
@@ -187,7 +273,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

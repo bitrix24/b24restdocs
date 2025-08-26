@@ -48,6 +48,53 @@ This method changes the quantity of a product in the payment line item.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.payment.product.setQuantity', {
+    			id: 1195,
+    			quantity: 3
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.product.setQuantity',
+                [
+                    'id'       => 1195,
+                    'quantity' => 3,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting product quantity: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.payment.product.setQuantity', {
             id: 1195,
@@ -63,7 +110,7 @@ This method changes the quantity of a product in the payment line item.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -129,10 +176,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `0` | Line item not found ||
+|| `0` | Product line item not found ||
 || `0` | Access denied ||
 || `0` | Quantity of the product cannot be less than or equal to 0 ||
-|| `0` | Insufficient product quantity to add to the payment ||
+|| `0` | Insufficient product to add to payment ||
 || `100` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

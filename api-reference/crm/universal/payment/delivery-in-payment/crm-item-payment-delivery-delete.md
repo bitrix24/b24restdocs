@@ -2,9 +2,9 @@
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: requires permission to modify the order from which the delivery item is removed
+> Who can execute the method: requires access permission to modify the order from which the delivery item is removed.
 
-This method removes a delivery item from the payment.
+The method removes a delivery item from the payment.
 
 ## Method Parameters
 
@@ -34,7 +34,7 @@ Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-p
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.payment.delivery.delete
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```http
     curl -X POST \
@@ -45,6 +45,51 @@ Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-p
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.payment.delivery.delete', {
+    			id: 1199,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.delivery.delete',
+                [
+                    'id' => 1199,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting payment delivery: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -61,7 +106,7 @@ Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-p
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -82,7 +127,7 @@ Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-p
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -111,7 +156,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM object elements
+> Who can execute the method: any user with "read" access permission for CRM entity items
 
 The method returns information about an item based on the item identifier and the CRM object type identifier.
 
@@ -14,11 +14,11 @@ The method returns information about an item based on the item identifier and th
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose item we want to retrieve ||
+[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) for which we want to retrieve the item ||
 || **id***
-[`integer`][1] | Identifier of the item whose information we want to obtain.
+[`integer`][1] | Identifier of the item whose information we want to retrieve.
 
-Can be retrieved using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
+Can be obtained using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
 || **useOriginalUfNames**
 [`boolean`][1] | This parameter is used to control the format of custom field names in the response.   
 Possible values:
@@ -60,47 +60,28 @@ Get information about a lead with `id = 250`
 - JS
 
     ```js
-        BX24.callMethod(
-            'crm.item.get',
-            {
-                entityTypeId: 1,
-                id: 250,
-                useOriginalUfNames: 'N',
-            },
-            (result) => {
-                if (result.error())
-                {
-                    console.error(result.error());
-
-                    return;
-                }
-
-                console.info(result.data());
-            },
-        );
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.get',
+    		{
+    			entityTypeId: 1,
+    			id: 250,
+    			useOriginalUfNames: 'N',
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
     ```
 
 - PHP
 
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.item.get',
-        [
-            'entityTypeId' => 1,
-            'id' => 250,
-            'useOriginalUfNames' => 'N',
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
-  
     ```php        
     try {
         $entityTypeId = 1; // Example entity type ID
@@ -153,6 +134,48 @@ Get information about a lead with `id = 250`
     }
     ```
 
+- BX24.js
+
+    ```js
+        BX24.callMethod(
+            'crm.item.get',
+            {
+                entityTypeId: 1,
+                id: 250,
+                useOriginalUfNames: 'N',
+            },
+            (result) => {
+                if (result.error())
+                {
+                    console.error(result.error());
+
+                    return;
+                }
+
+                console.info(result.data());
+            },
+        );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.item.get',
+        [
+            'entityTypeId' => 1,
+            'id' => 250,
+            'useOriginalUfNames' => 'N',
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -191,7 +214,7 @@ HTTP status: **200**
             "companyTitle": "Administrative Company",
             "post": "Admin",
             "address": null,
-            "comments": "[B]Comment about the admin[/B]",
+            "comments": "[B]Comment about admin[/B]",
             "webformId": 0,
             "originatorId": null,
             "originId": null,
@@ -203,7 +226,7 @@ HTTP status: **200**
             "hasImol": "N",
             "login": null,
             "isReturnCustomer": "N",
-            "searchContent": "250 Lead #250 Adminov Admin Adminovich Administrative Company 999.90 US dollar 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In process Exhibition Exhibition about admins g Admin [O]Comment about the admin[/O] 321",
+            "searchContent": "250 Lead #250 Adminov Admin Adminovich Administrative Company 999.90 US dollar 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In progress Exhibition Exhibition about admins g Admin [O]Comment about admin[/O] 321",
             "isManualOpportunity": "Y",
             "movedBy": 1,
             "movedTime": "2024-07-22T17:00:08+02:00",
@@ -269,7 +292,7 @@ HTTP status: **200**
 {% note info " " %}
 
 By default, custom field names are returned in camelCase, e.g., `ufCrm2_1639669411830`.
-When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
+When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -291,7 +314,7 @@ HTTP status: **400**, **403**
 #|
 || **Status** | **Code**                          | **Description**                                     | **Value**                                                    ||
 || `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users            | User is not an intranet user                                 ||
-|| `400`      | `NOT_FOUND`                      | SPA not found                                      | Occurs when an invalid `entityTypeId` is passed            ||
+|| `400`      | `NOT_FOUND`                      | SPA not found                                      | Occurs when an invalid `entityTypeId` is passed             ||
 || `400`      | `NOT_FOUND`                      | Item not found                                    | Item with the provided `id` of type `entityTypeId` does not exist ||
 || `400`      | `ACCESS_DENIED`                  | You do not have permission to view this item      | User does not have read access permission for items of type `entityTypeId` ||
 |#

@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: requires permission to modify the order to which the product item is added
+> Who can execute the method: requires access permission to modify the order to which the product item is being added
 
 This method adds a product item to the payment.
 
@@ -54,6 +54,55 @@ Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/pro
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.payment.product.add', {
+    			paymentId: 1039,
+    			rowId: 17587,
+    			quantity: 2
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.product.add',
+                [
+                    'paymentId' => 1039,
+                    'rowId'     => 17587,
+                    'quantity'  => 2
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding payment product: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.payment.product.add', {
             paymentId: 1039,
@@ -70,7 +119,7 @@ Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/pro
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -103,8 +152,8 @@ HTTP status: **200**
       "finish":1716276649.261574,
       "duration":0.9120709896087646,
       "processing":0.6422691345214844,
-      "date_start":"2024-05-21T10:30:48+03:00",
-      "date_finish":"2024-05-21T10:30:49+03:00"
+      "date_start":"2024-05-21T10:30:48+02:00",
+      "date_finish":"2024-05-21T10:30:49+02:00"
    }
 }
 ```
@@ -117,7 +166,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../../../data-types.md) | Identifier of the product item in the payment ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

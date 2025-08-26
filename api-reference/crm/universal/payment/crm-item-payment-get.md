@@ -33,7 +33,7 @@ This method retrieves brief information about the payment.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.payment.get
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```http
     curl -X POST \
@@ -44,6 +44,51 @@ This method retrieves brief information about the payment.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.payment.get', {
+    			id: 1036,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.get',
+                [
+                    'id' => 1036,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting payment item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -60,7 +105,7 @@ This method retrieves brief information about the payment.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -81,7 +126,7 @@ This method retrieves brief information about the payment.
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -89,7 +134,7 @@ HTTP Status: **200**
       "id":1036,
       "accountNumber":"3653\/1",
       "paid": "Y",
-      "datePaid":"2024-05-20T12:32:02+03:00",
+      "datePaid":"2024-05-20T12:32:02+02:00",
       "empPaidId":1,
       "paySystemId":6,
       "sum":0,
@@ -101,8 +146,8 @@ HTTP Status: **200**
       "finish":1716203536.798211,
       "duration":0.38332509994506836,
       "processing":0.052394866943359375,
-      "date_start":"2024-05-20T14:12:16+03:00",
-      "date_finish":"2024-05-20T14:12:16+03:00"
+      "date_start":"2024-05-20T14:12:16+02:00",
+      "date_finish":"2024-05-20T14:12:16+02:00"
    }
 }
 ```
@@ -147,10 +192,9 @@ Possible values:
 [`string`](../../../../api-reference/data-types.md) | Name of the payment system ||
 |#
 
-
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

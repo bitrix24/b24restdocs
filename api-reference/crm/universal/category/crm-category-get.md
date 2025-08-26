@@ -1,14 +1,14 @@
-# Get Sales Funnel by Id crm.category.get
+# Get the funnel by Id crm.category.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access permission to the funnel "Read"
+> Who can execute the method: any user with "Read" access permission to the funnel
 
 This method retrieves information about the funnel (direction) with the identifier `id`.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -16,14 +16,14 @@ This method retrieves information about the funnel (direction) with the identifi
 || **entityTypeId***
 [`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which we want to get the funnel ||
 || **id***
-[`integer`][1] | Identifier of the funnel. It can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel with the [`crm.category.add`](./crm-category-add.md) method ||
+[`integer`][1] | Funnel identifier. Can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel using the [`crm.category.add`](./crm-category-add.md) method ||
 |#
 
 ## Code Examples
 
 How to get information about the funnel with `id` = `1`, located in deals.
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -50,6 +50,58 @@ How to get information about the funnel with `id` = `1`, located in deals.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.category.get',
+    		{
+    			entityTypeId: 2,
+    			id: 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.category.get',
+                [
+                    'entityTypeId' => 2,
+                    'id'          => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting category: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.category.get",
         {
@@ -70,7 +122,7 @@ How to get information about the funnel with `id` = `1`, located in deals.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -99,7 +151,7 @@ HTTP status: **200**
     "result": {
         "category": {
             "id": 1,
-            "name": "New Funnel #1",
+            "name": "New funnel #1",
             "sort": 200,
             "entityTypeId": 2,
             "isDefault": "N",
@@ -147,9 +199,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `NOT_FOUND` | SPA not found | Occurs when invalid values for `entityTypeId` are provided ||
+|| `NOT_FOUND` | SPA not found | Occurs with incorrect values for `entityTypeId` ||
 || `ENTITY_TYPE_NOT_SUPPORTED` | Entity type `{entityTypeName}` is not supported | Occurs if the CRM object does not support funnels ||
-|| `NOT_FOUND` | Element not found | Occurs if no funnels exist with the given parameters ||
+|| `NOT_FOUND` | Element not found | Occurs if no funnels exist with such parameters ||
 || `ACCESS_DENIED` | Access denied | Occurs if the user does not have permission to view elements of this funnel ||
 |#
 

@@ -2,13 +2,13 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator of the online store
+> Who can execute the method: online store administrator
 
 This method adds a binding of an order to a CRM object.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method adds a binding of an order to a CRM object.
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -36,13 +36,13 @@ Binding is only possible to a deal or invoice
 
 For deals, it can be obtained using the [crm.deal.list](../../deals/crm-deal-list.md) method.
 
-For invoices, it can be obtained using the [crm.invoice.list](../../outdated/invoice/crm-invoice-list.md) method
+For invoices, it can be obtained using the [crm.invoice.list](../../outdated/invoice/crm-invoice-list.md)
 ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 Add order binding to a deal:
 
@@ -58,7 +58,7 @@ Add order binding to a deal:
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.orderentity.add
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```bash
     curl -X POST \
@@ -69,6 +69,31 @@ Add order binding to a deal:
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.orderentity.add",
+    		{
+    			fields: {
+    				orderId: 5125,
+    				ownerId: 6933,
+    				ownerTypeId: 2
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -100,7 +125,7 @@ Add order binding to a deal:
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -125,7 +150,7 @@ Add order binding to a deal:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -156,14 +181,14 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **dealOrder**
-[`crm_orderentity`](../../data-types.md#crm_orderentity) | Object containing information about the created binding ||
+[`crm_orderentity`](../../data-types.md#crm_orderentity) | Object with information about the created binding ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

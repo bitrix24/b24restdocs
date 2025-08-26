@@ -1,8 +1,8 @@
-# Delete Product Row from CRM Object crm.item.productrow.delete
+# Delete product row from CRM object crm.item.productrow.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the CRM object from which the product row is being deleted.
+> Who can execute the method: access permission to modify the CRM object from which the product row is being deleted is required.
 
 This method removes a product row from the CRM object.
 
@@ -46,6 +46,51 @@ This method removes a product row from the CRM object.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.productrow.delete', {
+    			id: 17655,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.productrow.delete',
+                [
+                    'id' => 17655,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting product row: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.productrow.delete', {
             id: 17655,
@@ -60,7 +105,7 @@ This method removes a product row from the CRM object.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -81,7 +126,7 @@ This method removes a product row from the CRM object.
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -105,12 +150,12 @@ HTTP Status: **200**
 || **result**
 [`any`](../../../data-types.md) | Result of the operation. The value is always null ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

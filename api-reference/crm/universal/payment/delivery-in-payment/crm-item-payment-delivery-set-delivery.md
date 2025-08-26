@@ -1,10 +1,10 @@
-# Reassign Delivery Item to Another Document crm.item.payment.delivery.setDelivery
+# Reassign the delivery item to another document crm.item.payment.delivery.setDelivery
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: access permission to modify the payment order is required
 
-This method reassigns a delivery item to another delivery document.
+This method reassigns the delivery item to another delivery document.
 
 ## Method Parameters
 
@@ -38,7 +38,7 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.payment.delivery.setDelivery
     ```
 
-- cURL (OAuth) 
+- cURL (OAuth)
 
     ```http
     curl -X POST \
@@ -49,6 +49,53 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.payment.delivery.setDelivery', {
+    			id: 1201,
+    			deliveryId: 4073,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.delivery.setDelivery',
+                [
+                    'id'         => 1201,
+                    'deliveryId' => 4073,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting delivery for payment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -66,7 +113,7 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -112,7 +159,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../../data-types.md) | Result of the operation ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

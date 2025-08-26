@@ -4,17 +4,17 @@
 >
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: access permission checks depend on the provided data:
+> Who can execute the method: permission checks during method execution depend on the provided data:
 >   - Any user has the right to reset their personal settings
 >   - A user can reset shared and others' settings only if they are an administrator
 
-This method resets the item card settings to their default values. It removes the personal settings of the specified user or the shared settings defined for all users.
+The method resets the item card settings to their default values. It removes the personal settings of the specified user or the shared settings defined for all users.
 
-{% include [Extras Notice](./_includes/extras_notice.md) %}
+{% include [Notice about extras](./_includes/extras_notice.md) %}
 
 ## Method Parameters
 
-{% include [Required Parameters Note](../../../../_includes/required.md) %}
+{% include [Footnote about required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,7 +33,7 @@ Required only when requesting personal settings
 - `'P'` — personal settings
 - `'C'` — shared settings
 
-The default value is `'P'` ||
+By default, the value is `'P'` ||
 || **extras**
 [`object`][1] | Additional parameters. Possible values and their structure are described [below](#extras) ||
 |#
@@ -44,10 +44,10 @@ The `extras` parameter depends on the CRM object.
 
 #|
 || **CRM Object** | **Name** | **Description** ||
-|| **SPA** | `categoryId` | Identifier of the sales funnel for SPAs. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
+|| **SPA** | `categoryId` | Identifier of the SPA funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
 If not specified, the default funnel identifier for this SPA will be used ||
-|| **Deal** | `dealCategoryId` | Identifier of the sales funnel for deals. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
+|| **Deal** | `dealCategoryId` | Identifier of the deal funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
 If not specified, the default funnel identifier for deals will be used ||
 || **Lead** | `leadCustomerType` | Type of leads. 
@@ -60,7 +60,7 @@ Possible values:
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 Reset the shared configuration for deal cards in the funnel with `id = 9` for the user with `id = 1`
 
@@ -89,6 +89,67 @@ Reset the shared configuration for deal cards in the funnel with `id = 9` for th
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.details.configuration.reset',
+    		{
+    			entityTypeId: 2,
+    			userId: 1,
+    			scope: "C",
+    			extras: {
+    				dealCategoryId: 9,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.details.configuration.reset',
+                [
+                    'entityTypeId' => 2,
+                    'userId'       => 1,
+                    'scope'        => "C",
+                    'extras'       => [
+                        'dealCategoryId' => 9,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            return;
+        }
+    
+        echo 'Success: ' . print_r($result->data(), true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error resetting details configuration: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
         BX24.callMethod(
             'crm.item.details.configuration.reset',
             {
@@ -112,7 +173,7 @@ Reset the shared configuration for deal cards in the funnel with `id = 9` for th
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -161,7 +222,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | Root element of the response. Returns `true` if the settings were successfully reset ||
+[`boolean`][1] | Root element of the response. Returns `true` in case of successful settings reset ||
 || **time**
 [`time`][1] | Information about the request execution time ||
 |#
@@ -177,7 +238,7 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 #|
@@ -187,7 +248,7 @@ HTTP status: **400**
 || Empty value | Access denied. | The user does not have administrative rights ||
 |#
 
-{% include [System Errors](./../../../../_includes/system-errors.md) %}
+{% include [system errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

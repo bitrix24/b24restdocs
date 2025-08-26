@@ -4,13 +4,13 @@
 >
 > Who can execute the method: Administrator
 
-This method forcibly sets a common detail for all users, removing their personal detail settings.
+This method forcibly sets a common detail for all users, removing their personal detail configuration.
 
-{% include [Extras Notice](./_includes/extras_notice.md) %}
+{% include [Notice about extras](./_includes/extras_notice.md) %}
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,10 +29,10 @@ The `extras` parameter depends on the CRM object.
 || **CRM Object** | **Name** | **Description** ||
 || **SPA** | `categoryId` | Identifier of the SPA funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
-If not specified, the default funnel identifier for this SPA is used. ||
+If not specified, the default funnel identifier for this SPA is used ||
 || **Deal** | `dealCategoryId` | Identifier of the deal funnel. Can be obtained using [`crm.category.list`](./../category/crm-category-list.md).
 
-If not specified, the default funnel identifier for deals is used. ||
+If not specified, the default funnel identifier for deals is used ||
 || **Lead** | `leadCustomerType` | Type of leads. 
 
 Possible values:
@@ -43,7 +43,7 @@ Possible values:
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 Set a common detail for deals in the funnel with `id = 9`
 
@@ -72,6 +72,63 @@ Set a common detail for deals in the funnel with `id = 9`
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.details.configuration.forceCommonScopeForAll',
+    		{
+    			entityTypeId: 2,
+    			extras: {
+    				dealCategoryId: 9,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.details.configuration.forceCommonScopeForAll',
+                [
+                    'entityTypeId' => 2,
+                    'extras' => [
+                        'dealCategoryId' => 9,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            return;
+        }
+    
+        echo 'Success: ' . print_r($result->data(), true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.details.configuration.forceCommonScopeForAll',
         {
@@ -93,7 +150,7 @@ Set a common detail for deals in the funnel with `id = 9`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -142,7 +199,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`][1] | Root element of the response. Returns `true` on success ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`][1] | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -156,18 +213,18 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeID' is not defined | Required parameter `entityTypeId` is not provided ||
-|| Empty value | The entity type '`entityTypeName`' is not supported in the current context. | The method does not support this entity type ||
+|| Empty value | Parameter 'entityTypeID' is not defined | Required parameter `entityTypeId` not provided ||
+|| Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type ||
 || Empty value | Access denied. | The user does not have administrative rights ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

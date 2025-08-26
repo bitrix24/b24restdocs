@@ -1,10 +1,10 @@
-# Get Unpaid Product Items of CRM Object crm.item.productrow.getAvailableForPayment
+# Get Unpaid Product Rows of CRM Object crm.item.productrow.getAvailableForPayment
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires read access permission for the CRM object whose product items are being selected.
+> Who can execute the method: requires read access permission for the CRM object whose product rows are being selected.
 
-The method retrieves product items of the CRM object for which the client has not yet been billed.
+The method retrieves product rows of the CRM object for which the client has not yet been billed.
 
 ## Method Parameters
 
@@ -48,6 +48,53 @@ The method retrieves product items of the CRM object for which the client has no
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.item.productrow.getAvailableForPayment', {
+    			ownerType: 'D',
+    			ownerId: 13144,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.productrow.getAvailableForPayment',
+                [
+                    'ownerType' => 'D',
+                    'ownerId'   => 13144,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting available product rows for payment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.item.productrow.getAvailableForPayment', {
             ownerType: 'D',
@@ -63,7 +110,7 @@ The method retrieves product items of the CRM object for which the client has no
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,7 +132,7 @@ The method retrieves product items of the CRM object for which the client has no
 
 ## Successful Response
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -160,14 +207,14 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **productRows**
-[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) | Array of objects containing information about all product items of the CRM object for which the client has not yet been billed ||
+[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) | Array of objects containing information about all product rows of the CRM object for which the client has not yet been billed ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

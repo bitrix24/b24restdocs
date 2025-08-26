@@ -4,11 +4,11 @@
 >
 > Who can execute the method: any user with administrative access to the CRM section
 
-This method updates the sales funnel (direction) with the identifier `id`, assigning it new field values from `fields`. If any field is missing in `fields`, its value will remain unchanged.
+This method updates the funnel (direction) with the identifier `id`, setting new values for the fields from `fields`. If any field is missing in `fields`, its value will remain unchanged.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,7 +18,7 @@ This method updates the sales funnel (direction) with the identifier `id`, assig
 || **id***
 [`integer`][1] | Identifier of the funnel. It can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel with the [`crm.category.add`](./crm-category-add.md) method ||
 || **fields***
-[`object`][1]  |  Field values (detailed description provided [below](#parametr-fields)) for updating the funnel fields in the following structure:
+[`object`][1]  |  Field values (detailed description provided [below](#parametr-fields)) for updating the funnel fields in the form of a structure:
 
 ```js
 fields: {
@@ -37,7 +37,7 @@ fields: {
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`][1] | Name of the funnel. Possible name criteria:
+[`string`][1] | Name of the funnel. The name can be:
 - length cannot exceed `255` characters
 - cannot be empty
 - cannot consist solely of spaces, tabs, etc.
@@ -46,7 +46,7 @@ Defaults to `-` ||
 || **sort**
 [`integer`][1] | Sort index. 
 
-Cannot be negative. If a value less than zero is passed to `sort`, it will be ignored and `sort` will be set to `0`.
+Cannot be negative. If a value less than zero is passed to `sort`, it will be ignored and `sort = 0` will be set.
 
 Defaults to `500` || 
 || **isDefault**
@@ -58,15 +58,14 @@ Defaults to `N`
 
 In deals, the `isDefault` field is not available for modification.
 
-You can check if a field is immutable using the [`crm.category.fields`](./crm-category-fields.md) method. Immutable fields have the property `isReadonly = true` ||
+You can find out if the field is immutable using the [`crm.category.fields`](./crm-category-fields.md) method. Immutable fields have the property `isReadonly = true` ||
 |#
-
 
 ## Code Examples
 
 How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -91,6 +90,66 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.category.update",
+    		{
+    			entityTypeId: 1152,
+    			id: 4,
+    			fields: {
+    				name: "New Funnel Name",
+    				sort: 1000,
+    				isDefault: "Y",
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.category.update',
+                [
+                    'entityTypeId' => 1152,
+                    'id'          => 4,
+                    'fields'      => [
+                        'name'     => 'New Funnel Name',
+                        'sort'     => 1000,
+                        'isDefault' => 'Y',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating category: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -118,7 +177,7 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -145,7 +204,7 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -178,17 +237,17 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response. Contains the [`category`](./crm-category-add.md#category) object ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "SPA not found"
+    "error_description": "Smart process not found"
 }
 ```
 
@@ -198,10 +257,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `NOT_FOUND` | SPA not found | Occurs with incorrect values for `entityTypeId` ||
+|| `NOT_FOUND` | Smart process not found | Occurs with incorrect values for `entityTypeId` ||
 || `ENTITY_TYPE_NOT_SUPPORTED` | Entity type `{entityTypeName}` is not supported | Occurs if the CRM object does not support funnels ||
 || `NOT_FOUND` | Element not found | Occurs if the funnel being updated does not exist ||
-|| `ACCESS_DENIED` | Access denied | Occurs if the user updating the funnel does not have sufficient permissions ||
+|| `ACCESS_DENIED` | Access denied | Occurs if the user updating the funnel does not have sufficient rights ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
