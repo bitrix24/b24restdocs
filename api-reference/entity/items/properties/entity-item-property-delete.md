@@ -1,8 +1,8 @@
-# Delete Additional Property of Storage Items entity.item.property.delete
+# Delete additional property of storage items entity.item.property.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly
 
 {% endnote %}
 
@@ -33,13 +33,60 @@ The method deletes additional properties of storage items. The user must have ma
 [`string`](../../../data-types.md) | Required. String identifier of the property. ||
 |#
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.item.property.delete',
+    		{
+    			ENTITY: 'menu_new',
+    			PROPERTY: 'new_prop'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.item.property.delete',
+                [
+                    'ENTITY'   => 'menu_new',
+                    'PROPERTY' => 'new_prop',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting entity item property: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -59,9 +106,9 @@ The method deletes additional properties of storage items. The user must have ma
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
-## Response on Success
+## Response on success
 
 > 200 OK
 ```json

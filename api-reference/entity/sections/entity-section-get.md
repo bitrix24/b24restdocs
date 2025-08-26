@@ -11,8 +11,8 @@ Some data may be missing — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- examples are missing
+- parameter types not specified
+- examples missing
 - response in case of error is absent
 
 {% endnote %}
@@ -53,7 +53,7 @@ The user must have at least read access permission (**R**) to the storage.
 - **DESC** - descending.
 The default value `Array("SORT"=>"ASC")` means that the result will be sorted in ascending order. If an empty array `Array()` is specified, the result will not be sorted. ||
 || **FILTER**
-[`unknown`](../../data-types.md) | An array in the form `array("filter field"=>"value" [, ...])`. The `filter field` can take the following values:
+[`unknown`](../../data-types.md) | An array in the form `array("filter_field"=>"value" [, ...])`. `Filter field` can take the following values:
 - **ACTIVE** - filter by activity (Y\|N);
 - **NAME** - by name (can search by pattern [%_]);
 - **CODE** - by symbolic code (by pattern [%_]);
@@ -69,13 +69,66 @@ All filterable fields can contain a type of filter check before the name. Option
 || **start** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.section.get',
+    		{
+    			ENTITY: 'menu_new',
+    			SORT: {
+    				'NAME': 'ASC'
+    			}
+    		}
+    	);
+    	
+    	const sections = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.section.get',
+                [
+                    'ENTITY' => 'menu_new',
+                    'SORT'   => [
+                        'NAME' => 'ASC'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        $sections = $result->data();
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting entity sections: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -100,7 +153,7 @@ All filterable fields can contain a type of filter check before the name. Option
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}
 
 ## Response in case of success
 

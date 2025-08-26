@@ -1,4 +1,4 @@
-# Get Storage Parameters or List of All Storages entity.get
+# Get storage parameters or list of all storages entity.get
 
 {% note warning "We are still updating this page" %}
 
@@ -10,8 +10,8 @@ Some data may be missing — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameter specifications are missing
-- examples are absent
+- required parameters are not specified
+- examples are missing
 - response in case of error is missing
 
 {% endnote %}
@@ -22,7 +22,7 @@ Some data may be missing — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The `entity.get` method retrieves the storage parameters or a list of all storages of the application.
+The `entity.get` method retrieves the storage parameters or a list of all application storages.
 
 ## Parameters
 
@@ -39,6 +39,46 @@ The `entity.get` method retrieves the storage parameters or a list of all storag
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod('entity.get');
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.get',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling entity.get: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod('entity.get');
@@ -57,6 +97,55 @@ Example of correctly retrieving a list of all available storages:
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.get',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info('List of created storages:', result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.get',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'List of created storages: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling entity.get: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -78,7 +167,7 @@ Example of correctly retrieving a list of all available storages:
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
-## Response on Success
+## Response in case of success
 
 > 200 OK
 ```json

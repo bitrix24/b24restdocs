@@ -33,13 +33,61 @@ The method `entity.item.property.get` retrieves a list of additional properties 
 [`string`](../../../data-types.md) | String identifier of the required property. ||
 |#
 
-{% include [Notes on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.item.property.get',
+    		{
+    			ENTITY: 'menu_new'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.item.property.get',
+                [
+                    'ENTITY' => 'menu_new',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting entity item properties: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -61,7 +109,7 @@ The method `entity.item.property.get` retrieves a list of additional properties 
 
 {% endlist %}
 
-{% include [Notes on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 ## Response in case of success
 

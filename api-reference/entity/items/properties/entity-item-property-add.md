@@ -1,8 +1,8 @@
-# Add Additional Property to Storage Elements entity.item.property.add
+# Add Additional Property to Storage Elements `entity.item.property.add`
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will complete it soon.
 
 - edits needed for writing standards
 - examples are missing
-- no response in case of error
+- response in case of error is absent
 
 {% endnote %}
 
@@ -38,13 +38,67 @@ The method `entity.item.property.add` adds an additional property to storage ele
 [`unknown`](../../../data-types.md) | Required. Type of the property (**S** - string, **N** - number, **F** - file). ||
 |#
 
-{% include [Notes on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.item.property.add',
+    		{
+    			ENTITY: 'menu_new',
+    			PROPERTY: 'new_prop',
+    			NAME: 'New Property',
+    			TYPE: 'S'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('Created element with ID:', result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.item.property.add',
+                [
+                    'ENTITY'   => 'menu_new',
+                    'PROPERTY' => 'new_prop',
+                    'NAME'     => 'New Property',
+                    'TYPE'     => 'S',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding entity item property: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -66,7 +120,7 @@ The method `entity.item.property.add` adds an additional property to storage ele
 
 {% endlist %}
 
-{% include [Notes on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 ## Response on Success
 

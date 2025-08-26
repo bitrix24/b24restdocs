@@ -1,4 +1,4 @@
-# Delete Storage entity.delete
+# Delete storage entity.delete
 
 {% note warning "We are still updating this page" %}
 
@@ -11,7 +11,7 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
-- no response in case of error
+- response in case of error is missing
 
 {% endnote %}
 
@@ -31,13 +31,58 @@ The `entity.delete` method removes the storage. The user must have management ri
 [`string`](../../data-types.md) | Required. String identifier of the storage to be deleted. ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.delete',
+    		{
+    			'ENTITY': 'test'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.delete',
+                [
+                    'ENTITY' => 'test'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting entity: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -50,9 +95,9 @@ The `entity.delete` method removes the storage. The user must have management ri
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-## Response on Success
+## Response on success
 
 > 200 OK
 ```json

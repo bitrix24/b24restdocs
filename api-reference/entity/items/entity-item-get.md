@@ -24,7 +24,7 @@ Some data may be missing — we will fill it in shortly.
 
 ## Description
 
-The `entity.item.get` method retrieves a list of storage items. It is a list method.
+The method `entity.item.get` retrieves a list of storage items. It is a list method.
 
 The user must have at least read access permission (**R**) to the storage.
 
@@ -38,13 +38,77 @@ The user must have at least read access permission (**R**) to the storage.
 || **start** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.item.get',
+    		{
+    			ENTITY: 'menu',
+    			SORT: {
+    				DATE_ACTIVE_FROM: 'ASC',
+    				ID: 'ASC'
+    			},
+    			FILTER: {
+    				'>=DATE_ACTIVE_FROM': dateStart,
+    				'<DATE_ACTIVE_FROM': dateFinish
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	this.buildData(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.item.get',
+                [
+                    'ENTITY' => 'menu',
+                    'SORT' => [
+                        'DATE_ACTIVE_FROM' => 'ASC',
+                        'ID' => 'ASC'
+                    ],
+                    'FILTER' => [
+                        '>=DATE_ACTIVE_FROM' => $dateStart,
+                        '<DATE_ACTIVE_FROM' => $dateFinish
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        $this->buildData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting entity items: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -82,6 +146,77 @@ The user must have at least read access permission (**R**) to the storage.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.item.get',
+    		{
+    			ENTITY: 'menu',
+    			SORT: {
+    				DATE_ACTIVE_FROM: 'ASC',
+    				ID: 'ASC'
+    			},
+    			FILTER: {
+    				'1':{
+    					'LOGIC':'OR',
+    					'PROPERTY_MYPROP1':'value1',
+    					'PROPERTY_MYPROP2':'value2'
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	// Your required data processing logic
+    	processResult(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.item.get',
+                [
+                    'ENTITY' => 'menu',
+                    'SORT' => [
+                        'DATE_ACTIVE_FROM' => 'ASC',
+                        'ID' => 'ASC'
+                    ],
+                    'FILTER' => [
+                        '1' => [
+                            'LOGIC' => 'OR',
+                            'PROPERTY_MYPROP1' => 'value1',
+                            'PROPERTY_MYPROP2' => 'value2'
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting entity items: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'entity.item.get',
         {
@@ -103,7 +238,7 @@ The user must have at least read access permission (**R**) to the storage.
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}
 
 ## Response in case of success
 

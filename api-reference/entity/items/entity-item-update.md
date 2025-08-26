@@ -1,8 +1,8 @@
-# Update Storage Item entity.item.update
+# Update storage item entity.item.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ The method `entity.item.update` updates a storage item. The user must have at le
 || **NAME**
 [`string`](../../data-types.md) | Name of the item. ||
 || **ACTIVE**
-[`unknown`](../../data-types.md) | Active flag of the item (Y\|N). ||
+[`unknown`](../../data-types.md) | Flag indicating if the item is active (Y\|N). ||
 || **DATE_ACTIVE_FROM**
 [`unknown`](../../data-types.md) | Date when the item becomes active. ||
 || **DATE_ACTIVE_TO**
@@ -55,16 +55,85 @@ The method `entity.item.update` updates a storage item. The user must have at le
 || **SECTION**
 [`unknown`](../../data-types.md) | Identifier of the storage section. ||
 || **PROPERTY_VALUES^*^**
-[`unknown`](../../data-types.md) | Required. Associative list of property values of the item. Storage properties are created using [entity.item.property.add](./properties/entity-item-property-add.md). ||
+[`unknown`](../../data-types.md) | Required. Associative list of property values for the item. Storage properties are created using [entity.item.property.add](./properties/entity-item-property-add.md). ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.item.update',
+    		{
+    			ENTITY: 'menu_new',
+    			ID: 842,
+    			DATE_ACTIVE_FROM: new Date(),
+    			DETAIL_PICTURE: '',
+    			NAME: 'Goodbye Cruel World',
+    			PROPERTY_VALUES: {
+    				test: 11,
+    				test1: 22,
+    				test_file: ''
+    			},
+    			SECTION: 219
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	// Your required data processing logic
+    	processResult(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.item.update',
+                [
+                    'ENTITY'          => 'menu_new',
+                    'ID'              => 842,
+                    'DATE_ACTIVE_FROM' => new DateTime(),
+                    'DETAIL_PICTURE'  => '',
+                    'NAME'            => 'Goodbye Cruel World',
+                    'PROPERTY_VALUES' => [
+                        'test'     => 11,
+                        'test1'    => 22,
+                        'test_file' => ''
+                    ],
+                    'SECTION'         => 219
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating entity item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -93,9 +162,9 @@ The method `entity.item.update` updates a storage item. The user must have at le
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}
 
-## Response on Success
+## Response on success
 
 > 200 OK
 ```json

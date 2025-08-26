@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing here — we will complete it shortly.
 - edits needed for writing standards
 - parameter types not specified
 - examples missing
-- response in case of error is absent
+- error response missing
 
 {% endnote %}
 
@@ -35,16 +35,61 @@ To change the set of access permissions, the user must have management rights (*
 [`string`](../../data-types.md) | Required. String identifier of the storage being updated. ||
 || **ACCESS**
 [`unknown`](../../data-types.md) | Description of the new set of access permissions for the storage. 
-It should be in the form of an associative array, where the keys are the identifiers of access permissions, and the values are **R** (read), **W** (write), or **X** (manage). ||
+It should be in the form of an associative array, where the keys are the identifiers of the access permissions, and the values are **R** (read), **W** (write), or **X** (manage). ||
 |#
 
-{% include [Notes on Parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.rights',
+    		{
+    			'ENTITY': 'dish'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.rights',
+                [
+                    'ENTITY' => 'dish'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling entity rights: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -57,7 +102,7 @@ It should be in the form of an associative array, where the keys are the identif
 
 {% endlist %}
 
-{% include [Notes on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Response
 

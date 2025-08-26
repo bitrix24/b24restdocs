@@ -1,8 +1,8 @@
-# Add Storage Section entity.section.add
+# Add entity.section.add storage section
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `entity.section.add` adds a storage section. The user must have at least write access (**W**) to the storage.
+The `entity.section.add` method adds a storage section. The user must have at least write access permission (**W**) in the storage.
 
 ## Parameters
 
@@ -35,9 +35,9 @@ The method `entity.section.add` adds a storage section. The user must have at le
 || **DESCRIPTION**
 [`unknown`](../../data-types.md) | Description of the section. ||
 || **ACTIVE**
-[`unknown`](../../data-types.md) | Flag indicating the section's activity (Y\|N). ||
+[`unknown`](../../data-types.md) | Flag indicating if the section is active (Y\|N). ||
 || **SORT**
-[`unknown`](../../data-types.md) | Sorting parameter of the section. ||
+[`unknown`](../../data-types.md) | Sorting parameter for the section. ||
 || **PICTURE**
 [`unknown`](../../data-types.md) | Picture of the section. ||
 || **DETAIL_PICTURE**
@@ -46,13 +46,60 @@ The method `entity.section.add` adds a storage section. The user must have at le
 [`unknown`](../../data-types.md) | Identifier of the parent section. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.section.add',
+    		{
+    			ENTITY: 'menu_new',
+    			'NAME': 'Test Section'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.section.add',
+                [
+                    'ENTITY' => 'menu_new',
+                    'NAME'   => 'Test Section',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding entity section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -72,9 +119,9 @@ The method `entity.section.add` adds a storage section. The user must have at le
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}
 
-## Response on Success
+## Response on success
 
 > 200 OK
 ```json

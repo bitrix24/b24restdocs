@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `entity.item.add` adds a storage element. The user must have at least write access (**W**) to the storage.
+The method `entity.item.add` adds a storage element. The user must have at least write access permission (**W**) in the storage.
 
 ## Parameters
 
@@ -35,9 +35,9 @@ The method `entity.item.add` adds a storage element. The user must have at least
 || **ACTIVE**
 [`unknown`](../../data-types.md) | Flag indicating the element's activity (Y\|N). ||
 || **DATE_ACTIVE_FROM**
-[`unknown`](../../data-types.md) | Start date of the element's activity. ||
+[`unknown`](../../data-types.md) | Date when the element becomes active. ||
 || **DATE_ACTIVE_TO**
-[`unknown`](../../data-types.md) | End date of the element's activity. ||
+[`unknown`](../../data-types.md) | Date when the element is no longer active. ||
 || **SORT**
 [`unknown`](../../data-types.md) | Sorting weight of the element. ||
 || **PREVIEW_PICTURE**
@@ -56,13 +56,80 @@ The method `entity.item.add` adds a storage element. The user must have at least
 [`unknown`](../../data-types.md) | Associative list of property values for the element. Storage properties are created using [entity.item.property.add](./properties/entity-item-property-add.md). ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter note](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'entity.item.add',
+    		{
+    			ENTITY: 'menu_new',
+    			DATE_ACTIVE_FROM: new Date(),
+    			DETAIL_PICTURE: '',
+    			NAME: 'Hello, world!',
+    			PROPERTY_VALUES: {
+    				test: 11,
+    				test1: 22,
+    				test_file: ''
+    			},
+    			SECTION: 219
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	// Your required data processing logic
+    	processResult(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'entity.item.add',
+                [
+                    'ENTITY'          => 'menu_new',
+                    'DATE_ACTIVE_FROM' => new DateTime(),
+                    'DETAIL_PICTURE'  => '',
+                    'NAME'            => 'Hello, world!',
+                    'PROPERTY_VALUES' => [
+                        'test'     => 11,
+                        'test1'    => 22,
+                        'test_file' => ''
+                    ],
+                    'SECTION'         => 219
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding entity item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -90,7 +157,7 @@ The method `entity.item.add` adds a storage element. The user must have at least
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Example note](../../../_includes/examples.md) %}
 
 ## Response on Success
 
