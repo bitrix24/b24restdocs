@@ -55,24 +55,6 @@ The list of fields for filtering can be found using the method [crm.status.field
 
 {% list tabs %}
 
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.status.list",
-        {
-            order: { SORT: "ASC" },
-            filter: { ENTITY_ID: "DEAL_STAGE" }
-        },
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
-
 - cURL (Webhook)
 
     ```bash
@@ -93,7 +75,103 @@ The list of fields for filtering can be found using the method [crm.status.field
     https://**put_your_bitrix24_address**/rest/crm.status.list
     ```
 
+- JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.status.list',
+        {
+          order: { SORT: "ASC" },
+          filter: { ENTITY_ID: "DEAL_STAGE" }
+        }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.status.list', {
+        order: { SORT: "ASC" },
+        filter: { ENTITY_ID: "DEAL_STAGE" }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('crm.status.list', {
+        order: { SORT: "ASC" },
+        filter: { ENTITY_ID: "DEAL_STAGE" }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.status.list',
+                [
+                    'order' => ['SORT' => 'ASC'],
+                    'filter' => ['ENTITY_ID' => 'DEAL_STAGE'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching status list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.status.list",
+        {
+            order: { SORT: "ASC" },
+            filter: { ENTITY_ID: "DEAL_STAGE" }
+        },
+        function(result) {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -115,7 +193,7 @@ The list of fields for filtering can be found using the method [crm.status.field
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -204,8 +282,8 @@ HTTP status: **200**
             "ID": "111",
             "ENTITY_ID": "DEAL_STAGE",
             "STATUS_ID": "WON",
-            "NAME": "Deal Won",
-            "NAME_INIT": "Deal Won",
+            "NAME": "Deal Successful",
+            "NAME_INIT": "Deal Successful",
             "SORT": "60",
             "SYSTEM": "Y",
             "CATEGORY_ID": null,
@@ -220,8 +298,8 @@ HTTP status: **200**
             "ID": "113",
             "ENTITY_ID": "DEAL_STAGE",
             "STATUS_ID": "LOSE",
-            "NAME": "Deal Lost",
-            "NAME_INIT": "Deal Lost",
+            "NAME": "Deal Failed",
+            "NAME_INIT": "Deal Failed",
             "SORT": "70",
             "SYSTEM": "Y",
             "CATEGORY_ID": null,
@@ -236,7 +314,7 @@ HTTP status: **200**
             "ID": "115",
             "ENTITY_ID": "DEAL_STAGE",
             "STATUS_ID": "APOLOGY",
-            "NAME": "Analysis of Failure Reasons",
+            "NAME": "Analysis of Failure Reason",
             "NAME_INIT": "",
             "SORT": "80",
             "SYSTEM": "N",
@@ -269,7 +347,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array of objects with information about directory items ||
+[`array`](../../data-types.md) | An array of objects containing information about directory items ||
 || **total**
 [`integer`](../../data-types.md) | The total number of items found ||
 || **time**
@@ -278,7 +356,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

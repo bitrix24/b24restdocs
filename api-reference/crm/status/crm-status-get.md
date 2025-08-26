@@ -23,23 +23,6 @@ The method `crm.status.get` returns the parameters of a directory item by its ID
 
 {% list tabs %}
 
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.status.get",
-        {
-            id: 123
-        },
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
-
 - cURL (Webhook)
 
     ```bash
@@ -60,7 +43,81 @@ The method `crm.status.get` returns the parameters of a directory item by its ID
     https://**put_your_bitrix24_address**/rest/crm.status.get
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.status.get',
+    		{
+    			id: 123
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.status.get',
+                [
+                    'id' => 123,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting CRM status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.status.get",
+        {
+            id: 123
+        },
+        function(result) {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -130,7 +187,7 @@ HTTP status: **200**
 || **SYSTEM**
 [`string`](../../data-types.md) | Indicator of system value ||
 || **CATEGORY_ID**
-[`integer`](../../data-types.md) | Identifier of the funnel to which the status belongs ||
+[`integer`](../../data-types.md) | Identifier of the funnel to which the status relates ||
 || **COLOR**
 [`string`](../../data-types.md) | Status color for kanban ||
 || **SEMANTICS**

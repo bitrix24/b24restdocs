@@ -1,4 +1,4 @@
-# Create CRM Directory Element crm.status.add
+# Create CRM Status Element crm.status.add
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
@@ -38,31 +38,31 @@ The method `crm.status.add` creates a new element in the specified CRM directory
 - `"F"` — "Failure", 
 - `""` — "In Progress".
 
-Use for status stages. Default is the "In Progress" group ||
+Use for status stages. Default is "In Progress" group ||
 |#
 
 ### Field Features
 
 **Restrictions for `STATUS_ID`**
 
-Observe length and character restrictions for different types of directories:
+Follow the length and character restrictions for different types of directories:
 
-- **STATUS** lead stages. Max. length: 21, can contain only Latin letters, numbers, hyphens, and underscores.
-- **QUOTE_STATUS** estimate stages. Max. length: 22, can contain only Latin letters, numbers, hyphens, and underscores.
-- **DEAL_STAGE** deal stages. Max. length: 22, can contain only Latin letters, numbers, hyphens, and underscores.
-- **DEAL_STAGE_xx** deal stages in non-default funnels. xx — funnel identifier. Max. length depends on the funnel identifier. Can contain only Latin letters, numbers, hyphens, and underscores.
-- For other `ENTITY_ID`, the maximum length of `STATUS_ID` is 50 characters, and it can contain any characters.
+- **STATUS** lead stages. Max length: 21, can contain only Latin letters, numbers, hyphens, and underscores.
+- **QUOTE_STATUS** estimate stages. Max length: 22, can contain only Latin letters, numbers, hyphens, and underscores.
+- **DEAL_STAGE** deal stages. Max length: 22, can contain only Latin letters, numbers, hyphens, and underscores.
+- **DEAL_STAGE_xx** deal stages in non-default funnels. xx — funnel identifier. Max length depends on the funnel identifier. Can contain only Latin letters, numbers, hyphens, and underscores.
+- For other `ENTITY_ID`, the maximum length of `STATUS_ID` is 50 characters and can contain any characters.
 
-If a stage is added for a custom deal funnel, a prefix for the funnel will be automatically added to the status identifier. This is necessary to identify the funnel by the stage identifier.
+If a stage is added for a custom deal funnel, the status identifier will automatically have the funnel prefix added. This is necessary to identify the funnel by the stage identifier.
 
-For example, the value `DECISION` for a deal funnel with identifier `1` will be saved as `C1:DECISION`. The system will automatically add the prefix `C1:`, corresponding to the deal funnel identifier. 
+For example, the value `DECISION` for a deal funnel with identifier `1` will be saved as `C1:DECISION`. The system will automatically add the prefix `C1:` corresponding to the deal funnel identifier. 
 If a value is passed to the field with the prefix `C1:DECISION`, it will be saved as `C1:DECISION`, and no additional prefix will be added.
 
 For SPAs with funnels, a similar logic for forming `STATUS_ID` from the value and prefix applies. The funnel prefix can be obtained using the method [crm.status.entity.types](./crm-status-entity-types.md).
 
 **Restrictions for `SORT`**
 
-For the correct operation of status stages, the sorting order must be followed: 
+For the correct operation of status stages, the sorting must follow this order: 
 1. Stages of the "In Progress" group
 2. Stage of the "Success" group
 3. Stages of the "Failure" group
@@ -73,7 +73,93 @@ For the correct operation of status stages, the sorting order must be followed:
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+         -H "Content-Type: application/json" \
+         -H "Accept: application/json" \
+         -d '{"fields":{"ENTITY_ID":"DEAL_STAGE_1","STATUS_ID":"DECISION","NAME":"Decision Making","SORT":70,"COLOR":"#FFA900"}}' \
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.status.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"ENTITY_ID":"DEAL_STAGE_1","STATUS_ID":"DECISION","NAME":"Decision Making","SORT":70,"COLOR":"#FFA900"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.status.add
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.status.add',
+    		{
+    			fields: {
+    				ENTITY_ID: 'DEAL_STAGE_1',
+    				STATUS_ID: 'DECISION',
+    				NAME: 'Decision Making',
+    				SORT: 70,
+    				COLOR: '#FFA900'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.status.add',
+                [
+                    'fields' => [
+                        'ENTITY_ID' => 'DEAL_STAGE_1',
+                        'STATUS_ID' => 'DECISION',
+                        'NAME'     => 'Decision Making',
+                        'SORT'     => 70,
+                        'COLOR'    => '#FFA900',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -96,27 +182,7 @@ For the correct operation of status stages, the sorting order must be followed:
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-         -H "Content-Type: application/json" \
-         -H "Accept: application/json" \
-         -d '{"fields":{"ENTITY_ID":"DEAL_STAGE_1","STATUS_ID":"DECISION","NAME":"Decision Making","SORT":70,"COLOR":"#FFA900"}}' \
-         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.status.add
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":"DEAL_STAGE_1","STATUS_ID":"DECISION","NAME":"Decision Making","SORT":70,"COLOR":"#FFA900"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/crm.status.add
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -195,7 +261,7 @@ HTTP status: **400**
 || `400`     | `The field ENTITY_ID is required.` | `ENTITY_ID` is not specified ||
 || `400`     | `The field STATUS_ID is required.` | `STATUS_ID` is not specified ||
 || `400`     | `Duplicate STATUS_ID.` | Such `STATUS_ID` already exists ||
-|| `400`     | `Error on creating status.` | Error while creating the element ||
+|| `400`     | `Error on creating status.` | Error creating the element ||
 || `400`     | ` ` | Cannot create an intermediate stage after success ||
 || `400`     | ` ` | The required field "Title" is not filled ||
 |#

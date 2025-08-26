@@ -16,21 +16,6 @@ No parameters.
 
 {% list tabs %}
 
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.status.entity.types",
-        {},
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
-
 - cURL (Webhook)
 
     ```bash
@@ -51,7 +36,69 @@ No parameters.
     https://**put_your_bitrix24_address**/rest/crm.status.entity.types
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.status.entity.types',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.status.entity.types',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.status.entity.types: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.status.entity.types",
+        {},
+        function(result) {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -179,7 +226,7 @@ HTTP status: **200**
     },
     {
       "ID": "DYNAMIC_177_STAGE_7",
-      "NAME": "Equipment Procurement (General)",
+      "NAME": "Equipment Purchase (General)",
       "SEMANTIC_INFO": [],
       "PREFIX": "DT177_7",
       "FIELD_ATTRIBUTE_SCOPE": "category_7",
@@ -192,7 +239,7 @@ HTTP status: **200**
     },
     {
       "ID": "DYNAMIC_177_STAGE_9",
-      "NAME": "Equipment Procurement (Second Funnel)",
+      "NAME": "Equipment Purchase (Second Funnel)",
       "SEMANTIC_INFO": [],
       "PREFIX": "DT177_9",
       "FIELD_ATTRIBUTE_SCOPE": "category_9",
@@ -234,7 +281,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`string`](../../data-types.md) | Identifier of the object, use the value in the `ENTITY_ID` field of the methods [crm.status.*](./index.md) ||
+[`string`](../../data-types.md) | Object identifier, use the value in the `ENTITY_ID` field of the [crm.status.*](./index.md) methods ||
 || **NAME**
 [`string`](../../data-types.md) | Name ||
 || **ENTITY_TYPE_ID**
@@ -244,7 +291,7 @@ HTTP status: **200**
 || **PREFIX**
 [`string`](../../data-types.md) | Prefix for the stage code in the funnel ||
 || **FIELD_ATTRIBUTE_SCOPE**
-[`string`](../../data-types.md) | Field application scope, funnel ||
+[`string`](../../data-types.md) | Field application area, funnel ||
 || **IS_ENABLED**
 [`boolean`](../../data-types.md) | Activity ||
 || **CATEGORY_ID**

@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `crm.status.entity.items` returns all directory items by the identifier `ENTITY_ID`, sorted by the `SORT` field. The method is similar to [crm.status.list](crm-status-list.md), except that in the latter, sorting rules can be defined.
+The method `crm.status.entity.items` returns all directory items by the identifier `ENTITY_ID`, sorted by the `SORT` field. This method is similar to [crm.status.list](crm-status-list.md), except that the latter allows you to define sorting rules.
 
 ## Method Parameters
 
@@ -22,23 +22,6 @@ The method `crm.status.entity.items` returns all directory items by the identifi
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.status.entity.items",
-        {
-            entityId: "DEAL_STAGE"
-        },
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -60,7 +43,75 @@ The method `crm.status.entity.items` returns all directory items by the identifi
     https://**put_your_bitrix24_address**/rest/crm.status.entity.items
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.status.entity.items",
+    		{
+    			entityId: "DEAL_STAGE"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.status.entity.items',
+                [
+                    'entityId' => 'DEAL_STAGE'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching status entity items: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.status.entity.items",
+        {
+            entityId: "DEAL_STAGE"
+        },
+        function(result) {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -122,7 +173,7 @@ HTTP status: **200**
             "STATUS_ID": "LOSE"
         },
         {
-            "NAME": "Analysis of Failure",
+            "NAME": "Analyzing Cause of Loss",
             "SORT": 80,
             "STATUS_ID": "APOLOGY"
         }
@@ -158,7 +209,7 @@ HTTP status: **400**
 ```json
 {
     "error": "The parameter entityId is not defined or invalid.",
-    "error_description": "The directory identifier is not specified or is incorrect."
+    "error_description": "The identifier of the directory is not specified or is incorrect."
 }
 ```
 
@@ -169,7 +220,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `400`     | `Access denied.` | No permission to perform the operation ||
-|| `400`     | `The parameter entityId is not defined or invalid.` | The directory identifier is not specified or is incorrect ||
+|| `400`     | `The parameter entityId is not defined or invalid.` | The identifier of the directory is not specified or is incorrect ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

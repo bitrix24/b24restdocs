@@ -14,12 +14,12 @@ The method `crm.status.delete` removes a status element by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../data-types.md) | Identifier of the status element to be deleted. You can obtain a list of identifiers using the [crm.status.list](./crm-status-list.md) method ||
+[`integer`](../../data-types.md) | Identifier of the status element to be deleted. You can obtain a list of identifiers using the method [crm.status.list](./crm-status-list.md) ||
 || **params**
 [`string`](../../data-types.md) | Available flags:
 
 - `FORCED` — flag for forcibly deleting system elements. Default is `N`.
-Pass `Y` to delete the element even if it is a system one ||
+Pass `Y` to delete the element even if it is a system element ||
 |#
 
 ## Code Examples
@@ -30,7 +30,80 @@ Deleting a regular element.
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+         -H "Content-Type: application/json" \
+         -H "Accept: application/json" \
+         -d '{"id":123}' \
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.status.delete
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":123,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.status.delete
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.status.delete",
+    		{
+    			id: 123
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.status.delete',
+                [
+                    'id' => 123,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -47,27 +120,7 @@ Deleting a regular element.
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-         -H "Content-Type: application/json" \
-         -H "Accept: application/json" \
-         -d '{"id":123}' \
-         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.status.delete
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"id":123,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/crm.status.delete
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -90,7 +143,76 @@ Deleting a system element.
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"id":123,"params":{"FORCED":"Y"}}' https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.status.delete
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"id":123,"params":{"FORCED":"Y"},"auth":"**put_access_token_here**"}' https://**put_your_bitrix24_address**/rest/crm.status.delete
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.status.delete",
+    		{
+    			id: 123,
+    			params: {
+    				FORCED: "Y"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.status.delete',
+                [
+                    'id' => 123,
+                    'params' => [
+                        'FORCED' => 'Y'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting CRM status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -111,19 +233,7 @@ Deleting a system element.
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"id":123,"params":{"FORCED":"Y"}}' https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.status.delete
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"id":123,"params":{"FORCED":"Y"},"auth":"**put_access_token_here**"}' https://**put_your_bitrix24_address**/rest/crm.status.delete
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -147,7 +257,7 @@ Deleting a system element.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -178,7 +288,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -193,7 +303,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `400`     | `Access denied.` | No rights to perform the operation ||
+|| `400`     | `Access denied.` | No permission to perform the operation ||
 || `400`     | `Invalid identifier.` | An invalid identifier was provided ||
 || `400`     | `Status is not found.` | Element not found ||
 || `400`     | `CRM System Status can be deleted only if parameter FORCED is specified and equal to "Y".` | A system element can only be deleted with the `FORCED = "Y"` parameter ||
