@@ -1,4 +1,4 @@
-# Do Something (Brief essence of the method operation)
+# Do This (Brief Essence of the Method Operation)
 
 > Method name: **imopenlines.xxx**
 >
@@ -20,7 +20,7 @@ The method does the following
 || **NAME***
 [`crm_item`](../data-types.md) | Description of the parameter. The type refers to the page with data types of the current scope ||
 || **SETTINGS***
-[`array`](../../data-types.md) | Example of a parameter with a complex nested structure. At this level, we describe it in general terms, but without all the details — just giving an overall idea. Because later, individual keys like `CONFIG` or `ITEMS` will be described in subsequent tables with separate headings
+[`array`](../../data-types.md) | Example of a parameter with a complex nested structure. At this level, we describe it in general terms, without all the details — just giving an overall idea. Because later, individual keys like `CONFIG` or `ITEMS` will be described in subsequent tables with separate headings
 
 ```json
 {
@@ -89,7 +89,7 @@ The method does the following
 
 ||
 || **TYPE***
-[`string`](../../data-types.md) | Description of the parameter as a list of values (the same story for fields with `Y`/`N`). Possible values:
+[`string`](../../data-types.md) | Description of the parameter as a list of values (the same story applies to fields with `Y`/`N`). Possible values:
 
 - `STRING` — string
 - `NUMBER` — floating-point number
@@ -116,6 +116,71 @@ Default value: `STRING`
     Here we will insert the necessary code, regenerated from your JS example
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.cashbox.handler.add",
+    		{
+    			"CODE": "restcashbox01",
+    			"NAME": "REST-Cash Register 01",
+    			"SORT": 100,
+    			"SUPPORTS_FFD105": "Y",
+    			"SETTINGS":
+    			{
+    				"PRINT_URL": "http://example.com/rest_print.php",
+    				"CHECK_URL": "http://example.com/rest_check.php",
+    				"HTTP_VERSION": "1.1",
+    				"CONFIG":
+    				{
+    					"AUTH": {
+    						"LABEL": "Authorization",
+    						"ITEMS": {
+    							"KEYWORD": {
+    								"TYPE": "STRING",
+    								"LABEL": "Password"
+    							},
+    							"PREFERENCE": {
+    								"TYPE": "ENUM",
+    								"LABEL": "Multiple Choice",
+    								"REQUIRED": "Y",
+    								"OPTIONS": {
+    									"FIRST": "First",
+    									"SECOND": "Second",
+    									"THIRD": "Third",
+    								}
+    							}
+    						}
+    					},
+    					"INTERACTION": {
+    						"LABEL": "Cash Register Interaction Settings",
+    						"ITEMS": {
+    							"MODE": {
+    								"TYPE": "ENUM",
+    								"LABEL": "Cash Register Operating Mode",
+    								"OPTIONS": {
+    									"ACTIVE": "active",
+    									"TEST": "test"
+    								}
+    							}
+    						}
+    					}
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -152,13 +217,13 @@ Default value: `STRING`
                         }
                     },
                     "INTERACTION": {
-                        "LABEL": "Interaction Settings with Cash Register",
+                        "LABEL": "Cash Register Interaction Settings",
                         "ITEMS": {
                             "MODE": {
                                 "TYPE": "ENUM",
                                 "LABEL": "Cash Register Operating Mode",
                                 "OPTIONS": {
-                                    "ACTIVE": "live",
+                                    "ACTIVE": "active",
                                     "TEST": "test"
                                 }
                             }
@@ -177,7 +242,7 @@ Default value: `STRING`
     );
     ```
 
-- PHP
+- PHP CRest
 
     Here we will insert the necessary code, regenerated from your JS example
 
@@ -185,7 +250,7 @@ Default value: `STRING`
 
 {% note tip "Typical use-cases and scenarios" %}
 
-We will fill this block later. Or remove the block if unnecessary
+We will fill in the content of this block later. Or we will remove the block if unnecessary
 
 {% endnote %}
 
@@ -215,7 +280,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | Description of the returned value. A link either to the root directory of types or to data types within the scope ||
+[`integer`](../../data-types.md) | Description of the returned value. A link either to the root reference of types or to data types within the scope ||
 || **time**
 [`array`](../../data-types.md) | Information about the execution time of the request ||
 || **start**
@@ -229,9 +294,9 @@ HTTP status: **200**
 || **date_finish**
 [`double`](../../data-types.md) | String representation of the date and time of the moment the request execution was completed ||
 || **operating_reset_at**
-[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read details in the article [operation limits](../../../limits.md) ||
+[`timestamp`](../../data-types.md) | Timestamp of the moment when the limit on REST API resources will be reset. Read more in the article [operation limit](../../../limits.md) ||
 || **operating**
-[`double`](../../data-types.md) | In how many milliseconds the limit on REST API resources will be reset. Read details in the article [operation limits](../../../limits.md) ||
+[`double`](../../data-types.md) | In how many milliseconds the limit on REST API resources will be reset. Read more in the article [operation limit](../../../limits.md) ||
 |#
 
 ## Error Handling
@@ -257,6 +322,6 @@ HTTP status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Exploring
+## Continue Learning
 
-We will fill this block later, but if you have recommendations on which methods or documentation pages should be mentioned here — we would appreciate it.
+We will fill in this block later, but if you have recommendations on which methods or documentation pages should be mentioned here, we would appreciate it.

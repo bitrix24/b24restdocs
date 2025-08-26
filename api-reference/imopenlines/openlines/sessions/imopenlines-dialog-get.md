@@ -10,7 +10,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- adjustments needed for writing standards
 - examples are missing
 
 {% endnote %}
@@ -21,7 +21,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method retrieves information about the operator's dialogue (chat) in the open channel.
+This method retrieves information about the open channel operator's dialogue (chat).
 
 ## Method Parameters
 
@@ -47,11 +47,57 @@ Any of the parameters can be used for the call.
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'imopenlines.dialog.get',
+    		{
+    			USER_CODE: 'livechat|1|1373|211'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.dialog.get',
+                [
+                    'USER_CODE' => 'livechat|1|1373|211'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting dialog: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -72,7 +118,7 @@ Any of the parameters can be used for the call.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../../../chat-bots/_includes/rest-command.md) %}
 
@@ -85,6 +131,10 @@ Any of the parameters can be used for the call.
         $_REQUEST["auth"]
     );
     ```
+
+- cURL
+
+    // example for cURL
 
 {% endlist %}
 
@@ -126,7 +176,7 @@ Any of the parameters can be used for the call.
 - `entity_data_3` – external data for the chat
 - `entity_id` – external code for the chat – identifier
 - `entity_type` – external code for the chat – type
-- `extranet` – indicator of external extranet user participation in the chat (`true/false`)
+- `extranet` – indicator of participation in the chat by an external extranet user (`true/false`)
 - `id` – identifier of the chat
 - `manager_list` – list of operators
 - `message_type` – type of chat messages
@@ -153,5 +203,5 @@ Any of the parameters can be used for the call.
 #|
 || **Code** | **Description** ||
 || **DIALOG_ID_EMPTY** | Dialogue identifier not provided ||
-|| **ACCESS_ERROR** | Current user does not have access permission to the dialogue ||
+|| **ACCESS_ERROR** | The current user does not have access permission to the dialogue ||
 |#

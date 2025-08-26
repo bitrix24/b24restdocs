@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing — we will fill it in shortly
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- edits needed for standard writing
 - parameter types are not specified
-- parameter requirements are not specified
+- parameter requirements are not indicated
 - examples are missing
 - success response is missing
 - error response is missing
@@ -31,7 +31,7 @@ This method adds a new open channel.
 
 #|
 || **Name**
-`Type`  | **Description** | **Available since** ||
+`Type`  | **Description** | **Available from** ||
 || **PARAMS**
 [`unknown`](../../data-types.md) | Array of parameters to add (optional). List of fields — below | ||
 |#
@@ -42,7 +42,7 @@ This method adds a new open channel.
 || **Name**
 `Type` | **Description** ||
 || **WELCOME_BOT_ENABLE**
-[`unknown`](../../data-types.md) | Assign a chatbot as responsible when a client reaches out. [Y/N (default)] — this option should be Y for the bot to work ||
+[`unknown`](../../data-types.md) | Assign a chatbot as responsible when a client contacts. [Y/N (default)] — this option must be Y for the bot to work ||
 || **WELCOME_BOT_JOIN**
 [`unknown`](../../data-types.md) | When to connect the chatbot (`first` (default), always) ||
 || **WELCOME_BOT_ID**
@@ -96,7 +96,7 @@ This method adds a new open channel.
 || **WORKTIME_TO**
 [`unknown`](../../data-types.md) | Working hours "to" (string format '00:00') ||
 || **WORKTIME_TIMEZONE**
-[`unknown`](../../data-types.md) | Time zone (format like 'Europe/Kaliningrad') ||
+[`unknown`](../../data-types.md) | Time zone (format type 'Europe/Kaliningrad') ||
 || **WORKTIME_HOLIDAYS**
 [`unknown`](../../data-types.md) | List of holidays (string, Example: 1.01,2.01,7.01,23.02,8.03,1.05,9.05,12.06,4.11,12.12) ||
 || **WORKTIME_DAYOFF**
@@ -110,7 +110,7 @@ This method adds a new open channel.
 || **CLOSE_TEXT**
 [`unknown`](../../data-types.md) | Text of the automatic response (string, default `null`) ||
 || **FULL_CLOSE_TIME**
-[`unknown`](../../data-types.md) | Time until the complete closure of the request (from the moment it is closed by the operator) (int, default 10 minutes) ||
+[`unknown`](../../data-types.md) | Time until complete closure of the request (from the moment it is closed by the operator) (int, default 10 minutes) ||
 || **AUTO_CLOSE_RULE**
 [`unknown`](../../data-types.md) | Action to be performed upon automatic closure (`none` (default), 'text') ||
 || **AUTO_CLOSE_TEXT**
@@ -118,15 +118,15 @@ This method adds a new open channel.
 || **AUTO_CLOSE_TIME**
 [`unknown`](../../data-types.md) | Time of last activity for auto-closing the dialogue (int, default 0) ||
 || **VOTE_MESSAGE**
-[`unknown`](../../data-types.md) | Send a request to the client for service quality assessment, char(1), [Y (default)/N] ||
+[`unknown`](../../data-types.md) | Send a request to the client for service quality evaluation, char(1), [Y (default)/N] ||
 || **VOTE_CLOSING_DELAY**
-[`unknown`](../../data-types.md) | Close the session immediately after the client assessment, char(1), [Y/N (default)] ||
+[`unknown`](../../data-types.md) | Close the session immediately after the client evaluation, char(1), [Y/N (default)] ||
 || **VOTE_MESSAGE_1_TEXT**
-[`unknown`](../../data-types.md) | Text for the assessment request in online chat and Bitrix24 Network ||
+[`unknown`](../../data-types.md) | Text for the evaluation request in online chat and Bitrix24 Network ||
 || **VOTE_MESSAGE_1_LIKE**
-[`unknown`](../../data-types.md) | Text for positive assessment in online chat and Bitrix24 Network ||
+[`unknown`](../../data-types.md) | Text for positive evaluation in online chat and Bitrix24 Network ||
 || **VOTE_MESSAGE_1_DISLIKE**
-[`unknown`](../../data-types.md) | Text for negative assessment in online chat and Bitrix24 Network ||
+[`unknown`](../../data-types.md) | Text for negative evaluation in online chat and Bitrix24 Network ||
 || **VOTE_MESSAGE_2_TEXT**
 [`unknown`](../../data-types.md) | Text for the assessment request in other channels (Viber, Telegram, Facebook and others) ||
 || **VOTE_MESSAGE_2_LIKE**
@@ -146,7 +146,7 @@ This method adds a new open channel.
 - AVATAR_ID — identifier of the avatar file on the account ||
 || **QUEUE**
 [`unknown`](../../data-types.md) | Queue of responsible employees. Array, fields:
-- U — array of user IDs to add to the queue. Can be passed in the format
+- U — array of user ids to add to the queue. Can be passed in the format
     ```js
     `QUEUE: [
         {
@@ -154,10 +154,11 @@ This method adds a new open channel.
             ENTITY_ID: "1"
         }
     ]
-    ``` ||
+    ```
+ ||
 || **QUEUE_OPERATOR_DATA**
 [`unknown`](../../data-types.md) | Operator data for display in chat. Array, fields:
-- U — array of users with data in the form "User ID" => array of data:
+- U — array of users with data of the type "User ID" => array of data:
   - NAME — name
   - USER_WORK_POSITION — position
   - AVATAR — link to avatar
@@ -166,7 +167,7 @@ This method adds a new open channel.
 
 ## Examples
 
-{% include [Example note](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -179,6 +180,71 @@ This method adds a new open channel.
     // example for cURL (OAuth)
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const params = {
+    		PARAMS: {
+    			LINE_NAME: 'New line name',
+    			...
+    		}
+    	};
+    	
+    	const response = await $b24.callMethod(
+    		'imopenlines.config.add',
+    		params
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		alert("Error: " + result.error());
+    	else
+    		alert("Successfully: " + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $params = [
+            'PARAMS' => [
+                'LINE_NAME' => 'New line name',
+                // Other parameters
+            ],
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.config.add',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Successfully: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding configuration: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     //imopenlines.config.add
@@ -197,14 +263,14 @@ This method adds a new open channel.
                 if (result.error())
                     alert("Error: " + result.error());
                 else
-                    alert("Success: " + result.data());
+                    alert("Successfully: " + result.data());
             }
         );
     }
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}

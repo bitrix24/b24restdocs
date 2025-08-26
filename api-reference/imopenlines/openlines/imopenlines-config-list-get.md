@@ -32,14 +32,14 @@ This method retrieves a list of open lines.
 || **Name**
 `Type` | **Description** ||
 || **PARAMS**
-[`array`](../../data-types.md) | Array of parameters for selection (select, order, filter) (optional). A list of available fields can be found in the method description [imopenlines.config.add](./imopenlines-config-add.md) ||
+[`array`](../../data-types.md) | Array of parameters for selection (select, order, filter) (optional). A list of available fields can be found in the description of the method [imopenlines.config.add](./imopenlines-config-add.md) ||
 || **OPTIONS**
 [`array`](../../data-types.md) | Array of additional options (optional). Currently includes only the field 'QUEUE' => 'Y'/'N' — queue of responsible employees ||
 |#
 
 ## Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -52,6 +52,95 @@ This method retrieves a list of open lines.
     // example for cURL (OAuth)
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'imopenlines.config.list.get',
+    		{
+    			PARAMS: {
+    				select: [
+    					'ID',
+    					...
+    				],
+    				order: {
+    					ID: 'ASC',
+    					...
+    				},
+    				filter: {
+    					ID: 1,
+    					...
+    				}
+    			},
+    			OPTIONS: {
+    				QUEUE: 'Y'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		alert("Error: " + result.error());
+    	else
+    		alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $params = [
+            'PARAMS' => [
+                'select' => [
+                    'ID',
+                    ...
+                ],
+                'order' => [
+                    'ID' => 'ASC',
+                    ...
+                ],
+                'filter' => [
+                    'ID' => 1,
+                    ...
+                ]
+            ],
+            'OPTIONS' => [
+                'QUEUE' => 'Y'
+            ]
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.config.list.get',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling imopenlines.config.list.get: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     //imopenlines.config.list.get
@@ -89,9 +178,9 @@ This method retrieves a list of open lines.
     }
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}
 
@@ -128,10 +217,10 @@ HTTP status: **200**
             "VOTE_CLOSING_DELAY": "N",
             "VOTE_MESSAGE_1_TEXT": "Please rate the quality of service.",
             "VOTE_MESSAGE_1_LIKE": "Thank you for your feedback!",
-            "VOTE_MESSAGE_1_DISLIKE": "We are sorry we couldn't help you, we will strive to improve.",
+            "VOTE_MESSAGE_1_DISLIKE": "We are sorry that we couldn't assist you, we will strive to improve.",
             "VOTE_MESSAGE_2_TEXT": "Please rate the quality of service.\r\n\r\nSend: 1 - good, 0 - bad",
             "VOTE_MESSAGE_2_LIKE": "Thank you for your feedback!",
-            "VOTE_MESSAGE_2_DISLIKE": "We are sorry we couldn't help you, we will strive to improve.",
+            "VOTE_MESSAGE_2_DISLIKE": "We are sorry that we couldn't assist you, we will strive to improve.",
             "AGREEMENT_MESSAGE": "N",
             "AGREEMENT_ID": "0",
             "CATEGORY_ENABLE": "N",
@@ -185,11 +274,11 @@ HTTP status: **200**
             "KPI_FIRST_ANSWER_TIME": "0",
             "KPI_FIRST_ANSWER_ALERT": "N",
             "KPI_FIRST_ANSWER_LIST": false,
-            "KPI_FIRST_ANSWER_TEXT": "Employee #OPERATOR# exceeded the allowable response time to the client for the first message. Dialog №#DIALOG#.",
+            "KPI_FIRST_ANSWER_TEXT": "Employee #OPERATOR# exceeded the allowable response time to the client's first message. Dialog №#DIALOG#.",
             "KPI_FURTHER_ANSWER_TIME": "0",
             "KPI_FURTHER_ANSWER_ALERT": "N",
             "KPI_FURTHER_ANSWER_LIST": false,
-            "KPI_FURTHER_ANSWER_TEXT": "Employee #OPERATOR# exceeded the allowable response time to the client for the message. Dialog №#DIALOG#.",
+            "KPI_FURTHER_ANSWER_TEXT": "Employee #OPERATOR# exceeded the allowable response time to the client's message. Dialog №#DIALOG#.",
             "KPI_CHECK_OPERATOR_ACTIVITY": "N",
             "SEND_NOTIFICATION_EMPTY_QUEUE": "N",
             "USE_WELCOME_FORM": "N",

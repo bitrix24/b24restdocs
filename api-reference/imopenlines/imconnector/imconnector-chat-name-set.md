@@ -54,6 +54,67 @@ This method sets a new chat name.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'imconnector.chat.name.set',
+    		{
+    			CONNECTOR: 'connector',
+    			LINE: '105',
+    			CHAT_ID: '47e007b1-ee15-43db-bcba-1c26e5884d3f',
+    			NAME: 'New dialog name'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		alert("Error: " + result.error());
+    	else
+    		alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $params = [
+            'CONNECTOR' => 'connector',
+            'LINE'      => '105',
+            'CHAT_ID'   => '47e007b1-ee15-43db-bcba-1c26e5884d3f',
+            'NAME'      => 'New dialog name',
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'imconnector.chat.name.set',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting chat name: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var params = {
         CONNECTOR: 'connector',
         LINE: '105',
@@ -73,7 +134,7 @@ This method sets a new chat name.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -96,8 +157,6 @@ This method sets a new chat name.
     ```
 
 {% endlist %}
-
-
 
 ## Response Handling
 
@@ -142,7 +201,7 @@ HTTP status: **200**
 || **SUCCESS**
 [`boolean`](../../data-types.md) | Returns `true` when the new chat name is successfully set ||
 || **DATA**
-[`object`](../../data-types.md) | Contains the `RESULT` object with the parameters of the new chat name ||
+[`object`](../../data-types.md) | Contains the `RESULT` object with parameters of the new chat name ||
 |#
 
 ## Error Handling
@@ -164,7 +223,7 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `NOT_ACTIVE_LINE` | The line with this ID is inactive or does not exist ||
 || `IMCONNECTOR_NO_CORRECT_PROVIDER` | Could not find a suitable provider for the connector ||
-|| `ERROR_ARGUMENT` | Required parameters `NAME` or `CHAT_ID` are missing ||
+|| `ERROR_ARGUMENT` | Required parameters `NAME`, `CHAT_ID`, `USER_ID`, `CONNECTOR`, or `LINE` are missing ||
 || `CHAT_RENAMING_FAILED` | Failed to rename the chat ||
 |#
 

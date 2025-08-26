@@ -1,8 +1,8 @@
-# Get Chat Messages and Dialog imopenlines.session.history.get
+# Get Chat and Dialog Messages imopenlines.session.history.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -26,34 +26,34 @@ This method retrieves the session history.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
-#| 
-|| **Name** 
+#|
+|| **Name**
 `Type` | **Example** | **Description** ||
-|| **CHAT_ID*** 
+|| **CHAT_ID***
 [`unknown`](../../../data-types.md) | 2020 | Chat identifier ||
-|| **SESSION_ID*** 
+|| **SESSION_ID***
 [`unknown`](../../../data-types.md) | 494 | Session identifier ||
 |#
 
 If the user is not a participant in the chat, an error will be returned when calling with **only the parameter** `CHAT_ID`:
 
 ```json
-{error: 'ACCESS_DENIED', error_description: 'You cannot open this conversation because you do not have sufficient rights.', ex: s}
+{error: 'ACCESS_DENIED', error_description: 'You cannot open this conversation because you do not have sufficient permissions.', ex: s}
 error
 :
 "ACCESS_DENIED"
 error_description
 :
-"You cannot open this conversation because you do not have sufficient rights."
+"You cannot open this conversation because you do not have sufficient permissions."
 ```
 
-You should use the `SESSION_ID` parameter, which does not return an error. To obtain `SESSION_ID`, use the method [imopenlines.dialog.get](imopenlines-dialog-get.md). If the chat has a session, its ID will be in the 6th parameter of the key `entity_data_1`.
+You should use the `SESSION_ID` parameter; with it, no error is returned. To obtain `SESSION_ID`, use the method [imopenlines.dialog.get](imopenlines-dialog-get.md). If the chat has a session, its ID will be in the 6th parameter of the `entity_data_1` key.
 
 ## Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -66,6 +66,56 @@ You should use the `SESSION_ID` parameter, which does not return an error. To ob
     // example for cURL (OAuth)
 
 - JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'imopenlines.session.history.get',
+            {
+                CHAT_ID: 2024
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch( error )
+    {
+        console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.session.history.get',
+                [
+                    'CHAT_ID' => 2024
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting session history: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -87,13 +137,13 @@ You should use the `SESSION_ID` parameter, which does not return an error. To ob
     );
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}
 
-## Successful Response
+## Response in case of success
 
 ```json
 {
@@ -159,8 +209,8 @@ You should use the `SESSION_ID` parameter, which does not return an error. To ob
                 "senderid":"0",
                 "recipientid":"chat1982",
                 "date":"2023-05-19T01:40:26+02:00",
-                "text":"Start a new dialog # [U",
-                "textlegacy":"Start a new dialog",
+                "text":"Start a new dialog No.[U",
+                "textlegacy":"Start a new dialog No.",
                 "params":{
                     "class":"bx-messenger-content-item-ol-start"
                 }
@@ -172,14 +222,14 @@ You should use the `SESSION_ID` parameter, which does not return an error. To ob
                 "recipientid":"chat1982",
                 "date":"2023-05-19T01:40:26+02:00",
                 "text":"Forwarded",
-                "textlegacy":"<B>Forwarded</B>",
+                "textlegacy":"<B>Forwarded",
                 "params":{
                     "attach":[
                         {
                             "id":1684478426,
                             "blocks":[
                                 {
-                                    "message":"Page site"
+                                    "message":"Page of the site"
                                 }
                             ],
                             "description":"",
@@ -195,8 +245,8 @@ You should use the `SESSION_ID` parameter, which does not return an error. To ob
                 "senderid":"0",
                 "recipientid":"chat1982",
                 "date":"2023-05-19T01:40:26+02:00",
-                "text":"Address directed",
-                "textlegacy":"Address directed",
+                "text":"Address directed to",
+                "textlegacy":"Address directed to",
                 "params":[
                 
                 ]
@@ -237,7 +287,7 @@ You should use the `SESSION_ID` parameter, which does not return an error. To ob
                 "recipientid":"chat1982",
                 "date":"2023-05-19T01:40:26+02:00",
                 "text":"[B]The form has been sent \"F",
-                "textlegacy":"<B>The form has been sent</B>",
+                "textlegacy":"<B>The form has been sent",
                 "params":{
                     "attach":[
                         {
@@ -325,7 +375,7 @@ You should use the `SESSION_ID` parameter, which does not return an error. To ob
         "chat":{
             "1982":{
                 "id":"1982",
-                "name":"Guest Room #33 - A1",
+                "name":"Bury Guest No. 33 - A1",
                 "owner":"0",
                 "color":"#ab7761",
                 "extranet":false,
@@ -372,11 +422,11 @@ You should use the `SESSION_ID` parameter, which does not return an error. To ob
 }
 ```
 
-## Error Response
+## Response in case of error
 
-### Possible Error Codes
+### Possible error codes
 
-#| 
+#|
 || **Code** | **Description** ||
 || **ACCESS_DENIED** | The current user does not have access to the specified chat ||
 || **CHAT_TYPE** | The specified chat is not an open line ||

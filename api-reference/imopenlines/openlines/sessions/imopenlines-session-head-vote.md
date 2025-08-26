@@ -1,8 +1,8 @@
-# Rate Employee Performance in the imopenlines.session.head.vote Dialog
+# Rate the employee's performance in the dialog imopenlines.session.head.vote
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing — we will complete it shortly.
 
 - parameter types are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method is used for rating the dialogue by a supervisor.
+This method is for rating the dialog by the supervisor.
 
 ## Method Parameters
 
@@ -32,15 +32,15 @@ This method is used for rating the dialogue by a supervisor.
 #|
 || **Name**
 `Type` | **Example** | **Description** ||
-|| **SESSION_ID***  
+|| **SESSION_ID*** 
 [`unknown`](../../../data-types.md) | `494` | Session identifier ||
-|| **RATING**  
+|| **RATING**
 [`unknown`](../../../data-types.md) | `5` | Number of stars from 1 to 5 ||
-|| **COMMENT**  
+|| **COMMENT**
 [`unknown`](../../../data-types.md) | `Well done` | Supervisor's comment ||
 |#
 
-**Note:** Although two parameters are optional, at least one of them must be filled.
+**Note:** Although two parameters are optional, at least one of them must be filled in.
 
 ## Examples
 
@@ -57,6 +57,56 @@ This method is used for rating the dialogue by a supervisor.
     // example for cURL (OAuth)
 
 - JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'imopenlines.session.head.vote',
+            {
+                CHAT_ID: 2024
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch( error )
+    {
+        console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.session.head.vote',
+                [
+                    'CHAT_ID' => 2024
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error voting for session head: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -78,9 +128,9 @@ This method is used for rating the dialogue by a supervisor.
     );
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}
 
@@ -98,6 +148,6 @@ true
 || **Code** | **Description** ||
 || **ACCESS_DENIED** | The current user does not have access to the specified chat ||
 || **CHAT_TYPE** | The specified chat is not an open line ||
-|| **CHAT_ID** | An incorrect chat identifier has been specified ||
+|| **CHAT_ID** | An incorrect chat identifier is specified ||
 || **WRONG_PARAMETER** | At least one of the optional parameters must be specified ||
 |#

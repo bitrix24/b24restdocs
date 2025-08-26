@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -23,17 +23,59 @@ Some data may be missing — we will complete it soon.
 
 This method retrieves information about the Open Lines API revisions.
 
-No parameters.
+No parameters required.
 
 ## Examples
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'imopenlines.revision.get',
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.revision.get',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting revision: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -52,23 +94,27 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../../chat-bots/_includes/rest-command.md) %}
 
     ```php
     $result = restCommand(
         'imopenlines.revision.get',
-        array(),
+        Array(),
         $_REQUEST["auth"]
     );
     ```
+
+- cURL
+
+    // example for cURL
 
 {% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Response in case of success
+## Response on Success
 
 ```json
 {    

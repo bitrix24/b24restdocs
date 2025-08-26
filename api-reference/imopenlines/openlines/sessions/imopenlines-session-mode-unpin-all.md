@@ -2,16 +2,16 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
-- no response in case of an error
+- response in case of error is missing
 
 {% endnote %}
 
@@ -21,11 +21,11 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-Unpinning all dialogs from the current operator. Returns an array of identifiers of unpinned sessions.
+Unpinning all dialogs from the current operator. Returns an array of identifiers for the unpinned sessions.
 
 ## Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -38,6 +38,56 @@ Unpinning all dialogs from the current operator. Returns an array of identifiers
     // example for cURL (OAuth)
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'imopenlines.session.mode.unpinAll',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.warn(error.ex);
+    	return false;
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.session.mode.unpinAll',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Warning: ' . $result->error()->ex;
+            return false;
+        }
+    
+        echo 'Success: ' . print_r($result->data(), true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unpinning all sessions: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -55,9 +105,9 @@ Unpinning all dialogs from the current operator. Returns an array of identifiers
     );
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}
 

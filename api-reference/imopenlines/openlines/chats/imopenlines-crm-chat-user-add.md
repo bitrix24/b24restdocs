@@ -32,17 +32,17 @@ This method adds a user to a CRM entity chat.
 #|
 || **Parameter**
 `Type` | **Description** ||
-|| **CRM_ENTITY_TYPE*** 
+|| **CRM_ENTITY_TYPE***  
 [`unknown`](../../../data-types.md) | Type of CRM entity:
 - lead
 - deal
 - company
 - contact ||
-|| **CRM_ENTITY*** 
+|| **CRM_ENTITY***  
 [`unknown`](../../../data-types.md) | Identifier of the CRM entity ||
-|| **USER_ID*** 
-[`unknown`](../../../data-types.md) | Identifier of the user or bot to be added to the chat ||
-|| **CHAT_ID**
+|| **USER_ID***  
+[`unknown`](../../../data-types.md) | Identifier of the user or bot we want to add to the chat ||
+|| **CHAT_ID**  
 [`unknown`](../../../data-types.md) | Identifier of the chat. If not specified, the last chat linked to the CRM entity will be used ||
 |#
 
@@ -61,6 +61,62 @@ This method adds a user to a CRM entity chat.
     // example for cURL (OAuth)
 
 - JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'imopenlines.crm.chat.user.add',
+            {
+                CRM_ENTITY_TYPE: 'deal',
+                CRM_ENTITY: 288,
+                USER_ID: 12,
+                CHAT_ID: 8773
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch( error )
+    {
+        console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.crm.chat.user.add',
+                [
+                    'CRM_ENTITY_TYPE' => 'deal',
+                    'CRM_ENTITY'      => 288,
+                    'USER_ID'         => 12,
+                    'CHAT_ID'         => 8773,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding user to chat: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -84,9 +140,9 @@ This method adds a user to a CRM entity chat.
     );
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}
 

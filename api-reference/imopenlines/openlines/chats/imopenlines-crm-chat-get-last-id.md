@@ -23,7 +23,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method retrieves the `ID` of the last chat associated with a CRM entity.
+This method retrieves the `ID` of the last chat associated with a CRM entity.
 
 ## Method Parameters
 
@@ -32,14 +32,14 @@ The method retrieves the `ID` of the last chat associated with a CRM entity.
 #|
 || **Name**
 `Type` | **Description** | **Available from** ||
-|| **CRM_ENTITY_TYPE***  
+|| **CRM_ENTITY_TYPE*** 
 [`unknown`](../../../data-types.md) | Type of CRM entity: 
 - LEAD — lead
 - DEAL — deal
 - COMPANY — company
 - CONTACT — contact
  | ||
-|| **CRM_ENTITY***  
+|| **CRM_ENTITY*** 
 [`unknown`](../../../data-types.md) | Identifier of the CRM entity | ||
 |#
 
@@ -60,6 +60,67 @@ The method retrieves the `ID` of the last chat associated with a CRM entity.
 - JS
 
     ```js
+    try
+    {
+    	const params = {
+    		CRM_ENTITY_TYPE: 'LEAD',
+    		CRM_ENTITY: 1,
+    	};
+    	
+    	const response = await $b24.callMethod(
+    		'imopenlines.crm.chat.getLastId',
+    		params
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		alert("Error: " + result.error());
+    	else
+    		alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    function crmChatGetLastId() {
+        try {
+            $params = [
+                'CRM_ENTITY_TYPE' => 'LEAD',
+                'CRM_ENTITY'      => 1,
+            ];
+    
+            $response = $b24Service
+                ->core
+                ->call(
+                    'imopenlines.crm.chat.getLastId',
+                    $params
+                );
+    
+            $result = $response
+                ->getResponseData()
+                ->getResult();
+    
+            if ($result->error()) {
+                echo 'Error: ' . $result->error();
+            } else {
+                echo 'Success: ' . $result->data();
+            }
+    
+        } catch (Throwable $e) {
+            error_log($e->getMessage());
+            echo 'Error getting last chat ID: ' . $e->getMessage();
+        }
+    }
+    ```
+
+- BX24.js
+
+    ```js
     function crmChatGetLastId() {
         var params = {
             CRM_ENTITY_TYPE: 'LEAD',
@@ -78,8 +139,8 @@ The method retrieves the `ID` of the last chat associated with a CRM entity.
     }
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}

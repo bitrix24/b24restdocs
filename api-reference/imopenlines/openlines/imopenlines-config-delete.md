@@ -1,8 +1,8 @@
-# Delete Open Line imopenlines.config.delete
+# Delete open line imopenlines.config.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly
 
 {% endnote %}
 
@@ -32,7 +32,7 @@ This method deletes an open line.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CONFIG_ID***  
+|| **CONFIG_ID***
 [`unknown`](../../data-types.md) | Line identifier ||
 |#
 
@@ -51,6 +51,69 @@ This method deletes an open line.
     // example for cURL (OAuth)
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const params = {
+    		CONFIG_ID: 1
+    	};
+    	
+    	const response = await $b24.callMethod(
+    		'imopenlines.config.delete',
+    		params
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		alert("Error: " + result.error());
+    	}
+    	else
+    	{
+    		alert("Success: " + result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $params = [
+            'CONFIG_ID' => 1
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.config.delete',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting configuration: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     //imopenlines.config.delete
@@ -72,8 +135,8 @@ This method deletes an open line.
     }
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}

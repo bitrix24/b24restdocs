@@ -10,11 +10,11 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for standard writing
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -33,10 +33,10 @@ This method updates the open channel.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CONFIG_ID***  
+|| **CONFIG_ID***
 [`unknown`](../../data-types.md) | ID of the line ||
-|| **PARAMS**  
-[`unknown`](../../data-types.md) | Array of parameters for update (optional). A list of possible fields is available in the method description [imopenlines.config.add](./imopenlines-config-add.md) ||
+|| **PARAMS**
+[`unknown`](../../data-types.md) | Array of parameters to update (optional). A list of possible fields can be found in the description of the method [imopenlines.config.add](./imopenlines-config-add.md) ||
 |#
 
 ## Examples
@@ -56,6 +56,71 @@ This method updates the open channel.
 - JS
 
     ```js
+    try
+    {
+    	const params = {
+    		CONFIG_ID: 1,
+    		PARAMS: {
+    			LINE_NAME: 'New line name',
+    			...
+    		}
+    	};
+    	
+    	const response = await $b24.callMethod(
+    		'imopenlines.config.update',
+    		params
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		alert("Error: " + result.error());
+    	else
+    		alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $params = [
+            'CONFIG_ID' => 1,
+            'PARAMS'    => [
+                'LINE_NAME' => 'New line name',
+                // Other parameters
+            ],
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.config.update',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating config: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     //imopenlines.config.update
     function configUpdate()
     {
@@ -73,14 +138,14 @@ This method updates the open channel.
                 if (result.error())
                     alert("Error: " + result.error());
                 else
-                    alert("Successfully: " + result.data());
+                    alert("Success: " + result.data());
             }
         );
     }
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}

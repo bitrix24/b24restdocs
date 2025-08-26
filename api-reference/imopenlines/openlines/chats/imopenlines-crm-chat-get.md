@@ -1,14 +1,14 @@
-# Get Chat for CRM Object imopenlines.crm.chat.get
+# Get chat for CRM object imopenlines.crm.chat.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - no response in case of an error
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it soon.
 
 This method retrieves chats for a CRM object.
 
-## Method Parameters
+## Method parameters
 
 {% include [Note on parameters](../../../../_includes/required.md) %}
 
@@ -48,7 +48,7 @@ Possible values:
 Default — `Y` ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -77,6 +77,60 @@ Default — `Y` ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'imopenlines.crm.chat.get',
+    		{
+    			CRM_ENTITY_TYPE: 'deal',
+    			CRM_ENTITY: 288,
+    			ACTIVE_ONLY: 'N'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.crm.chat.get',
+                [
+                    'CRM_ENTITY_TYPE' => 'deal',
+                    'CRM_ENTITY'      => 288,
+                    'ACTIVE_ONLY'     => 'N',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting CRM chat: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'imopenlines.crm.chat.get',
         {
@@ -97,7 +151,7 @@ Default — `Y` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -118,7 +172,7 @@ Default — `Y` ||
 
 {% endlist %}
 
-## Response Handling
+## Response handling
 
 HTTP status: **200**
 
@@ -128,19 +182,19 @@ HTTP status: **200**
         {
             "CHAT_ID": "9852",
             "CONNECTOR_ID": "livechat",
-            "CONNECTOR_TITLE": "Live Chat"
+            "CONNECTOR_TITLE": "Live chat"
         }
     ]
 }
 ```
 
-### Returned Data
+### Returned data
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Array of objects. Each object contains chat description ||
+[`object`](../../data-types.md) | Array of objects. Each object contains a chat description ||
 || **CHAT_ID**
 [`string`](../../data-types.md) | Identifier of the chat ||
 || **CONNECTOR_ID**
@@ -149,9 +203,9 @@ HTTP status: **200**
 [`string`](../../data-types.md) | Title of the connector ||
 |#
 
-## Error Handling
+## Error handling
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -33,7 +33,7 @@ This method allows you to join a session.
 #|
 || **Name**
 `Type` | **Example** | **Description** ||
-|| **CHAT_ID*** 
+|| **CHAT_ID***
 [`unknown`](../../../data-types.md) | 494 | Identifier of the chat ||
 |#
 
@@ -52,6 +52,56 @@ This method allows you to join a session.
     // example for cURL (OAuth)
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'imopenlines.session.join',
+    		{
+    			CHAT_ID: 2024
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.session.join',
+                [
+                    'CHAT_ID' => 2024
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error joining openlines session: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -73,9 +123,9 @@ This method allows you to join a session.
     );
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}
 

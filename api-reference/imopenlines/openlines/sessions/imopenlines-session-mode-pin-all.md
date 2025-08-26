@@ -1,17 +1,17 @@
-# Pin All Available Dialogs to the Operator imopenlines.session.mode.pinAll
+# Pin all available dialogs to the operator imopenlines.session.mode.pinAll
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
-- no response in case of an error
+- response in case of error is missing
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Pinning all dialogs to the current operator. Returns an array of IDs of pinned s
 
 ## Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -38,6 +38,54 @@ Pinning all dialogs to the current operator. Returns an array of IDs of pinned s
     // example for cURL (OAuth)
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'imopenlines.session.mode.pinAll',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.warn(error.ex);
+    	return false;
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.session.mode.pinAll',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Warning: ' . $result->error()->ex;
+            return false;
+        }
+    
+        echo 'Success: ' . print_r($result->data(), true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -55,13 +103,13 @@ Pinning all dialogs to the current operator. Returns an array of IDs of pinned s
     );
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}
 
-## Response on Success
+## Response in case of success
 
 ```json
 {

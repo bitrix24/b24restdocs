@@ -1,4 +1,4 @@
-# Change settings for the imconnector.connector.data.set
+# Change settings for the connector imconnector.connector.data.set
 
 {% note warning "We are still updating this page" %}
 
@@ -12,8 +12,8 @@ Some data may be missing — we will complete it shortly.
 
 - parameter types are not specified
 - parameter requirements are not specified
-- success response is missing
-- error response is missing
+- no response in case of success
+- no response in case of error
   
 {% endnote %}
 
@@ -23,9 +23,9 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method sets data for the REST connector.
+The method sets data for the REST connector.
 
-## Method Parameters
+## Method parameters
 
 #|
 || **Name**
@@ -38,9 +38,9 @@ This method sets data for the REST connector.
 - `name` — name of the channel that will be displayed in the widget ||
 |#
 
-## Code Examples
+## Code examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -67,6 +67,80 @@ This method sets data for the REST connector.
 - JS
 
     ```js
+    async function connectorDataSet()
+    {
+        try
+        {
+            var params = {
+                CONNECTOR: 'myrestconnector',
+                LINE: 1,
+                DATA: {
+                    id: 123,
+                    url: 'http://localhost',
+                    url_im: 'http://localhost',
+                    name: 'My rest connector name'
+                }
+            };
+            
+            const response = await $b24.callMethod(
+                'imconnector.connector.data.set',
+                params
+            );
+            
+            const result = response.getData().result;
+            alert("Successfully: " + result);
+        }
+        catch(error)
+        {
+            alert("Error: " + error);
+        }
+    }
+    ```
+
+- PHP
+
+    ```php
+    function connectorDataSet()
+    {
+        try {
+            $params = [
+                'CONNECTOR' => 'myrestconnector',
+                'LINE' => 1,
+                'DATA' => [
+                    'id' => 123,
+                    'url' => 'http://localhost',
+                    'url_im' => 'http://localhost',
+                    'name' => 'My rest connector name'
+                ]
+            ];
+    
+            $response = $b24Service
+                ->core
+                ->call(
+                    'imconnector.connector.data.set',
+                    $params
+                );
+    
+            $result = $response
+                ->getResponseData()
+                ->getResult();
+    
+            if ($result->error()) {
+                echo 'Error: ' . $result->error();
+            } else {
+                echo 'Successfully: ' . $result->data();
+            }
+    
+        } catch (Throwable $e) {
+            error_log($e->getMessage());
+            echo 'Error setting connector data: ' . $e->getMessage();
+        }
+    }
+    ```
+
+- BX24.js
+
+    ```js
     function connectorDataSet()
     {
         var params = {
@@ -86,13 +160,13 @@ This method sets data for the REST connector.
                 if (result.error())
                     alert("Error: " + result.error());
                 else
-                    alert("Success: " + result.data());
+                    alert("Successfully: " + result.data());
             }
         );
     }
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -120,7 +194,7 @@ This method sets data for the REST connector.
 
 {% endlist %}
 
-## Continue Learning 
+## Continue exploring 
 
 - [{#T}](./imconnector-register.md)
 - [{#T}](./imconnector-activate.md)

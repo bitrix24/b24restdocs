@@ -1,4 +1,4 @@
-# Switch the dialogue to "silent" mode imopenlines.session.mode.silent
+# Switch the dialog to "silent" mode imopenlines.session.mode.silent
 
 {% note warning "We are still updating this page" %}
 
@@ -12,8 +12,8 @@ Some data may be missing here — we will fill it in shortly
 
 - parameter types are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -32,9 +32,9 @@ This method is used to enable and disable silent messaging mode.
 #|
 || **Name**
 `Type` | **Example** | **Default** | **Description** ||
-|| **CHAT_ID***  
+|| **CHAT_ID***
 [`unknown`](../../../data-types.md) | 2020 | | Identifier of the chat ||
-|| **ACTIVATE**  
+|| **ACTIVATE**
 [`unknown`](../../../data-types.md) | Y | N | Activation flag ||
 |#
 
@@ -53,6 +53,60 @@ This method is used to enable and disable silent messaging mode.
     // example for cURL (OAuth)
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'imopenlines.session.mode.silent',
+    		{
+    			CHAT_ID: 2024
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.warn(error.ex);
+    	return false;
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.session.mode.silent',
+                [
+                    'CHAT_ID' => 2024
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Warning: ' . $result->error()->ex;
+            return false;
+        }
+    
+        echo 'Success: ' . print_r($result->data(), true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -73,9 +127,9 @@ This method is used to enable and disable silent messaging mode.
     );
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}
 

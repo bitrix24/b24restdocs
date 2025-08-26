@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing — we will complete it shortly
 >
 > Who can execute the method: any user
 
-The method sends a message on behalf of the user in the CRM entity chat.
+The method `imopenlines.crm.message.add` sends a message on behalf of the user in the chat of the CRM entity.
 
 ## Method Parameters
 
@@ -33,20 +33,20 @@ The method sends a message on behalf of the user in the CRM entity chat.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CRM_ENTITY_TYPE***  
-[`unknown`](../../../data-types.md) | Type of CRM entity:
+|| **CRM_ENTITY_TYPE*** 
+[`unknown`](../../../data-types.md) | Type of CRM object:
 - lead — lead
 - deal — deal
 - company — company
 - contact — contact
  ||
-|| **CRM_ENTITY_ID***  
+|| **CRM_ENTITY*** 
 [`unknown`](../../../data-types.md) | Identifier of the CRM entity ||
-|| **USER_ID***  
+|| **USER_ID*** 
 [`unknown`](../../../data-types.md) | Identifier of the user or bot we want to add to the chat ||
-|| **CHAT_ID***  
+|| **CHAT_ID*** 
 [`unknown`](../../../data-types.md) | Identifier of the chat ||
-|| **MESSAGE***  
+|| **MESSAGE*** 
 [`unknown`](../../../data-types.md) | Message text ||
 |#
 
@@ -67,11 +67,65 @@ The method sends a message on behalf of the user in the CRM entity chat.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'imopenlines.crm.message.add',
+    		{
+    			CRM_ENTITY_TYPE: 'deal',
+    			CRM_ENTITY: 288,
+    			USER_ID: 12,
+    			CHAT_ID: 8773,
+    			MESSAGE: 'Message text'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.crm.message.add',
+                [
+                    'CRM_ENTITY_TYPE' => 'deal',
+                    'CRM_ENTITY'      => 288,
+                    'USER_ID'         => 12,
+                    'CHAT_ID'         => 8773,
+                    'MESSAGE'         => 'Message text',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding CRM message: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'imopenlines.crm.message.add',
         {
             CRM_ENTITY_TYPE: 'deal',
-            CRM_ENTITY_ID: 288,
+            CRM_ENTITY: 288,
             USER_ID: 12,
             CHAT_ID: 8773,
             MESSAGE: 'Message text'
@@ -88,9 +142,9 @@ The method sends a message on behalf of the user in the CRM entity chat.
     );
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}
 

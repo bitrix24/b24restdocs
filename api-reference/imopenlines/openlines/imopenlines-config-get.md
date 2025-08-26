@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing — we will complete it shortly.
 
 - parameter types are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -57,6 +57,71 @@ The method retrieves an open line by its ID.
 - JS
 
     ```js
+    try
+    {
+    	const params = {
+    		CONFIG_ID:    1,
+    		WITH_QUEUE: 'Y',
+    		SHOW_OFFLINE: 'Y'
+    	};
+    	
+    	const response = await $b24.callMethod(
+    		'imopenlines.config.get',
+    		params
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		alert("Error: " + result.error());
+    	}
+    	else
+    	{
+    		alert("Success: " + result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $params = [
+            'CONFIG_ID'   => 1,
+            'WITH_QUEUE'  => 'Y',
+            'SHOW_OFFLINE' => 'Y',
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.config.get',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling imopenlines.config.get: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     //imopenlines.config.get
     function configGet()
     {
@@ -78,8 +143,8 @@ The method retrieves an open line by its ID.
     }
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    // example for php
 
 {% endlist %}
