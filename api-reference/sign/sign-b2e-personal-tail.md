@@ -1,12 +1,12 @@
-# Get a List of Signed Documents for User sign.b2e.personal.tail
+# Get a list of signed documents for the user sign.b2e.personal.tail
 
 > Scope: [`sign.b2e`](../scopes/permissions.md)
 >
 > Who can execute the method: a user with access to their signed documents
 
-The method `sign.b2e.personal.tail` returns a list of signed documents for the user from the KEDO section.
+The method `sign.b2e.personal.tail` returns a list of signed documents for the user from the e-Signature for HR section.
 
-The method works only in the context of [application](../app-installation/index.md) authorization.
+The method works only in the context of authorization of the [application](../app-installation/index.md).
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The parameter accepts a value from 1 to 50.
 
 By default, 20 records are displayed per page ||
 || **offset**
-[`integer`](../data-types.md) | This parameter is used for pagination control. It is similar to the standard [start](../performance/huge-data.md) parameter.
+[`integer`](../data-types.md) | This parameter is used for pagination control. It is similar to the standard parameter [start](../performance/huge-data.md).
  
 The page size of results depends on the **limit** parameter
 ||
@@ -46,6 +46,60 @@ The page size of results depends on the **limit** parameter
 
 - JS
 
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sign.b2e.personal.tail',
+    		{
+    			// Number of records per page. Value from 1 to 50. Default is 20.
+    			limit: 2,
+    			
+    			// Parameter for pagination control.
+    			// Used to specify the offset from the start of the list.
+    			offset: 0
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sign.b2e.personal.tail',
+                [
+                    'limit'  => 2,
+                    'offset' => 0
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         'sign.b2e.personal.tail',
@@ -67,7 +121,7 @@ The page size of results depends on the **limit** parameter
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -93,7 +147,7 @@ The page size of results depends on the **limit** parameter
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -145,14 +199,14 @@ HTTP Status: **200**
 || **title**
 [`string`](../data-types.md) | Title of the document ||
 || **signed_date**
-[`string`](../data-types.md) | Date of document signing ||
+[`string`](../data-types.md) | Date of signing the document ||
 || **file_url**
 [`string`](../data-types.md) | Link to download the signed document ||
 |#
 
 ## Error Handling
 
-HTTP Status: **401**
+HTTP status: **401**
 
 ```json
 {

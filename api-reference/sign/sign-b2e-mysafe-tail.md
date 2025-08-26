@@ -1,8 +1,8 @@
-# Get a List of Signed Documents in the Company's Safe sign.b2e.mysafe.tail
+# Get a list of signed documents in the company's safe sign.b2e.mysafe.tail
 
 > Scope: [`sign.b2e`](../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Company Safe" section. Available documents depend on the "Access to Safe Documents" permission level.
+> Who can execute the method: a user with access to the "Company Safe" section. Available documents depend on the "Access to safe documents" permission level.
 
 The method `sign.b2e.mysafe.tail` returns a list of signed documents in the company's safe.
 
@@ -10,7 +10,7 @@ The method works only in the context of [application](../app-installation/index.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -30,7 +30,7 @@ The page size of results depends on the **limit** parameter
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -45,6 +45,60 @@ The page size of results depends on the **limit** parameter
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sign.b2e.mysafe.tail',
+    		{
+    			// Number of records per page. Value from 1 to 50. Default is 20.
+    			limit: 2,
+    			
+    			// Parameter for managing pagination.
+    			// Used to specify the offset from the start of the list.
+    			offset: 0
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sign.b2e.mysafe.tail',
+                [
+                    'limit'  => 2,
+                    'offset' => 0
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -67,7 +121,7 @@ The page size of results depends on the **limit** parameter
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -93,7 +147,7 @@ The page size of results depends on the **limit** parameter
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -138,7 +192,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response. Contains information about signed documents in the company's safe ||
+[`object`](../data-types.md) | The root element of the response. Contains information about signed documents in the company's safe ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
@@ -151,7 +205,7 @@ HTTP Status: **200**
 || **id**
 [`integer`](../data-types.md) | Identifier of the signed document ||
 || **title**
-[`string`](../data-types.md) | Title of the document ||
+[`string`](../data-types.md) | Document title ||
 || **create_date**
 [`string`](../data-types.md) | Document creation date ||
 || **signed_date**
@@ -173,7 +227,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **401**
+HTTP status: **401**
 
 ```json
 {
@@ -188,7 +242,7 @@ HTTP Status: **401**
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
-## Continue Exploring
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./sign-b2e-personal-tail.md)
