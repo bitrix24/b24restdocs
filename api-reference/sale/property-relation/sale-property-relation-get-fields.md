@@ -1,10 +1,10 @@
-# Get Property Binding Fields sale.propertyRelation.getFields
+# Get Fields of Property Binding sale.propertyRelation.getFields
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `sale.propertyRelation.getFields` allows access to the available property binding fields.
+The method `sale.propertyRelation.getFields` allows access to the available fields of property binding.
 
 No parameters.
 
@@ -37,6 +37,52 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'sale.propertyRelation.getFields',
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyRelation.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting sale property fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.propertyRelation.getFields',
         {},
@@ -50,7 +96,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -100,8 +146,8 @@ HTTP status: **200**
         "finish": 1712302994.75173,
         "duration": 0.40963101387023926,
         "processing": 0.009072065353393555,
-        "date_start": "2024-04-05T10:43:14+03:00",
-        "date_finish": "2024-04-05T10:43:14+03:00"
+        "date_start": "2024-04-05T10:43:14+02:00",
+        "date_finish": "2024-04-05T10:43:14+02:00"
     }
 }
 ```
@@ -116,7 +162,7 @@ HTTP status: **200**
 || **propertyRelation**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_order_property_relation`](../data-types.md), and `value` is an object of type [`rest_field_description`](../data-types.md) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

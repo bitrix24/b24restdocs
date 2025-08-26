@@ -2,32 +2,32 @@
 
 > Scope: [`sale, cashbox`](../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to modify settings")
+> Who can execute the method: CRM administrator (permission "Allow to change settings")
 
 This method adds a cash register.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
- 
+
 #|
 || **Name**
 `type` | **Description** ||
 || **NAME***
 [`string`](../../data-types.md) | Name of the cash register ||
 || **REST_CODE***
-[`sale_cashbox_handler.CODE`](../data-types.md#sale_cashbox_handler) | Code of the cash register's REST handler. Specified when adding the handler in the method [sale.cashbox.handler.add](./sale-cashbox-handler-add.md) in the `CODE` parameter ||
+[`sale_cashbox_handler.CODE`](../data-types.md#sale_cashbox_handler) | REST handler code for the cash register. Specified when adding the handler in the method [sale.cashbox.handler.add](./sale-cashbox-handler-add.md) in the `CODE` parameter ||
 || **EMAIL***
-[`string`](../../data-types.md) | E-mail address to which notifications will be sent in case of errors during receipt printing ||
+[`string`](../../data-types.md) | Email address to which notifications will be sent in case of errors during receipt printing ||
 || **OFD**
 [`string`](../../data-types.md) | OFD handler code. Available OFD handlers: 
 - `bx_firstofd` — First OFD 
-- `bx_platformaofd` — Platform OFD 
+- `bx_platformaofd` — OFD Platform 
 - `bx_yarusofd` — YARUS OFD
 - `bx_taxcomofd` — Taxcom OFD 
 - `bx_ofdruofd` — OFD.RU 
 - `bx_tenzorofd` — Tensor OFD 
-- `bx_conturofd` — Kontur OFD 
+- `bx_conturofd` — Contour OFD 
 
 By default, without OFD
 ||
@@ -41,7 +41,7 @@ By default, an empty array
 
 By default, empty ||
 || **ACTIVE**
-[`string`](../../data-types.md) | Activity status of the cash register. Possible values:
+[`string`](../../data-types.md) | Activity of the cash register. Possible values:
 - `Y` — yes
 - `N` — no
   
@@ -68,16 +68,16 @@ By default, empty ||
 `type` | **Description** ||
 || **Settings for all OFDs** |  ||
 || **OFD_MODE**
-[`object`](../../data-types.md) | Settings related to the OFD operation mode. The `IS_TEST` parameter ([`string`](../../data-types.md) with values `Y/N`) is passed — OFD operation mode: 
+[`object`](../../data-types.md) | Settings related to the OFD operation mode. The `IS_TEST` parameter is passed ([`string`](../../data-types.md) with values `Y/N`) — OFD operation mode: 
 - `Y` — test mode 
-- `N` — production mode ||
+- `N` — working mode ||
 || **Additional settings for OFD.RU** |  ||
 || **SELLER_INFO**
-[`object`](../../data-types.md) | Settings for the "Seller Information" section. The required parameter `INN` ([`string`](../../data-types.md)) is passed — seller's INN
+[`object`](../../data-types.md) | Settings for the "Seller Information" section. The required parameter `INN` ([`string`](../../data-types.md)) — seller's INN
 ||
 || **Additional settings for YARUS OFD** |  ||
 || **AUTH**
-[`object`](../../data-types.md) | Authorization settings. The `INN` parameter ([`string`](../../data-types.md)) is passed — security key
+[`object`](../../data-types.md) | Authorization settings. The `INN` parameter is passed ([`string`](../../data-types.md)) — security key
 ||
 |#
 
@@ -108,6 +108,102 @@ By default, empty ||
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.cashbox.add",
+    		{
+    			"NAME": 'Rest-Cash Register',
+    			"REST_CODE": 'restcashbox01',
+    			"EMAIL": "user@example.com",
+    			"NUMBER_KKM": "123",
+    			"ACTIVE": "Y",
+    			"SORT": 100,
+    			"OFD": "bx_ofdruofd",
+    			"OFD_SETTINGS":
+    			{
+    				"OFD_MODE":
+    				{
+    					"IS_TEST": "N"
+    				}
+    			},
+    			"SETTINGS":
+    			{
+    				"AUTH":
+    				{
+    					"KEYWORD": "top_secret!",
+    					"PREFERENCE": "SECOND"
+    				},
+    				"INTERACTION":
+    				{
+    					"MODE": "ACTIVE"
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.cashbox.add',
+                [
+                    'NAME'       => 'Rest-Cash Register',
+                    'REST_CODE'  => 'restcashbox01',
+                    'EMAIL'      => 'user@example.com',
+                    'NUMBER_KKM' => '123',
+                    'ACTIVE'     => 'Y',
+                    'SORT'       => 100,
+                    'OFD'        => 'bx_ofdruofd',
+                    'OFD_SETTINGS' => [
+                        'OFD_MODE' => [
+                            'IS_TEST' => 'N'
+                        ]
+                    ],
+                    'SETTINGS' => [
+                        'AUTH' => [
+                            'KEYWORD'    => 'top_secret!',
+                            'PREFERENCE' => 'SECOND'
+                        ],
+                        'INTERACTION' => [
+                            'MODE' => 'ACTIVE'
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding cash register: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -150,7 +246,7 @@ By default, empty ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -248,8 +344,8 @@ HTTP status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient permissions to add the cash register | 403 ||
-|| `ERROR_CHECK_FAILURE` | Required field value is not specified or one of the field values is incorrect | 400 ||
+|| `ACCESS_DENIED` | Insufficient rights to add a cash register | 403 ||
+|| `ERROR_CHECK_FAILURE` | A required field value is not specified or the value of one of the fields is incorrect | 400 ||
 || `ERROR_CASHBOX_ADD` | Other errors. More detailed information about the error can be found in `error_description` | 400 ||
 |#
 

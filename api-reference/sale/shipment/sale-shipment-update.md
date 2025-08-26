@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method updates the shipment.
+This method updates a shipment.
 
 ## Method Parameters
 
@@ -21,7 +21,7 @@ This method updates the shipment.
 
 ### Parameter fields
 
-General parameters applicable to shipment properties of any type:
+General parameters relevant for shipment properties of any type:
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -53,13 +53,13 @@ If not provided, the status DN is used (see the default status table in the docu
 || **basePriceDelivery**
 [`double`](../../data-types.md) | Base delivery cost (without discounts / surcharges).
 
-If provided, it is also used for setting the value of `priceDelivery`. The provided value of `priceDelivery` is ignored in this case.
+If provided, it is also used for setting the `priceDelivery` value. The provided `priceDelivery` value is ignored in this case.
 
 If neither basePriceDelivery nor priceDelivery is provided, both prices are set to 0 ||
 || **priceDelivery**
 [`double`](../../data-types.md) | Delivery cost.
 
-If provided and `basePriceDelivery` is not set, it is also used for setting the value of `basePriceDelivery`.
+If provided and basePriceDelivery is not set, it is also used for setting the basePriceDelivery value.
 
 If neither basePriceDelivery nor priceDelivery is provided, both prices are set to 0 ||
 || **comments**
@@ -106,6 +106,77 @@ Can be used for synchronizing the shipment with an external system ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.shipment.update', {
+    			id: 2452,
+    			fields: {
+    				allowDelivery: 'N',
+    				deducted: 'N',
+    				deliveryId: 3,
+    				statusId: 'DD',
+    				deliveryDocDate: '2024-02-13T15:05:49',
+    				deliveryDocNum: 'MyDocumentNumber',
+    				trackingNumber: 'MyTrackingNumber',
+    				basePriceDelivery: 1999.99,
+    				comments: 'My new comment for manager',
+    				responsibleId: 1,
+    				xmlId: 'myNewXmlId',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipment.update',
+                [
+                    'id' => 2452,
+                    'fields' => [
+                        'allowDelivery'      => 'N',
+                        'deducted'           => 'N',
+                        'deliveryId'         => 3,
+                        'statusId'           => 'DD',
+                        'deliveryDocDate'    => '2024-02-13T15:05:49',
+                        'deliveryDocNum'     => 'MyDocumentNumber',
+                        'trackingNumber'     => 'MyTrackingNumber',
+                        'basePriceDelivery'  => 1999.99,
+                        'comments'           => 'My new comment for manager',
+                        'responsibleId'      => 1,
+                        'xmlId'              => 'myNewXmlId',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating shipment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.shipment.update', {
             id: 2452,
@@ -132,7 +203,7 @@ Can be used for synchronizing the shipment with an external system ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -170,65 +241,65 @@ HTTP status: **200**
 
 ```json
 {
-   "result": {
-      "shipment": {
-         "accountNumber": "2068\/19",
-         "allowDelivery": "N",
-         "basePriceDelivery": 1999.99,
-         "canceled": "N",
-         "comments": "My new comment for manager",
-         "companyId": null,
-         "currency": "USD",
-         "customPriceDelivery": "N",
-         "dateAllowDelivery": "2024-04-12T10:01:23+02:00",
-         "dateCanceled": null,
-         "dateDeducted": "2024-04-12T10:01:23+02:00",
-         "dateInsert": "2024-04-11T14:17:52+02:00",
-         "dateMarked": null,
-         "dateResponsibleId": "2024-04-12T10:01:23+02:00",
-         "deducted": "N",
-         "deliveryDocDate": "2024-02-13T14:05:49+02:00",
-         "deliveryDocNum": "MyDocumentNumber",
-         "deliveryId": 3,
-         "deliveryName": "Pickup",
-         "deliveryXmlId": "",
-         "discountPrice": 0,
-         "empAllowDeliveryId": 1,
-         "empCanceledId": null,
-         "empDeductedId": 1,
-         "empMarkedId": null,
-         "empResponsibleId": 1,
-         "externalDelivery": "N",
-         "id": 2452,
-         "id1c": "",
-         "marked": "N",
-         "orderId": 2068,
-         "priceDelivery": 1999.99,
-         "reasonMarked": "",
-         "reasonUndoDeducted": "",
-         "responsibleId": 1,
-         "shipmentItems": [
+   "result":{
+      "shipment":{
+         "accountNumber":"2068\/19",
+         "allowDelivery":"N",
+         "basePriceDelivery":1999.99,
+         "canceled":"N",
+         "comments":"My new comment for manager",
+         "companyId":null,
+         "currency":"USD",
+         "customPriceDelivery":"N",
+         "dateAllowDelivery":"2024-04-12T10:01:23+02:00",
+         "dateCanceled":null,
+         "dateDeducted":"2024-04-12T10:01:23+02:00",
+         "dateInsert":"2024-04-11T14:17:52+02:00",
+         "dateMarked":null,
+         "dateResponsibleId":"2024-04-12T10:01:23+02:00",
+         "deducted":"N",
+         "deliveryDocDate":"2024-02-13T14:05:49+02:00",
+         "deliveryDocNum":"MyDocumentNumber",
+         "deliveryId":3,
+         "deliveryName":"Pickup",
+         "deliveryXmlId":"",
+         "discountPrice":0,
+         "empAllowDeliveryId":1,
+         "empCanceledId":null,
+         "empDeductedId":1,
+         "empMarkedId":null,
+         "empResponsibleId":1,
+         "externalDelivery":"N",
+         "id":2452,
+         "id1c":"",
+         "marked":"N",
+         "orderId":2068,
+         "priceDelivery":1999.99,
+         "reasonMarked":"",
+         "reasonUndoDeducted":"",
+         "responsibleId":1,
+         "shipmentItems":[
             
          ],
-         "statusId": "DD",
-         "statusXmlId": "",
-         "system": "N",
-         "trackingDescription": "",
-         "trackingLastCheck": "",
-         "trackingNumber": "MyTrackingNumber",
-         "trackingStatus": "",
-         "updated1c": "N",
-         "version1c": "",
-         "xmlId": "myNewXmlId"
+         "statusId":"DD",
+         "statusXmlId":"",
+         "system":"N",
+         "trackingDescription":"",
+         "trackingLastCheck":"",
+         "trackingNumber":"MyTrackingNumber",
+         "trackingStatus":"",
+         "updated1c":"N",
+         "version1c":"",
+         "xmlId":"myNewXmlId"
       }
    },
-   "time": {
-      "start": 1712928678.417617,
-      "finish": 1712928679.68092,
-      "duration": 1.2633028030395508,
-      "processing": 1.0808379650115967,
-      "date_start": "2024-04-12T16:31:18+02:00",
-      "date_finish": "2024-04-12T16:31:19+02:00"
+   "time":{
+      "start":1712928678.417617,
+      "finish":1712928679.68092,
+      "duration":1.2633028030395508,
+      "processing":1.0808379650115967,
+      "date_start":"2024-04-12T16:31:18+02:00",
+      "date_finish":"2024-04-12T16:31:19+02:00"
    }
 }
 ```
@@ -241,7 +312,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **shipment**
-[`sale_order_shipment`](../data-types.md) | Object containing information about the updated shipment ||
+[`sale_order_shipment`](../data-types.md) | Object with information about the updated shipment ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -252,8 +323,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error": 0,
-   "error_description": "Required fields: name"
+   "error":0,
+   "error_description":"Required fields: name"
 }
 ```
 
@@ -265,7 +336,7 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `201140400001` | Shipment not found ||
 || `200040300020` | Insufficient permissions to update the shipment ||
-|| `BX_INVALID_VALUE` | Value of one of the fields failed validation before saving ||
+|| `BX_INVALID_VALUE` | Value of one of the fields did not pass validation before saving ||
 || `100` | Parameter `id` not specified ||
 || `100` | Parameter `fields` not specified or empty ||
 || `0` | Required fields of the `fields` structure not provided ||

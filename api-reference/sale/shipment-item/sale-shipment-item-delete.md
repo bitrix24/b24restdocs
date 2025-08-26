@@ -1,4 +1,4 @@
-# Delete Shipment Item Element sale.shipmentitem.delete
+# Delete Shipment Item from Collection sale.shipmentitem.delete
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -46,6 +46,53 @@ The method `sale.shipmentitem.delete` removes an item from the shipment's table 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.shipmentitem.delete", {
+    			"id": 5
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipmentitem.delete',
+                [
+                    'id' => 5,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting shipment item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.shipmentitem.delete", {
             "id": 5
@@ -58,7 +105,7 @@ The method `sale.shipmentitem.delete` removes an item from the shipment's table 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -79,7 +126,7 @@ The method `sale.shipmentitem.delete` removes an item from the shipment's table 
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -89,8 +136,8 @@ HTTP status: **200**
         "finish":1712571752.329445,
         "duration":0.8424267768859863,
         "processing":0.6462001800537109,
-        "date_start":"2024-04-08T13:22:31+03:00",
-        "date_finish":"2024-04-08T13:22:32+03:00"
+        "date_start":"2024-04-08T13:22:31+02:00",
+        "date_finish":"2024-04-08T13:22:32+02:00"
     }
 }
 ```
@@ -101,14 +148,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the shipment table item deletion ||
+[`boolean`](../../data-types.md) | Result of deleting the shipment table item ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -125,7 +172,7 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `201240400001` | The item to be deleted from the shipment table was not found ||
 || `200040300020` | Insufficient permissions to delete the shipment table item ||
-|| `100` | The `id` parameter is not specified ||
+|| `100` | The `id` parameter is missing ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

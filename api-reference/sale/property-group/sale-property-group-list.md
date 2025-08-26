@@ -1,4 +1,4 @@
-# Get a List of Property Groups sale.propertygroup.list
+# Get a list of property groups sale.propertygroup.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -12,16 +12,16 @@ This method is designed to retrieve a list of property groups.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array of fields to select (see fields of the object [sale_order_property_group](../data-types.md)).
+[`array`](../../data-types.md) | An array of fields to select (see fields of the [sale_order_property_group](../data-types.md) object).
 
-If the array is not provided or an empty array is passed, all available fields of property groups will be selected.
+If the array is not provided or is empty, all available fields of property groups will be selected.
 ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected property groups in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the object [sale_order_property_group](../data-types.md). 
+Possible values for `field` correspond to the fields of the [sale_order_property_group](../data-types.md) object.
 
-An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
 - `+` — filtering by the exact value of the specified field; this also includes elements where the field value is undefined (NULL)
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -34,7 +34,7 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
 || **order**
 [`object`](../../data-types.md) | An object for sorting the selected property groups in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the object [sale_order_property_group](../data-types.md).
+Possible values for `field` correspond to the fields of the [sale_order_property_group](../data-types.md) object.
 
 Possible values for `order`:
 - `asc` — in ascending order
@@ -44,7 +44,7 @@ Possible values for `order`:
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -71,6 +71,106 @@ Possible values for `order`:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'sale.propertygroup.list',
+        {
+          "select": ["id", "name", "personTypeId", "sort"],
+          "filter": {
+            ">=id": 14,
+          },
+          "order": {
+            "name": "asc",
+            "id": "desc",
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('sale.propertygroup.list', {
+        "select": ["id", "name", "personTypeId", "sort"],
+        "filter": {
+          ">=id": 14,
+        },
+        "order": {
+          "name": "asc",
+          "id": "desc",
+        }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('sale.propertygroup.list', {
+        "select": ["id", "name", "personTypeId", "sort"],
+        "filter": {
+          ">=id": 14,
+        },
+        "order": {
+          "name": "asc",
+          "id": "desc",
+        }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertygroup.list',
+                [
+                    'select' => ['id', 'name', 'personTypeId', 'sort'],
+                    'filter' => [
+                        '>=id' => 14,
+                    ],
+                    'order' => [
+                        'name' => 'asc',
+                        'id'   => 'desc',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching property groups: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.propertygroup.list", {
             "select": ["id", "name", "personTypeId", "sort"],
@@ -92,7 +192,7 @@ Possible values for `order`:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -118,34 +218,34 @@ Possible values for `order`:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "propertyGroups":[
+    "result": {
+        "propertyGroups": [
             {
-                "id":18,
-                "name":"New Property Group 2",
-                "personTypeId":3,
-                "sort":100
+                "id": 18,
+                "name": "New property group 2",
+                "personTypeId": 3,
+                "sort": 100
             },
             {
-                "id":14,
-                "name":"New Property Group 1",
-                "personTypeId":3,
-                "sort":100
+                "id": 14,
+                "name": "New property group 1",
+                "personTypeId": 3,
+                "sort": 100
             }
         ]
     },
-    "total":2,
-    "time":{
-        "start":1711544498.747502,
-        "finish":1711544498.987554,
-        "duration":0.2400519847869873,
-        "processing":0.010115861892700195,
-        "date_start":"2024-03-27T16:01:38+03:00",
-        "date_finish":"2024-03-27T16:01:38+03:00"
+    "total": 2,
+    "time": {
+        "start": 1711544498.747502,
+        "finish": 1711544498.987554,
+        "duration": 0.2400519847869873,
+        "processing": 0.010115861892700195,
+        "date_start": "2024-03-27T16:01:38+02:00",
+        "date_finish": "2024-03-27T16:01:38+02:00"
     }
 }
 ```
@@ -158,19 +258,19 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **propertyGroups**
-[`sale_order_property_group[]`](../data-types.md) | Array of objects with information about the selected property groups ||
+[`sale_order_property_group[]`](../data-types.md) | Array of objects containing information about the selected property groups ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": 0,
+    "error_description": "error"
 }
 ```
 
@@ -180,7 +280,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read property groups ||
+|| `200040300010` | Insufficient rights to read property groups ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

@@ -20,7 +20,7 @@ You can obtain the identifiers of delivery services using the [sale.delivery.get
 ||
 || **TYPE***
 [`string`](../../../data-types.md) | Type of service. Possible values:
-- `enum` — list (selecting an option from a pre-defined list)
+- `enum` — list (option selection from a pre-defined list)
 - `checkbox` — single service (e.g., door delivery)
 - `quantity` — quantitative service (e.g., required number of movers)
 ||
@@ -45,13 +45,13 @@ If the value is not provided, `N` is used by default.
 This field is relevant only for services of type `single service (checkbox)` and `quantitative service (quantity)`.
 ||
 || **ITEMS***
-[`object[]`](../../../data-types.md) | List of available options for selection (detailed description provided [below](#parameter-items)).
+[`object[]`](../../../data-types.md) | List of available options for selection (detailed description provided [below](#parametr-items)).
 
 This field is relevant only for services of type `list (enum)`.
 ||
 |#
 
-### Parameter ITEMS
+### ITEMS Parameter
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -70,7 +70,7 @@ This field is relevant only for services of type `list (enum)`.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-Adding a service with type `Quantitative service`:
+Adding a service with type `Quantitative Service`:
 
 {% list tabs %}
 
@@ -97,6 +97,65 @@ Adding a service with type `Quantitative service`:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.delivery.extra.service.add', {
+    			DELIVERY_ID: 197,
+    			ACTIVE: "Y",
+    			CODE: "door_delivery",
+    			NAME: "Door Delivery",
+    			DESCRIPTION: "Door Delivery Description",
+    			TYPE: "checkbox",
+    			SORT: 100,
+    			PRICE: 99.99,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.extra.service.add',
+                [
+                    'DELIVERY_ID'  => 197,
+                    'ACTIVE'       => "Y",
+                    'CODE'         => "door_delivery",
+                    'NAME'         => "Door Delivery",
+                    'DESCRIPTION'  => "Door Delivery Description",
+                    'TYPE'         => "checkbox",
+                    'SORT'         => 100,
+                    'PRICE'        => 99.99,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding extra service: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.delivery.extra.service.add', {
             DELIVERY_ID: 197,
@@ -118,7 +177,7 @@ Adding a service with type `Quantitative service`:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -173,6 +232,86 @@ Adding a service with type `List`:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.delivery.extra.service.add', {
+    			DELIVERY_ID: 198,
+    			ACTIVE: "Y",
+    			CODE: "cargo_type",
+    			NAME: "Cargo Type",
+    			DESCRIPTION: "Cargo Type Description",
+    			TYPE: "enum",
+    			SORT: 100,
+    			ITEMS: [{
+    					TITLE: "Small Package(s)",
+    					CODE: "small_package",
+    					PRICE: 129.99,
+    				},
+    				{
+    					TITLE: "Documents",
+    					CODE: "documents",
+    					PRICE: 69.99,
+    				},
+    			],
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.extra.service.add',
+                [
+                    'DELIVERY_ID'  => 198,
+                    'ACTIVE'       => "Y",
+                    'CODE'         => "cargo_type",
+                    'NAME'         => "Cargo Type",
+                    'DESCRIPTION'  => "Cargo Type Description",
+                    'TYPE'         => "enum",
+                    'SORT'         => 100,
+                    'ITEMS'        => [
+                        [
+                            'TITLE' => "Small Package(s)",
+                            'CODE'  => "small_package",
+                            'PRICE' => 129.99,
+                        ],
+                        [
+                            'TITLE' => "Documents",
+                            'CODE'  => "documents",
+                            'PRICE' => 69.99,
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding extra service: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.delivery.extra.service.add', {
             DELIVERY_ID: 198,
@@ -204,7 +343,7 @@ Adding a service with type `List`:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -243,7 +382,7 @@ Adding a service with type `List`:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -272,7 +411,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {

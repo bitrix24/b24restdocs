@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method deletes a variant of the order property value. It is applicable only for properties of type `ENUM`.
+This method deletes a property variant value of an order. It is applicable only for properties of type `ENUM`.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method deletes a variant of the order property value. It is applicable only
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_property_variant.id`](../data-types.md) | Identifier of the property value variant ||
+[`sale_order_property_variant.id`](../data-types.md) | Identifier of the property variant ||
 |#
 
 ## Code Examples
@@ -46,6 +46,55 @@ This method deletes a variant of the order property value. It is applicable only
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.propertyvariant.delete", {
+    			"id": 5
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyvariant.delete',
+                [
+                    'id' => 5
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting property variant: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.propertyvariant.delete", {
             "id": 5
@@ -60,7 +109,7 @@ This method deletes a variant of the order property value. It is applicable only
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -81,7 +130,7 @@ This method deletes a variant of the order property value. It is applicable only
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -91,8 +140,8 @@ HTTP Status: **200**
         "finish":1711631569.45937,
         "duration":0.3153409957885742,
         "processing":0.010441780090332031,
-        "date_start":"2024-03-28T16:12:49+03:00",
-        "date_finish":"2024-03-28T16:12:49+03:00"
+        "date_start":"2024-03-28T16:12:49+02:00",
+        "date_finish":"2024-03-28T16:12:49+02:00"
     }
 }
 ```
@@ -103,14 +152,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of deleting the property value variant ||
+[`boolean`](../../data-types.md) | Result of deleting the property variant ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -125,9 +174,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `201540400001` | The property value variant to be deleted was not found ||
-|| `200040300020` | Insufficient permissions to delete the property value variant ||
-|| `100` | The `id` parameter is not specified ||
+|| `201540400001` | The property variant to be deleted was not found ||
+|| `200040300020` | Insufficient permissions to delete the property variant ||
+|| `100` | The `id` parameter is missing ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

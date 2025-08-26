@@ -1,4 +1,4 @@
-# Change the Property of a Basket Item sale.basketproperties.update
+# Change the property of the basket item sale.basketproperties.update
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -16,7 +16,7 @@ This method modifies the property for an item (position) in the basket of an ord
 || **id***
 [`sale_basket_item_property.id`](../data-types.md#sale_basket_item_property) | Identifier of the order item ||
 || **fields***
-[`object`](../../data-types.md) | Values of the fields being modified (detailed description provided [below](#parametr-fields)) for the basket item (position) property:
+[`object`](../../data-types.md) | Values of the fields to be modified (detailed description is provided [below](#parametr-fields)) for the basket item (position) property:
 
 ```js
 fields: {
@@ -78,6 +78,62 @@ fields: {
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.basketproperties.update",
+    		{
+    			id: 17,
+    			fields: {
+    				name: 'Article',
+    				value: '123-456-789',
+    				code: 'ARTICUL',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.basketproperties.update',
+                [
+                    'id' => 17,
+                    'fields' => [
+                        'name'  => 'Article',
+                        'value' => '123-456-789',
+                        'code'  => 'ARTICUL',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating basket properties: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.basketproperties.update",
         {
@@ -85,7 +141,8 @@ fields: {
             fields: {
                 name: 'Article',
                 value: '123-456-789',
-                code: 'ARTICUL',		}
+                code: 'ARTICUL',
+            }
         },
     )
         .then(
@@ -107,7 +164,7 @@ fields: {
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -170,7 +227,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketProperty**
-[`sale_basket_item_property`](../data-types.md#sale_basket_item_property) | Object containing the data of the modified basket item (position) property ||
+[`sale_basket_item_property`](../data-types.md#sale_basket_item_property) | Object with data of the modified basket item (position) property ||
 || **total**
 [`integer`](../../data-types.md) | Number of processed records ||
 || **time**
@@ -194,7 +251,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `20004030001` | Insufficient permissions to modify ||
+|| `20004030001` | Insufficient rights to modify ||
 || `100` | Required parameters not provided ||
 || `0` | Other errors (e.g., missing required fields) ||
 |#

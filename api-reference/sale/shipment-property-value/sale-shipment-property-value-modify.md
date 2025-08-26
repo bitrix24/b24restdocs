@@ -4,33 +4,33 @@
 >
 > Who can execute the method: administrator
 
-This method updates the values of shipment properties.
+This method updates the shipment property values.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | The root element where request parameters are passed ||
+[`object`](../../data-types.md) | The root element that carries the request parameters ||
 |#
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **shipment***
-[`object`](../../data-types.md) | An object containing the shipment ID and shipment property values (detailed description provided [below](#shipment)) ||
+[`object`](../../data-types.md) | The object containing the shipment ID and shipment property values (detailed description provided [below](#shipment)) ||
 |#
 
 ### Parameter shipment {#shipment}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -43,7 +43,7 @@ This method updates the values of shipment properties.
 
 ### Parameter propertyValues {#propertyvalues}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -56,7 +56,7 @@ This method updates the values of shipment properties.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -81,6 +81,78 @@ This method updates the values of shipment properties.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.shipmentpropertyvalue.modify', {
+    			fields: {
+    				shipment: {
+    					id: 4120,
+    					propertyValues: [{
+    							shipmentPropsId: 105,
+    							value: 'Comments value'
+    						},
+    						{
+    							shipmentPropsId: 106,
+    							value: 'Description value'
+    						},
+    					],
+    				},
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipmentpropertyvalue.modify',
+                [
+                    'fields' => [
+                        'shipment' => [
+                            'id'            => 4120,
+                            'propertyValues' => [
+                                [
+                                    'shipmentPropsId' => 105,
+                                    'value'           => 'Comments value'
+                                ],
+                                [
+                                    'shipmentPropsId' => 106,
+                                    'value'           => 'Description value'
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error modifying shipment property value: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -110,7 +182,7 @@ This method updates the values of shipment properties.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -145,33 +217,33 @@ This method updates the values of shipment properties.
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "propertyValues":[
+    "result": {
+        "propertyValues": [
             {
-                "code":null,
-                "id":38164,
-                "name":"Comments",
-                "value":"Comments value"
+                "code": null,
+                "id": 38164,
+                "name": "Comments",
+                "value": "Comments value"
             },
             {
-                "code":null,
-                "id":38165,
-                "name":"Description",
-                "value":"Description value"
+                "code": null,
+                "id": 38165,
+                "name": "Description",
+                "value": "Description value"
             }
         ]
     },
-    "time":{
-        "start":1718022201.149589,
-        "finish":1718022201.726496,
-        "duration":0.5769069194793701,
-        "processing":0.38397693634033203,
-        "date_start":"2024-06-10T15:23:21+03:00",
-        "date_finish":"2024-06-10T15:23:21+03:00"
+    "time": {
+        "start": 1718022201.149589,
+        "finish": 1718022201.726496,
+        "duration": 0.5769069194793701,
+        "processing": 0.38397693634033203,
+        "date_start": "2024-06-10T15:23:21+02:00",
+        "date_finish": "2024-06-10T15:23:21+02:00"
     }
 }
 ```
@@ -191,12 +263,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":100,
-    "error_description":"Could not find value for parameter {fields}"
+    "error": 100,
+    "error_description": "Could not find value for parameter {fields}"
 }
 ```
 
@@ -206,7 +278,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to change property values ||
+|| `200040300020` | Insufficient permissions to modify property values ||
 || `100` | Required parameters are missing ||
 || `201040400006` | Invalid shipment ID ||
 || `201040400007` | Shipment not found ||

@@ -1,14 +1,14 @@
-# Update the Basket Item (Catalog Product) of an Existing Order sale.basketitem.updateCatalogProduct
+# Change the basket item position (catalog product) of an existing order sale.basketitem.updateCatalogProduct
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method updates the basket item (catalog product) of an existing order.
+This method changes the basket item position (catalog product) of an existing order.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,9 +19,9 @@ This method updates the basket item (catalog product) of an existing order.
 [`object`](../../data-types.md) | Object with modifiable fields ||
 |#
 
-### Parameter fields
+### fields Parameter
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -36,7 +36,7 @@ This method updates the basket item (catalog product) of an existing order.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -47,7 +47,7 @@ This method updates the basket item (catalog product) of an existing order.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":6783,"fields":{"quantity":4}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.basketitem.updateCatalogProduct
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/sale.basketitem.updateCatalogProduct
     ```
 
 - cURL (OAuth)
@@ -61,6 +61,60 @@ This method updates the basket item (catalog product) of an existing order.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.basketitem.updateCatalogProduct",
+    		{
+    			id: 6783,
+    			fields: {
+    				quantity: 4,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.basketitem.updateCatalogProduct',
+                [
+                    'id'     => 6783,
+                    'fields' => [
+                        'quantity' => 4,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating catalog product: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -91,7 +145,7 @@ This method updates the basket item (catalog product) of an existing order.
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -115,7 +169,7 @@ This method updates the basket item (catalog product) of an existing order.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -123,7 +177,7 @@ HTTP Status: **200**
         "basketItem": {
             "basePrice": 1234,
             "canBuy": "Y",
-            "catalogXmlId": "FUTURE-1C-CATALOG",
+            "catalogXmlId": "FUTURE-QUICKBOOKS-CATALOG",
             "currency": "USD",
             "customPrice": "N",
             "dateInsert": "2024-04-22T16:23:43+02:00",
@@ -170,7 +224,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItem**
-[`sale_basket_item`](../data-types.md) | Object with the data of the created basket item ||
+[`sale_basket_item`](../data-types.md) | Object with data of the created basket item ||
 || **total**
 [`integer`](../../data-types.md) | Number of processed records ||
 || **time**
@@ -179,7 +233,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -194,11 +248,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200140400006` | `Module catalog does not exist`
+|| `200140400006` | `Module catalog is not exists`
 
 The Trade Catalog module is missing
 || 
-|| `200140400001` | `basket item does not exist`
+|| `200140400001` | `basket item is not exists`
 
 Basket item not found
 || 
@@ -210,13 +264,13 @@ Order ID is not specified
 
 Order not found
 || 
-|| `200140400011` | `Currency must match the currency of the order`
+|| `200140400011` | `Currency must be the currency of the order`
 
 The item's currency does not match the order's currency
 || 
 || `200040300010` | Insufficient permissions to modify
 || 
-|| `100` | Required parameters are missing
+|| `100` | Required parameters are not specified
 ||
 || `0` | Other errors (e.g., fatal errors)
 ||

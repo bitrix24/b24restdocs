@@ -1,4 +1,4 @@
-# Add Payer Type sale.persontype.add
+# Add payer type sale.persontype.add
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -14,7 +14,7 @@ This method adds a new payer type.
 || **Name**
 `Type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for creating a new payer type in the following structure:
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for creating a new payer type in the form of a structure:
 
 ```js
 fields: {
@@ -35,7 +35,7 @@ fields: {
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **name***
 [`string`](../../data-types.md) | Name of the payer type ||
 || **code**
@@ -80,6 +80,69 @@ Can be used to synchronize the current payer type with a similar position in an 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.persontype.add', 
+    		{
+    			fields: {
+    				name: 'Individual',
+    				sort: '100',
+    				active: 'Y',
+    				code: 'MY_CRM_COMPANY',
+    				xmlId: 'myXmlId'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.persontype.add',
+                [
+                    'fields' => [
+                        'name'   => 'Individual',
+                        'sort'   => '100',
+                        'active' => 'Y',
+                        'code'   => 'MY_CRM_COMPANY',
+                        'xmlId'  => 'myXmlId',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding person type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.persontype.add', 
         {
@@ -101,7 +164,7 @@ Can be used to synchronize the current payer type with a similar position in an 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -128,7 +191,7 @@ Can be used to synchronize the current payer type with a similar position in an 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -158,7 +221,7 @@ HTTP Status: **200**
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **personType**
@@ -169,7 +232,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

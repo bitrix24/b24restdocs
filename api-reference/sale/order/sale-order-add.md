@@ -29,8 +29,7 @@ The method `sale.order.add` is designed for adding an order.
 || **personTypeId***
 [`sale_person_type.id`](../data-types.md) | Identifier of the payer type ||
 || **currency***
-[`string`](../../data-types.md) | Currency. The list of currencies can be obtained through the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
-[`string`](../../data-types.md) | Currency. The list of currencies can be obtained through the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
+[`string`](../../data-types.md) | Currency. The list of currencies can be obtained via the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
 || **price**
 [`double`](../../data-types.md) | Price ||
 || **discountValue**
@@ -51,7 +50,7 @@ Defaults to `N` ||
 || **empMarkedId**
 [`user.id`](../../data-types.md) | Identifier of the user who set the marking ||
 || **reasonMarked**
-[`string`](../../data-types.md) | Reason why the order was marked ||
+[`string`](../../data-types.md) | Reason for marking the order ||
 || **userDescription**
 [`string`](../../data-types.md) | Customer's comment on the order ||
 || **additionalInfo**
@@ -149,6 +148,114 @@ Defaults to `N` ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.order.add',
+    		{
+    			fields: {
+    				lid: 's1',
+    				personTypeId: 1,
+    				currency: 'USD',
+    				price: 100,
+    				discountValue: 10,
+    				statusId: 'N',
+    				empStatusId: 1,
+    				dateInsert: '2024-03-01T14:00:00',
+    				marked: 'Y',
+    				empMarkedId: 1,
+    				reasonMarked: '',
+    				userDescription: '',
+    				additionalInfo: '',
+    				comments: '',
+    				companyId: 1,
+    				responsibleId: 1,
+    				recurringId: 1,
+    				lockedBy: 1,
+    				recountFlag: 'N',
+    				affiliateId: 1,
+    				updated1c: 'N',
+    				orderTopic: '',
+    				xmlId: '',
+    				id1c: '',
+    				version1c: '',
+    				externalOrder: 'N',
+    				canceled: 'Y',
+    				empCanceledId: 1,
+    				reasonCanceled: '',
+    				userId: 1,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.order.add',
+                [
+                    'fields' => [
+                        'lid'            => 's1',
+                        'personTypeId'   => 1,
+                        'currency'       => 'USD',
+                        'price'          => 100,
+                        'discountValue'  => 10,
+                        'statusId'       => 'N',
+                        'empStatusId'    => 1,
+                        'dateInsert'     => '2024-03-01T14:00:00',
+                        'marked'         => 'Y',
+                        'empMarkedId'    => 1,
+                        'reasonMarked'   => '',
+                        'userDescription' => '',
+                        'additionalInfo' => '',
+                        'comments'       => '',
+                        'companyId'      => 1,
+                        'responsibleId'  => 1,
+                        'recurringId'    => 1,
+                        'lockedBy'       => 1,
+                        'recountFlag'    => 'N',
+                        'affiliateId'    => 1,
+                        'updated1c'      => 'N',
+                        'orderTopic'     => '',
+                        'xmlId'          => '',
+                        'id1c'           => '',
+                        'version1c'      => '',
+                        'externalOrder'  => 'N',
+                        'canceled'       => 'Y',
+                        'empCanceledId'  => 1,
+                        'reasonCanceled' => '',
+                        'userId'         => 1,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding order: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.order.add',
         {
@@ -195,7 +302,7 @@ Defaults to `N` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -248,7 +355,6 @@ Defaults to `N` ||
 ## Response Handling
 
 HTTP Status: **200**
-HTTP Status: **200**
 
 ```json
 {
@@ -262,11 +368,6 @@ HTTP Status: **200**
             "comments": "",
             "companyId": 1,
             "currency": "USD",
-            "dateCanceled": "2024-04-12T13:50:21+02:00",
-            "dateInsert": "2024-03-01T13:00:00+02:00",
-            "dateMarked": "2024-04-12T13:50:21+02:00",
-            "dateStatus": "2024-04-12T13:50:21+02:00",
-            "dateUpdate": "2024-04-12T13:50:21+02:00",
             "dateCanceled": "2024-04-12T13:50:21+02:00",
             "dateInsert": "2024-03-01T13:00:00+02:00",
             "dateMarked": "2024-04-12T13:50:21+02:00",
@@ -310,8 +411,6 @@ HTTP Status: **200**
         "processing": 2.210068941116333,
         "date_start": "2024-04-12T14:50:20+02:00",
         "date_finish": "2024-04-12T14:50:23+02:00"
-        "date_start": "2024-04-12T14:50:20+02:00",
-        "date_finish": "2024-04-12T14:50:23+02:00"
     }
 }
 ```
@@ -324,14 +423,13 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **order**
-[`sale_order`](../data-types.md) | Object with information about the added order ||
+[`sale_order`](../data-types.md) | Object containing information about the added order ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
 HTTP Status: **400**
 
 ```json
@@ -348,7 +446,6 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `200040300020` | Insufficient permissions to add an order ||
-|| `100` | Parameter `fields` is not specified or is empty ||
 || `100` | Parameter `fields` is not specified or is empty ||
 || `0` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||

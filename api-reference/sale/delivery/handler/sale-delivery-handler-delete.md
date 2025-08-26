@@ -1,10 +1,10 @@
-# Delete Delivery Handler sale.delivery.handler.delete
+# Delete Delivery Service Handler sale.delivery.handler.delete
 
 > Scope: [`sale`](../../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator
 
-This method deletes a delivery handler.
+This method deletes the delivery service handler.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method deletes a delivery handler.
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_delivery_handler.ID`](../../data-types.md) | Identifier of the delivery handler   ||
+[`sale_delivery_handler.ID`](../../data-types.md) | Identifier of the delivery service handler   ||
 |#
 
 ## Code Examples
@@ -46,6 +46,53 @@ This method deletes a delivery handler.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.delivery.handler.delete', {
+    			ID: 14,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.handler.delete',
+                [
+                    'ID' => 14,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting delivery handler: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.delivery.handler.delete', {
             ID: 14,
@@ -60,7 +107,7 @@ This method deletes a delivery handler.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -91,8 +138,8 @@ HTTP status: **200**
       "finish":1713859948.315044,
       "duration":0.2848479747772217,
       "processing":0.027885913848876953,
-      "date_start":"2024-04-23T11:12:28+03:00",
-      "date_finish":"2024-04-23T11:12:28+03:00"
+      "date_start":"2024-04-23T11:12:28+02:00",
+      "date_finish":"2024-04-23T11:12:28+02:00"
    }
 }
 ```
@@ -103,9 +150,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of deleting the delivery handler ||
+[`boolean`](../../../data-types.md) | Result of deleting the delivery service handler ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -125,10 +172,10 @@ HTTP status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ERROR_HANDLER_NOT_FOUND` | Delivery handler with the specified identifier (ID) not found | 400 ||
+|| `ERROR_HANDLER_NOT_FOUND` | Delivery service handler with the specified identifier (ID) not found | 400 ||
 || `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | 400 ||
-|| `ERROR_HANDLER_DELETE` | Error when attempting to delete the delivery handler | 400 ||
-|| `ACCESS_DENIED` | Insufficient permissions to delete the delivery handler | 403 ||
+|| `ERROR_HANDLER_DELETE` | Error when attempting to delete the delivery service handler | 400 ||
+|| `ACCESS_DENIED` | Insufficient rights to delete the delivery service handler | 403 ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -81,7 +81,7 @@ Defaults to `N` ||
 || **empPaidId**
 [`user.id`](../../data-types.md) | Identifier of the user who made the payment ||
 || **psStatus**
-[`string`](../../data-types.md) | Payment system status flag — whether the payment was successfully made. Options:
+[`string`](../../data-types.md) | Payment system status flag — whether the payment was successful. Options:
 
 - `Y` — yes
 - `N` — no
@@ -127,7 +127,7 @@ Cost of payment upon delivery. Used for cash on delivery ||
 || **empReturnId**
 [`user.id`](../../data-types.md) | Identifier of the user who processed the return ||
 || **payReturnComment**
-[`string`](../../data-types.md) | Return comment ||
+[`string`](../../data-types.md) | Comment on the return ||
 || **responsibleId**
 [`user.id`](../../data-types.md) | Identifier of the user responsible for the payment ||
 || **empResponsibleId**
@@ -140,21 +140,21 @@ Cost of payment upon delivery. Used for cash on delivery ||
 
 Defaults to N ||
 || **comments**
-[`string`](../../data-types.md) | Payment comments ||
+[`string`](../../data-types.md) | Comments on the payment ||
 || **updated1c**
-[`string`](../../data-types.md) | Payment updated via 1C:
+[`string`](../../data-types.md) | Payment updated via QuickBooks and other similar platforms:
 
 - `Y` — yes
 - `N` — no
 
 Defaults to N ||
 || **id1c**
-[`string`](../../data-types.md) | Identifier in 1C ||
+[`string`](../../data-types.md) | Identifier in QuickBooks and other similar platforms ||
 || **version1c**
-[`string`](../../data-types.md) | Payment document version from 1C ||
+[`string`](../../data-types.md) | Payment document version from QuickBooks and other similar platforms ||
 || **externalPayment**
 [`string`](../../data-types.md) | Relevant only for on-premise version
-Whether it is an external payment or not. Used for import from 1C via XML
+Whether it is an external payment. Used for import from QuickBooks and other similar platforms via XML
 
 - `Y` — yes
 - `F` — yes, loaded with the order
@@ -189,7 +189,7 @@ Defaults to `N` ||
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":144,"fields":{"paySystemId":1,"paid":"Y","datePaid":"2024-04-10T10:00:00","empPaidId":1,"psStatus":"Y","psSum":100,"psCurrency":"USD","psResponseDate":"2024-04-10T10:00:00","sum":100,"companyId":1,"responsibleId":1,"empResponsibleId":1,"isReturn":"N","externalPayment":"N","psInvoiceId":1,"marked":"N"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.payment.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/sale.payment.update
     ```
 
 - cURL (OAuth)
@@ -203,6 +203,126 @@ Defaults to `N` ||
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.payment.update',
+    		{
+    			id: 144,
+    			fields: {
+    				paySystemId: 1,
+    				paid: 'Y',
+    				datePaid: '2024-04-10T10:00:00',
+    				empPaidId: 1,
+    				psStatus: 'Y',
+    				psStatusCode: '',
+    				psStatusDescription: '',
+    				psStatusMessage: '',
+    				psSum: 100,
+    				psCurrency: 'USD',
+    				psResponseDate: '2024-04-10T10:00:00',
+    				payVoucherNum: '',
+    				payVoucherDate: '2024-04-10T10:00:00',
+    				datePayBefore: '2024-04-10T10:00:00',
+    				dateBill: '2024-04-10T10:00:00',
+    				xmlId: '',
+    				sum: 100,
+    				companyId: 1,
+    				payReturnNum: '',
+    				priceCod: 100,
+    				payReturnDate: '2024-04-10T10:00:00',
+    				empReturnId: 1,
+    				payReturnComment: '',
+    				responsibleId: 1,
+    				empResponsibleId: 1,
+    				isReturn: 'N',
+    				comments: '',
+    				updated1c: 'N',
+    				id1c: '',
+    				version1c: '',
+    				externalPayment: 'N',
+    				psInvoiceId: 1,
+    				marked: 'N',
+    				reasonMarked: '',
+    				empMarkedId: 1,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.payment.update',
+                [
+                    'id' => 144,
+                    'fields' => [
+                        'paySystemId'          => 1,
+                        'paid'                 => 'Y',
+                        'datePaid'             => '2024-04-10T10:00:00',
+                        'empPaidId'            => 1,
+                        'psStatus'             => 'Y',
+                        'psStatusCode'         => '',
+                        'psStatusDescription'  => '',
+                        'psStatusMessage'      => '',
+                        'psSum'                => 100,
+                        'psCurrency'           => 'USD',
+                        'psResponseDate'       => '2024-04-10T10:00:00',
+                        'payVoucherNum'        => '',
+                        'payVoucherDate'       => '2024-04-10T10:00:00',
+                        'datePayBefore'        => '2024-04-10T10:00:00',
+                        'dateBill'             => '2024-04-10T10:00:00',
+                        'xmlId'                => '',
+                        'sum'                  => 100,
+                        'companyId'            => 1,
+                        'payReturnNum'         => '',
+                        'priceCod'             => 100,
+                        'payReturnDate'        => '2024-04-10T10:00:00',
+                        'empReturnId'          => 1,
+                        'payReturnComment'     => '',
+                        'responsibleId'        => 1,
+                        'empResponsibleId'     => 1,
+                        'isReturn'             => 'N',
+                        'comments'             => '',
+                        'updated1c'            => 'N',
+                        'id1c'                 => '',
+                        'version1c'            => '',
+                        'externalPayment'      => 'N',
+                        'psInvoiceId'          => 1,
+                        'marked'               => 'N',
+                        'reasonMarked'         => '',
+                        'empMarkedId'          => 1,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating payment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -257,7 +377,7 @@ Defaults to `N` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -315,7 +435,7 @@ Defaults to `N` ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -388,12 +508,12 @@ HTTP Status: **200**
 || **payment**
 [`sale_order_payment`](../data-types.md) | Object with information about the updated payment ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the request processing time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

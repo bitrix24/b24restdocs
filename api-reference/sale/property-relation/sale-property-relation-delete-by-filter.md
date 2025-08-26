@@ -1,10 +1,10 @@
-# Delete Property Binding `sale.propertyRelation.deleteByFilter`
+# Remove Property Relation with sale.propertyRelation.deleteByFilter
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `sale.propertyRelation.deleteByFilter` removes the property binding.
+The method `sale.propertyRelation.deleteByFilter` removes the property relation.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ The method `sale.propertyRelation.deleteByFilter` removes the property binding.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for removing the property binding ||
+[`object`](../../data-types.md) | Field values for removing the property relation ||
 |#
 
 ### Parameter fields
@@ -65,6 +65,64 @@ The method `sale.propertyRelation.deleteByFilter` removes the property binding.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.propertyRelation.deleteByFilter', 
+    		{
+    			fields: {
+    				entityId: 6,
+    				entityType: 'D',
+    				propertyId: 40
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyRelation.deleteByFilter',
+                [
+                    'fields' => [
+                        'entityId'    => 6,
+                        'entityType'  => 'D',
+                        'propertyId'  => 40
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting property relation: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.propertyRelation.deleteByFilter', 
         {
@@ -84,7 +142,7 @@ The method `sale.propertyRelation.deleteByFilter` removes the property binding.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -109,7 +167,7 @@ The method `sale.propertyRelation.deleteByFilter` removes the property binding.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -119,8 +177,8 @@ HTTP Status: **200**
         "finish": 1712301886.884087,
         "duration": 0.44754719734191895,
         "processing": 0.040498971939086914,
-        "date_start": "2024-04-05T10:24:46+03:00",
-        "date_finish": "2024-04-05T10:24:46+03:00"
+        "date_start": "2024-04-05T10:24:46+02:00",
+        "date_finish": "2024-04-05T10:24:46+02:00"
     }
 }
 ```
@@ -131,14 +189,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the property binding removal ||
+[`boolean`](../../data-types.md) | Result of the property relation removal ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -153,10 +211,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `201640400004` | Property binding with the specified parameters not found ||
-|| `200040300010` | Insufficient permissions to delete the property binding ||
-|| `100` | Parameter `fields` is missing or empty ||
-|| `0` | Required parameter is missing ||
+|| `201640400004` | Property relation with the specified parameters not found ||
+|| `200040300010` | Insufficient permissions to delete the property relation ||
+|| `100` | Parameter `fields` is not specified or is empty ||
+|| `0` | Required parameter not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

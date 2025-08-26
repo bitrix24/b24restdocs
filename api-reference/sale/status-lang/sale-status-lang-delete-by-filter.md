@@ -1,10 +1,10 @@
-# Delete Localization sale.statusLang.deleteByFilter
+# Delete localization sale.statusLang.deleteByFilter
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method removes localization records for order or delivery status by status ID and language.
+This method deletes the localization records of the order or delivery status by status ID and language.
 
 ## Method Parameters
 
@@ -14,12 +14,12 @@ This method removes localization records for order or delivery status by status 
 || **Name**
 `type`| **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Values of the filter fields (detailed description provided [below](#parametr-fields)) for deleting the localization record in the following structure:
+[`object`](../../data-types.md) | Values of the filter fields (detailed description provided [below](#parametr-fields)) for deleting the localization record in the form of a structure:
 
 ```js
 fields: {
     statusId: 'value',
-    lid: 'value',
+    lid: 'value'
     name: 'value'
 }
 ```
@@ -52,9 +52,9 @@ fields: {
 - la — Spanish
 - ms — Malay
 - pl — Polish
-- ru — Russian
-- sc — Chinese (Simplified)
-- tc — Chinese (Traditional)
+- de — German
+- sc — Chinese (simplified)
+- tc — Chinese (traditional)
 - th — Thai
 - tr — Turkish
 - ua — Ukrainian
@@ -66,7 +66,7 @@ The list of available languages can be obtained using the method [sale.statuslan
 
 {% note alert "Attention" %}
 
-To ensure the method works correctly, please provide any non-empty value for this parameter.
+To ensure the method works correctly, please provide any non-empty value for this parameter 
 
 {% endnote %}
 
@@ -102,6 +102,62 @@ To ensure the method works correctly, please provide any non-empty value for thi
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.statusLang.deleteByFilter',
+    		{
+    			fields: {
+    				statusId: 'RD',
+    				lid: 'la',
+    				name: '-',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.statusLang.deleteByFilter',
+                [
+                    'fields' => [
+                        'statusId' => 'RD',
+                        'lid'     => 'la',
+                        'name'    => '-',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting status language: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.statusLang.deleteByFilter',
         {
@@ -121,7 +177,7 @@ To ensure the method works correctly, please provide any non-empty value for thi
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -147,7 +203,7 @@ To ensure the method works correctly, please provide any non-empty value for thi
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -176,7 +232,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -195,7 +251,7 @@ HTTP Status: **400**
 || `201750000004` | Unknown localization language identifier `lid` provided ||
 || `200040300010` | Insufficient permissions to delete the status localization ||
 || `100` | Parameter `fields` not specified or empty ||
-|| `0` | Required fields in the `fields` structure not provided ||
+|| `0` | Required fields of the `fields` structure not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

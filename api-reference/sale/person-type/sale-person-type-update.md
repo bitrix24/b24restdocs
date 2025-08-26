@@ -1,4 +1,4 @@
-# Change Payer Type sale.persontype.update
+# Change the payer type sale.persontype.update
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -14,7 +14,7 @@ This method modifies the fields of the payer type.
 || **Parameter**
 `type`| **Description** ||
 || **id***
-[`sale_person_type.id`](../data-types.md) | Payer type number ||
+[`sale_person_type.id`](../data-types.md) | The ID of the payer type ||
 || **fields***
 [`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for updating the payer type field in the form of a structure:
 
@@ -39,13 +39,13 @@ fields: {
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Name of the payer type ||
+[`string`](../../data-types.md) | The name of the payer type ||
 || **code**
-[`string`](../../data-types.md) | Code of the payer type. Must be unique ||
+[`string`](../../data-types.md) | The code of the payer type. Must be unique ||
 || **sort**
 [`string`](../../data-types.md) | Sorting. Default value is `150` ||
 || **active**
-[`string`](../../data-types.md) | Active flag. Can take values `Y` / `N`. Default is set to `Y` ||
+[`string`](../../data-types.md) | Activity flag. Can take values `Y` / `N`. Default is set to `Y` ||
 || **xmlId**
 [`string`](../../data-types.md) | External identifier.
 
@@ -65,7 +65,7 @@ Can be used to synchronize the current payer type with a similar position in an 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":12,"fields":{"name":"Legal Entity"}}' \
+    -d '{"id":12,"fields":{"name":"Legal entity"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.persontype.update
     ```
 
@@ -75,11 +75,67 @@ Can be used to synchronize the current payer type with a similar position in an 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":12,"fields":{"name":"Legal Entity"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":12,"fields":{"name":"Legal entity"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.persontype.update
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.persontype.update', 
+    		{
+    			id: 12,
+    			fields: {
+    				name: 'Legal entity'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.persontype.update',
+                [
+                    'id' => 12,
+                    'fields' => [
+                        'name' => 'Legal entity'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating person type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -87,7 +143,7 @@ Can be used to synchronize the current payer type with a similar position in an 
         {
             id: 12,
             fields: {
-                name: 'Legal Entity'
+                name: 'Legal entity'
             }
         }, 
         function(result)
@@ -100,8 +156,7 @@ Can be used to synchronize the current payer type with a similar position in an 
     );
     ```
 
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -111,7 +166,7 @@ Can be used to synchronize the current payer type with a similar position in an 
         [
             'id' => 12,
             'fields' => [
-                'name' => 'Legal Entity'
+                'name' => 'Legal entity'
             ]
         ]
     );
@@ -134,7 +189,7 @@ HTTP status: **200**
         "active": "Y",
         "code": "MY_CRM_COMPANY",
         "id": 68,
-        "name": "Legal Entity",
+        "name": "Legal entity",
         "sort": "100",
         "xmlId": "1234"
         }
@@ -157,7 +212,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
+[`object`](../../data-types.md) | The root element of the response ||
 || **personType**
 [`sale_person_type`](../data-types.md) | Object with information about the updated payer type ||
 || **time**
@@ -181,7 +236,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200740400001` | Payer type with the specified `id` does not exist ||
+|| `200740400001` | The payer type with the specified `id` does not exist ||
 || `200750000007`
 `200750000002` | Error updating the type ||
 || `200040300020` | No access to edit ||

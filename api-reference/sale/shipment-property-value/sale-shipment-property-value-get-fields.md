@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method returns the available fields of shipment property values.
+The method returns the available fields of shipment property values.
 
 No parameters.
 
@@ -37,6 +37,49 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.shipmentpropertyvalue.getfields", {}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipmentpropertyvalue.getfields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting shipment property fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.shipmentpropertyvalue.getfields", {},
         function(result) {
@@ -49,7 +92,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -68,63 +111,63 @@ No parameters.
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "propertyValue":{
-            "code":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":false,
-                "type":"string"
+    "result": {
+        "propertyValue": {
+            "code": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
             },
-            "id":{
-                "isImmutable":true,
-                "isReadOnly":true,
-                "isRequired":false,
-                "type":"integer"
+            "id": {
+                "isImmutable": true,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "integer"
             },
-            "name":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":false,
-                "type":"string"
+            "name": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
             },
-            "shipmentId":{
-                "isImmutable":true,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"integer"
+            "shipmentId": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
             },
-            "shipmentPropsId":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"integer"
+            "shipmentPropsId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
             },
-            "shipmentPropsXmlId":{
-                "isImmutable":false,
-                "isReadOnly":true,
-                "isRequired":false,
-                "type":"string"
+            "shipmentPropsXmlId": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "string"
             },
-            "value":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"string"
+            "value": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
             }
         }
     },
-    "time":{
-        "start":1718024003.807242,
-        "finish":1718024003.98344,
-        "duration":0.17619800567626953,
-        "processing":0.005009889602661133,
-        "date_start":"2024-06-10T15:53:23+03:00",
-        "date_finish":"2024-06-10T15:53:23+03:00"
+    "time": {
+        "start": 1718024003.807242,
+        "finish": 1718024003.98344,
+        "duration": 0.17619800567626953,
+        "processing": 0.005009889602661133,
+        "date_start": "2024-06-10T15:53:23+02:00",
+        "date_finish": "2024-06-10T15:53:23+02:00"
     }
 }
 ```
@@ -144,12 +187,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": 0,
+    "error_description": "error"
 }
 ```
 

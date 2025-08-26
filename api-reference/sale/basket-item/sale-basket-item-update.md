@@ -1,10 +1,10 @@
-# Update the Basket Item Position of an Existing Order sale.basketitem.update
+# Change the position of the basket in an existing order sale.basketitem.update
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method updates the basket item position of an existing order.
+This method modifies the position of the basket in an existing order.
 
 ## Method Parameters
 
@@ -16,10 +16,10 @@ This method updates the basket item position of an existing order.
 || **id***
 [`sale_basket_item.id`](../data-types.md) | Identifier of the order item ||
 || **fields***
-[`object`](../../data-types.md) | Values of the fields to be updated ||
+[`object`](../../data-types.md) | Values of the fields to be modified ||
 |#
 
-### Fields Parameter
+### Parameter fields
 
 #|
 || **Name**
@@ -27,11 +27,11 @@ This method updates the basket item position of an existing order.
 || **sort**
 [`integer`](../../data-types.md) | Position in the list of order items ||
 || **price**
-[`double`](../../data-types.md) | Price including surcharges and discounts ||
+[`double`](../../data-types.md) | Price including markups and discounts ||
 || **basePrice**
-[`double`](../../data-types.md) | Original price excluding surcharges and discounts ||
+[`double`](../../data-types.md) | Original price excluding markups and discounts ||
 || **discountPrice**
-[`double`](../../data-types.md) | Amount of the final discount or surcharge ||
+[`double`](../../data-types.md) | Amount of the final discount or markup ||
 || **quantity**
 [`double`](../../data-types.md) | Quantity of the product ||
 || **xmlId**
@@ -51,7 +51,7 @@ This method updates the basket item position of an existing order.
 - `Y` — yes
 - `N` — no ||
 || **vatRate**
-[`double`](../../data-types.md) | Tax rate in percentage. To indicate the "No VAT" rate, an empty string should be passed ||
+[`double`](../../data-types.md) | Tax rate in percentage. To specify the "No VAT" rate, an empty string should be passed ||
 || **vatIncluded**
 [`string`](../../data-types.md) | Flag indicating whether VAT or tax is included in the product price. Possible values:
 - `Y` — yes
@@ -91,6 +91,62 @@ This method updates the basket item position of an existing order.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.basketitem.update",
+    		{
+    			id: 6791,
+    			fields: {
+    				quantity: 7,
+    				price: 10,
+    				discountPrice: 990,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.basketitem.update',
+                [
+                    'id' => 6791,
+                    'fields' => [
+                        'quantity'      => 7,
+                        'price'         => 10,
+                        'discountPrice' => 990,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating basket item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.basketitem.update",
         {
@@ -121,7 +177,7 @@ This method updates the basket item position of an existing order.
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -148,7 +204,7 @@ This method updates the basket item position of an existing order.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -203,7 +259,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItem**
-[`sale_basket_item`](../data-types.md) | Object containing the data of the updated basket item ||
+[`sale_basket_item`](../data-types.md) | Object containing data of the updated basket item ||
 || **total**
 [`integer`](../../data-types.md) | Number of processed records ||
 || **time**
@@ -212,7 +268,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -245,7 +301,7 @@ Item currency does not match the order's currency
 || 
 || `200040300010` | Insufficient permissions to modify
 || 
-|| `100` | Required parameters are missing
+|| `100` | Required parameters not specified
 ||
 || `0` | Other errors (e.g., fatal errors)
 || 

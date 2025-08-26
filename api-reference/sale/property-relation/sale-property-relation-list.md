@@ -1,4 +1,4 @@
-# Get a List of Property Bindings `sale.propertyRelation.list`
+# Get a list of property bindings sale.propertyRelation.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -8,13 +8,13 @@ The method `sale.propertyRelation.list` allows you to retrieve a list of propert
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to be selected (see fields of the object [sale_order_property_relation](../data-types.md#sale_order_property_relation)).
+[`array`](../../data-types.md) | The array contains a list of fields to select (see fields of the object [sale_order_property_relation](../data-types.md#sale_order_property_relation)).
 
 If not provided or an empty array is passed, all available fields of property bindings will be selected. ||
 || **filter**
@@ -22,24 +22,24 @@ If not provided or an empty array is passed, all available fields of property bi
 
 Possible values for `field` correspond to the fields of the object [sale_order_property_relation](../data-types.md#sale_order_property_relation).
 
-An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
+An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"
     - "%mol" — searching for values ending with "mol"
     - "%mol%" — searching for values where "mol" can be in any position
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides.
 
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - "mol%" — searching for values not starting with "mol"
     - "%mol" — searching for values not ending with "mol"
     - "%mol%" — searching for values where the substring "mol" is not present in any position
@@ -56,23 +56,23 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 Possible values for `field` correspond to the fields of the object [sale_order_property_relation](../data-types.md#sale_order_property_relation).
 
 Possible values for `order`:
-- `asc` — ascending order
-- `desc` — descending order ||
+- `asc` — in ascending order
+- `desc` — in descending order ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../../data-types.md) | The parameter is used to control pagination.
 
 The page size of results is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
-The formula for calculating the value of the `start` parameter:
+The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number ||
+`start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -97,6 +97,120 @@ The formula for calculating the value of the `start` parameter:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'sale.propertyRelation.list',
+        {
+          select: [
+            'entityId',
+            'entityType',
+            'propertyId',
+          ],
+          filter: {
+            entityId: 6,
+          },
+          order: {
+            entityId: 'asc',
+          },
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('sale.propertyRelation.list', {
+        select: [
+          'entityId',
+          'entityType',
+          'propertyId',
+        ],
+        filter: {
+          entityId: 6,
+        },
+        order: {
+          entityId: 'asc',
+        },
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('sale.propertyRelation.list', {
+        select: [
+          'entityId',
+          'entityType',
+          'propertyId',
+        ],
+        filter: {
+          entityId: 6,
+        },
+        order: {
+          entityId: 'asc',
+        },
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyRelation.list',
+                [
+                    'select' => [
+                        'entityId',
+                        'entityType',
+                        'propertyId',
+                    ],
+                    'filter' => [
+                        'entityId' => 6,
+                    ],
+                    'order' => [
+                        'entityId' => 'asc',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing sale property relations: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -124,7 +238,7 @@ The formula for calculating the value of the `start` parameter:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -155,7 +269,7 @@ The formula for calculating the value of the `start` parameter:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -184,8 +298,8 @@ HTTP Status: **200**
         "finish": 1712308457.096419,
         "duration": 0.4327890872955322,
         "processing": 0.023340940475463867,
-        "date_start": "2024-04-05T12:14:16+03:00",
-        "date_finish": "2024-04-05T12:14:17+03:00"
+        "date_start": "2024-04-05T12:14:16+02:00",
+        "date_finish": "2024-04-05T12:14:17+02:00"
     }
 }
 ```
@@ -198,7 +312,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
 || **propertyRelations**
-[`sale_order_property_relation`](../data-types.md) | An array of objects containing information about the selected property bindings ||
+[`sale_order_property_relation`](../data-types.md) | An array of objects with information about the selected property bindings ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
@@ -207,7 +321,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -216,7 +330,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -226,7 +340,7 @@ HTTP Status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

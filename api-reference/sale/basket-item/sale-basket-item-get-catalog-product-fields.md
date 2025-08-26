@@ -1,18 +1,18 @@
-# Get Available Fields of the Basket Item (Catalog Product) sale.basketitem.getFieldsCatalogProduct
+# Get Available Fields of a Basket Item (Product from Catalog) sale.basketitem.getFieldsCatalogProduct
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: store manager
 
-This method returns a list of available fields for the basket item (position) for the methods [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md) and [sale.basketitem.updateCatalogProduct](./sale-basket-item-update-catalog-product.md) — these methods only work with products from the catalog module in the basket items (positions).
+This method returns a list of available fields for a basket item (position) for the methods [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md) and [sale.basketitem.updateCatalogProduct](./sale-basket-item-update-catalog-product.md) — these methods only work with products from the catalog module in basket items (positions).
 
-Unlike [sale.basketitem.getFields](./sale-basket-item-get-fields.md), the method `sale.basketitem.getFieldsCatalogProduct` returns the minimum required list of fields for operation.
+Unlike [sale.basketitem.getFields](./sale-basket-item-get-fields.md), the method `sale.basketitem.getFieldsCatalogProduct` returns the minimum necessary list of fields for operation.
 
-Without parameters.
+No parameters required.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -39,6 +39,52 @@ Without parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.basketitem.getFieldsCatalogProduct",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.basketitem.getFieldsCatalogProduct',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting catalog product fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.basketitem.getFieldsCatalogProduct",
         {},
@@ -62,7 +108,7 @@ Without parameters.
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -128,7 +174,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItem**
-[`object`](../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [sale_basket_item](../data-types.md) object, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description)
+[`object`](../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the field of the [sale_basket_item](../data-types.md), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description)
 ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||

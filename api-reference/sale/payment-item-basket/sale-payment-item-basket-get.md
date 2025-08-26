@@ -1,25 +1,25 @@
-# Get Values of All Fields for the Payment Item Basket Binding sale.paymentitembasket.get
+# Get Values of All Fields for the Basket Item Binding to Payment sale.paymentitembasket.get
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method retrieves the values of all fields for the payment item basket binding.
+This method retrieves the values of all fields for the basket item binding to payment.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_payment_item_basket.id`](../data-types.md) | Identifier for the payment item basket binding ||
+[`sale_payment_item_basket.id`](../data-types.md) | Identifier of the basket item binding to payment ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,53 @@ This method retrieves the values of all fields for the payment item basket bindi
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paymentitembasket.get', {
+    			id: 1186,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paymentitembasket.get',
+                [
+                    'id' => 1186,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting payment item basket: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.paymentitembasket.get', {
             id: 1186,
@@ -60,7 +107,7 @@ This method retrieves the values of all fields for the payment item basket bindi
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -81,27 +128,27 @@ This method retrieves the values of all fields for the payment item basket bindi
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "paymentItemBasket":{
-            "basketId":2722,
-            "dateInsert":"2024-04-17T10:51:03+03:00",
-            "id":1186,
-            "paymentId":1025,
-            "quantity":3,
-            "xmlId":"myXmlId"
+    "result": {
+        "paymentItemBasket": {
+            "basketId": 2722,
+            "dateInsert": "2024-04-17T10:51:03+02:00",
+            "id": 1186,
+            "paymentId": 1025,
+            "quantity": 3,
+            "xmlId": "myXmlId"
         }
     },
-    "time":{
-        "start":1713343923.033388,
-        "finish":1713343923.350584,
-        "duration":0.3171961307525635,
-        "processing":0.03599095344543457,
-        "date_start":"2024-04-17T11:52:03+03:00",
-        "date_finish":"2024-04-17T11:52:03+03:00"
+    "time": {
+        "start": 1713343923.033388,
+        "finish": 1713343923.350584,
+        "duration": 0.3171961307525635,
+        "processing": 0.03599095344543457,
+        "date_start": "2024-04-17T11:52:03+02:00",
+        "date_finish": "2024-04-17T11:52:03+02:00"
     }
 }
 ```
@@ -114,35 +161,35 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **paymentItemBasket**
-[`sale_payment_item_basket`](../data-types.md) | Information about the payment item basket binding ||
+[`sale_payment_item_basket`](../data-types.md) | Information about the basket item binding to payment ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":201240400001,
-    "error_description":"payment item does not exist"
+    "error": 201240400001,
+    "error_description": "payment item does not exist"
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `201240400001` | Payment item basket binding not found ||
-|| `200040300010` | Insufficient permissions to read payment item basket binding data ||
+|| `201240400001` | Basket item binding to payment not found ||
+|| `200040300010` | Insufficient permissions to read data about the basket item binding to payment ||
 || `100` | Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

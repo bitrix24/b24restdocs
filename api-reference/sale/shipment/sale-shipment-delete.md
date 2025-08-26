@@ -46,6 +46,53 @@ This method deletes a shipment.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.shipment.delete", {
+    			"id": 2461
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipment.delete',
+                [
+                    'id' => 2461,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting shipment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.shipment.delete", {
             "id": 2461
@@ -60,7 +107,7 @@ This method deletes a shipment.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -115,7 +162,7 @@ HTTP status: **400**
 ```json
 {
    "error":"SALE_SHIPMENT_EXIST_SHIPPED",
-   "error_description":"The shipment has already been shipped. Cancel the shipment"
+   "error_description":"The shipment has already been shipped. Please cancel the shipment"
 }
 ```
 
@@ -128,7 +175,7 @@ HTTP status: **400**
 || `201140400001` | The shipment to be deleted was not found ||
 || `200040300020` | Insufficient permissions to delete the shipment ||
 || `SALE_SHIPMENT_EXIST_SHIPPED` | Attempt to delete a shipped shipment ||
-|| `100` | The `id` parameter is missing ||
+|| `100` | The parameter `id` is not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

@@ -8,18 +8,18 @@ The method `sale.propertyRelation.add` adds a property binding.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating a property binding ||
+[`object`](../../data-types.md) | Field values for creating the property binding ||
 |#
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter**
@@ -38,7 +38,7 @@ The method `sale.propertyRelation.add` adds a property binding.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -49,7 +49,7 @@ The method `sale.propertyRelation.add` adds a property binding.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"entityId":6,"entityType":"D","propertyId":40}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.propertyRelation.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/sale.propertyRelation.add
     ```
 
 - cURL (OAuth)
@@ -63,6 +63,64 @@ The method `sale.propertyRelation.add` adds a property binding.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.propertyRelation.add',
+    		{
+    			fields: {
+    				entityId: 6,
+    				entityType: 'D',
+    				propertyId: 40
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyRelation.add',
+                [
+                    'fields' => [
+                        'entityId'    => 6,
+                        'entityType'  => 'D',
+                        'propertyId'  => 40,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding property relation: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -84,7 +142,7 @@ The method `sale.propertyRelation.add` adds a property binding.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -125,8 +183,8 @@ HTTP status: **200**
         "finish": 1712244476.402808,
         "duration": 0.9075310230255127,
         "processing": 0.08538603782653809,
-        "date_start": "2024-04-04T18:27:55+03:00",
-        "date_finish": "2024-04-04T18:27:56+03:00"
+        "date_start": "2024-04-04T18:27:55+02:00",
+        "date_finish": "2024-04-04T18:27:56+02:00"
     }
 }
 ```
@@ -141,7 +199,7 @@ HTTP status: **200**
 || **propertyRelations**
 [`sale_order_property_relation`](../data-types.md) | Object with information about the created binding ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -161,12 +219,12 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `201650000001` | A binding with the specified values `entityId`, `entityType`, `propertyId` already exists
+|| `201650000001` | Binding with the specified values `entityId`, `entityType`, `propertyId` already exists
  ||
-|| `201650000002` | The property does not exist. Invalid value for the provided parameter `propertyId` || 
-|| `200040300020` | Insufficient permissions to create a property binding || 
-|| `100` | The parameter `fields` is not specified or is empty || 
-|| `0` | Required fields are not provided ||
+|| `201650000002` | Property does not exist. Invalid value for the provided parameter `propertyId` || 
+|| `200040300020` | Insufficient permissions to create the property binding || 
+|| `100` | Parameter `fields` is missing or empty || 
+|| `0` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

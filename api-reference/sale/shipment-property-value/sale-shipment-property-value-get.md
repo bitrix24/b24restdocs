@@ -46,6 +46,53 @@ This method returns the values of the shipment property.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.shipmentpropertyvalue.get", {
+    			"id": 38164
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipmentpropertyvalue.get',
+                [
+                    'id' => 38164,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting shipment property value: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.shipmentpropertyvalue.get", {
             "id": 38164
@@ -60,7 +107,7 @@ This method returns the values of the shipment property.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,22 +132,22 @@ HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "propertyValue":{
-            "code":null,
-            "id":38164,
-            "name":"Comments",
-            "shipmentPropsId":105,
-            "value":"Comments value"
+    "result": {
+        "propertyValue": {
+            "code": null,
+            "id": 38164,
+            "name": "Comments",
+            "shipmentPropsId": 105,
+            "value": "Comments value"
         }
     },
-    "time":{
-        "start":1718023082.525679,
-        "finish":1718023082.798483,
-        "duration":0.27280378341674805,
-        "processing":0.055876970291137695,
-        "date_start":"2024-06-10T15:38:02+03:00",
-        "date_finish":"2024-06-10T15:38:02+03:00"
+    "time": {
+        "start": 1718023082.525679,
+        "finish": 1718023082.798483,
+        "duration": 0.27280378341674805,
+        "processing": 0.055876970291137695,
+        "date_start": "2024-06-10T15:38:02+02:00",
+        "date_finish": "2024-06-10T15:38:02+02:00"
     }
 }
 ```
@@ -124,8 +171,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":201040400001,
-    "error_description":"Property value has not been found"
+    "error": 201040400001,
+    "error_description": "Property value has not been found"
 }
 ```
 
@@ -136,7 +183,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `201040400001` | Property value not found ||
-|| `200040300010` | Insufficient permissions to read the property value ||
+|| `200040300010` | Insufficient permissions to read property value ||
 || `100` | Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

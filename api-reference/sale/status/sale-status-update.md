@@ -1,4 +1,4 @@
-# Update Status sale.status.update
+# Update status sale.status.update
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -31,7 +31,7 @@ This method updates the status of an order or delivery.
 - `O` — order status
 - `D` — delivery status ||
 || **notify**
-[`string`](../../data-types.md) | Indicator of whether to send an email notification to the user when the order or delivery changes to this status.
+[`string`](../../data-types.md) | Indicator of whether to send an email notification to the user when the order or delivery transitions to this status.
 
 Possible values:
 - `Y` — notify
@@ -77,6 +77,67 @@ Can be used for synchronization with the order or delivery status by identifier 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.status.update', {
+    			id: 'MS',
+    			fields: {
+    				type: 'D',
+    				notify: 'N',
+    				sort: 100,
+    				color: '#00FF00',
+    				xmlId: 'updatedXmlId',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.status.update',
+                [
+                    'id' => 'MS',
+                    'fields' => [
+                        'type'   => 'D',
+                        'notify' => 'N',
+                        'sort'   => 100,
+                        'color'  => '#00FF00',
+                        'xmlId'  => 'updatedXmlId',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating sale status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.status.update', {
             id: 'MS',
@@ -98,7 +159,7 @@ Can be used for synchronization with the order or delivery status by identifier 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -187,7 +248,7 @@ HTTP status: **400**
 - statuses `DF` and `DN` must always have type `D` (delivery)
 ||
 || `201350000007` | Error occurs when trying to change the order status type if orders are already attached to this status ||
-|| `201350000008` | Error occurs when trying to change the delivery status type if shipments are already attached to this status ||
+|| `201350000008` | Error occurs when trying to change the delivery status type if deliveries are already attached to this status ||
 || `100` | Parameter `id` not specified ||
 || `100` | Parameter `fields` not specified or empty ||
 || `0` | Required fields of the `fields` structure not provided ||

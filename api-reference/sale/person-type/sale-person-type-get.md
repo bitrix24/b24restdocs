@@ -1,4 +1,4 @@
-# Get Payer Type by Id sale.persontype.get
+# Get the payer type by Id sale.persontype.get
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -8,18 +8,18 @@ This method is used to access the fields of the payer type by its `Id`.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter**
 `Type` | **Description** ||
 || **id***
-[`sale_person_type.id`](../data-types.md) | Payer type number ||
+[`sale_person_type.id`](../data-types.md) | The payer type number ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,54 @@ This method is used to access the fields of the payer type by its `Id`.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.persontype.get',
+    		{ id: id }
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.persontype.get',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting person type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.persontype.get', 
         { id: id }, 
@@ -59,7 +107,7 @@ This method is used to access the fields of the payer type by its `Id`.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -108,13 +156,13 @@ HTTP status: **200**
 
 #|
 || **Name**
-`Type` | **Description** ||
+`type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
+[`object`](../../data-types.md) | The root element of the response ||
 || **personType**
 [`sale_person_type`](../data-types.md) | Object with information about the updated payer type ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -134,9 +182,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200740400001` | Payer type with the specified `id` does not exist ||
+|| `200740400001` | The payer type with the specified `id` does not exist ||
 || `200040300010` | No access to read ||
-|| `100` | Parameter `id` is not specified ||
+|| `100` | The `id` parameter is not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

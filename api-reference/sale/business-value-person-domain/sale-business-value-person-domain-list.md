@@ -1,4 +1,4 @@
-# Get a List of Matches for a Natural or Legal Person sale.businessValuePersonDomain.list
+# Get a list of matches for a natural or legal person sale.businessValuePersonDomain.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -8,13 +8,13 @@ The method `sale.businessValuePersonDomain.list` retrieves a list of matches for
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select.
+[`array`](../../data-types.md) | The array contains a list of fields to select.
 
 If not provided or an empty array is passed, all available fields for matching a natural or legal person will be selected.
 
@@ -28,7 +28,7 @@ Possible values for `field`:
 - `personTypeId`
 - `domain` 
 
-An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -36,7 +36,7 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `@` — IN (an array is passed as the value)
 - `!@`— NOT IN (an array is passed as the value)
 - `=` — equals, exact match (used by default)
-- `!=` - does not equal ||
+- `!=` - not equal ||
 || **order**
 [`object`](../../data-types.md) | An object for sorting the selected matches for a natural or legal person in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
@@ -48,7 +48,7 @@ Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../../data-types.md) | The parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 
@@ -61,7 +61,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -88,6 +88,88 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'sale.businessValuePersonDomain.list',
+        {
+          select: ["personTypeId"],
+          filter: {"=domain": "I"},
+          order: {"personTypeId": "DESC"}
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in chunks and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('sale.businessValuePersonDomain.list', {
+        select: ["personTypeId"],
+        filter: {"=domain": "I"},
+        order: {"personTypeId": "DESC"}
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('sale.businessValuePersonDomain.list', {
+        select: ["personTypeId"],
+        filter: {"=domain": "I"},
+        order: {"personTypeId": "DESC"}
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.businessValuePersonDomain.list',
+                [
+                    'select' => ["personTypeId"],
+                    'filter' => ["=domain" => "I"],
+                    'order' => ["personTypeId" => "DESC"]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.businessValuePersonDomain.list',
         {
@@ -105,7 +187,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -128,7 +210,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -172,7 +254,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -181,7 +263,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -191,7 +273,7 @@ HTTP Status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

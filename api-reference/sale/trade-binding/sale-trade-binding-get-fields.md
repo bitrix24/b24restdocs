@@ -1,4 +1,4 @@
-# Get Available Order Fields from Sources sale.tradeBinding.getFields
+# Get Available Order Fields from sale.tradeBinding.getFields
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -37,6 +37,48 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.tradeBinding.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.tradeBinding.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        console.log($result);
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting trade binding fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.tradeBinding.getFields',
         {},
@@ -54,7 +96,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -73,7 +115,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -115,14 +157,14 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **tradeBinding**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_order_trade_binding`](../data-types.md#sale_order_trade_binding), and `value` is an object of type [`rest_field_description`](../../data-types.md) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_order_trade_binding`](../data-types.md#sale_order_trade_binding), and `value` is an object of type [`rest_field_description`](../data-types.md) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

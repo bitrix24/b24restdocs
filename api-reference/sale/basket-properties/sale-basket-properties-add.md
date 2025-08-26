@@ -14,7 +14,7 @@ This method adds a property for an item (position) in the basket of an order.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for creating a property for a basket item (position):
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for creating a property of a basket item (position):
 
 ```js
 fields: {
@@ -40,9 +40,9 @@ fields: {
 [`sale_basket_item.id`](../data-types.md) | Identifier of the basket item (position) in the order.
 Can be obtained using the methods [`sale.basketitem.get`](../basket-item/sale-basket-item-get.md) or [`sale.basketitem.list`](../basket-item/sale-basket-item-list.md) ||
 || **name***
-[`string`](../../data-types.md) | Name of the property ||
+[`string`](../../data-types.md) | Property name ||
 || **value***
-[`string`](../../data-types.md) | Value of the property ||
+[`string`](../../data-types.md) | Property value ||
 || **code***
 [`string`](../../data-types.md) | Symbolic code of the property ||
 || **sort**
@@ -82,6 +82,62 @@ If not specified, it will be generated automatically ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.basketproperties.add",
+    		{
+    			fields: {
+    				basketId: 6806,
+    				name: 'Article',
+    				value: '4653-4877',
+    				code: 'ARTICUL',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.basketproperties.add',
+                [
+                    'fields' => [
+                        'basketId' => 6806,
+                        'name'     => 'Article',
+                        'value'    => '4653-4877',
+                        'code'     => 'ARTICUL',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding basket property: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.basketproperties.add",
         {
@@ -112,7 +168,7 @@ If not specified, it will be generated automatically ||
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -173,7 +229,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketProperty**
-[`sale_basket_item_property`](../data-types.md#sale_basket_item_property) | Object containing the data of the created property for the basket item (position) ||
+[`sale_basket_item_property`](../data-types.md#sale_basket_item_property) | Object with data of the created property of the basket item (position) ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -201,7 +257,7 @@ Basket item (position) identifier is not specified ||
 || `200240400005` | Basket item id is bad
 Invalid basket item (position) identifier — for example, the string ‘seventy’ ||
 || `200240400001`, `200240400002` | Basket item (position) not found ||
-|| `100` | Parameter `fields` is not specified or is empty ||
+|| `100` | Parameter `fields` is not specified or empty ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

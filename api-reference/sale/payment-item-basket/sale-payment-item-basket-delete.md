@@ -1,4 +1,4 @@
-# Delete the Binding of the Cart Item to the Payment sale.paymentitembasket.delete
+# Delete the binding of the cart item to the payment sale.paymentitembasket.delete
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ This method removes the binding of a cart item to a payment.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -20,7 +20,7 @@ This method removes the binding of a cart item to a payment.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -31,7 +31,7 @@ This method removes the binding of a cart item to a payment.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":1186}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.paymentitembasket.delete
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/sale.paymentitembasket.delete
     ```
 
 - cURL (OAuth)
@@ -45,6 +45,53 @@ This method removes the binding of a cart item to a payment.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paymentitembasket.delete', {
+    			id: 1186,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paymentitembasket.delete',
+                [
+                    'id' => 1186,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting payment item basket: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -61,7 +108,7 @@ This method removes the binding of a cart item to a payment.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -82,7 +129,7 @@ This method removes the binding of a cart item to a payment.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -92,8 +139,8 @@ HTTP Status: **200**
         "finish":1713341822.437787,
         "duration":0.6500210762023926,
         "processing":0.40876007080078125,
-        "date_start":"2024-04-17T11:17:01+03:00",
-        "date_finish":"2024-04-17T11:17:02+03:00"
+        "date_start":"2024-04-17T11:17:01+02:00",
+        "date_finish":"2024-04-17T11:17:02+02:00"
     }
 }
 ```
@@ -111,7 +158,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

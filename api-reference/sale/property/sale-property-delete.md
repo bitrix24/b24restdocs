@@ -46,6 +46,56 @@ This method deletes an order property.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.property.delete", {
+    			"id": 57
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.property.delete',
+                [
+                    'id' => 57,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting sale property: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.property.delete", {
             "id": 57
@@ -60,7 +110,7 @@ This method deletes an order property.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -91,8 +141,8 @@ HTTP status: **200**
       "finish":1712238625.700109,
       "duration":0.4370460510253906,
       "processing":0.029300928115844727,
-      "date_start":"2024-04-04T16:50:25+03:00",
-      "date_finish":"2024-04-04T16:50:25+03:00"
+      "date_start":"2024-04-04T16:50:25+02:00",
+      "date_finish":"2024-04-04T16:50:25+02:00"
    }
 }
 ```
@@ -126,10 +176,10 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `200840400001` | The order property to be deleted was not found ||
-|| `200850000004` | Internal error while deleting the order property ||
-|| `ERROR_CORE` | Internal error while deleting the order property ||
+|| `200850000004` | Internal error deleting the order property ||
+|| `ERROR_CORE` | Internal error deleting the order property ||
 || `200040300020` | Insufficient permissions to delete the order property ||
-|| `100` | The `id` parameter is not specified ||
+|| `100` | Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

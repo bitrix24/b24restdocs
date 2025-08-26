@@ -2,11 +2,11 @@
 
 > Scope: [`sale, cashbox`](../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to modify settings")
+> Who can execute the method: CRM administrator (access permission "Allow to change settings")
 
 This method deletes the REST cashbox handler.
 
-If there are cashboxes linked to the handler, the handler will not be deleted â€” you must first remove the cashboxes.
+If there are cashboxes linked to the handler, it will not be deleted â€” you must first remove the cashboxes.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ If there are cashboxes linked to the handler, the handler will not be deleted â€
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_cashbox_handler.ID`](../data-types.md#sale_cashbox_handler) | Identifier of the handler to be deleted ||
+[`sale_cashbox_handler.ID`](../data-types.md#sale_cashbox_handler) | Identifier of the cashbox handler to be deleted ||
 |#
 
 ## Code Examples
@@ -48,6 +48,63 @@ If there are cashboxes linked to the handler, the handler will not be deleted â€
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.cashbox.handler.delete",
+    		{
+    			"ID": 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.cashbox.handler.delete',
+                [
+                    'ID' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting cashbox handler: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.cashbox.handler.delete",
         {
@@ -63,7 +120,7 @@ If there are cashboxes linked to the handler, the handler will not be deleted â€
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -110,7 +167,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Result of deleting the REST cashbox handler ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -131,7 +188,7 @@ HTTP status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Insufficient permissions to delete the handler | 403 ||
-|| `ERROR_CHECK_FAILURE` | The `ID` field value is not specified or there are cashboxes linked to this handler on the account | 400 ||
+|| `ERROR_CHECK_FAILURE` | The `ID` field value is not specified or there are cashboxes linked to this handler | 400 ||
 || `ERROR_HANDLER_NOT_FOUND` | Handler with the specified `ID` not found | 400 ||
 || `ERROR_HANDLER_DELETE` | Other errors. More detailed information about the error can be found in `error_description` | 400 ||
 |#

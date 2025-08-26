@@ -1,4 +1,4 @@
-# Get a List of Property Values sale.propertyvalue.list
+# Get a list of property values sale.propertyvalue.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -12,28 +12,28 @@ This method retrieves a list of order property value options.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array of fields to select (see fields of the [sale_order_property_value](../data-types.md) object).
+[`array`](../../data-types.md) | An array of fields to be selected (see fields of the [sale_order_property_value](../data-types.md) object).
 
-If the array is not provided or is empty, all available property value fields will be selected.
+If the array is not provided or an empty array is passed, all available property value fields will be selected.
 ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering selected property values in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [sale_order_property_value](../data-types.md) object.
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring at any position in the string.
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring at any position in the string.
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be at any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search is conducted from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present at any position
@@ -48,11 +48,11 @@ An additional prefix can be specified for the key to clarify the filter behavior
 Possible values for `field` correspond to the fields of the [sale_order_property_value](../data-types.md) object.
 
 Possible values for `order`:
-- `asc` — ascending order
-- `desc` — descending order
+- `asc` — in ascending order
+- `desc` — in descending order
 ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 
@@ -66,7 +66,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -91,6 +91,108 @@ The formula for calculating the `start` parameter value:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const parameters = {
+        "select": [
+            "code",
+            "id",
+            "name",
+            "orderId",
+            "orderPropsId",
+            "orderPropsXmlId",
+            "value",
+        ],
+        "filter": {
+            "=code": "FIO",
+            "%value": "Boris",
+            ">orderId": 1600,
+        },
+        "order": {
+            "orderId": "desc",
+        },
+    };
+    
+    try {
+        const response = await $b24.callListMethod(
+            'sale.propertyvalue.list',
+            parameters,
+            (progress) => { console.log('Progress:', progress) }
+        );
+        const items = response.getData() || [];
+        for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in chunks and efficiently using memory.
+    
+    try {
+        const generator = $b24.fetchListMethod('sale.propertyvalue.list', parameters, 'ID');
+        for await (const page of generator) {
+            for (const entity of page) { console.log('Entity:', entity); }
+        }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient than fetchListMethod when dealing with large volumes of data.
+    
+    try {
+        const response = await $b24.callMethod('sale.propertyvalue.list', parameters, 0);
+        const result = response.getData().result || [];
+        for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyvalue.list',
+                [
+                    'select' => [
+                        'code',
+                        'id',
+                        'name',
+                        'orderId',
+                        'orderPropsId',
+                        'orderPropsXmlId',
+                        'value',
+                    ],
+                    'filter' => [
+                        '=code'    => 'FIO',
+                        '%value'   => 'Boris',
+                        '>orderId' => 1600,
+                    ],
+                    'order' => [
+                        'orderId' => 'desc',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching sale property values: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -123,7 +225,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -164,90 +266,90 @@ HTTP Status: **200**
 
 ```json
 {
-    "result":{
-        "propertyValues":[
+    "result": {
+        "propertyValues": [
             {
-                "code":"FIO",
-                "id":10774,
-                "name":"First Last",
-                "orderId":1650,
-                "orderPropsId":20,
-                "orderPropsXmlId":null,
-                "value":"Sokolov Boris Viktorovich"
+                "code": "FIO",
+                "id": 10774,
+                "name": "First Last Name",
+                "orderId": 1650,
+                "orderPropsId": 20,
+                "orderPropsXmlId": null,
+                "value": "Sokolov Boris Viktorovich"
             },
             {
-                "code":"FIO",
-                "id":10763,
-                "name":"First Last",
-                "orderId":1649,
-                "orderPropsId":20,
-                "orderPropsXmlId":null,
-                "value":"Sokolov Boris Viktorovich"
+                "code": "FIO",
+                "id": 10763,
+                "name": "First Last Name",
+                "orderId": 1649,
+                "orderPropsId": 20,
+                "orderPropsXmlId": null,
+                "value": "Sokolov Boris Viktorovich"
             },
             {
-                "code":"FIO",
-                "id":10723,
-                "name":"First Last",
-                "orderId":1641,
-                "orderPropsId":20,
-                "orderPropsXmlId":null,
-                "value":"Sokolov Boris Viktorovich"
+                "code": "FIO",
+                "id": 10723,
+                "name": "First Last Name",
+                "orderId": 1641,
+                "orderPropsId": 20,
+                "orderPropsXmlId": null,
+                "value": "Sokolov Boris Viktorovich"
             },
             {
-                "code":"FIO",
-                "id":10718,
-                "name":"First Last",
-                "orderId":1640,
-                "orderPropsId":20,
-                "orderPropsXmlId":null,
-                "value":"Sokolov Boris Viktorovich"
+                "code": "FIO",
+                "id": 10718,
+                "name": "First Last Name",
+                "orderId": 1640,
+                "orderPropsId": 20,
+                "orderPropsXmlId": null,
+                "value": "Sokolov Boris Viktorovich"
             },
             {
-                "code":"FIO",
-                "id":10713,
-                "name":"First Last",
-                "orderId":1639,
-                "orderPropsId":20,
-                "orderPropsXmlId":null,
-                "value":"Sokolov Boris Viktorovich"
+                "code": "FIO",
+                "id": 10713,
+                "name": "First Last Name",
+                "orderId": 1639,
+                "orderPropsId": 20,
+                "orderPropsXmlId": null,
+                "value": "Sokolov Boris Viktorovich"
             },
             {
-                "code":"FIO",
-                "id":10708,
-                "name":"First Last",
-                "orderId":1638,
-                "orderPropsId":20,
-                "orderPropsXmlId":null,
-                "value":"Sokolov Boris Viktorovich"
+                "code": "FIO",
+                "id": 10708,
+                "name": "First Last Name",
+                "orderId": 1638,
+                "orderPropsId": 20,
+                "orderPropsXmlId": null,
+                "value": "Sokolov Boris Viktorovich"
             },
             {
-                "code":"FIO",
-                "id":10687,
-                "name":"First Last",
-                "orderId":1634,
-                "orderPropsId":20,
-                "orderPropsXmlId":null,
-                "value":"Sokolov Boris Viktorovich"
+                "code": "FIO",
+                "id": 10687,
+                "name": "First Last Name",
+                "orderId": 1634,
+                "orderPropsId": 20,
+                "orderPropsXmlId": null,
+                "value": "Sokolov Boris Viktorovich"
             },
             {
-                "code":"FIO",
-                "id":10517,
-                "name":"First Last",
-                "orderId":1603,
-                "orderPropsId":20,
-                "orderPropsXmlId":null,
-                "value":"Sokolov Boris Viktorovich"
+                "code": "FIO",
+                "id": 10517,
+                "name": "First Last Name",
+                "orderId": 1603,
+                "orderPropsId": 20,
+                "orderPropsXmlId": null,
+                "value": "Sokolov Boris Viktorovich"
             }
         ]
     },
-    "total":8,
-    "time":{
-        "start":1712061753.171393,
-        "finish":1712061753.431631,
-        "duration":0.2602381706237793,
-        "processing":0.021820783615112305,
-        "date_start":"2024-04-02T15:42:33+03:00",
-        "date_finish":"2024-04-02T15:42:33+03:00"
+    "total": 8,
+    "time": {
+        "start": 1712061753.171393,
+        "finish": 1712061753.431631,
+        "duration": 0.2602381706237793,
+        "processing": 0.021820783615112305,
+        "date_start": "2024-04-02T15:42:33+02:00",
+        "date_finish": "2024-04-02T15:42:33+02:00"
     }
 }
 ```
@@ -258,9 +360,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response ||
+[`object`](../../data-types.md) | Root element of the response ||
 || **propertyValues**
-[`sale_order_property_value[]`](../data-types.md) | An array of objects containing information about the selected property values ||
+[`sale_order_property_value[]`](../data-types.md) | An array of objects with information about the selected property values ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -271,8 +373,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": 0,
+    "error_description": "error"
 }
 ```
 

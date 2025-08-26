@@ -4,11 +4,11 @@
 >
 > Who can execute the method: store manager
 
-This method retrieves information about a basket item (position) in an order.
+This method retrieves information about a basket item (position).
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -16,13 +16,13 @@ This method retrieves information about a basket item (position) in an order.
 || **id***
 [`sale_basket_item.id`](../data-types.md) | Identifier of the basket item (position).
 
-Can be obtained using the [sale.basketitem.list](./sale-basket-item-list.md) method.
+Can be obtained using the [sale.basketitem.list](./sale-basket-item-list.md) method
 ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -47,6 +47,56 @@ Can be obtained using the [sale.basketitem.list](./sale-basket-item-list.md) met
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.basketitem.get",
+    		{
+    			id: 6801
+    		}
+    	);
+    
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.basketitem.get',
+                [
+                    'id' => 6801,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting basket item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -74,7 +124,7 @@ Can be obtained using the [sale.basketitem.list](./sale-basket-item-list.md) met
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -103,7 +153,7 @@ HTTP Status: **200**
         "basketItem": {
             "basePrice": 1000,
             "canBuy": "Y",
-            "catalogXmlId": "FUTURE-1C-CATALOG",
+            "catalogXmlId": "FUTURE-QUICKBOOKS-CATALOG",
             "currency": "USD",
             "customPrice": "N",
             "dateInsert": "2024-04-23T15:59:37+02:00",
@@ -148,7 +198,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItem**
-[`sale_basket_item`](../data-types.md) | Object containing data about the basket item (position) ||
+[`sale_basket_item`](../data-types.md) | Object containing the data of the basket item (position) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -176,7 +226,7 @@ Basket position not found
 || 
 || `200040300010` | Insufficient permissions to read
 || 
-|| `100` | Required parameters are missing
+|| `100` | Required parameters not specified
 ||
 || `0` | Other errors (e.g., fatal errors)
 || 

@@ -46,6 +46,57 @@ This method retrieves the values of all payment fields by `Id`.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.payment.get",
+    		{
+    			"id": 6
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.payment.get',
+                [
+                    'id' => 6,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Payment data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting payment information: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.payment.get",
         {
@@ -61,7 +112,7 @@ This method retrieves the values of all payment fields by `Id`.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -82,7 +133,7 @@ This method retrieves the values of all payment fields by `Id`.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -92,11 +143,11 @@ HTTP Status: **200**
             "comments": "",
             "companyId": null,
             "currency": "USD",
-            "dateBill": "2022-10-14T16:46:27+03:00",
+            "dateBill": "2022-10-14T16:46:27+02:00",
             "dateMarked": null,
             "datePaid": null,
             "datePayBefore": null,
-            "dateResponsibleId": "2022-10-14T16:46:27+03:00",
+            "dateResponsibleId": "2022-10-14T16:46:27+02:00",
             "empMarkedId": null,
             "empPaidId": null,
             "empResponsibleId": 1,
@@ -139,8 +190,8 @@ HTTP Status: **200**
         "finish": 1713446369.113212,
         "duration": 0.8734161853790283,
         "processing": 0.4978961944580078,
-        "date_start": "2024-04-18T16:19:28+03:00",
-        "date_finish": "2024-04-18T16:19:29+03:00"
+        "date_start": "2024-04-18T16:19:28+02:00",
+        "date_finish": "2024-04-18T16:19:29+02:00"
     }
 }
 ```
@@ -160,7 +211,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

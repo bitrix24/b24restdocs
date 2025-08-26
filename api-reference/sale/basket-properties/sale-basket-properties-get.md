@@ -1,14 +1,14 @@
-# Get the Value of the Basket Property sale.basketproperties.get
+# Get the value of the basket property sale.basketproperties.get
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: store manager
 
-This method returns the property for an item in the basket of an order by its identifier.
+The method returns the property for an item (position) in the basket of an order by its identifier.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method returns the property for an item in the basket of an order by its id
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -44,6 +44,54 @@ This method returns the property for an item in the basket of an order by its id
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.basketproperties.get",
+    		{
+    			id: 17
+    		}
+    	);
+    
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.basketproperties.get',
+                [
+                    'id' => 17,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting basket properties: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -71,7 +119,7 @@ This method returns the property for an item in the basket of an order by its id
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -92,7 +140,7 @@ This method returns the property for an item in the basket of an order by its id
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -129,12 +177,12 @@ HTTP Status: **200**
 || **basketProperty**
 [`sale_basket_item_property`](../data-types.md#sale_basket_item_property) | Object with the data of the basket item property ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -150,7 +198,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `200240400003` | Basket item not found ||
-|| `200040300010` | Insufficient permissions to read ||
+|| `200040300010` | Insufficient rights for reading ||
 || `100` | Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

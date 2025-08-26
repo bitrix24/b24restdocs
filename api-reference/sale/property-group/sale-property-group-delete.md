@@ -46,6 +46,53 @@ This method deletes a property group.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.propertygroup.delete", {
+    			"id": 15
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertygroup.delete',
+                [
+                    'id' => 15,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting property group: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.propertygroup.delete", {
             "id": 15
@@ -60,7 +107,7 @@ This method deletes a property group.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -91,8 +138,8 @@ HTTP status: **200**
         "finish":1711454254.795907,
         "duration":0.22673511505126953,
         "processing":0.03125,
-        "date_start":"2024-03-26T14:57:34+03:00",
-        "date_finish":"2024-03-26T14:57:34+03:00"
+        "date_start":"2024-03-26T14:57:34+02:00",
+        "date_finish":"2024-03-26T14:57:34+02:00"
     }
 }
 ```
@@ -127,7 +174,7 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `200940400001` | The property group to be deleted was not found ||
 || `200040300020` | Insufficient permissions to delete the property group ||
-|| `100` | The `id` parameter is missing ||
+|| `100` | The parameter `id` is not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

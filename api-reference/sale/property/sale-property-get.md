@@ -46,6 +46,56 @@ This method retrieves the order property.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            "sale.property.get", {
+                "id": 22
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.property.get',
+                [
+                    'id' => 22
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting sale property: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.property.get", {
             "id": 22
@@ -60,7 +110,7 @@ This method retrieves the order property.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -122,8 +172,8 @@ HTTP status: **200**
         "finish": 1712818820.232912,
         "duration": 0.2064070701599121,
         "processing": 0.018364906311035156,
-        "date_start": "2024-04-11T10:00:20+03:00",
-        "date_finish": "2024-04-11T10:00:20+03:00"
+        "date_start": "2024-04-11T10:00:20+02:00",
+        "date_finish": "2024-04-11T10:00:20+02:00"
     }
 }
 ```
@@ -138,7 +188,7 @@ HTTP status: **200**
 || **property**
 [`sale_order_property`](../data-types.md) | Information about the order property ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

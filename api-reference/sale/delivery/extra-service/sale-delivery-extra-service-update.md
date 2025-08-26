@@ -16,7 +16,7 @@ This method updates the delivery service.
 || **ID***
 [`sale_delivery_extra_service.ID`](../../data-types.md) | Identifier of the service.
 
-You can obtain the identifiers of delivery services using the method [sale.delivery.extra.service.get](./sale-delivery-extra-service-get.md)
+You can obtain the identifiers of delivery services using the [sale.delivery.extra.service.get](./sale-delivery-extra-service-get.md) method.
 ||
 || **NAME**
 [`string`](../../../data-types.md) | Name of the service ||
@@ -34,16 +34,16 @@ You can obtain the identifiers of delivery services using the method [sale.deliv
 || **PRICE**
 [`double`](../../../data-types.md) | Cost of the service in the delivery service's currency.
 
-This field is relevant only for services of type `single service (checkbox)` and `quantity service (quantity)`
+This field is relevant only for services of type `single service (checkbox)` and `quantitative service (quantity)`
 ||
 || **ITEMS**
-[`object[]`](../../../data-types.md) | List of available options for selection (detailed description is provided [below](#parameter-items)).
+[`object[]`](../../../data-types.md) | List of available options for selection (detailed description provided [below](#parametr-items)).
 
 This field is relevant only for services of type `list (enum)`
 ||
 |#
 
-### Parameter ITEMS
+### ITEMS Parameter
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -62,7 +62,7 @@ This field is relevant only for services of type `list (enum)`
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-Updating a service of type `Quantity Service`:
+Updating a service of type `Quantitative service`:
 
 {% list tabs %}
 
@@ -89,6 +89,65 @@ Updating a service of type `Quantity Service`:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.delivery.extra.service.update', {
+    			ID: 128,
+    			ACTIVE: "N",
+    			CODE: "door_delivery",
+    			NAME: "Door Delivery New Name",
+    			DESCRIPTION: "Door Delivery New Description",
+    			SORT: 200,
+    			PRICE: 399.99,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.extra.service.update',
+                [
+                    'ID'          => 128,
+                    'ACTIVE'      => "N",
+                    'CODE'        => "door_delivery",
+                    'NAME'        => "Door Delivery New Name",
+                    'DESCRIPTION' => "Door Delivery New Description",
+                    'SORT'        => 200,
+                    'PRICE'       => 399.99,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating delivery service: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.delivery.extra.service.update', {
             ID: 128,
@@ -109,7 +168,7 @@ Updating a service of type `Quantity Service`:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -161,6 +220,96 @@ Updating a service of type `List`:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.delivery.extra.service.update', {
+    			ID: 129,
+    			ACTIVE: "N",
+    			CODE: "cargo_type",
+    			NAME: "Cargo Type New Name",
+    			DESCRIPTION: "Cargo Type New Description",
+    			TYPE: "enum",
+    			SORT: 500,
+    			ITEMS: [{
+    					TITLE: "Small Package(s)",
+    					CODE: "small_package",
+    					PRICE: 129.99,
+    				},
+    				{
+    					TITLE: "Documents",
+    					CODE: "documents",
+    					PRICE: 69.99,
+    				},
+    				{
+    					TITLE: "Large Package(s)",
+    					CODE: "large_package",
+    					PRICE: 1290.99,
+    				},
+    			],
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.extra.service.update',
+                [
+                    'ID'          => 129,
+                    'ACTIVE'      => "N",
+                    'CODE'        => "cargo_type",
+                    'NAME'        => "Cargo Type New Name",
+                    'DESCRIPTION' => "Cargo Type New Description",
+                    'TYPE'        => "enum",
+                    'SORT'        => 500,
+                    'ITEMS'       => [
+                        [
+                            'TITLE' => "Small Package(s)",
+                            'CODE'  => "small_package",
+                            'PRICE' => 129.99,
+                        ],
+                        [
+                            'TITLE' => "Documents",
+                            'CODE'  => "documents",
+                            'PRICE' => 69.99,
+                        ],
+                        [
+                            'TITLE' => "Large Package(s)",
+                            'CODE'  => "large_package",
+                            'PRICE' => 1290.99,
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating delivery extra service: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.delivery.extra.service.update', {
             ID: 129,
@@ -197,7 +346,7 @@ Updating a service of type `List`:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -251,8 +400,8 @@ HTTP status: **200**
       "finish":1714549724.479944,
       "duration":0.20696806907653809,
       "processing":0.02615499496459961,
-      "date_start":"2024-05-01T10:48:44+03:00",
-      "date_finish":"2024-05-01T10:48:44+03:00"
+      "date_start":"2024-05-01T10:48:44+02:00",
+      "date_finish":"2024-05-01T10:48:44+02:00"
    }
 }
 ```
@@ -286,7 +435,7 @@ HTTP status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | `400` || 
-|| `ERROR_EXTRA_SERVICE_UPDATE` | Error when trying to update the service | `400` || 
+|| `ERROR_EXTRA_SERVICE_UPDATE` | Error while attempting to update the service | `400` || 
 || `ERROR_EXTRA_SERVICE_NOT_FOUND` | Service with the specified identifier (ID) not found | `400` ||
 || `ACCESS_DENIED` | Insufficient rights to add the service | `403` ||
 |#

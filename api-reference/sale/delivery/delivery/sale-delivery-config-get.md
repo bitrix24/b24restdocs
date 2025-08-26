@@ -47,6 +47,53 @@ This method retrieves the settings of the delivery service.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.delivery.config.get', {
+    			ID: 196,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.config.get',
+                [
+                    'ID' => 196,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting delivery config: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.delivery.config.get', {
             ID: 196,
@@ -61,7 +108,7 @@ This method retrieves the settings of the delivery service.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -105,7 +152,7 @@ HTTP Status: **200**
       },
       {
          "CODE":"SETTING_5",
-         "VALUE":"03/25/2023"
+         "VALUE":"25.03.2023"
       },
       {
          "CODE":"SETTING_6",
@@ -117,8 +164,8 @@ HTTP Status: **200**
       "finish":1714137257.672526,
       "duration":0.22220182418823242,
       "processing":0.029755115509033203,
-      "date_start":"2024-04-26T16:14:17+03:00",
-      "date_finish":"2024-04-26T16:14:17+03:00"
+      "date_start":"2024-04-26T16:14:17+02:00",
+      "date_finish":"2024-04-26T16:14:17+02:00"
    }
 }
 ```
@@ -167,7 +214,7 @@ HTTP Status: **400**, **403**
 || **Code** | **Description** | **Status** ||
 || `ERROR_DELIVERY_NOT_FOUND` | Delivery service with the specified identifier (ID) not found | 400 ||
 || `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | 400 ||
-|| `ACCESS_DENIED` | Insufficient permissions to retrieve delivery service settings | 403 ||
+|| `ACCESS_DENIED` | Insufficient rights to retrieve delivery service settings | 403 ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

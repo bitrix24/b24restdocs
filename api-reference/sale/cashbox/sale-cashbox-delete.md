@@ -1,4 +1,4 @@
-# Delete Cash Register sale.cashbox.delete
+# Delete cash register sale.cashbox.delete
 
 > Scope: [`sale, cashbox`](../../scopes/permissions.md)
 >
@@ -46,6 +46,59 @@ This method deletes a cash register.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.cashbox.delete",
+    		{
+    			"ID": 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.cashbox.delete',
+                [
+                    'ID' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting cash register: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.cashbox.delete",
         {
@@ -61,7 +114,7 @@ This method deletes a cash register.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -106,7 +159,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the cash register deletion ||
+[`boolean`](../../data-types.md) | Result of cash register deletion ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -128,7 +181,7 @@ HTTP status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient permissions to delete the cash register or the application is trying to delete a cash register added by another application | 403 ||
+|| `ACCESS_DENIED` | Insufficient rights to delete the cash register or the application is trying to delete a cash register added by another application | 403 ||
 || `ERROR_CHECK_FAILURE` | The `ID` field value is not specified | 400 ||
 || `ERROR_CASHBOX_NOT_FOUND` | Cash register with the specified `ID` not found | 400 ||
 || `ERROR_CASHBOX_DELETE` | Other errors. More detailed information about the error can be found in `error_description` | 400 ||

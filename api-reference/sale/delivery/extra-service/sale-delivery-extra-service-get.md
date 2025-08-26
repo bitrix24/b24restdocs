@@ -8,7 +8,7 @@ This method retrieves information about all services of a specific delivery serv
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method retrieves information about all services of a specific delivery serv
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,53 @@ This method retrieves information about all services of a specific delivery serv
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.delivery.extra.service.get', {
+    			DELIVERY_ID: 198,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.extra.service.get',
+                [
+                    'DELIVERY_ID' => 198,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting extra service for delivery: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.delivery.extra.service.get', {
             DELIVERY_ID: 198,
@@ -60,7 +107,7 @@ This method retrieves information about all services of a specific delivery serv
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -128,8 +175,8 @@ HTTP Status: **200**
       "finish":1714551728.519896,
       "duration":0.2246079444885254,
       "processing":0.01918506622314453,
-      "date_start":"2024-05-01T11:22:08+03:00",
-      "date_finish":"2024-05-01T11:22:08+03:00"
+      "date_start":"2024-05-01T11:22:08+02:00",
+      "date_finish":"2024-05-01T11:22:08+02:00"
    }
 }
 ```
@@ -163,8 +210,8 @@ HTTP Status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ERROR_DELIVERY_NOT_FOUND` | Delivery service with the specified identifier not found | `400` || 
-|| `ERROR_CHECK_FAILURE` | Error in validating incoming parameters (details in the error description) | `400` || 
-|| `ACCESS_DENIED` | Insufficient permissions to retrieve the list of services | `403` ||
+|| `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | `400` || 
+|| `ACCESS_DENIED` | Insufficient rights to retrieve the list of services | `403` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -1,14 +1,14 @@
-# Remove Item (Position) from the Cart in Order sale.basketitem.delete
+# Remove item (position) from the cart using sale.basketitem.delete
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method removes an item (position) from the cart in an order.
+This method removes an item (position) from the cart in the order.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -16,13 +16,13 @@ This method removes an item (position) from the cart in an order.
 || **id***
 [`sale_basket_item.id`](../data-types.md) | Identifier of the cart item (position).
 
-Can be obtained using the [sale.basketitem.list](./sale-basket-item-list.md) method.
+You can obtain it using the [sale.basketitem.list](./sale-basket-item-list.md) method.
 ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -33,7 +33,7 @@ Can be obtained using the [sale.basketitem.list](./sale-basket-item-list.md) met
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":6803}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.basketitem.delete
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/sale.basketitem.delete
     ```
 
 - cURL (OAuth)
@@ -47,6 +47,54 @@ Can be obtained using the [sale.basketitem.list](./sale-basket-item-list.md) met
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.basketitem.delete",
+    		{
+    			id: 6803
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.basketitem.delete',
+                [
+                    'id' => 6803,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting basket item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -74,7 +122,7 @@ Can be obtained using the [sale.basketitem.list](./sale-basket-item-list.md) met
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -95,7 +143,7 @@ Can be obtained using the [sale.basketitem.list](./sale-basket-item-list.md) met
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -118,14 +166,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of removing the cart item ||
+[`boolean`](../../data-types.md) | Result of the cart item removal ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -142,7 +190,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200140400001` | `basket item does not exist`
 
-Cart position not found
+Cart item not found
 || 
 || `200040300010` | Insufficient permissions to delete
 || 

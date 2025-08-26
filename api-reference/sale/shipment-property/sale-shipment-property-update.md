@@ -8,7 +8,7 @@ This method updates the shipment property.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,9 +21,9 @@ This method updates the shipment property.
 
 ### Parameter fields
 
-General parameters relevant for shipment properties of any type:
+General parameters applicable to shipment properties of any type:
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -65,14 +65,14 @@ If not provided, the default value is `N` ||
 || **description**
 [`string`](../../data-types.md) | Description of the shipment property ||
 || **required**
-[`string`](../../data-types.md) | Indicator of whether the shipment property value is required.
+[`string`](../../data-types.md) | Indicator of whether filling in the shipment property value is mandatory.
 Possible values:
 - `Y` — yes
 - `N` — no
 
 If not provided, the default value is `N` ||
 || **multiple**
-[`string`](../../data-types.md) | Indicator of whether the order property is multiple. For multiple properties, multiple values can be specified.
+[`string`](../../data-types.md) | Indicator of whether the order property is multiple. For multiple properties, it is possible to specify several values.
 Possible values:
 - `Y` — yes
 - `N` — no
@@ -84,18 +84,18 @@ If not provided, the default value is `N` ||
 [`any`](../data-types.md) | Default value of the shipment property.
 For multiple shipment properties (multiple), an array of values is supported ||
 || **settings**
-[`object`](../../data-types.md) | Object in the format {"field_1": "value_1", ... "field_N": "value_N"} for passing additional settings for the shipment property.
+[`object`](../../data-types.md) | An object in the format {"field_1": "value_1", ... "field_N": "value_N"} for passing additional settings for the shipment property.
 
 The list of supported keys for this object depends on the property type. For some property types (e.g., Y/N), additional properties are not provided. The description of the **settings** parameter for different property types is provided in the description of the method [`sale.shipmentproperty.add`](sale-shipment-property-add.md) ||
 |#
 
-Parameters relevant for order properties of type `STRING`
+Parameters applicable to order properties of type `STRING`
 
 #|
 || **Name**
 `type` | **Description** ||
 || **isProfileName**
-[`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as the user profile name.
+[`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as the user's profile name.
 Possible values: 
 - `Y` — yes
 - `N` — no
@@ -109,7 +109,7 @@ Possible values:
 
 If not provided, the default value is `N` ||
 || **isEmail**
-[`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as an e-mail (e.g., when registering a new user during checkout).
+[`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as an e-mail (e.g., when registering a new user during order placement).
 Possible values: 
 - `Y` — yes
 - `N` — no
@@ -138,7 +138,7 @@ Possible values:
 If not provided, the default value is `N` ||
 |#
 
-Parameters relevant for shipment properties of type [`LOCATION`](../data-types.md)			
+Parameters applicable to shipment properties of type [`LOCATION`](../data-types.md)
 
 #|
 || **Name**
@@ -161,7 +161,7 @@ If not provided, the default value is `N` ||
 [`string`](../../data-types.md) | Deprecated field. Not used ||
 |#
 
-Parameters relevant for shipment properties of type `ADDRESS`			
+Parameters applicable to shipment properties of type `ADDRESS`
 
 #|
 || **Name**
@@ -184,7 +184,7 @@ If not provided, the default value is `N` ||
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -209,6 +209,105 @@ If not provided, the default value is `N` ||
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.shipmentproperty.update', {
+    			id: 93,
+    			fields: {
+    				personTypeId: 3,
+    				propsGroupId: 6,
+    				name: 'Phone (for contacting the courier)',
+    				type: 'STRING',
+    				code: 'PHONE',
+    				active: 'Y',
+    				util: 'N',
+    				userProps: 'Y',
+    				isFiltered: 'N',
+    				sort: 500,
+    				description: 'property description',
+    				required: 'Y',
+    				multiple: 'N',
+    				settings: {
+    					multiline: 'Y',
+    					maxlength: 100
+    				},
+    				xmlId: '',
+    				defaultValue: '',
+    				isProfileName: 'Y',
+    				isPayer: 'Y',
+    				isEmail: 'N',
+    				isPhone: 'N',
+    				isZip: 'N',
+    				isAddress: 'N',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipmentproperty.update',
+                [
+                    'id' => 93,
+                    'fields' => [
+                        'personTypeId'  => 3,
+                        'propsGroupId'  => 6,
+                        'name'          => 'Phone (for contacting the courier)',
+                        'type'          => 'STRING',
+                        'code'          => 'PHONE',
+                        'active'        => 'Y',
+                        'util'          => 'N',
+                        'userProps'     => 'Y',
+                        'isFiltered'    => 'N',
+                        'sort'          => 500,
+                        'description'   => 'property description',
+                        'required'      => 'Y',
+                        'multiple'      => 'N',
+                        'settings'      => [
+                            'multiline' => 'Y',
+                            'maxlength' => 100
+                        ],
+                        'xmlId'         => '',
+                        'defaultValue'  => '',
+                        'isProfileName' => 'Y',
+                        'isPayer'       => 'Y',
+                        'isEmail'       => 'N',
+                        'isPhone'       => 'N',
+                        'isZip'         => 'N',
+                        'isAddress'     => 'N',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating shipment property: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -252,7 +351,7 @@ If not provided, the default value is `N` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -300,7 +399,7 @@ If not provided, the default value is `N` ||
 
 ## Successful Response
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -344,8 +443,8 @@ HTTP Status: **200**
       "finish":1712818736.611224,
       "duration":0.3758888244628906,
       "processing":0.18679594993591309,
-      "date_start":"2024-04-11T09:58:56+03:00",
-      "date_finish":"2024-04-11T09:58:56+03:00"
+      "date_start":"2024-04-11T09:58:56+02:00",
+      "date_finish":"2024-04-11T09:58:56+02:00"
    }
 }
 ```
@@ -360,12 +459,12 @@ HTTP Status: **200**
 || **property**
 [`sale_shipment_property`](../data-types.md) | Object with information about the updated shipment property ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -382,22 +481,22 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200840400001` | The updated shipment property was not found ||
 || `200850000003` | Internal error updating the property ||
-|| `200850000009` | An error occurs when trying to update the shipment property with the `multiple` parameter set to `Y`, if the `isFiltered` parameter is not provided.
+|| `200850000009` | Error occurs when trying to update a shipment property with the `multiple` parameter set to `Y`, if the `isFiltered` parameter is not provided.
 Filtering by multiple shipment properties is not supported ||
-|| `200850000010` | An error occurs when trying to update the shipment property with the `multiple` parameter set to `Y`, if the `isFiltered` parameter value is not `N`.
+|| `200850000010` | Error occurs when trying to update a shipment property with the `multiple` parameter set to `Y`, if the `isFiltered` parameter value is not `N`.
 Filtering by multiple shipment properties is not supported ||
-|| `200850000011` | An error occurs when trying to update the shipment property of type `LOCATION` with the `isLocation` parameter set to `Y`, if the `multiple` parameter value is not specified.
+|| `200850000011` | Error occurs when trying to update a shipment property of type `LOCATION` with the `isLocation` parameter set to `Y`, if the `multiple` parameter value is not specified.
 Multiplicity is not supported for shipment properties marked with the `isLocation` indicator ||
-|| `200850000012` | An error occurs when trying to update the shipment property of type `LOCATION` with the `isLocation` parameter set to `Y`, if the `multiple` parameter value is not `N`.
+|| `200850000012` | Error occurs when trying to update a shipment property of type `LOCATION` with the `isLocation` parameter set to `Y`, if the `multiple` parameter value is not `N`.
 Multiplicity is not supported for shipment properties marked with the `isLocation` indicator ||
-|| `200850000013` | An error occurs when trying to update the shipment property of type `LOCATION` with the `isLocation4tax` parameter set to `Y`, if the `multiple` parameter value is not specified.
+|| `200850000013` | Error occurs when trying to update a shipment property of type `LOCATION` with the `isLocation4tax` parameter set to `Y`, if the `multiple` parameter value is not specified.
 Multiplicity is not supported for shipment properties marked with the `isLocation4tax` indicator ||
-|| `200850000014` | An error occurs when trying to update the shipment property of type `LOCATION` with the `isLocation4tax` parameter set to `Y`, if the `multiple` parameter value is not `N`.
+|| `200850000014` | Error occurs when trying to update a shipment property of type `LOCATION` with the `isLocation4tax` parameter set to `Y`, if the `multiple` parameter value is not `N`.
 Multiplicity is not supported for shipment properties marked with the `isLocation4tax` indicator ||
-|| `200850000015` | An error occurs when trying to update the shipment property of type `STRING` with the `isProfileName` parameter set to `Y`, if the `required` parameter value is not specified.
-Profile name is required and cannot be empty ||
-|| `200850000016` | An error occurs when trying to update the shipment property of type `STRING` with the `isProfileName` parameter set to `Y`, if the `required` parameter value is not `Y`.
-Profile name is required and cannot be empty ||
+|| `200850000015` | Error occurs when trying to update a shipment property of type `STRING` with the `isProfileName` parameter set to `Y`, if the `required` parameter value is not specified.
+Profile name is mandatory and cannot be empty ||
+|| `200850000016` | Error occurs when trying to update a shipment property of type `STRING` with the `isProfileName` parameter set to `Y`, if the `required` parameter value is not `Y`.
+Profile name is mandatory and cannot be empty ||
 || `200040300020` | Insufficient permissions to update the shipment property ||
 || `100` | The `id` parameter is not specified ||
 || `100` | The `fields` parameter is not specified or is empty ||

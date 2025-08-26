@@ -14,7 +14,7 @@ This method adds a new payment.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md)| Field values (detailed description provided [below](#parametr-fields)) for creating a payment in the form of a structure:
+[`object`](../../data-types.md)| Field values (detailed description provided [below](#parameter-fields)) for creating a payment in the form of a structure:
 
 ```js
 fields: {
@@ -105,7 +105,7 @@ Defaults to `null` ||
 || **payVoucherDate**
 [`datetime`](../../data-types.md) | Payment document date ||
 || **datePayBefore**
-[`datetime`](../../data-types.md) | Outdated.
+[`datetime`](../../data-types.md) | Deprecated.
 Date by which the invoice must be paid ||
 || **dateBill**
 [`datetime`](../../data-types.md) | Invoice date ||
@@ -142,19 +142,19 @@ Defaults to N ||
 || **comments**
 [`string`](../../data-types.md) | Payment comments ||
 || **updated1c**
-[`string`](../../data-types.md) | Payment updated via 1C:
+[`string`](../../data-types.md) | Payment updated via QuickBooks and other similar platforms:
 
 - `Y` — yes
 - `N` — no
 
 Defaults to `N` ||
 || **id1c**
-[`string`](../../data-types.md) | Identifier in 1C ||
+[`string`](../../data-types.md) | Identifier in QuickBooks and other similar platforms ||
 || **version1c**
-[`string`](../../data-types.md) | Payment document version from 1C ||
+[`string`](../../data-types.md) | Payment document version from QuickBooks and other similar platforms ||
 || **externalPayment**
 [`string`](../../data-types.md) | Relevant only for on-premise version
-External payment or not. Used for import from 1C via XML
+External payment or not. Used for import from QuickBooks and other similar platforms via XML
 
 - `Y` — yes
 - `F` — yes, loaded with the order
@@ -204,6 +204,128 @@ Defaults to `N` ||
     ```
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.payment.add',
+    		{
+    			fields: {
+    				orderId: 200,
+    				paySystemId: 1,
+    				paid: 'Y',
+    				datePaid: '2024-04-10T10:00:00',
+    				empPaidId: 1,
+    				psStatus: 'Y',
+    				psStatusCode: '',
+    				psStatusDescription: '',
+    				psStatusMessage: '',
+    				psSum: 100,
+    				psCurrency: 'USD',
+    				psResponseDate: '2024-04-10T10:00:00',
+    				payVoucherNum: '',
+    				payVoucherDate: '2024-04-10T10:00:00',
+    				datePayBefore: '2024-04-10T10:00:00',
+    				dateBill: '2024-04-10T10:00:00',
+    				xmlId: '',
+    				sum: 100,
+    				companyId: 1,
+    				payReturnNum: '',
+    				priceCod: 100,
+    				payReturnDate: '2024-04-10T10:00:00',
+    				empReturnId: 1,
+    				payReturnComment: '',
+    				responsibleId: 1,
+    				empResponsibleId: 1,
+    				isReturn: 'N',
+    				comments: '',
+    				updated1c: 'N',
+    				id1c: '',
+    				version1c: '',
+    				externalPayment: 'N',
+    				psInvoiceId: 1,
+    				marked: 'N',
+    				reasonMarked: '',
+    				empMarkedId: 1,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.payment.add',
+                [
+                    'fields' => [
+                        'orderId'             => 200,
+                        'paySystemId'         => 1,
+                        'paid'               => 'Y',
+                        'datePaid'           => '2024-04-10T10:00:00',
+                        'empPaidId'          => 1,
+                        'psStatus'           => 'Y',
+                        'psStatusCode'       => '',
+                        'psStatusDescription' => '',
+                        'psStatusMessage'    => '',
+                        'psSum'              => 100,
+                        'psCurrency'         => 'USD',
+                        'psResponseDate'     => '2024-04-10T10:00:00',
+                        'payVoucherNum'      => '',
+                        'payVoucherDate'     => '2024-04-10T10:00:00',
+                        'datePayBefore'      => '2024-04-10T10:00:00',
+                        'dateBill'           => '2024-04-10T10:00:00',
+                        'xmlId'              => '',
+                        'sum'                => 100,
+                        'companyId'          => 1,
+                        'payReturnNum'       => '',
+                        'priceCod'           => 100,
+                        'payReturnDate'      => '2024-04-10T10:00:00',
+                        'empReturnId'        => 1,
+                        'payReturnComment'   => '',
+                        'responsibleId'      => 1,
+                        'empResponsibleId'   => 1,
+                        'isReturn'           => 'N',
+                        'comments'           => '',
+                        'updated1c'          => 'N',
+                        'id1c'               => '',
+                        'version1c'          => '',
+                        'externalPayment'    => 'N',
+                        'psInvoiceId'        => 1,
+                        'marked'             => 'N',
+                        'reasonMarked'       => '',
+                        'empMarkedId'        => 1,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding payment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -258,7 +380,7 @@ Defaults to `N` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -316,7 +438,7 @@ Defaults to `N` ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -394,7 +516,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -409,9 +531,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to add payment ||
-|| `100` | Parameter `fields` not specified or empty ||
-|| `0` | Required fields not provided ||
+|| `200040300020` | Insufficient rights to add payment ||
+|| `100` | Parameter `fields` is not specified or is empty ||
+|| `0` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

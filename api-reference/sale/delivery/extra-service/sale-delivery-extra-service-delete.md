@@ -1,4 +1,4 @@
-# Delete Delivery Service sale.delivery.extra.service.delete
+# Delete the delivery service sale.delivery.extra.service.delete
 
 > Scope: [`sale, delivery`](../../../scopes/permissions.md)
 >
@@ -16,7 +16,7 @@ This method deletes a delivery service.
 || **ID***
 [`sale_delivery_extra_service.ID`](../../data-types.md) | Identifier of the service.
 
-You can obtain the identifiers of delivery services using the [sale.delivery.extra.service.get](./sale-delivery-extra-service-get.md) method.
+You can obtain the identifiers of delivery services using the [sale.delivery.extra.service.get](./sale-delivery-extra-service-get.md) method
  ||
 |#
 
@@ -49,6 +49,53 @@ You can obtain the identifiers of delivery services using the [sale.delivery.ext
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.delivery.extra.service.delete', {
+    			ID: 134,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.extra.service.delete',
+                [
+                    'ID' => 134,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting extra service: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.delivery.extra.service.delete', {
             ID: 134,
@@ -63,7 +110,7 @@ You can obtain the identifiers of delivery services using the [sale.delivery.ext
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -84,7 +131,7 @@ You can obtain the identifiers of delivery services using the [sale.delivery.ext
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -94,8 +141,8 @@ HTTP Status: **200**
         "finish":1714551146.571992,
         "duration":0.20426487922668457,
         "processing":0.03886008262634277,
-        "date_start":"2024-05-01T11:12:26+03:00",
-        "date_finish":"2024-05-01T11:12:26+03:00"
+        "date_start":"2024-05-01T11:12:26+02:00",
+        "date_finish":"2024-05-01T11:12:26+02:00"
     }
 }
 ```
@@ -113,7 +160,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -131,7 +178,7 @@ HTTP Status: **400**, **403**
 || `ERROR_EXTRA_SERVICE_NOT_FOUND` | Service with the specified identifier not found | `400` || 
 || `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | `400` || 
 || `ERROR_EXTRA_SERVICE_DELETE` | Error when attempting to delete the service | `400` || 
-|| `ACCESS_DENIED` | Insufficient permissions to delete the service | `403` ||
+|| `ACCESS_DENIED` | Insufficient rights to delete the service | `403` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

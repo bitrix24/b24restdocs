@@ -10,7 +10,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,6 +37,51 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            "sale.paymentitembasket.getfields", {}
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paymentitembasket.getfields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting payment item basket fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.paymentitembasket.getfields", {},
         function(result) {
@@ -49,7 +94,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -68,57 +113,57 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "paymentItemBasket":{
-            "basketId":{
-                "isImmutable":true,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"integer"
+    "result": {
+        "paymentItemBasket": {
+            "basketId": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
             },
-            "dateInsert":{
-                "isImmutable":false,
-                "isReadOnly":true,
-                "isRequired":false,
-                "type":"datetime"
+            "dateInsert": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "datetime"
             },
-            "id":{
-                "isImmutable":false,
-                "isReadOnly":true,
-                "isRequired":false,
-                "type":"integer"
+            "id": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "integer"
             },
-            "paymentId":{
-                "isImmutable":true,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"integer"
+            "paymentId": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
             },
-            "quantity":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"double"
+            "quantity": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "double"
             },
-            "xmlId":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":false,
-                "type":"string"
+            "xmlId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
             }
         }
     },
-    "time":{
-        "start":1713345432.601877,
-        "finish":1713345432.909408,
-        "duration":0.30753111839294434,
-        "processing":0.0054111480712890625,
-        "date_start":"2024-04-17T12:17:12+03:00",
-        "date_finish":"2024-04-17T12:17:12+03:00"
+    "time": {
+        "start": 1713345432.601877,
+        "finish": 1713345432.909408,
+        "duration": 0.30753111839294434,
+        "processing": 0.0054111480712890625,
+        "date_start": "2024-04-17T12:17:12+02:00",
+        "date_finish": "2024-04-17T12:17:12+02:00"
     }
 }
 ```
@@ -131,19 +176,19 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **paymentItemBasket**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [sale_payment_item_basket](../data-types.md) object, and `value` is an object of type [rest_field_description](../data-types.md) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [sale_payment_item_basket](../data-types.md) object, and `value` is an object of type [rest_field_description](../../data-types.md) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": 0,
+    "error_description": "error"
 }
 ```
 

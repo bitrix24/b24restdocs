@@ -2,7 +2,7 @@
 
 > Scope: [`sale, cashbox`](../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow changing settings")
+> Who can execute the method: CRM administrator (access permission "Allow changing settings")
 
 This method updates an existing cash register.
 
@@ -14,7 +14,7 @@ This method updates an existing cash register.
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_cashbox.ID`](../data-types.md#sale_cashbox) | Identifier of the cash register to be updated ||
+[`sale_cashbox.ID`](../data-types.md#sale_cashbox) | Identifier of the cash register being updated ||
 || **FIELDS***
 [`object`](../../data-types.md) | Values of the fields to be updated (detailed description provided [below](#fields)) ||
 |#
@@ -27,16 +27,16 @@ This method updates an existing cash register.
 || **NAME**
 [`string`](../../data-types.md) | Name of the cash register ||
 || **EMAIL**
-[`string`](../../data-types.md) | E-mail address to which notifications will be sent in case of errors during receipt printing ||
+[`string`](../../data-types.md) | Email address to which notifications will be sent in case of errors during receipt printing ||
 || **OFD**
 [`string`](../../data-types.md) | OFD handler code. Available OFD handlers: 
 - `bx_firstofd` — First OFD 
-- `bx_platformaofd` — Platform OFD 
+- `bx_platformaofd` — OFD Platform 
 - `bx_yarusofd` — YARUS OFD 
 - `bx_taxcomofd` — Taxcom OFD 
 - `bx_ofdruofd` — OFD.RU 
 - `bx_tenzorofd` — Tensor OFD 
-- `bx_conturofd` — Kontur OFD
+- `bx_conturofd` — Contour OFD
 
 By default, without OFD
 ||
@@ -56,7 +56,7 @@ By default, without OFD
 - `Y` — yes
 - `N` — no ||
 || **SETTINGS**
-[`object`](../../data-types.md) | Cash register settings according to the structure of settings provided in the `CONFIG` key of the `SETTINGS` field of the [sale.cashbox.handler.add](./sale-cashbox-handler-add.md) method ||
+[`object`](../../data-types.md) | Cash register settings according to the structure of settings passed in the `CONFIG` key of the `SETTINGS` field of the [sale.cashbox.handler.add](./sale-cashbox-handler-add.md) method ||
 |#
 
 ### OFD_SETTINGS Parameter {#ofd_settings}
@@ -66,16 +66,16 @@ By default, without OFD
 `type` | **Description** ||
 || **Settings for all OFDs** |  ||
 || **OFD_MODE**
-[`object`](../../data-types.md) | Settings related to the OFD operation mode. The `IS_TEST` parameter is passed ([`string`](../../data-types.md) with values `Y/N`) — OFD operation mode: 
+[`object`](../../data-types.md) | Settings related to the OFD operation mode. The `IS_TEST` parameter ([`string`](../../data-types.md) with values `Y/N`) is passed — OFD operation mode: 
 - `Y` — test mode 
-- `N` — production mode ||
+- `N` — working mode ||
 || **Additional settings for OFD.RU** |  ||
 || **SELLER_INFO**
-[`object`](../../data-types.md) | Settings for the "Seller Information" section. The required parameter `INN` ([`string`](../../data-types.md)) — seller's INN is passed
+[`object`](../../data-types.md) | Settings for the "Seller Information" section. The required parameter `INN` ([`string`](../../data-types.md)) is passed — seller's INN
 ||
 || **Additional settings for YARUS OFD** |  ||
 || **AUTH**
-[`object`](../../data-types.md) | Authorization settings. The `INN` parameter ([`string`](../../data-types.md)) — security key is passed
+[`object`](../../data-types.md) | Authorization settings. The `INN` parameter ([`string`](../../data-types.md)) is passed — security key
 ||
 |#
 
@@ -108,6 +108,62 @@ By default, without OFD
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.cashbox.update",
+    		{
+    			"ID": 1,
+    			"FIELDS": {
+    				"NAME": "New Name",
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.cashbox.update',
+                [
+                    'ID'     => 1,
+                    'FIELDS' => [
+                        'NAME' => 'New Name',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating cash register: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.cashbox.update",
         {
@@ -126,7 +182,7 @@ By default, without OFD
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -177,7 +233,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Result of updating the cash register fields ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -197,7 +253,7 @@ HTTP status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient rights to update the cash register or the application is trying to modify a cash register added by another application | 403 ||
+|| `ACCESS_DENIED` | Insufficient permissions to update the cash register or the application is trying to modify a cash register added by another application | 403 ||
 || `ERROR_CHECK_FAILURE` | The values for the `ID` or `FIELDS` fields are not specified | 400 ||
 || `ERROR_CASHBOX_NOT_FOUND` | Cash register with the specified `ID` not found | 400 ||
 || `ERROR_CASHBOX_UPDATE` | Other errors. More detailed information about the error can be found in `error_description` | 400 ||

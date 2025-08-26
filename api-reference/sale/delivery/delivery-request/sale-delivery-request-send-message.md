@@ -16,12 +16,12 @@ This method creates notifications for a delivery request.
 || **DELIVERY_ID***
 [`sale_delivery_service.ID`](../../data-types.md) | Identifier of the delivery service related to the delivery request.
 
-You can obtain the identifiers `sale_delivery_service.ID` of delivery services using the method [sale.delivery.getlist](../delivery/sale-delivery-get-list.md)
+You can obtain the identifiers of `sale_delivery_service.ID` for delivery services using the [sale.delivery.getlist](../delivery/sale-delivery-get-list.md) method.
 ||
 || **REQUEST_ID***
 [`string`](../../../data-types.md) | Identifier of the delivery request.
 
-The identifier is assigned by the external system in response to the webhook for creating a delivery order (more details in the webhook description [Creating a Delivery Order](../webhooks/create-delivery-request.md))
+The identifier is assigned by the external system in response to the webhook for creating a delivery order (more details in the webhook description [Creating a Delivery Order](../webhooks/create-delivery-request.md)).
 ||
 || **ADDRESSEE***
 [`string`](../../../data-types.md) | Recipient of the message.
@@ -35,7 +35,7 @@ Possible values:
 ||
 |#
 
-### Parameter MESSAGE {#parametr-message}
+### MESSAGE Parameter {#parametr-message}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -50,7 +50,7 @@ At least one of the following fields must be filled: `SUBJECT`, `BODY`
 || **BODY***
 [`string`](../../../data-types.md) | Body of the message.
 
-Macros can be used in the body of the message to replace time and monetary values.
+The body of the message may use macros to replace time and monetary values.
 
 At least one of the following fields must be filled: `SUBJECT`, `BODY`
 ||
@@ -60,11 +60,11 @@ At least one of the following fields must be filled: `SUBJECT`, `BODY`
 || **MONEY_VALUES**
 [`object`](../../../data-types.md) | Object in the format `key => value`. 
 
-Used for replacing monetary values in the body of the message (see example below)
+Used to replace monetary values in the body of the message (see example below)
 ||
 |#
 
-### Parameter STATUS {#parametr-status}
+### STATUS Parameter {#parametr-status}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -113,6 +113,81 @@ Possible values:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.delivery.request.sendmessage', {
+    			DELIVERY_ID: 225,
+    			REQUEST_ID: "4757aca4931a4f029f49c0db4374d13d",
+    			ADDRESSEE: "MANAGER",
+    			MESSAGE: {
+    				SUBJECT: "Your order is on its way",
+    				BODY: "Estimated delivery price: #MONEY#",
+    				MONEY_VALUES: {
+    					"#MONEY#": 351.2,
+    				},
+    				STATUS: {
+    					MESSAGE: "Success",
+    					SEMANTIC: "success",
+    				},
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error()) {
+    		console.error(result.error());
+    	} else {
+    		console.info(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.request.sendmessage',
+                [
+                    'DELIVERY_ID' => 225,
+                    'REQUEST_ID' => "4757aca4931a4f029f49c0db4374d13d",
+                    'ADDRESSEE' => "MANAGER",
+                    'MESSAGE' => [
+                        'SUBJECT' => "Your order is on its way",
+                        'BODY' => "Estimated delivery price: #MONEY#",
+                        'MONEY_VALUES' => [
+                            "#MONEY#" => 351.2,
+                        ],
+                        'STATUS' => [
+                            'MESSAGE' => "Success",
+                            'SEMANTIC' => "success",
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error sending delivery message: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.delivery.request.sendmessage', {
             DELIVERY_ID: 225,
@@ -140,7 +215,7 @@ Possible values:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -184,8 +259,8 @@ HTTP status: **200**
         "finish":1714561617.526123,
         "duration":0.3253021240234375,
         "processing":0.1471860408782959,
-        "date_start":"2024-05-01T14:06:57+03:00",
-        "date_finish":"2024-05-01T14:06:57+03:00"
+        "date_start":"2024-05-01T14:06:57+02:00",
+        "date_finish":"2024-05-01T14:06:57+02:00"
     }
 }
 ```
@@ -241,7 +316,7 @@ Either the subject or the body of the message must be specified
 | `400` ||
 || `REQUEST_SHIPMENT_NOT_FOUND` | Shipments linked to the specified delivery request not found
 | `400` ||
-|| `ACCESS_DENIED` | Insufficient permissions to add the delivery service | `403` ||
+|| `ACCESS_DENIED` | Insufficient rights to add the delivery service | `403` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -2,7 +2,7 @@
 
 > Scope: [`sale, cashbox`](../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to modify settings")
+> Who can execute the method: CRM administrator (permission "Allow to change settings")
 
 This method updates the data of the REST cash register handler.
 
@@ -34,7 +34,7 @@ Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbo
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":1,"FIELDS":{"NAME":"My REST Cash Register with New Name","SORT":200,"SETTINGS":{"PRINT_URL":"http://setagaya.com/receipt_print.php","CHECK_URL":"http://setagaya.com/receipt_check.php","CONFIG":{"AUTH":{"LABEL":"Authorization","ITEMS":{"LOGIN":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Login"},"PASSWORD":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Password"}}},"COMPANY":{"LABEL":"Company Information","ITEMS":{"INN":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Company INN"}}},"INTERACTION":{"LABEL":"Interaction Settings with Cash Register","ITEMS":{"MODE":{"TYPE":"ENUM","LABEL":"Cash Register Operating Mode","OPTIONS":{"ACTIVE":"live","TEST":"test"}}}}},"SUPPORTS_FFD105":"N"}}}' \
+    -d '{"ID":1,"FIELDS":{"NAME":"My REST cash register with a new name","SORT":200,"SETTINGS":{"PRINT_URL":"http://setagaya.bx/receipt_print.php","CHECK_URL":"http://setagaya.bx/receipt_check.php","CONFIG":{"AUTH":{"LABEL":"Authorization","ITEMS":{"LOGIN":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Login"},"PASSWORD":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Password"}}},"COMPANY":{"LABEL":"Company Information","ITEMS":{"INN":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Company INN"}}},"INTERACTION":{"LABEL":"Cash Register Interaction Settings","ITEMS":{"MODE":{"TYPE":"ENUM","LABEL":"Cash Register Operation Mode","OPTIONS":{"ACTIVE":"live","TEST":"test"}}}}},"SUPPORTS_FFD105":"N"}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.cashbox.handler.update
     ```
 
@@ -44,11 +44,158 @@ Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbo
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":1,"FIELDS":{"NAME":"My REST Cash Register with New Name","SORT":200,"SETTINGS":{"PRINT_URL":"http://setagaya.com/receipt_print.php","CHECK_URL":"http://setagaya.com/receipt_check.php","CONFIG":{"AUTH":{"LABEL":"Authorization","ITEMS":{"LOGIN":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Login"},"PASSWORD":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Password"}}},"COMPANY":{"LABEL":"Company Information","ITEMS":{"INN":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Company INN"}}},"INTERACTION":{"LABEL":"Interaction Settings with Cash Register","ITEMS":{"MODE":{"TYPE":"ENUM","LABEL":"Cash Register Operating Mode","OPTIONS":{"ACTIVE":"live","TEST":"test"}}}}},"SUPPORTS_FFD105":"N"}},"auth":"**put_access_token_here**"}' \
+    -d '{"ID":1,"FIELDS":{"NAME":"My REST cash register with a new name","SORT":200,"SETTINGS":{"PRINT_URL":"http://setagaya.bx/receipt_print.php","CHECK_URL":"http://setagaya.bx/receipt_check.php","CONFIG":{"AUTH":{"LABEL":"Authorization","ITEMS":{"LOGIN":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Login"},"PASSWORD":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Password"}}},"COMPANY":{"LABEL":"Company Information","ITEMS":{"INN":{"TYPE":"STRING","REQUIRED":"Y","LABEL":"Company INN"}}},"INTERACTION":{"LABEL":"Cash Register Interaction Settings","ITEMS":{"MODE":{"TYPE":"ENUM","LABEL":"Cash Register Operation Mode","OPTIONS":{"ACTIVE":"live","TEST":"test"}}}}},"SUPPORTS_FFD105":"N"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.cashbox.handler.update
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.cashbox.handler.update",
+    		{
+    			"ID": 1,
+    			"FIELDS":
+    			{
+    				"NAME": "My REST cash register with a new name",
+    				"SORT": 200,
+    				"SETTINGS": {
+    					"PRINT_URL": "http://setagaya.bx/receipt_print.php",
+    					"CHECK_URL": "http://setagaya.bx/receipt_check.php",
+    					"CONFIG": {
+    						"AUTH": {
+    							"LABEL": "Authorization",
+    							"ITEMS": {
+    								"LOGIN": {
+    									"TYPE": "STRING",
+    									"REQUIRED": "Y",
+    									"LABEL": "Login"
+    								},
+    								"PASSWORD": {
+    									"TYPE": "STRING",
+    									"REQUIRED": "Y",
+    									"LABEL": "Password"
+    								}
+    							}
+    						},
+    						"COMPANY": {
+    							"LABEL": "Company Information",
+    							"ITEMS": {
+    								"INN": {
+    									"TYPE": "STRING",
+    									"REQUIRED": "Y",
+    									"LABEL": "Company INN"
+    								}
+    							}
+    						},
+    						"INTERACTION": {
+    							"LABEL": "Cash Register Interaction Settings",
+    							"ITEMS": {
+    								"MODE": {
+    									"TYPE": "ENUM",
+    									"LABEL": "Cash Register Operation Mode",
+    									"OPTIONS": {
+    										"ACTIVE": "live",
+    										"TEST": "test"
+    									}
+    								}
+    							}
+    						}
+    					},
+    					"SUPPORTS_FFD105": "N"
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.cashbox.handler.update',
+                [
+                    'ID'     => 1,
+                    'FIELDS' => [
+                        'NAME'     => 'My REST cash register with a new name',
+                        'SORT'     => 200,
+                        'SETTINGS' => [
+                            'PRINT_URL'      => 'http://setagaya.bx/receipt_print.php',
+                            'CHECK_URL'      => 'http://setagaya.bx/receipt_check.php',
+                            'CONFIG'         => [
+                                'AUTH'        => [
+                                    'LABEL' => 'Authorization',
+                                    'ITEMS' => [
+                                        'LOGIN'    => [
+                                            'TYPE'     => 'STRING',
+                                            'REQUIRED' => 'Y',
+                                            'LABEL'    => 'Login',
+                                        ],
+                                        'PASSWORD' => [
+                                            'TYPE'     => 'STRING',
+                                            'REQUIRED' => 'Y',
+                                            'LABEL'    => 'Password',
+                                        ],
+                                    ],
+                                ],
+                                'COMPANY'      => [
+                                    'LABEL' => 'Company Information',
+                                    'ITEMS' => [
+                                        'INN' => [
+                                            'TYPE'     => 'STRING',
+                                            'REQUIRED' => 'Y',
+                                            'LABEL'    => 'Company INN',
+                                        ],
+                                    ],
+                                ],
+                                'INTERACTION'  => [
+                                    'LABEL' => 'Cash Register Interaction Settings',
+                                    'ITEMS' => [
+                                        'MODE' => [
+                                            'TYPE'    => 'ENUM',
+                                            'LABEL'   => 'Cash Register Operation Mode',
+                                            'OPTIONS' => [
+                                                'ACTIVE' => 'live',
+                                                'TEST'   => 'test',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'SUPPORTS_FFD105' => 'N',
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating cash register handler: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod( 
@@ -57,11 +204,11 @@ Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbo
         "ID": 1, 
         "FIELDS": 
         { 
-            "NAME": "My REST Cash Register with New Name",
+            "NAME": "My REST cash register with a new name",
             "SORT": 200,
             "SETTINGS": {
-                "PRINT_URL": "http://setagaya.com/receipt_print.php",
-                "CHECK_URL": "http://setagaya.com/receipt_check.php",
+                "PRINT_URL": "http://setagaya.bx/receipt_print.php",
+                "CHECK_URL": "http://setagaya.bx/receipt_check.php",
                 "CONFIG": {
                     "AUTH": {
                         "LABEL": "Authorization",
@@ -89,11 +236,11 @@ Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbo
                         }
                     },
                     "INTERACTION": {
-                        "LABEL": "Interaction Settings with Cash Register",
+                        "LABEL": "Cash Register Interaction Settings",
                         "ITEMS": {
                             "MODE": {
                                 "TYPE": "ENUM",
-                                "LABEL": "Cash Register Operating Mode",
+                                "LABEL": "Cash Register Operation Mode",
                                 "OPTIONS": {
                                     "ACTIVE": "live",
                                     "TEST": "test"
@@ -116,7 +263,7 @@ Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbo
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -127,12 +274,12 @@ Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbo
             'ID' => 1,
             'FIELDS' =>
             [
-                'NAME' => 'My REST Cash Register with New Name',
+                'NAME' => 'My REST cash register with a new name',
                 'SORT' => 200,
                 'SETTINGS' =>
                 [
-                    'PRINT_URL' => 'http://setagaya.com/receipt_print.php',
-                    'CHECK_URL' => 'http://setagaya.com/receipt_check.php',
+                    'PRINT_URL' => 'http://setagaya.bx/receipt_print.php',
+                    'CHECK_URL' => 'http://setagaya.bx/receipt_check.php',
                     'CONFIG' =>
                     [
                         'AUTH' =>
@@ -153,7 +300,7 @@ Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbo
                                     'LABEL' => 'Password'
                                 ]
                             ]
-                        ],
+                        },
                         'COMPANY' =>
                         [
                             'LABEL' => 'Company Information',
@@ -166,16 +313,16 @@ Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbo
                                     'LABEL' => 'Company INN'
                                 ]
                             ]
-                        ],
+                        },
                         'INTERACTION' =>
                         [
-                            'LABEL' => 'Interaction Settings with Cash Register',
+                            'LABEL' => 'Cash Register Interaction Settings',
                             'ITEMS' =>
                             [
                                 'MODE' =>
                                 [
                                     'TYPE' => 'ENUM',
-                                    'LABEL' => 'Cash Register Operating Mode',
+                                    'LABEL' => 'Cash Register Operation Mode',
                                     'OPTIONS' =>
                                     [
                                         'ACTIVE' => 'live',
@@ -184,7 +331,7 @@ Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbo
                                 ]
                             ]
                         ]
-                    ],
+                    },
                     'SUPPORTS_FFD105' => 'N'
                 ]
             ]
@@ -224,9 +371,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of updating the fields of the REST cash register handler ||
+[`boolean`](../../data-types.md) | Result of updating the REST cash register handler ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -247,7 +394,7 @@ HTTP Status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Insufficient permissions to update the handler or the application is trying to modify a handler added by another application | 403 ||
-|| `ERROR_CHECK_FAILURE` | The values for `ID` or `FIELDS` are not specified | 400 ||
+|| `ERROR_CHECK_FAILURE` | The values for fields `ID` or `FIELDS` are not specified | 400 ||
 || `ERROR_HANDLER_NOT_FOUND` | Handler with the specified `ID` not found | 400 ||
 || `ERROR_HANDLER_UPDATE` | Other errors. More detailed information about the error can be found in `error_description` | 400 ||
 |#

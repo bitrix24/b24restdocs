@@ -8,7 +8,7 @@ This method retrieves the variant value of an order property. It is applicable o
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method retrieves the variant value of an order property. It is applicable o
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,53 @@ This method retrieves the variant value of an order property. It is applicable o
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.propertyvariant.get", {
+    			"id": 6
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyvariant.get',
+                [
+                    'id' => 6
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting property variant: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.propertyvariant.get", {
             "id": 6
@@ -60,7 +107,7 @@ This method retrieves the variant value of an order property. It is applicable o
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,23 +132,23 @@ HTTP Status: **200**
 
 ```json
 {
-    "result":{
-        "propertyVariant":{
-            "description":"Description of the value for red color",
-            "id":6,
-            "name":"Red",
-            "orderPropsId":49,
-            "sort":10,
-            "value":"red"
+    "result": {
+        "propertyVariant": {
+            "description": "Description of the value for red color",
+            "id": 6,
+            "name": "Red",
+            "orderPropsId": 49,
+            "sort": 10,
+            "value": "red"
         }
     },
-    "time":{
-        "start":1711632097.794569,
-        "finish":1711632098.028609,
-        "duration":0.2340400218963623,
-        "processing":0.009068012237548828,
-        "date_start":"2024-03-28T16:21:37+03:00",
-        "date_finish":"2024-03-28T16:21:38+03:00"
+    "time": {
+        "start": 1711632097.794569,
+        "finish": 1711632098.028609,
+        "duration": 0.2340400218963623,
+        "processing": 0.009068012237548828,
+        "date_start": "2024-03-28T16:21:37+02:00",
+        "date_finish": "2024-03-28T16:21:38+02:00"
     }
 }
 ```
@@ -125,12 +172,12 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":201540400001,
-    "error_description":"property variant does not exist"
+    "error": 201540400001,
+    "error_description": "property variant does not exist"
 }
 ```
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -142,7 +189,7 @@ HTTP Status: **400**
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

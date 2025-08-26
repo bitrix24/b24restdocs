@@ -1,4 +1,4 @@
-# Get Delivery Services List sale.delivery.getlist
+# Get a list of delivery services sale.delivery.getlist
 
 > Scope: [`sale`](../../../scopes/permissions.md)
 >
@@ -23,10 +23,10 @@ If not provided or an empty array is passed, all available fields of delivery se
  
 Possible values for `field` correspond to the fields of the object [`sale_delivery_service`](../../data-types.md).
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 
 - `=` — equals (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring at any position in the string.
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
@@ -36,12 +36,12 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples: 
     - `"mol%"` — searching for values starting with "mol"
     - `"%mol"` — searching for values ending with "mol"
-    - `"%mol%"` — searching for values where "mol" can be in any position
+    - `"%mol%"` — searching for values where "mol" can be at any position
 - `%=` — LIKE (see description above)
 - `!=%` — NOT LIKE, substring search. The % symbol needs to be passed in the value. Examples:
     - `"mol%"` — searching for values not starting with "mol"
     - `"%mol"` — searching for values not ending with "mol"
-    - `"%mol%"` — searching for values where the substring "mol" is not present in any position
+    - `"%mol%"` — searching for values where the substring "mol" is not present at any position
 - `!%=` — NOT LIKE (see description above)
 ||
 || **ORDER**
@@ -85,6 +85,104 @@ Possible values for `order`:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const parameters = {
+        SELECT: [
+            "ID",
+            "PARENT_ID",
+            "NAME",
+            "ACTIVE",
+            "DESCRIPTION",
+            "SORT",
+            "CURRENCY",
+        ],
+        FILTER: {
+            "@ID": [196, 197, 198],
+        },
+        ORDER: {
+            SORT: "ASC",
+            ID: "DESC",
+        },
+    };
+    
+    try {
+        const response = await $b24.callListMethod(
+            'sale.delivery.getlist',
+            parameters,
+            (progress) => { console.log('Progress:', progress) }
+        );
+        const items = response.getData() || [];
+        for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+        const generator = $b24.fetchListMethod('sale.delivery.getlist', parameters, 'ID');
+        for await (const page of generator) {
+            for (const entity of page) { console.log('Entity:', entity); }
+        }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+        const response = await $b24.callMethod('sale.delivery.getlist', parameters, 0);
+        const result = response.getData().result || [];
+        for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.getlist',
+                [
+                    'SELECT' => [
+                        "ID",
+                        "PARENT_ID",
+                        "NAME",
+                        "ACTIVE",
+                        "DESCRIPTION",
+                        "SORT",
+                        "CURRENCY",
+                    ],
+                    'FILTER' => [
+                        '@ID' => [196, 197, 198],
+                    ],
+                    'ORDER' => [
+                        'SORT' => "ASC",
+                        'ID'   => "DESC",
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting delivery list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.delivery.getlist', {
             SELECT: [
@@ -100,7 +198,6 @@ Possible values for `order`:
                 "@ID": [196, 197, 198],
             },
             ORDER: {
-
                 SORT: "ASC",
                 ID: "DESC",
             },
@@ -115,7 +212,7 @@ Possible values for `order`:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -185,8 +282,8 @@ HTTP status: **200**
         "finish":1714141661.945714,
         "duration":0.1940760612487793,
         "processing":0.013057947158813477,
-        "date_start":"2024-04-26T17:27:41+03:00",
-        "date_finish":"2024-04-26T17:27:41+03:00"
+        "date_start":"2024-04-26T17:27:41+02:00",
+        "date_finish":"2024-04-26T17:27:41+02:00"
     }
 }
 ```
@@ -220,7 +317,7 @@ HTTP status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | 400 ||
-|| `ACCESS_DENIED` | Insufficient permissions to retrieve the list of delivery services | 403 ||
+|| `ACCESS_DENIED` | Insufficient rights to retrieve the list of delivery services | 403 ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

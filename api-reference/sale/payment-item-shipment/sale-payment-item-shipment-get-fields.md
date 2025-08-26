@@ -4,13 +4,13 @@
 >
 > Who can execute the method: administrator
 
-This method retrieves the available fields for the payment item shipment binding.
+This method retrieves the available fields of the payment item shipment binding table.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,6 +37,50 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            "sale.paymentitemshipment.getfields",
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paymentitemshipment.getfields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting payment item shipment fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.paymentitemshipment.getfields",
         {},
@@ -50,7 +94,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -69,51 +113,51 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "paymentItemShipment":{
-            "dateInsert":{
-                "isImmutable":false,
-                "isReadOnly":true,
-                "isRequired":false,
-                "type":"datetime"
+    "result": {
+        "paymentItemShipment": {
+            "dateInsert": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "datetime"
             },
-            "id":{
-                "isImmutable":false,
-                "isReadOnly":true,
-                "isRequired":false,
-                "type":"integer"
+            "id": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "integer"
             },
-            "paymentId":{
-                "isImmutable":true,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"integer"
+            "paymentId": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
             },
-            "shipmentId":{
-                "isImmutable":true,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"integer"
+            "shipmentId": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
             },
-            "xmlId":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":false,
-                "type":"string"
+            "xmlId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
             }
         }
     },
-    "time":{
-        "start":1713171556.275477,
-        "finish":1713171556.555498,
-        "duration":0.28002095222473145,
-        "processing":0.008104085922241211,
-        "date_start":"2024-04-15T11:59:16+03:00",
-        "date_finish":"2024-04-15T11:59:16+03:00"
+    "time": {
+        "start": 1713171556.275477,
+        "finish": 1713171556.555498,
+        "duration": 0.28002095222473145,
+        "processing": 0.008104085922241211,
+        "date_start": "2024-04-15T11:59:16+02:00",
+        "date_finish": "2024-04-15T11:59:16+02:00"
     }
 }
 ```
@@ -126,19 +170,19 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **paymentItemShipment**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [sale_payment_item_shipment](../data-types.md), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the [sale_payment_item_shipment](../data-types.md) object, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": 0,
+    "error_description": "error"
 }
 ```
 
@@ -148,7 +192,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read available fields for payment bindings to shipments ||
+|| `200040300010` | Insufficient permissions to read available payment item shipment binding fields ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

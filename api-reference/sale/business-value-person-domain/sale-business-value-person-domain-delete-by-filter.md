@@ -63,6 +63,62 @@ You can obtain the identifiers of payer types using the method [sale.persontype.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.businessValuePersonDomain.deleteByFilter', 
+    		{
+    			fields: {
+    				personTypeId: 3,
+    				domain: "I"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.businessValuePersonDomain.deleteByFilter',
+                [
+                    'fields' => [
+                        'personTypeId' => 3,
+                        'domain'      => "I",
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting business value person domain: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.businessValuePersonDomain.deleteByFilter', 
         {
@@ -81,7 +137,7 @@ You can obtain the identifiers of payer types using the method [sale.persontype.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -116,8 +172,8 @@ HTTP status: **200**
         "finish":1712571752.329445,
         "duration":0.8424267768859863,
         "processing":0.6462001800537109,
-        "date_start":"2024-04-08T13:22:31+02:00",
-        "date_finish":"2024-04-08T13:22:32+02:00"
+        "date_start":"2024-04-08T13:22:31+03:00",
+        "date_finish":"2024-04-08T13:22:32+03:00"
     }
 }
 ```

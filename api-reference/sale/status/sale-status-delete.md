@@ -46,6 +46,53 @@ This method deletes an order or delivery status.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.status.delete", {
+    			"id": "MS"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.status.delete',
+                [
+                    'id' => 'MS',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting sale status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.status.delete", {
             "id": "MS"
@@ -60,7 +107,7 @@ This method deletes an order or delivery status.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -100,7 +147,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the status deletion ||
+[`boolean`](../../data-types.md) | Result of status deletion ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -122,15 +169,15 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `201340400001` | The status to be deleted was not found ||
-|| `200040300020` | Insufficient permissions to delete the status ||
-|| `201350000002` | An error occurs when attempting to delete certain [system statuses](./index.md):
+|| `201340400001` | Status to be deleted not found ||
+|| `200040300020` | Insufficient permissions to delete status ||
+|| `201350000002` | Error occurs when trying to delete certain [system statuses](./index.md):
 - `N`
 - `F`
 - `DN`
 - `DF`
 ||
-|| `100` | The `id` parameter is missing ||
+|| `100` | Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

@@ -10,7 +10,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,6 +37,52 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.statuslang.getfields",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.statuslang.getfields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting sale status fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.statuslang.getfields",
         {},
@@ -50,7 +96,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -69,45 +115,45 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "statusLang":{
-            "description":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":false,
-                "type":"string"
+    "result": {
+        "statusLang": {
+            "description": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
             },
-            "lid":{
-                "isImmutable":true,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"string"
+            "lid": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
             },
-            "name":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"string"
+            "name": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
             },
-            "statusId":{
-                "isImmutable":true,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"string"
+            "statusId": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
             }
         }
     },
-    "time":{
-        "start":1712231062.904967,
-        "finish":1712231063.158455,
-        "duration":0.25348782539367676,
-        "processing":0.005218982696533203,
-        "date_start":"2024-04-04T14:44:22+03:00",
-        "date_finish":"2024-04-04T14:44:23+03:00"
+    "time": {
+        "start": 1712231062.904967,
+        "finish": 1712231063.158455,
+        "duration": 0.25348782539367676,
+        "processing": 0.005218982696533203,
+        "date_start": "2024-04-04T14:44:22+02:00",
+        "date_finish": "2024-04-04T14:44:23+02:00"
     }
 }
 ```
@@ -120,19 +166,19 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **statusLang**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the [sale_status_lang](../data-types.md) object, and value is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the [sale_status_lang](../data-types.md) object, and value is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"error"
+   "error": 0,
+   "error_description": "error"
 }
 ```
 

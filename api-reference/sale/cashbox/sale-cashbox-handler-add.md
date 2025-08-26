@@ -1,10 +1,10 @@
-# Add Cash Register Handler sale.cashbox.handler.add
+# Add Cashbox Handler sale.cashbox.handler.add
 
 > Scope: [`sale, cashbox`](../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator (permission "Allow changing settings")
 
-This method adds a REST handler for the cash register.
+This method adds a REST cashbox handler.
 
 ## Method Parameters
 
@@ -18,15 +18,15 @@ This method adds a REST handler for the cash register.
 || **NAME***
 [`string`](../../data-types.md) | Name of the REST handler ||
 || **SORT**
-[`integer`](../../data-types.md) | Sorting order. Default value: `100` ||
+[`integer`](../../data-types.md) | Sorting. Default value: `100` ||
 || **SUPPORTS_FFD105**
-[`string`](../../data-types.md) | Indicates whether the cash register supports fiscal data format version 1.05. Possible values:
+[`string`](../../data-types.md) | Indicates if the cashbox supports fiscal data format version 1.05. Possible values:
 - `Y` — yes
 - `N` — no
   
 Default value: `N` ||
 || **SETTINGS***
-[`object`](../../data-types.md) | Settings of the handler (detailed description provided [below](#settings)) ||
+[`object`](../../data-types.md) | Handler settings (detailed description provided [below](#settings)) ||
 |#
 
 ### SETTINGS Parameter {#settings}
@@ -41,11 +41,11 @@ Default value: `N` ||
 || **CHECK_URL***
 [`string`](../../data-types.md) | Address for checking the status of the receipt ||
 || **HTTP_VERSION**
-[`string`](../../data-types.md) | Version of the HTTP protocol used for requests. Possible values: `1.0`, `1.1`. 
+[`string`](../../data-types.md) | HTTP protocol version used for requests. Possible values: `1.0`, `1.1`. 
 
 If the parameter is not filled, HTTP `1.0` is used for requests ||
 || **CONFIG***
-[`object`](../../data-types.md) | Structure of settings (detailed description provided [below](#settingsconfig)), which the user can set and modify on the cash register editing page, as well as when adding or updating the cash register via REST. 
+[`object`](../../data-types.md) | Structure of settings (detailed description provided [below](#settingsconfig)), which the user can set and modify on the cashbox editing page, as well as when adding or updating the cashbox via REST. 
 
 Each key in this parameter defines one section on the settings page, the key is the section code. The values of the object describe the section and the settings contained within it
 ||
@@ -59,15 +59,15 @@ Each key in this parameter defines one section on the settings page, the key is 
 || **Name**
 `type` | **Description** ||
 || **LABEL***
-[`string`](../../data-types.md) | Title of the section ||
+[`string`](../../data-types.md) | Section header ||
 || **ITEMS***
 [`object`](../../data-types.md) | List of settings in the section (detailed description provided [below](#settingsconfigitems)). 
 
-The key is the setting code, and the value is the description of the setting 
+The key is the setting code, the value is the description of the setting 
 ||
 |#
 
-### SETTINGS[CONFIG][section code][ITEMS] Parameter {#settingsconfigitems}
+### SETTINGS[CONFIG][section_code][ITEMS] Parameter {#settingsconfigitems}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -75,7 +75,7 @@ The key is the setting code, and the value is the description of the setting
 || **Name**
 `type` | **Description** ||
 || **TYPE***
-[`string`](../../data-types.md) | Type of the setting. Possible values:
+[`string`](../../data-types.md) | Type of setting. Possible values:
 
 - `STRING` — string
 - `NUMBER` — floating-point number
@@ -85,38 +85,38 @@ The key is the setting code, and the value is the description of the setting
 || **LABEL***
 [`string`](../../data-types.md) | Name of the setting ||
 || **REQUIRED***
-[`string`](../../data-types.md) | Indicates whether the setting is required. Possible values:
+[`string`](../../data-types.md) | Indicates if the setting is required. Possible values:
 
 - `Y` — yes
 - `N` — no
 ||
 ||  **DISABLED**
-[`string`](../../data-types.md) | Indicates whether editing of the setting is disabled. Possible values:
+[`string`](../../data-types.md) | Indicates if editing of the setting is disabled. Possible values:
 
 - `Y` — yes
 - `N` — no
 
 Default value: `N` ||
 ||  **MULTIPLE**
-[`string`](../../data-types.md) | Indicates whether the setting is multiple. Possible values:
+[`string`](../../data-types.md) | Indicates if the setting is multiple. Possible values:
 
 - `Y` — yes
 - `N` — no
 
 Default value: `N` ||
 ||  **MULTILINE**
-[`string`](../../data-types.md) | Indicates whether the field is multiline. Used for the `STRING` type. Possible values:
+[`string`](../../data-types.md) | Indicates if the field is multiline. Used for `STRING` type. Possible values:
 
 - `Y` — yes
 - `N` — no
 
 Default value: `N` ||
 ||  **OPTIONS***
-[`object`](../../data-types.md) | List of possible values for the property. Used for the `ENUM` type. 
+[`object`](../../data-types.md) | List of possible values for the property. Used for `ENUM` type. 
 
-The key of the object is the property value, and the value of the key is the name of the value displayed in the interface ||
+The key of the object is the property value, the value of the key is the name of the value displayed in the interface ||
 ||  **TIME**
-[`string`](../../data-types.md) | Indicates whether time selection is possible. Used for the `DATE` type. Possible values:
+[`string`](../../data-types.md) | Indicates if time selection is possible. Used for `DATE` type. Possible values:
 
 - `Y` — yes
 - `N` — no
@@ -137,7 +137,7 @@ Default value: `N`
     -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CODE":"restcashbox01","NAME":"REST-Cash Register 01","SORT":100,"SUPPORTS_FFD105":"Y","SETTINGS":{"PRINT_URL":"http://example.com/rest_print.php","CHECK_URL":"http://example.com/rest_check.php","HTTP_VERSION":"1.1","CONFIG":{"AUTH":{"LABEL":"Authorization","ITEMS":{"KEYWORD":{"TYPE":"STRING","LABEL":"Keyword"},"PREFERENCE":{"TYPE":"ENUM","LABEL":"Multiple Choice","REQUIRED":"Y","OPTIONS":{"FIRST":"First","SECOND":"Second","THIRD":"Third"}}}},"INTERACTION":{"LABEL":"Interaction Settings with Cash Register","ITEMS":{"MODE":{"TYPE":"ENUM","LABEL":"Cash Register Operating Mode","OPTIONS":{"ACTIVE":"active","TEST":"test"}}}}}}}' \
+    -d '{"CODE":"restcashbox01","NAME":"REST-Cashbox 01","SORT":100,"SUPPORTS_FFD105":"Y","SETTINGS":{"PRINT_URL":"http://example.com/rest_print.php","CHECK_URL":"http://example.com/rest_check.php","HTTP_VERSION":"1.1","CONFIG":{"AUTH":{"LABEL":"Authorization","ITEMS":{"KEYWORD":{"TYPE":"STRING","LABEL":"Keyword"},"PREFERENCE":{"TYPE":"ENUM","LABEL":"Multiple Choice","REQUIRED":"Y","OPTIONS":{"FIRST":"First","SECOND":"Second","THIRD":"Third"}}}},"INTERACTION":{"LABEL":"Interaction Settings with Cashbox","ITEMS":{"MODE":{"TYPE":"ENUM","LABEL":"Cashbox Operating Mode","OPTIONS":{"ACTIVE":"live","TEST":"test"}}}}}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.cashbox.handler.add
     ```
 
@@ -147,18 +147,151 @@ Default value: `N`
     -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CODE":"restcashbox01","NAME":"REST-Cash Register 01","SORT":100,"SUPPORTS_FFD105":"Y","SETTINGS":{"PRINT_URL":"http://example.com/rest_print.php","CHECK_URL":"http://example.com/rest_check.php","HTTP_VERSION":"1.1","CONFIG":{"AUTH":{"LABEL":"Authorization","ITEMS":{"KEYWORD":{"TYPE":"STRING","LABEL":"Keyword"},"PREFERENCE":{"TYPE":"ENUM","LABEL":"Multiple Choice","REQUIRED":"Y","OPTIONS":{"FIRST":"First","SECOND":"Second","THIRD":"Third"}}}},"INTERACTION":{"LABEL":"Interaction Settings with Cash Register","ITEMS":{"MODE":{"TYPE":"ENUM","LABEL":"Cash Register Operating Mode","OPTIONS":{"ACTIVE":"active","TEST":"test"}}}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"CODE":"restcashbox01","NAME":"REST-Cashbox 01","SORT":100,"SUPPORTS_FFD105":"Y","SETTINGS":{"PRINT_URL":"http://example.com/rest_print.php","CHECK_URL":"http://example.com/rest_check.php","HTTP_VERSION":"1.1","CONFIG":{"AUTH":{"LABEL":"Authorization","ITEMS":{"KEYWORD":{"TYPE":"STRING","LABEL":"Keyword"},"PREFERENCE":{"TYPE":"ENUM","LABEL":"Multiple Choice","REQUIRED":"Y","OPTIONS":{"FIRST":"First","SECOND":"Second","THIRD":"Third"}}}},"INTERACTION":{"LABEL":"Interaction Settings with Cashbox","ITEMS":{"MODE":{"TYPE":"ENUM","LABEL":"Cashbox Operating Mode","OPTIONS":{"ACTIVE":"live","TEST":"test"}}}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.cashbox.handler.add
     ```
 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.cashbox.handler.add",
+    		{
+    			"CODE": "restcashbox01",
+    			"NAME": "REST-Cashbox 01",
+    			"SORT": 100,
+    			"SUPPORTS_FFD105": "Y",
+    			"SETTINGS":
+    			{
+    				"PRINT_URL": "http://example.com/rest_print.php",
+    				"CHECK_URL": "http://example.com/rest_check.php",
+    				"HTTP_VERSION": "1.1",
+    				"CONFIG":
+    				{
+    					"AUTH": {
+    						"LABEL": "Authorization",
+    						"ITEMS": {
+    							"KEYWORD": {
+    								"TYPE": "STRING",
+    								"LABEL": "Keyword"
+    							},
+    							"PREFERENCE": {
+    								"TYPE": "ENUM",
+    								"LABEL": "Multiple Choice",
+    								"REQUIRED": "Y",
+    								"OPTIONS": {
+    									"FIRST": "First",
+    									"SECOND": "Second",
+    									"THIRD": "Third",
+    								}
+    							}
+    						}
+    					},
+    					"INTERACTION": {
+    						"LABEL": "Interaction Settings with Cashbox",
+    						"ITEMS": {
+    							"MODE": {
+    								"TYPE": "ENUM",
+    								"LABEL": "Cashbox Operating Mode",
+    								"OPTIONS": {
+    									"ACTIVE": "live",
+    									"TEST": "test"
+    								}
+    							}
+    						}
+    					}
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.cashbox.handler.add',
+                [
+                    'CODE'          => 'restcashbox01',
+                    'NAME'          => 'REST-Cashbox 01',
+                    'SORT'          => 100,
+                    'SUPPORTS_FFD105' => 'Y',
+                    'SETTINGS'      => [
+                        'PRINT_URL'    => 'http://example.com/rest_print.php',
+                        'CHECK_URL'    => 'http://example.com/rest_check.php',
+                        'HTTP_VERSION' => '1.1',
+                        'CONFIG'       => [
+                            'AUTH'       => [
+                                'LABEL' => 'Authorization',
+                                'ITEMS' => [
+                                    'KEYWORD'    => [
+                                        'TYPE'  => 'STRING',
+                                        'LABEL' => 'Keyword',
+                                    ],
+                                    'PREFERENCE' => [
+                                        'TYPE'     => 'ENUM',
+                                        'LABEL'    => 'Multiple Choice',
+                                        'REQUIRED' => 'Y',
+                                        'OPTIONS'  => [
+                                            'FIRST'  => 'First',
+                                            'SECOND' => 'Second',
+                                            'THIRD'  => 'Third',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'INTERACTION' => [
+                                'LABEL' => 'Interaction Settings with Cashbox',
+                                'ITEMS' => [
+                                    'MODE' => [
+                                        'TYPE'    => 'ENUM',
+                                        'LABEL'   => 'Cashbox Operating Mode',
+                                        'OPTIONS' => [
+                                            'ACTIVE' => 'live',
+                                            'TEST'   => 'test',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        console.dir($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding cashbox handler: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.cashbox.handler.add",
         {
             "CODE": "restcashbox01",
-            "NAME": "REST-Cash Register 01",
+            "NAME": "REST-Cashbox 01",
             "SORT": 100,
             "SUPPORTS_FFD105": "Y",
             "SETTINGS":
@@ -188,13 +321,13 @@ Default value: `N`
                         }
                     },
                     "INTERACTION": {
-                        "LABEL": "Interaction Settings with Cash Register",
+                        "LABEL": "Interaction Settings with Cashbox",
                         "ITEMS": {
                             "MODE": {
                                 "TYPE": "ENUM",
-                                "LABEL": "Cash Register Operating Mode",
+                                "LABEL": "Cashbox Operating Mode",
                                 "OPTIONS": {
-                                    "ACTIVE": "active",
+                                    "ACTIVE": "live",
                                     "TEST": "test"
                                 }
                             }
@@ -213,7 +346,7 @@ Default value: `N`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -222,7 +355,7 @@ Default value: `N`
         'sale.cashbox.handler.add',
         [
             'CODE' => 'restcashbox01',
-            'NAME' => 'REST-Cash Register 01',
+            'NAME' => 'REST-Cashbox 01',
             'SORT' => 100,
             'SUPPORTS_FFD105' => 'Y',
             'SETTINGS' =>
@@ -241,7 +374,7 @@ Default value: `N`
                             [
                                 'TYPE' => 'STRING',
                                 'LABEL' => 'Keyword'
-                            ],
+                            },
                             'PREFERENCE' =>
                             [
                                 'TYPE' => 'ENUM',
@@ -258,19 +391,19 @@ Default value: `N`
                     },
                     'INTERACTION' =>
                     [
-                        'LABEL' => 'Interaction Settings with Cash Register',
+                        'LABEL' => 'Interaction Settings with Cashbox',
                         'ITEMS' =>
                         [
                             'MODE' =>
                             [
                                 'TYPE' => 'ENUM',
-                                'LABEL' => 'Cash Register Operating Mode',
+                                'LABEL' => 'Cashbox Operating Mode',
                                 'OPTIONS' =>
                                 [
-                                    'ACTIVE' => 'active',
+                                    'ACTIVE' => 'live',
                                     'TEST' => 'test'
                                 ]
-                            }
+                            ]
                         ]
                     ]
                 ]
@@ -293,7 +426,7 @@ Default value: `N`
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -324,7 +457,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -339,8 +472,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient rights to add the handler | 403 ||
-|| `ERROR_CHECK_FAILURE` | A required field value is missing or one of the field values is incorrect | 400 ||
+|| `ACCESS_DENIED` | Insufficient permissions to add the handler | 403 ||
+|| `ERROR_CHECK_FAILURE` | Required field value is missing or one of the field values is incorrect | 400 ||
 || `ERROR_HANDLER_ALREADY_EXIST` | A handler with the code specified in the `CODE` parameter already exists in the system | 400 ||
 || `ERROR_HANDLER_ADD` | Other errors. More detailed information about the error can be found in `error_description` | 400 ||
 |#
@@ -416,7 +549,7 @@ The `PRINT_URL` page is the address to which data for printing the receipt is se
 || **Name**
 `type` | **Description** ||
 || **type**
-[`string`](../../data-types.md) | Type of the receipt. Values:
+[`string`](../../data-types.md) | Type of receipt. Values:
 - `sell` — full payment
 - `sellreturncash` — full cash return
 - `sellreturn` — full non-cash return
@@ -427,13 +560,13 @@ The `PRINT_URL` page is the address to which data for printing the receipt is se
 - `creditpaymentreturn` — non-cash credit payment return
 - `creditpaymentreturncash` — cash credit payment return
 - `credit` — purchase on credit
-- `creditreturn` — return of a credit purchase
+- `creditreturn` — return of purchase on credit
 - `prepayment` — partial advance payment
-- `prepaymentreturn` — non-cash return of partial advance payment
-- `prepaymentreturncash` — cash return of partial advance payment
+- `prepaymentreturn` — non-cash partial advance return
+- `prepaymentreturncash` — cash partial advance return
 - `fullprepayment` — 100% advance payment
-- `fullprepaymentreturn` — non-cash return of 100% advance payment
-- `fullprepaymentreturncash` — cash return of 100% advance payment ||
+- `fullprepaymentreturn` — non-cash 100% advance return
+- `fullprepaymentreturncash` — cash 100% advance return ||
 || **operation**
 [`string`](../../data-types.md) | Indicator of income/expenditure. Values:
 - `income` — income
@@ -441,9 +574,9 @@ The `PRINT_URL` page is the address to which data for printing the receipt is se
 || **calculated**
 [`string`](../../data-types.md) | Analogous to `operation` (for compatibility) ||
 || **unique_id**
-[`integer`](../../data-types.md) | ID of the receipt in the portal database ||
+[`integer`](../../data-types.md) | ID of the receipt in the database ||
 || **items**
-[`object`](../../data-types.md) | Array of items in the receipt (detailed description provided [below](#items)) ||
+[`object`](../../data-types.md) | Array of products in the receipt (detailed description provided [below](#items)) ||
 || **date_create**
 [`integer`](../../data-types.md) | Date of receipt creation (`timestamp`) ||
 || **payments**
@@ -455,9 +588,9 @@ The `PRINT_URL` page is the address to which data for printing the receipt is se
 || **total_sum**
 [`float`](../../data-types.md) | Total amount of the receipt ||
 || **uuid**
-[`string`](../../data-types.md) | Identifier of the document in the external system (portal *Bitrix24*) ||
+[`string`](../../data-types.md) | Identifier of the document in the external system (Bitrix24 portal) ||
 || **service_email**
-[`string`](../../data-types.md) | Email (from cash register settings) ||
+[`string`](../../data-types.md) | Email (from cashbox settings) ||
 |#
 
 #### items Parameter {#items}
@@ -472,15 +605,15 @@ The `PRINT_URL` page is the address to which data for printing the receipt is se
 || **price**
 [`float`](../../data-types.md) | Selling price ||
 || **sum**
-[`float`](../../data-types.md) | Position amount ||
+[`float`](../../data-types.md) | Amount for the item ||
 || **quantity**
 [`float`](../../data-types.md) | Quantity of the product ||
 || **vat**
-[`int`](../../data-types.md) | Tax identifier. It can be used in the [catalog.vat.get](../../catalog/vat/catalog-vat-get.md) method to obtain information about the tax ||
+[`int`](../../data-types.md) | Tax identifier. It can be used in the [catalog.vat.get](../../catalog/vat/catalog-vat-get.md) method to obtain tax information ||
 || **vat_sum**
 [`float`](../../data-types.md) | Tax amount ||
 || **barcode**
-[`string`](../../data-types.md) | Barcode. Used when inventory accounting is enabled and the product has a unique barcode ||
+[`string`](../../data-types.md) | Barcode. Used when inventory management is enabled and the product has a unique barcode ||
 || **nomenclature_code**
 [`string`](../../data-types.md) | Nomenclature code in binary representation (if available) ||
 || **marking_code**
@@ -531,7 +664,7 @@ The array transmits the `discount` parameter ([`float`](../../data-types.md)) �
 - `cash` — cash payment
 - `cashless` — non-cash payment ||
 || **is_cash**
-[`string`](../../data-types.md) | Indicates whether the payment is made in cash (`Y/N`). The key is deprecated; it is recommended to use `type` instead ||
+[`string`](../../data-types.md) | Indicates if the payment is made in cash (`Y/N`). The key is deprecated; it is recommended to use `type` instead ||
 || **sum**
 [`float`](../../data-types.md) | Payment amount ||
 || **currency**
@@ -540,7 +673,7 @@ The array transmits the `discount` parameter ([`float`](../../data-types.md)) �
 
 ## CHECK_URL Page {#check_url}
 
-The `CHECK_URL` page is the address where the success of the receipt printing is checked.
+The `CHECK_URL` page is the address for checking the success of receipt printing.
 
 A request to the `CHECK_URL` address is made either by the manager's request or automatically after some time following the successful printing of the receipt.
 

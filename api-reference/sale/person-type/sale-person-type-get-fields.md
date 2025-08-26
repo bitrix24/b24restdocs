@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method returns the fields of the payer type.
+The method returns fields of the payer type.
 
 No parameters.
 
@@ -37,6 +37,52 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.persontype.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.persontype.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting person type fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.persontype.getFields',
         {},
@@ -50,7 +96,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -135,8 +181,8 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **personType**
-[`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value"}`.
-Where `field` is the identifier of the object [sale_person_type](../data-types.md), and value is an object of type [rest_field_description](../data-types.md#rest_field_description)
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value"}`.
+Where `field` is the identifier of the object [sale_person_type](../data-types.md), and value is an object of type [rest_field_description](../../data-types.md#rest_field_description)
 ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
@@ -159,7 +205,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | No read access ||
+|| `200040300010` | No access to read ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

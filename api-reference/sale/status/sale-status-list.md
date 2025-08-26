@@ -1,4 +1,4 @@
-# Get the List of Statuses sale.status.list
+# Get the list of statuses sale.status.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -14,36 +14,36 @@ This method retrieves a list of statuses.
 || **select**
 [`array`](../../data-types.md) | An array of fields to select (see fields of the [sale_status](../data-types.md) object).
 
-If the array is not provided or is empty, all available status fields will be selected.
+If the array is not provided or an empty array is passed, all available status fields will be selected.
 ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected property groups in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering selected property groups in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [sale_status](../data-types.md) object.
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring at any position in the string.
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
-    - `"%mol%"` — searches for values where "mol" can be at any position
+    - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search is performed from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
-    - `"%mol%"` — searches for values where the substring "mol" is not present at any position
+    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
  ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting the selected statuses in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting selected statuses in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [sale_status](../data-types.md) object.
 
@@ -60,7 +60,7 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number.
+`start = (N-1) * 50`, where `N` is the desired page number
 ||
 |#
 
@@ -93,6 +93,103 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const method = "sale.status.list";
+    const parameters = {
+        "select": [
+            "id",
+            "type",
+            "notify",
+            "color",
+            "sort",
+            "xmlId",
+        ],
+        "filter": {
+            "id": "N",
+        },
+        "order": {
+            "type": "asc",
+        }
+    };
+    
+    try {
+        const response = await $b24.callListMethod(method, parameters);
+        const items = response.getData() || [];
+        for (const entity of items) {
+            console.log('Entity:', entity);
+        }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in chunks and efficiently using memory.
+    
+    try {
+        const generator = $b24.fetchListMethod(method, parameters, 'ID');
+        for await (const page of generator) {
+            for (const entity of page) {
+                console.log('Entity:', entity);
+            }
+        }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+        const response = await $b24.callMethod(method, parameters, 0);
+        const result = response.getData().result || [];
+        for (const entity of result) {
+            console.log('Entity:', entity);
+        }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.status.list',
+                [
+                    'select' => [
+                        'id',
+                        'type',
+                        'notify',
+                        'color',
+                        'sort',
+                        'xmlId',
+                    ],
+                    'filter' => [
+                        'id' => 'N',
+                    ],
+                    'order' => [
+                        'type' => 'asc',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching sale status list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.status.list", {
             "select": [
@@ -120,7 +217,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -151,30 +248,30 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "statuses":[
+    "result": {
+        "statuses": [
             {
-                "color":"#BEEDF1",
-                "id":"N",
-                "notify":"Y",
-                "sort":10,
-                "type":"O",
-                "xmlId":null
+                "color": "#BEEDF1",
+                "id": "N",
+                "notify": "Y",
+                "sort": 10,
+                "type": "O",
+                "xmlId": null
             }
         ]
     },
-    "total":1,
-    "time":{
-        "start":1712655587.593758,
-        "finish":1712655587.816158,
-        "duration":0.22239995002746582,
-        "processing":0.016273975372314453,
-        "date_start":"2024-04-09T12:39:47+03:00",
-        "date_finish":"2024-04-09T12:39:47+03:00"
+    "total": 1,
+    "time": {
+        "start": 1712655587.593758,
+        "finish": 1712655587.816158,
+        "duration": 0.22239995002746582,
+        "processing": 0.016273975372314453,
+        "date_start": "2024-04-09T12:39:47+02:00",
+        "date_finish": "2024-04-09T12:39:47+02:00"
     }
 }
 ```
@@ -187,7 +284,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
 || **status**
-[`sale_status[]`](../data-types.md) | An array of objects containing information about the selected statuses ||
+[`sale_status[]`](../data-types.md) | An array of objects with information about the selected statuses ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
@@ -196,12 +293,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": 0,
+    "error_description": "error"
 }
 ```
 

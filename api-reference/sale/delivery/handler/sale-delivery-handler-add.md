@@ -1,10 +1,10 @@
-# Add Delivery Handler sale.delivery.handler.add
+# Add Delivery Service Handler sale.delivery.handler.add
 
 > Scope: [`sale`](../../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator
 
-This method adds a delivery handler.
+This method adds a delivery service handler.
 
 ## Method Parameters
 
@@ -14,19 +14,19 @@ This method adds a delivery handler.
 || **Name**
 `type` | **Description** ||
 || **NAME***
-[`string`](../../../data-types.md) | Name of the delivery handler ||
+[`string`](../../../data-types.md) | Name of the delivery service handler ||
 || **CODE***
-[`string`](../../../data-types.md) | Symbolic code of the delivery handler ||
+[`string`](../../../data-types.md) | Symbolic code of the delivery service handler ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting ||
 || **DESCRIPTION**
-[`integer`](../../../data-types.md) | Description of the delivery handler ||
+[`integer`](../../../data-types.md) | Description of the delivery service handler ||
 || **SETTINGS***
-[`object`](../../../data-types.md) | Object containing information about the delivery handler's settings (detailed description provided [below](#parametr-settings)) ||
+[`object`](../../../data-types.md) | Object containing information about the settings of the delivery service handler (detailed description provided [below](#parametr-settings)) ||
 || **PROFILES***
 [`object[]`](../../../data-types.md) | Array containing a list of delivery profile objects (detailed description provided [below](#parametr-profiles)).
 
-It is implied that the delivery handler must have at least 1 profile  ||
+It is implied that the delivery service handler must have at least 1 profile ||
 |#
 
 ### SETTINGS Parameter
@@ -39,25 +39,25 @@ It is implied that the delivery handler must have at least 1 profile  ||
 || **CALCULATE_URL***
 [`string`](../../../data-types.md) | URL for calculating delivery cost.
 
-This URL receives data about the shipment (what to deliver, where, and how), for which the delivery cost needs to be calculated in the response.
+Data about the shipment (what to deliver, where, and how) is sent to this URL, for which the delivery cost needs to be calculated in the response.
 
-The request and response format is detailed in the documentation for the webhook **Delivery Cost Calculation** ||
+The request and response format is detailed in the documentation for the webhook **Calculate Delivery Cost** ||
 || **CREATE_DELIVERY_REQUEST_URL**
 [`string`](../../../data-types.md) | URL for creating a delivery order.
 
-This URL receives data about the shipment (what to deliver, where, and how), for which an order needs to be placed with the delivery service.
+Data about the shipment (what to deliver, where, and how) is sent to this URL, for which a delivery order needs to be placed with the delivery service.
 
-The request and response format is detailed in the documentation for the webhook **Creating a Delivery Order** ||
+The request and response format is detailed in the documentation for the webhook **Create Delivery Order** ||
 || **CANCEL_DELIVERY_REQUEST_URL**
 [`string`](../../../data-types.md) | URL for canceling a delivery order.
 
-This URL receives data about the shipment (what to deliver, where, and how), for which the order needs to be canceled with the delivery service.
+Data about the shipment (what to deliver, where, and how) is sent to this URL, for which the delivery order needs to be canceled with the delivery service.
 
-The request and response format is detailed in the documentation for the webhook **Canceling a Delivery Order** ||
+The request and response format is detailed in the documentation for the webhook **Cancel Delivery Order** ||
 || **HAS_CALLBACK_TRACKING_SUPPORT**
-[`string`](../../../data-types.md) | Indicator of whether the delivery service will send notifications about the delivery order status (see method [`sale.delivery.request.sendmessage`](../delivery-request/sale-delivery-request-send-message.md)). 
+[`string`](../../../data-types.md) | Indicator of whether the delivery service will send notifications about the status of the delivery order (see method [`sale.delivery.request.sendmessage`](../delivery-request/sale-delivery-request-send-message.md)). 
 
-If event support is indicated, a delivery CRM activity will be created in the manager's interface when ordering delivery, into which changes related to the current delivery status can be transmitted.
+If event support is specified, a delivery activity will be created in the manager's interface when ordering delivery, into which changes related to the current delivery status can be transmitted.
 
 Possible values:
 - `Y` — support available
@@ -112,11 +112,11 @@ This parameter is relevant only for settings of type `ENUM`
 || **Name**
 `type` | **Description** ||
 || **NAME***
-[`string`](../../../data-types.md) | Name of the delivery handler profile  ||
+[`string`](../../../data-types.md) | Name of the delivery service handler profile  ||
 || **CODE***
-[`string`](../../../data-types.md) | Symbolic code of the delivery handler profile ||
+[`string`](../../../data-types.md) | Symbolic code of the delivery service handler profile ||
 || **DESCRIPTION**
-[`string`](../../../data-types.md) | Description of the delivery handler profile  ||
+[`string`](../../../data-types.md) | Description of the delivery service handler profile  ||
 |#
 
 ## Code Examples
@@ -146,6 +146,171 @@ This parameter is relevant only for settings of type `ENUM`
     ```
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.delivery.handler.add', {
+    			CODE: "uber",
+    			NAME: "Uber",
+    			DESCRIPTION: "Uber Description",
+    			SORT: 250,
+    			SETTINGS: {
+    				CALCULATE_URL: "http://gateway.bx/calculate.php",
+    				CREATE_DELIVERY_REQUEST_URL: "http://gateway.bx/create_delivery_request.php",
+    				CANCEL_DELIVERY_REQUEST_URL: "http://gateway.bx/cancel_delivery_request.php",
+    				HAS_CALLBACK_TRACKING_SUPPORT: "Y",
+    				CONFIG: [{
+    						TYPE: "STRING",
+    						CODE: "SETTING_1",
+    						NAME: "String Example",
+    					},
+    					{
+    						TYPE: "Y/N",
+    						CODE: "SETTING_2",
+    						NAME: "Checkbox Example",
+    					},
+    					{
+    						TYPE: "NUMBER",
+    						CODE: "SETTING_3",
+    						NAME: "Number Example",
+    					},
+    					{
+    						TYPE: "ENUM",
+    						CODE: "SETTING_4",
+    						NAME: "Enum Example",
+    						OPTIONS: {
+    							"Option1Code": "Option1Value",
+    							"Option2Code": "Option2Value",
+    							"Option3Code": "Option3Value",
+    							"Option4Code": "Option4Value",
+    							"Option5Code": "Option5Value",
+    						},
+    					},
+    					{
+    						TYPE: "DATE",
+    						CODE: "SETTING_5",
+    						NAME: "Date Example",
+    					},
+    					{
+    						TYPE: "LOCATION",
+    						CODE: "SETTING_6",
+    						NAME: "Location Example",
+    					},
+    				],
+    			},
+    			PROFILES: [{
+    					NAME: "Taxi",
+    					CODE: "TAXI",
+    					DESCRIPTION: "Taxi Delivery",
+    				},
+    				{
+    					NAME: "Cargo",
+    					CODE: "CARGO",
+    					DESCRIPTION: "Cargo Delivery",
+    				},
+    			],
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.handler.add',
+                [
+                    'CODE'        => "uber",
+                    'NAME'        => "Uber",
+                    'DESCRIPTION' => "Uber Description",
+                    'SORT'        => 250,
+                    'SETTINGS'    => [
+                        'CALCULATE_URL'                => "http://gateway.bx/calculate.php",
+                        'CREATE_DELIVERY_REQUEST_URL'  => "http://gateway.bx/create_delivery_request.php",
+                        'CANCEL_DELIVERY_REQUEST_URL'  => "http://gateway.bx/cancel_delivery_request.php",
+                        'HAS_CALLBACK_TRACKING_SUPPORT' => "Y",
+                        'CONFIG'                       => [
+                            [
+                                'TYPE' => "STRING",
+                                'CODE' => "SETTING_1",
+                                'NAME' => "String Example",
+                            ],
+                            [
+                                'TYPE' => "Y/N",
+                                'CODE' => "SETTING_2",
+                                'NAME' => "Checkbox Example",
+                            ],
+                            [
+                                'TYPE' => "NUMBER",
+                                'CODE' => "SETTING_3",
+                                'NAME' => "Number Example",
+                            ],
+                            [
+                                'TYPE'    => "ENUM",
+                                'CODE'    => "SETTING_4",
+                                'NAME'    => "Enum Example",
+                                'OPTIONS' => [
+                                    "Option1Code" => "Option1Value",
+                                    "Option2Code" => "Option2Value",
+                                    "Option3Code" => "Option3Value",
+                                    "Option4Code" => "Option4Value",
+                                    "Option5Code" => "Option5Value",
+                                ],
+                            ],
+                            [
+                                'TYPE' => "DATE",
+                                'CODE' => "SETTING_5",
+                                'NAME' => "Date Example",
+                            ],
+                            [
+                                'TYPE' => "LOCATION",
+                                'CODE' => "SETTING_6",
+                                'NAME' => "Location Example",
+                            ],
+                        ],
+                    ],
+                    'PROFILES'    => [
+                        [
+                            'NAME'        => "Taxi",
+                            'CODE'        => "TAXI",
+                            'DESCRIPTION' => "Taxi Delivery",
+                        ],
+                        [
+                            'NAME'        => "Cargo",
+                            'CODE'        => "CARGO",
+                            'DESCRIPTION' => "Cargo Delivery",
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding delivery handler: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -220,7 +385,7 @@ This parameter is relevant only for settings of type `ENUM`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -295,7 +460,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_delivery_handler.ID`](../../../data-types.md) | Identifier of the delivery handler ||
+[`sale_delivery_handler.ID`](../../../data-types.md) | Identifier of the delivery service handler ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -318,9 +483,9 @@ HTTP status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | 400 ||
-|| `ERROR_HANDLER_ADD` | Error when trying to add a delivery handler | 400 ||
-|| `ERROR_HANDLER_ALREADY_EXIST` | Delivery handler with the specified code `CODE` already exists | 400 ||
-|| `ACCESS_DENIED` | Insufficient rights to add a delivery handler | 403 ||
+|| `ERROR_HANDLER_ADD` | Error when trying to add a delivery service handler | 400 ||
+|| `ERROR_HANDLER_ALREADY_EXIST` | Delivery service handler with the specified code `CODE` already exists | 400 ||
+|| `ACCESS_DENIED` | Insufficient rights to add a delivery service handler | 403 ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

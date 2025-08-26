@@ -1,4 +1,4 @@
-# Delete Payment Item Shipment Binding
+# Remove the binding sale.paymentItemShipment.delete
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `sale.paymentItemShipment.delete` removes the payment binding to the 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ The method `sale.paymentItemShipment.delete` removes the payment binding to the 
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,54 @@ The method `sale.paymentItemShipment.delete` removes the payment binding to the 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paymentitemshipment.delete',
+    		{
+    			id: 1182
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paymentitemshipment.delete',
+                [
+                    'id' => 1182
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting payment item shipment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.paymentitemshipment.delete',
         {
@@ -61,7 +109,7 @@ The method `sale.paymentItemShipment.delete` removes the payment binding to the 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -82,7 +130,7 @@ The method `sale.paymentItemShipment.delete` removes the payment binding to the 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -92,8 +140,8 @@ HTTP Status: **200**
         "finish":1713169442.182851,
         "duration":0.7426910400390625,
         "processing":0.5059871673583984,
-        "date_start":"2024-04-15T11:24:01+03:00",
-        "date_finish":"2024-04-15T11:24:02+03:00"
+        "date_start":"2024-04-15T11:24:01+02:00",
+        "date_finish":"2024-04-15T11:24:02+02:00"
     }
 }
 ```
@@ -104,14 +152,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the payment binding removal to the shipment ||
+[`boolean`](../../data-types.md) | Result of removing the payment binding to the shipment ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

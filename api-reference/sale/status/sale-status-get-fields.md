@@ -1,10 +1,10 @@
-# Get Available Fields for sale.status.delete
+# Get Available Fields of sale.status.delete
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method returns the available fields for statuses.
+The method returns the available fields of statuses.
 
 No parameters.
 
@@ -37,6 +37,51 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            "sale.status.getfields", {}
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.status.getfields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting sale status fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.status.getfields", {},
         function(result) {
@@ -49,7 +94,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -65,57 +110,57 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "status":{
-            "color":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":false,
-                "type":"string"
+    "result": {
+        "status": {
+            "color": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
             },
-            "id":{
-                "isImmutable":true,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"string"
+            "id": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
             },
-            "notify":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":false,
-                "type":"string"
+            "notify": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
             },
-            "sort":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":false,
-                "type":"integer"
+            "sort": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "integer"
             },
-            "type":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":true,
-                "type":"char"
+            "type": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "char"
             },
-            "xmlId":{
-                "isImmutable":false,
-                "isReadOnly":false,
-                "isRequired":false,
-                "type":"string"
+            "xmlId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
             }
         }
     },
-    "time":{
-        "start":1712147353.206979,
-        "finish":1712147353.46492,
-        "duration":0.25794100761413574,
-        "processing":0.005347013473510742,
-        "date_start":"2024-04-03T15:29:13+03:00",
-        "date_finish":"2024-04-03T15:29:13+03:00"
+    "time": {
+        "start": 1712147353.206979,
+        "finish": 1712147353.46492,
+        "duration": 0.25794100761413574,
+        "processing": 0.005347013473510742,
+        "date_start": "2024-04-03T15:29:13+02:00",
+        "date_finish": "2024-04-03T15:29:13+02:00"
     }
 }
 ```
@@ -131,17 +176,17 @@ HTTP Status: **200**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [sale_status](../data-types.md) object, and `value` is an object of type [rest_field_description](../../data-types.md)
 ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": 0,
+    "error_description": "error"
 }
 ```
 

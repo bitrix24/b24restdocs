@@ -1,4 +1,4 @@
-# Add a Position with a Product or Service from the Catalog Module to the Cart of an Existing Order sale.basketitem.addCatalogProduct
+# Add a position with a product or service from the catalog module to the cart of an existing order sale.basketitem.addCatalogProduct
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ This method adds a position (item) with a product or service from the catalog mo
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method adds a position (item) with a product or service from the catalog mo
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -35,12 +35,12 @@ Must be obtained earlier using the methods [sale.order.add](../order/sale-order-
 [`catalog_product.id`](../../catalog/data-types.md#catalog_product) | Identifier of the product/variation
 ||
 || **price**
-[`double`](../../data-types.md) | Price including markups and discounts (see the `customPrice` field below). If not specified, it will be calculated based on catalog data.
+[`double`](../../data-types.md) | Price considering markups and discounts (see the `customPrice` field below). If not specified, it will be calculated based on catalog data.
 
 The field will be automatically filled if `customPrice !== ‘Y’`
  ||
 || **basePrice**
-[`double`](../../data-types.md) | Original price excluding markups and discounts (see the `customPrice` field below). If not specified, it will be calculated based on catalog data.
+[`double`](../../data-types.md) | Original price without considering markups and discounts (see the `customPrice` field below). If not specified, it will be calculated based on catalog data.
 
 The field will be automatically filled if `customPrice !== ‘Y’`
  ||
@@ -54,11 +54,11 @@ The field will be automatically filled if `customPrice !== ‘Y’`
 || **customPrice**
 [`string`](../../data-types.md) | Is the price specified manually:
 - `Y` — price is set manually
-- `N` — price obtained from the product catalog
+- `N` — price is obtained from the product catalog
 
 Default value is `N`.
 
-If `Y` is specified, the catalog price data will be ignored. It is necessary to explicitly set the parameters `price`, `basePrice`, and `discountPrice` so that the condition `basePrice = price + discountPrice` is met
+If `Y` is specified, the catalog price data will be ignored. The parameters `price`, `basePrice`, and `discountPrice` must be explicitly set so that the condition `basePrice = price + discountPrice` is met
  ||
 || **quantity***
 [`double`](../../data-types.md) | Quantity of the product ||
@@ -70,7 +70,7 @@ If `Y` is specified, the catalog price data will be ignored. It is necessary to 
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -95,6 +95,64 @@ If `Y` is specified, the catalog price data will be ignored. It is necessary to 
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.basketitem.addCatalogProduct",
+    		{
+    			fields: {
+    				orderId: 5147,
+    				quantity: 1,
+    				productId: 4347,
+    				currency: 'USD',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.basketitem.addCatalogProduct',
+                [
+                    'fields' => [
+                        'orderId'   => 5147,
+                        'quantity'  => 1,
+                        'productId' => 4347,
+                        'currency'  => 'USD',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding catalog product: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -127,7 +185,7 @@ If `Y` is specified, the catalog price data will be ignored. It is necessary to 
         );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -153,7 +211,7 @@ If `Y` is specified, the catalog price data will be ignored. It is necessary to 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -212,12 +270,12 @@ HTTP Status: **200**
 || **total**
 [`integer`](../../data-types.md) | Number of processed records ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -238,7 +296,7 @@ The Trade Catalog module (catalog) is missing
 || 
 || `200140400007` | `basket item is not saved - bad data`
 
-The item was not created. This error occurs if an invalid product identifier is passed or if the product is inactive
+The item was not created. The error occurs if an incorrect product identifier is passed or if the product is inactive
 || 
 || `200140400008` | `Required fields: fields[ORDER_ID]`
 
@@ -250,9 +308,9 @@ Order not found
 || 
 || `200140400011` | `Currency must be the currency of the order`
 
-The currency of the item does not match the currency of the order
+The position currency does not match the order currency
 || 
-|| `200040300010` | Insufficient permissions to add
+|| `200040300010` | Insufficient rights to add
 || 
 || `100` | Required parameters are not specified
 ||

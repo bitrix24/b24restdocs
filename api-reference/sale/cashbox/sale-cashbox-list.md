@@ -1,10 +1,10 @@
-# Get a List of Configured Cash Registers sale.cashbox.list
+# Get a list of configured cash registers sale.cashbox.list
 
 > Scope: [`sale, cashbox`](../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to modify settings")
+> Who can execute the method: CRM administrator (access permission "Allow to modify settings")
 
-This method returns a list of configured cash registers.
+The method returns a list of configured cash registers.
 
 ## Method Parameters
 
@@ -12,13 +12,13 @@ This method returns a list of configured cash registers.
 || **Name**
 `type` | **Description** ||
 || **SELECT**
-[`array`](../../data-types.md) | An array of fields to select (see fields of the [sale_cashbox](../data-types.md#sale_cashbox) object) ||
+[`array`](../../data-types.md) | An array with the list of fields to select (see fields of the [sale_cashbox](../data-types.md#sale_cashbox) object) ||
 || **FILTER**
 [`object`](../../data-types.md) | An object for filtering selected cash registers in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [sale_cashbox](../data-types.md#sale_cashbox) object.
 
-When specifying multiple fields, the logic `AND` is used.
+When specifying multiple fields, the `AND` logic is used.
 
 An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -27,17 +27,17 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol does not need to be included in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol needs to be included in the value. Examples:
-    - `"milk%"` — searches for values starting with "milk"
-    - `"%milk"` — searches for values ending with "milk"
-    - `"%milk%"` — searches for values where "milk" can be in any position
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+    - `"mol%"` — searches for values starting with "mol"
+    - `"%mol"` — searches for values ending with "mol"
+    - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be included in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be included in the value. Examples:
-    - `"milk%"` — searches for values not starting with "milk"
-    - `"%milk"` — searches for values not ending with "milk"
-    - `"%milk%"` — searches for values where the substring "milk" is not present in any position
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+    - `"mol%"` — searches for values not starting with "mol"
+    - `"%mol"` — searches for values not ending with "mol"
+    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
@@ -55,7 +55,7 @@ Possible values for `order`:
 
 ## Code Examples
 
-{% include [Footnote on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -65,7 +65,7 @@ Possible values for `order`:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"SELECT":["ID","NAME"],"FILTER":{"=NAME":"My Rest Cash Register",">ID":9},"ORDER":{"ID":"DESC"}}' \
+    -d '{"SELECT":["ID","NAME"],"FILTER":{"=NAME":"My Rest-Cash Register",">ID":9},"ORDER":{"ID":"DESC"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.cashbox.list
     ```
 
@@ -75,18 +75,93 @@ Possible values for `order`:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"SELECT":["ID","NAME"],"FILTER":{"=NAME":"My Rest Cash Register",">ID":9},"ORDER":{"ID":"DESC"},"auth":"**put_access_token_here**"}' \
+    -d '{"SELECT":["ID","NAME"],"FILTER":{"=NAME":"My Rest-Cash Register",">ID":9},"ORDER":{"ID":"DESC"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.cashbox.list
     ```
 
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'sale.cashbox.list',
+        {
+          "SELECT": ["ID", "NAME"],
+          "FILTER": {"=NAME": "My Rest-Cash Register", ">ID": 9},
+          "ORDER": {"ID": "DESC"}
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('sale.cashbox.list', { "SELECT": ["ID", "NAME"], "FILTER": {"=NAME": "My Rest-Cash Register", ">ID": 9}, "ORDER": {"ID": "DESC"} }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('sale.cashbox.list', { "SELECT": ["ID", "NAME"], "FILTER": {"=NAME": "My Rest-Cash Register", ">ID": 9}, "ORDER": {"ID": "DESC"} }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.cashbox.list',
+                [
+                    'SELECT' => ['ID', 'NAME'],
+                    'FILTER' => ['=NAME' => 'My Rest-Cash Register', '>ID' => 9],
+                    'ORDER'  => ['ID' => 'DESC'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling sale.cashbox.list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod( 
         "sale.cashbox.list", 
         { 
             "SELECT": ["ID", "NAME"], 
-            "FILTER": {"=NAME": "My Rest Cash Register", ">ID": 9},
+            "FILTER": {"=NAME": "My Rest-Cash Register", ">ID": 9},
             "ORDER": {"ID": "DESC"},
         }, 
         function(result) 
@@ -99,7 +174,7 @@ Possible values for `order`:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -108,7 +183,7 @@ Possible values for `order`:
         'sale.cashbox.list',
         [
             'SELECT' => ['ID', 'NAME'],
-            'FILTER' => ['=NAME' => 'My Rest Cash Register', '>ID' => 9],
+            'FILTER' => ['=NAME' => 'My Rest-Cash Register', '>ID' => 9],
             'ORDER' => ['ID' => 'DESC']
         ]
     );
@@ -122,7 +197,7 @@ Possible values for `order`:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -163,12 +238,12 @@ HTTP Status: **200**
 || **result**
 [`sale_cashbox[]`](../data-types.md#sale_cashbox) | An array of cash registers registered in the system  ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -183,8 +258,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient permissions to retrieve the list of cash registers | 403 ||
-|| ‘’ (empty error code) | An incorrect field was specified for selection, filtering, or sorting. More detailed information about the error can be found in `error_description` | 400 ||
+|| `ACCESS_DENIED` | Insufficient rights to obtain the list of cash registers | 403 ||
+|| ‘’ (empty error code) | An incorrect field has been specified for selection, filtering, or sorting. More detailed information about the error can be found in `error_description` | 400 ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

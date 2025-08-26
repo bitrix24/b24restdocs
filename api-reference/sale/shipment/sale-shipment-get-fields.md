@@ -37,6 +37,51 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.shipment.getfields", {}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipment.getfields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting shipment fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.shipment.getfields", {},
         function(result) {
@@ -49,7 +94,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -351,8 +396,8 @@ HTTP status: **200**
       "finish":1713190895.854316,
       "duration":2.7128419876098633,
       "processing":0.16173791885375977,
-      "date_start":"2024-04-15T17:21:33+03:00",
-      "date_finish":"2024-04-15T17:21:35+03:00"
+      "date_start":"2024-04-15T17:21:33+02:00",
+      "date_finish":"2024-04-15T17:21:35+02:00"
    }
 }
 ```

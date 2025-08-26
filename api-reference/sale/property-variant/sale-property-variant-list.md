@@ -1,10 +1,10 @@
-# Get a List of Property Variants sale.propertyvariant.list
+# Get a list of property variants sale.propertyvariant.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of property variant values. It is applicable only for properties of type `ENUM`.
+The method retrieves a list of property value variants. This method is applicable only for properties of type `ENUM`.
 
 ## Method Parameters
 
@@ -12,16 +12,16 @@ This method retrieves a list of property variant values. It is applicable only f
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array of fields to select (see fields of the [sale_order_property_variant](../data-types.md) object).
+[`array`](../../data-types.md) | An array of fields to be selected (see fields of the object [sale_order_property_variant](../data-types.md)).
 
-If the array is not provided or an empty array is passed, all available fields of the property variant values will be selected. ||
+If the array is not provided or an empty array is passed, all available fields of the property value variants will be selected. ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected property variant values in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering the selected property value variants in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [sale_order_property_variant](../data-types.md) object.
+Possible values for `field` correspond to the fields of the object [sale_order_property_variant](../data-types.md).
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
-- `+` — filter by the exact value of the specified field; this will also include elements where the field value is undefined (NULL)
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
+- `+` — filtering by the exact value of the specified field; this also includes elements where the field value is undefined (NULL)
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -31,9 +31,9 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `!` — not equal
 ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting the selected property variant values in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting the selected property value variants in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the [sale_order_property_variant](../data-types.md) object.
+Possible values for `field` correspond to the fields of the object [sale_order_property_variant](../data-types.md).
 
 Possible values for `order`:
 - `asc` — in ascending order
@@ -43,7 +43,7 @@ Possible values for `order`:
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -70,6 +70,104 @@ Possible values for `order`:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'sale.propertyvariant.list',
+        {
+          "select": ["id", "name", "orderPropsId", "value"],
+          "filter": {
+            ">=id": 5,
+          },
+          "order": {
+            "orderPropsId": "desc",
+            "id": "asc",
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('sale.propertyvariant.list', {
+        "select": ["id", "name", "orderPropsId", "value"],
+        "filter": {
+          ">=id": 5,
+        },
+        "order": {
+          "orderPropsId": "desc",
+          "id": "asc",
+        }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('sale.propertyvariant.list', {
+        "select": ["id", "name", "orderPropsId", "value"],
+        "filter": {
+          ">=id": 5,
+        },
+        "order": {
+          "orderPropsId": "desc",
+          "id": "asc",
+        }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyvariant.list',
+                [
+                    'select' => ['id', 'name', 'orderPropsId', 'value'],
+                    'filter' => [
+                        '>=id' => 5,
+                    ],
+                    'order' => [
+                        'orderPropsId' => 'desc',
+                        'id' => 'asc',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching property variants: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.propertyvariant.list", {
             "select": ["id", "name", "orderPropsId", "value"],
@@ -91,7 +189,7 @@ Possible values for `order`:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -117,46 +215,46 @@ Possible values for `order`:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "propertyVariants":[
+    "result": {
+        "propertyVariants": [
             {
-                "id":8,
-                "name":"M",
-                "orderPropsId":50,
-                "value":"m"
+                "id": 8,
+                "name": "M",
+                "orderPropsId": 50,
+                "value": "m"
             },
             {
-                "id":9,
-                "name":"L",
-                "orderPropsId":50,
-                "value":"l"
+                "id": 9,
+                "name": "L",
+                "orderPropsId": 50,
+                "value": "l"
             },
             {
-                "id":6,
-                "name":"Red",
-                "orderPropsId":49,
-                "value":"red"
+                "id": 6,
+                "name": "Red",
+                "orderPropsId": 49,
+                "value": "red"
             },
             {
-                "id":7,
-                "name":"Green",
-                "orderPropsId":49,
-                "value":"green"
+                "id": 7,
+                "name": "Green",
+                "orderPropsId": 49,
+                "value": "green"
             }
         ]
     },
-    "total":4,
-    "time":{
-        "start":1711633054.631642,
-        "finish":1711633054.872368,
-        "duration":0.24072599411010742,
-        "processing":0.011013984680175781,
-        "date_start":"2024-03-28T16:37:34+03:00",
-        "date_finish":"2024-03-28T16:37:34+03:00"
+    "total": 4,
+    "time": {
+        "start": 1711633054.631642,
+        "finish": 1711633054.872368,
+        "duration": 0.24072599411010742,
+        "processing": 0.011013984680175781,
+        "date_start": "2024-03-28T16:37:34+02:00",
+        "date_finish": "2024-03-28T16:37:34+02:00"
     }
 }
 ```
@@ -169,19 +267,19 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **propertyVariants**
-[`sale_order_property_variant[]`](../data-types.md) | An array of objects containing information about the selected property variant values ||
+[`sale_order_property_variant[]`](../data-types.md) | Array of objects containing information about the selected property value variants ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": 0,
+    "error_description": "error"
 }
 ```
 
@@ -191,7 +289,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read property variant values ||
+|| `200040300010` | Insufficient permissions to read property value variants ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

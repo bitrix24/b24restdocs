@@ -97,6 +97,77 @@ Can be used for synchronizing the shipment with an external system ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.shipment.add', {
+    			fields: {
+    				orderId: 2068,
+    				allowDelivery: 'Y',
+    				deducted: 'Y',
+    				deliveryId: 2,
+    				statusId: 'DN',
+    				deliveryDocDate: '2024-02-13T14:05:48',
+    				deliveryDocNum: 'DocumentNumber123456',
+    				trackingNumber: 'trackingNumber',
+    				basePriceDelivery: 999.99,
+    				comments: 'My comment for manager',
+    				responsibleId: 25,
+    				xmlId: 'myXmlId',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipment.add',
+                [
+                    'fields' => [
+                        'orderId'           => 2068,
+                        'allowDelivery'     => 'Y',
+                        'deducted'          => 'Y',
+                        'deliveryId'        => 2,
+                        'statusId'          => 'DN',
+                        'deliveryDocDate'   => '2024-02-13T14:05:48',
+                        'deliveryDocNum'    => 'DocumentNumber123456',
+                        'trackingNumber'    => 'trackingNumber',
+                        'basePriceDelivery' => 999.99,
+                        'comments'          => 'My comment for manager',
+                        'responsibleId'     => 25,
+                        'xmlId'             => 'myXmlId',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding shipment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.shipment.add', {
             fields: {
@@ -124,7 +195,7 @@ Can be used for synchronizing the shipment with an external system ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -162,50 +233,50 @@ HTTP status: **200**
 
 ```json
 {
-   "result": {
-      "shipment": {
-         "accountNumber": "2068/19",
-         "allowDelivery": "Y",
-         "basePriceDelivery": 999.99,
-         "canceled": "N",
-         "comments": "My comment for manager",
-         "currency": "USD",
-         "customPriceDelivery": "N",
-         "dateAllowDelivery": "2024-04-11T14:17:52+02:00",
-         "dateDeducted": "2024-04-11T14:17:52+02:00",
-         "dateInsert": "2024-04-11T14:17:52+02:00",
-         "dateResponsibleId": "2024-04-11T14:17:52+02:00",
-         "deducted": "Y",
-         "deliveryDocDate": "2024-02-13T13:05:48+02:00",
-         "deliveryDocNum": "DocumentNumber123456",
-         "deliveryId": 2,
-         "deliveryName": "Courier Delivery",
-         "deliveryXmlId": "",
-         "empAllowDeliveryId": 1,
-         "empDeductedId": 1,
-         "empResponsibleId": 1,
-         "id": 2452,
-         "marked": "N",
-         "orderId": 2068,
-         "priceDelivery": 999.99,
-         "responsibleId": 25,
-         "shipmentItems": [
+   "result":{
+      "shipment":{
+         "accountNumber":"2068\/19",
+         "allowDelivery":"Y",
+         "basePriceDelivery":999.99,
+         "canceled":"N",
+         "comments":"My comment for manager",
+         "currency":"USD",
+         "customPriceDelivery":"N",
+         "dateAllowDelivery":"2024-04-11T14:17:52+02:00",
+         "dateDeducted":"2024-04-11T14:17:52+02:00",
+         "dateInsert":"2024-04-11T14:17:52+02:00",
+         "dateResponsibleId":"2024-04-11T14:17:52+02:00",
+         "deducted":"Y",
+         "deliveryDocDate":"2024-02-13T13:05:48+02:00",
+         "deliveryDocNum":"DocumentNumber123456",
+         "deliveryId":2,
+         "deliveryName":"Courier Delivery",
+         "deliveryXmlId":"",
+         "empAllowDeliveryId":1,
+         "empDeductedId":1,
+         "empResponsibleId":1,
+         "id":2452,
+         "marked":"N",
+         "orderId":2068,
+         "priceDelivery":999.99,
+         "responsibleId":25,
+         "shipmentItems":[
             
          ],
-         "statusId": "DN",
-         "statusXmlId": "FFdddd",
-         "system": "N",
-         "trackingNumber": "trackingNumber",
-         "xmlId": "myXmlId"
+         "statusId":"DN",
+         "statusXmlId":"FFdddd",
+         "system":"N",
+         "trackingNumber":"trackingNumber",
+         "xmlId":"myXmlId"
       }
    },
-   "time": {
-      "start": 1712837872.459187,
-      "finish": 1712837873.462857,
-      "duration": 1.0036699771881104,
-      "processing": 0.8182649612426758,
-      "date_start": "2024-04-11T15:17:52+02:00",
-      "date_finish": "2024-04-11T15:17:53+02:00"
+   "time":{
+      "start":1712837872.459187,
+      "finish":1712837873.462857,
+      "duration":1.0036699771881104,
+      "processing":0.8182649612426758,
+      "date_start":"2024-04-11T15:17:52+02:00",
+      "date_finish":"2024-04-11T15:17:53+02:00"
    }
 }
 ```
@@ -229,8 +300,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error": 0,
-   "error_description": "Unable to load order"
+   "error":0,
+   "error_description":"Unable to load order"
 }
 ```
 
@@ -244,7 +315,7 @@ HTTP status: **400**
 || `100` | Parameter `fields` is not specified or is empty ||
 || `0` | Order not found ||
 || `SALE_SHIPMENT_WRONG_DELIVERY_SERVICE` | Delivery service not found ||
-|| `BX_INVALID_VALUE` | Value of one of the fields failed validation before saving ||
+|| `BX_INVALID_VALUE` | Value of one of the fields did not pass validation before saving ||
 || `0` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

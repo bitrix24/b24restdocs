@@ -2,13 +2,13 @@
 
 > Scope: [`sale, cashbox`](../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to modify settings")
+> Who can execute the method: CRM administrator (permission "Allow to change settings")
 
-This method saves the result of printing a receipt that was printed on a REST cash register. The UUID of the receipt is saved when it is printed from the `PRINT_URL` response provided when adding the handler (see [example of implementing a simple cash register on REST API](../../../tutorials/sale/cashbox-add-example.md)).
+The method saves the result of printing a receipt that was printed on a REST cash register. The UUID of the receipt is saved when it is printed from the `PRINT_URL` response specified when adding the handler (see [example of implementing a simple cash register on REST API](../../../tutorials/sale/cashbox-add-example.md)).
 
 ## Method Parameters
 
-{% include [Footnote about required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,14 +26,14 @@ This method saves the result of printing a receipt that was printed on a REST ca
 || **FISCAL_RECEIPT_NUMBER**
 [`string`](../../data-types.md) | Fiscal receipt number ||
 || **FN_NUMBER**
-[`string`](../../data-types.md) | Fiscal accumulator number ||
+[`string`](../../data-types.md) | Fiscal storage number ||
 || **SHIFT_NUMBER**
 [`string`](../../data-types.md) | Shift number ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -44,7 +44,7 @@ This method saves the result of printing a receipt that was printed on a REST ca
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"UUID":"check|example.com|1","PRINT_END_TIME":"1609459200","REG_NUMBER_KKT":"1234567891011121","FISCAL_DOC_ATTR":"1234567890","FISCAL_DOC_NUMBER":"12345","FISCAL_RECEIPT_NUMBER":"123","FN_NUMBER":"1234567891011121","SHIFT_NUMBER":"1"}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.cashbox.check.apply
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/sale.cashbox.check.apply
     ```
 
 - cURL (OAuth)
@@ -58,6 +58,75 @@ This method saves the result of printing a receipt that was printed on a REST ca
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.cashbox.check.apply",
+    		{
+    			'UUID':'check|example.com|1',
+    			'PRINT_END_TIME':'1609459200',
+    			'REG_NUMBER_KKT':'1234567891011121',
+    			'FISCAL_DOC_ATTR':'1234567890',
+    			'FISCAL_DOC_NUMBER':'12345',
+    			'FISCAL_RECEIPT_NUMBER':'123',
+    			'FN_NUMBER':'1234567891011121',
+    			'SHIFT_NUMBER':'1'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.cashbox.check.apply',
+                [
+                    'UUID'                => 'check|example.com|1',
+                    'PRINT_END_TIME'      => '1609459200',
+                    'REG_NUMBER_KKT'      => '1234567891011121',
+                    'FISCAL_DOC_ATTR'     => '1234567890',
+                    'FISCAL_DOC_NUMBER'   => '12345',
+                    'FISCAL_RECEIPT_NUMBER' => '123',
+                    'FN_NUMBER'           => '1234567891011121',
+                    'SHIFT_NUMBER'        => '1',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+            // Your data processing logic
+            processData($result->data());
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error applying cash register check: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -82,7 +151,7 @@ This method saves the result of printing a receipt that was printed on a REST ca
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

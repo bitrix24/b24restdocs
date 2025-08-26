@@ -12,11 +12,11 @@ The method `sale.tradePlatform.list` retrieves a list of order sources.
 || **Name**
 `Type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the object [sale_order_trade_platform](../data-types.md#sale_order_trade_platform)) ||
+[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object) ||
 || **filter**
-[`object`](../../data-types.md) | A list of fields for filtering. When multiple fields are specified, AND logic is used.
+[`object`](../../data-types.md) | A list of fields for filtering. When specifying multiple fields, AND logic is used.
 
-The fields correspond to the fields of the object [sale_order_trade_platform](../data-types.md#sale_order_trade_platform).
+The fields correspond to the fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object.
 
 An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 - `=` — equals (works with arrays as well)
@@ -41,9 +41,9 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
 || **order**
 [`object`](../../data-types.md) | Sorting parameters. Format: `{field: direction (ASC, DESC)}`. 
 
-The fields correspond to the fields of the object [sale_order_trade_platform](../data-types.md#sale_order_trade_platform). ||
+The fields correspond to the fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object. ||
 || **start**
-[`int`](../../data-types.md) | This parameter is used for pagination.
+[`int`](../../data-types.md) | This parameter is used for managing pagination.
  
 The page size of results is always static: 50 records.
  
@@ -84,6 +84,80 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'sale.tradePlatform.list',
+        {
+          select: ['id', 'code'],
+          filter: {'%code': 'smart'},
+          order: {'code': 'asc'},
+          start: 0,
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('sale.tradePlatform.list', { select: ['id', 'code'], filter: {'%code': 'smart'}, order: {'code': 'asc'}, start: 0 }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('sale.tradePlatform.list', { select: ['id', 'code'], filter: {'%code': 'smart'}, order: {'code': 'asc'}, start: 0 }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.tradePlatform.list',
+                [
+                    'select' => ['id', 'code'],
+                    'filter' => ['%code' => 'smart'],
+                    'order'  => ['code' => 'asc'],
+                    'start'  => 0,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching trade platforms: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod( 
         "sale.tradePlatform.list", 
         {
@@ -106,7 +180,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -170,7 +244,6 @@ HTTP status: **200**
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
-
 
 ## Error Handling
 

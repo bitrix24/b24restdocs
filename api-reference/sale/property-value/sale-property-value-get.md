@@ -4,11 +4,11 @@
 >
 > Who can execute the method: administrator
 
-This method retrieves the property value by its ID.
+This method retrieves the property value by ID.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method retrieves the property value by its ID.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,53 @@ This method retrieves the property value by its ID.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.propertyvalue.get", {
+    			"id": 13176
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyvalue.get',
+                [
+                    'id' => 13176,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting sale property value: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.propertyvalue.get", {
             "id": 13176
@@ -60,7 +107,7 @@ This method retrieves the property value by its ID.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,22 +132,22 @@ HTTP Status: **200**
 
 ```json
 {
-    "result":{
-        "propertyValue":{
-            "code":"FIO",
-            "id":13176,
-            "name":"First Last",
-            "orderPropsId":20,
-            "value":"John Smith"
+    "result": {
+        "propertyValue": {
+            "code": "FIO",
+            "id": 13176,
+            "name": "First Last",
+            "orderPropsId": 20,
+            "value": "John Smith"
         }
     },
-    "time":{
-        "start":1712056406.00744,
-        "finish":1712056406.370423,
-        "duration":0.36298298835754395,
-        "processing":0.0960841178894043,
-        "date_start":"2024-04-02T14:13:26+03:00",
-        "date_finish":"2024-04-02T14:13:26+03:00"
+    "time": {
+        "start": 1712056406.00744,
+        "finish": 1712056406.370423,
+        "duration": 0.36298298835754395,
+        "processing": 0.0960841178894043,
+        "date_start": "2024-04-02T14:13:26+02:00",
+        "date_finish": "2024-04-02T14:13:26+02:00"
     }
 }
 ```
@@ -124,8 +171,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":201040400001,
-    "error_description":"property value does not exist"
+    "error": 201040400001,
+    "error_description": "property value does not exist"
 }
 ```
 

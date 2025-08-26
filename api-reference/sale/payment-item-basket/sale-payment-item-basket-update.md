@@ -1,14 +1,14 @@
-# Update the Binding of the Cart Item to Payment sale.paymentitembasket.update
+# Update the binding of the cart item to the payment sale.paymentitembasket.update
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method updates the binding of a cart item to a payment.
+This method updates the binding of the cart item to the payment.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ This method updates the binding of a cart item to a payment.
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -34,7 +34,7 @@ This method updates the binding of a cart item to a payment.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -61,6 +61,61 @@ This method updates the binding of a cart item to a payment.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paymentitembasket.update', {
+    			id: 1186,
+    			fields: {
+    				quantity: 1,
+    				xmlId: 'myNewXmlId',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paymentitembasket.update',
+                [
+                    'id' => 1186,
+                    'fields' => [
+                        'quantity' => 1,
+                        'xmlId' => 'myNewXmlId',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating payment item basket: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.paymentitembasket.update', {
             id: 1186,
@@ -79,7 +134,7 @@ This method updates the binding of a cart item to a payment.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -105,27 +160,27 @@ This method updates the binding of a cart item to a payment.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "paymentItemBasket":{
-            "basketId":2722,
-            "dateInsert":"2024-04-17T09:37:45+03:00",
-            "id":1186,
-            "paymentId":1025,
-            "quantity":1,
-            "xmlId":"myNewXmlId"
+    "result": {
+        "paymentItemBasket": {
+            "basketId": 2722,
+            "dateInsert": "2024-04-17T09:37:45+02:00",
+            "id": 1186,
+            "paymentId": 1025,
+            "quantity": 1,
+            "xmlId": "myNewXmlId"
         }
     },
-    "time":{
-        "start":1713341342.331169,
-        "finish":1713341343.013559,
-        "duration":0.6823902130126953,
-        "processing":0.4167962074279785,
-        "date_start":"2024-04-17T11:09:02+03:00",
-        "date_finish":"2024-04-17T11:09:03+03:00"
+    "time": {
+        "start": 1713341342.331169,
+        "finish": 1713341343.013559,
+        "duration": 0.6823902130126953,
+        "processing": 0.4167962074279785,
+        "date_start": "2024-04-17T11:09:02+02:00",
+        "date_finish": "2024-04-17T11:09:03+02:00"
     }
 }
 ```
@@ -138,19 +193,19 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **paymentItemBasket**
-[`sale_payment_item_basket`](../data-types.md) | Object containing information about the updated binding of the cart item to the payment ||
+[`sale_payment_item_basket`](../data-types.md) | Object with information about the updated binding of the cart item to the payment ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":201240400001,
-    "error_description":"payment item does not exist"
+    "error": 201240400001,
+    "error_description": "payment item does not exist"
 }
 ```
 
@@ -162,8 +217,8 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `201240400001` | The updated binding of the cart item to the payment was not found ||
 || `200040300020` | Insufficient permissions to update the binding of the cart item to the payment ||
-|| `100` | The `id` parameter is missing ||
-|| `100` | The `fields` parameter is missing or empty ||
+|| `100` | The `id` parameter is not specified ||
+|| `100` | The `fields` parameter is not specified or is empty ||
 || `0` | Required fields in the `fields` structure are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

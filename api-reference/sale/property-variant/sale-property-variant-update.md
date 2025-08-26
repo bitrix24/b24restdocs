@@ -16,7 +16,7 @@ This method updates the value variant of a property. It is applicable only for p
 || **id***
 [`sale_order_property_variant.id`](../data-types.md) | Identifier of the property value variant ||
 || **fields***
-[`object`](../../data-types.md) | Field values for updating the property value variant ||
+[`object`](../../data-types.md) | Field values to update the property value variant ||
 |#
 
 ### Parameter fields
@@ -49,7 +49,7 @@ This method updates the value variant of a property. It is applicable only for p
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":5,"fields":{"name":"Red","value":"red","sort":10,"description":"New description for the red color value"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.propertyvariant.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/sale.propertyvariant.update
     ```
 
 - cURL (OAuth)
@@ -63,6 +63,65 @@ This method updates the value variant of a property. It is applicable only for p
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.propertyvariant.update", {
+    			"id": 5,
+    			"fields": {
+    				"name": "Red",
+    				"value": "red",
+    				"sort": 10,
+    				"description": "New description for the red color value"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyvariant.update',
+                [
+                    'id' => 5,
+                    'fields' => [
+                        'name'        => 'Red',
+                        'value'       => 'red',
+                        'sort'        => 10,
+                        'description' => 'New description for the red color value',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating property variant: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -85,7 +144,7 @@ This method updates the value variant of a property. It is applicable only for p
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -116,23 +175,23 @@ HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "propertyVariant":{
-            "description":"New description for the red color value",
-            "id":5,
-            "name":"Red",
-            "orderPropsId":49,
-            "sort":10,
-            "value":"red"
+    "result": {
+        "propertyVariant": {
+            "description": "New description for the red color value",
+            "id": 5,
+            "name": "Red",
+            "orderPropsId": 49,
+            "sort": 10,
+            "value": "red"
         }
     },
-    "time":{
-        "start":1711630589.257634,
-        "finish":1711630589.527446,
-        "duration":0.26981210708618164,
-        "processing":0.010741949081420898,
-        "date_start":"2024-03-28T15:56:29+03:00",
-        "date_finish":"2024-03-28T15:56:29+03:00"
+    "time": {
+        "start": 1711630589.257634,
+        "finish": 1711630589.527446,
+        "duration": 0.26981210708618164,
+        "processing": 0.010741949081420898,
+        "date_start": "2024-03-28T15:56:29+02:00",
+        "date_finish": "2024-03-28T15:56:29+02:00"
     }
 }
 ```
@@ -147,7 +206,7 @@ HTTP status: **200**
 || **propertyVariant**
 [`sale_order_property_variant`](../data-types.md) | Object with information about the updated property value variant ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -156,8 +215,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"Required fields: name"
+    "error": 0,
+    "error_description": "Required fields: name"
 }
 ```
 
@@ -167,14 +226,14 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `201540400001` | The property value variant being updated was not found ||
+|| `201540400001` | The updated property value variant was not found ||
 || `200040300020` | Insufficient permissions to update the property value variant ||
-|| `100` | The `id` parameter is not specified ||
-|| `100` | The `fields` parameter is not specified or is empty ||
-|| `0` | Required fields in the `fields` structure were not provided ||
+|| `100` | Parameter `id` is not specified ||
+|| `100` | Parameter `fields` is not specified or is empty ||
+|| `0` | Required fields in the `fields` structure are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
-|| `ERROR_NO_VALUE` | An empty value was provided for the character code of the property value variant ||
-|| `ERROR_NO_NAME` | An empty value was provided for the name of the property value variant ||
+|| `ERROR_NO_VALUE` | An empty value for the property value variant's character code was provided ||
+|| `ERROR_NO_NAME` | An empty value for the property value variant's name was provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

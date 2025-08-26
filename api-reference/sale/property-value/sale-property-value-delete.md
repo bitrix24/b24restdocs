@@ -1,10 +1,10 @@
-# Delete Property Value `sale.propertyvalue.delete`
+# Delete Order Property Value sale.propertyvalue.delete
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method deletes the property value of an order.
+This method deletes the value of an order property.
 
 ## Method Parameters
 
@@ -46,6 +46,53 @@ This method deletes the property value of an order.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.propertyvalue.delete", {
+    			"id": 5
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyvalue.delete',
+                [
+                    'id' => 5
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting property value: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.propertyvalue.delete", {
             "id": 5
@@ -60,7 +107,7 @@ This method deletes the property value of an order.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -91,8 +138,8 @@ HTTP Status: **200**
         "finish":1712051971.60512,
         "duration":1.0263500213623047,
         "processing":0.7483029365539551,
-        "date_start":"2024-04-02T12:59:30+03:00",
-        "date_finish":"2024-04-02T12:59:31+03:00"
+        "date_start":"2024-04-02T12:59:30+02:00",
+        "date_finish":"2024-04-02T12:59:31+02:00"
     }
 }
 ```
@@ -127,7 +174,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `201040400001` | The property value to be deleted was not found ||
 || `200040300020` | Insufficient permissions to delete the property value ||
-|| `100` | The `id` parameter is not specified ||
+|| `100` | The `id` parameter is missing ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

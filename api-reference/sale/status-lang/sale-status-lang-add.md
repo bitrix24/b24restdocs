@@ -14,7 +14,7 @@ This method adds localization for the order or delivery status.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding status localization in the form of a structure:
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding status localization in the form of a structure:
 
 ```js
 fields: {
@@ -53,7 +53,7 @@ fields: {
 - la — Spanish
 - ms — Malay
 - pl — Polish
-- ru — Russian
+- de — German
 - sc — Chinese (Simplified)
 - tc — Chinese (Traditional)
 - th — Thai
@@ -81,7 +81,7 @@ The list of available languages can be obtained using the method [sale.statuslan
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"statusId":"RD","lid":"en","name":"Returned by Customer","description":"The customer returned the item due to a defect"}}' \
+    -d '{"fields":{"statusId":"RD","lid":"de","name":"Returned by Customer","description":"The customer returned the product due to a defect"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.statuslang.add
     ```
 
@@ -91,11 +91,67 @@ The list of available languages can be obtained using the method [sale.statuslan
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"statusId":"RD","lid":"en","name":"Returned by Customer","description":"The customer returned the item due to a defect"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"statusId":"RD","lid":"de","name":"Returned by Customer","description":"The customer returned the product due to a defect"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.statuslang.add
     ```
 
 - JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'sale.statuslang.add',
+            {
+                fields: {
+                    statusId: 'RD',
+                    lid: 'de',
+                    name: 'Returned by Customer',
+                    description: 'The customer returned the product due to a defect'
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.statuslang.add',
+                [
+                    'fields' => [
+                        'statusId'    => 'RD',
+                        'lid'         => 'de',
+                        'name'        => 'Returned by Customer',
+                        'description' => 'The customer returned the product due to a defect'
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding status language: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -103,9 +159,9 @@ The list of available languages can be obtained using the method [sale.statuslan
         {
             fields: {
                 statusId: 'RD',
-                lid: 'en',
+                lid: 'de',
                 name: 'Returned by Customer',
-                description: 'The customer returned the item due to a defect'
+                description: 'The customer returned the product due to a defect'
             }
         },
         function(result) {
@@ -118,7 +174,7 @@ The list of available languages can be obtained using the method [sale.statuslan
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -129,9 +185,9 @@ The list of available languages can be obtained using the method [sale.statuslan
             'fields' =>
             [
                 'statusId' => 'RD',
-                'lid' => 'en',
+                'lid' => 'de',
                 'name' => 'Returned by Customer',
-                'description' => 'The customer returned the item due to a defect'
+                'description' => 'The customer returned the product due to a defect'
             ]
         ]
     );
@@ -149,21 +205,21 @@ HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "statusLang":{
-            "description":"The customer returned the item due to a defect",
-            "lid":"en",
-            "name":"Returned by Customer",
-            "statusId":"RD"
+    "result": {
+        "statusLang": {
+            "description": "The customer returned the product due to a defect",
+            "lid": "de",
+            "name": "Returned by Customer",
+            "statusId": "RD"
         }
     },
-    "time":{
-        "start":1712218058.514339,
-        "finish":1712218060.34603,
-        "duration":1.831691026687622,
-        "processing":0.042268991470336914,
-        "date_start":"2024-04-04T11:07:38+03:00",
-        "date_finish":"2024-04-04T11:07:40+03:00"
+    "time": {
+        "start": 1712218058.514339,
+        "finish": 1712218060.34603,
+        "duration": 1.831691026687622,
+        "processing": 0.042268991470336914,
+        "date_start": "2024-04-04T11:07:38+02:00",
+        "date_finish": "2024-04-04T11:07:40+02:00"
     }
 }
 ```
@@ -187,8 +243,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":201750000003,
-    "error_description":"Duplicate entry for key [statusId, lid]"
+    "error": 201750000003,
+    "error_description": "Duplicate entry for key [statusId, lid]"
 }
 ```
 
@@ -202,7 +258,7 @@ HTTP status: **400**
 || `201750000004` | An unknown localization language identifier `lid` was provided ||
 || `200040300020` | Insufficient permissions to add status localization ||
 || `100` | The `fields` parameter is missing or empty ||
-|| `0` | Required fields in the `fields` structure were not provided ||
+|| `0` | Required fields in the `fields` structure are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

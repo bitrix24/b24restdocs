@@ -1,4 +1,4 @@
-# Add Item to Shipment Table Part sale.shipmentitem.add
+# Add an item to the shipment table part sale.shipmentitem.add
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `sale.shipmentitem.add` adds an item to the shipment table part.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,26 +19,26 @@ The method `sale.shipmentitem.add` adds an item to the shipment table part.
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **orderDeliveryId***
-[`sale_order_shipment.id`](../data-types.md) | Identifier of the shipment ||
+[`sale_order_shipment.id`](../data-types.md) | Shipment identifier ||
 || **basketId***
-[`sale_basket_item.id`](../data-types.md) | Identifier of the basket ||
+[`sale_basket_item.id`](../data-types.md) | Basket identifier ||
 || **quantity***
 [`double`](../../data-types.md) | Quantity of the product ||
 || **xmlId**
 [`string`](../../data-types.md) | External identifier.
 
-Can be used to synchronize the current product position of the shipment with a similar position in an external system ||
+Can be used to synchronize the current product position in the shipment with a similar position in an external system ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -49,7 +49,7 @@ Can be used to synchronize the current product position of the shipment with a s
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"orderDeliveryId":33,"basketId":18,"quantity":1}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.shipmentitem.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/sale.shipmentitem.add
     ```
 
 - cURL (OAuth)
@@ -63,6 +63,64 @@ Can be used to synchronize the current product position of the shipment with a s
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.shipmentitem.add',
+    		{
+    			fields: {
+    				orderDeliveryId: 33,
+    				basketId: 18,
+    				quantity: 1
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipmentitem.add',
+                [
+                    'fields' => [
+                        'orderDeliveryId' => 33,
+                        'basketId'        => 18,
+                        'quantity'        => 1,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding shipment item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -84,7 +142,7 @@ Can be used to synchronize the current product position of the shipment with a s
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -109,28 +167,28 @@ Can be used to synchronize the current product position of the shipment with a s
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "shipmentItem":{
-            "basketId":2716,
-            "dateInsert":"2024-04-11T09:10:34+03:00",
-            "id":7,
-            "orderDeliveryId":2431,
-            "quantity":3,
-            "reservedQuantity":0,
-            "xmlId":"myXmlId"
+    "result": {
+        "shipmentItem": {
+            "basketId": 2716,
+            "dateInsert": "2024-04-11T09:10:34+02:00",
+            "id": 7,
+            "orderDeliveryId": 2431,
+            "quantity": 3,
+            "reservedQuantity": 0,
+            "xmlId": "myXmlId"
         }
     },
-    "time":{
-        "start":1712819431.708122,
-        "finish":1712819435.985352,
-        "duration":4.2772300243377686,
-        "processing":4.085968971252441,
-        "date_start":"2024-04-11T10:10:31+03:00",
-        "date_finish":"2024-04-11T10:10:35+03:00"
+    "time": {
+        "start": 1712819431.708122,
+        "finish": 1712819435.985352,
+        "duration": 4.2772300243377686,
+        "processing": 4.085968971252441,
+        "date_start": "2024-04-11T10:10:31+02:00",
+        "date_finish": "2024-04-11T10:10:35+02:00"
     }
 }
 ```
@@ -143,19 +201,19 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **shipmentItem**
-[`sale_order_shipment_item`](../data-types.md) | Object containing information about the added item in the shipment table part ||
+[`sale_order_shipment_item`](../data-types.md) | Object with information about the added item in the shipment table part ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":201250000001,
-    "error_description":"Duplicate entry for key [basketId, orderDeliveryId]"
+    "error": 201250000001,
+    "error_description": "Duplicate entry for key [basketId, orderDeliveryId]"
 }
 ```
 
@@ -168,10 +226,10 @@ HTTP Status: **400**
 || `201250000001` | An item with the specified field values `basketId` and `orderDeliveryId` already exists.
 
 To change the quantity of the product, use the method [`sale.shipmentitem.update`](./sale-shipment-item-update.md) ||
-|| `201240400002` | Shipment not found. Invalid value for the provided parameter `orderDeliveryId` ||
-|| `201240400003` | Basket not found. Invalid value for the provided parameter `basketId` ||
+|| `201240400002` | Shipment not found. Invalid value for the passed parameter `orderDeliveryId` ||
+|| `201240400003` | Basket not found. Invalid value for the passed parameter `basketId` ||
 || `200040300020` | Insufficient permissions to add an item to the shipment table part ||
-|| `100` | The parameter `fields` is not specified or is empty ||
+|| `100` | The `fields` parameter is missing or empty ||
 || `0` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

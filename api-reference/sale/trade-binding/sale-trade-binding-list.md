@@ -1,10 +1,10 @@
-# Get a list of orders from the sources sale.tradeBinding.list
+# Get a list of orders from sources sale.tradeBinding.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with the "View product catalog" access permission
 
-The method `sale.tradeBinding.list` returns a list of orders from the sources.
+The method `sale.tradeBinding.list` returns a list of orders from sources.
 
 ## Method Parameters
 
@@ -14,13 +14,13 @@ The method `sale.tradeBinding.list` returns a list of orders from the sources.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the object [sale_order_trade_binding](../data-types.md#sale_order_trade_binding)).
+[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the [sale_order_trade_binding](../data-types.md#sale_order_trade_binding) object).
 
 If not provided or an empty array is passed, all available order fields will be selected. ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected orders in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. When specifying multiple fields, AND logic is used.
+[`object`](../../data-types.md) | An object for filtering the selected orders in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. When multiple fields are specified, AND logic is used.
 
-Possible values for `field` correspond to the fields of the object [sale_order_trade_binding](../data-types.md#sale_order_trade_binding).
+Possible values for `field` correspond to the fields of the [sale_order_trade_binding](../data-types.md#sale_order_trade_binding) object.
 
 An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 - `=` — equals (works with arrays as well)
@@ -43,7 +43,7 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
 || **order**
 [`object`](../../data-types.md) | An object for sorting the selected orders in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the object [sale_order_trade_binding](../data-types.md#sale_order_trade_binding).
+Possible values for `field` correspond to the fields of the [sale_order_trade_binding](../data-types.md#sale_order_trade_binding) object.
 
 Possible values for `order`:
 - `asc` — in ascending order
@@ -89,6 +89,78 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'sale.tradeBinding.list',
+        {
+          select: ['orderId', 'tradingPlatformId'],
+          filter: {'!=tradingPlatformID': 10},
+          order: {'tradingPlatformId': 'DESC'}
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('sale.tradeBinding.list', { select: ['orderId', 'tradingPlatformId'], filter: {'!=tradingPlatformID': 10}, order: {'tradingPlatformId': 'DESC'} }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination data retrieval process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('sale.tradeBinding.list', { select: ['orderId', 'tradingPlatformId'], filter: {'!=tradingPlatformID': 10}, order: {'tradingPlatformId': 'DESC'} }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.tradeBinding.list',
+                [
+                    'select' => ['orderId', 'tradingPlatformId'],
+                    'filter' => ['!=tradingPlatformID' => 10],
+                    'order'  => ['tradingPlatformId' => 'DESC'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching trade bindings: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.tradeBinding.list",
         {
@@ -110,7 +182,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

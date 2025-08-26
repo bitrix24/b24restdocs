@@ -46,6 +46,53 @@ This method retrieves the shipment property.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.shipmentproperty.get", {
+    			"id": 22
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipmentproperty.get',
+                [
+                    'id' => 22,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting shipment property: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.shipmentproperty.get", {
             "id": 22
@@ -60,7 +107,7 @@ This method retrieves the shipment property.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -122,8 +169,8 @@ HTTP status: **200**
         "finish": 1712818820.232912,
         "duration": 0.2064070701599121,
         "processing": 0.018364906311035156,
-        "date_start": "2024-04-11T10:00:20+03:00",
-        "date_finish": "2024-04-11T10:00:20+03:00"
+        "date_start": "2024-04-11T10:00:20+02:00",
+        "date_finish": "2024-04-11T10:00:20+02:00"
     }
 }
 ```
@@ -138,7 +185,7 @@ HTTP status: **200**
 || **property**
 [`sale_shipment_property`](../data-types.md) | Information about the shipment property ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

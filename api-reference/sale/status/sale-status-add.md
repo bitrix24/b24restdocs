@@ -34,7 +34,7 @@ The status identifier must be unique regardless of its type. This means you cann
 - `O` — order status
 - `D` — delivery status ||
 || **notify**
-[`string`](../../data-types.md) | Indicator of whether to send an email notification to the user when the order or delivery moves to this status.
+[`string`](../../data-types.md) | Indicator of whether to send an email notification to the user when the order or delivery transitions to this status.
 
 Possible values:
 - `Y` — notify
@@ -80,6 +80,67 @@ Can be used for synchronization with the order or delivery status by identifier 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.status.add', {
+    			fields: {
+    				id: 'MS',
+    				type: 'O',
+    				notify: 'Y',
+    				sort: 500,
+    				color: '#FF0000',
+    				xmlId: 'myStatusXmlId',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.status.add',
+                [
+                    'fields' => [
+                        'id'     => 'MS',
+                        'type'   => 'O',
+                        'notify' => 'Y',
+                        'sort'   => 500,
+                        'color'  => '#FF0000',
+                        'xmlId'  => 'myStatusXmlId',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.status.add', {
             fields: {
@@ -101,7 +162,7 @@ Can be used for synchronization with the order or delivery status by identifier 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -130,23 +191,23 @@ HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "status":{
-            "color":"#FF0000",
-            "id":"MS",
-            "notify":"Y",
-            "sort":500,
-            "type":"O",
-            "xmlId":"myStatusXmlId"
+    "result": {
+        "status": {
+            "color": "#FF0000",
+            "id": "MS",
+            "notify": "Y",
+            "sort": 500,
+            "type": "O",
+            "xmlId": "myStatusXmlId"
         }
     },
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -159,9 +220,9 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **status**
-[`sale_status`](../data-types.md) | Object containing information about the added status ||
+[`sale_status`](../data-types.md) | Object with information about the added status ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -170,8 +231,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":201350000001,
-    "error_description":"Duplicate entry for key [id]"
+    "error": 201350000001,
+    "error_description": "Duplicate entry for key [id]"
 }
 ```
 
@@ -181,13 +242,13 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `201350000001` | A status with the provided identifier already exists ||
-|| `201350000003` | Status type value was not provided or the provided value is incorrect ||
-|| `201350000004` | An empty status identifier value was provided ||
+|| `201350000001` | Status with the provided identifier already exists ||
+|| `201350000003` | Status type value not provided or the provided value is incorrect ||
+|| `201350000004` | Empty status identifier value provided ||
 || `201350000005` | Status identifier length limit exceeded ||
-|| `200040300020` | Insufficient permissions to add the status ||
-|| `100` | The `fields` parameter is not specified or is empty ||
-|| `0` | Required fields were not provided ||
+|| `200040300020` | Insufficient permissions to add status ||
+|| `100` | Parameter `fields` not specified or empty ||
+|| `0` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

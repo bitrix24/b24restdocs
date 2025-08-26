@@ -1,4 +1,4 @@
-# Get a List of Shipment Item Table Elements sale.shipmentitem.list
+# Get a list of shipment item table elements sale.shipmentitem.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -8,13 +8,13 @@ The method `sale.shipmentitem.list` allows you to retrieve a list of shipment it
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | The array contains a list of fields to select (see fields of the object [sale_order_shipment_item](../data-types.md#sale_order_shipment_item)).
+[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the object [sale_order_shipment_item](../data-types.md#sale_order_shipment_item)).
 
 If not provided or an empty array is passed, all available fields of the shipment item table elements will be selected. ||
 || **filter**
@@ -22,27 +22,27 @@ If not provided or an empty array is passed, all available fields of the shipmen
 
 Possible values for `field` correspond to the fields of the object [sale_order_shipment_item](../data-types.md#sale_order_shipment_item).
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol must be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"
     - "%mol" — searching for values ending with "mol"
-    - "%mol%" — searching for values where "mol" can be in any position.
+    - "%mol%" — searching for values where "mol" can be in any position
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
 
-- `!=%` — NOT LIKE, substring search. The `%` symbol must be included in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values not starting with "mol"
     - "%mol" — searching for values not ending with "mol"
-    - "%mol%" — searching for values where the substring "mol" is not present in any position.
+    - "%mol%" — searching for values where the substring "mol" is not present in any position
 
 - `!%=` — NOT LIKE (see description above)
 
@@ -59,20 +59,20 @@ Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../../data-types.md) | This parameter is used to control pagination.
 
-The page size of the results is always static: 50 records.
+The page size of results is always static: 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
-The formula for calculating the `start` parameter value:
+The formula for calculating the value of the `start` parameter:
 
 `start = (N-1) * 50`, where `N` — the desired page number ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -97,6 +97,140 @@ The formula for calculating the `start` parameter value:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'sale.shipmentitem.list',
+        {
+          "select": [
+            "id",
+            "orderDeliveryId",
+            "basketId",
+            "quantity",
+            "xmlId",
+            "dateInsert",
+            "reservedQuantity",
+          ],
+          "filter": {
+            "<id": 10,
+            "@orderDeliveryId": [2431, 2430],
+            "basketId": 2716,
+          },
+          "order": {
+            "id": "desc",
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('sale.shipmentitem.list', {
+        "select": [
+          "id",
+          "orderDeliveryId",
+          "basketId",
+          "quantity",
+          "xmlId",
+          "dateInsert",
+          "reservedQuantity",
+        ],
+        "filter": {
+          "<id": 10,
+          "@orderDeliveryId": [2431, 2430],
+          "basketId": 2716,
+        },
+        "order": {
+          "id": "desc",
+        }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('sale.shipmentitem.list', {
+        "select": [
+          "id",
+          "orderDeliveryId",
+          "basketId",
+          "quantity",
+          "xmlId",
+          "dateInsert",
+          "reservedQuantity",
+        ],
+        "filter": {
+          "<id": 10,
+          "@orderDeliveryId": [2431, 2430],
+          "basketId": 2716,
+        },
+        "order": {
+          "id": "desc",
+        }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipmentitem.list',
+                [
+                    'select' => [
+                        'id',
+                        'orderDeliveryId',
+                        'basketId',
+                        'quantity',
+                        'xmlId',
+                        'dateInsert',
+                        'reservedQuantity',
+                    ],
+                    'filter' => [
+                        '<id'            => 10,
+                        '@orderDeliveryId' => [2431, 2430],
+                        'basketId'       => 2716,
+                    ],
+                    'order' => [
+                        'id' => 'desc',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching shipment items: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -129,7 +263,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -166,40 +300,40 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "shipmentItems":[
+    "result": {
+        "shipmentItems": [
             {
-                "basketId":2716,
-                "dateInsert":"2024-04-11T09:10:34+03:00",
-                "id":7,
-                "orderDeliveryId":2431,
-                "quantity":5,
-                "reservedQuantity":0,
-                "xmlId":"myNewXmlId"
+                "basketId": 2716,
+                "dateInsert": "2024-04-11T09:10:34+02:00",
+                "id": 7,
+                "orderDeliveryId": 2431,
+                "quantity": 5,
+                "reservedQuantity": 0,
+                "xmlId": "myNewXmlId"
             },
             {
-                "basketId":2716,
-                "dateInsert":"2024-04-08T10:36:24+03:00",
-                "id":1,
-                "orderDeliveryId":2430,
-                "quantity":5,
-                "reservedQuantity":0,
-                "xmlId":"myXmlId2"
+                "basketId": 2716,
+                "dateInsert": "2024-04-08T10:36:24+02:00",
+                "id": 1,
+                "orderDeliveryId": 2430,
+                "quantity": 5,
+                "reservedQuantity": 0,
+                "xmlId": "myXmlId2"
             }
         ]
     },
-    "total":2,
-    "time":{
-        "start":1712819741.592596,
-        "finish":1712819741.796288,
-        "duration":0.20369195938110352,
-        "processing":0.01679706573486328,
-        "date_start":"2024-04-11T10:15:41+03:00",
-        "date_finish":"2024-04-11T10:15:41+03:00"
+    "total": 2,
+    "time": {
+        "start": 1712819741.592596,
+        "finish": 1712819741.796288,
+        "duration": 0.20369195938110352,
+        "processing": 0.01679706573486328,
+        "date_start": "2024-04-11T10:15:41+02:00",
+        "date_finish": "2024-04-11T10:15:41+02:00"
     }
 }
 ```
@@ -210,23 +344,23 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response ||
+[`object`](../../data-types.md) | Root element of the response ||
 || **shipmentItems**
-[`sale_order_shipment_item[]`](../data-types.md) | An array of objects containing information about the selected shipment item table elements ||
+[`sale_order_shipment_item[]`](../data-types.md) | An array of objects with information about the selected shipment item table elements ||
 || **total**
-[`integer`](../../data-types.md) | The total number of records found ||
+[`integer`](../../data-types.md) | Total number of records found ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": 0,
+    "error_description": "error"
 }
 ```
 

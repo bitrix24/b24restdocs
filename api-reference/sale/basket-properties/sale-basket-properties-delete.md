@@ -4,7 +4,7 @@
 >
 > Who can execute the method: store administrator
 
-This method removes a property for an item in the basket of an order.
+This method removes a property for an item (position) in the basket of an order.
 
 ## Method Parameters
 
@@ -12,14 +12,14 @@ This method removes a property for an item in the basket of an order.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_basket_item_property.id`](../data-types.md) | Identifier of the basket item property.
+[`sale_basket_item_property.id`](../data-types.md) | Identifier of the basket item (position) property.
 
-This can be obtained using the [`sale.basketproperties.list`](sale-basket-properties-list.md) method ||
+You can obtain it using the method [`sale.basketproperties.list`](sale-basket-properties-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -44,6 +44,56 @@ This can be obtained using the [`sale.basketproperties.list`](sale-basket-proper
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.basketproperties.delete",
+    		{
+    			id: 17
+    		}
+    	);
+    
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.basketproperties.delete',
+                [
+                    'id' => 17,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting basket property: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -72,7 +122,7 @@ This can be obtained using the [`sale.basketproperties.list`](sale-basket-proper
 
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -93,7 +143,7 @@ This can be obtained using the [`sale.basketproperties.list`](sale-basket-proper
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -123,7 +173,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -140,7 +190,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200140400001` | basket item does not exist
 
-Basket item not found   ||
+Basket position not found   ||
 || `200040300010` | Insufficient permissions to delete ||
 || `100` | Required parameters not provided ||
 || `0` | Other errors (e.g., fatal errors) ||

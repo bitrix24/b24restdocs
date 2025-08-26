@@ -1,4 +1,4 @@
-# Get the list of delivery service handlers sale.delivery.handler.list
+# Get a list of delivery service handlers sale.delivery.handler.list
 
 > Scope: [`sale`](../../../scopes/permissions.md)
 >
@@ -10,7 +10,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,6 +37,70 @@ No parameters.
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'sale.delivery.handler.list',
+        {},
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('sale.delivery.handler.list', {}, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('sale.delivery.handler.list', {}, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.delivery.handler.list',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching delivery handlers: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.delivery.handler.list', {},
         function(result) {
@@ -49,7 +113,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -157,8 +221,8 @@ HTTP status: **200**
       "finish":1713872315.655173,
       "duration":0.3202061653137207,
       "processing":0.013887882232666016,
-      "date_start":"2024-04-23T14:38:35+03:00",
-      "date_finish":"2024-04-23T14:38:35+03:00"
+      "date_start":"2024-04-23T14:38:35+02:00",
+      "date_finish":"2024-04-23T14:38:35+02:00"
    }
 }
 ```
@@ -169,7 +233,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_delivery_handler[]`](../../data-types.md) | Array of objects containing information about the selected delivery service handlers  ||
+[`sale_delivery_handler[]`](../../data-types.md) | Array of objects with information about the selected delivery service handlers  ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -191,7 +255,7 @@ HTTP status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient permissions to retrieve the list of delivery services | 403 ||
+|| `ACCESS_DENIED` | Insufficient rights to retrieve the list of delivery services | 403 ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

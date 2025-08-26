@@ -31,7 +31,7 @@ This method adds a binding of a basket item to a payment.
 || **quantity**
 [`double`](../../data-types.md) | Quantity of the product ||
 || **xmlId**
-[`string`](../../data-types.md) | External identifier of the record ||
+[`string`](../../data-types.md) | External record identifier ||
 |#
 
 ## Code Examples
@@ -63,6 +63,63 @@ This method adds a binding of a basket item to a payment.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paymentitembasket.add', {
+    			fields: {
+    				quantity: 3,
+    				basketId: 2722,
+    				paymentId: 1025,
+    				xmlId: 'myXmlId',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paymentitembasket.add',
+                [
+                    'fields' => [
+                        'quantity'  => 3,
+                        'basketId'  => 2722,
+                        'paymentId' => 1025,
+                        'xmlId'     => 'myXmlId',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding payment item to basket: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.paymentitembasket.add', {
             fields: {
@@ -82,7 +139,7 @@ This method adds a binding of a basket item to a payment.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -113,23 +170,23 @@ HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "paymentItemBasket":{
-            "basketId":2722,
-            "dateInsert":"2024-04-17T09:37:45+03:00",
-            "id":1186,
-            "paymentId":1025,
-            "quantity":3,
-            "xmlId":"myXmlId"
+    "result": {
+        "paymentItemBasket": {
+            "basketId": 2722,
+            "dateInsert": "2024-04-17T09:37:45+02:00",
+            "id": 1186,
+            "paymentId": 1025,
+            "quantity": 3,
+            "xmlId": "myXmlId"
         }
     },
-    "time":{
-        "start":1713339465.349855,
-        "finish":1713339465.968993,
-        "duration":0.6191380023956299,
-        "processing":0.38312196731567383,
-        "date_start":"2024-04-17T10:37:45+03:00",
-        "date_finish":"2024-04-17T10:37:45+03:00"
+    "time": {
+        "start": 1713339465.349855,
+        "finish": 1713339465.968993,
+        "duration": 0.6191380023956299,
+        "processing": 0.38312196731567383,
+        "date_start": "2024-04-17T10:37:45+02:00",
+        "date_finish": "2024-04-17T10:37:45+02:00"
     }
 }
 ```
@@ -142,9 +199,9 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **paymentItemBasket**
-[`sale_payment_item_basket`](../data-types.md) | Object containing information about the added binding of the basket item to the payment ||
+[`sale_payment_item_basket`](../data-types.md) | Object with information about the added binding of the basket item to the payment ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -153,8 +210,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":201240400002,
-    "error_description":"payment not exists"
+    "error": 201240400002,
+    "error_description": "payment not exists"
 }
 ```
 
@@ -165,10 +222,10 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `201250000001` | An item with the specified field values `paymentId` and `basketId` already exists ||
-|| `201240400002` | Payment not found. Invalid value for the provided parameter `paymentId` ||
-|| `201240400003` | Basket item not found. Invalid value for the provided parameter `basketId` ||
-|| `200040300020` | Insufficient permissions to add the binding of the basket item to the payment ||
-|| `100` | Parameter `fields` is not specified or is empty ||
+|| `201240400002` | Payment not found. Incorrect value for the provided parameter `paymentId` ||
+|| `201240400003` | Basket item not found. Incorrect value for the provided parameter `basketId` ||
+|| `200040300020` | Insufficient permissions to add a binding of the basket item to the payment ||
+|| `100` | The parameter `fields` is not specified or is empty ||
 || `0` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

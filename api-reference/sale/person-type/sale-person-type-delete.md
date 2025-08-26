@@ -1,4 +1,4 @@
-# Delete Payer Type sale.persontype.delete
+# Delete payer type sale.persontype.delete
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ This method deletes a payer type.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter**
@@ -19,7 +19,7 @@ This method deletes a payer type.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,61 @@ This method deletes a payer type.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.persontype.delete',
+    		{ id: 5 }
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.log(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.persontype.delete',
+                [
+                    'id' => 5,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting person type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.persontype.delete', 
         { id: 5 }, 
@@ -59,7 +114,7 @@ This method deletes a payer type.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -80,7 +135,7 @@ This method deletes a payer type.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -105,12 +160,12 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Result of deleting the payer type ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -126,7 +181,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `200750000003` | The payer type with the specified `id` has a protected field `code`, such a type cannot be deleted ||
-|| `200040300020` | No access to edit ||
+|| `200040300020` | No access to editing ||
 || `200740400001` | The payer type with the specified `id` does not exist ||
 || `200750000008`
 `200750000004` | Unable to delete the payer type.

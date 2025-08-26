@@ -46,6 +46,53 @@ This method retrieves the values of all shipment fields.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.shipment.get", {
+    			"id": 2465
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.shipment.get',
+                [
+                    'id' => 2465,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting shipment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.shipment.get", {
             "id": 2465
@@ -60,7 +107,7 @@ This method retrieves the values of all shipment fields.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,73 +132,73 @@ HTTP status: **200**
 
 ```json
 {
-   "result":{
-      "shipment":{
-         "accountNumber":"2069\/2",
-         "allowDelivery":"N",
-         "basePriceDelivery":600,
-         "canceled":"N",
-         "comments":"",
-         "companyId":0,
-         "currency":"USD",
-         "customPriceDelivery":"N",
-         "dateAllowDelivery":null,
-         "dateCanceled":null,
-         "dateDeducted":null,
-         "dateInsert":"2024-04-11T15:05:48+03:00",
-         "dateMarked":null,
-         "dateResponsibleId":"2024-04-11T15:05:48+03:00",
-         "deducted":"N",
-         "deliveryDocDate":null,
-         "deliveryDocNum":"",
-         "deliveryId":2,
-         "deliveryName":"Courier Delivery",
-         "deliveryXmlId":"",
-         "discountPrice":0,
-         "empAllowDeliveryId":null,
-         "empCanceledId":null,
-         "empDeductedId":null,
-         "empMarkedId":null,
-         "empResponsibleId":null,
-         "externalDelivery":"N",
-         "id":2465,
-         "id1c":"",
-         "marked":"N",
-         "orderId":2069,
-         "priceDelivery":600,
-         "reasonMarked":"",
-         "reasonUndoDeducted":"",
-         "responsibleId":0,
-         "shipmentItems":[
+   "result": {
+      "shipment": {
+         "accountNumber": "2069/2",
+         "allowDelivery": "N",
+         "basePriceDelivery": 600,
+         "canceled": "N",
+         "comments": "",
+         "companyId": 0,
+         "currency": "USD",
+         "customPriceDelivery": "N",
+         "dateAllowDelivery": null,
+         "dateCanceled": null,
+         "dateDeducted": null,
+         "dateInsert": "2024-04-11T15:05:48+02:00",
+         "dateMarked": null,
+         "dateResponsibleId": "2024-04-11T15:05:48+02:00",
+         "deducted": "N",
+         "deliveryDocDate": null,
+         "deliveryDocNum": "",
+         "deliveryId": 2,
+         "deliveryName": "Courier Delivery",
+         "deliveryXmlId": "",
+         "discountPrice": 0,
+         "empAllowDeliveryId": null,
+         "empCanceledId": null,
+         "empDeductedId": null,
+         "empMarkedId": null,
+         "empResponsibleId": null,
+         "externalDelivery": "N",
+         "id": 2465,
+         "id1c": "",
+         "marked": "N",
+         "orderId": 2069,
+         "priceDelivery": 600,
+         "reasonMarked": "",
+         "reasonUndoDeducted": "",
+         "responsibleId": 0,
+         "shipmentItems": [
             {
-               "basketId":2721,
-               "dateInsert":"2024-04-11T15:05:51+03:00",
-               "id":10,
-               "orderDeliveryId":2465,
-               "quantity":1,
-               "reservedQuantity":1,
-               "xmlId":"bx_6617e02cb74f9"
+               "basketId": 2721,
+               "dateInsert": "2024-04-11T15:05:51+02:00",
+               "id": 10,
+               "orderDeliveryId": 2465,
+               "quantity": 1,
+               "reservedQuantity": 1,
+               "xmlId": "bx_6617e02cb74f9"
             }
          ],
-         "statusId":"DN",
-         "statusXmlId":"FFdddd",
-         "system":"N",
-         "trackingDescription":"",
-         "trackingLastCheck":"",
-         "trackingNumber":"",
-         "trackingStatus":"",
-         "updated1c":"N",
-         "version1c":"",
-         "xmlId":"bx_6617e02cae2a1"
+         "statusId": "DN",
+         "statusXmlId": "FFdddd",
+         "system": "N",
+         "trackingDescription": "",
+         "trackingLastCheck": "",
+         "trackingNumber": "",
+         "trackingStatus": "",
+         "updated1c": "N",
+         "version1c": "",
+         "xmlId": "bx_6617e02cae2a1"
       }
    },
-   "time":{
-      "start":1712840827.02634,
-      "finish":1712840827.41618,
-      "duration":0.38983988761901855,
-      "processing":0.21664810180664062,
-      "date_start":"2024-04-11T16:07:07+03:00",
-      "date_finish":"2024-04-11T16:07:07+03:00"
+   "time": {
+      "start": 1712840827.02634,
+      "finish": 1712840827.41618,
+      "duration": 0.38983988761901855,
+      "processing": 0.21664810180664062,
+      "date_start": "2024-04-11T16:07:07+02:00",
+      "date_finish": "2024-04-11T16:07:07+02:00"
    }
 }
 ```
@@ -175,8 +222,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":201140400001,
-   "error_description":"shipment does not exist"
+   "error": 201140400001,
+   "error_description": "shipment does not exist"
 }
 ```
 

@@ -1,4 +1,4 @@
-# Get a List of Bindings sale.paymentItemShipment.list
+# Get a list of bindings sale.paymentItemShipment.list
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
@@ -20,7 +20,7 @@ If not provided or an empty array is passed, all available fields of payment bin
  
 Possible values for `field` correspond to the fields of the [sale_payment_item_shipment](../data-types.md) object.
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 
 - `=` — equals (works with arrays as well)
 - `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
@@ -52,7 +52,7 @@ Possible values for `order`:
 - `desc` — in descending order
  ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../../data-types.md) | This parameter is used to manage pagination.
  
 The page size of results is always static: 50 records.
  
@@ -66,7 +66,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -91,6 +91,133 @@ The formula for calculating the `start` parameter value:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'sale.paymentitemshipment.list',
+        {
+          "select": [
+            "id",
+            "shipmentId",
+            "paymentId",
+            "xmlId",
+            "dateInsert",
+          ],
+          "filter": {
+            "paymentId": 1025,
+            "shipmentId": 2467,
+          },
+          "order": {
+            "id": "desc",
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('sale.paymentitemshipment.list', {
+        "select": [
+          "id",
+          "shipmentId",
+          "paymentId",
+          "xmlId",
+          "dateInsert",
+        ],
+        "filter": {
+          "paymentId": 1025,
+          "shipmentId": 2467,
+        },
+        "order": {
+          "id": "desc",
+        }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('sale.paymentitemshipment.list', {
+        "select": [
+          "id",
+          "shipmentId",
+          "paymentId",
+          "xmlId",
+          "dateInsert",
+        ],
+        "filter": {
+          "paymentId": 1025,
+          "shipmentId": 2467,
+        },
+        "order": {
+          "id": "desc",
+        }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paymentitemshipment.list',
+                [
+                    'select' => [
+                        'id',
+                        'shipmentId',
+                        'paymentId',
+                        'xmlId',
+                        'dateInsert',
+                    ],
+                    'filter' => [
+                        'paymentId'  => 1025,
+                        'shipmentId' => 2467,
+                    ],
+                    'order' => [
+                        'id' => 'desc',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching payment item shipments: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -120,7 +247,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -158,25 +285,25 @@ HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "paymentItemsShipment":[
+    "result": {
+        "paymentItemsShipment": [
             {
-                "dateInsert":"2024-04-11T16:59:21+03:00",
-                "id":1180,
-                "paymentId":1025,
-                "shipmentId":2467,
-                "xmlId":"bx_6617fac9afe1e"
+                "dateInsert": "2024-04-11T16:59:21+02:00",
+                "id": 1180,
+                "paymentId": 1025,
+                "shipmentId": 2467,
+                "xmlId": "bx_6617fac9afe1e"
             }
         ]
     },
-    "total":1,
-    "time":{
-        "start":1713172802.193215,
-        "finish":1713172802.464073,
-        "duration":0.2708580493927002,
-        "processing":0.018366098403930664,
-        "date_start":"2024-04-15T12:20:02+03:00",
-        "date_finish":"2024-04-15T12:20:02+03:00"
+    "total": 1,
+    "time": {
+        "start": 1713172802.193215,
+        "finish": 1713172802.464073,
+        "duration": 0.2708580493927002,
+        "processing": 0.018366098403930664,
+        "date_start": "2024-04-15T12:20:02+02:00",
+        "date_finish": "2024-04-15T12:20:02+02:00"
     }
 }
 ```
@@ -202,8 +329,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": 0,
+    "error_description": "error"
 }
 ```
 
@@ -213,7 +340,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the elements of the shipment's tabular part ||
+|| `200040300010` | Insufficient rights to read the elements of the shipment's tabular part ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

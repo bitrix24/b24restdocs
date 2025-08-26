@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-The `sale.order.delete` method is designed to remove an order and its related objects.
+The `sale.order.delete` method is designed to delete an order and its related objects.
 
 ## Method Parameters
 
@@ -46,6 +46,56 @@ The `sale.order.delete` method is designed to remove an order and its related ob
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.order.delete", {
+    			"id": 5
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.order.delete',
+                [
+                    'id' => 5,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting sale order: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.order.delete", {
             "id": 5
@@ -60,7 +110,7 @@ The `sale.order.delete` method is designed to remove an order and its related ob
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -134,7 +184,7 @@ HTTP Status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./sale-order-add.md)
 - [{#T}](./sale-order-update.md)

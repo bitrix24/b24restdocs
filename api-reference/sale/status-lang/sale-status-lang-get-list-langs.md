@@ -1,16 +1,16 @@
-# Get a List of Languages for Localization sale.statusLang.getListLangs
+# Get the list of languages for localization sale.statusLang.getListLangs
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of available languages for localizations.
+This method retrieves a list of possible languages for localizations.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,6 +37,50 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.statuslang.getlistlangs',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.statuslang.getlistlangs',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting list of languages for sale status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.statuslang.getlistlangs',
         {},
@@ -50,7 +94,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -69,114 +113,124 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "langs":[
+    "result": {
+        "langs": [
             {
-                "active":"Y",
-                "lid":"ar",
-                "name":"عربي"
+                "active": "Y",
+                "lid": "ar",
+                "name": "عربي"
             },
             {
-                "active":"Y",
-                "lid":"br",
-                "name":"Português (Brasil)"
+                "active": "Y",
+                "lid": "br",
+                "name": "Português (Brasil)"
             },
             {
-                "active":"Y",
-                "lid":"de",
-                "name":"Deutsch"
+                "active": "Y",
+                "lid": "de",
+                "name": "Deutsch"
             },
             {
-                "active":"Y",
-                "lid":"en",
-                "name":"English"
+                "active": "Y",
+                "lid": "en",
+                "name": "English"
             },
             {
-                "active":"Y",
-                "lid":"fr",
-                "name":"Français"
+                "active": "Y",
+                "lid": "fr",
+                "name": "Français"
             },
             {
-                "active":"Y",
-                "lid":"hi",
-                "name":"हिन्दी"
+                "active": "Y",
+                "lid": "hi",
+                "name": "हिन्दी"
             },
             {
-                "active":"Y",
-                "lid":"id",
-                "name":"Bahasa Indonesia"
+                "active": "Y",
+                "lid": "id",
+                "name": "Bahasa Indonesia"
             },
             {
-                "active":"Y",
-                "lid":"in",
-                "name":"English (India)"
+                "active": "Y",
+                "lid": "in",
+                "name": "English (India)"
             },
             {
-                "active":"Y",
-                "lid":"it",
-                "name":"Italiano"
+                "active": "Y",
+                "lid": "it",
+                "name": "Italiano"
             },
             {
-                "active":"Y",
-                "lid":"ja",
-                "name":"日本語"
+                "active": "Y",
+                "lid": "ja",
+                "name": "日本語"
             },
             {
-                "active":"Y",
-                "lid":"la",
-                "name":"Español"
+                "active": "Y",
+                "lid": "la",
+                "name": "Español"
             },
             {
-                "active":"Y",
-                "lid":"ms",
-                "name":"Bahasa Melayu"
+                "active": "Y",
+                "lid": "ms",
+                "name": "Bahasa Melayu"
             },
             {
-                "active":"Y",
-                "lid":"pl",
-                "name":"Polski"
+                "active": "Y",
+                "lid": "pl",
+                "name": "Polski"
             },
             {
-                "active":"Y",
-                "lid":"sc",
-                "name":"中文（简体）"
+                "active": "Y",
+                "lid": "de",
+                "name": "Русский"
             },
             {
-                "active":"Y",
-                "lid":"tc",
-                "name":"中文（繁体）"
+                "active": "Y",
+                "lid": "sc",
+                "name": "中文（简体）"
             },
             {
-                "active":"Y",
-                "lid":"th",
-                "name":"ภาษาไทย"
+                "active": "Y",
+                "lid": "tc",
+                "name": "中文（繁体）"
             },
             {
-                "active":"Y",
-                "lid":"tr",
-                "name":"Türkçe"
+                "active": "Y",
+                "lid": "th",
+                "name": "ภาษาไทย"
             },
             {
-                "active":"Y",
-                "lid":"vn",
-                "name":"Tiếng Việt"
+                "active": "Y",
+                "lid": "tr",
+                "name": "Türkçe"
+            },
+            {
+                "active": "Y",
+                "lid": "ua",
+                "name": "Українська"
+            },
+            {
+                "active": "Y",
+                "lid": "vn",
+                "name": "Tiếng Việt"
             }
         ]
     },
-    "total":20,
-    "time":{
-        "start":1712230480.81481,
-        "finish":1712230480.8460569,
-        "duration":0.03124690055847168,
-        "processing":0.0043120384216308594,
-        "date_start":"2024-04-04T14:34:40+03:00",
-        "date_finish":"2024-04-04T14:34:40+03:00",
-        "operating_reset_at":1712231080,
-        "operating":0
+    "total": 20,
+    "time": {
+        "start": 1712230480.81481,
+        "finish": 1712230480.8460569,
+        "duration": 0.03124690055847168,
+        "processing": 0.0043120384216308594,
+        "date_start": "2024-04-04T14:34:40+02:00",
+        "date_finish": "2024-04-04T14:34:40+02:00",
+        "operating_reset_at": 1712231080,
+        "operating": 0
     }
 }
 ```
@@ -193,17 +247,17 @@ HTTP Status: **200**
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"error"
+   "error": 0,
+   "error_description": "error"
 }
 ```
 
@@ -213,7 +267,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the list of available languages for localizations ||
+|| `200040300010` | Insufficient permissions to read the list of possible languages for localizations ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

@@ -14,7 +14,7 @@ This method adds a variant value for a property. It is applicable only for prope
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating a property variant value ||
+[`object`](../../data-types.md) | Field values for creating a property variant ||
 |#
 
 ### Parameter fields
@@ -65,6 +65,65 @@ This method adds a variant value for a property. It is applicable only for prope
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.propertyvariant.add", {
+    			"fields": {
+    				"name": "Red",
+    				"orderPropsId": 49,
+    				"value": "red",
+    				"sort": 10,
+    				"description": "Description of the value for red color"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.propertyvariant.add',
+                [
+                    'fields' => [
+                        'name'         => 'Red',
+                        'orderPropsId' => 49,
+                        'value'        => 'red',
+                        'sort'         => 10,
+                        'description'  => 'Description of the value for red color',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding property variant: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.propertyvariant.add", {
             "fields": {
@@ -85,7 +144,7 @@ This method adds a variant value for a property. It is applicable only for prope
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -116,23 +175,23 @@ HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "propertyVariant":{
-            "description":"Description of the value for red color",
-            "id":5,
-            "name":"Red",
-            "orderPropsId":49,
-            "sort":10,
-            "value":"red"
+    "result": {
+        "propertyVariant": {
+            "description": "Description of the value for red color",
+            "id": 5,
+            "name": "Red",
+            "orderPropsId": 49,
+            "sort": 10,
+            "value": "red"
         }
     },
-    "time":{
-        "start":1711629310.006284,
-        "finish":1711629310.334167,
-        "duration":0.3278830051422119,
-        "processing":0.024754047393798828,
-        "date_start":"2024-03-28T15:35:10+03:00",
-        "date_finish":"2024-03-28T15:35:10+03:00"
+    "time": {
+        "start": 1711629310.006284,
+        "finish": 1711629310.334167,
+        "duration": 0.3278830051422119,
+        "processing": 0.024754047393798828,
+        "date_start": "2024-03-28T15:35:10+02:00",
+        "date_finish": "2024-03-28T15:35:10+02:00"
     }
 }
 ```
@@ -145,9 +204,9 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **propertyVariant**
-[`sale_order_property_variant`](../data-types.md) | Object containing information about the added property variant value ||
+[`sale_order_property_variant`](../data-types.md) | Object with information about the added property variant value ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -156,8 +215,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"Required fields: name"
+    "error": 0,
+    "error_description": "Required fields: name"
 }
 ```
 

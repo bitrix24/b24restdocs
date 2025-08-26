@@ -46,6 +46,53 @@ This method deletes a payment.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.payment.delete", {
+    			"id": 5
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.payment.delete',
+                [
+                    'id' => 5
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting payment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.payment.delete", {
             "id": 5
@@ -60,7 +107,7 @@ This method deletes a payment.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -81,7 +128,7 @@ This method deletes a payment.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -91,8 +138,8 @@ HTTP status: **200**
         "finish": 1713444187.320981,
         "duration": 3.0825610160827637,
         "processing": 2.6834518909454346,
-        "date_start": "2024-04-18T15:43:04+03:00",
-        "date_finish": "2024-04-18T15:43:07+03:00"
+        "date_start": "2024-04-18T15:43:04+02:00",
+        "date_finish": "2024-04-18T15:43:07+02:00"
     }
 }
 ```
@@ -103,14 +150,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the payment deletion ||
+[`boolean`](../../data-types.md) | Result of payment deletion ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {	

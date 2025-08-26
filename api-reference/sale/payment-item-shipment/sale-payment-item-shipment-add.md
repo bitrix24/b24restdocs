@@ -14,7 +14,7 @@ This method adds a payment binding to a shipment.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for creating a payment binding to a shipment in the following structure:
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for creating a payment binding to a shipment in the form of a structure:
 
 ```js
 fields: {
@@ -71,6 +71,61 @@ fields: {
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paymentitemshipment.add', {
+    			fields: {
+    				shipmentId: 2471,
+    				paymentId: 1025,
+    				xmlId: 'myXmlId',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paymentitemshipment.add',
+                [
+                    'fields' => [
+                        'shipmentId' => 2471,
+                        'paymentId' => 1025,
+                        'xmlId'     => 'myXmlId',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding payment item shipment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'sale.paymentitemshipment.add', {
             fields: {
@@ -89,7 +144,7 @@ fields: {
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -114,26 +169,26 @@ fields: {
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "paymentItemShipment":{
-            "dateInsert":"2024-04-15T09:22:26+03:00",
-            "id":1181,
-            "paymentId":1025,
-            "shipmentId":2471,
-            "xmlId":"myXmlId"
+    "result": {
+        "paymentItemShipment": {
+            "dateInsert": "2024-04-15T09:22:26+02:00",
+            "id": 1181,
+            "paymentId": 1025,
+            "shipmentId": 2471,
+            "xmlId": "myXmlId"
         }
     },
-    "time":{
-        "start":1713165816.941795,
-        "finish":1713165817.220281,
-        "duration":0.2784857749938965,
-        "processing":0.045699119567871094,
-        "date_start":"2024-04-15T10:23:36+03:00",
-        "date_finish":"2024-04-15T10:23:37+03:00"
+    "time": {
+        "start": 1713165816.941795,
+        "finish": 1713165817.220281,
+        "duration": 0.2784857749938965,
+        "processing": 0.045699119567871094,
+        "date_start": "2024-04-15T10:23:36+02:00",
+        "date_finish": "2024-04-15T10:23:37+02:00"
     }
 }
 ```
@@ -146,19 +201,19 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **paymentItemShipment**
-[`sale_payment_item_shipment`](../data-types.md) | Object containing information about the added payment binding to the shipment ||
+[`sale_payment_item_shipment`](../data-types.md) | Object with information about the added payment binding to the shipment ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":201240400003,
-    "error_description":"shipment not exists"
+    "error": 201240400003,
+    "error_description": "shipment not exists"
 }
 ```
 
@@ -172,10 +227,10 @@ HTTP Status: **400**
  
 If it is necessary to change the previously specified external identifier of the binding, use the method [sale.paymentitemshipment.update](./sale-payment-item-shipment-update.md)
 ||
-|| `201240400002` | Payment not found. Invalid value for the provided parameter `paymentId` ||
-|| `201240400003` | Shipment not found. Invalid value for the provided parameter `shipmentId` ||
-|| `200040300020` | Insufficient permissions to add a payment binding to the shipment ||
-|| `100` | The `fields` parameter is missing or empty ||
+|| `201240400002` | Payment not found. Incorrect value of the passed parameter `paymentId` ||
+|| `201240400003` | Shipment not found. Incorrect value of the passed parameter `shipmentId` ||
+|| `200040300020` | Insufficient rights to add payment binding to the shipment ||
+|| `100` | Parameter `fields` is not specified or is empty ||
 || `0` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

@@ -8,18 +8,18 @@ This method retrieves the values of all fields of the status.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_status.id`](../data-types.md) | Character identifier of the status ||
+[`sale_status.id`](../data-types.md) | Symbolic identifier of the status ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,56 @@ This method retrieves the values of all fields of the status.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            "sale.status.get", {
+                "id": "N"
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.status.get',
+                [
+                    'id' => 'N',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting sale status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.status.get", {
             "id": "N"
@@ -60,7 +110,7 @@ This method retrieves the values of all fields of the status.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -82,23 +132,23 @@ HTTP Status: **200**
 
 ```json
 {
-    "result":{
-        "status":{
-            "color":"#BEEDF1",
-            "id":"N",
-            "notify":"Y",
-            "sort":10,
-            "type":"O",
-            "xmlId":null
+    "result": {
+        "status": {
+            "color": "#BEEDF1",
+            "id": "N",
+            "notify": "Y",
+            "sort": 10,
+            "type": "O",
+            "xmlId": null
         }
     },
-    "time":{
-        "start":1712144798.388861,
-        "finish":1712144798.636187,
-        "duration":0.24732613563537598,
-        "processing":0.012362003326416016,
-        "date_start":"2024-04-03T14:46:38+03:00",
-        "date_finish":"2024-04-03T14:46:38+03:00"
+    "time": {
+        "start": 1712144798.388861,
+        "finish": 1712144798.636187,
+        "duration": 0.24732613563537598,
+        "processing": 0.012362003326416016,
+        "date_start": "2024-04-03T14:46:38+02:00",
+        "date_finish": "2024-04-03T14:46:38+02:00"
     }
 }
 ```
@@ -111,9 +161,9 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **status**
-[`sale_status`](../data-types.md) | Status information ||
+[`sale_status`](../data-types.md) | Information about the status ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -122,8 +172,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":201340400001,
-    "error_description":"status does not exist"
+    "error": 201340400001,
+    "error_description": "status does not exist"
 }
 ```
 

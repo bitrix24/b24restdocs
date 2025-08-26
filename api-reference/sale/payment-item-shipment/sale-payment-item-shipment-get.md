@@ -46,6 +46,54 @@ This method retrieves the payment binding to the shipment by `ID`.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.paymentitemshipment.get",
+    		{
+    			"id": 1183
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paymentitemshipment.get',
+                [
+                    'id' => 1183,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting payment item shipment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.paymentitemshipment.get",
         {
@@ -61,7 +109,7 @@ This method retrieves the payment binding to the shipment by `ID`.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -86,22 +134,22 @@ HTTP status: **200**
 
 ```json
 {
-    "result":{
-        "paymentItemShipment":{
-            "dateInsert":"2024-04-15T10:53:42+03:00",
-            "id":1183,
-            "paymentId":1025,
-            "shipmentId":2471,
-            "xmlId":"myXmlId"
+    "result": {
+        "paymentItemShipment": {
+            "dateInsert": "2024-04-15T10:53:42+02:00",
+            "id": 1183,
+            "paymentId": 1025,
+            "shipmentId": 2471,
+            "xmlId": "myXmlId"
         }
     },
-    "time":{
-        "start":1713171284.974848,
-        "finish":1713171285.256904,
-        "duration":0.2820558547973633,
-        "processing":0.035675048828125,
-        "date_start":"2024-04-15T11:54:44+03:00",
-        "date_finish":"2024-04-15T11:54:45+03:00"
+    "time": {
+        "start": 1713171284.974848,
+        "finish": 1713171285.256904,
+        "duration": 0.2820558547973633,
+        "processing": 0.035675048828125,
+        "date_start": "2024-04-15T11:54:44+02:00",
+        "date_finish": "2024-04-15T11:54:45+02:00"
     }
 }
 ```
@@ -125,8 +173,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":201240400001,
-    "error_description":"payment item does not exist"
+    "error": 201240400001,
+    "error_description": "payment item does not exist"
 }
 ```
 
@@ -137,7 +185,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `201240400001` | Payment binding to the shipment not found ||
-|| `200040300010` | Insufficient permissions to read payment binding data to the shipment ||
+|| `200040300010` | Insufficient permissions to read payment binding data ||
 || `100` | Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
