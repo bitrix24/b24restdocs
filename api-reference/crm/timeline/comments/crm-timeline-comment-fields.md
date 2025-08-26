@@ -37,6 +37,51 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.comment.fields'
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.comment.fields'
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching timeline comment fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.comment.fields",
         result => {
@@ -48,7 +93,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -64,7 +109,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -150,7 +195,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response containing all [comment fields](#fields) ||
+[`object`](../../../data-types.md) | Root element of the response, containing all [comment fields](#fields) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -184,12 +229,12 @@ Values:
 || **COMMENT**
 [`string`](../../../data-types.md) | Comment text ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. Array of values described by [rules](../../../files/how-to-upload-files.md) ||
+[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described by [rules](../../../files/how-to-upload-files.md) ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

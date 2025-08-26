@@ -33,7 +33,64 @@ The method `crm.activity.badge.get` will return an array containing [badge field
     ```
 
 - JS
-  
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.badge.get',
+    		{
+    			code: 'missedCall',
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.badge.get',
+                [
+                    'code' => 'missedCall',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting activity badge: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         "crm.activity.badge.get",
@@ -48,7 +105,7 @@ The method `crm.activity.badge.get` will return an array containing [badge field
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

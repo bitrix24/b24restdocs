@@ -41,9 +41,9 @@ fields:
 || **entityId***
 [`integer`](../../../data-types.md) | Identifier of the entity item in which the entry will be created ||
 || **title***
-[`string`](../../../data-types.md) | Entry title ||
+[`string`](../../../data-types.md) | Title of the entry ||
 || **text***
-[`string`](../../../data-types.md) | Entry text ||
+[`string`](../../../data-types.md) | Text of the entry ||
 || **iconCode***
 [`string`](../../../data-types.md) | Icon code.
 
@@ -79,6 +79,71 @@ A list of available codes can be obtained using the method [crm.timeline.icon.li
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.logmessage.add',
+    		{
+    			fields: {
+    				entityTypeId: 1,
+    				entityId: 1,
+    				title: 'Test title',
+    				text: 'Test text message',
+    				iconCode: 'info',
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.logmessage.add',
+                [
+                    'fields' => [
+                        'entityTypeId' => 1,
+                        'entityId'     => 1,
+                        'title'        => 'Test title',
+                        'text'         => 'Test text message',
+                        'iconCode'     => 'info',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding log message: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.logmessage.add",
         {
@@ -99,7 +164,7 @@ A list of available codes can be obtained using the method [crm.timeline.icon.li
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -126,7 +191,7 @@ A list of available codes can be obtained using the method [crm.timeline.icon.li
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -178,16 +243,16 @@ The `result` field contains the [logMessage](#logMessage) object ||
 || **authorId** 
 [`integer`](../../../data-types.md)| User who created the entry ||
 || **title**
-[`string`](../../../data-types.md)| Entry title ||
+[`string`](../../../data-types.md)| Title of the entry ||
 || **text** 
-[`string`](../../../data-types.md)| Entry content ||
+[`string`](../../../data-types.md)| Content of the entry ||
 || **iconCode** 
 [`string`](../../../data-types.md)| Icon code ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

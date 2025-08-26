@@ -1,10 +1,10 @@
-# Pin a Record in the Timeline crm.timeline.item.pin
+# Pinning an Item in the Timeline crm.timeline.item.pin
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `crm.timeline.item.pin` pins a record in the timeline.
+The method `crm.timeline.item.pin` pins an item in the timeline.
 
 ## Method Parameters
 
@@ -14,11 +14,11 @@ The method `crm.timeline.item.pin` pins a record in the timeline.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the timeline record, for example `999`. You can obtain the id using the method [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the timeline item, for example `999`. You can obtain the id using the method [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md) ||
 || **ownerTypeId***
-[`integer`](../../data-types.md#object_type) | [Identifier of the CRM object type](../../data-types.md#object_type) to which the record is linked, for example `2` for a deal ||
+[`integer`](../../data-types.md#object_type) | [Identifier of the CRM object type](../../data-types.md#object_type) to which the item is linked, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../data-types.md) | Identifier of the CRM entity to which the record is linked, for example `10` ||
+[`integer`](../../../data-types.md) | Identifier of the CRM element to which the item is linked, for example `10` ||
 |#
 
 ## Code Examples
@@ -50,6 +50,60 @@ The method `crm.timeline.item.pin` pins a record in the timeline.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.timeline.item.pin",
+    		{
+    			id: 999,
+    			ownerTypeId: 2,
+    			ownerId: 10,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.item.pin',
+                [
+                    'id'          => 999,
+                    'ownerTypeId' => 2,
+                    'ownerId'     => 10,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error pinning timeline item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.item.pin",
         {
@@ -65,7 +119,7 @@ The method `crm.timeline.item.pin` pins a record in the timeline.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -88,7 +142,7 @@ The method `crm.timeline.item.pin` pins a record in the timeline.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -119,7 +173,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

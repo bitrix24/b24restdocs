@@ -48,7 +48,7 @@ For the activity with `id = 8`, linked to the activity with `id = 4`, we will se
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":2,"entityId":4,"activityId":8,"layout":{"blocks":{"block_1":{"type":"text","properties":{"value":"Hello!\nWe are starting.","multiline":true,"bold":true,"color":"base_90"}},"block_2":{"type":"largeText","properties":{"value":"Hello!\nWe are starting.\nWe continue.\nWe are still working on this.\nWe continue.\nWe are close to the result.\nGoodbye."}},"block_3":{"type":"link","properties":{"text":"Open deal","bold":true,"action":{"type":"redirect","uri":"/crm/deal/details/123/"}}},"block_4":{"type":"withTitle","properties":{"title":"Title","block":{"type":"text","properties":{"value":"Some value"}}}}}}' \
+    -d '{"entityTypeId":2,"entityId":4,"activityId":8,"layout":{"blocks":{"block_1":{"type":"text","properties":{"value":"Hello!\nWe are starting.","multiline":true,"bold":true,"color":"base_90"}},"block_2":{"type":"largeText","properties":{"value":"Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to the result.\nGoodbye."}},"block_3":{"type":"link","properties":{"text":"Open deal","bold":true,"action":{"type":"redirect","uri":"/crm/deal/details/123/"}}},"block_4":{"type":"withTitle","properties":{"title":"Title","block":{"type":"text","properties":{"value":"Some value"}}}}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.layout.blocks.set
     ```
 
@@ -58,11 +58,104 @@ For the activity with `id = 8`, linked to the activity with `id = 4`, we will se
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entityTypeId":2,"entityId":4,"activityId":8,"layout":{"blocks":{"block_1":{"type":"text","properties":{"value":"Hello!\nWe are starting.","multiline":true,"bold":true,"color":"base_90"}},"block_2":{"type":"largeText","properties":{"value":"Hello!\nWe are starting.\nWe continue.\nWe are still working on this.\nWe continue.\nWe are close to the result.\nGoodbye."}},"block_3":{"type":"link","properties":{"text":"Open deal","bold":true,"action":{"type":"redirect","uri":"/crm/deal/details/123/"}}},"block_4":{"type":"withTitle","properties":{"title":"Title","block":{"type":"text","properties":{"value":"Some value"}}}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"entityTypeId":2,"entityId":4,"activityId":8,"layout":{"blocks":{"block_1":{"type":"text","properties":{"value":"Hello!\nWe are starting.","multiline":true,"bold":true,"color":"base_90"}},"block_2":{"type":"largeText","properties":{"value":"Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to the result.\nGoodbye."}},"block_3":{"type":"link","properties":{"text":"Open deal","bold":true,"action":{"type":"redirect","uri":"/crm/deal/details/123/"}}},"block_4":{"type":"withTitle","properties":{"title":"Title","block":{"type":"text","properties":{"value":"Some value"}}}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.layout.blocks.set
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.layout.blocks.set',
+    		{
+    			entityTypeId: 2, // Deal
+    			entityId: 4,     // Deal ID
+    			activityId: 8,   // ID of the deal linked to this deal
+    			layout: layout,  // Object describing the set of additional content blocks
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.layout.blocks.set',
+                [
+                    'entityTypeId' => 2, // Deal
+                    'entityId'     => 4, // Deal ID
+                    'activityId'   => 8, // ID of the deal linked to this deal
+                    'layout'       => [
+                        'blocks' => [
+                            'block_1' => [
+                                'type'       => "text",
+                                'properties' => [
+                                    'value'     => "Hello!\nWe are starting.",
+                                    'multiline' => true,
+                                    'bold'      => true,
+                                    'color'     => "base_90",
+                                ],
+                            ],
+                            'block_2' => [
+                                'type'       => "largeText",
+                                'properties' => [
+                                    'value' => "Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to the result.\nGoodbye.",
+                                ],
+                            ],
+                            'block_3' => [
+                                'type'       => "link",
+                                'properties' => [
+                                    'text'     => "Open deal",
+                                    'bold'     => true,
+                                    'action'   => [
+                                        'type' => "redirect",
+                                        'uri'  => "/crm/deal/details/123/",
+                                    ],
+                                ],
+                            ],
+                            'block_4' => [
+                                'type'       => "withTitle",
+                                'properties' => [
+                                    'title'  => "Title",
+                                    'block'  => [
+                                        'type'       => "text",
+                                        'properties' => [
+                                            'value' => "Some value",
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting activity layout blocks: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     const layout = {
@@ -79,7 +172,7 @@ For the activity with `id = 8`, linked to the activity with `id = 4`, we will se
             'block_2': {
                 type: "largeText",
                 properties: {
-                    value: "Hello!\nWe are starting.\nWe continue.\nWe are still working on this.\nWe continue.\nWe are close to the result.\nGoodbye."
+                    value: "Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to the result.\nGoodbye."
                 }
             },
             'block_3': {
@@ -125,7 +218,7 @@ For the activity with `id = 8`, linked to the activity with `id = 4`, we will se
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -149,7 +242,7 @@ For the activity with `id = 8`, linked to the activity with `id = 4`, we will se
                     'block_2' => [
                         'type' => "largeText",
                         'properties' => [
-                            'value' => "Hello!\nWe are starting.\nWe continue.\nWe are still working on this.\nWe continue.\nWe are close to the result.\nGoodbye."
+                            'value' => "Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to the result.\nGoodbye."
                         ]
                     ],
                     'block_3' => [
@@ -213,7 +306,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ERROR_WRONG_CONTEXT",
-    "error_description": "The method can only be called in the context of a REST application"
+    "error_description": "The method call is only possible in the context of a REST application"
 }
 ```
 
@@ -231,7 +324,7 @@ HTTP status: **400**
 || `FIELD_IS_REQUIRED` | The `blocks` field in `RestAppLayoutDto` must be filled. ||
 |#
 
-The method also returns errors related to incorrect structure of the set of content blocks. Details can be found in the error message.
+The method also returns errors related to the incorrect structure of the set of content blocks. Details can be found in the error message.
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 

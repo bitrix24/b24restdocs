@@ -16,16 +16,16 @@ Within the application, you can only obtain the set of additional content blocks
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the CRM entity type to which the timeline record is linked ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object type to which the timeline record is linked ||
 || **entityId***
-[`integer`](../../../data-types.md) | Identifier of the CRM entity to which the timeline record is linked ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object to which the timeline record is linked ||
 || **timelineId***
 [`integer`](../../../data-types.md) | Identifier of the timeline record ||
 |#
 
 ## Code Examples
 
-Get a set of additional content blocks for the timeline record with `id = 8`, linked to the deal with `id = 4`:
+Retrieve a set of additional content blocks for the timeline record with `id = 8`, linked to the deal with `id = 4`:
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -54,6 +54,61 @@ Get a set of additional content blocks for the timeline record with `id = 8`, li
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.layout.blocks.get',
+    		{
+    			entityTypeId: 2, // Deal
+    			entityId: 4,     // Deal ID
+    			timelineId: 8,   // ID of the timeline record linked to this deal
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.layout.blocks.get',
+                [
+                    'entityTypeId' => 2, // Deal
+                    'entityId'     => 4, // Deal ID
+                    'timelineId'   => 8, // ID of the timeline record linked to this deal
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting timeline layout blocks: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.timeline.layout.blocks.get',
         {
@@ -71,7 +126,7 @@ Get a set of additional content blocks for the timeline record with `id = 8`, li
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -161,7 +216,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a rest application ||
-|| `OWNER_NOT_FOUND` | The entity to which the timeline record is linked was not found ||
+|| `OWNER_NOT_FOUND` | The element to which the timeline record is linked was not found ||
 || `NOT_FOUND` | The timeline record was not found ||
 || `ACCESS_DENIED` | Access denied ||
 |#

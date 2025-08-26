@@ -37,11 +37,11 @@ fields:
 }
 ```
 
-File content is transmitted as a [base64 string](../../../files/how-to-upload-files.md)
+The file content is transmitted as a [base64 string](../../../files/how-to-upload-files.md)
 
 {% note warning %}
 
-Starting from crm version 23.100.0, the method only accepts parameters with the key `fields` in lowercase. Other undocumented variants (Fields, FIELDS, arFields) are not accepted.
+Starting from version crm 23.100.0, the method only accepts parameters with the key `fields` in lowercase. Other undocumented variants (Fields, FIELDS, arFields) are not accepted.
 
 {% endnote %}
 
@@ -60,13 +60,13 @@ Starting from crm version 23.100.0, the method only accepts parameters with the 
 
 The value can be obtained using the [`crm.item.list`](../../universal/crm-item-list.md) method or when creating an element with the help of [`crm.item.add`](../../universal/crm-item-add.md) ||
 || **ENTITY_TYPE***
-[`string`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../../universal/user-defined-object-types/index.md) of the CRM object to which the comment is attached. For example: `lead`, `deal`, `contact`, `company`, `order` ||
+[`string`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../../universal/user-defined-object-types/index.md) of the CRM object to which the comment is attached. For example: `lead`, `deal`, `contact`, `company`, `order`, `dynamic_1046` ||
 || **AUTHOR_ID**
 [`user`](../../../data-types.md#standart-objects) | Identifier of the user adding the comment ||
 || **COMMENT***
 [`string`](../../../data-types.md) | Text of the comment ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described according to [the rules](../../../files/how-to-upload-files.md) ||
+[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described by the [rules](../../../files/how-to-upload-files.md) ||
 |#
 
 ## Code Examples
@@ -98,6 +98,79 @@ The value can be obtained using the [`crm.item.list`](../../universal/crm-item-l
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.timeline.comment.add",
+    		{
+    			fields:
+    			{
+    				"ENTITY_ID": 10,
+    				"ENTITY_TYPE": "deal",
+    				"COMMENT": "New comment was added",
+    				"AUTHOR_ID": 5,
+    				"FILES": [
+    					[
+    						"1.gif", 
+    						"R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+    					],
+    					[
+    						"2.gif",
+    						"R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+    					],
+    				]
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.comment.add',
+                [
+                    'fields' => [
+                        'ENTITY_ID'   => 10,
+                        'ENTITY_TYPE' => 'deal',
+                        'COMMENT'     => 'New comment was added',
+                        'AUTHOR_ID'   => 5,
+                        'FILES'       => [
+                            ['1.gif', 'R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='],
+                            ['2.gif', 'R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding timeline comment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.comment.add",
         {
@@ -127,7 +200,7 @@ The value can be obtained using the [`crm.item.list`](../../universal/crm-item-l
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

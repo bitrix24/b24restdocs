@@ -52,6 +52,69 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.todo.updateDeadline',
+    		{
+    			id: 999,
+    			ownerTypeId: 2,
+    			ownerId: 1,
+    			value: new Date()
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.todo.updateDeadline',
+                [
+                    'id'          => 999,
+                    'ownerTypeId' => 2,
+                    'ownerId'     => 1,
+                    'value'       => date('Y-m-d H:i:s'),
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating todo deadline: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.activity.todo.updateDeadline",
         {
@@ -69,7 +132,7 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

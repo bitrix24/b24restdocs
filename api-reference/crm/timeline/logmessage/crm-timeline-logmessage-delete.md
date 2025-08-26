@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `user with permission to modify the CRM entity that contains the entry`
+> Who can execute the method: `user with permission to modify the CRM entity where the entry is located`
 
 This method deletes a timeline log entry.
 
@@ -56,6 +56,59 @@ You can obtain identifiers using the [`crm.timeline.logmessage.list`](./crm-time
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.logmessage.delete',
+    		{
+    			id: 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.logmessage.delete',
+                [
+                    'id' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting log message: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.logmessage.delete",
         {
@@ -70,7 +123,7 @@ You can obtain identifiers using the [`crm.timeline.logmessage.list`](./crm-time
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

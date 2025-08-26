@@ -1,34 +1,34 @@
-# Get Information About Note crm.timeline.note.get
+# Get Information About the Note crm.timeline.note.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: `any user`
 
-This method returns information about a note related to a timeline record.
+The method returns information about a note related to a timeline record.
 
 ## Method Parameters
 
-{% include [Footnote about required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ownerTypeId***
-[`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md) to which the record belongs ||
+[`integer`](../../../data-types.md) | [Identifier of the element type](../../data-types.md) to which the record belongs ||
 || **ownerId***
-[`integer`](../../../data-types.md) | Identifier of the entity to which the record belongs ||
+[`integer`](../../../data-types.md) | Identifier of the element to which the record belongs ||
 || **itemType***
 [`integer`](../../../data-types.md) | Type of the record to which the note should be applied: 
 
 - `1` — history record
-- `2` — deal ||
+- `2` — activity ||
 || **itemId***
-[`integer`](../../../data-types.md) | Identifier of the record to which the note should be applied. If `itemType=1`, this is the identifier of the timeline history record. If `itemType=2`, this is the identifier of the deal ||
+[`integer`](../../../data-types.md) | Identifier of the record to which the note should be applied. If `itemType=1`, this is the identifier of the timeline history record. If `itemType=2`, this is the identifier of the activity ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -55,6 +55,62 @@ This method returns information about a note related to a timeline record.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.timeline.note.get",
+    		{
+    			ownerTypeId: 1,
+    			ownerId: 1,
+    			itemType: 1,
+    			itemId: 2,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.note.get',
+                [
+                    'ownerTypeId' => 1,
+                    'ownerId'     => 1,
+                    'itemType'    => 1,
+                    'itemId'      => 2,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting timeline note: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.note.get",
         {
@@ -71,7 +127,7 @@ This method returns information about a note related to a timeline record.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -90,6 +146,7 @@ This method returns information about a note related to a timeline record.
     print_r($result);
     echo '</PRE>';
     ```
+
 {% endlist %}
 
 ## Response Handling
@@ -101,9 +158,9 @@ HTTP Status: **200**
     "result": {
         "text": "Test note",
         "createdById": 1,
-        "createdTime": "2024-03-17T15:55:10+03:00",
+        "createdTime": "2024-03-17T15:55:10+02:00",
         "updatedById": 1,
-        "updatedTime": "2024-03-17T15:55:10+03:00"
+        "updatedTime": "2024-03-17T15:55:10+02:00"
     },
     "time": {
         "start": 1712132792.910734,
@@ -128,11 +185,11 @@ HTTP Status: **200**
 
 - **text** — text of the note
 - **createdById** — identifier of the user who created the note
-- **createdTime** — date and time the note was created
+- **createdTime** — date and time of note creation
 - **updatedById** — identifier of the user who modified the note
-- **updatedTime** — date and time the note was modified ||
+- **updatedTime** — date and time of note modification ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

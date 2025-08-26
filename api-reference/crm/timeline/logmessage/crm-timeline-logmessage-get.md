@@ -2,13 +2,13 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `user with read access permission to the CRM entity containing the record`
+> Who can execute the method: `user with read access permission to the CRM entity containing the entry`
 
 This method retrieves information about a timeline log entry.
 
 {% note info "" %}
 
-It's important to note that the method can only retrieve data for entries that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System entries cannot be retrieved using `crm.timeline.logmessage.get`.
+It is important to note that the method can only retrieve data about entries that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System entries cannot be retrieved using `crm.timeline.logmessage.get`.
 
 {% endnote %}
 
@@ -54,6 +54,59 @@ Identifiers can be obtained using the method [`crm.timeline.logmessage.list`](./
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.logmessage.get',
+    		{
+    			id: 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.logmessage.get',
+                [
+                    'id' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting log message: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.logmessage.get",
         {
@@ -68,7 +121,7 @@ Identifiers can be obtained using the method [`crm.timeline.logmessage.list`](./
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -146,14 +199,14 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `NOT_FOUND` | No timeline entry exists with the specified `id` ||
+|| `NOT_FOUND` | The timeline entry with the specified `id` does not exist ||
 || `100` | Required fields were not provided ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Exploring 
+## Continue Learning
 
 - [{#T}](./crm-timeline-logmessage-add.md)
 - [{#T}](./crm-timeline-logmessage-list.md)

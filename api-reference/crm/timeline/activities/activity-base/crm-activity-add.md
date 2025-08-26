@@ -20,7 +20,7 @@ The method `crm.activity.add` creates a new system activity.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`array`](../../../../data-types.md) | Array of values for [activity fields](#fields) in the form of a structure:
+[`array`](../../../../data-types.md) | Array of values for [activity fields](#fields) in the following structure:
 
 ```json
 fields:
@@ -78,9 +78,9 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 || **NOTIFY_TYPE**
 [`crm.enum.activitynotifytype`](../../../data-types.md) | Type of notification ||
 || **ORIGINATOR_ID**
-[`string`](../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
+[`string`](../../../data-types.md) | Identifier of the data source, used only for binding to an external source ||
 || **ORIGIN_ID**
-[`string`](../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
+[`string`](../../../data-types.md) | Identifier of the entity in the data source, used only for binding to an external source ||
 || **ORIGIN_VERSION**
 [`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 || **PRIORITY**
@@ -111,7 +111,7 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 [`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
 |#
 
-### Usage Scenarios for Field Values
+### Value Usage Examples for Fields
 
 For activities of type `e-mail`:
 - if the email should not be sent, set parameters `DIRECTION=2` and `COMPLETED='N'`;
@@ -144,6 +144,102 @@ For activities of type `e-mail`:
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.activity.add",
+    		{
+    			fields: {
+    				"OWNER_TYPE_ID": 2,
+    				"OWNER_ID": 102,
+    				"TYPE_ID": 2,
+    				"COMMUNICATIONS": [
+    					{ VALUE: "+18005551234", ENTITY_ID: 134, ENTITY_TYPE_ID: 3 }
+    				],
+    				"SUBJECT": "New call",
+    				"START_TIME": "2023-12-31T12:00:00+00:00", // Example date and time
+    				"END_TIME": "2023-12-31T12:30:00+00:00", // Example date and time
+    				"COMPLETED": "N",
+    				"PRIORITY": 3,
+    				"RESPONSIBLE_ID": 1,
+    				"DESCRIPTION": "Important call",
+    				"DESCRIPTION_TYPE": 3,
+    				"DIRECTION": 2,
+    				"FILES": [
+    					{
+    						fileData: [
+    							"example.jpg", // File name
+    							"base64_encoded_content_here" // File content in base64 format
+    						]
+    					}
+    				]
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.add',
+                [
+                    'fields' => [
+                        'OWNER_TYPE_ID'    => 2,
+                        'OWNER_ID'         => 102,
+                        'TYPE_ID'          => 2,
+                        'COMMUNICATIONS'   => [
+                            ['VALUE' => '+18005551234', 'ENTITY_ID' => 134, 'ENTITY_TYPE_ID' => 3]
+                        ],
+                        'SUBJECT'          => 'New call',
+                        'START_TIME'       => '2023-12-31T12:00:00+00:00',
+                        'END_TIME'         => '2023-12-31T12:30:00+00:00',
+                        'COMPLETED'        => 'N',
+                        'PRIORITY'         => 3,
+                        'RESPONSIBLE_ID'   => 1,
+                        'DESCRIPTION'      => 'Important call',
+                        'DESCRIPTION_TYPE' => 3,
+                        'DIRECTION'        => 2,
+                        'FILES'            => [
+                            [
+                                'fileData' => [
+                                    'example.jpg',
+                                    'base64_encoded_content_here'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding activity: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -185,7 +281,7 @@ For activities of type `e-mail`:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -238,7 +334,7 @@ For activities of type `e-mail`:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -262,14 +358,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns the identifier of the activity in the timeline on success, otherwise — `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns the identifier of the activity in the timeline in case of success, otherwise — `false` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -288,7 +384,7 @@ HTTP Status: **400**
 || `The field RESPONSIBLE_ID is not defined or invalid` | The `RESPONSIBLE_ID` field is not set ||
 || `The field TYPE_ID is not defined or invalid` | The `TYPE_ID` field is not set ||
 || `The field COMMUNICATIONS is not defined or invalid` | The `COMMUNICATIONS` field is not set ||
-|| `The only one communication is allowed for activity of specified type` | More than one contact is allowed ||
+|| `The only one communication is allowed for activity of specified type` | More than one contact is specified ||
 || `Could not build binding. Please ensure that owner info and communications are defined correctly` | Connections for the activity are not specified ||
 || 
 - `Email send error. Failed to load module "subscribe"`
@@ -303,8 +399,8 @@ HTTP Status: **400**
  | Errors related to "email" activities ||
 || `The custom activity without provider is not supported in current context` | Activity type is not supported in the specified context ||
 || `Use crm.activity.configurable.add for this activity provider` | Incorrect method call for configurable activity ||
-|| `Access denied` | No permission to add entity in CRM ||
-|| `Application context required` | Incorrect `PROVIDER_ID` parameter for activity created in the context of the application ||
+|| `Access denied` | No permission to add an entity in CRM ||
+|| `Application context required` | Incorrect `PROVIDER_ID` parameter for the activity created in the application context ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}

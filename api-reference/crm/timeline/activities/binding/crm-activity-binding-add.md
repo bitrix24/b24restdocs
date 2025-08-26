@@ -1,4 +1,4 @@
-# Add a deal binding to a CRM entity crm.activity.binding.add
+# Add a deal binding with a CRM entity crm.activity.binding.add
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -13,11 +13,11 @@ The method `crm.activity.binding.add` establishes a binding between a deal and a
 #|
 || **Name**
 `type` | **Description** ||
-|| **activityId***
+|| **activityId*** 
 [`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
-|| **entityTypeId***
+|| **entityTypeId*** 
 [`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the deal should be bound, for example `2` for a deal ||
-|| **entityId***
+|| **entityId*** 
 [`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the deal should be bound, for example `1` ||
 |#
 
@@ -49,6 +49,58 @@ The method `crm.activity.binding.add` establishes a binding between a deal and a
 
 - JS
 
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.binding.add',
+    		{
+    			activityId: 999, // Deal ID
+    			entityTypeId: 2, // CRM object type ID
+    			entityId: 1 // CRM entity ID
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('Result:', result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.binding.add',
+                [
+                    'activityId'   => 999, // Deal ID
+                    'entityTypeId' => 2, // CRM object type ID
+                    'entityId'     => 1 // CRM entity ID
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding activity binding: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         'crm.activity.binding.add',
@@ -67,8 +119,8 @@ The method `crm.activity.binding.add` establishes a binding between a deal and a
     );
     ```
 
-- PHP
-  
+- PHP CRest
+
     ```php
     require_once('crest.php');
 
@@ -114,7 +166,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Operation result. Returns `true` if the binding was successfully created, otherwise — `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the binding was successfully created, otherwise `false` ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -138,7 +190,7 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `100` | Required fields not provided ||
 || `NOT_FOUND` | Entity not found ||
-|| `OWNER_NOT_FOUND` | Entity owner not found ||
+|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `ACTIVITY_IS_ALREADY_BOUND` | The deal is already bound to this entity ||
 |#

@@ -52,6 +52,65 @@ The method `crm.activity.todo.updateResponsibleUser` updates the responsible use
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.todo.updateResponsibleUser',
+    		{
+    			id: 999,
+    			ownerTypeId: 2,
+    			ownerId: 1,
+    			responsibleId: 5
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.todo.updateResponsibleUser',
+                [
+                    'id'           => 999,
+                    'ownerTypeId'  => 2,
+                    'ownerId'      => 1,
+                    'responsibleId' => 5
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating responsible user: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.activity.todo.updateResponsibleUser",
         {
@@ -69,7 +128,7 @@ The method `crm.activity.todo.updateResponsibleUser` updates the responsible use
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -140,7 +199,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are missing ||
 || `NOT_FOUND` | CRM entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||

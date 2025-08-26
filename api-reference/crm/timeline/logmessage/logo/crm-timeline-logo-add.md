@@ -56,6 +56,65 @@ File requirements:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.logo.add',
+    		{
+    			code: 'info',
+    			fileContent: 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU',
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.logo.add',
+                [
+                    'code'        => 'info',
+                    'fileContent' => 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding timeline logo: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.logo.add",
         {
@@ -71,7 +130,7 @@ File requirements:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -101,7 +160,7 @@ File requirements:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -138,7 +197,6 @@ The `result` field contains the [logo](#logo) object ||
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-
 #### Logo Object {#logo}
 
 #|
@@ -156,7 +214,7 @@ If the logo was added by the user, the field contains the path to the logo image
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -172,7 +230,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Access denied ||
-|| `INVALID_ARG_VALUE` | Invalid parameter `fileContent` specified ||
+|| `INVALID_ARG_VALUE` | Invalid `fileContent` parameter specified ||
 || `FILE_SAVE_ERROR` | Unable to save the provided logo file ||
 || `100` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal) ||

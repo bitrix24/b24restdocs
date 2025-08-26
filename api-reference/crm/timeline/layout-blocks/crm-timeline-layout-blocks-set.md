@@ -6,11 +6,11 @@
 
 The method `crm.timeline.layout.blocks.set` sets a set of additional content blocks for a timeline record.
 
-Setting a new set of additional content blocks in a timeline record will erase the previously added set within a single application.
+Setting a new set of additional content blocks in a timeline record will erase the previously added set within the same application.
 
 Setting a set of additional content blocks cannot be applied to timeline records related to:
 - activities, for activities use the methods [crm.activity.layout.blocks.*](../activities/layout-blocks/index.md),
-- [log messages](../logmessage/index.md),
+- [timeline log records](../logmessage/index.md),
 - deprecated timeline records.
 
 ## Method Parameters
@@ -64,6 +64,99 @@ In the timeline record with `id = 8`, linked to the deal with `id = 4`, we will 
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.layout.blocks.set',
+    		{
+    			entityTypeId: 2, // Deal
+    			entityId: 4,     // Deal ID
+    			timelineId: 8,   // ID of the timeline record linked to this deal
+    			layout: layout,  // Object describing the set of additional content blocks
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.layout.blocks.set',
+                [
+                    'entityTypeId' => 2, // Deal
+                    'entityId'     => 4, // Deal ID
+                    'timelineId'   => 8, // ID of the timeline record linked to this deal
+                    'layout'       => [
+                        'blocks' => [
+                            'block_1' => [
+                                'type'       => "text",
+                                'properties' => [
+                                    'value'     => "Hello!\nWe are starting.",
+                                    'multiline' => true,
+                                    'bold'      => true,
+                                    'color'     => "base_90"
+                                ]
+                            ],
+                            'block_2' => [
+                                'type'       => "largeText",
+                                'properties' => [
+                                    'value' => "Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to the result.\nGoodbye."
+                                ]
+                            ],
+                            'block_3' => [
+                                'type'       => "link",
+                                'properties' => [
+                                    'text'     => "Open deal",
+                                    'bold'     => true,
+                                    'action'   => [
+                                        'type' => "redirect",
+                                        'uri'  => "/crm/deal/details/123/"
+                                    ]
+                                ]
+                            ],
+                            'block_4' => [
+                                'type'       => "withTitle",
+                                'properties' => [
+                                    'title'   => "Title",
+                                    'block'   => [
+                                        'type'       => "text",
+                                        'properties' => [
+                                            'value' => "Some value"
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting timeline layout blocks: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     const layout = {
@@ -126,7 +219,7 @@ In the timeline record with `id = 8`, linked to the deal with `id = 4`, we will 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -192,8 +285,8 @@ In the timeline record with `id = 8`, linked to the deal with `id = 4`, we will 
 If the timeline record contains more than one set of additional content blocks, they will be displayed in the order they were added.
 
 In the HTML layout, it is explicitly highlighted with data attributes which application added the set of additional content blocks:
-- `data-app-name`: name of the application,
-- `data-rest-client-id`: identifier of the application.
+- `data-app-name`: application name,
+- `data-rest-client-id`: application identifier.
 
 ## Response Handling
 
@@ -214,7 +307,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ERROR_WRONG_CONTEXT",
-    "error_description": "The method call is only possible in the context of a REST application"
+    "error_description": "Method call is only possible in the context of a REST application"
 }
 ```
 
@@ -224,15 +317,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ERROR_WRONG_CONTEXT` | The method call is only possible in the context of a REST application ||
+|| `ERROR_WRONG_CONTEXT` | Method call is only possible in the context of a REST application ||
 || `OWNER_NOT_FOUND` | The element to which the timeline record is linked was not found ||
-|| `NOT_FOUND` | The timeline record was not found ||
+|| `NOT_FOUND` | Timeline record not found ||
 || `ACCESS_DENIED` | Access denied ||
 || `UNSUITABLE_TIMELINE_ITEM` | The type of timeline record is not suitable for adding a set of additional content blocks ||
 || `FIELD_IS_REQUIRED` | The `blocks` field in `RestAppLayoutDto` must be filled. ||
 |#
 
-The method also returns errors related to the incorrect structure of the set of content blocks. Details can be found in the error message.
+The method also returns errors related to incorrect structure of the content block set. Details can be found in the error message.
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 

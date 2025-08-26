@@ -13,18 +13,18 @@ This method allows you to save a note.
 #|
 || **Name**
 `type` | **Description** ||
-|| **ownerTypeId***
+|| **ownerTypeId***  
 [`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md) to which the record belongs ||
-|| **ownerId***
+|| **ownerId***  
 [`integer`](../../../data-types.md) | Identifier of the entity to which the record belongs ||
-|| **itemType***
+|| **itemType***  
 [`integer`](../../../data-types.md) | Type of the record to which the note should be applied: 
 
 - `1` — history record
-- `2` — deal ||
-|| **itemId***
-[`integer`](../../../data-types.md) | Identifier of the record to which the note should be applied. If `itemType=1`, this is the identifier of the timeline history record. If `itemType=2`, this is the identifier of the deal ||
-|| **text***
+- `2` — activity ||
+|| **itemId***  
+[`integer`](../../../data-types.md) | Identifier of the record to which the note should be applied. If `itemType=1`, this is the identifier of the timeline history record. If `itemType=2`, this is the identifier of the activity ||
+|| **text***  
 [`string`](../../../data-types.md) | Note text ||
 |#
 
@@ -57,6 +57,71 @@ This method allows you to save a note.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.note.save',
+    		{
+    			ownerTypeId: 1,
+    			ownerId: 1,
+    			itemType: 1,
+    			itemId: 2,
+    			text: 'Test note',
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.note.save',
+                [
+                    'ownerTypeId' => 1,
+                    'ownerId'     => 1,
+                    'itemType'    => 1,
+                    'itemId'      => 2,
+                    'text'        => 'Test note',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error saving note: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.note.save",
         {
@@ -74,7 +139,7 @@ This method allows you to save a note.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

@@ -1,4 +1,4 @@
-# Delete badge by code crm.activity.badge.delete
+# Delete Badge by Code crm.activity.badge.delete
 
 > Scope: [`crm`](../../../../../scopes/permissions.md)
 >
@@ -12,7 +12,7 @@ The method `crm.activity.badge.delete` removes a badge.
 
 #|
 || **Field** | **Description** ||
-|| **code***  
+|| **code***
 [`string`](../../../../../data-types.md) | Badge code, for example `missedCall` ||
 |#
 
@@ -23,7 +23,7 @@ The method `crm.activity.badge.delete` removes a badge.
 {% list tabs %}
 
 - cURL (OAuth)
-  
+
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
@@ -33,7 +33,60 @@ The method `crm.activity.badge.delete` removes a badge.
     ```
 
 - JS
-  
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            "crm.activity.badge.delete",
+            {
+                code: 'missedCall',
+            }
+        );
+        
+        const result = response.getData().result;
+        if (result.error())
+            console.error(result.error());
+        else
+            console.dir(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.badge.delete',
+                [
+                    'code' => 'missedCall',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting activity badge: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         "crm.activity.badge.delete",
@@ -48,7 +101,7 @@ The method `crm.activity.badge.delete` removes a badge.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -89,7 +142,7 @@ HTTP status: **200**
 ### Returned Data
 
 #|
-|| **Name**  
+|| **Name**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../../../data-types.md) | Root element of the response. Contains:

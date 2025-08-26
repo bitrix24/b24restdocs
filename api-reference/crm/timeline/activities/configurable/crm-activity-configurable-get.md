@@ -42,6 +42,63 @@ The method can only be called in the context of an [application](https://helpdes
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.configurable.get',
+    		{
+    			id: 999,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.configurable.get',
+                [
+                    'id' => 999,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting configurable activity: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.activity.configurable.get",
         {
@@ -56,7 +113,7 @@ The method can only be called in the context of an [application](https://helpdes
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -161,7 +218,7 @@ HTTP Status: **200**
                 "footer": {
                     "buttons": {
                         "startCall": {
-                            "title": "About the Client",
+                            "title": "About Client",
                             "type": "primary",
                             "action": {
                                 "type": "openRestApp",
@@ -216,7 +273,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../../data-types.md) | Root element of the response - an associative array with the key **activity**, which will contain [fields](./crm-activity-configurable-add.md#parametr-fields) ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

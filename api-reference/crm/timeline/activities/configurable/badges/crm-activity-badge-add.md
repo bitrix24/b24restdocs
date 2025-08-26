@@ -12,14 +12,14 @@ The method `crm.activity.badge.add` adds a new badge for a configurable activity
 
 #|
 || **Field** | **Description** ||
-|| **code***  
+|| **code***
 [`string`](../../../../../data-types.md) | Badge code, for example `missedCall` ||
-|| **title***  
+|| **title***
 [`string`\|`array`](../../../../../data-types.md) | Badge title. Can be a string or an array of strings for different languages ||
-|| **value***  
+|| **value***
 [`string`\|`array`](../../../../../data-types.md) | Badge value. Can be a string or an array of strings for different languages ||
-|| **type***  
-[`string`](../../../../../data-types.md) | [Badge type](./index.md#tip-bejdzha) ||
+|| **type***
+[`string`](../../../../../data-types.md) | [Badge type](./index.md#badge-type) ||
 |#
 
 ## Code Examples
@@ -29,7 +29,7 @@ The method `crm.activity.badge.add` adds a new badge for a configurable activity
 {% list tabs %}
 
 - cURL (OAuth)
-  
+
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
@@ -39,7 +39,66 @@ The method `crm.activity.badge.add` adds a new badge for a configurable activity
     ```
 
 - JS
-  
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'crm.activity.badge.add',
+            {
+                code: 'missedCall',
+                title: 'Call Status',
+                value: 'Missed',
+                type: 'failure'
+            }
+        );
+        
+        const result = response.getData().result;
+        if (result.error())
+            console.error(result.error());
+        else
+            console.dir(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.badge.add',
+                [
+                    'code'  => 'missedCall',
+                    'title' => 'Call Status',
+                    'value' => 'Missed',
+                    'type'  => 'failure'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding activity badge: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         "crm.activity.badge.add",
@@ -57,7 +116,7 @@ The method `crm.activity.badge.add` adds a new badge for a configurable activity
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -81,7 +140,7 @@ The method `crm.activity.badge.add` adds a new badge for a configurable activity
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -108,7 +167,7 @@ HTTP status: **200**
 ### Returned Data
 
 #|
-|| **Name**  
+|| **Name**
 `type` | **Description** ||
 || **result**
 [`object`](../../../../data-types.md) | Root element of the response containing information about the added badge in case of success. In case of failure, it will return `null` ||
@@ -118,7 +177,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

@@ -65,6 +65,77 @@ The method `crm.activity.todo.update` updates a universal activity.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.todo.update',
+    		{
+    			id: 999,
+    			ownerTypeId: 2,
+    			ownerId: 1,
+    			deadline: (new Date()),
+    			title: 'New activity title',
+    			description: 'New activity description',
+    			responsibleId: 1,
+    			pingOffsets: [15, 30],
+    			colorId: 7
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.todo.update',
+                [
+                    'id'            => 999,
+                    'ownerTypeId'   => 2,
+                    'ownerId'       => 1,
+                    'deadline'      => (new DateTime()),
+                    'title'         => 'New activity title',
+                    'description'   => 'New activity description',
+                    'responsibleId' => 1,
+                    'pingOffsets'   => [15, 30],
+                    'colorId'       => 7
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+            // Your logic for processing data
+            processData($result->data());
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating todo activity: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.activity.todo.update",
         {
@@ -87,7 +158,7 @@ The method `crm.activity.todo.update` updates a universal activity.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -116,7 +187,7 @@ The method `crm.activity.todo.update` updates a universal activity.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -148,7 +219,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

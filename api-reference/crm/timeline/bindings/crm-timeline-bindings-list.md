@@ -4,7 +4,7 @@
 >
 > Who can execute the method: `any user`
 
-This method retrieves the list of bindings for a record in the timeline.
+The method retrieves a list of bindings for a record in the timeline.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ This method retrieves the list of bindings for a record in the timeline.
 || **filter***
 [`object`](../../../data-types.md) | Object for filtering selected records.
 
-The `OWNER_ID` field must be used; other fields are not necessary. ||
+The `OWNER_ID` field is required; other fields are not necessary. ||
 |#
 
 ## Code Examples
@@ -48,6 +48,91 @@ The `OWNER_ID` field must be used; other fields are not necessary. ||
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.timeline.bindings.list',
+        {
+          filter: {
+            "OWNER_ID": 999,
+          },
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in chunks and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.timeline.bindings.list', {
+        filter: {
+          "OWNER_ID": 999,
+        },
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('crm.timeline.bindings.list', {
+        filter: {
+          "OWNER_ID": 999,
+        },
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.bindings.list',
+                [
+                    'filter' => [
+                        'OWNER_ID' => 999,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            print_r($result->data());
+            if ($result->more()) {
+                $result->next();
+            }
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching timeline bindings: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.bindings.list",
         {
@@ -67,7 +152,7 @@ The `OWNER_ID` field must be used; other fields are not necessary. ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -116,8 +201,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-03T17:19:01+02:00",
+        "date_finish": "2024-05-03T17:19:01+02:00",
         "operating": 0
     }
 }

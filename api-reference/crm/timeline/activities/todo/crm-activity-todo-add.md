@@ -13,11 +13,11 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
 #|
 || **Name**
 `type` | **Description** ||
-|| **ownerTypeId*** 
+|| **ownerTypeId***
 [`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is linked, for example `2` for a deal ||
-|| **ownerId*** 
+|| **ownerId***
 [`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the activity is linked, for example, `1` ||
-|| **deadline*** 
+|| **deadline***
 [`datetime`](../../../../data-types.md) | Deadline for the activity, for example `2025-02-03T15:00:00` ||
 || **title**
 [`string`](../../../../data-types.md) | Title of the activity, default is an empty string ||
@@ -28,10 +28,9 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
 || **parentActivityId**
 [`integer`](../../../../data-types.md) | Identifier of the activity in the timeline that can be linked to the created activity, for example `888` ||
 || **pingOffsets**
-[`array`](../../../../data-types.md) | An array containing integer values in minutes to set reminder times for the activity. For example, `[0, 15]` means that 2 reminders will be created, one 15 minutes before the deadline and one at the moment the deadline occurs. Default is an empty array, with no reminders ||
+[`array`](../../../../data-types.md) | An array containing integer values in minutes that allow you to set reminder times for the activity. For example, `[0, 15]` means that 2 reminders will be created, one 15 minutes before the deadline and one at the moment the deadline occurs. Default is an empty array, with no reminders ||
 || **colorId**
 [`integer`](../../../../data-types.md) | Identifier of the activity color in the timeline, for example `1`. There are 8 colors available, values from 1 to 7 and a default color if none is specified
-
 ||
 |#
 
@@ -64,6 +63,75 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.todo.add',
+    		{
+    			ownerTypeId: 2,
+    			ownerId: 1,
+    			deadline: (new Date()),
+    			title: 'Activity Title',
+    			description: 'Activity Description',
+    			responsibleId: 5,
+    			pingOffsets: [0, 15],
+    			colorId: 2
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.todo.add',
+                [
+                    'ownerTypeId'   => 2,
+                    'ownerId'       => 1,
+                    'deadline'      => (new DateTime()),
+                    'title'         => 'Activity Title',
+                    'description'   => 'Activity Description',
+                    'responsibleId' => 5,
+                    'pingOffsets'   => [0, 15],
+                    'colorId'       => 2
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding todo activity: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.activity.todo.add",
         {
@@ -85,7 +153,7 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -113,7 +181,7 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -145,7 +213,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

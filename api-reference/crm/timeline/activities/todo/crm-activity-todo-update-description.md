@@ -52,6 +52,62 @@ The method `crm.activity.todo.updateDescription` changes the description in the 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.todo.updateDescription',
+    		{
+    			id: 999,
+    			ownerTypeId: 2,
+    			ownerId: 1,
+    			value: 'New activity description'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.todo.updateDescription',
+                [
+                    'id'          => 999,
+                    'ownerTypeId' => 2,
+                    'ownerId'     => 1,
+                    'value'       => 'New activity description',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating todo description: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.activity.todo.updateDescription",
         {
@@ -69,7 +125,7 @@ The method `crm.activity.todo.updateDescription` changes the description in the 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -93,7 +149,7 @@ The method `crm.activity.todo.updateDescription` changes the description in the 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -125,7 +181,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -140,11 +196,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are missing ||
 || `NOT_FOUND` | CRM entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
-|| `CAN_NOT_UPDATE_COMPLETED_TODO` | Completed activity cannot be modified ||
+|| `CAN_NOT_UPDATE_COMPLETED_TODO` | Closed activity cannot be modified ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}

@@ -18,9 +18,9 @@ If the activity is linked to only one entity, this binding cannot be removed.
 || **activityId***
 [`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
 || **entityTypeId***
-[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is being unlinked, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is being unbound, for example `2` for a deal ||
 || **entityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the activity is being unlinked, for example `1`  ||
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the activity is being unbound, for example `1`  ||
 |#
 
 ## Code Examples
@@ -51,6 +51,56 @@ If the activity is linked to only one entity, this binding cannot be removed.
 
 - JS
 
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.binding.delete',
+    		{
+    			activityId: 999, // Activity ID
+    			entityTypeId: 2, // CRM object type ID
+    			entityId: 1 // CRM entity ID
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('Result:', result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.binding.delete',
+                [
+                    'activityId'   => 999, // Activity ID
+                    'entityTypeId' => 2, // CRM object type ID
+                    'entityId'     => 1 // CRM entity ID
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Result: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         'crm.activity.binding.delete',
@@ -69,7 +119,7 @@ If the activity is linked to only one entity, this binding cannot be removed.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -116,7 +166,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the connection was successfully removed, otherwise — `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the binding was successfully removed, otherwise `false` ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -142,7 +192,7 @@ HTTP status: **400**
 || `NOT_FOUND` | Entity not found ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `BINDING_NOT_FOUND` | Activity is not linked to this entity ||
+|| `BINDING_NOT_FOUND` | Activity is not bound to this entity ||
 || `LAST_BINDING_CANNOT_BE_DELETED` | Cannot delete the only binding of the activity to the entity ||
 |#
 

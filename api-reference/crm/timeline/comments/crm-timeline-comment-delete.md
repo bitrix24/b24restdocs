@@ -4,7 +4,7 @@
 >
 > Who can execute the method: `any user`
 
-This method deletes a deal of type "Comment".
+This method deletes a "Comment" type activity.
 
 ## Method Parameters
 
@@ -14,16 +14,16 @@ This method deletes a deal of type "Comment".
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Integer identifier of the deal of type "Comment" (for example, `1`). You can obtain identifiers using the method [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) ||
+[`integer`](../../../data-types.md) | Integer identifier of the "Comment" type activity (for example, `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
 || **ownerTypeId**
-[`integer`](../../data-types.md#object_type) | [Integer identifier of the CRM entity type](../../data-types.md#object_type) to which the comment is linked (for example, `2` for a deal) ||
+[`integer`](../../data-types.md#object_type) | [Integer identifier of the CRM entity type](../../data-types.md#object_type) to which the comment is attached (for example, `2` for a deal) ||
 || **ownerId**
-[`integer`](../../../data-types.md) | Integer identifier of the CRM entity to which the comment is linked (for example, `1`). You can get a list of identifiers using the method [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) (field `ENTITY_ID`) ||
+[`integer`](../../../data-types.md) | Integer identifier of the CRM entity to which the comment is attached (for example, `1`). A list of identifiers can be obtained using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
 |#
 
 {% note warning %}
 
-When specifying `ownerTypeId` and `ownerId`, if the comment is linked to multiple entities, the comment will be deleted from the entity whose identifiers were provided. You can get a list of all bindings for the comment using the method [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md)
+When specifying `ownerTypeId` and `ownerId`, if the comment is linked to multiple entities, the comment will be deleted from the entity whose identifiers were provided. You can get a list of all bindings for the comment using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method.
 
 {% endnote %}
 
@@ -56,6 +56,67 @@ When specifying `ownerTypeId` and `ownerId`, if the comment is linked to multipl
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.comment.delete',
+    		{
+    			id: 999,
+    			ownerTypeId: 2,
+    			ownerId: 10,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.comment.delete',
+                [
+                    'id'          => 999,
+                    'ownerTypeId' => 2,
+                    'ownerId'     => 10,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting timeline comment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.comment.delete",
         {
@@ -72,7 +133,7 @@ When specifying `ownerTypeId` and `ownerId`, if the comment is linked to multipl
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -104,8 +165,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-03T17:19:01+02:00",
+        "date_finish": "2024-05-03T17:19:01+02:00",
         "operating": 0
     }
 }

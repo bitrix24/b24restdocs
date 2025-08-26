@@ -6,7 +6,7 @@
 
 The method `crm.timeline.layout.blocks.delete` removes a set of additional content blocks for a timeline record.
 
-Within the application, only the set of additional content blocks that was installed through this application can be deleted.
+Within the application, you can only delete the set of additional content blocks that was installed through this application.
 
 ## Method Parameters
 
@@ -15,11 +15,11 @@ Within the application, only the set of additional content blocks that was insta
 #|
 || **Name**
 `type` | **Description** ||
-|| **entityTypeId*** 
+|| **entityTypeId***
 [`integer`](../../../data-types.md) | Identifier of the entity type to which the timeline record is linked ||
-|| **entityId*** 
+|| **entityId***
 [`integer`](../../../data-types.md) | Identifier of the entity to which the timeline record is linked ||
-|| **timelineId*** 
+|| **timelineId***
 [`integer`](../../../data-types.md) | Identifier of the timeline record ||
 |#
 
@@ -54,6 +54,58 @@ Delete a set of additional content blocks for the timeline record with `id = 8`,
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.layout.blocks.delete',
+    		{
+    			entityTypeId: 2, // Deal
+    			entityId: 4,     // Deal ID
+    			timelineId: 8,   // ID of the timeline record linked to this deal
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.layout.blocks.delete',
+                [
+                    'entityTypeId' => 2, // Deal
+                    'entityId'     => 4, // Deal ID
+                    'timelineId'   => 8, // ID of the timeline record linked to this deal
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting timeline layout block: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.timeline.layout.blocks.delete',
         {
@@ -71,7 +123,7 @@ Delete a set of additional content blocks for the timeline record with `id = 8`,
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -95,7 +147,7 @@ Delete a set of additional content blocks for the timeline record with `id = 8`,
 
 HTTP status: **200**
 
-Returns `{ success: true }` in case of successful deletion of the set of additional content blocks, otherwise `null`.
+Returns `{ success: true }` if the set of additional content blocks was successfully deleted, otherwise `null`.
 
 ```json
 {
@@ -110,7 +162,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ERROR_WRONG_CONTEXT",
-    "error_description": "The method can only be called in the context of a REST application"
+    "error_description": "The method can only be called in the context of a rest application"
 }
 ```
 
@@ -120,7 +172,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a REST application ||
+|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a rest application ||
 || `OWNER_NOT_FOUND` | The element to which the timeline record is linked was not found ||
 || `NOT_FOUND` | The timeline record or the set of additional content blocks was not found ||
 || `ACCESS_DENIED` | Access denied ||

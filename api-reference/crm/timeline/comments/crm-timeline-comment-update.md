@@ -16,7 +16,7 @@ This method updates a "Comment" type activity in the timeline.
 || **id***
 [`integer`](../../../data-types.md) | Integer identifier of the "Comment" type activity (for example, `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the "Comment" type activity in the structure:
+[`object`](../../../data-types.md) | Values of the fields (detailed description provided [below](#parametr-fields)) for updating the "Comment" type activity in the structure:
 
 ```js
 fields:
@@ -37,7 +37,7 @@ fields:
 
 {% note warning %}
 
-Starting from crm version 23.100.0, only parameters with the key `fields` in lowercase are accepted. Other undocumented variants (Fields, FIELDS, arFields) are not accepted.
+Starting from version crm 23.100.0, only parameters with the key `fields` in lowercase are accepted. Other undocumented variants (Fields, FIELDS, arFields) are not accepted.
 
 {% endnote %}
 
@@ -88,6 +88,75 @@ Starting from crm version 23.100.0, only parameters with the key `fields` in low
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.comment.update',
+    		{
+    			id: 999,
+    			fields:
+    			{
+    				"COMMENT": "Comment was changed",
+    				"FILES": [
+    					[
+    						"1.gif", 
+    						"R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+    					],
+    					[
+    						"2.gif",
+    						"R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+    					],
+    				]
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.comment.update',
+                [
+                    'id'     => 999,
+                    'fields' => [
+                        'COMMENT' => 'Comment was changed',
+                        'FILES'  => [
+                            ['1.gif', 'R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='],
+                            ['2.gif', 'R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating timeline comment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.comment.update",
         {
@@ -116,7 +185,7 @@ Starting from crm version 23.100.0, only parameters with the key `fields` in low
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -144,7 +213,7 @@ Starting from crm version 23.100.0, only parameters with the key `fields` in low
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -173,7 +242,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -188,9 +257,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
+|| `OWNER_NOT_FOUND` | Owner of the item not found ||
 || `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Entity not found ||
+|| `NOT_FOUND` | Item not found ||
 || `INVALID_ARG_VALUE` | Empty comment ||
 || `100` | Required fields not provided ||
 |#

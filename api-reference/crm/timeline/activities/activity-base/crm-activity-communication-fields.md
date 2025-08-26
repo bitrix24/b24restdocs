@@ -12,7 +12,7 @@ No parameters
 
 ## Code Examples
 
-{% include [Note on examples](../../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,7 +37,53 @@ No parameters
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.communication.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.communication.fields',
+                []
+            );
     
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching communication fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         'crm.activity.communication.fields',
@@ -51,7 +97,7 @@ No parameters
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -156,7 +202,7 @@ HTTP status: **200**
 
 #### Overview of Activity Communication Fields {#all-fields}
 
-{% include [Note on required parameters](../../../../../_includes/required.md) %}
+{% include [Footnote about required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Field** `type` | **Description** ||

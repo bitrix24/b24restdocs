@@ -1,10 +1,10 @@
-# Update system activity crm.activity.update
+# Update System Activity crm.activity.update
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: any user with permission to update the activity
 
-{% note warning "Method development has been discontinued" %}
+{% note warning "Method development has been halted" %}
 
 The method `crm.activity.update` continues to function, but there is a more current equivalent [crm.activity.todo.update](../todo/crm-activity-todo-update.md).
 
@@ -12,7 +12,7 @@ The method `crm.activity.update` continues to function, but there is a more curr
 
 The method `crm.activity.update` updates an existing activity.
 
-## Method parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../../../_includes/required.md) %}
 
@@ -53,15 +53,15 @@ fields:
 || **COMMUNICATIONS***
 [`crm_activity_communication`](../../../data-types.md) | [Description of the communication](./crm-activity-communication-fields.md) ||
 || **DEADLINE**
-[`datetime`](../../../data-types.md) | Date and time of the activity's deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
+[`datetime`](../../../data-types.md) | Date and time of the activity deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
 || **DESCRIPTION**
 [`string`](../../../data-types.md) | Text description of the activity ||
 || **DESCRIPTION_TYPE**
 [`crm.enum.contenttype`](../../../data-types.md) | Type of description ||
 || **DIRECTION**
-[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. Relevant for calls and e-mails, not used for meetings ||
+[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
 || **END_TIME**
-[`datetime`](../../../data-types.md) | Time of the activity's completion | ||
+[`datetime`](../../../data-types.md) | End time of the activity | ||
 || **FILES**
 [`diskfile`](../../../data-types.md) | Files added to the activity ||
 || **LOCATION**
@@ -71,9 +71,9 @@ fields:
 || **ORIGINATOR_ID**
 [`string`](../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../../data-types.md) | Identifier of the element in the data source, used only for linking to an external source ||
+[`string`](../../../data-types.md) | Identifier of the item in the data source, used only for linking to an external source ||
 || **ORIGIN_VERSION**
-[`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will overwrite the data ||
+[`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, it can be edited in CRM without fear that the next export will overwrite the data ||
 || **PRIORITY**
 [`crm.enum.activitypriority`](../../../data-types.md) | Priority ||
 || **PROVIDER_DATA**
@@ -91,7 +91,7 @@ fields:
 || **SETTINGS**
 [`object`](../../../data-types.md) | Additional settings ||
 || **START_TIME**
-[`datetime`](../../../data-types.md) | Time the activity starts ||
+[`datetime`](../../../data-types.md) | Start time of the activity ||
 || **STATUS**
 [`crm_enum_activitystatus`](../../../data-types.md) | Status of the activity ||
 || **SUBJECT**
@@ -102,7 +102,7 @@ fields:
 [`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
 |#
 
-## Code examples
+## Code Examples
 
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
@@ -114,7 +114,7 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New description of the activity"}}' \
+    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New activity description"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.update
     ```
 
@@ -124,12 +124,68 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New description of the activity"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":999,"fields":{"RESPONSIBLE_ID":1,"DESCRIPTION":"New activity description"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.update
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.update',
+    		{
+    			id: 999,
+    			fields: {
+    				"RESPONSIBLE_ID": 1, 
+    				"DESCRIPTION": "New activity description"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.update',
+                [
+                    'id' => 999,
+                    'fields' => [
+                        "RESPONSIBLE_ID" => 1,
+                        "DESCRIPTION" => "New activity description"
+                    ]
+                ]
+            );
     
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating activity: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         'crm.activity.update',
@@ -137,7 +193,7 @@ fields:
             id: 999,
             fields: {
                 "RESPONSIBLE_ID": 1, 
-                "DESCRIPTION": "New description of the activity"
+                "DESCRIPTION": "New activity description"
             }
         },
         result => {
@@ -150,7 +206,7 @@ fields:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -161,7 +217,7 @@ fields:
             'id' => 999,
             'fields' => [
                 'RESPONSIBLE_ID' => 1,
-                'DESCRIPTION' => 'New description of the activity'
+                'DESCRIPTION' => 'New activity description'
             ]
         ]
     );
@@ -173,9 +229,9 @@ fields:
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -193,20 +249,20 @@ HTTP status: **200**
 }
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the activity was successfully changed, otherwise `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the activity was successfully updated, otherwise `false` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-## Error handling
+## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -217,7 +273,7 @@ HTTP status: **400**
 
 {% include notitle [error handling](../../../../../_includes/error-info.md) %}
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
@@ -226,7 +282,7 @@ HTTP status: **400**
 || `The field RESPONSIBLE_ID is not defined or invalid` | The `RESPONSIBLE_ID` field is not set ||
 || `The field TYPE_ID is not defined or invalid` | The `TYPE_ID` field is not set ||
 || `The field COMMUNICATIONS is not defined or invalid` | The `COMMUNICATIONS` field is not set ||
-|| `The only one communication is allowed for activity of specified type` | More than one contact is not allowed ||
+|| `The only one communication is allowed for activity of specified type` | More than one contact is allowed ||
 || `Could not build binding. Please ensure that owner info and communications are defined correctly` | Connections for the activity are not specified ||
 || `The custom activity without provider is not supported in current context` | The activity type is not supported in the given context ||
 || `Use crm.activity.configurable.update for this activity provider` | Incorrect method call for configurable activity ||
@@ -236,7 +292,7 @@ HTTP status: **400**
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Continue exploring 
+## Continue Learning 
 
 - [{#T}](./crm-activity-add.md)
 - [{#T}](./crm-activity-delete.md)

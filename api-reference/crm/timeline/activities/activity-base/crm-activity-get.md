@@ -6,7 +6,7 @@
 
 The method `crm.activity.get` returns information about the activity by its ID.
 
-## Method Parameters
+## Method parameters
 
 {% include [Note on required parameters](../../../../../_includes/required.md) %}
 
@@ -17,7 +17,7 @@ The method `crm.activity.get` returns information about the activity by its ID.
 [`integer`](../../../../data-types.md) | The ID of the activity in the timeline, for example `999` ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
@@ -44,7 +44,60 @@ The method `crm.activity.get` returns information about the activity by its ID.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.get',
+    		{
+    			id: 999,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.get',
+                [
+                    'id' => 999,
+                ]
+            );
     
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting activity: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         'crm.activity.get',
@@ -60,8 +113,8 @@ The method `crm.activity.get` returns information about the activity by its ID.
     );
     ```
 
-- PHP
-  
+- PHP CRest
+
     ```php
     require_once('crest.php');
 
@@ -79,9 +132,9 @@ The method `crm.activity.get` returns information about the activity by its ID.
 
 {% endlist %}
 
-## Response Handling
+## Response handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -139,20 +192,20 @@ HTTP Status: **200**
 }
 ```
 
-### Returned Data
+### Returned data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | The root element of the response. The values for the `result` field correspond to [the fields of the object](./crm-activity-fields.md#all-fields) ||
+[`object`](../../../../data-types.md) | Root element of the response. Values for the `result` field correspond to [fields of the object](./crm-activity-fields.md#all-fields) ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-## Error Handling
+## Error handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -163,7 +216,7 @@ HTTP Status: **400**
 
 {% include notitle [error handling](../../../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
@@ -174,7 +227,7 @@ HTTP Status: **400**
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](./crm-activity-add.md)
 - [{#T}](./crm-activity-update.md)

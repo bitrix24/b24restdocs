@@ -1,10 +1,10 @@
-# Add Custom CRM Activity Type crm.activity.type.add
+# Add Custom Activity Type crm.activity.type.add
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can execute the method: `any user`
 
-The method `crm.activity.type.add` registers a custom activity type by specifying its name and icon.
+The method `crm.activity.type.add` registers a custom activity type by specifying a name and an icon.
 
 ## Method Parameters
 
@@ -62,7 +62,7 @@ A detailed description is provided [below](#parametr-fields)
     https://**put_your_bitrix24_address**/rest/crm.activity.type.add
     ```
 
-    After this, you just need to specify your type when creating an activity, and the icon and name will be loaded automatically.
+    After this, it is sufficient to specify your type when creating an activity, and the icon and name will be loaded automatically.
     
     ```bash
     curl -X POST \
@@ -73,6 +73,68 @@ A detailed description is provided [below](#parametr-fields)
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.activity.type.add",
+    		{
+    			fields:
+    			{
+    				"TYPE_ID": 'QuickBooks and other similar platforms',
+    				"NAME": "Activity for QuickBooks",
+    				'ICON_FILE': document.getElementById('type-icon'), // file input node
+    				"IS_CONFIGURABLE_TYPE": "N"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.type.add',
+                [
+                    'fields' => [
+                        'TYPE_ID'            => 'QuickBooks and other similar platforms',
+                        'NAME'               => 'Activity for QuickBooks',
+                        'ICON_FILE'          => $_FILES['type-icon'], // file input node
+                        'IS_CONFIGURABLE_TYPE' => 'N',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding activity type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -94,7 +156,7 @@ A detailed description is provided [below](#parametr-fields)
     );
     ```
 
-    After this, you just need to specify your type when creating an activity, and the icon and name will be loaded automatically. 
+    After this, it is sufficient to specify your type when creating an activity, and the icon and name will be loaded automatically. 
 
     ```js
     BX24.callMethod(
@@ -120,7 +182,7 @@ A detailed description is provided [below](#parametr-fields)
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -142,7 +204,7 @@ A detailed description is provided [below](#parametr-fields)
     echo '</PRE>';
     ```
 
-    After this, you just need to specify your type when creating an activity, and the icon and name will be loaded automatically. 
+    After this, it is sufficient to specify your type when creating an activity, and the icon and name will be loaded automatically. 
 
      ```php
     require_once('crest.php');
@@ -168,13 +230,11 @@ A detailed description is provided [below](#parametr-fields)
     echo '</PRE>';
     ```
 
-
-
 {% endlist %}
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -207,7 +267,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

@@ -36,6 +36,56 @@ The method `crm.activity.type.delete` removes a custom activity type.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.type.delete',
+    		{
+    			'TYPE_ID': 'QuickBooks and other similar platforms',
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.type.delete',
+                [
+                    'TYPE_ID' => 'QuickBooks and other similar platforms',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting activity type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.activity.type.delete",
         {
@@ -49,7 +99,7 @@ The method `crm.activity.type.delete` removes a custom activity type.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -119,8 +169,8 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `Access denied! Application context required` | The method works only in the context of applications ||
-|| `INVALID_ARG_VALUE` | The custom activity type with the specified `TYPE_ID` does not exist ||
+|| `Access denied! Application context required` | Method works only in the context of applications ||
+|| `INVALID_ARG_VALUE` | Custom activity type with the specified `TYPE_ID` does not exist ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}

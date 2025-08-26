@@ -1,10 +1,10 @@
-# Get a list of comments crm.timeline.comment.list
+# Get a List of Comments crm.timeline.comment.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: `any user`
 
-This method retrieves a list of all comments of the specified CRM entity type.
+The method retrieves a list of all comments of the specified CRM entity type.
 
 ## Method Parameters
 
@@ -12,7 +12,7 @@ This method retrieves a list of all comments of the specified CRM entity type.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array containing the list of fields to select (see the fields of the [result](./crm-timeline-comment-fields.md#fields) object). If not provided or an empty array is passed, the result will return an empty array ||
+[`array`](../../../data-types.md) | An array containing the list of fields to be selected (see the fields of the [result](./crm-timeline-comment-fields.md#fields) object). If not provided or an empty array is passed, the result will return an empty array ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering the selected comments in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
@@ -28,19 +28,19 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
-  - `"mol%"` — searching for values starting with "mol"
-  - `"%mol"` — searching for values ending with "mol"
-  - `"%mol%"` — searching for values where "mol" can be in any position
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+  - `"mol%"` — looking for values starting with "mol"
+  - `"%mol"` — looking for values ending with "mol"
+  - `"%mol%"` — looking for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
-  - `"mol%"` — searching for values not starting with "mol"
-  - `"%mol"` — searching for values not ending with "mol"
-  - `"%mol%"` — searching for values where the substring "mol" is not present in any position
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+  - `"mol%"` — looking for values not starting with "mol"
+  - `"%mol"` — looking for values not ending with "mol"
+  - `"%mol%"` — looking for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (see description above)
-- `=` — equals, exact match (used by default)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal ||
 || **order**
@@ -54,7 +54,7 @@ Possible values for `order`:
 - `DESC` — in descending order
  ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used for pagination control.
+[`integer`](../../../data-types.md) | This parameter is used for managing pagination.
 
 The page size of results is always static: 50 records.
 
@@ -62,13 +62,13 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number
+`start = (N-1) * 50`, where `N` — the number of the desired page
  ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -93,6 +93,129 @@ The formula for calculating the `start` parameter value:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.timeline.comment.list',
+        {
+          filter: {
+            "ENTITY_ID": 10,
+            "ENTITY_TYPE": "deal",
+          },
+          select: [
+            "ID",
+            "CREATED",
+            "ENTITY_ID",
+            "ENTITY_TYPE",
+            "AUTHOR_ID",
+            "COMMENT", 
+            "FILES",
+          ],
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.timeline.comment.list', {
+        filter: {
+          "ENTITY_ID": 10,
+          "ENTITY_TYPE": "deal",
+        },
+        select: [
+          "ID",
+          "CREATED",
+          "ENTITY_ID",
+          "ENTITY_TYPE",
+          "AUTHOR_ID",
+          "COMMENT", 
+          "FILES",
+        ],
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.timeline.comment.list', {
+        filter: {
+          "ENTITY_ID": 10,
+          "ENTITY_TYPE": "deal",
+        },
+        select: [
+          "ID",
+          "CREATED",
+          "ENTITY_ID",
+          "ENTITY_TYPE",
+          "AUTHOR_ID",
+          "COMMENT", 
+          "FILES",
+        ],
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.comment.list',
+                [
+                    'filter' => [
+                        'ENTITY_ID'   => 10,
+                        'ENTITY_TYPE' => 'deal',
+                    ],
+                    'select' => [
+                        'ID',
+                        'CREATED',
+                        'ENTITY_ID',
+                        'ENTITY_TYPE',
+                        'AUTHOR_ID',
+                        'COMMENT',
+                        'FILES',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching timeline comments: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -121,7 +244,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -154,7 +277,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -233,12 +356,12 @@ HTTP status: **200**
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -253,7 +376,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied. | No permissions to edit the entity in CRM ||
+|| Empty string | Access denied. | No rights to edit the entity in CRM ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -14,7 +14,7 @@ This method removes the binding of a timeline record from a CRM entity.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for unbinding the timeline record from the CRM entity in the following structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for unbinding the timeline record from the CRM entity in the form of a structure:
 
 ```js
 fields: {
@@ -76,6 +76,64 @@ fields: {
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.timeline.bindings.unbind",
+    		{
+    			fields: {
+    				"OWNER_ID": 1110,
+    				"ENTITY_ID": 10,
+    				"ENTITY_TYPE": "deal",
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.bindings.unbind',
+                [
+                    'fields' => [
+                        'OWNER_ID'    => 1110,
+                        'ENTITY_ID'   => 10,
+                        'ENTITY_TYPE' => 'deal',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unbinding timeline: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.bindings.unbind",
         {
@@ -94,7 +152,7 @@ fields: {
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -119,7 +177,7 @@ fields: {
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -143,14 +201,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the operation. Returns `true` if the binding was successfully removed, otherwise returns `false` ||
+[`boolean`](../../../data-types.md) | Result of the operation. Returns `true` if the binding was successfully removed, otherwise — `false` ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -165,10 +223,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | OWNER_ID is not defined or invalid | The required parameter `OWNER_ID` is not provided or the provided `OWNER_ID` is invalid ||
-|| Empty string | ENTITY_ID is not defined or invalid. | The required parameter `ENTITY_ID` is not provided or the provided `ENTITY_ID` is invalid ||
-|| Empty string | ENTITY_TYPE is not defined or invalid. | The required parameter `ENTITY_TYPE` is not provided or the provided `ENTITY_TYPE` is invalid ||
-|| Empty string | Not found. | The record of the binding of the timeline record to the CRM entity was not found ||
+|| Empty string | OWNER_ID is not defined or invalid | The required parameter `OWNER_ID` was not provided or the provided `OWNER_ID` is invalid ||
+|| Empty string | ENTITY_ID is not defined or invalid. | The required parameter `ENTITY_ID` was not provided or the provided `ENTITY_ID` is invalid ||
+|| Empty string | ENTITY_TYPE is not defined or invalid. | The required parameter `ENTITY_TYPE` was not provided or the provided `ENTITY_TYPE` is invalid ||
+|| Empty string | Not found. | The record of the timeline binding with the CRM entity was not found ||
 || Empty string | Access denied. | No permission to edit the entity in CRM ||
 |#
 

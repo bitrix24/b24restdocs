@@ -40,7 +40,7 @@ fields:
 ```
 ||
 || **layout***
-[`LayoutDto`](./structure/layout.md) | [Associative array of a special structure](./structure/layout.md#example), describing the appearance of the activity in the timeline ||
+[`LayoutDto`](./structure/layout.md) | [Associative array of special structure](./structure/layout.md#example), describing the appearance of the activity in the timeline ||
 |#
 
 ## Code Examples
@@ -55,11 +55,185 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"fields":{"typeId":"CONFIGURABLE","completed":false,"deadline":"**put_current_date_time_here**","pingOffsets":[300],"isIncomingChannel":"Y","responsibleId":5,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Smith","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About the Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"id":999,"fields":{"typeId":"CONFIGURABLE","completed":false,"deadline":"**put_current_date_time_here**","pingOffsets":[300],"isIncomingChannel":"Y","responsibleId":5,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Smith","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.configurable.update
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.activity.configurable.update",
+    		{
+    			id: 999,
+    			fields:
+    			{
+    				typeId: 'CONFIGURABLE',
+    				completed: false,
+    				deadline: new Date(),
+    				pingOffsets: [300],
+    				isIncomingChannel: 'Y',
+    				responsibleId: 5,
+    				badgeCode: 'CUSTOM',
+    			},
+    			layout:
+    			{
+    				"icon": {
+    					"code": "call-completed"
+    				},
+    				"header": {
+    					"title": "Incoming Call"
+    				},
+    				"body": {
+    					"logo": {
+    						"code": "call-incoming"
+    					},
+    					"blocks": {
+    						"responsible": {
+    							"type": "lineOfBlocks",
+    							"properties": {
+    								"blocks": {
+    									"client": {
+    										"type": "link",
+    										"properties": {
+    											"text": "John Smith",
+    											"bold": true,
+    											"action": {
+    												"type": "redirect",
+    												"uri": "/crm/lead/details/789/"
+    											}
+    										}
+    									},
+    									"phone": {
+    										"type": "text",
+    										"properties": {
+    											"value": "+1 999 888 7777"
+    										}
+    									}
+    								}
+    							}
+    						}
+    					}
+    				},
+    				"footer": {
+    					"buttons": {
+    						"startCall": {
+    							"title": "About Client",
+    							"action": {
+    								"type": "openRestApp",
+    								"actionParams": {
+    									"clientId": 456
+    								}
+    							},
+    							"type": "primary"
+    						}
+    					}
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.configurable.update',
+                [
+                    'id'     => 999,
+                    'fields' => [
+                        'typeId'            => 'CONFIGURABLE',
+                        'completed'         => false,
+                        'deadline'          => new DateTime(),
+                        'pingOffsets'       => [300],
+                        'isIncomingChannel' => 'Y',
+                        'responsibleId'     => 5,
+                        'badgeCode'         => 'CUSTOM',
+                    ],
+                    'layout' => [
+                        'icon'   => [
+                            'code' => 'call-completed',
+                        ],
+                        'header' => [
+                            'title' => 'Incoming Call',
+                        ],
+                        'body'   => [
+                            'logo'   => [
+                                'code' => 'call-incoming',
+                            ],
+                            'blocks' => [
+                                'responsible' => [
+                                    'type'       => 'lineOfBlocks',
+                                    'properties' => [
+                                        'blocks' => [
+                                            'client' => [
+                                                'type'       => 'link',
+                                                'properties' => [
+                                                    'text'   => 'John Smith',
+                                                    'bold'   => true,
+                                                    'action' => [
+                                                        'type' => 'redirect',
+                                                        'uri'  => '/crm/lead/details/789/',
+                                                    ],
+                                                ],
+                                            ],
+                                            'phone'  => [
+                                                'type'       => 'text',
+                                                'properties' => [
+                                                    'value' => '+1 999 888 7777',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'footer' => [
+                            'buttons' => [
+                                'startCall' => [
+                                    'title'  => 'About Client',
+                                    'action' => [
+                                        'type'         => 'openRestApp',
+                                        'actionParams' => [
+                                            'clientId' => 456,
+                                        ],
+                                    ],
+                                    'type'   => 'primary',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating configurable activity: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -118,7 +292,7 @@ fields:
                 "footer": {
                     "buttons": {
                         "startCall": {
-                            "title": "About the Client",
+                            "title": "About Client",
                             "action": {
                                 "type": "openRestApp",
                                 "actionParams": {
@@ -139,8 +313,8 @@ fields:
     );
     ```
 
-- PHP
-  
+- PHP CRest
+
     ```php
     require_once('crest.php');
 
@@ -190,15 +364,15 @@ fields:
                                             'value' => '+1 999 888 7777'
                                         ]
                                     ]
-                                }
+                                ]
                             ]
-                        }
+                        ]
                     ]
                 ],
                 'footer' => [
                     'buttons' => [
                         'startCall' => [
-                            'title' => 'About the Client',
+                            'title' => 'About Client',
                             'action' => [
                                 'type' => 'openRestApp',
                                 'actionParams' => [
@@ -206,7 +380,7 @@ fields:
                                 ]
                             ],
                             'type' => 'primary'
-                        }
+                        ]
                     ]
                 ]
             ]
@@ -232,16 +406,16 @@ HTTP Status: **200**
 {
     "result": {
         "activity": {
-            "id": 999
+            "id": 999,
         },
-        "time": {
-            "start": 1724068028.331234,
-            "finish": 1724068028.726591,
-            "duration": 0.3953571319580078,
-            "processing": 0.13033390045166016,
-            "date_start": "2025-01-21T13:47:08+02:00",
-            "date_finish": "2025-01-21T13:47:08+02:00",
-            "operating": 0
+    "time": {
+        "start": 1724068028.331234,
+        "finish": 1724068028.726591,
+        "duration": 0.3953571319580078,
+        "processing": 0.13033390045166016,
+        "date_start": "2025-01-21T13:47:08+02:00",
+        "date_finish": "2025-01-21T13:47:08+02:00",
+        "operating": 0
         }
     }
 }

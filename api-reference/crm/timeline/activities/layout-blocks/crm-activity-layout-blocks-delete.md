@@ -54,6 +54,58 @@ Delete a set of additional content blocks in the activity with `id = 8`, linked 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.activity.layout.blocks.delete',
+    		{
+    			entityTypeId: 2, // Deal
+    			entityId: 4,     // Deal ID
+    			activityId: 8,   // ID of the deal linked to this deal
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.layout.blocks.delete',
+                [
+                    'entityTypeId' => 2, // Deal
+                    'entityId'     => 4, // Deal ID
+                    'activityId'   => 8, // ID of the deal linked to this deal
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting activity layout block: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.activity.layout.blocks.delete',
         {
@@ -71,7 +123,7 @@ Delete a set of additional content blocks in the activity with `id = 8`, linked 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -94,7 +146,7 @@ Delete a set of additional content blocks in the activity with `id = 8`, linked 
 
 HTTP status: **200**
 
-Returns `{ success: true }` in case of successful deletion of the set of additional content blocks, otherwise `null`.
+Returns `{ success: true }` if the set of additional content blocks is successfully deleted, otherwise `null`.
 
 ```json
 {

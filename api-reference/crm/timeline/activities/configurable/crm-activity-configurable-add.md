@@ -20,7 +20,7 @@ The method can only be called in the context of an [application](https://helpdes
 || **Name**
 `type` | **Description** ||
 || **ownerTypeId***
-[`integer`](../../../../data-types.md) | Integer identifier of the [CRM entity type](../../../data-types.md#object_type) where the activity is created, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | Integer identifier of the [CRM object type](../../../data-types.md#object_type) where the activity is created, for example `2` for a deal ||
 || **ownerId***
 [`integer`](../../../../data-types.md) | Integer identifier of the CRM element where the activity is created, for example `1` ||
 || **fields***
@@ -52,9 +52,9 @@ fields:
 || **Name**
 `type` | **Description** ||
 || **typeId**
-[`string`](../../../../data-types.md) | Type of the configurable activity. If the value is not specified, it defaults to `CONFIGURABLE`. If specified, the value must correspond to one of the types created by the method [crm.activity.type.add](../types/crm-activity-type-add.md) with the field `IS_CONFIGURABLE_TYPE` equal to `Y` in the context of the same application ||
+[`string`](../../../../data-types.md) | Type of the configurable activity. If the value is not specified, it defaults to `CONFIGURABLE`. If specified, the value must correspond to one of the types created by the method [crm.activity.type.add](../types/crm-activity-type-add.md) with the field `IS_CONFIGURABLE_TYP0` equal to `Y` in the context of the same application ||
 || **completed**
-[`boolean`](../../../../data-types.md) | Flag indicating whether the activity is completed. You can use `Y/N`, `1/0`, `true/false` to set the value ||
+[`boolean`](../../../../data-types.md) | Flag indicating whether the activity is closed. You can use `Y/N`, `1/0`, `true/false` to set the value ||
 || **deadline**
 [`datetime`](../../../../data-types.md) | Deadline for the activity ||
 || **pingOffsets**
@@ -78,16 +78,192 @@ fields:
 {% list tabs %}
 
 - cURL (OAuth)
-  
+
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ownerTypeId":1,"ownerId":999,"fields":{"typeId":"CONFIGURABLE","completed":true,"deadline":"**put_current_date_time_here**","pingOffsets":[60,300],"isIncomingChannel":"N","responsibleId":1,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Doe","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About the Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"ownerTypeId":1,"ownerId":999,"fields":{"typeId":"CONFIGURABLE","completed":true,"deadline":"**put_current_date_time_here**","pingOffsets":[60,300],"isIncomingChannel":"N","responsibleId":1,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Smith","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.configurable.add
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.activity.configurable.add",
+    		{
+    			ownerTypeId: 1,
+    			ownerId: 999,
+    			fields:
+    			{
+    				typeId: 'CONFIGURABLE',
+    				completed: true,
+    				deadline: new Date(),
+    				pingOffsets: [60, 300],
+    				isIncomingChannel: 'N',
+    				responsibleId: 1,
+    				badgeCode: 'CUSTOM',
+    			},
+    			layout:
+    			{
+    				"icon": {
+    					"code": "call-completed"
+    				},
+    				"header": {
+    					"title": "Incoming Call"
+    				},
+    				"body": {
+    					"logo": {
+    						"code": "call-incoming"
+    					},
+    					"blocks": {
+    						"responsible": {
+    							"type": "lineOfBlocks",
+    							"properties": {
+    								"blocks": {
+    									"client": {
+    										"type": "link",
+    										"properties": {
+    											"text": "John Smith",
+    											"bold": true,
+    											"action": {
+    												"type": "redirect",
+    												"uri": "/crm/lead/details/789/"
+    											}
+    										}
+    									},
+    									"phone": {
+    										"type": "text",
+    										"properties": {
+    											"value": "+1 999 888 7777"
+    										}
+    									}
+    								}
+    							}
+    						}
+    					}
+    				},
+    				"footer": {
+    					"buttons": {
+    						"startCall": {
+    							"title": "About Client",
+    							"action": {
+    								"type": "openRestApp",
+    								"actionParams": {
+    									"clientId": 456
+    								}
+    							},
+    							"type": "primary"
+    						}
+    					}
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.activity.configurable.add',
+                [
+                    'ownerTypeId' => 1,
+                    'ownerId' => 999,
+                    'fields' => [
+                        'typeId' => 'CONFIGURABLE',
+                        'completed' => true,
+                        'deadline' => new DateTime(),
+                        'pingOffsets' => [60, 300],
+                        'isIncomingChannel' => 'N',
+                        'responsibleId' => 1,
+                        'badgeCode' => 'CUSTOM',
+                    ],
+                    'layout' => [
+                        'icon' => [
+                            'code' => 'call-completed',
+                        ],
+                        'header' => [
+                            'title' => 'Incoming Call',
+                        ],
+                        'body' => [
+                            'logo' => [
+                                'code' => 'call-incoming',
+                            ],
+                            'blocks' => [
+                                'responsible' => [
+                                    'type' => 'lineOfBlocks',
+                                    'properties' => [
+                                        'blocks' => [
+                                            'client' => [
+                                                'type' => 'link',
+                                                'properties' => [
+                                                    'text' => 'John Smith',
+                                                    'bold' => true,
+                                                    'action' => [
+                                                        'type' => 'redirect',
+                                                        'uri' => '/crm/lead/details/789/',
+                                                    ],
+                                                ],
+                                            ],
+                                            'phone' => [
+                                                'type' => 'text',
+                                                'properties' => [
+                                                    'value' => '+1 999 888 7777',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'footer' => [
+                            'buttons' => [
+                                'startCall' => [
+                                    'title' => 'About Client',
+                                    'action' => [
+                                        'type' => 'openRestApp',
+                                        'actionParams' => [
+                                            'clientId' => 456,
+                                        ],
+                                    ],
+                                    'type' => 'primary',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding configurable activity: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -125,7 +301,7 @@ fields:
                                     "client": {
                                         "type": "link",
                                         "properties": {
-                                            "text": "John Doe",
+                                            "text": "John Smith",
                                             "bold": true,
                                             "action": {
                                                 "type": "redirect",
@@ -147,7 +323,7 @@ fields:
                 "footer": {
                     "buttons": {
                         "startCall": {
-                            "title": "About the Client",
+                            "title": "About Client",
                             "action": {
                                 "type": "openRestApp",
                                 "actionParams": {
@@ -168,7 +344,7 @@ fields:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -206,7 +382,7 @@ fields:
                                     'client' => [
                                         'type' => 'link',
                                         'properties' => [
-                                            'text' => 'John Doe',
+                                            'text' => 'John Smith',
                                             'bold' => true,
                                             'action' => [
                                                 'type' => 'redirect',
@@ -228,7 +404,7 @@ fields:
                 'footer' => [
                     'buttons' => [
                         'startCall' => [
-                            'title' => 'About the Client',
+                            'title' => 'About Client',
                             'action' => [
                                 'type' => 'openRestApp',
                                 'actionParams' => [
@@ -256,7 +432,7 @@ fields:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -290,7 +466,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -309,7 +485,7 @@ HTTP status: **400**
 || `100` | Required fields are not filled ||
 || `ERROR_WRONG_CONTEXT` | The method can only be called in the context of an application ||
 || `ERROR_WRONG_APPLICATION` | The activity can only be updated by the application that created it ||
-|| `WRONG_FIELD_VALUE` | Invalid field value ||
+|| `WRONG_FIELD_VALUE` | Incorrect field value ||
 || `INCOMING_ACTIVITY_CAN_NOT_BE_WITH_DEADLINE` | Incoming activity cannot have a deadline ||
 || `ERROR_EMPTY_LAYOUT` | The layout field must be filled ||
 |#

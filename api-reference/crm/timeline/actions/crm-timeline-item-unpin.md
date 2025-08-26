@@ -1,29 +1,29 @@
-# Unpin Timeline Record in crm.timeline.item.unpin
+# Unpin Timeline Item in crm.timeline.item.unpin
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `crm.timeline.item.unpin` unpins a record in the timeline.
+The method `crm.timeline.item.unpin` unpins a timeline item.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Footnote on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the timeline record, for example `999`. You can obtain the id using the method [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the timeline item, for example `999`. You can obtain the id using the method [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md) ||
 || **ownerTypeId***
-[`integer`](../../data-types.md#object_type) | [Identifier of the CRM object type](../../data-types.md#object_type) to which the record is linked, for example `2` for a deal ||
+[`integer`](../../data-types.md#object_type) | [Identifier of the CRM object type](../../data-types.md#object_type) to which the item is linked, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../data-types.md) | Identifier of the CRM entity to which the record is linked, for example `10` ||
+[`integer`](../../../data-types.md) | Identifier of the CRM entity to which the item is linked, for example `10` ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -50,6 +50,63 @@ The method `crm.timeline.item.unpin` unpins a record in the timeline.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.item.unpin',
+    		{
+    			id: 999,
+    			ownerTypeId: 2,
+    			ownerId: 10,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.item.unpin',
+                [
+                    'id'          => 999,
+                    'ownerTypeId' => 2,
+                    'ownerId'     => 10,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unpinning timeline item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.item.unpin",
         {
@@ -65,7 +122,7 @@ The method `crm.timeline.item.unpin` unpins a record in the timeline.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -88,7 +145,7 @@ The method `crm.timeline.item.unpin` unpins a record in the timeline.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -119,7 +176,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -136,8 +193,8 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `100` | Required fields are missing ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `NOT_FOUND` | Element not found ||
-|| `OWNER_NOT_FOUND` | Owner of the element not found ||
+|| `NOT_FOUND` | Item not found ||
+|| `OWNER_NOT_FOUND` | Owner of the item not found ||
 || `CAN_NOT_CHANGE_PINNED` | Unable to perform the operation ||
 |#
 

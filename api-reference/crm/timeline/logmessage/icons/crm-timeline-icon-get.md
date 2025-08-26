@@ -1,4 +1,4 @@
-# Get Information About the Icon crm.timeline.icon.get
+# Get Information About the crm.timeline.icon.get
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ This method retrieves information about the timeline log entry icon.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,6 +48,56 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.timeline.icon.get",
+    		{
+    			code: "info",
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.icon.get',
+                [
+                    'code' => 'info',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting timeline icon: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.icon.get",
         {
@@ -62,7 +112,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

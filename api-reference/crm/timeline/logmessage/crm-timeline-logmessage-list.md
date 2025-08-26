@@ -1,14 +1,14 @@
-# Get a list of log entries crm.timeline.logmessage.list
+# Get the list of log entries crm.timeline.logmessage.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `user with read access permission to the CRM entity containing the record`
+> Who can execute the method: `user with read access permission for the CRM entity containing the record`
 
 This method retrieves a list of timeline log entries.
 
 {% note info "" %}
 
-It is important to note that the method can only retrieve data for records that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System records cannot be retrieved using `crm.timeline.logmessage.list`.
+It is important to note that the method can only retrieve data about records that were previously added using [`crm.timeline.logmessage.add`](./crm-timeline-logmessage-add.md). System records cannot be retrieved using `crm.timeline.logmessage.list`.
 
 {% endnote %}
 
@@ -20,19 +20,19 @@ It is important to note that the method can only retrieve data for records that 
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md#object_type) for which to retrieve the list of log entries (for example, `1` — lead) ||
+[`integer`](../../../data-types.md) | [Identifier of the entity type](../../data-types.md#object_type) for which to retrieve the list of log entries (e.g., `1` — lead) ||
 || **entityId***
-[`integer`](../../../data-types.md) | Identifier of the entity item for which to retrieve the list of log entries (for example, `1`) ||
+[`integer`](../../../data-types.md) | Identifier of the entity item for which to retrieve the list of log entries (e.g., `1`) ||
 || **order**
-[`object`](../../../data-types.md) | Sorting list, where the key is the field and the value is `asc` or `desc`.
+[`object`](../../../data-types.md) | List for sorting, where the key is the field and the value is `asc` or `desc`.
 
 By default, `desc` is used.
 
-Sorting is only supported by the **id** and **created** fields ||
+Sorting is supported only by the **id** and **created** fields ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used for pagination control.
+[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
 
-The result page size is always static: 10 entries.
+The page size of results is always static: 10 entries.
 
 To select the second page of results, you need to pass the value `10`. To select the third page of results — the value `20`, and so on.
 
@@ -70,6 +70,82 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.timeline.logmessage.list',
+        {
+          entityTypeId: 1,
+          entityId: 1,
+          order: { created: "desc" },
+          start: 1,
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.timeline.logmessage.list', { entityTypeId: 1, entityId: 1, order: { created: "desc" }, start: 1 }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('crm.timeline.logmessage.list', { entityTypeId: 1, entityId: 1, order: { created: "desc" }, start: 1 }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.logmessage.list',
+                [
+                    'entityTypeId' => 1,
+                    'entityId'     => 1,
+                    'order'        => ['created' => 'desc'],
+                    'start'        => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing log messages: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.logmessage.list",
         {
@@ -87,7 +163,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -111,7 +187,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -153,18 +229,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md) | Root element of the response.
+[`array`](../../../data-types.md) | The root element of the response.
 
-The `result` field contains an array, each entry of which contains an associative array of fields for the log entry [logMessage](./crm-timeline-logmessage-add.md#logMessage) ||
+The `result` field contains an array, each entry of which contains an associative array of log entry fields [logMessage](./crm-timeline-logmessage-add.md#logMessage) ||
 || **total**
-[`integer`](../../../data-types.md) | Total number of records found ||
+[`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -185,7 +261,7 @@ HTTP status: **400**
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Exploring 
 
 - [{#T}](./crm-timeline-logmessage-add.md)
 - [{#T}](./crm-timeline-logmessage-get.md)

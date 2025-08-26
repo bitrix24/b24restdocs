@@ -8,7 +8,7 @@ This method retrieves information about the logo of the timeline log entry.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ You can get a list of all available codes using the method [`crm.timeline.logo.l
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,6 +48,56 @@ You can get a list of all available codes using the method [`crm.timeline.logo.l
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.timeline.logo.get',
+    		{
+    			code: 'info',
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.timeline.logo.get',
+                [
+                    'code' => 'info',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting timeline logo: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.timeline.logo.get",
         {
@@ -62,7 +112,7 @@ You can get a list of all available codes using the method [`crm.timeline.logo.l
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -83,7 +133,7 @@ You can get a list of all available codes using the method [`crm.timeline.logo.l
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -113,7 +163,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | The root element of the response.
+[`object`](../../../../data-types.md) | Root element of the response.
 
 The `result` field contains the [logo](./crm-timeline-logo-add.md#logo) object ||
 || **time**
@@ -122,7 +172,7 @@ The `result` field contains the [logo](./crm-timeline-logo-add.md#logo) object |
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -138,13 +188,13 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `NOT_FOUND` | No logo exists with the specified `code` ||
-|| `100` | Required fields were not provided ||
+|| `100` | Required fields not provided ||
 || `0` | Other errors (e.g., fatal) ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Exploring 
 
 - [{#T}](./crm-timeline-logo-add.md)
 - [{#T}](./crm-timeline-logo-list.md)
