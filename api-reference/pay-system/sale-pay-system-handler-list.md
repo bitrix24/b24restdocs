@@ -1,10 +1,10 @@
-# Get a List of REST Handlers for the Payment System sale.paysystem.handler.list
+# Get a list of REST handlers for the payment system sale.paysystem.handler.list
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to modify settings")
+> Who can execute the method: CRM administrator (permission "Allow to change settings")
 
-This method returns a list of REST handlers for the payment system.
+The method returns a list of REST handlers for the payment system.
 
 No parameters.
 
@@ -37,6 +37,72 @@ No parameters.
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'sale.paysystem.handler.list',
+        {},
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('sale.paysystem.handler.list', {}, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('sale.paysystem.handler.list', {}, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paysystem.handler.list',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching payment system handlers: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.paysystem.handler.list",
         {},
@@ -50,7 +116,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -69,7 +135,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -180,7 +246,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **403**
+HTTP status: **403**
 
 ```json
 {
@@ -195,7 +261,7 @@ HTTP Status: **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Access denied. The application is trying to modify a handler added by another application, or lacks sufficient rights to update the handler | 403 ||
+|| `ACCESS_DENIED` | Access denied. The application is trying to modify a handler added by another application, or insufficient rights to update the handler | 403 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

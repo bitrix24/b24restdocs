@@ -1,8 +1,8 @@
-# Update REST Handler for Payment System sale.paysystem.handler.update
+# Update REST handler for payment system sale.paysystem.handler.update
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to modify settings")
+> Who can execute the method: CRM administrator (permission "Allow changing settings")
 
 This method updates the REST handler for the payment system.
 
@@ -29,7 +29,7 @@ This method updates the REST handler for the payment system.
 || **CODE**
 [`string`](../data-types.md) | Unique code of the handler in the system ||
 || **SETTINGS**
-[`object`](../data-types.md) | Settings of the handler. The format is similar to the format in [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) ||
+[`object`](../data-types.md) | Handler settings. The format is similar to the format in [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) ||
 || **SORT**
 [`integer`](../data-types.md) | Sorting ||
 |#
@@ -46,8 +46,8 @@ This method updates the REST handler for the payment system.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":3,"FIELDS":{"CODE":"newresthandlercode","NAME":"New Handler Name","SORT":200,"SETTINGS":{"CURRENCY":["USD","BYN"],"FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","PARAMS":{"serviceid":"REST_SERVICE_ID_2","invoiceNumber":"PAYMENT_ID_2","Sum":"PAYMENT_SHOULD_PAY_2","customer":"PAYMENT_BUYER_ID_2"},"CODES":{"REST_SERVICE_ID_2":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_2":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PAYMENT_ID_2":{"NAME":"Payment Number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY_2":{"NAME":"Payment Amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY_2":{"NAME":"Automatic Payment Status Change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID_2":{"NAME":"Buyer Code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}}}}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.paysystem.handler.update
+    -d '{"ID":3,"FIELDS":{"CODE":"newresthandlercode","NAME":"New handler name","SORT":200,"SETTINGS":{"CURRENCY":["USD","EUR"],"FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","PARAMS":{"serviceid":"REST_SERVICE_ID_2","invoiceNumber":"PAYMENT_ID_2","Sum":"PAYMENT_SHOULD_PAY_2","customer":"PAYMENT_BUYER_ID_2"},"CODES":{"REST_SERVICE_ID_2":{"NAME":"Store number","DESCRIPTION":"Store number","SORT":"100"},"REST_SERVICE_KEY_2":{"NAME":"Secret key","DESCRIPTION":"Secret key","SORT":"300"},"PAYMENT_ID_2":{"NAME":"Payment number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY_2":{"NAME":"Payment amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY_2":{"NAME":"Automatic payment status change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID_2":{"NAME":"Buyer code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}}}}}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/sale.paysystem.handler.update
     ```
 
 - cURL (OAuth)
@@ -56,11 +56,187 @@ This method updates the REST handler for the payment system.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":3,"FIELDS":{"CODE":"newresthandlercode","NAME":"New Handler Name","SORT":200,"SETTINGS":{"CURRENCY":["USD","BYN"],"FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","PARAMS":{"serviceid":"REST_SERVICE_ID_2","invoiceNumber":"PAYMENT_ID_2","Sum":"PAYMENT_SHOULD_PAY_2","customer":"PAYMENT_BUYER_ID_2"},"CODES":{"REST_SERVICE_ID_2":{"NAME":"Store Number","DESCRIPTION":"Store Number","SORT":"100"},"REST_SERVICE_KEY_2":{"NAME":"Secret Key","DESCRIPTION":"Secret Key","SORT":"300"},"PAYMENT_ID_2":{"NAME":"Payment Number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY_2":{"NAME":"Payment Amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY_2":{"NAME":"Automatic Payment Status Change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID_2":{"NAME":"Buyer Code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"ID":3,"FIELDS":{"CODE":"newresthandlercode","NAME":"New handler name","SORT":200,"SETTINGS":{"CURRENCY":["USD","EUR"],"FORM_DATA":{"ACTION_URI":"http://example.com/payment_form.php","METHOD":"POST","PARAMS":{"serviceid":"REST_SERVICE_ID_2","invoiceNumber":"PAYMENT_ID_2","Sum":"PAYMENT_SHOULD_PAY_2","customer":"PAYMENT_BUYER_ID_2"},"CODES":{"REST_SERVICE_ID_2":{"NAME":"Store number","DESCRIPTION":"Store number","SORT":"100"},"REST_SERVICE_KEY_2":{"NAME":"Secret key","DESCRIPTION":"Secret key","SORT":"300"},"PAYMENT_ID_2":{"NAME":"Payment number","SORT":"400","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"ACCOUNT_NUMBER"}},"PAYMENT_SHOULD_PAY_2":{"NAME":"Payment amount","SORT":"600","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"PAYMENT","PROVIDER_VALUE":"SUM"}},"PS_CHANGE_STATUS_PAY_2":{"NAME":"Automatic payment status change","SORT":"700","INPUT":{"TYPE":"Y/N"}},"PAYMENT_BUYER_ID_2":{"NAME":"Buyer code","SORT":"1000","GROUP":"PAYMENT","DEFAULT":{"PROVIDER_KEY":"ORDER","PROVIDER_VALUE":"USER_ID"}}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.paysystem.handler.update
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.paysystem.handler.update",
+    		{
+    			'ID': 3,
+    			'FIELDS': {
+    				'CODE': 'newresthandlercode',
+    				'NAME': 'New handler name',
+    				'SORT': 200,
+    				'SETTINGS': {
+    					"CURRENCY": [
+    						"USD", "EUR"
+    					],
+    					"FORM_DATA": {
+    						"ACTION_URI": "http://example.com/payment_form.php",
+    						"METHOD": "POST",
+    						"PARAMS": {
+    							"serviceid": "REST_SERVICE_ID_2",
+    							"invoiceNumber": "PAYMENT_ID_2",
+    							"Sum": "PAYMENT_SHOULD_PAY_2",
+    							"customer": "PAYMENT_BUYER_ID_2"
+    						}
+    					},
+    					"CODES": {
+    						"REST_SERVICE_ID_2": {
+    							"NAME": "Store number",
+    							"DESCRIPTION": "Store number",
+    							"SORT": "100"
+    						},
+    						"REST_SERVICE_KEY_2": {
+    							"NAME": "Secret key",
+    							"DESCRIPTION": "Secret key",
+    							"SORT": "300"
+    						},
+    						"PAYMENT_ID_2": {
+    							"NAME": "Payment number",
+    							"SORT": "400",
+    							"GROUP": "PAYMENT",
+    							"DEFAULT": {
+    								"PROVIDER_KEY": "PAYMENT",
+    								"PROVIDER_VALUE": "ACCOUNT_NUMBER"
+    							}
+    						},
+    						"PAYMENT_SHOULD_PAY_2": {
+    							"NAME": "Payment amount",
+    							"SORT": "600",
+    							"GROUP": "PAYMENT",
+    							"DEFAULT": {
+    								"PROVIDER_KEY": "PAYMENT",
+    								"PROVIDER_VALUE": "SUM"
+    							}
+    						},
+    						"PS_CHANGE_STATUS_PAY_2": {
+    							"NAME": "Automatic payment status change",
+    							"SORT": "700",
+    							"INPUT": {
+    								"TYPE": "Y/N"
+    							}
+    						},
+    						"PAYMENT_BUYER_ID_2": {
+    							"NAME": "Buyer code",
+    							"SORT": "1000",
+    							"GROUP": "PAYMENT",
+    							"DEFAULT": {
+    								"PROVIDER_KEY": "ORDER",
+    								"PROVIDER_VALUE": "USER_ID"
+    							}
+    						}
+    					}
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paysystem.handler.update',
+                [
+                    'ID'     => 3,
+                    'FIELDS' => [
+                        'CODE'     => 'newresthandlercode',
+                        'NAME'     => 'New handler name',
+                        'SORT'     => 200,
+                        'SETTINGS' => [
+                            'CURRENCY'  => ['USD', 'EUR'],
+                            'FORM_DATA' => [
+                                'ACTION_URI' => 'http://example.com/payment_form.php',
+                                'METHOD'     => 'POST',
+                                'PARAMS'     => [
+                                    'serviceid'    => 'REST_SERVICE_ID_2',
+                                    'invoiceNumber' => 'PAYMENT_ID_2',
+                                    'Sum'          => 'PAYMENT_SHOULD_PAY_2',
+                                    'customer'     => 'PAYMENT_BUYER_ID_2',
+                                ],
+                            ],
+                            'CODES'    => [
+                                'REST_SERVICE_ID_2' => [
+                                    'NAME'        => 'Store number',
+                                    'DESCRIPTION' => 'Store number',
+                                    'SORT'        => '100',
+                                ],
+                                'REST_SERVICE_KEY_2' => [
+                                    'NAME'        => 'Secret key',
+                                    'DESCRIPTION' => 'Secret key',
+                                    'SORT'        => '300',
+                                ],
+                                'PAYMENT_ID_2' => [
+                                    'NAME'   => 'Payment number',
+                                    'SORT'   => '400',
+                                    'GROUP'  => 'PAYMENT',
+                                    'DEFAULT' => [
+                                        'PROVIDER_KEY'  => 'PAYMENT',
+                                        'PROVIDER_VALUE' => 'ACCOUNT_NUMBER',
+                                    ],
+                                ],
+                                'PAYMENT_SHOULD_PAY_2' => [
+                                    'NAME'   => 'Payment amount',
+                                    'SORT'   => '600',
+                                    'GROUP'  => 'PAYMENT',
+                                    'DEFAULT' => [
+                                        'PROVIDER_KEY'  => 'PAYMENT',
+                                        'PROVIDER_VALUE' => 'SUM',
+                                    ],
+                                ],
+                                'PS_CHANGE_STATUS_PAY_2' => [
+                                    'NAME'  => 'Automatic payment status change',
+                                    'SORT'  => '700',
+                                    'INPUT' => [
+                                        'TYPE' => 'Y/N',
+                                    ],
+                                ],
+                                'PAYMENT_BUYER_ID_2' => [
+                                    'NAME'   => 'Buyer code',
+                                    'SORT'   => '1000',
+                                    'GROUP'  => 'PAYMENT',
+                                    'DEFAULT' => [
+                                        'PROVIDER_KEY'  => 'ORDER',
+                                        'PROVIDER_VALUE' => 'USER_ID',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating payment system handler: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -69,11 +245,11 @@ This method updates the REST handler for the payment system.
             'ID': 3,
             'FIELDS': {
                 'CODE': 'newresthandlercode',
-                'NAME': 'New Handler Name',
+                'NAME': 'New handler name',
                 'SORT': 200,
                 'SETTINGS': {
                     "CURRENCY": [
-                        "USD", "BYN"
+                        "USD", "EUR"
                     ],
                     "FORM_DATA": {
                         "ACTION_URI": "http://example.com/payment_form.php",
@@ -87,17 +263,17 @@ This method updates the REST handler for the payment system.
                     },
                     "CODES": {
                         "REST_SERVICE_ID_2": {
-                            "NAME": "Store Number",
-                            "DESCRIPTION": "Store Number",
+                            "NAME": "Store number",
+                            "DESCRIPTION": "Store number",
                             "SORT": "100"
                         },
                         "REST_SERVICE_KEY_2": {
-                            "NAME": "Secret Key",
-                            "DESCRIPTION": "Secret Key",
+                            "NAME": "Secret key",
+                            "DESCRIPTION": "Secret key",
                             "SORT": "300"
                         },
                         "PAYMENT_ID_2": {
-                            "NAME": "Payment Number",
+                            "NAME": "Payment number",
                             "SORT": "400",
                             "GROUP": "PAYMENT",
                             "DEFAULT": {
@@ -106,7 +282,7 @@ This method updates the REST handler for the payment system.
                             }
                         },
                         "PAYMENT_SHOULD_PAY_2": {
-                            "NAME": "Payment Amount",
+                            "NAME": "Payment amount",
                             "SORT": "600",
                             "GROUP": "PAYMENT",
                             "DEFAULT": {
@@ -115,14 +291,14 @@ This method updates the REST handler for the payment system.
                             }
                         },
                         "PS_CHANGE_STATUS_PAY_2": {
-                            "NAME": "Automatic Payment Status Change",
+                            "NAME": "Automatic payment status change",
                             "SORT": "700",
                             "INPUT": {
                                 "TYPE": "Y/N"
                             }
                         },
                         "PAYMENT_BUYER_ID_2": {
-                            "NAME": "Buyer Code",
+                            "NAME": "Buyer code",
                             "SORT": "1000",
                             "GROUP": "PAYMENT",
                             "DEFAULT": {
@@ -146,7 +322,7 @@ This method updates the REST handler for the payment system.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -157,10 +333,10 @@ This method updates the REST handler for the payment system.
             'ID' => 3,
             'FIELDS' => [
                 'CODE' => 'newresthandlercode',
-                'NAME' => 'New Handler Name',
+                'NAME' => 'New handler name',
                 'SORT' => 200,
                 'SETTINGS' => [
-                    'CURRENCY' => ['USD', 'BYN'],
+                    'CURRENCY' => ['USD', 'EUR'],
                     'FORM_DATA' => [
                         'ACTION_URI' => 'http://example.com/payment_form.php',
                         'METHOD' => 'POST',
@@ -173,17 +349,17 @@ This method updates the REST handler for the payment system.
                     ],
                     'CODES' => [
                         'REST_SERVICE_ID_2' => [
-                            'NAME' => 'Store Number',
-                            'DESCRIPTION' => 'Store Number',
+                            'NAME' => 'Store number',
+                            'DESCRIPTION' => 'Store number',
                             'SORT' => '100'
                         ],
                         'REST_SERVICE_KEY_2' => [
-                            'NAME' => 'Secret Key',
-                            'DESCRIPTION' => 'Secret Key',
+                            'NAME' => 'Secret key',
+                            'DESCRIPTION' => 'Secret key',
                             'SORT' => '300'
                         ],
                         'PAYMENT_ID_2' => [
-                            'NAME' => 'Payment Number',
+                            'NAME' => 'Payment number',
                             'SORT' => '400',
                             'GROUP' => 'PAYMENT',
                             'DEFAULT' => [
@@ -192,7 +368,7 @@ This method updates the REST handler for the payment system.
                             ]
                         ],
                         'PAYMENT_SHOULD_PAY_2' => [
-                            'NAME' => 'Payment Amount',
+                            'NAME' => 'Payment amount',
                             'SORT' => '600',
                             'GROUP' => 'PAYMENT',
                             'DEFAULT' => [
@@ -201,14 +377,14 @@ This method updates the REST handler for the payment system.
                             ]
                         ],
                         'PS_CHANGE_STATUS_PAY_2' => [
-                            'NAME' => 'Automatic Payment Status Change',
+                            'NAME' => 'Automatic payment status change',
                             'SORT' => '700',
                             'INPUT' => [
                                 'TYPE' => 'Y/N'
                             ]
                         ],
                         'PAYMENT_BUYER_ID_2' => [
-                            'NAME' => 'Buyer Code',
+                            'NAME' => 'Buyer code',
                             'SORT' => '1000',
                             'GROUP' => 'PAYMENT',
                             'DEFAULT' => [
@@ -231,7 +407,7 @@ This method updates the REST handler for the payment system.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -262,7 +438,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -281,7 +457,7 @@ HTTP Status: **400**, **403**
 || `ERROR_CHECK_FAILURE` | The `ID` or `FIELDS` field value is not specified | 400 ||
 || `ERROR_HANDLER_NOT_FOUND` | Handler with the specified `ID` not found | 400 ||
 || `ERROR_HANDLER_UPDATE` | Other errors. For detailed information about the error, see `error_description` | 400 ||
-|| `ERROR_UNEXPECTED_ANSWER` | Unexpected server response. One possible reason is attempting to specify a non-unique `CODE` parameter for the handler that already exists for another handler | 400 ||
+|| `ERROR_UNEXPECTED_ANSWER` | Unexpected server response. One possible reason is attempting to specify a non-unique `CODE` parameter for the handler, which already exists for another handler | 400 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

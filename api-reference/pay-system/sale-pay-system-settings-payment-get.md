@@ -1,4 +1,4 @@
-# Get Payment System Settings for a Specific Payment sale.paysystem.settings.payment.get
+# Get Payment System Settings for Specific Payment sale.paysystem.settings.payment.get
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method returns the payment system settings for a specific payment.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -23,7 +23,7 @@ The method returns the payment system settings for a specific payment.
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -50,6 +50,56 @@ The method returns the payment system settings for a specific payment.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paysystem.settings.payment.get',
+    		{
+    			"PAYMENT_ID": 10,
+    			"PAY_SYSTEM_ID": 11
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paysystem.settings.payment.get',
+                [
+                    'PAYMENT_ID'    => 10,
+                    'PAY_SYSTEM_ID' => 11,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting payment settings: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod('sale.paysystem.settings.payment.get', {
             "PAYMENT_ID": 10,
             "PAY_SYSTEM_ID": 11
@@ -68,7 +118,7 @@ The method returns the payment system settings for a specific payment.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -118,7 +168,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response. 
+[`object`](../data-types.md) | Root element of the response. 
 
 The keys of the object are the parameter codes specified when adding the handler via [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) in the `CODES` parameter. 
 
@@ -127,7 +177,7 @@ The values of the object are the parameter values:
 - or specified when adding the payment system via [sale.paysystem.add](./sale-pay-system-add.md)
 ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -148,8 +198,8 @@ HTTP Status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Insufficient permissions to retrieve settings | 403 ||
-|| `ERROR_CHECK_FAILURE` | One of the required fields is missing, the payment system with the specified `ID` was not found, or the payment with the specified `ID` linked to the specified payment system was not found (details can be found in the error description) | 400 ||
-|| `ERROR_INTERNAL_ORDER_NOT_FOUND` | The order linked to the specified payment was not found | 400 ||
+|| `ERROR_CHECK_FAILURE` | One of the required fields is missing, the payment system with the specified `ID` is not found, or the payment with the specified `ID` linked to the specified payment system is not found (details in the error description) | 400 ||
+|| `ERROR_INTERNAL_ORDER_NOT_FOUND` | The order linked to the specified payment is not found | 400 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

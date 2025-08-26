@@ -1,10 +1,8 @@
-# Delete Payment System
+# Delete Payment System sale.paysystem.delete
 
-> Method name: **sale.paysystem.delete**
->
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to modify settings")
+> Who can execute the method: CRM administrator (access permission "Allow to modify settings")
 
 This method deletes a payment system.
 
@@ -48,6 +46,56 @@ This method deletes a payment system.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paysystem.delete',
+    		{
+    			"ID": 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paysystem.delete',
+                [
+                    'ID' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting payment system: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod('sale.paysystem.delete', {
             "ID": 1
         },
@@ -65,7 +113,7 @@ This method deletes a payment system.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -112,7 +160,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../data-types.md) | Result of deleting the payment system ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -122,7 +170,7 @@ HTTP status: **400**, **403**
 ```json
 {
     "error": "ERROR_PAY_SYSTEM_NOT_FOUND",
-    "error_description": "Payment system not found"
+    "error_description": "Pay system not found"
 }
 ```
 
@@ -132,7 +180,7 @@ HTTP status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Access denied. The application is trying to modify a payment system added by another application, or lacks the rights to delete the payment system | 403 ||
+|| `ACCESS_DENIED` | Access denied. The application is trying to modify a payment system added by another application, or there are insufficient rights to delete the payment system | 403 ||
 || `ERROR_PAY_SYSTEM_NOT_FOUND` | Payment system with the specified `ID` not found | 400 ||
 || `ERROR_CHECK_FAILURE` | Parameter `ID` not specified | 400 ||
 |#

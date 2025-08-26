@@ -2,7 +2,7 @@
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow to change settings")
+> Who can execute the method: CRM administrator (permission "Allow changing settings")
 
 This method updates the payment system settings. The structure of the settings is defined when adding the payment system handler in the method [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) under the `CODES` key of the `SETTINGS` parameter.
 
@@ -20,7 +20,7 @@ This method updates the payment system settings. The structure of the settings i
 [`sale_person_type.id`](../sale/data-types.md) | Identifier of the payer type for which settings need to be retrieved
 ||
 || **SETTINGS***
-[`object`](../data-types.md) | Settings to be updated. The keys are the names of the settings, and the values are objects, the structure of which is described [below](#parametr-settings)
+[`object`](../data-types.md) | Settings to be updated. The keys are the names of the settings, and the values are objects whose structure is described [below](#parametr-settings)
 ||
 |#
 
@@ -32,7 +32,7 @@ This method updates the payment system settings. The structure of the settings i
 || **TYPE**
 [`string`](../data-types.md) | Source of the parameter value ||
 || **VALUE**
-[`string`](../data-types.md) | Code of the parameter at the source or the value of the parameter (for `TYPE="VALUE"`) ||
+[`string`](../data-types.md) | Parameter code at the source or parameter value (for `TYPE="VALUE"`) ||
 |#
 
 ## Code Examples
@@ -64,6 +64,68 @@ This method updates the payment system settings. The structure of the settings i
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paysystem.settings.update',
+    		{
+    			'ID': 11,
+    			'PERSON_TYPE_ID': 1,
+    			'SETTINGS': {
+    				'REST_SERVICE_KEY_IFRAME': {
+    					'TYPE': 'VALUE',
+    					'VALUE': 'NEW_KEY',
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paysystem.settings.update',
+                [
+                    'ID'            => 11,
+                    'PERSON_TYPE_ID' => 1,
+                    'SETTINGS'      => [
+                        'REST_SERVICE_KEY_IFRAME' => [
+                            'TYPE'  => 'VALUE',
+                            'VALUE' => 'NEW_KEY',
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating payment system settings: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod('sale.paysystem.settings.update', {
         'ID': 11,
         'PERSON_TYPE_ID': 1,
@@ -86,7 +148,7 @@ This method updates the payment system settings. The structure of the settings i
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -160,8 +222,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient permissions to read settings | 403 ||
-|| `ERROR_CHECK_FAILURE` | One of the required fields is missing or the specified payment system was not found (details are in the error description) | 400 ||
+|| `ACCESS_DENIED` | Insufficient rights to read settings | 403 ||
+|| `ERROR_CHECK_FAILURE` | One of the required fields is missing or the specified payment system was not found (details in the error description) | 400 ||
 || `ERROR_HANDLER_NOT_FOUND` | The `SETTINGS` field is missing or an empty object was passed | 400 ||
 |#
 

@@ -1,4 +1,4 @@
-# Pay for an Order through a Specific Payment System sale.paysystem.pay.payment
+# Pay for an order through a specific payment system sale.paysystem.pay.payment
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
@@ -52,6 +52,59 @@ To perform the payment, there must be a payment linked to the specified payment 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paysystem.pay.payment',
+    		{
+    			"PAYMENT_ID": 1,
+    			"PAY_SYSTEM_ID": 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paysystem.pay.payment',
+                [
+                    'PAYMENT_ID'    => 1,
+                    'PAY_SYSTEM_ID' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling sale.paysystem.pay.payment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod('sale.paysystem.pay.payment', {
             "PAYMENT_ID": 1,
             "PAY_SYSTEM_ID": 1,
@@ -70,7 +123,7 @@ To perform the payment, there must be a payment linked to the specified payment 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -92,7 +145,7 @@ To perform the payment, there must be a payment linked to the specified payment 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -123,11 +176,11 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
-    "error": "ERROR_CHECK_FAILURE",
+    "error": " ERROR_CHECK_FAILURE",
     "error_description": "Pay system not found"
 }
 ```

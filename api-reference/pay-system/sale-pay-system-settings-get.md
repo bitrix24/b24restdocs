@@ -2,9 +2,9 @@
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator (permission "Allow changing settings")
+> Who can execute the method: CRM administrator (permission "Allow to modify settings")
 
-This method returns the settings of the payment system. The structure of the settings is defined when adding the payment system handler in the method [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) under the `CODES` key of the `SETTINGS` parameter.
+The method returns the settings of the payment system. The structure of the settings is defined when adding the payment system handler in the method [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) under the `CODES` key of the `SETTINGS` parameter.
 
 ## Method Parameters
 
@@ -50,6 +50,56 @@ This method returns the settings of the payment system. The structure of the set
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paysystem.settings.get',
+    		{
+    			'ID': 11,
+    			'PERSON_TYPE_ID': 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paysystem.settings.get',
+                [
+                    'ID'            => 11,
+                    'PERSON_TYPE_ID' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting payment system settings: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod('sale.paysystem.settings.get', {
         'ID': 11,
         'PERSON_TYPE_ID': 1,
@@ -66,7 +116,7 @@ This method returns the settings of the payment system. The structure of the set
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -134,7 +184,7 @@ HTTP Status: **400**, **403**
 
 ```json
 {
-    "error": "ERROR_CHECK_FAILURE",
+    "error": " ERROR_CHECK_FAILURE",
     "error_description": "Pay system not found"
 }
 ```
@@ -146,7 +196,7 @@ HTTP Status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Insufficient permissions to read settings | 403 ||
-|| `ERROR_CHECK_FAILURE` | One of the required fields is missing or the specified payment system was not found (details can be found in the error description) | 400 ||
+|| `ERROR_CHECK_FAILURE` | One of the required fields is missing or the specified payment system was not found (details in the error description) | 400 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

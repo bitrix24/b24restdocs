@@ -46,6 +46,56 @@ This method deletes the REST handler for the payment system.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.paysystem.handler.delete",
+    		{
+    			'ID': 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paysystem.handler.delete',
+                [
+                    'ID' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting payment system handler: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.paysystem.handler.delete",
         {
@@ -65,7 +115,7 @@ This method deletes the REST handler for the payment system.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -112,7 +162,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../data-types.md) | Result of deleting the REST handler ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

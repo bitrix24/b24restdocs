@@ -1,20 +1,20 @@
-# Pay Invoice through a Specific Payment System sale.paysystem.pay.invoice
+# Pay an invoice through a specific payment system sale.paysystem.pay.invoice
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
-> Who can execute the method: user with permissions to create and edit CRM invoices (legacy version)
+> Who can execute the method: a user with permissions to create and edit CRM invoices (old version)
 
-This method is used to pay an invoice (legacy version) through a specific payment system. It is called after processing the response from the payment system.
+This method is used to pay an invoice (old version) through a specific payment system. It is called after processing the response from the payment system.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **INVOICE_ID***
-[`integer`](../data-types.md) | Identifier of the legacy invoice. To retrieve information about invoices, use the service [crm.invoice.*](../crm/outdated/invoice/index.md)
+[`integer`](../data-types.md) | Identifier of the old version invoice. To retrieve information about invoices, use the service [crm.invoice.*](../crm/outdated/invoice/index.md)
 ||
 || **PAY_SYSTEM_ID**
 [`sale_paysystem.ID`](../sale/data-types.md) | Identifier of the payment system
@@ -26,13 +26,13 @@ You must pass either the `PAY_SYSTEM_ID` parameter or the `BX_REST_HANDLER`:
 - when passing `PAY_SYSTEM_ID`, the payment system with the specified identifier is used 
 - when passing `BX_REST_HANDLER`, the first found payment system with the specified handler is used 
 
-If both parameters are provided, the `PAY_SYSTEM_ID` parameter takes precedence.
+If both parameters are passed, the `PAY_SYSTEM_ID` parameter takes precedence.
 ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -59,6 +59,56 @@ If both parameters are provided, the `PAY_SYSTEM_ID` parameter takes precedence.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paysystem.pay.invoice',
+    		{
+    			"INVOICE_ID": 2,
+    			"PAY_SYSTEM_ID": 31,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paysystem.pay.invoice',
+                [
+                    'INVOICE_ID'    => 2,
+                    'PAY_SYSTEM_ID' => 31,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error paying invoice: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod('sale.paysystem.pay.invoice', {
         "INVOICE_ID": 2,
         "PAY_SYSTEM_ID": 31,
@@ -77,7 +127,7 @@ If both parameters are provided, the `PAY_SYSTEM_ID` parameter takes precedence.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -99,7 +149,7 @@ If both parameters are provided, the `PAY_SYSTEM_ID` parameter takes precedence.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -130,11 +180,11 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error": "ERROR_CHECK_FAILURE",
+    "error": " ERROR_CHECK_FAILURE",
     "error_description": "Pay system not found"
 }
 ```

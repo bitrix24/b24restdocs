@@ -1,14 +1,14 @@
-# Get Payment System Settings for a Specific Invoice sale.paysystem.settings.invoice.get
+# Get payment system settings for a specific invoice sale.paysystem.settings.invoice.get
 
 > Scope: [`pay_system`](../scopes/permissions.md)
 >
 > Who can execute the method: a user with permissions to create and edit CRM invoices (legacy version)
 
-This method returns the payment system settings for a specific invoice (legacy version).
+The method returns the payment system settings for a specific invoice (legacy version).
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,15 +24,15 @@ This method returns the payment system settings for a specific invoice (legacy v
 ||
 |#
 
-You must provide either the `PAY_SYSTEM_ID` parameter or the `BX_REST_HANDLER`:
-- When providing `PAY_SYSTEM_ID`, the payment system with the specified identifier is used.
-- When providing `BX_REST_HANDLER`, the first found payment system with the specified handler is used.
+You must pass either the `PAY_SYSTEM_ID` parameter or the `BX_REST_HANDLER`:
+- when passing `PAY_SYSTEM_ID`, the payment system with the specified identifier is used
+- when passing `BX_REST_HANDLER`, the first found payment system with the specified handler is used
 
-If both parameters are provided, the `PAY_SYSTEM_ID` parameter takes precedence.
+If both parameters are passed, the `PAY_SYSTEM_ID` parameter takes precedence.
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -59,6 +59,58 @@ If both parameters are provided, the `PAY_SYSTEM_ID` parameter takes precedence.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sale.paysystem.settings.invoice.get',
+    		{
+    			"INVOICE_ID": 10,
+    			"PAY_SYSTEM_ID": 11
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paysystem.settings.invoice.get',
+                [
+                    'INVOICE_ID'    => 10,
+                    'PAY_SYSTEM_ID' => 11,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting invoice settings: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod('sale.paysystem.settings.invoice.get', {
             "INVOICE_ID": 10,
             "PAY_SYSTEM_ID": 11
@@ -77,7 +129,7 @@ If both parameters are provided, the `PAY_SYSTEM_ID` parameter takes precedence.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -99,7 +151,7 @@ If both parameters are provided, the `PAY_SYSTEM_ID` parameter takes precedence.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -133,19 +185,19 @@ The keys of the object are the parameter codes specified when adding the handler
 
 The values of the object are the parameter values:
 - either filled in manually by the user when creating the payment system
-- or specified when adding the payment system via [sale.paysystem.add](./sale-pay-system-add.md)
+- or specified when adding the payment system via [sale.paysystem.add](./sale-paysystem-add.md)
 ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
-    "error": "ERROR_CHECK_FAILURE",
+    "error": " ERROR_CHECK_FAILURE",
     "error_description": "Pay system not found"
 }
 ```
@@ -157,7 +209,7 @@ HTTP Status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Insufficient permissions to retrieve settings | 403 ||
-|| `ERROR_CHECK_FAILURE` | One of the required fields is missing or the payment system with the specified `ID` or `bx_rest_handler` was not found (details in the error description) | 400 ||
+|| `ERROR_CHECK_FAILURE` | One of the required fields is missing or the payment system with the specified `ID` or `bx_rest_handler` was not found (see error description for details) | 400 ||
 || `ERROR_INTERNAL_INVOICE_NOT_FOUND` | The specified invoice was not found | 400 ||
 |#
 

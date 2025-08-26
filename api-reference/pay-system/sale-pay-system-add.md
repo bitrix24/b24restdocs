@@ -28,19 +28,19 @@ This method adds a payment system.
 
 If not provided, defaults to `N` ||
 || **SETTINGS**
-[`object`](../data-types.md) | List of handler settings values in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the name of the setting and `value` is an object containing the keys [TYPE](#possible-values-of-key-type) and [VALUE](#possible-values-of-key-value) (see description below). 
+[`object`](../data-types.md) | List of handler settings values in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the name of the setting, and `value` is an object containing keys [TYPE](#possible-values-of-key-type) and [VALUE](#possible-values-of-key-value) (see description below).
 
 The structure of the settings is defined when adding the payment system handler in the method [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) under the `CODES` key of the `SETTINGS` parameter ||
 || **ENTITY_REGISTRY_TYPE***
 [`string`](../data-types.md) | Binding of the payment system:
-- `ORDER` — value for store orders, deals, SPAs
+- `ORDER` — value for store orders, deals, smart processes
 - `CRM_INVOICE` — value for CRM invoices
 - `CRM_QUOTE` — value for CRM estimates
 ||
 || **LOGOTYPE**
 [`string`](../data-types.md) | Logo of the payment system (image in Base64 format) ||
 || **NEW_WINDOW**
-[`string`](../data-types.md) | Flag for the "Open in new window" setting. Possible values:
+[`string`](../data-types.md) | Flag for the setting "Open in new window". Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -58,7 +58,7 @@ If not provided, defaults to `N` ||
 || **PAYMENT** | Payment ||
 || **USER** | User ||
 || **VALUE** | Arbitrary string value ||
-|| **Y\N** | Checkbox ||
+|| **Y\N** | Flag ||
 |#
 
 ### Possible Values of the VALUE Key
@@ -168,6 +168,96 @@ If not provided, defaults to `N` ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"sale.paysystem.add",
+    		{
+    			'NAME' : 'Card Payment',
+    			'DESCRIPTION': 'Easily pay for purchases with a card.',
+    			'XML_ID': 'my_ps_id',
+    			'PERSON_TYPE_ID' : 1,
+    			'BX_REST_HANDLER' : 'resthandlercode',
+    			'ACTIVE' : 'Y',
+    			'ENTITY_REGISTRY_TYPE': 'ORDER',
+    			'LOGOTYPE': '/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAASABUDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD73/4Oa/25vEf7CH/BK/XNW8GarrPh/wAZeONcsfCejazpk3k3GkyS+ZdTSh/vKWtbO5jDJhlaVWBBGR4V/wAFMP28vj1/wRc/4I+fs56O3jmLxh+0j4m1Wy0/V5tft11a9v4xDNc30SYJE/kTSWdn52S7o6tne+4fNv7f3/BSHwX8d/2xvjL+y/8A8FBrHxt4R+F+g/EKDxB8NtY8L6WLeTTbG3N5BDLdMqSy3FtdWkynfFFI4aSUDYQvl8r/AMFDv+Cr37P37eP/AAWX/Zz+IHw10/42fGi6+GOp2VlpnhbSrBNL03WLtLw3cF7ZtOzXJlExjWWGW1hEy20YM0aoSwB/RtRRRQBw/wAb/wBmb4b/ALTWk2On/Ej4feB/iDY6ZMbiztvEuhWurQ2khG0vGtwjhGK8EqASOKT4L/swfDX9mTTr+z+G3w78DfD201WRZr2Dw1oNrpMd46ghWkW3jQOwBIBbJAJoooA7miiigD//2Q==',
+    			'NEW_WINDOW': 'N',
+    			'SETTINGS' : {
+    				'REST_SERVICE_ID' : {
+    					'TYPE' : 'VALUE',
+    					'VALUE' : 'SERVICE ID VALUE'
+    				},
+    				'REST_SERVICE_KEY' : {
+    					'TYPE' : 'VALUE',
+    					'VALUE' : 'KEY ID VALUE'
+    				},
+    				'PAYMENT_ID': {
+    					'TYPE': 'PAYMENT',
+    					'VALUE': 'ACCOUNT_NUMBER',
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.paysystem.add',
+                [
+                    'NAME'               => 'Card Payment',
+                    'DESCRIPTION'        => 'Easily pay for purchases with a card.',
+                    'XML_ID'             => 'my_ps_id',
+                    'PERSON_TYPE_ID'     => 1,
+                    'BX_REST_HANDLER'    => 'resthandlercode',
+                    'ACTIVE'             => 'Y',
+                    'ENTITY_REGISTRY_TYPE' => 'ORDER',
+                    'LOGOTYPE'           => '/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAASABUDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD73/4Oa/25vEf7CH/BK/XNW8GarrPh/wAZeONcsfCejazpk3k3GkyS+ZdTSh/vKWtbO5jDJhlaVWBBGR4V/wAFMP28vj1/wRc/4I+fs56O3jmLxh+0j4m1Wy0/V5tft11a9v4xDNc30SYJE/kTSWdn52S7o6tne+4fNv7f3/BSHwX8d/2xvjL+y/8A8FBrHxt4R+F+g/EKDxB8NtY8L6WLeTTbG3N5BDLdMqSy3FtdWkynfFFI4aSUDYQvl8r/AMFDv+Cr37P37eP/AAWX/Zz+IHw10/42fGi6+GOp2VlpnhbSrBNL03WLtLw3cF7ZtOzXJlExjWWGW1hEy20YM0aoSwB/RtRRRQBw/wAb/wBmb4b/ALTWk2On/Ej4feB/iDY6ZMbiztvEuhWurQ2khG0vGtwjhGK8EqASOKT4L/swfDX9mTTr+z+G3w78DfD201WRZr2Dw1oNrpMd46ghWkW3jQOwBIBbJAJoooA7miiigD//2Q==',
+                    'NEW_WINDOW'         => 'N',
+                    'SETTINGS'           => [
+                        'REST_SERVICE_ID' => [
+                            'TYPE'  => 'VALUE',
+                            'VALUE' => 'SERVICE ID VALUE',
+                        ],
+                        'REST_SERVICE_KEY' => [
+                            'TYPE'  => 'VALUE',
+                            'VALUE' => 'KEY ID VALUE',
+                        ],
+                        'PAYMENT_ID'      => [
+                            'TYPE'  => 'PAYMENT',
+                            'VALUE' => 'ACCOUNT_NUMBER',
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding payment system: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "sale.paysystem.add",
         {
@@ -209,7 +299,7 @@ If not provided, defaults to `N` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -224,7 +314,7 @@ If not provided, defaults to `N` ||
             'BX_REST_HANDLER' => 'resthandlercode',
             'ACTIVE' => 'Y',
             'ENTITY_REGISTRY_TYPE' => 'ORDER',
-            'LOGOTYPE' => '/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAASABUDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD73/4Oa/25vEf7CH/BK/XNW8GarrPh/wAZeONcsfCejazpk3k3GkyS+ZdTSh/vKWtbO5jDJhlaVWBBGR4V/wAFMP28vj1/wRc/4I+fs56O3jmLxh+0j4m1Wy0/V5tft11a9v4xDNc30SYJE/kTSWdn52S7o6tne+4fNv7f3/BSHwX8d/2xvjL+y/8A8FBrHxt4R+F+g/EKDxB8NtY8L6WLeTTbG3N5BDLdMqSy3FtdWkynfFFI4aSUDYQvl8r/AMFDv+Cr37P37eP/AAWX/Zz+IHw10/42fGi6+GOp2VlpnhbSrBNL03WLtLw3cF7ZtOzXJlExjWWGW1hEy20YM0aoSwB/RtRRRQBw/wAb/wBmb4b/ALTWk2On/Ej4feB/iDY6ZMbiztvEuhWurQ2khG0vGtwjhGK8EqASOKT4H/swfDX9mTTr+z+G3w78DfD201WRZr2Dw1oNrpMd46ghWkW3jQOwBIBbJAJoooA7miiigD//2Q==',
+            'LOGOTYPE' => '/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAASABUDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD73/4Oa/25vEf7CH/BK/XNW8GarrPh/wAZeONcsfCejazpk3k3GkyS+ZdTSh/vKWtbO5jDJhlaVWBBGR4V/wAFMP28vj1/wRc/4I+fs56O3jmLxh+0j4m1Wy0/V5tft11a9v4xDNc30SYJE/kTSWdn52S7o6tne+4fNv7f3/BSHwX8d/2xvjL+y/8A8FBrHxt4R+F+g/EKDxB8NtY8L6WLeTTbG3N5BDLdMqSy3FtdWkynfFFI4aSUDYQvl8r/AMFDv+Cr37P37eP/AAWX/Zz+IHw10/42fGi6+GOp2VlpnhbSrBNL03WLtLw3cF7ZtOzXJlExjWWGW1hEy20YM0aoSwB/RtRRRQBw/wAb/wBmb4b/ALTWk2On/Ej4feB/iDY6ZMbiztvEuhWurQ2khG0vGtwjhGK8EqASOKT4H/swfDX9mTTr+z+G3w78DfD201WRZr2Dw1oNrpMd46ghWkW3jQOwBIBbJAJoooA7miiigD//2Q==',
             'NEW_WINDOW' => 'N',
             'SETTINGS' => [
                 'REST_SERVICE_ID' => [
@@ -298,8 +388,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient permissions to add the payment system | 403 ||
-|| `ERROR_CHECK_FAILURE` | Required field value is missing or one of the field values is incorrect | 400 ||
+|| `ACCESS_DENIED` | Insufficient rights to add the payment system | 403 ||
+|| `ERROR_CHECK_FAILURE` | Required field value is not specified or one of the field values is incorrect | 400 ||
 || `ERROR_PAY_SYSTEM_ADD` | Other errors. For detailed information about the error, see `error_description` | 400 ||
 || `ERROR_HANDLER_NOT_FOUND` | Handler specified in the `BX_REST_HANDLER` parameter not found | 400 ||
 || `ERROR_PERSON_TYPE_NOT_FOUND` | Payer type specified in the `PERSON_TYPE_ID` parameter not found | 400 ||
