@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- missing examples (there should be three examples - curl, js, php)
+- missing examples (should include three examples - curl, js, php)
 - missing response in case of error
 
 {% endnote %}
@@ -13,7 +13,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -34,6 +34,59 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            "disk.storage.getforapp",
+            {}
+        );
+        
+        const result = response.getData().result;
+        if (result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.dir(result);
+        }
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.storage.getforapp',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting storage for app: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "disk.storage.getforapp",
         {},
@@ -49,9 +102,9 @@ No parameters.
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Response in case of success
+## Response on Success
 
 The returned structure is similar to that provided in [disk.storage.get](./disk-storage-get.md).
 

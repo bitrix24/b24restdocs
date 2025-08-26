@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- missing examples (should include three examples - curl, js, php)
+- missing examples (there should be three examples - curl, js, php)
 - missing response in case of error
 
 {% endnote %}
@@ -13,7 +13,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly
+Some data may be missing here — we will fill it in shortly
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ The method `disk.folder.getfields` returns the description of folder fields.
 
 - `TYPE` — field type;
 - `USE_IN_FILTER` — whether the field can be used for filtering the selection;
-- `USE_IN_SHOW` — whether this field is available when receiving a response.
+- `USE_IN_SHOW` — whether this field is available in the response.
 
 ## Parameters
 
@@ -36,6 +36,52 @@ No parameters.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.folder.getfields",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.folder.getfields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting folder fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -53,9 +99,9 @@ No parameters.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Response on Success
+## Response in case of success
 
 > 200 OK
 

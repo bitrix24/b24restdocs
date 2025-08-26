@@ -1,4 +1,4 @@
-# Move Folder to Trash disk.folder.markdeleted
+# Move folder to trash disk.folder.markdeleted
 
 {% if build == 'dev' %}
 
@@ -40,6 +40,63 @@ The method `disk.folder.markdeleted` moves a folder to the trash.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.folder.markdeleted",
+    		{
+    			id: 8
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.folder.markdeleted',
+                [
+                    'id' => 8
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error marking folder as deleted: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "disk.folder.markdeleted",
         {
@@ -57,9 +114,9 @@ The method `disk.folder.markdeleted` moves a folder to the trash.
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Response on success
 
 > 200 OK
 

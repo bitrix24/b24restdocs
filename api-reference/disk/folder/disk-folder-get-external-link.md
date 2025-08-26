@@ -6,7 +6,7 @@
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- examples are missing (there should be three examples - curl, js, php)
+- examples are missing (should include three examples - curl, js, php)
 - response in case of error is missing
 - response in case of success is missing
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -39,6 +39,56 @@ The method `disk.folder.getExternalLink` returns a public link by folder ID.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.folder.getExternalLink",
+    		{
+    			id: 10
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.folder.getExternalLink',
+                [
+                    'id' => 10,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting external link for folder: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

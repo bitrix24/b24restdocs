@@ -7,8 +7,8 @@
 - parameter types are not specified
 - parameter requirements are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- success response is missing
-- error response is missing
+- response on success is missing
+- response on error is missing
 
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -33,9 +33,9 @@ The method `disk.rights.getTasks` allows you to retrieve a list of access levels
 || **ID**
 [`unknown`](../../data-types.md) | Identifier of the access level. ||
 || **NAME**
-[`unknown`](../../data-types.md) | Symbolic code. ||
+[`unknown`](../../data-types.md) |  Symbolic code. ||
 || **TITLE**
-[`unknown`](../../data-types.md) | Title. ||
+[`unknown`](../../data-types.md) |  Title. ||
 || **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
@@ -44,6 +44,60 @@ The method `disk.rights.getTasks` allows you to retrieve a list of access levels
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.rights.getTasks",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.rights.getTasks',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting tasks: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -60,9 +114,9 @@ The method `disk.rights.getTasks` allows you to retrieve a list of access levels
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Success response
+## Response on success
 
 > 200 OK
 

@@ -8,7 +8,7 @@
 - parameter requirements are not indicated
 - detailed description of the data parameter is missing
 - examples are absent (there should be three examples - curl, js, php)
-- response in case of error is missing
+- response in case of an error is missing
 
 {% endnote %}
 
@@ -31,7 +31,7 @@ The method `disk.storage.addfolder` creates a folder in the root of the storage.
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Identifier of the storage. ||
+[`unknown`](../../data-types.md) | Storage identifier. ||
 || **data**
 [`unknown`](../../data-types.md) | Array describing the folder. The required field `NAME` — the name of the new folder. ||
 |#
@@ -41,6 +41,58 @@ The method `disk.storage.addfolder` creates a folder in the root of the storage.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.storage.addfolder",
+    		{
+    			id: 4,
+    			data: {'NAME': 'New'}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.storage.addfolder',
+                [
+                    'id'   => 4,
+                    'data' => ['NAME' => 'New'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding folder: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

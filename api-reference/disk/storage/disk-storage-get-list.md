@@ -8,7 +8,7 @@
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
 - no error response is provided
-- no detailed example in case of success
+- no detailed success example is available
 
 {% endnote %}
 
@@ -16,7 +16,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it soon
 
 {% endnote %}
 
@@ -47,30 +47,106 @@ See also the description of [list methods](../../how-to-call-rest-api/list-metho
 
 - JS
 
-```js
-//search for a group storage with a name containing "Foot"
-BX24.callMethod(
-    "disk.storage.getlist",
-    {
-        filter: {
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'disk.storage.getlist',
+        {
+          filter: {
             'ENTITY_TYPE': 'group',
             '%NAME': 'Foot'
-        }
-    },
-    function (result)
-    {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
     }
-);
-```
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('disk.storage.getlist', { filter: { 'ENTITY_TYPE': 'group', '%NAME': 'Foot' } }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('disk.storage.getlist', { filter: { 'ENTITY_TYPE': 'group', '%NAME': 'Foot' } }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.storage.getlist',
+                [
+                    'filter' => [
+                        'ENTITY_TYPE' => 'group',
+                        '%NAME'      => 'Foot'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error searching for group storage: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+  ```js
+  //search for a group storage with a name containing "Foot"
+  BX24.callMethod(
+      "disk.storage.getlist",
+      {
+          filter: {
+              'ENTITY_TYPE': 'group',
+              '%NAME': 'Foot'
+          }
+      },
+      function (result)
+      {
+          if (result.error())
+              console.error(result.error());
+          else
+              console.dir(result.data());
+      }
+  );
+  ```
 
 {% endlist %}
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Response in case of success
+## Response on success
 
 The response is an array of objects, the structure of which is similar to [disk.storage.get](./disk-storage-get.md).

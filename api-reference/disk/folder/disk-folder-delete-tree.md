@@ -2,7 +2,7 @@
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
@@ -40,6 +40,59 @@ The method `disk.folder.deletetree` permanently deletes a folder and all its sub
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.folder.deletetree",
+    		{
+    			id: 8
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.folder.deletetree',
+                [
+                    'id' => 8,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting folder tree: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "disk.folder.deletetree",
         {
@@ -59,7 +112,7 @@ The method `disk.folder.deletetree` permanently deletes a folder and all its sub
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Successful Response
 
 > 200 OK
 

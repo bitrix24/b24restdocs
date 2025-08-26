@@ -5,9 +5,9 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of error is absent
+- response in case of error is missing
 
 {% endnote %}
 
@@ -30,7 +30,7 @@ The method `disk.folder.getchildren` returns a list of files and folders that ar
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Identifier of the folder. ||
+[`unknown`](../../data-types.md) | Folder identifier. ||
 || **filter**
 [`unknown`](../../data-types.md) |  Optional parameter. Supports filtering by fields specified in [disk.folder.getfields](./disk-folder-get-fields.md) as `USE_IN_FILTER: true`. ||
 || **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
@@ -47,6 +47,62 @@ See also the description of [list methods](../../how-to-call-rest-api/list-metho
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.folder.getchildren",
+    		{
+    			id: 8,
+    			filter: {
+    				CREATED_BY: 1
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.folder.getchildren',
+                [
+                    'id' => 8,
+                    'filter' => [
+                        'CREATED_BY' => 1
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting folder children: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

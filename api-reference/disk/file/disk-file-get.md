@@ -1,4 +1,4 @@
-# Get file parameters by identifier disk.file.get
+# Get File Parameters by ID disk.file.get
 
 {% if build == 'dev' %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will fill it in shortly
 >
 > Who can execute the method: any user
 
-The method `disk.file.get` returns a file by its identifier.
+The method `disk.file.get` returns a file by its ID.
 
 {% note warning %}
 
@@ -36,7 +36,7 @@ The link to download the file from the `DOWNLOAD_URL` parameter contains an auth
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | File identifier. ||
+[`unknown`](../../data-types.md) | File ID. ||
 |#
 
 ## Example
@@ -44,6 +44,63 @@ The link to download the file from the `DOWNLOAD_URL` parameter contains an auth
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.file.get",
+    		{
+    			id: 10
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.file.get',
+                [
+                    'id' => 10
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting file: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -65,7 +122,7 @@ The link to download the file from the `DOWNLOAD_URL` parameter contains an auth
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Response on success
+## Response on Success
 
 > 200 OK
 
@@ -74,16 +131,16 @@ The link to download the file from the `DOWNLOAD_URL` parameter contains an auth
     "ID": "10", //identifier
     "NAME": "2511.jpg", //file name
     "CODE": null, //symbolic code
-    "STORAGE_ID": "4", //storage identifier
+    "STORAGE_ID": "4", //storage ID
     "TYPE": "file",
-    "PARENT_ID": "8", //parent folder identifier
+    "PARENT_ID": "8", //parent folder ID
     "DELETED_TYPE": "0", //deletion marker
     "CREATE_TIME": "2015-04-24T10:41:51+02:00", //creation time
     "UPDATE_TIME": "2015-04-24T15:52:43+02:00", //modification time
     "DELETE_TIME": null, //time moved to trash
-    "CREATED_BY": "1", //identifier of the user who created the file
-    "UPDATED_BY": "1", //identifier of the user who modified the file
-    "DELETED_BY": "0", //identifier of the user who moved the file to trash
+    "CREATED_BY": "1", //ID of the user who created the file
+    "UPDATED_BY": "1", //ID of the user who modified the file
+    "DELETED_BY": "0", //ID of the user who moved the file to trash
     "DOWNLOAD_URL": "https://test.bitrix24.com/disk/downloadFile/10/?&ncc=1&filename=2511.jpg&auth=******",
 //returns url for downloading the file by the application
     "DETAIL_URL": "https://test.bitrix24.com/workgroups/group/3/disk/file/2511.jpg"

@@ -1,4 +1,4 @@
-# List of Files and Folders in the Root of Storage disk.storage.getchildren
+# List of Files and Folders in the Root of the Storage disk.storage.getchildren
 
 {% if build == 'dev' %}
 
@@ -7,7 +7,7 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of error is absent
+- no response in case of error
 
 {% endnote %}
 
@@ -48,6 +48,62 @@ See also the description of [list methods](../../how-to-call-rest-api/list-metho
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.storage.getchildren",
+    		{
+    			id: 4,
+    			filter: {
+    				CREATED_BY: 1
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.storage.getchildren',
+                [
+                    'id' => 4,
+                    'filter' => [
+                        'CREATED_BY' => 1
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting children from storage: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "disk.storage.getchildren",
         {
@@ -68,7 +124,7 @@ See also the description of [list methods](../../how-to-call-rest-api/list-metho
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Response in Case of Success
 

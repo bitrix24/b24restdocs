@@ -7,7 +7,7 @@
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of error is absent
+- no error response provided
 
 {% endnote %}
 
@@ -15,7 +15,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -40,6 +40,59 @@ The method `disk.file.markdeleted` moves a file to the trash.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.file.markdeleted",
+    		{
+    			id: 10
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.file.markdeleted',
+                [
+                    'id' => 10
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error marking file as deleted: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "disk.file.markdeleted",
         {
@@ -57,9 +110,9 @@ The method `disk.file.markdeleted` moves a file to the trash.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}
 
-## Response on success
+## Success response
 
 > 200 OK
 

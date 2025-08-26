@@ -1,4 +1,4 @@
-# Create Subfolder disk.folder.addsubfolder
+# Create a Subfolder disk.folder.addsubfolder
 
 {% if build == 'dev' %}
 
@@ -8,7 +8,7 @@
 - parameter requirements are not indicated
 - detailed description of the data parameter is missing
 - examples are absent (there should be three examples - curl, js, php)
-- response in case of error is missing
+- response in case of an error is missing
 
 {% endnote %}
 
@@ -33,7 +33,7 @@ The method `disk.folder.addsubfolder` creates a subfolder.
 || **id**
 [`unknown`](../../data-types.md) | Identifier of the folder. ||
 || **data**
-[`unknown`](../../data-types.md) | Array describing the folder. The required field `NAME` — the name of the new folder. ||
+[`unknown`](../../data-types.md) | Array describing the folder. The required field `NAME` — name of the new folder. ||
 |#
 
 ## Example
@@ -41,6 +41,69 @@ The method `disk.folder.addsubfolder` creates a subfolder.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.folder.addsubfolder",
+    		{
+    			id: 8,
+    			data: {
+    				NAME: 'New sub folder'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.folder.addsubfolder',
+                [
+                    'id' => 8,
+                    'data' => [
+                        'NAME' => 'New sub folder'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding subfolder: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -63,7 +126,7 @@ The method `disk.folder.addsubfolder` creates a subfolder.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}
 
 ## Response on Success
 

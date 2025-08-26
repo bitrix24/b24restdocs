@@ -1,4 +1,4 @@
-# Copy file to the specified folder disk.file.copyto
+# Copy File to Specified Folder disk.file.copyto
 
 {% if build == 'dev' %}
 
@@ -42,6 +42,65 @@ The method `disk.file.copyto` copies a file to the specified folder.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.file.copyto",
+    		{
+    			id: 10,
+    			targetFolderId: 226
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.file.copyto',
+                [
+                    'id'             => 10,
+                    'targetFolderId' => 226,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error copying file: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "disk.file.copyto",
         {
@@ -60,9 +119,9 @@ The method `disk.file.copyto` copies a file to the specified folder.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-## Success response
+## Response on Success
 
 > 200 OK
 

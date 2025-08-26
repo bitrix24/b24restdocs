@@ -6,7 +6,7 @@
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no response in case of error
+- no response in case of an error
 
 {% endnote %}
 
@@ -33,7 +33,7 @@ The method `disk.folder.uploadfile` uploads a new file to the specified folder.
 || **fileContent**
 [`unknown`](../../data-types.md) | Upload the file in [Base64](../../files/how-to-upload-files.md) format. ||
 || **data**
-[`unknown`](../../data-types.md) | An array describing the file. The required field `NAME` — the name of the new file. It is possible to send the file as a string encoded in base64. ||
+[`unknown`](../../data-types.md) | An array describing the file. The required field `NAME` — the name of the new file. It is possible to send the file as a base64 encoded string. ||
 || **generateUniqueName**
 [`unknown`](../../data-types.md) | Optional, defaults to `false`. If set to `true`, the uploaded file will have a unique name by adding a suffix (1), (2), etc. Example: avatar (1).jpg, avatar (2).jpg. ||
 || **rights**
@@ -48,11 +48,92 @@ Please note that the list of available `TASK_ID` identifiers for setting permiss
 
 {% endnote %}
 
-### Example of File Upload
+### Example of Uploading a File
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.folder.uploadfile",
+    		{
+    			id: 4,
+    			data: {
+    				NAME: "avatar.jpg"
+    			},
+    			fileContent: document.getElementById('test_file_input'),
+    			generateUniqueName: true,
+    			rights: [
+    				{
+    					TASK_ID: 42,
+    					ACCESS_CODE: 'U35' // access for user with ID=35
+    				},
+    				{
+    					TASK_ID: 38,
+    					ACCESS_CODE: 'U2' // access for user with ID=2
+    				}
+    			]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.folder.uploadfile',
+                [
+                    'id'               => 4,
+                    'data'             => [
+                        'NAME' => 'avatar.jpg',
+                    ],
+                    'fileContent'      => $_FILES['test_file_input'],
+                    'generateUniqueName' => true,
+                    'rights'           => [
+                        [
+                            'TASK_ID'     => 42,
+                            'ACCESS_CODE' => 'U35', // access for user with ID=35
+                        ],
+                        [
+                            'TASK_ID'     => 38,
+                            'ACCESS_CODE' => 'U2', // access for user with ID=2
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error uploading file to folder: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -89,7 +170,7 @@ Please note that the list of available `TASK_ID` identifiers for setting permiss
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
-### Example of Direct File Upload to Disk
+### Example of Directly Uploading a File to Disk
 
 1. Call `/rest/disk.folder.uploadFile` and pass only the `ID` of the folder to the method.
     ```
@@ -102,8 +183,8 @@ Please note that the list of available `TASK_ID` identifiers for setting permiss
     "uploadUrl": "http://b24.sigurd.bx/rest/upload.json?auth=n2423m863oil59f99c9g0bm4918l5erz&token=disk%7CaWQ9Mjg5Jl89QkYzazEzaXNnUjNHcVZQcDJZaGxGRmI4TGhXOG5EZXQ%3D%7CInVwbG9hZHxkaXNrfGFXUTlNamc1Smw4OVFrWXphekV6YVhOblVqTkhjVlpRY0RKWmFHeEdSbUk0VEdoWE9HNUVaWFE9fG4yNDIzbTg2M29pbDU5Zjk5YzlnMGJtNDkxOGw1ZXJ6Ig%3D%3D.Aga709nyY0%2BrFiv3laHjfg6XuOO5JT6ttjU%2F53ifphM%3D"
     }
     ```
-3. Send a POST request to the received `UploadUrl` in `multipart/form-data`, where the file is passed in the field with the name received in the `field` parameter.
-    ``` 
+3. Send a POST request to the received `UploadUrl` in `multipart/form-data`, passing the file in the field with the name obtained from the `field` parameter.
+    ```
     http --form POST "http://b24.sigurd.bx/rest/upload.json?auth=n2423m863oil59f99c9g0bm4918l5erz&token=disk%7CaWQ9Mjg5Jl89QkYzazEzaXNnUjNHcVZQcDJZaGxGRmI4TGhXOG5EZXQ%3D%7CInVwbG9hZHxkaXNrfGFXUTlNamc1Smw4OVFrWXphekV6YVhOblVqTkhjVlpRY0RKWmFHeEdSbUk0VEdoWE9HNUVaWFE9fG4yNDIzbTg2M29pbDU5Zjk5YzlnMGJtNDkxOGw1ZXJ6Ig%3D%3D.Aga709nyY0%2BrFiv3laHjfg6XuOO5JT6ttjU%2F53ifphM%3D" file@~/somelongfile.log
     ```
 4. In response, receive data about the uploaded file.
@@ -205,13 +286,13 @@ Please note that the list of available `TASK_ID` identifiers for setting permiss
 
 {% endlist %}
 
-## Response on Success
+## Response in Case of Success
 
 > 200 OK
 
-On success, it returns a structure similar to [disk.file.get](../file/disk-file-get.md).
+In case of success, it returns a structure similar to [disk.file.get](../file/disk-file-get.md).
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](../../../tutorials/tasks/how-to-create-comment-with-file.md)
 - [{#T}](../../../tutorials/tasks/how-to-create-task-with-file.md)

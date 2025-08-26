@@ -1,13 +1,13 @@
-# Get Public Link for File disk.file.getExternalLink
+# Get a public link to the file disk.file.getExternalLink
 
 {% if build == 'dev' %}
 
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- response in case of error is absent
+- response in case of error is missing
 
 {% endnote %}
 
@@ -40,6 +40,56 @@ The method `disk.file.getExternalLink` returns a public link by file identifier.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.file.getExternalLink",
+    		{
+    			id: 10
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.file.getExternalLink',
+                [
+                    'id' => 10
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting external link for file: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "disk.file.getExternalLink",
         {
@@ -59,7 +109,7 @@ The method `disk.file.getExternalLink` returns a public link by file identifier.
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Response on Success
+## Response in case of success
 
 > 200 OK
 

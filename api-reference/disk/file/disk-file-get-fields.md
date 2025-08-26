@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- missing examples (there should be three examples - curl, js, php)
+- missing examples (should include three examples - curl, js, php)
 - missing success response
 - missing error response
 
@@ -22,10 +22,10 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `disk.file.getfields` returns the description of file fields.
+The method `disk.file.getfields` returns a description of the file fields.
 
 - `TYPE` — field type;
-- `USE_IN_FILTER` — ability to use the field when filtering the selection;
+- `USE_IN_FILTER` — whether the field can be used when filtering the selection;
 - `USE_IN_SHOW` — whether this field is available when receiving a response.
 
 ## Parameters
@@ -37,6 +37,59 @@ No parameters
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.file.getfields",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.file.getfields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting file fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -54,4 +107,4 @@ No parameters
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

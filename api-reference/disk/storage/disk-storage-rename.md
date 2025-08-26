@@ -5,9 +5,9 @@
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing (there should be three examples - curl, js, php)
-- no error response is provided
+- no error response provided
 
 {% endnote %}
 
@@ -30,7 +30,7 @@ The method `disk.storage.rename` renames the storage. Only the application stora
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Storage identifier. ||
+[`unknown`](../../data-types.md) | Identifier of the storage. ||
 || **newName**
 [`unknown`](../../data-types.md) | New name. ||
 |#
@@ -40,6 +40,58 @@ The method `disk.storage.rename` renames the storage. Only the application stora
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"disk.storage.rename",
+    		{
+    			id: 2,
+    			newName: 'New name for storage'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'disk.storage.rename',
+                [
+                    'id'     => 2,
+                    'newName' => 'New name for storage',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error renaming storage: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -60,7 +112,7 @@ The method `disk.storage.rename` renames the storage. Only the application stora
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on success
 
