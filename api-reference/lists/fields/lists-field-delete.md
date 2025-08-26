@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-- success response is absent
-- error response is absent
+- parameter types not specified
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -24,14 +24,14 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The `lists.field.delete` method allows you to remove a field from a list. If the field is successfully deleted, it returns a response of `true`; otherwise, an *Exception* will be generated.
+The method `lists.field.delete` allows you to delete a field from a list. If the field is successfully deleted, it returns a response of `true`; otherwise, an *Exception* will be thrown.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **IBLOCK_TYPE_ID**^*^
-[`unknown`](../../data-types.md) | `id` of the information block (required):
+[`unknown`](../../data-types.md) | `id` of the information block type (required):
 - **lists** - type of list information block
 - **bitrix_processes** - type of processes information block
 - **lists_socnet** - type of group lists information block ||
@@ -43,13 +43,74 @@ The `lists.field.delete` method allows you to remove a field from a list. If the
 [`unknown`](../../data-types.md) | `ID` of the field (required. If the field is a property of the information block, the format is: "PROPERTY_propertyId") ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.field.delete',
+    		{
+    			'IBLOCK_TYPE_ID': 'lists_socnet',
+    			'IBLOCK_CODE': 'rest_1',
+    			'FIELD_ID': 'PROPERTY_61'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		alert("Error: " + result.error());
+    	else
+    		alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $params = [
+            'IBLOCK_TYPE_ID' => 'lists_socnet',
+            'IBLOCK_CODE'    => 'rest_1',
+            'FIELD_ID'       => 'PROPERTY_61',
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.field.delete',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var params = {
@@ -72,4 +133,4 @@ The `lists.field.delete` method allows you to remove a field from a list. If the
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `lists.delete` removes a list. On successful deletion, the response is *true*, otherwise *false*.
+The method `lists.delete` removes a list. Upon successful deletion, the response is *true*, otherwise *false*.
 
 ## Parameters
 
@@ -41,13 +41,72 @@ The method `lists.delete` removes a list. On successful deletion, the response i
 [`unknown`](../../data-types.md) | `id` of the group (required if the list is created for a group); ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.delete',
+    		{
+    			'IBLOCK_TYPE_ID': 'lists_socnet',
+    			'IBLOCK_CODE': 'rest_1'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		alert("Error: " + result.error());
+    	else
+    		alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $params = [
+            'IBLOCK_TYPE_ID' => 'lists_socnet',
+            'IBLOCK_CODE'    => 'rest_1',
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.delete',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var params = {
@@ -69,4 +128,4 @@ The method `lists.delete` removes a list. On successful deletion, the response i
 
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}

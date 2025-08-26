@@ -1,4 +1,4 @@
-# Update Current Universal List lists.update
+# Update the current universal list lists.update
 
 {% note warning "We are still updating this page" %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The `lists.update` method updates an existing list. On successful list update, the response is `true`, otherwise *Exception*.
+The method `lists.update` updates an existing list. If the list is successfully updated, the response is `true`, otherwise *Exception*.
 
 ## Parameters
 
@@ -45,20 +45,97 @@ The `lists.update` method updates an existing list. On successful list update, t
 - **DESCRIPTION** - description;
 - **SORT** - sorting;
 - **PICTURE** - image;
-- **BIZPROC** - enabling business process support. ||
+- **BIZPROC** - enabling support for workflows. ||
 || **MESSAGES**
 [`unknown`](../../data-types.md) | labels for list items and sections; ||
 || **RIGHTS**
 [`unknown`](../../data-types.md) | access permission management. ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.update',
+    		{
+    			'IBLOCK_TYPE_ID': 'lists_socnet',
+    			'IBLOCK_CODE': 'rest_1',
+    			'FIELDS': {
+    				'NAME': 'List 1 (Update)',
+    				'DESCRIPTION': 'Test list (Update)',
+    				'SORT': '20',
+    				'PICTURE': document.getElementById('iblock-image-update')
+    			},
+    			'RIGHTS': {
+    				'G1': 'X'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		alert("Error: " + result.error());
+    	else
+    		alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $params = [
+            'IBLOCK_TYPE_ID' => 'lists_socnet',
+            'IBLOCK_CODE'    => 'rest_1',
+            'FIELDS'         => [
+                'NAME'        => 'List 1 (Update)',
+                'DESCRIPTION' => 'Test list (Update)',
+                'SORT'        => '20',
+                'PICTURE'     => $_POST['iblock-image-update'], // Assuming this is coming from a form POST request
+            ],
+            'RIGHTS'         => [
+                'G1' => 'X',
+            ],
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.update',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var params = {
@@ -89,4 +166,4 @@ The `lists.update` method updates an existing list. On successful list update, t
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}

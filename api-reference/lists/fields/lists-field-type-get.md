@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -40,16 +40,85 @@ The method `lists.field.type.get` allows you to retrieve a list of available fie
 || **SOCNET_GROUP_ID**^*^
 [`unknown`](../../data-types.md) | `id` of the group (required if the list is created for a group) ||
 || **FIELD_ID**
-[`unknown`](../../data-types.md) | `ID` of the field (If the field is an information block property, the format is: `PROPERTY_propertyId`. If specified, it returns available types for the specified field type) ||
+[`unknown`](../../data-types.md) | `ID` of the field (If the field is a property of the information block, the format is: `PROPERTY_propertyId`. If specified, returns available types for the specified field type) ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.field.type.get',
+    		params
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		alert("getFieldTypes: " + result.error());
+    	}
+    	else
+    	{
+    		var types = result.data(), html = '';
+    		for(var typeId in types)
+    		{
+    			if(!types.hasOwnProperty(typeId)) continue;
+    			html += ''+types[typeId]+''; 
+    		}
+    		$('#field-type').html(html);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $params = [
+            'IBLOCK_TYPE_ID' => 'lists_socnet',
+            'IBLOCK_CODE'    => 'rest_1',
+        ];
+    
+        if (!empty($params['IBLOCK_CODE']) || !empty($params['IBLOCK_ID'])) {
+            $response = $b24Service
+                ->core
+                ->call(
+                    'lists.field.type.get',
+                    $params
+                );
+    
+            $result = $response
+                ->getResponseData()
+                ->getResult();
+    
+            $html = '';
+            foreach ($result as $typeId => $type) {
+                $html .= '' . $type . '';
+            }
+    
+            echo 'Success: ' . $html;
+            $('#field-type').html($html);
+        }
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting field types: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var params = {
@@ -83,4 +152,4 @@ The method `lists.field.type.get` allows you to retrieve a list of available fie
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}

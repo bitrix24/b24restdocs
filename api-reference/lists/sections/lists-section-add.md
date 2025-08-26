@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-- success response is absent
-- error response is absent
+- parameter types not specified
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -42,18 +42,85 @@ The method `lists.section.add` creates a list section. If the section is created
 || **IBLOCK_SECTION_ID**
 [`unknown`](../../data-types.md) | Identifier of the parent section; if not specified, the section will be root | ||
 || **FIELDS**
-[`unknown`](../../data-types.md) | Array of fields and values. Required field: NAME. | ||
+[`unknown`](../../data-types.md) | Array of fields and values. Required fields: NAME. | ||
 || **SECTION_CODE**^*^
 [`unknown`](../../data-types.md) | Symbolic code of the section (required). | ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const params = {
+    		'IBLOCK_TYPE_ID': 'lists',
+    		'IBLOCK_CODE': 'rest_1',
+    		'SECTION_CODE': 'Section_code_1',
+    		'FIELDS': {
+    			'NAME': 'Section_1',
+    		}
+    	};
+    	
+    	const response = await $b24.callMethod(
+    		'lists.section.add',
+    		params
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		alert("Error: " + result.error());
+    	else
+    		console.log(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.section.add',
+                [
+                    'IBLOCK_TYPE_ID' => 'lists',
+                    'IBLOCK_CODE'   => 'rest_1',
+                    'SECTION_CODE'  => 'Section_code_1',
+                    'FIELDS'        => [
+                        'NAME' => 'Section_1',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     /* lists.section.add */
@@ -80,4 +147,4 @@ The method `lists.section.add` creates a list section. If the section is created
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}

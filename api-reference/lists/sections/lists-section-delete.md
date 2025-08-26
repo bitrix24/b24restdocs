@@ -1,8 +1,8 @@
-# Delete List Section `lists.section.delete`
+# Delete the section of the universal list lists.section.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-- success response is absent
-- error response is absent
+- parameter types not specified
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -43,13 +43,71 @@ The method `lists.section.delete` removes a list section. On successful deletion
 [`unknown`](../../data-types.md) | `id` of the group (required if the list is created for a group); | ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.section.delete',
+    		{
+    			'IBLOCK_TYPE_ID': 'lists',
+    			'IBLOCK_CODE': 'rest_1',
+    			'SECTION_CODE': 'Section_code_1'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $params = [
+            'IBLOCK_TYPE_ID' => 'lists',
+            'IBLOCK_CODE'    => 'rest_1',
+            'SECTION_CODE'   => 'Section_code_1',
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.section.delete',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     /* lists.section.delete */
@@ -73,4 +131,4 @@ The method `lists.section.delete` removes a list section. On successful deletion
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

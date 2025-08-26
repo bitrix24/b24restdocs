@@ -2,19 +2,19 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
-- edits needed for writing standards
+- edits are needed to meet writing standards
 - parameter types are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -37,7 +37,7 @@ The method `lists.section.update` updates a list section. On successful update, 
 [`unknown`](../../data-types.md) | Code or identifier of the information block (required). | ||
 || **IBLOCK_SECTION_ID**
 [`unknown`](../../data-types.md) | Identifier of the parent section; if not specified, the section will be root | ||
-|| **FIELDS** | Array of fields and values. Required field: NAME | ||
+|| **FIELDS** | Array of fields and values. Required fields: NAME | ||
 || **SOCNET_GROUP_ID**^*^
 [`unknown`](../../data-types.md) | `id` of the group (required if the list is created for a group); | ||
 |#
@@ -49,6 +49,68 @@ The method `lists.section.update` updates a list section. On successful update, 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.section.update',
+    		{
+    			'IBLOCK_TYPE_ID': 'lists',
+    			'IBLOCK_CODE': 'rest_1',
+    			'SECTION_CODE': 'Section_code_1',
+    			'FIELDS': {
+    				'NAME': 'Section_1 (Updated)'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.section.update',
+                [
+                    'IBLOCK_TYPE_ID' => 'lists',
+                    'IBLOCK_CODE'    => 'rest_1',
+                    'SECTION_CODE'   => 'Section_code_1',
+                    'FIELDS'         => [
+                        'NAME' => 'Section_1 (Updated)'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     /* lists.section.update */

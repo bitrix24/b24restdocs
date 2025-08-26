@@ -1,8 +1,8 @@
-# Update List Field `lists.field.update`
+# Update List Field lists.field.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -13,8 +13,8 @@ Some data may be missing here — we will complete it shortly.
 - edits needed for writing standards
 - parameter types are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -55,7 +55,7 @@ The method `lists.field.update` allows you to update a list field. If the field 
 - **CODE**^*^ - code (required if the field is a property of the information block)
 - **SETTINGS** - field display settings
 - **USER_TYPE_SETTINGS** - user settings
-- **ROW_COUNT/COL_COUNT** - settings for textarea fields
+- **ROW_COUNT/COL_COUNT** - setting for textarea fields
 - **LINK_IBLOCK_ID** - `id` of the linked section ||
 |#
 
@@ -66,6 +66,128 @@ The method `lists.field.update` allows you to update a list field. If the field 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.field.update',
+    		{
+    			'IBLOCK_TYPE_ID': 'lists_socnet',
+    			'IBLOCK_CODE': 'rest_1',
+    			'FIELD_ID': 'PROPERTY_61',
+    			'FIELDS': {
+    				'NAME': 'List field (Update)',
+    				'IS_REQUIRED': 'N',
+    				'MULTIPLE': 'N',
+    				'TYPE': 'L',
+    				'SORT': '20',
+    				'CODE': 'fieldList',
+    				'LIST': {
+    					'58': {
+    						'SORT': '10',
+    						'VALUE': 'one'
+    					},
+    					'59': {
+    						'SORT': '20',
+    						'VALUE': 'two'
+    					},
+    					'60': {
+    						'SORT': '30',
+    						'VALUE': 'three'
+    					}
+    				},
+    				'LIST_DEF': {
+    					'0': '59'
+    				},
+    				'SETTINGS': {
+    					'SHOW_ADD_FORM': 'Y',
+    					'SHOW_EDIT_FORM': 'Y',
+    					'ADD_READ_ONLY_FIELD': 'N',
+    					'EDIT_READ_ONLY_FIELD': 'Y',
+    					'SHOW_FIELD_PREVIEW': 'N'
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $params = [
+            'IBLOCK_TYPE_ID' => 'lists_socnet',
+            'IBLOCK_CODE' => 'rest_1',
+            'FIELD_ID' => 'PROPERTY_61',
+            'FIELDS' => [
+                'NAME' => 'List field (Update)',
+                'IS_REQUIRED' => 'N',
+                'MULTIPLE' => 'N',
+                'TYPE' => 'L',
+                'SORT' => '20',
+                'CODE' => 'fieldList',
+                'LIST' => [
+                    '58' => [
+                        'SORT' => '10',
+                        'VALUE' => 'one'
+                    ],
+                    '59' => [
+                        'SORT' => '20',
+                        'VALUE' => 'two'
+                    ],
+                    '60' => [
+                        'SORT' => '30',
+                        'VALUE' => 'three'
+                    ]
+                ],
+                'LIST_DEF' => [
+                    '0' => '59'
+                ],
+                'SETTINGS' => [
+                    'SHOW_ADD_FORM' => 'Y',
+                    'SHOW_EDIT_FORM' => 'Y',
+                    'ADD_READ_ONLY_FIELD' => 'N',
+                    'EDIT_READ_ONLY_FIELD' => 'Y',
+                    'SHOW_FIELD_PREVIEW' => 'N'
+                ]
+            ]
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.field.update',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating list field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var params = {

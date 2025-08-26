@@ -1,8 +1,8 @@
-# Get the Information Block Type ID lists.get.iblock.type.id
+# Get the ID of the information block type lists.get.iblock.type.id
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -40,6 +40,58 @@ The method `lists.get.iblock.type.id` returns the `id` of the information block 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.get.iblock.type.id',
+    		{
+    			'IBLOCK_ID': '41'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $params = [
+            'IBLOCK_ID' => '41'
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.get.iblock.type.id',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling lists.get.iblock.type.id: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var params = {
         'IBLOCK_ID': '41'
     };
@@ -58,6 +110,4 @@ The method `lists.get.iblock.type.id` returns the `id` of the information block 
 
 {% endlist %}
 
-
-
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}

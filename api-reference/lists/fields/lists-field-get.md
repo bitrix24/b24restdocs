@@ -11,10 +11,10 @@ Some data may be missing here — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- examples missing
-- success response missing
-- error response missing
+- parameter types are not specified
+- examples are missing
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The `lists.field.get` method allows you to retrieve data about a field or fields of a list. On success, a list of fields with data will be returned; otherwise, an empty array will be returned.
+The method `lists.field.get` allows you to retrieve data about a field or fields of a list. On success, a list of fields with data will be returned; otherwise, an empty array will be returned.
 
 ## Parameters
 
@@ -43,13 +43,67 @@ The `lists.field.get` method allows you to retrieve data about a field or fields
 [`unknown`](../../data-types.md) | `ID` of the field (If the field is a property of the information block, the format is: "PROPERTY_propertyId". If not specified, the response will include data for all fields of the specified list) ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.field.get',
+    		{
+    			'IBLOCK_TYPE_ID': 'lists_socnet',
+    			'IBLOCK_CODE': 'rest_1'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $params = [
+            'IBLOCK_TYPE_ID' => 'lists_socnet',
+            'IBLOCK_CODE'    => 'rest_1',
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.field.get',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling lists.field.get: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var params = {
@@ -71,4 +125,4 @@ The `lists.field.get` method allows you to retrieve data about a field or fields
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

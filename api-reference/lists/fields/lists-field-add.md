@@ -1,4 +1,4 @@
-# Create a List Field lists.field.add
+# Create a list field lists.field.add
 
 {% note warning "We are still updating this page" %}
 
@@ -24,7 +24,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `lists.field.add` creates a list field. If the field is created successfully, the response is `true`, otherwise it returns `Exception`.
+The method `lists.field.add` creates a list field. If the field is created successfully, the response is `true`, otherwise an `Exception`.
 
 ## Parameters
 
@@ -54,7 +54,7 @@ The method `lists.field.add` creates a list field. If the field is created succe
     - **S:Date** - Date
     - **S:DateTime** - Date/Time
     - **S:HTML** - HTML/text
-    - **E:EList** - Element binding as a list. When creating a field with this type, it is mandatory to specify `LINK_IBLOCK_ID` - `id` of the information block whose elements will be displayed in the selector of this field.
+    - **E:EList** - Element binding as a list. When creating a field with this type, it is necessary to specify `LINK_IBLOCK_ID` - `id` of the information block whose elements will be displayed in the selector of this field.
     - **N:Sequence** - Counter
     - **S:Money** - Money
     - **S:DiskFile** - File (Drive)
@@ -62,28 +62,125 @@ The method `lists.field.add` creates a list field. If the field is created succe
     - **S:ECrm** - CRM element binding
 - **SORT** - sorting
 - **DEFAULT_VALUE** - default value
-- **LIST** - can be used to add values for fields of type "List".
-- **LIST_TEXT_VALUES** - can be used to add values for fields of type "List" using a string. (Each unique line will become a separate list value)
-- **LIST_DEF** - default value for the field of type "List" (Format: array with the value where the value is the `id` of the list item)
+- **LIST** - can be used to add values for the "List" type field.
+- **LIST_TEXT_VALUES** - can be used to add values for the "List" type field using a string. (Each unique line will become a separate list value)
+- **LIST_DEF** - default value for the "List" type field (Format: array with the value where the value is the `id` of the list item)
 - **CODE**^*^ - code (required if the field is a property of the information block)
 - **SETTINGS** - all keys must be present, otherwise default values will overwrite, including:
     - **SHOW_ADD_FORM** - show in the add form
     - **SHOW_EDIT_FORM** - show in the edit form
     - **ADD_READ_ONLY_FIELD** - read-only (add form)
     - **EDIT_READ_ONLY_FIELD** - read-only (edit form)
-    - **SHOW_FIELD_PREVIEW** - show field when generating a link to the list item
+    - **SHOW_FIELD_PREVIEW** - show the field when generating a link to the list item
 - **USER_TYPE_SETTINGS** - key for passing custom settings
 - **ROW_COUNT/COL_COUNT** - settings for textarea fields
 - **LINK_IBLOCK_ID** - `id` of the linked list (section of the information block) ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.field.add',
+    		{
+    			'IBLOCK_TYPE_ID': 'lists_socnet',
+    			'IBLOCK_CODE': 'rest_1',
+    			'SOCNET_GROUP_ID': '7',
+    			'FIELDS': {
+    				'NAME': 'List field',
+    				'IS_REQUIRED': 'Y',
+    				'MULTIPLE': 'N',
+    				'TYPE': 'L',
+    				'SORT': '20',
+    				'CODE': 'fieldList',
+    				'LIST_TEXT_VALUES': 'one\ntwo\nthree',
+    				'SETTINGS': {
+    					'SHOW_ADD_FORM': 'Y',
+    					'SHOW_EDIT_FORM': 'Y',
+    					'ADD_READ_ONLY_FIELD': 'N',
+    					'EDIT_READ_ONLY_FIELD': 'N',
+    					'SHOW_FIELD_PREVIEW': 'N'
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		alert("Error: " + result.error());
+    	}
+    	else
+    	{
+    		alert("Success: " + result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $params = [
+            'IBLOCK_TYPE_ID'   => 'lists_socnet',
+            'IBLOCK_CODE'      => 'rest_1',
+            'SOCNET_GROUP_ID'  => '7',
+            'FIELDS'           => [
+                'NAME'             => 'List field',
+                'IS_REQUIRED'      => 'Y',
+                'MULTIPLE'         => 'N',
+                'TYPE'             => 'L',
+                'SORT'             => '20',
+                'CODE'             => 'fieldList',
+                'LIST_TEXT_VALUES' => 'one\ntwo\nthree',
+                'SETTINGS'         => [
+                    'SHOW_ADD_FORM'       => 'Y',
+                    'SHOW_EDIT_FORM'      => 'Y',
+                    'ADD_READ_ONLY_FIELD' => 'N',
+                    'EDIT_READ_ONLY_FIELD' => 'N',
+                    'SHOW_FIELD_PREVIEW'  => 'N',
+                ],
+            ],
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.field.add',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var params = {
@@ -122,4 +219,4 @@ The method `lists.field.add` creates a list field. If the field is created succe
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}

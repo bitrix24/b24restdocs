@@ -42,7 +42,7 @@ All fields of the element and their values must be passed in the request.
 || **Name**
 `type` | **Description** ||
 || **IBLOCK_TYPE_ID***
-[`unknown`](../../data-types.md) | `id` of the information block type:
+[`unknown`](../../data-types.md) | `id` of the information block:
 - `lists` — list information block type
 - `bitrix_processes` — processes information block type
 - `lists_socnet` — group lists information block type ||
@@ -51,7 +51,7 @@ All fields of the element and their values must be passed in the request.
 || **ELEMENT_CODE/ELEMENT_ID***
 [`unknown`](../../data-types.md) | Code or `id` of the element ||
 || **FIELDS**
-[`unknown`](../../data-types.md) | Array of fields and values. For the field type "File" `F`, pass the file in [Base64](../../files/how-to-update-files.md) format  ||
+[`unknown`](../../data-types.md) | Array of fields and values. For a field of type "File" `F`, pass the file in [Base64](../../files/how-to-update-files.md) format  ||
 || **SOCNET_GROUP_ID***
 [`unknown`](../../data-types.md) | `id` of the group. This parameter is required if the list is created for a group ||
 |#
@@ -69,7 +69,7 @@ All fields of the element and their values must be passed in the request.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"IBLOCK_TYPE_ID":"lists_socnet","IBLOCK_CODE":"rest_1","ELEMENT_CODE":"element_1","FIELDS":{"NAME":"Test element (Update)","PROPERTY_62":{"599":"Text string (Update)"},"PROPERTY_63":{"600":"73","601":"97","602":"17"}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/lists.element.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/lists.element.update
     ```
 
 - cURL (OAuth)
@@ -83,6 +83,76 @@ All fields of the element and their values must be passed in the request.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.element.update',
+    		params
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		alert("Error: " + result.error());
+    	}
+    	else
+    	{
+    		alert("Success: " + result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $params = [
+            'IBLOCK_TYPE_ID' => 'lists_socnet',
+            'IBLOCK_CODE'    => 'rest_1',
+            'ELEMENT_CODE'   => 'element_1',
+            'FIELDS'         => [
+                'NAME'       => 'Test element (Update)',
+                'PROPERTY_62' => [
+                    '599' => 'Text string (Update)'
+                ],
+                'PROPERTY_63' => [
+                    '600' => '73',
+                    '601' => '97',
+                    '602' => '17'
+                ]
+            ]
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.element.update',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating list element: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var params = {
@@ -114,7 +184,7 @@ All fields of the element and their values must be passed in the request.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -161,7 +231,7 @@ All fields of the element and their values must be passed in the request.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"IBLOCK_TYPE_ID":"lists","IBLOCK_ID":"41","ELEMENT_CODE":"element1","FIELDS":{"NAME":"Test element 1","PROPERTY_121":{"4754":["50","n1582"]}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/lists.element.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/lists.element.update
     ```
 
 - cURL (OAuth)
@@ -175,6 +245,70 @@ All fields of the element and their values must be passed in the request.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.element.update',
+    		{
+    			'IBLOCK_TYPE_ID': 'lists',
+    			'IBLOCK_ID': '41',
+    			'ELEMENT_CODE': 'element1',
+    			'FIELDS': {
+    				'NAME': 'Test element 1',
+    				'PROPERTY_121': {'4754': ['50', 'n1582']} // or without id 'PROPERTY_121': {'n0': ['50', 'n1582']}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $params = [
+            'IBLOCK_TYPE_ID' => 'lists',
+            'IBLOCK_ID'      => '41',
+            'ELEMENT_CODE'   => 'element1',
+            'FIELDS'         => [
+                'NAME'       => 'Test element 1',
+                'PROPERTY_121' => ['4754' => ['50', 'n1582']] // or without id 'PROPERTY_121' => ['n0' => ['50', 'n1582']]
+            ]
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.element.update',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating list element: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var params = {
@@ -199,7 +333,7 @@ All fields of the element and their values must be passed in the request.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -224,11 +358,11 @@ All fields of the element and their values must be passed in the request.
 
 {% endlist %}
 
-Values in the File (Drive) field without the prefix `"n"` are already attached files (`attachedId`), while those with the prefix are your new files that have already been uploaded to the drive.
+Values in the File field (Drive) without the prefix `"n"` are already attached files (`attachedId`), while those with the prefix are your new files that have already been uploaded to the drive.
 
 ### How to Delete a File
 
-Find out the ID of file values using the method [lists.element.get](./lists-element-get.md).
+Find out the ID of the file values using the method [lists.element.get](./lists-element-get.md).
 
 {% list tabs %}
 
@@ -239,7 +373,7 @@ Find out the ID of file values using the method [lists.element.get](./lists-elem
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"IBLOCK_TYPE_ID":"bitrix_processes","IBLOCK_ID":47}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/lists.element.get
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/lists.element.get
     ```
 
 - cURL (OAuth)
@@ -255,12 +389,59 @@ Find out the ID of file values using the method [lists.element.get](./lists-elem
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.element.get', {IBLOCK_TYPE_ID: 'bitrix_processes', IBLOCK_ID: 47}
+    	);
+    	
+    	const result = response.getData().result;
+    	// Your logic for processing data
+    	processResult(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.element.get',
+                [
+                    'IBLOCK_TYPE_ID' => 'bitrix_processes',
+                    'IBLOCK_ID'      => 47,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting list elements: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'lists.element.get', {IBLOCK_TYPE_ID: 'bitrix_processes', IBLOCK_ID: 47}
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -300,9 +481,9 @@ You will receive a response in the following format.
 ],
 ```
 
-Here, `PROPERTY_133` is a multiple field of type File. It represents an object where the key is the `ID` of the property value needed for deletion, and the value is the `ID` of the file.
+Here, `PROPERTY_133` is a multiple file type field. It represents an object where the key is the `ID` of the property value needed for deletion, and the value is the `ID` of the file.
 
-To delete a property value, pass a field with the suffix `_DEL` to the method `lists.element.update`. In it, specify the list of values to be deleted. Use the `ID` of the property value as the key and `"Y"` as the value.
+To delete a property value, pass a field with the suffix `_DEL` to the method `lists.element.update`. Specify the list of values to be deleted. Use the `ID` of the property value as the key and `"Y"` as the value.
 
 {% list tabs %}
 
@@ -313,7 +494,7 @@ To delete a property value, pass a field with the suffix `_DEL` to the method `l
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"IBLOCK_TYPE_ID":"bitrix_processes","IBLOCK_ID":47,"ELEMENT_ID":480,"FIELDS":{"NAME":"1","PROPERTY_133_DEL":{"2857":"Y"}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/lists.element.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/lists.element.update
     ```
 
 - cURL (OAuth)
@@ -329,6 +510,62 @@ To delete a property value, pass a field with the suffix `_DEL` to the method `l
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'lists.element.update', {
+    		IBLOCK_TYPE_ID: 'bitrix_processes',
+    		IBLOCK_ID: 47,
+    		ELEMENT_ID: 480,
+    		FIELDS: { NAME: '1', PROPERTY_133_DEL: {"2857": "Y"} }
+    	});
+    
+    	const result = response.getData().result;
+    	// Your logic for processing data
+    	processResult(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'lists.element.update',
+                [
+                    'IBLOCK_TYPE_ID' => 'bitrix_processes',
+                    'IBLOCK_ID'      => 47,
+                    'ELEMENT_ID'     => 480,
+                    'FIELDS'         => [
+                        'NAME'           => '1',
+                        'PROPERTY_133_DEL' => ["2857" => "Y"],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating list element: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'lists.element.update', {
         IBLOCK_TYPE_ID: 'bitrix_processes',
@@ -339,7 +576,7 @@ To delete a property value, pass a field with the suffix `_DEL` to the method `l
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
