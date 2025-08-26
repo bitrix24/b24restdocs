@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: administrator
 
-This method allows you to set the delivery status of a specified message sent via a messaging provider.
+This method allows you to set the delivery status of a specified message sent via the messaging provider.
 
 #|
 || **Parameter** | **Description** ||
@@ -35,13 +35,69 @@ This method allows you to set the delivery status of a specified message sent vi
 - `failed` - delivery error ||
 |#
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Footnote on parameters](../../_includes/required.md) %}
 
 ### Example
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'messageservice.message.status.update',
+    		{
+    			CODE: 'provider1',
+    			message_id: 1,
+    			status: 'delivered'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'messageservice.message.status.update',
+                [
+                    'CODE'      => 'provider1',
+                    'message_id' => 1,
+                    'status'     => 'delivered',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating message status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -63,4 +119,6 @@ This method allows you to set the delivery status of a specified message sent vi
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+
+
+{% include [Footnote on examples](../../_includes/examples.md) %}

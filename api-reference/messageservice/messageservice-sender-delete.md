@@ -1,4 +1,4 @@
-# Delete SMS provider or message provider messageservice.sender.delete
+# Delete SMS provider or messageservice.sender.delete
 
 {% note warning "We are still updating this page" %}
 
@@ -12,8 +12,8 @@ Some data may be missing — we will complete it shortly.
 
 - parameter types are not specified
 - parameter requirements are not specified
-- no success response
-- no error response
+- no success response is provided
+- no error response is provided
 - No examples in other languages
 
 {% endnote %}
@@ -24,7 +24,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: administrator
 
-The method deletes a previously registered message provider. You cannot delete a provider registered by another application or another webhook.
+This method deletes a previously registered message provider. You cannot delete a provider registered by another application or another webhook.
 
 #|
 || **Parameter** | **Description** ||
@@ -38,6 +38,59 @@ The method deletes a previously registered message provider. You cannot delete a
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'messageservice.sender.delete',
+    		{
+    			'CODE': provider
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	alert("Successfully: " + result);
+    }
+    catch( error )
+    {
+    	alert('Error: ' + error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    function uninstallProvider($provider)
+    {
+        try {
+            $response = $b24Service
+                ->core
+                ->call(
+                    'messageservice.sender.delete',
+                    [
+                        'CODE' => $provider
+                    ]
+                );
+    
+            $result = $response
+                ->getResponseData()
+                ->getResult();
+    
+            if ($result->error()) {
+                echo 'Error: ' . $result->error();
+            } else {
+                echo 'Successfully: ' . $result->data();
+            }
+    
+        } catch (Throwable $e) {
+            error_log($e->getMessage());
+            echo 'Error calling messageservice.sender.delete: ' . $e->getMessage();
+        }
+    }
+    ```
+
+- BX24.js
 
     ```js
     function uninstallProvider(provider)

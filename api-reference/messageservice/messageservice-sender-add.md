@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,9 +11,9 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
-- no success response
-- no error response
+- parameter requirements are not indicated
+- no success response is provided
+- no error response is provided
 - No examples in other languages
 
 {% endnote %}
@@ -28,20 +28,20 @@ This method registers a new message provider.
 
 #|
 || **Parameter** | **Description** ||
-|| **CODE** | Internal identifier of the provider. Allowed characters are a-z, A-Z, 0-9, dot, hyphen, and underscore. ||
+|| **CODE** | Internal identifier of the provider. Allowed characters are a-z, A-Z, 0-9, dot, dash, and underscore. ||
 || **TYPE** | Type of the provider. ||
-|| **HANDLER** | URL of the application to which the data will be sent. ||
-|| **NAME** | Name of the provider. Can be a string or an associative array of localized strings. ||
-|| **DESCRIPTION** | Description of the provider. Can be a string or an associative array of localized strings. ||
+|| **HANDLER** | URL of the application to which data will be sent. ||
+|| **NAME** | Name of the provider. It can be a string or an associative array of localized strings. ||
+|| **DESCRIPTION** | Description of the provider. It can be a string or an associative array of localized strings. ||
 |#
 
 {% include [Footnote on parameters](../../_includes/required.md) %}
 
 Data is sent to HANDLER:
 
-- **module_id** - initiating module. `crm` means the message was sent from a card (other options may be available in the future), `bizproc` means sent from Business Processes or Automation rules.
-- **bindings** - parameter relevant only for module_id = crm. It contains an array of message bindings to CRM entities (to which the activity will be linked).
-- **workflow_id**, **document_id**, **document_type** - parameters relevant only for module_id = bizproc. These parameters are not always present: if sent from a card, they will not be included.
+- **module_id** - initiating module. `crm` means the message was sent from a detail form (other options may be available in the future), `bizproc` means sent from Business Processes or an Automation rule.
+- **bindings** - parameter relevant only for module_id = crm. It contains an array of message bindings to CRM entities (what the activity will be linked to).
+- **workflow_id**, **document_id**, **document_type** - parameters relevant only for module_id = bizproc. These parameters are not always present: if sent from a detail form, they will not be included.
 - **message_id** - unique identifier of the message. It can be used to refer to [messageservice.message.status.update](messageservice-message-status-update.md).
 - **message_to** - recipient's phone number
 - **message_body** - text of the message
@@ -51,6 +51,69 @@ Data is sent to HANDLER:
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'messageservice.sender.add',
+    		{
+    			CODE: 'provider1',
+    			TYPE: 'SMS',
+    			HANDLER: 'http:///',
+    			NAME: 'Provider ***.com',
+    			DESCRIPTION: 'Provider ***.com'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		alert("Error: " + result.error());
+    	else
+    		alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $params = [
+            'CODE'        => 'provider1',
+            'TYPE'        => 'SMS',
+            'HANDLER'     => 'http:///',
+            'NAME'        => 'Provider ***.com',
+            'DESCRIPTION' => 'Provider ***.com',
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'messageservice.sender.add',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding sender: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var params = {
@@ -75,7 +138,7 @@ Data is sent to HANDLER:
 
 {% endlist %}
 
-**Sending from CRM card**
+**Sending from CRM detail form**
 
 ```plaintext
 Array
@@ -95,7 +158,7 @@ Array
         (
             [phone_number] => +1*********
             [message_text] => test message
-        )
+    )
 
     [type] => SMS
     [code] => example
@@ -145,4 +208,4 @@ Array
 
 )
 ```
-{% include [Example Notes](../../_includes/examples.md) %}
+{% include [Footnote on examples](../../_includes/examples.md) %}

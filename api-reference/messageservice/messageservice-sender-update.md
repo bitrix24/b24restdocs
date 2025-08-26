@@ -58,6 +58,67 @@ The request must contain at least one optional parameter.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'messageservice.sender.update',
+    		{
+    			CODE: 'provider',
+    			HANDLER: 'https://newhandler.com/',
+    			NAME: 'New Provider Name',
+    			DESCRIPTION: 'New Provider Description'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		alert("Error: " + result.error());
+    	else
+    		alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $params = [
+            'CODE'        => 'provider',
+            'HANDLER'     => 'https://newhandler.com/',
+            'NAME'        => 'New Provider Name',
+            'DESCRIPTION' => 'New Provider Description',
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'messageservice.sender.update',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating sender: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var params = {
         CODE: 'provider',
         HANDLER: 'https://newhandler.com/',
@@ -77,7 +138,7 @@ The request must contain at least one optional parameter.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -126,6 +187,62 @@ The request must contain at least one optional parameter.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'messageservice.sender.update',
+    		{
+    			CODE: 'provider',
+    			NAME: {"en":"New Name","de":"Neuer Name"},
+    			DESCRIPTION: {"en":"New Description"}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $params = [
+            'CODE'        => 'provider',
+            'NAME'        => ['en' => 'New Name', 'de' => 'Neuer Name'],
+            'DESCRIPTION' => ['en' => 'New Description'],
+        ];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'messageservice.sender.update',
+                $params
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating sender: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var params = {
         CODE: 'provider',
         NAME: {"en":"New Name","de":"Neuer Name"},
@@ -144,7 +261,7 @@ The request must contain at least one optional parameter.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -174,7 +291,7 @@ The request must contain at least one optional parameter.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -198,12 +315,12 @@ HTTP status: **200**
 || **result**
 [`boolean`](../data-types.md) | Result of the message provider update ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
