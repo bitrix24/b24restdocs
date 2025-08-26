@@ -2,9 +2,9 @@
 
 > Who can execute the method: any user
 
-The method `event.offline.get` returns the first queued offline events to the application according to the filter settings. The availability of offline events can be checked through the method [feature.get](../common/system/feature-get.md).
+The method `event.offline.get` returns the first queued offline events to the application according to the filter settings. The availability of offline events can be checked via the [feature.get](../common/system/feature-get.md) method.
 
-The method works only in the context of [application](../app-installation/index.md) authorization.
+This method works only in the context of [application](../app-installation/index.md) authorization.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ The method works only in the context of [application](../app-installation/index.
 || **filter**
 [`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID` with standard operations like `=`, `>`, `<`, `<=`, and so on.
 
-Important: the operation type is placed before the field name in the filter ||
+Important: the operation type is placed before the filter field name ||
 || **order**
 [`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter, and an array of the form `[field=>ASC|DESC]` is accepted. By default — [TIMESTAMP_X:ASC] ||
 || **limit**
@@ -31,7 +31,7 @@ Important: the operation type is placed before the field name in the filter ||
 || **clear**
 [`integer`](../data-types.md) | Values: `0|1` — whether to delete the selected records. By default `1` ||
 || **process_id**
-[`string`](../data-types.md) | Process identifier. Used if you need to re-select any unprocessed records from the current process ||
+[`string`](../data-types.md) | Process identifier. Used if you need to select more unprocessed records from the current process ||
 || **error**
 [`integer`](../data-types.md) | Values: `0|1` — whether to return erroneous records. By default `0` ||
 |#
@@ -68,6 +68,69 @@ The method supports multithreaded parsing. This means that multiple parallel req
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'event.offline.get',
+    		{
+    			'filter': {
+    				'=MESSAGE_ID': 1,
+    				'=EVENT_NAME': 'ONCRMLEADADD',
+    				'>=ID': 1
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error()) {
+    		console.error(result.error());
+    	} else {
+    		console.dir(result);
+    	}
+    }
+    catch (error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'event.offline.get',
+                [
+                    'filter' => [
+                        '=MESSAGE_ID' => 1,
+                        '=EVENT_NAME' => 'ONCRMLEADADD',
+                        '>=ID'       => 1,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting offline events: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "event.offline.get",
         {
@@ -87,7 +150,7 @@ The method supports multithreaded parsing. This means that multiple parallel req
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -112,7 +175,7 @@ The method supports multithreaded parsing. This means that multiple parallel req
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -149,7 +212,7 @@ HTTP status: **200**
 || **result**
 [`object`](../data-types.md) | Root element of the response ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

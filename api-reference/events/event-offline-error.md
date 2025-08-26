@@ -14,7 +14,7 @@ The method works only in the context of authorizing the [application](../app-ins
 || **Name**
 `type` | **Description** ||
 || **process_id***
-[`string`](../data-types.md) | Identifier of the process handling the records ||
+[`string`](../data-types.md) | Identifier of the process that is handling the records ||
 || **message_id**
 [`array`](../data-types.md) | Array of values for the `MESSAGE_ID` field of the records to be marked as erroneous ||
 |#
@@ -42,6 +42,65 @@ The method works only in the context of authorizing the [application](../app-ins
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'event.offline.error',
+    		{
+    			'process_id': 'yh3gu929sf0d32lsfysqas2y1hlpp09q',
+    			'message_id': [2]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'event.offline.error',
+                [
+                    'process_id' => 'yh3gu929sf0d32lsfysqas2y1hlpp09q',
+                    'message_id' => [2],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error handling offline event: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "event.offline.error",
         {
@@ -58,7 +117,7 @@ The method works only in the context of authorizing the [application](../app-ins
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

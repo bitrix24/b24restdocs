@@ -1,10 +1,10 @@
-# Get a List of Offline Events event.offline.list
+# Get a list of offline events event.offline.list
 
 > Who can execute the method: any user
 
-The method `event.offline.list` is used to read the current queue without making changes to its state, unlike [event.offline.get](./event-offline-get.md). The availability of offline events can be checked using the [feature.get](../common/system/feature-get.md) method.
+The method `event.offline.list` is used to read the current queue without making changes to its state, unlike [event.offline.get](./event-offline-get.md). The availability of offline events can be checked through the [feature.get](../common/system/feature-get.md) method.
 
-This method works only in the context of application authorization [application](../app-installation/index.md).
+The method works only in the context of application authorization [application](../app-installation/index.md).
 
 ## Method Parameters
 
@@ -14,11 +14,11 @@ This method works only in the context of application authorization [application]
 || **Name**
 `type` | **Description** ||
 || **filter**
-[`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID`, `PROCESS_ID`, `ERROR` with standard operations like `=`, `>`, `<`, `<=`, and so on ||
+[`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by the fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID`, `PROCESS_ID`, `ERROR` with standard operations like `=`, `>`, `<`, `<=`, and so on ||
 || **order**
-[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter, and it accepts an array in the form of `[field=>ASC|DESC]`. By default — `[ID:ASC]` ||
+[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter, and an array of the form `[field=>ASC|DESC]` is accepted. By default — `[ID:ASC]` ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static: 50 records.
 
@@ -56,6 +56,87 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'event.offline.list',
+        {
+          "filter": {
+            "ERROR": 0
+          },
+          "order": {
+            "ID": "DESC"
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('event.offline.list', { "filter": { "ERROR": 0 }, "order": { "ID": "DESC" } }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('event.offline.list', { "filter": { "ERROR": 0 }, "order": { "ID": "DESC" } }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'event.offline.list',
+                [
+                    'filter' => [
+                        'ERROR' => 0,
+                    ],
+                    'order' => [
+                        'ID' => 'DESC',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching offline events: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "event.offline.list",
         {
@@ -76,7 +157,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -151,7 +232,7 @@ HTTP status: **200**
 || **total**
 [`integer`](../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

@@ -4,9 +4,9 @@
 
 The `event.get` method allows you to retrieve a list of registered event handlers.
 
-The method works only in the context of [application](../app-installation/index.md) authorization.
+The method works only in the context of authorizing the [application](../app-installation/index.md).
 
-No parameters required.
+No parameters.
 
 ## Code Examples
 
@@ -27,35 +27,23 @@ No parameters required.
 - JS
 
     ```js
-    BX24.callMethod(
-        "event.get",
-        {},
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.log(result.data());
-        }
-    );
+    try
+    {
+        const response = await $b24.callMethod(
+            'event.get',
+            {}
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'event.get',
-        []
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -71,6 +59,37 @@ No parameters required.
     } catch (Throwable $e) {
         print("Error: " . $e->getMessage());
     }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "event.get",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'event.get',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
