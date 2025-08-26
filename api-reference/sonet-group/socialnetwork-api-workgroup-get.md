@@ -1,4 +1,4 @@
-# Get data about the workgroup socialnetwork.api.workgroup.get
+# Get information about the workgroup socialnetwork.api.workgroup.get
 
 > Scope: [`socialnetwork`](../scopes/permissions.md)
 >
@@ -12,7 +12,7 @@ The method `socialnetwork.api.workgroup.get` returns information about a workgro
 
 #|
 || **Name** `type` | **Description** ||
-|| **params*** [`object`](../data-types.md) | Request parameters to get the group ||
+|| **params*** [`object`](../data-types.md) | Request parameters to retrieve the group ||
 |#
 
 ### Parameter params
@@ -22,8 +22,8 @@ The method `socialnetwork.api.workgroup.get` returns information about a workgro
 #|
 || **Name** `type` | **Description** ||
 || **groupId*** [`integer`](../data-types.md#standart-types) | Group identifier. The value for this field can be obtained using the method [sonet_group.get](./sonet-group-get.md) ||
-|| **select** [`array`](../data-types.md#standart-types) | List of additional fields to retrieve, returned in `result` ||
-|| **mode** [`string`](../data-types.md#standart-types) | Request mode. Can only take the value `mobile`, which allows obtaining additional data in the `result[ADDITIONAL_DATA]` array ||
+|| **select** [`array`](../data-types.md#standart-types) | List of additional fields to extract, returned in `result` ||
+|| **mode** [`string`](../data-types.md#standart-types) | Request mode. Can only take the value `mobile`, which allows obtaining additional data in the array `result[ADDITIONAL_DATA]` ||
 |#
 
 #### Parameter params[select] {#paramsselect}
@@ -33,7 +33,7 @@ The method `socialnetwork.api.workgroup.get` returns information about a workgro
 || **AVATAR** | URL of the group's compressed user avatar ||
 || **AVATAR_DATA** | Information about the group's avatar ||
 || **AVATAR_TYPES** | Types of avatars for groups ||
-|| **COUNTERS** | Number of unaccepted requests and invitations to join the group ||
+|| **COUNTERS** | Number of pending requests and invitations to join the group ||
 || **DATE_CREATE** | Date and time of group creation in a more readable format ||
 || **DEPARTMENTS** | Departments of employees added to the group ||
 || **EFFICIENCY** | Group efficiency ||
@@ -43,7 +43,7 @@ The method `socialnetwork.api.workgroup.get` returns information about a workgro
 || **LIST_OF_MEMBERS_AWAITING_INVITE** | Users awaiting confirmation to join the group ||
 || **OWNER_DATA** | Data about the group owner ||
 || **PIN** | Whether the group is pinned by the current user on the groups and projects page. Returned as `result[IS_PIN]` ||
-|| **PRIVACY_TYPE** | Level of privacy of the group. Returned as `result[PRIVACY_CODE]` ||
+|| **PRIVACY_TYPE** | Privacy level of the group. Returned as `result[PRIVACY_CODE]` ||
 || **SUBJECT_DATA** | Information about the group's subject specified in the advanced group settings ||
 || **TAGS** | Group tags specified in the advanced group settings ||
 || **USER_DATA** | Data about the current user's role in the group ||
@@ -52,19 +52,6 @@ The method `socialnetwork.api.workgroup.get` returns information about a workgro
 ## Example
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod('socialnetwork.api.workgroup.get', {
-        params: {
-            groupId: 622,
-            select: [ 'DEPARTMENTS', 'TAGS' ],
-        },
-    }, result => {
-        console.log(result);
-    });
-    ```
 
 - cURL (Webhook)
 
@@ -86,7 +73,72 @@ The method `socialnetwork.api.workgroup.get` returns information about a workgro
     https://**put_your_bitrix24_address**/rest/socialnetwork.api.workgroup.get
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'socialnetwork.api.workgroup.get',
+    		{
+    			params: {
+    				groupId: 622,
+    				select: [ 'DEPARTMENTS', 'TAGS' ],
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'socialnetwork.api.workgroup.get',
+                [
+                    'params' => [
+                        'groupId' => 622,
+                        'select'  => [ 'DEPARTMENTS', 'TAGS' ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting workgroup info: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod('socialnetwork.api.workgroup.get', {
+        params: {
+            groupId: 622,
+            select: [ 'DEPARTMENTS', 'TAGS' ],
+        },
+    }, result => {
+        console.log(result);
+    });
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -122,7 +174,7 @@ HTTP status: **200**
         "SITE_ID": "s1",
         "SUBJECT_ID": 1,
         "NAME": "Group for demonstrating the method",
-        "DESCRIPTION": "First line of the group description\r\nSecond line of the group description",
+        "DESCRIPTION": "First line of group description\r\nSecond line of group description",
         "KEYWORDS": "group tag, another group tag",
         "CLOSED": "N",
         "VISIBLE": "Y",
@@ -139,7 +191,7 @@ HTTP status: **200**
         "PROJECT": "N",
         "PROJECT_DATE_START": null,
         "PROJECT_DATE_FINISH": null,
-        "SEARCH_INDEX": "Group for demonstrating the method First line of the group description\r\nSecond line of the group description group tag #group tag another group tag #another group tag group@example.com",
+        "SEARCH_INDEX": "Group for demonstrating the method First line of group description\r\nSecond line of group description group tag #group tag another group tag #another group tag group@example.com",
         "LANDING": "N",
         "SCRUM_OWNER_ID": 0,
         "SCRUM_SPRINT_DURATION": 0,
@@ -197,7 +249,7 @@ HTTP status: **200**
 #|
 || **Name** `type` | **Description** ||
 || **ID** [`integer`](../data-types.md#standart-types) | Group identifier ||
-|| **ACTIVE** [`boolean`](../data-types.md#standart-types) | Flag `Y`/`N` - whether the group is active. You can activate or deactivate the group using the method [sonet_group.update](sonet-group-update.md) ||
+|| **ACTIVE** [`boolean`](../data-types.md#standart-types) | Flag `Y`/`N` - whether the group is active. The group can be activated or deactivated using the method [sonet_group.update](sonet-group-update.md) ||
 || **SITE_ID** [`string`](../data-types.md#standart-types) | Identifier of the site to which the group belongs ||
 || **SUBJECT_ID** [`integer`](../data-types.md#standart-types) | Identifier of the group's subject. The subject of the group is specified in the advanced group settings ||
 || **NAME** [`string`](../data-types.md#standart-types) | Group name ||
@@ -214,7 +266,7 @@ HTTP status: **200**
 ||
 || **DATE_UPDATE** [`string`](../data-types.md#standart-types) | Date of group update in the format `DD.MM.YYYY hh:mm:ss` ||
 || **DATE_ACTIVITY** [`string`](../data-types.md#standart-types) | Date of last activity in the group in the format `DD.MM.YYYY hh:mm:ss` ||
-|| **IMAGE_ID** [`integer`](../data-types.md#standart-types) | Identifier of the group's user avatar in the `b_file` table. `0` if a system image is used as the avatar ||
+|| **IMAGE_ID** [`integer`](../data-types.md#standart-types) | Identifier of the group's user avatar in the `b_file` table. `0` if a system image is used as an avatar ||
 || **AVATAR_TYPE** [`string`](../data-types.md#standart-types) | Type of the last set system avatar:
 - `folder` - folder avatar
 - `checks` - checkbox avatar
@@ -253,12 +305,12 @@ HTTP status: **200**
 || **CHAT_ID** [`integer`](../data-types.md#standart-types) | Identifier of the group chat ||
 || **DIALOG_ID** [`string`](../data-types.md#standart-types) | Identifier of the group dialog ||
 || **ORDINARY_MEMBERS** [`array`](../data-types.md#standart-types) | Array of identifiers of group users who are not owners or moderators ||
-|| **INVITED_MEMBERS** [`array`](../data-types.md#standart-types) | Array of identifiers of portal users who have been invited to the group but have not yet accepted ||
+|| **INVITED_MEMBERS** [`array`](../data-types.md#standart-types) | Array of identifiers of portal users who were invited to the group but have not yet accepted ||
 || **MODERATOR_MEMBERS** [`array`](../data-types.md#standart-types) | Array of identifiers of group members with the role of moderator ||
 || **SITE_IDS** [`array`](../data-types.md#standart-types) | List of identifiers of sites to which the group belongs ||
 || **AVATAR** [`string`](../data-types.md#standart-types) | URL of the group's compressed user avatar. `""` if no user avatar is set ||
 || **AVATAR_TYPES** [`object`](../data-types.md#standart-types) | Object containing group avatars:
-- `AVATAR_TYPE[avatar_id][sort]` [`integer`](../data-types.md#standart-types) - sorting of the avatar
+- `AVATAR_TYPE[avatar_id][sort]` [`integer`](../data-types.md#standart-types) - avatar sorting
 - `AVATAR_TYPE[avatar_id][mobileUrl]` [`string`](../data-types.md#standart-types) - URL for displaying the avatar in the mobile app
 - `AVATAR_TYPE[avatar_id][webCssClass]` [`string`](../data-types.md#standart-types) - CSS class of the avatar
 - `AVATAR_TYPE[avatar_id][entitySelectorUrl]` [`string`](../data-types.md#standart-types) - Entity selector URL
@@ -282,7 +334,7 @@ HTTP status: **200**
 - `OWNER_DATA[FORMATTED_NAME]` [`string`](../data-types.md#standart-types) - formatted name of the group owner according to account settings
 ||
 || **SUBJECT_DATA** [`object`](../data-types.md#standart-types) | Information about the group's subject specified in the advanced group settings:
-- `SUBJECT_DATA[ID]` [`integer`](../data-types.md#standart-types) - identifier of the subject
+- `SUBJECT_DATA[ID]` [`integer`](../data-types.md#standart-types) - subject identifier
 - `SUBJECT_DATA[NAME]` [`string`](../data-types.md#standart-types) - name of the subject
 ||
 || **TAGS** [`array`](../data-types.md#standart-types) | Group tags, similar to `KEYWORDS`, but in array format ||
@@ -294,24 +346,24 @@ HTTP status: **200**
 - `ACTIONS[LEAVE]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether the user can leave the group
 - `ACTIONS[FOLLOW]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether the user can subscribe to group updates
 - `ACTIONS[PIN]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether pinning the group is available
-- `ACTIONS[EDIT_FEATURES]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether changing group features is available
+- `ACTIONS[EDIT_FEATURES]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether changing the group's features is available
 ||
 || **USER_DATA** [`object`](../data-types.md#standart-types) | Information about the current user regarding the group:
 - `USER_DATA[ROLE]` [`any`](../data-types.md#standart-types) - user's role in the group:
     - `A` - group owner
     - `E` - group moderator
     - `K` - group participant
-    - `Z` - awaiting membership
+    - `Z` - awaiting entry
     - `false` - value is absent
-- `USER_DATA[INITIATED_BY_TYPE]` [`any`](../data-types.md#standart-types) - who initiated the user's connection to the group:
-    - `U` - by a user, e.g., the user sent a request to join the group
-    - `G` - by the group, e.g., the user was invited
+- `USER_DATA[INITIATED_BY_TYPE]` [`any`](../data-types.md#standart-types) - who initiated the user's connection with the group:
+    - `U` - by the user, for example, the user sent a request to join the group
+    - `G` - by the group, for example, the user was invited
     - `false` - value is absent
 - `USER_DATA[IS_SUBSCRIBED]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether the user is subscribed to group updates
 ||
 || **DEPARTMENTS** [`array`](../data-types.md#standart-types) | Array of identifiers of departments added to the group ||
 || **IS_PIN** [`boolean`](../data-types.md#standart-types) | Value `true`/`false` - whether the group is pinned by the current user on the groups and projects page ||
-|| **PRIVACY_CODE** [`string`](../data-types.md#standart-types) | Level of privacy of the group:
+|| **PRIVACY_CODE** [`string`](../data-types.md#standart-types) | Privacy level of the group:
 - `open` - open group
 - `closed` - closed group
 - `secret` - secret group
@@ -320,14 +372,14 @@ HTTP status: **200**
 - `LIST_OF_MEMBERS[0][id]` [`user`](../data-types.md#standart-objects) - user identifier
 - `LIST_OF_MEMBERS[0][isOwner]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether the user is the group owner
 - `LIST_OF_MEMBERS[0][isModerator]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether the user is a moderator
-- `LIST_OF_MEMBERS[0][isScrumMaster]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether the user is a scrum master (in the case of scrum groups)
-- `LIST_OF_MEMBERS[0][isAutoMember]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether the user was added to the group automatically (without an invitation)
+- `LIST_OF_MEMBERS[0][isScrumMaster]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether the user is a scrum master (in case of scrum groups)
+- `LIST_OF_MEMBERS[0][isAutoMember]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether the user was added to the group automatically (without invitation)
 - `LIST_OF_MEMBERS[0][name]` [`string`](../data-types.md#standart-types) - user's first name
 - `LIST_OF_MEMBERS[0][lastName]` [`string`](../data-types.md#standart-types) - user's last name
 - `LIST_OF_MEMBERS[0][position]` [`string`](../data-types.md#standart-types) - user's position
 - `LIST_OF_MEMBERS[0][photo]` [`string`](../data-types.md#standart-types) - URL of the user's compressed avatar
 ||
-|| **FEATURES** [`object`](../data-types.md#standart-types) | Array with information about group features:
+|| **FEATURES** [`object`](../data-types.md#standart-types) | Array with information about the group's features:
 - `FEATURES[0][featureName]` [`string`](../data-types.md#standart-types) - symbolic identifier of the feature
 - `FEATURES[0][name]` [`string`](../data-types.md#standart-types) - name of the feature
 - `FEATURES[0][customName]` [`string`](../data-types.md#standart-types) - custom name of the feature in the advanced group settings
@@ -346,7 +398,7 @@ HTTP status: **200**
 - `GROUP_MEMBERS_LIST[0][isMember]` [`boolean`](../data-types.md#standart-types) - Value `true`/`false` - whether the user is a member of the group
 ||
 || **COUNTERS** [`object`](../data-types.md#standart-types) | Counters:
-- `COUNTERS[workgroup_requests_out]` [`integer`](../data-types.md#standart-types) - current number of unaccepted invitations to the group
+- `COUNTERS[workgroup_requests_out]` [`integer`](../data-types.md#standart-types) - current number of pending invitations to the group
 - `COUNTERS[workgroup_requests_in]` [`integer`](../data-types.md#standart-types) - current number of requests to join the group
 ||
 || **EFFICIENCY** [`integer`](../data-types.md#standart-types) | Group efficiency ||
@@ -355,11 +407,11 @@ HTTP status: **200**
     - `A` - group owner
     - `E` - group moderator
     - `K` - group participant
-    - `Z` - awaiting membership
+    - `Z` - awaiting entry
     - `""` - user has no relation to the group
-- `ADDITIONAL_DATA[INITIATED_BY_TYPE]` [`string`](../data-types.md#standart-types) - who initiated the user's connection to the group:
-    - `U` - by a user, e.g., the user sent a request to join the group
-    - `G` - by the group, e.g., the user was invited
+- `ADDITIONAL_DATA[INITIATED_BY_TYPE]` [`string`](../data-types.md#standart-types) - who initiated the user's connection with the group:
+    - `U` - by the user, for example, the user sent a request to join the group
+    - `G` - by the group, for example, the user was invited
     - `""` - user has no relation to the group
 ||
 |#
@@ -382,7 +434,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Status** ||
 || `SONET_CONTROLLER_WORKGROUP_EMPTY` | The parameter `groupId` was not provided in the `params` array | 400 ||
-|| `SONET_CONTROLLER_WORKGROUP_NOT_FOUND` | The group with the identifier `params[groupId]` was not found or the current user does not have access to it | 400 ||
+|| `SONET_CONTROLLER_WORKGROUP_NOT_FOUND` | The group with identifier `params[groupId]` was not found or the current user does not have access to it | 400 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

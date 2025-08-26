@@ -1,8 +1,8 @@
-# Create a social network group sonet_group.create
+# Create Social Network Group sonet_group.create
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will fill it in shortly.
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no response in case of error
+- no error response is provided
 - no examples in other languages
 
 {% endnote %}
@@ -55,20 +55,19 @@ https://mydomain.bitrix24.com/rest/sonet_group.create.json?auth=803f65e30340ff39
 - **K** - all group members.
 **CLOSED** - flag Y/N - whether the group is archived,
 **SPAM_PERMS** - who has the right to send messages to the group (required field). Values are similar to the INITIATE_PERMS parameter.
-**PROJECT** - flag Y/N - whether the group is a project or not. By default - it is not. (Since version 18.0.0)
-**PROJECT_DATE_FINISH** - sets the project end date. (Since version 18.0.0)
+**PROJECT** - flag Y/N - whether the group is a project or not. By default - it is not. (Since version 18.0.0)<br>**PROJECT_DATE_FINISH** - sets the project end date. (Since version 18.0.0)
 **PROJECT_DATE_START** - sets the project start date. (Since version 18.0.0)
 **SCRUM_MASTER_ID** - if filled with a user ID, this project will become a scrum. (Since version 22.300) ||
 || **bAutoSubscribe** | Auto-subscription to the created topic. Optional parameter. Defaults to True. (Since version 10.0.0) ||
 |#
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Notes on parameters](../../_includes/required.md) %}
 
 In case of successful group creation, it returns its ID; otherwise, it returns an error message.
 
 {% note info "" %}
 
-**Note**: Creating extranet groups via REST API is not yet possible.
+**Note**: Creating extranet groups via the REST API is not yet possible.
 
 {% endnote %}
 
@@ -79,7 +78,59 @@ In case of successful group creation, it returns its ID; otherwise, it returns a
 - JS
 
     ```js
-    // Let's create a visible and open social network group named 'Test sonet group' with the right to invite new members for all current group members
+    try
+    {
+    	const response = await $b24.callMethod('sonet_group.create', {
+    		'NAME': 'Test sonet group',
+    		'VISIBLE': 'Y',
+    		'OPENED': 'N',
+    		'INITIATE_PERMS': 'K'
+    	});
+    
+    	const result = response.getData().result;
+    	console.log('Created social network group with ID:', result);
+    	// Your logic for processing data
+    	processResult(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sonet_group.create',
+                [
+                    'NAME'          => 'Test sonet group',
+                    'VISIBLE'       => 'Y',
+                    'OPENED'        => 'N',
+                    'INITIATE_PERMS' => 'K',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating sonet group: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    // Create a visible and open social network group named 'Test sonet group' with the right to invite new members for all current group members
 
     BX24.callMethod('sonet_group.create', {
         'NAME': 'Test sonet group',
@@ -91,5 +142,4 @@ In case of successful group creation, it returns its ID; otherwise, it returns a
 
 {% endlist %}
 
-
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Notes on examples](../../_includes/examples.md) %}

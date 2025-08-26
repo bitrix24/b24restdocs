@@ -51,6 +51,53 @@ You can obtain epic identifiers using the [`tasks.api.scrum.epic.list`](./tasks-
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.epic.delete',
+    		{
+    			id: epicId,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $epicId = 1;
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.epic.delete',
+                [
+                    'id' => $epicId,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting epic: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const epicId = 1;
     BX24.callMethod(
         'tasks.api.scrum.epic.delete',
@@ -64,12 +111,12 @@ You can obtain epic identifiers using the [`tasks.api.scrum.epic.list`](./tasks-
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
-    // executing a request to the REST API
+    // executing request to REST API
     $result = CRest::call(
         'tasks.api.scrum.epic.delete',
         [
@@ -77,7 +124,7 @@ You can obtain epic identifiers using the [`tasks.api.scrum.epic.list`](./tasks-
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Processing the response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     }
@@ -110,7 +157,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description**  | **Value** ||
 || `0` | Access denied | No access to Scrum ||
-|| `0` | Epic not found | This epic does not exist ||
+|| `0` | Epic not found | The epic does not exist ||
 || `100` | Could not find value for parameter {id} | Incorrect parameter name or parameter not set ||
 || `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
 |#

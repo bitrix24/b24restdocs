@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it soon.
 
 > Scope: [`sonet`](../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can execute the method: any user
 
 ## Description
 
@@ -33,7 +33,7 @@ This method allows you to remove a user or users from a workgroup. To perform th
 #|
 || **Parameter** | **Description** ||
 || **GROUP_ID** | ID of the workgroup. ||
-|| **USER_ID** | ID of the user (or array of IDs) being removed from the group. ||
+|| **USER_ID** | ID of the user (or array of IDs) to be removed from the group. ||
 |#
 
 {% include [Footnote about parameters](../../../_includes/required.md) %}
@@ -43,6 +43,54 @@ This method allows you to remove a user or users from a workgroup. To perform th
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sonet_group.user.delete',
+    		{
+    			GROUP_ID: 15,
+    			USER_ID: [ 10, 21 ]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('Deleted users from group:', result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sonet_group.user.delete',
+                [
+                    'GROUP_ID' => 15,
+                    'USER_ID' => [10, 21]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting users from social network group: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     // Removing users with ID=10 and 21 from the social network group with ID=15

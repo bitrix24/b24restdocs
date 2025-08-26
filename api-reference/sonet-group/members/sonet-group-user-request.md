@@ -46,6 +46,53 @@ This method sends a request from the current user to join a social network group
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sonet_group.user.request',
+    		{
+    			'GROUP_ID': 17,
+    			'MESSAGE': 'Request'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sonet_group.user.request',
+                [
+                    'GROUP_ID' => 17,
+                    'MESSAGE'  => 'Request',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error sending request to join group: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     // Sending a request to join the group with ID=17
     BX24.callMethod('sonet_group.user.request', {
         'GROUP_ID': 17,
@@ -54,7 +101,6 @@ This method sends a request from the current user to join a social network group
     ```
 
 {% endlist %}
-
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 

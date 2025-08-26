@@ -1,4 +1,4 @@
-# Get a List of Epics tasks.api.scrum.epic.list
+# Get a list of epics tasks.api.scrum.epic.list
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -23,23 +23,23 @@ Possible values for the array elements correspond to the fields in the response 
 || **filter**
 [`array`](../../../data-types.md) | An array in the format `{'filter_field': 'filter_value' [, ...]}`.
 
-An additional prefix can be specified for the key to clarify the filter behavior.
+The key can have an additional prefix that specifies the filter behavior.
 
 Possible prefix values:
 - `=` — equals (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol does not need to be included in the filter value. The search looks for the substring in any position of the string.
+- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol does not need to be included in the filter value. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol needs to be included in the value. Examples:
+- `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
   - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol needs to be included in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The % symbol needs to be passed in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
   - `"%mol%"` — searching for values where the substring "mol" is not present in any position
@@ -55,7 +55,7 @@ Possible values for the array elements correspond to the fields in the response 
 
 If the array contains the value `"*"`, all available fields will be returned.
 
-The default value is an empty array `array()`. This means that all fields from the main query table will be returned.
+The default value is an empty array `array()`. This means that all fields from the main query table will be returned
 ||
 || **start**
 [`integer`](../../../data-types.md) | The page number of the output. Works for HTTPS requests.
@@ -71,7 +71,7 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
-{% include [Footnote on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -128,6 +128,139 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const groupId = 143;
+    try {
+      const response = await $b24.callListMethod(
+        'tasks.api.scrum.epic.list',
+        {
+          filter: {
+            GROUP_ID: groupId,
+            '>=ID': 1,
+            '<=ID': 50,
+            'NAME': '%epic%',
+            '!=DESCRIPTION': 'old epic',
+            'CREATED_BY': 1,
+            'MODIFIED_BY': 3,
+            'COLOR': '#69dafc'
+          },
+          order: {
+            'ID': 'asc',
+            'NAME': 'desc'
+          },
+          select: ['ID', 'NAME', 'DESCRIPTION', 'CREATED_BY', 'MODIFIED_BY', 'COLOR'],
+          start: 0
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    const groupId = 143;
+    try {
+      const generator = $b24.fetchListMethod('tasks.api.scrum.epic.list', {
+        filter: {
+          GROUP_ID: groupId,
+          '>=ID': 1,
+          '<=ID': 50,
+          'NAME': '%epic%',
+          '!=DESCRIPTION': 'old epic',
+          'CREATED_BY': 1,
+          'MODIFIED_BY': 3,
+          'COLOR': '#69dafc'
+        },
+        order: {
+          'ID': 'asc',
+          'NAME': 'desc'
+        },
+        select: ['ID', 'NAME', 'DESCRIPTION', 'CREATED_BY', 'MODIFIED_BY', 'COLOR'],
+        start: 0
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    const groupId = 143;
+    try {
+      const response = await $b24.callMethod('tasks.api.scrum.epic.list', {
+        filter: {
+          GROUP_ID: groupId,
+          '>=ID': 1,
+          '<=ID': 50,
+          'NAME': '%epic%',
+          '!=DESCRIPTION': 'old epic',
+          'CREATED_BY': 1,
+          'MODIFIED_BY': 3,
+          'COLOR': '#69dafc'
+        },
+        order: {
+          'ID': 'asc',
+          'NAME': 'desc'
+        },
+        select: ['ID', 'NAME', 'DESCRIPTION', 'CREATED_BY', 'MODIFIED_BY', 'COLOR'],
+        start: 0
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.epic.list',
+                [
+                    'filter' => [
+                        'GROUP_ID'      => $groupId,
+                        '>=ID'          => 1,
+                        '<=ID'          => 50,
+                        'NAME'          => '%epic%',
+                        '!=DESCRIPTION' => 'old epic',
+                        'CREATED_BY'    => 1,
+                        'MODIFIED_BY'   => 3,
+                        'COLOR'         => '#69dafc'
+                    ],
+                    'order'  => [
+                        'ID'   => 'asc',
+                        'NAME' => 'desc'
+                    ],
+                    'select' => ['ID', 'NAME', 'DESCRIPTION', 'CREATED_BY', 'MODIFIED_BY', 'COLOR'],
+                    'start'  => 0
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const groupId = 143;
     BX24.callMethod(
         'tasks.api.scrum.epic.list',
@@ -156,12 +289,12 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
-    require_once('crest.php'); // connecting CRest PHP SDK
+    require_once('crest.php'); // include CRest PHP SDK
 
-    // executing a request to the REST API
+    // execute a request to the REST API
     $result = CRest::call(
         'tasks.api.scrum.epic.list',
         [
@@ -197,7 +330,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 [
@@ -230,7 +363,7 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../../data-types.md) | Epic identifier ||
 || **groupId**
-[`integer`](../../../data-types.md) | Group identifier (scrum) to which the epic is attached ||
+[`integer`](../../../data-types.md) | Group identifier (scrum) to which the epic is linked ||
 || **name**
 [`string`](../../../data-types.md) | Epic name ||
 || **description**
@@ -246,7 +379,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

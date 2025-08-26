@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -46,7 +46,57 @@ This method allows changing the role of a user or users in a workgroup. To perfo
 - JS
 
     ```js
-    // Changing the roles of users with ID=10 and 21 in the social network group with ID=15 to moderators
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sonet_group.user.update',
+    		{
+    			GROUP_ID: 15,
+    			USER_ID: [ 10, 21 ],
+    			ROLE: 'E'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('Updated user roles:', result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sonet_group.user.update',
+                [
+                    'GROUP_ID' => 15,
+                    'USER_ID'  => [10, 21],
+                    'ROLE'     => 'E',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating user roles: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    // Changing roles of users with ID=10 and 21 in the social network group with ID=15 to moderators
     BX24.callMethod('sonet_group.user.update', {
         GROUP_ID: 15,
         USER_ID: [ 10, 21 ],

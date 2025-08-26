@@ -1,4 +1,4 @@
-# Update Kanban Stage tasks.api.scrum.kanban.updateStage
+# Update Scrum Kanban Stage tasks.api.scrum.kanban.updateStage
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -29,13 +29,13 @@ This method changes the stage of the Scrum Kanban.
 || **sprintId**
 [`integer`](../../../data-types.md) | Identifier of the sprint. You can obtain the identifier using the method [tasks.api.scrum.sprint.list](../sprint/tasks-api-scrum-sprint-list.md) ||
 || **name**
-[`string`](../../../data-types.md) | Name of the Kanban stage ||
+[`string`](../../../data-types.md) | Name of the kanban stage ||
 || **type**
-[`string`](../../../data-types.md) | Type of the Kanban stage. Possible values: `NEW`, `WORK`, `FINISH` ||
+[`string`](../../../data-types.md) | Type of the kanban stage. Possible values: `NEW`, `WORK`, `FINISH` ||
 || **sort**
-[`integer`](../../../data-types.md) | Sorting order. The value of the field must be a multiple of `100` ||
+[`integer`](../../../data-types.md) | Sort order. The value of the field must be a multiple of `100` ||
 || **color**
-[`string`](../../../data-types.md) | Color of the Kanban stage ||
+[`string`](../../../data-types.md) | Color of the kanban stage ||
 |#
 
 ## Code Examples
@@ -67,6 +67,66 @@ This method changes the stage of the Scrum Kanban.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.kanban.updateStage',
+    		{
+    			"stageId": 65,
+    			"fields": {
+    				"name": "Updated Stage",
+    				"type": "WORK",
+    				"color": "00C4FB",
+    				"sort": 100,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.kanban.updateStage',
+                [
+                    'stageId' => 65,
+                    'fields'  => [
+                        'name'  => 'Updated Stage',
+                        'type'  => 'WORK',
+                        'color' => '00C4FB',
+                        'sort'  => 100,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating stage: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.kanban.updateStage',
         {
@@ -88,7 +148,7 @@ This method changes the stage of the Scrum Kanban.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -149,8 +209,8 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `0` | `Stage id not found` | Required field `stageId` is not filled ||
-|| `0` | `Stage not found` | Unknown stage identifier `stageId` provided ||
-|| `0` | `Incorrect sprintId value` | Unknown sprint identifier provided or no access to the sprint ||
+|| `0` | `Stage not found` | An unknown stage identifier `stageId` was provided ||
+|| `0` | `Incorrect sprintId value` | An unknown sprint identifier was provided or no access to the sprint ||
 || `0` | `Access denied` | Access is denied ||
 || `0` | Unknown error | ||
 |#

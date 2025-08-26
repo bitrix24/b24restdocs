@@ -1,4 +1,4 @@
-# Add Backlog in Scrum tasks.api.scrum.backlog.add
+# Add backlog in Scrum tasks.api.scrum.backlog.add
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -74,6 +74,63 @@ The group identifier can be obtained when creating a new group [sonet_group.crea
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.backlog.add',
+    		{
+    			"fields": {
+    				"groupId": 125,
+    				"createdBy": 6,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.backlog.add',
+                [
+                    'fields' => [
+                        'groupId'   => 125,
+                        'createdBy' => 6,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding backlog: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.backlog.add',{
             "fields": {
@@ -91,7 +148,7 @@ The group identifier can be obtained when creating a new group [sonet_group.crea
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -115,7 +172,7 @@ The group identifier can be obtained when creating a new group [sonet_group.crea
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -153,7 +210,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -167,7 +224,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `0` | Backlog already added | The error occurs when attempting to create a backlog while an active backlog already exists in the group ||
+|| `0` | Backlog already added | The error occurs when trying to create a backlog while an active backlog already exists in the group ||
 || `0` | Access denied | Missing appropriate access permissions ||
 || `0` | createdBy user not found | The provided user identifier is invalid. For example, a user with such an identifier does not exist ||
 || `0` | modifiedBy user not found | The provided user identifier is invalid. For example, a user with such an identifier does not exist ||

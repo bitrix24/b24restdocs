@@ -19,7 +19,7 @@ The method `tasks.api.scrum.sprint.update` updates a sprint.
 [`object`](../../../data-types.md) | Object containing sprint data ||
 |#
 
-### fields Parameter
+### Parameter fields
 
 #|
 || **Name**
@@ -56,8 +56,8 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
     "fields": {
         "name": "Sprint 2",
         "groupId": 1,
-        "dateStart": "2021-11-22T00:00:00+01:00",
-        "dateEnd": "2021-11-29T00:00:00+01:00"
+        "dateStart": "2021-11-22T00:00:00+02:00",
+        "dateEnd": "2021-11-29T00:00:00+02:00"
     }
     }' \
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.update
@@ -74,8 +74,8 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
     "fields": {
         "name": "Sprint 2",
         "groupId": 1,
-        "dateStart": "2021-11-22T00:00:00+01:00",
-        "dateEnd": "2021-11-29T00:00:00+01:00"
+        "dateStart": "2021-11-22T00:00:00+02:00",
+        "dateEnd": "2021-11-29T00:00:00+02:00"
     }
     }' \
     https://your-domain.bitrix24.com/rest/tasks.api.scrum.sprint.update
@@ -84,11 +84,71 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.sprint.update',
+    		{
+    			id: sprintId,
+    			fields: {
+    				name: name,
+    				groupId: groupId,
+    				dateStart: dateStart,
+    				dateEnd: dateEnd,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.sprint.update',
+                [
+                    'id' => $sprintId,
+                    'fields' => [
+                        'name'      => $name,
+                        'groupId'   => $groupId,
+                        'dateStart' => $dateStart,
+                        'dateEnd'   => $dateEnd,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating sprint: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const sprintId = 2;
     const groupId = 1;
     const name = 'Sprint 2';
-    const dateStart = '2021-11-22T00:00:00+01:00';
-    const dateEnd = '2021-11-29T00:00:00+01:00';
+    const dateStart = '2021-11-22T00:00:00+02:00';
+    const dateEnd = '2021-11-29T00:00:00+02:00';
     BX24.callMethod(
         'tasks.api.scrum.sprint.update',
         {
@@ -107,10 +167,10 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
-    require_once('crest.php'); // include CRest PHP SDK
+    require_once('crest.php'); // connect CRest PHP SDK
 
     // execute request to REST API
     $result = CRest::call(
@@ -120,13 +180,13 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
             'fields' => [
                 'name' => 'Sprint 2',
                 'groupId' => 1,
-                'dateStart' => '2021-11-22T00:00:00+01:00',
-                'dateEnd' => '2021-11-29T00:00:00+01:00'
+                'dateStart' => '2021-11-22T00:00:00+02:00',
+                'dateEnd' => '2021-11-29T00:00:00+02:00'
             ]
         ]
     );
 
-    // Handle response from Bitrix24
+    // Process response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -152,8 +212,8 @@ HTTP Status: **200**
         "sort": 1,
         "createdBy": 1,
         "modifiedBy": 1,
-        "dateStart": "2021-11-22T00:00:00+01:00",
-        "dateEnd": "2021-11-29T00:00:00+01:00",
+        "dateStart": "2021-11-22T00:00:00+02:00",
+        "dateEnd": "2021-11-29T00:00:00+02:00",
         "status": "planned"
     }
 }

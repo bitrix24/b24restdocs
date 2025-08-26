@@ -14,11 +14,11 @@ This method adds a task to the Scrum kanban.
 || **Name**
 `type` | **Description** ||
 || **sprintId***
-[`integer`](../../../data-types.md) | Sprint identifier. You can obtain the identifier using the [tasks.api.scrum.sprint.list](../sprint/tasks-api-scrum-sprint-list.md) method ||
+[`integer`](../../../data-types.md) | Identifier of the sprint. You can obtain the identifier using the method [tasks.api.scrum.sprint.list](../sprint/tasks-api-scrum-sprint-list.md) ||
 || **taskId***
-[`integer`](../../../data-types.md) | Task identifier. You can obtain the identifier using the [tasks.task.list](../../../tasks/tasks-task-list.md) method ||
+[`integer`](../../../data-types.md) | Identifier of the task. You can obtain the identifier using the method [tasks.task.list](../../../tasks/tasks-task-list.md) ||
 || **stageId***
-[`integer`](../../../data-types.md) | Stage identifier. You can obtain the identifier using the [tasks.api.scrum.kanban.getStages](./tasks-api-scrum-kanban-get-stages.md) method ||
+[`integer`](../../../data-types.md) | Identifier of the stage. You can obtain the identifier using the method [tasks.api.scrum.kanban.getStages](./tasks-api-scrum-kanban-get-stages.md) ||
 |#
 
 ## Code Examples
@@ -50,6 +50,58 @@ This method adds a task to the Scrum kanban.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.kanban.addTask',
+    		{
+    			"sprintId": 5,
+    			"taskId": 751,
+    			"stageId": 58,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.kanban.addTask',
+                [
+                    'sprintId' => 5,
+                    'taskId'   => 751,
+                    'stageId'  => 58,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.kanban.addTask',
         {
@@ -67,7 +119,7 @@ This method adds a task to the Scrum kanban.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

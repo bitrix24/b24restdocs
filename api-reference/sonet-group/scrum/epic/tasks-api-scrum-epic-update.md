@@ -49,7 +49,7 @@ fields: {
 || **description**
 [`string`](../../../data-types.md) | Epic description ||
 || **groupId***
-[`integer`](../../../data-types.md) | Identifier of the group (scrum) to which the epic belongs ||
+[`integer`](../../../data-types.md) | Group identifier (Scrum) to which the epic belongs ||
 || **color**
 [`string`](../../../data-types.md) | Epic color ||
 || **files**
@@ -59,7 +59,7 @@ In `files`, you can pass an array of values with file identifiers, specifying th
 
 {% note warning "Attention" %}
 
-If an empty array is passed, the files will be deleted.
+If you pass an empty array, the files will be deleted.
 
 {% endnote %}
 
@@ -114,6 +114,70 @@ If an empty array is passed, the files will be deleted.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.epic.update',
+    		{
+    			id: epicId,
+    			fields:{
+    				name: name,
+    				description: description,
+    				color: color,
+    				files: files
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $epicId = 1;
+        $name = 'Updated epic name';
+        $description = 'Updated description text';
+        $color = '#bbecf1';
+        $files = ['n429', 'n243'];
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.epic.update',
+                [
+                    'id' => $epicId,
+                    'fields' => [
+                        'name' => $name,
+                        'description' => $description,
+                        'color' => $color,
+                        'files' => $files
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating epic: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const epicId = 1;
     const name = 'Updated epic name';
     const description = 'Updated description text';
@@ -137,17 +201,17 @@ If an empty array is passed, the files will be deleted.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
-    require_once('crest.php'); // include CRest PHP SDK
+    require_once('crest.php'); // connecting CRest PHP SDK
     $epicId = 1;
     $name = 'Updated epic name';
     $description = 'Updated description text';
     $color = '#bbecf1';
     $files = ['n429', 'n243'];
 
-    // execute request to REST API
+    // executing request to REST API
     $result = CRest::call(
     'tasks.api.scrum.epic.update',
     [
@@ -161,7 +225,7 @@ If an empty array is passed, the files will be deleted.
     ]
     );
 
-    // Handle response from Bitrix24
+    // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
     }
@@ -196,7 +260,7 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../../data-types.md) | Epic identifier ||
 || **groupId**
-[`integer`](../../../data-types.md) | Identifier of the group (scrum) to which the epic is linked ||
+[`integer`](../../../data-types.md) | Group identifier (Scrum) to which the epic is linked ||
 || **name**
 [`string`](../../../data-types.md) | Epic name ||
 || **description**

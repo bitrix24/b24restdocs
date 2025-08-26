@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method retrieves the available fields for a Scrum task.
+This method retrieves the available fields of a Scrum task.
 
 No parameters.
 
@@ -35,6 +35,48 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.task.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.task.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting task fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.task.getFields',
         {},
@@ -45,7 +87,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -108,7 +150,7 @@ The response returns an object `fields`, which contains all the fields of the Sc
 || **entityId**
 `integer` | Identifier of the backlog or sprint ||
 || **storyPoints**
-`string` | Story Points (relative assessment of task complexity).
+`string` | Story Points (relative estimate of task complexity).
 
 Can have a string value ||
 || **epicId**
@@ -116,9 +158,9 @@ Can have a string value ||
 || **sort**
 `integer` | Sorting ||
 || **createdBy**
-`integer` | Created by whom ||
+`integer` | Who created the task ||
 || **modifiedBy**
-`integer` | Modified by whom ||
+`integer` | Who modified the task ||
 |#
 
 ## Error Handling

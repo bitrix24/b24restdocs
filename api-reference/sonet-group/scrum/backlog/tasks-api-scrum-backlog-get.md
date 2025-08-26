@@ -6,7 +6,7 @@
 
 The method `tasks.api.scrum.backlog.get` returns the values of backlog fields by Scrum `id`.
 
-It may be necessary to obtain the `id` of the backlog for adding or moving a task to the backlog.
+You may need to obtain the `id` of the backlog to add or move a task to the backlog.
 
 ## Method Parameters
 
@@ -50,6 +50,57 @@ Can be obtained when creating a new group [sonet_group.create](../../sonet-group
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.backlog.get',
+    		{
+    			"id": 125,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.backlog.get',
+                [
+                    'id' => 125,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting scrum backlog: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.backlog.get',{
             "id": 125,
@@ -64,7 +115,7 @@ Can be obtained when creating a new group [sonet_group.create](../../sonet-group
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

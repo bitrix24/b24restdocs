@@ -1,4 +1,4 @@
-# Check Current User Permissions sonet_group.feature.access
+# Check the current user's access permissions sonet_group.feature.access
 
 {% note warning "We are still updating this page" %}
 
@@ -8,11 +8,11 @@ Some data may be missing — we will complete it shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - parameter types are not specified
 - parameter requirements are not indicated
-- no error response is provided
+- no response in case of error
 - no examples in other languages
 
 {% endnote %}
@@ -23,7 +23,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-Checks if the current user has permission to perform an operation in the social network group by calling the function `CSocNetFeaturesPerms::CurrentUserCanPerformOperation()`.
+Checks whether the current user has the right to perform an operation in the social network group by calling the function `CSocNetFeaturesPerms::CurrentUserCanPerformOperation()`.
 
 ## Request:
 
@@ -50,11 +50,11 @@ https://mydomain.bitrix24.com/rest/sonet_group.feature.access.json?auth=52423d4a
 
 {% include [Footnote about parameters](../../_includes/required.md) %}
 
-Returns **true** if the user has permission to perform the operation, **false** if not, and an error in case of incorrect parameters.
+Returns **true** if the user has the right to perform the operation, **false** if not, and an error in case of incorrect parameters.
 
 {% note info "Note" %}
 
-Operation and functionality codes can be found in the description of the method `CanPerformOperation`.
+See the codes of operations and functionalities in the description of the method `CanPerformOperation`.
 
 {% endnote %}
 
@@ -63,6 +63,58 @@ Operation and functionality codes can be found in the description of the method 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sonet_group.feature.access',
+    		{
+    			'GROUP_ID': 1,
+    			'FEATURE': 'blog',
+    			'OPERATION': 'write_post'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	// Your required data processing logic
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sonet_group.feature.access',
+                [
+                    'GROUP_ID' => 1,
+                    'FEATURE' => 'blog',
+                    'OPERATION' => 'write_post'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting group list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     // Getting the list of the current user's groups
@@ -75,6 +127,5 @@ Operation and functionality codes can be found in the description of the method 
     ```
 
 {% endlist %}
-
 
 {% include [Footnote about examples](../../_includes/examples.md) %}

@@ -6,7 +6,7 @@
 
 The method `tasks.api.scrum.sprint.complete` completes the active sprint of the selected Scrum.
 
-When the sprint is completed, any unfinished tasks are moved to the backlog.
+When the sprint is completed, unfinished tasks are moved to the backlog.
 
 ## Method Parameters
 
@@ -51,6 +51,54 @@ When the sprint is completed, any unfinished tasks are moved to the backlog.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.sprint.complete',
+    		{
+    			id: groupId
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.sprint.complete',
+                [
+                    'id' => $groupId
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error completing sprint: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const groupId = 1;
     BX24.callMethod(
         'tasks.api.scrum.sprint.complete',
@@ -64,12 +112,12 @@ When the sprint is completed, any unfinished tasks are moved to the backlog.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
-    // executing the request to the REST API
+    // executing request to REST API
     $result = CRest::call(
         'tasks.api.scrum.sprint.complete',
         [

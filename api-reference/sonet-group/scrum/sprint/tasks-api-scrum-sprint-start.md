@@ -19,7 +19,7 @@ Tasks will be added to the kanban of the active sprint. If there were completed 
 #|
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **id*** 
 [`integer`](../../../data-types.md) | Sprint identifier ||
 |#
 
@@ -55,6 +55,54 @@ Tasks will be added to the kanban of the active sprint. If there were completed 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.sprint.start',
+    		{
+    			id: sprintId
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $sprintId = 2;
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.sprint.start',
+                [
+                    'id' => $sprintId
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error starting sprint: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const sprintId = 2;
     BX24.callMethod(
         'tasks.api.scrum.sprint.start',
@@ -68,12 +116,12 @@ Tasks will be added to the kanban of the active sprint. If there were completed 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
-    // executing a request to the REST API
+    // executing request to REST API
     $result = CRest::call(
         'tasks.api.scrum.sprint.start',
         [
@@ -81,7 +129,7 @@ Tasks will be added to the kanban of the active sprint. If there were completed 
         ]
     );
 
-    // Handling the response from Bitrix24
+    // Processing response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -128,7 +176,7 @@ HTTP status: **200**
 || **entityType** 
 [`string`](../../../data-types.md) | Entity type (in this case `sprint`) ||
 || **name** 
-[`string`](../../../data-types.md) | Name of the sprint ||
+[`string`](../../../data-types.md) | Sprint name ||
 || **goal** 
 [`string`](../../../data-types.md) | Sprint goal. Set only in the interface when starting the sprint ||
 || **sort** 
@@ -138,11 +186,11 @@ HTTP status: **200**
 || **modifiedBy** 
 [`integer`](../../../data-types.md) | Identifier of the user who modified the sprint ||
 || **dateStart** 
-[`string`](../../../data-types.md) | Start date of the sprint in `ISO 8601` format ||
+[`string`](../../../data-types.md) | Sprint start date in `ISO 8601` format ||
 || **dateEnd** 
-[`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
+[`string`](../../../data-types.md) | Sprint end date in `ISO 8601` format ||
 || **status** 
-[`string`](../../../data-types.md) | Status of the sprint ||
+[`string`](../../../data-types.md) | Sprint status ||
 |#
 
 ## Error Handling
@@ -164,7 +212,7 @@ HTTP status: **400**
 || **Code** | **Error Message** | **Description** ||
 || `0` | `Access denied` | No access to Scrum ||
 || `0` | `Sprint not found` | Such a sprint does not exist ||
-|| `0` | `Sprint must be planned` | The sprint must be in the "planned" status ||
+|| `0` | `Sprint must be planned` | Sprint must be in "planned" status ||
 || `100` | `Could not find value for parameter {id}` | Incorrect parameter name or parameter not set ||
 || `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int` | Invalid parameter type ||
 |#

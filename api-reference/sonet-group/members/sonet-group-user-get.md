@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -42,13 +42,56 @@ The method returns an array of social network group members by calling `CSocNetU
 || **ID** | ID of the group whose members need to be retrieved. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod('sonet_group.user.get', {
+    		'ID': 15
+    	});
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sonet_group.user.get',
+                [
+                    'ID' => 15
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting group users: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     // Getting the list of social network group members with ID=15
@@ -59,8 +102,7 @@ The method returns an array of social network group members by calling `CSocNetU
 
 {% endlist %}
 
-
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Request:
 

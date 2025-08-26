@@ -82,7 +82,6 @@ In `files`, you can pass an array of values with file identifiers, specifying th
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.epic.add
     ```
 
-
 - cURL (OAuth)
 
     ```bash
@@ -102,6 +101,66 @@ In `files`, you can pass an array of values with file identifiers, specifying th
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.epic.add',
+    		{
+    			fields: {
+    				name: name,
+    				groupId: groupId,
+    				description: description,
+    				color: color,
+    				files: files
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.epic.add',
+                [
+                    'fields' => [
+                        'name'        => $name,
+                        'groupId'     => $groupId,
+                        'description' => $description,
+                        'color'       => $color,
+                        'files'       => $files,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding epic: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     const groupId = 1;
@@ -128,7 +187,7 @@ In `files`, you can pass an array of values with file identifiers, specifying th
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // include CRest PHP SDK
@@ -150,10 +209,10 @@ In `files`, you can pass an array of values with file identifiers, specifying th
                 'color' => $color,
                 'files' => $files
             ]
-        ]
+        }
     );
 
-    // Handle response from Bitrix24
+    // Process response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     }
@@ -221,9 +280,9 @@ HTTP Status: **400**
 || `0` | Access denied | No access to scrum ||
 || `0` | Epic not created | Failed to create epic ||
 || `0` | createdBy user not found | User in the "creator" field not found ||
-|| `0` | modifiedBy user not found | User in the "last modified" field not found ||
-|| `0` | Group is not found | Parameter `GROUP_ID` not specified or group with such `ID` does not exist ||
-|| `0` | Name is not found | Parameter `NAME` not specified ||
+|| `0` | modifiedBy user not found | User in the "last modified by" field not found ||
+|| `0` | Group is not found | `GROUP_ID` parameter not specified or group with such `ID` does not exist ||
+|| `0` | Name is not found | `NAME` parameter not specified ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

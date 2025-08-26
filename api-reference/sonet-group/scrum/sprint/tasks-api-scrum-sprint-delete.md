@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user with access to Scrum
 
-The method `tasks.api.scrum.sprint.delete` removes a sprint.
+The method `tasks.api.scrum.sprint.delete` deletes a sprint.
 
 When a sprint with tasks is deleted, the tasks will be moved to the backlog.
 
@@ -16,7 +16,7 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the sprint ||
+[`integer`](../../../data-types.md) | Sprint identifier ||
 |#
 
 ## Code Examples
@@ -35,7 +35,7 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
     }' \
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.delete
     ```
-
+    
 - cURL (oAuth)
 
     ```bash
@@ -47,8 +47,54 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
     }' \
     https://your-domain.bitrix24.com/rest/tasks.api.scrum.sprint.delete
     ```
-
+    
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.sprint.delete',
+    		{
+    			id: sprintId
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.sprint.delete',
+                [
+                    'id' => $sprintId
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting sprint: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     const sprintId = 1;
@@ -64,12 +110,12 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
-    // executing a request to the REST API
+    // executing request to REST API
     $result = CRest::call(
         'tasks.api.scrum.sprint.delete',
         [
@@ -77,7 +123,7 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
         ]
     );
 
-    // Processing the response from Bitrix24
+    // Handling response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     } else {

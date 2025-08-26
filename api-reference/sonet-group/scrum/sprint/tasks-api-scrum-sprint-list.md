@@ -1,4 +1,4 @@
-# Get a List of Sprints tasks.api.scrum.sprint.list
+# Get the list of sprints tasks.api.scrum.sprint.list
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `tasks.api.scrum.sprint.list` returns a list of sprints.
 
 This method is similar to other methods with filtering by list.
 
-## Method Parameters
+## Method parameters
 
 #|
 || **Name**
@@ -16,7 +16,7 @@ This method is similar to other methods with filtering by list.
 || **order**
 [`object`](../../../data-types.md) | An object for sorting the result. The object format is `{'sorting_field': 'sorting_direction' [, ...]}`. Available fields are described in the table [below](#fields).
 
-The sorting direction can take the following values:
+Sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending ||
 || **filter**
@@ -26,12 +26,12 @@ The sorting direction can take the following values:
 
 If the array contains the value `"*"`, all available fields will be returned.
 
-The default value is an empty array `array()`. In this case, all fields of the main query table will be returned. ||
+The default value is an empty array `array()`. In this case, all fields of the main query table will be returned ||
 || **start**
 [`integer`](../../../data-types.md) | The page number of the output. Works for https requests ||
 |#
 
-### Available Filter Fields {#fields}
+### Available filter fields {#fields}
 
 #|
 || **Name**
@@ -60,9 +60,9 @@ The default value is an empty array `array()`. In this case, all fields of the m
 [`object`](../../../data-types.md) | Information ||
 |#
 
-## Code Examples
+## Code examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -98,6 +98,93 @@ The default value is an empty array `array()`. In this case, all fields of the m
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const groupId = 1;
+    try {
+      const response = await $b24.callListMethod(
+        'tasks.api.scrum.sprint.list',
+        {
+          filter: {
+            GROUP_ID: groupId,
+            '>=DATE_END': new Date()
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    const groupId = 1;
+    try {
+      const generator = $b24.fetchListMethod('tasks.api.scrum.sprint.list', {
+        filter: {
+          GROUP_ID: groupId,
+          '>=DATE_END': new Date()
+        }
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    const groupId = 1;
+    try {
+      const response = await $b24.callMethod('tasks.api.scrum.sprint.list', {
+        filter: {
+          GROUP_ID: groupId,
+          '>=DATE_END': new Date()
+        }
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $groupId = 1;
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.sprint.list',
+                [
+                    'filter' => [
+                        'GROUP_ID'    => $groupId,
+                        '>=DATE_END' => new DateTime(),
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching sprint list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const groupId = 1;
     BX24.callMethod(
         'tasks.api.scrum.sprint.list',
@@ -114,12 +201,12 @@ The default value is an empty array `array()`. In this case, all fields of the m
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // include CRest PHP SDK
 
-    // execute request to REST API
+    // execute a request to the REST API
     $result = CRest::call(
         'tasks.api.scrum.sprint.list',
         [
@@ -140,9 +227,9 @@ The default value is an empty array `array()`. In this case, all fields of the m
 
 {% endlist %}
 
-## Response Handling
+## Response handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 [
@@ -175,7 +262,7 @@ HTTP Status: **200**
 ]
 ```
 
-### Returned Data
+### Returned data
 
 #|
 || **Name**
@@ -189,9 +276,9 @@ HTTP Status: **200**
 || **entityType** 
 [`string`](../../../data-types.md) | Entity type (in this case `sprint`) ||
 || **name** 
-[`string`](../../../data-types.md) | Sprint name ||
+[`string`](../../../data-types.md) | Name of the sprint ||
 || **goal** 
-[`string`](../../../data-types.md) | Sprint goal. Set only in the interface when starting the sprint ||
+[`string`](../../../data-types.md) | Goal of the sprint. Set only in the interface when starting the sprint ||
 || **sort** 
 [`integer`](../../../data-types.md) | Sorting ||
 || **createdBy** 
@@ -203,12 +290,12 @@ HTTP Status: **200**
 || **dateEnd** 
 [`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
 || **status** 
-[`string`](../../../data-types.md) | Sprint status ||
+[`string`](../../../data-types.md) | Status of the sprint ||
 |#
 
-## Error Handling
+## Error handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -219,16 +306,16 @@ HTTP Status: **400**
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible error codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
+|| **Code** | **Error message** | **Description** ||
 || `0` | `Could not load list`| No sprints found with the specified filters ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](./tasks-api-scrum-sprint-add.md)
 - [{#T}](./tasks-api-scrum-sprint-update.md)

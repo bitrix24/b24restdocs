@@ -13,7 +13,7 @@ The method `tasks.api.scrum.sprint.add` adds a sprint to Scrum.
 #|
 || **Name**
 `type` | **Description** ||
-|| **fields*** 
+|| **fields***
 [`object`](../../../data-types.md) | Object containing sprint data ||
 |#
 
@@ -24,19 +24,19 @@ The method `tasks.api.scrum.sprint.add` adds a sprint to Scrum.
 #|
 || **Name**
 `type` | **Description** ||
-|| **groupId*** 
+|| **groupId***
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs. 
 
 The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./tasks-api-scrum-sprint-get.md) for an existing sprint ||
-|| **name*** 
+|| **name***
 [`string`](../../../data-types.md) | Name of the sprint ||
-|| **sort** 
+|| **sort**
 [`integer`](../../../data-types.md) | Sorting ||
-|| **dateStart** 
+|| **dateStart**
 [`string`](../../../data-types.md) | Start date of the sprint. Available formats: `ISO 8601`, `timestamp` ||
-|| **dateEnd** 
+|| **dateEnd**
 [`string`](../../../data-types.md) | End date of the sprint. Available formats: `ISO 8601`, `timestamp` ||
-|| **status** 
+|| **status**
 [`string`](../../../data-types.md) | Status of the sprint. Available values: `active`, `planned`, `completed` ||
 |#
 
@@ -88,6 +88,70 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.sprint.add',
+    		{
+    			fields: {
+    				name: name,
+    				groupId: groupId,
+    				createdBy: createdBy,
+    				sort: sort,
+    				status: status,
+    				dateStart: dateStart,
+    				dateEnd: dateEnd,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.sprint.add',
+                [
+                    'fields' => [
+                        'name'      => $name,
+                        'groupId'   => $groupId,
+                        'createdBy' => $createdBy,
+                        'sort'      => $sort,
+                        'status'    => $status,
+                        'dateStart' => $dateStart,
+                        'dateEnd'   => $dateEnd,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding sprint: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const groupId = 1;
     const name = 'Sprint 1';
     const createdBy = 1;
@@ -115,10 +179,10 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
-    require_once('crest.php'); // include CRest PHP SDK
+    require_once('crest.php'); // connect CRest PHP SDK
 
     $groupId = 1;
     $name = 'Sprint 1';
@@ -144,7 +208,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
         ]
     );
 
-    // Handle response from Bitrix24
+    // Process response from Bitrix24
     if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     } else {
@@ -182,29 +246,29 @@ HTTP Status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **result** 
+|| **result**
 [`object`](../../../data-types.md) | Object containing sprint data ||
-|| **id** 
+|| **id**
 [`integer`](../../../data-types.md) | Identifier of the sprint ||
-|| **groupId** 
+|| **groupId**
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
-|| **entityType** 
-[`string`](../../../data-types.md) | Type of entity (in this case `sprint`) ||
-|| **name** 
+|| **entityType**
+[`string`](../../../data-types.md) | Entity type (in this case `sprint`) ||
+|| **name**
 [`string`](../../../data-types.md) | Name of the sprint ||
-|| **goal** 
+|| **goal**
 [`string`](../../../data-types.md) | Goal of the sprint. Set only in the interface when starting the sprint ||
-|| **sort** 
+|| **sort**
 [`integer`](../../../data-types.md) | Sorting ||
-|| **createdBy** 
+|| **createdBy**
 [`integer`](../../../data-types.md) | Identifier of the user who created the sprint ||
-|| **modifiedBy** 
+|| **modifiedBy**
 [`integer`](../../../data-types.md) | Identifier of the user who modified the sprint ||
-|| **dateStart** 
+|| **dateStart**
 [`string`](../../../data-types.md) | Start date of the sprint in `ISO 8601` format ||
-|| **dateEnd** 
+|| **dateEnd**
 [`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
-|| **status** 
+|| **status**
 [`string`](../../../data-types.md) | Status of the sprint ||
 |#
 

@@ -1,8 +1,8 @@
-# Delete Social Network Group sonet_group.delete
+# Delete social network group sonet_group.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -32,7 +32,7 @@ Deletes a social network group. To perform this operation, the current user must
 || **GROUP_ID** | ID of the group to be deleted. ||
 |#
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 In case of successful group deletion, it returns **true**, otherwise - an error message.
 
@@ -41,6 +41,51 @@ In case of successful group deletion, it returns **true**, otherwise - an error 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sonet_group.delete',
+    		{
+    			'GROUP_ID': 11
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sonet_group.delete',
+                [
+                    'GROUP_ID' => 11
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting social network group: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     // Deleting social network group with ID=11
@@ -52,8 +97,7 @@ In case of successful group deletion, it returns **true**, otherwise - an error 
 
 {% endlist %}
 
-
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 ## Request:
 

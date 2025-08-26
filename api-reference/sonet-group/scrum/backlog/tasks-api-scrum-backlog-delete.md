@@ -10,7 +10,7 @@ In normal circumstances, there is no need to delete the backlog. When the backlo
 
 The method is used if the backlog was mistakenly added to a group or project that is not Scrum.
 
-## Method Parameters
+## Method parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -23,7 +23,7 @@ The method is used if the backlog was mistakenly added to a group or project tha
 It can be obtained using the backlog creation method [tasks.api.scrum.backlog.add](./tasks-api-scrum-backlog-add.md) or by retrieving backlog fields by Scrum identifier using [tasks.api.scrum.backlog.get](./tasks-api-scrum-backlog-get.md) ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -52,6 +52,57 @@ It can be obtained using the backlog creation method [tasks.api.scrum.backlog.ad
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.backlog.delete',
+    		{
+    			"id": 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.backlog.delete',
+                [
+                    'id' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting backlog item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.backlog.delete',
         {
@@ -67,7 +118,7 @@ It can be obtained using the backlog creation method [tasks.api.scrum.backlog.ad
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -86,7 +137,7 @@ It can be obtained using the backlog creation method [tasks.api.scrum.backlog.ad
 
 {% endlist %}
 
-## Response Handling
+## Response handling
 
 HTTP status: **200**
 
@@ -106,7 +157,7 @@ In case of successful execution, the server will return the following response:
 }
 ```
 
-## Error Handling
+## Error handling
 
 HTTP status: **400**
 
@@ -119,18 +170,18 @@ HTTP status: **400**
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible error codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `0` | Backlog not found | The error occurs when trying to delete a non-existent backlog ||
+|| **Code** | **Error message** | **Description** ||
+|| `0` | Backlog not found | Error occurs when trying to delete a non-existent backlog ||
 || `0` | Access denied | Missing appropriate access permissions ||
 || `0` | Unknown error | Another error ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue learning
 
 - [{#T}](./tasks-api-scrum-backlog-add.md)
 - [{#T}](./tasks-api-scrum-backlog-update.md)

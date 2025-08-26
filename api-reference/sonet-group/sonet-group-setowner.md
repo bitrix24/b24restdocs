@@ -11,8 +11,8 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not specified
-- no error response is provided
+- parameter requirements are not indicated
+- no response in case of error
 - no examples in other languages
 
 {% endnote %}
@@ -33,7 +33,7 @@ This method changes the owner of a group. It can be executed either by the socia
 || **USER_ID** | The identifier of the new owner. ||
 |#
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 On success, it returns `true`.
 
@@ -44,6 +44,53 @@ On success, it returns `true`.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'sonet_group.setowner',
+    		{
+    			'GROUP_ID': 11,
+    			'USER_ID': 2
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sonet_group.setowner',
+                [
+                    'GROUP_ID' => 11,
+                    'USER_ID'  => 2
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting group owner: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod('sonet_group.setowner', {
         'GROUP_ID': 11,
         'USER_ID': 2
@@ -52,5 +99,4 @@ On success, it returns `true`.
 
 {% endlist %}
 
-
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}

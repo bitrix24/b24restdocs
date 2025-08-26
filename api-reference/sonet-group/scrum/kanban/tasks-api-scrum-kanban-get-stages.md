@@ -46,6 +46,54 @@ The method returns the Kanban stages by the sprint ID.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.kanban.getStages',
+    		{
+    			"sprintId": 5,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.kanban.getStages',
+                [
+                    'sprintId' => 5,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting stages: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.kanban.getStages',
         {
@@ -61,7 +109,7 @@ The method returns the Kanban stages by the sprint ID.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

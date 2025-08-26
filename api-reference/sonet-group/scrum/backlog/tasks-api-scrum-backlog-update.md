@@ -1,4 +1,4 @@
-# Update Backlog tasks.api.scrum.backlog.update
+# Update backlog tasks.api.scrum.backlog.update
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -12,7 +12,7 @@ This method updates the backlog.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Backlog identifier.
+[`integer`](../../../data-types.md) | Backlog identifier. 
 
 You can obtain it using the method [tasks.api.scrum.backlog.get](./tasks-api-scrum-backlog-get.md) ||
 || **fields***
@@ -74,6 +74,62 @@ The group identifier can be obtained when creating a new group [sonet_group.crea
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.backlog.update',
+    		{
+    			"id": 1,
+    			"fields": {
+    				"groupId": 125,
+    				"createdBy": 6,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.backlog.update',
+                [
+                    'id' => 1,
+                    'fields' => [
+                        'groupId'   => 125,
+                        'createdBy' => 6,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating backlog: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.backlog.update',
         {
@@ -93,7 +149,7 @@ The group identifier can be obtained when creating a new group [sonet_group.crea
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -118,7 +174,7 @@ The group identifier can be obtained when creating a new group [sonet_group.crea
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -128,13 +184,13 @@ HTTP Status: **200**
         "createdBy": 6,
         "modifiedBy": 1
     },
-    "time": {
-        "start": 1712137817.343984,
-        "finish": 1712137817.605804,
-        "duration": 0.26182007789611816,
-        "processing": 0.018325090408325195,
-        "date_start": "2024-04-03T12:50:17+02:00",
-        "date_finish": "2024-04-03T12:50:17+02:00"
+    "time":{
+        "start":1712137817.343984,
+        "finish":1712137817.605804,
+        "duration":0.26182007789611816,
+        "processing":0.018325090408325195,
+        "date_start":"2024-04-03T12:50:17+02:00",
+        "date_finish":"2024-04-03T12:50:17+02:00"
     }
 }
 ```
@@ -156,12 +212,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "Access denied"
+    "error":0,
+    "error_description":"Access denied"
 }
 ```
 

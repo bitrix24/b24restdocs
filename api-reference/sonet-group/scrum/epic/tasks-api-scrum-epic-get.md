@@ -26,7 +26,7 @@ The method retrieves the values of the epic fields by its identifier `id`.
 || **id***
 [`integer`](../../../data-types.md) | Epic identifier.
 
-Epic identifiers can be obtained using the [`tasks.api.scrum.epic.list`](./tasks-api-scrum-epic-list.md) method ||
+You can get the identifiers of epics using the method [`tasks.api.scrum.epic.list`](./tasks-api-scrum-epic-list.md) ||
 |#
 
 ## Code Examples
@@ -58,6 +58,54 @@ Epic identifiers can be obtained using the [`tasks.api.scrum.epic.list`](./tasks
 - JS
 
     ```js
+    try
+    {
+    	const epicId = 1;
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.epic.get',
+    		{
+    			id: epicId,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $epicId = 1;
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.epic.get',
+                [
+                    'id' => $epicId,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting epic: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     const epicId = 1;
     BX24.callMethod(
         'tasks.api.scrum.epic.get',
@@ -71,7 +119,7 @@ Epic identifiers can be obtained using the [`tasks.api.scrum.epic.list`](./tasks
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -92,7 +140,7 @@ Epic identifiers can be obtained using the [`tasks.api.scrum.epic.list`](./tasks
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -162,12 +210,12 @@ HTTP Status: **200**
 || **color**
 [`string`](../../../data-types.md) | Epic color in HEX format ||
 || **files**
-[`object`](../../../data-types.md) | Object containing data about all files attached to the epic ||
+[`object`](../../../data-types.md) | Object with data about all files attached to the epic ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -183,7 +231,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description**  | **Value** ||
 || `0` | Access denied | No access to view epic data ||
-|| `0` | Epic not found | Such an epic does not exist ||
+|| `0` | Epic not found | The epic does not exist ||
 || `100` | Could not find value for parameter {id} | Incorrect parameter name or parameter not set ||
 || `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
 |#

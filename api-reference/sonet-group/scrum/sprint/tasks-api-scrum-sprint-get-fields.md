@@ -1,21 +1,21 @@
-# Get a List of Available Sprint Fields tasks.api.scrum.sprint.getFields
+# Get a list of available fields for the sprint tasks.api.scrum.sprint.getFields
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.api.scrum.sprint.getFields` returns the available fields of a sprint.
+The method `tasks.api.scrum.sprint.getFields` returns the available fields for the sprint.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cUrl (Webhook)
-  
+
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
@@ -25,7 +25,7 @@ No parameters.
     ```
 
 - cURL (oAuth)
-  
+
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
@@ -36,7 +36,49 @@ No parameters.
     ```
 
 - JS
-  
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.sprint.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.sprint.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting sprint fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'tasks.api.scrum.sprint.getFields',
@@ -48,8 +90,8 @@ No parameters.
     );
     ```
 
-- PHP
-  
+- PHP CRest
+
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK
 
@@ -71,7 +113,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {

@@ -1,16 +1,16 @@
-# Get a List of Available Fields for the Kanban Stage tasks.api.scrum.kanban.getFields
+# Get a list of available fields for the kanban stage tasks.api.scrum.kanban.getFields
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method returns the available fields for the Kanban stage.
+The method returns the available fields for the kanban stage.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,6 +37,25 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.kanban.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.kanban.getFields',
         {},
@@ -50,7 +69,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -69,7 +88,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -92,13 +111,13 @@ HTTP Status: **200**
         }
       }
     },
-    "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+03:00",
-        "date_finish":"2024-04-03T12:50:17+03:00"
+    "time": {
+        "start": 1712137817.343984,
+        "finish": 1712137817.605804,
+        "duration": 0.26182007789611816,
+        "processing": 0.018325090408325195,
+        "date_start": "2024-04-03T12:50:17+02:00",
+        "date_finish": "2024-04-03T12:50:17+02:00"
     }
 }
 ```

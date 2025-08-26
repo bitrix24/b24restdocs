@@ -1,12 +1,12 @@
-# Get a List of Available Epic Fields tasks.api.scrum.epic.getFields
+# Get a list of available fields for epic tasks.api.scrum.epic.getFields
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.api.scrum.epic.getFields` returns the available fields of an epic.
+The method `tasks.api.scrum.epic.getFields` returns the available fields for an epic.
 
-Without parameters.
+No parameters.
 
 ## Code Examples
 
@@ -38,6 +38,48 @@ Without parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.epic.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.epic.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting epic fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.epic.getFields',
         {},
@@ -48,7 +90,7 @@ Without parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php'); // connecting CRest PHP SDK

@@ -6,7 +6,7 @@
 
 This method deletes a stage.
 
-The stage will not be deleted if there are tasks in it.
+The stage will not be deleted if it contains tasks.
 
 ## Method Parameters
 
@@ -15,7 +15,7 @@ The stage will not be deleted if there are tasks in it.
 #|
 || **Name**
 `type` | **Description** ||
-|| **sprintId***
+|| **stageId***
 [`integer`](../../../data-types.md) | Identifier of the stage. You can obtain the identifier using the method [tasks.api.scrum.kanban.getStages](./tasks-api-scrum-kanban-get-stages.md) ||
 |#
 
@@ -48,6 +48,57 @@ The stage will not be deleted if there are tasks in it.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.kanban.deleteStage',
+    		{
+    			"stageId": 65,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.kanban.deleteStage',
+                [
+                    'stageId' => 65,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting stage: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.kanban.deleteStage',
         {
@@ -63,7 +114,7 @@ The stage will not be deleted if there are tasks in it.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -122,7 +173,7 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `0` | `Stage id not found` | Required field `stageId` is not filled ||
 || `0` | `Stage not found` | An unknown stage identifier `stageId` was provided ||
-|| `0` | `Stage has tasks` | There are tasks in the stage, and it cannot be deleted ||
+|| `0` | `Stage has tasks` | The stage has tasks and cannot be deleted ||
 || `0` | `Access denied` | Access is denied ||
 || `0` | Unknown error ||
 |#

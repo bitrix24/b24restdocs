@@ -11,9 +11,9 @@ This method creates or updates a Scrum task. You will be able to:
 - change story points
 - link an epic
 
-A task must be created using the [tasks.task.add](../../../tasks/tasks-task-add.md) method or updated using the [tasks.task.update](../../../tasks/tasks-task-update.md) method. Linking the task to Scrum is specified in the group identifier parameter `GROUP_ID`. 
+A task must be created using the [tasks.task.add](../../../tasks/tasks-task-add.md) method or updated using the [tasks.task.update](../../../tasks/tasks-task-update.md) method. Linking the task to Scrum is specified in the group identifier parameter `GROUP_ID`.
 
-You can obtain the group identifier using the [create new group](../../sonet-group-create.md) method or the [get group list](../../socialnetwork-api-workgroup-list.md) method. A group is considered a Scrum if the `SCRUM_MASTER_ID` field is filled.
+You can obtain the group identifier using the [create new group](../../sonet-group-create.md) method or the [get group list](../../socialnetwork-api-workgroup-list.md) method. A group is considered Scrum if the `SCRUM_MASTER_ID` field is filled.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ You can obtain the group identifier using the [create new group](../../sonet-gro
 || **id***
 [`integer`](../../../data-types.md) | Task identifier ||
 || **fields***
-[`object`](../../../data-types.md) | Object containing records about the Scrum task (detailed description provided [below](#parametr-fields)) in the following structure:
+[`object`](../../../data-types.md) | An object containing records about the Scrum task (detailed description provided [below](#parametr-fields)) in the following structure:
 
 ```js
 fields: {
@@ -37,7 +37,7 @@ fields: {
 ||
 |#
 
-### Fields Parameter
+### Parameter fields
 
 #|
 || **Name**
@@ -47,7 +47,7 @@ fields: {
 
 If the value is not specified, *Bitrix24* will automatically add the task to the Scrum backlog if it exists ||
 || **storyPoints**
-`string` | Story Points — relative assessment of the task's complexity.
+`string` | Story Points — a relative estimate of the task's complexity.
 
 Can have a string value ||
 || **epicId**
@@ -83,6 +83,65 @@ Can have a string value ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.task.update',
+    		{
+    			id: 1,
+    			fields: 
+    			{
+    				epicId: 1,
+    				storyPoints: '8',
+    				entityId: 2
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.task.update',
+                [
+                    'id' => 1,
+                    'fields' => [
+                        'epicId'      => 1,
+                        'storyPoints' => '8',
+                        'entityId'    => 2
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating scrum task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.task.update',
         {
@@ -101,7 +160,7 @@ Can have a string value ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -127,7 +186,7 @@ Can have a string value ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -160,7 +219,7 @@ Possible values:
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

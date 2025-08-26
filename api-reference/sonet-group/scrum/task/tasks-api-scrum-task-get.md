@@ -46,6 +46,64 @@ This method retrieves the values of the Scrum task fields by its identifier `id`
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.task.get',
+    		{
+    			id: 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.task.get',
+                [
+                    'id' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting scrum task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.task.get',
         {
@@ -61,7 +119,7 @@ This method retrieves the values of the Scrum task fields by its identifier `id`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -82,7 +140,7 @@ This method retrieves the values of the Scrum task fields by its identifier `id`
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -112,13 +170,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Object containing task data ||
+[`object`](../../../data-types.md) | Object with task data ||
 || **entityId** 
 [`integer`](../../../data-types.md) | Identifier of the backlog or sprint ||
 || **storyPoints**
 [`string`](../../../data-types.md) | Number of story points. 
 
-Data type is a string, as story points do not necessarily have to be a number ||
+Data type is a string, as story points may not necessarily be a number ||
 || **epicId**
 [`integer`](../../../data-types.md) | Identifier of the epic ||
 || **sort**
@@ -128,12 +186,12 @@ Data type is a string, as story points do not necessarily have to be a number ||
 || **modifiedBy**
 [`integer`](../../../data-types.md) | Identifier of the user who last modified the task ||
 || **time**
-[`array`](../../../data-types.md#time) | Information about the request processing time ||
+[`array`](../../../data-types.md#time) | Information about the time taken for the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -147,7 +205,7 @@ HTTP status: **200**
 #|
 || **Code** | **Description**  | **Value** ||
 || `0` | Task not found | The task does not exist or the user does not have access to this task ||
-|| `100` | Could not find value for parameter {id} | Incorrect parameter name or parameter not set ||
+|| `100` | Could not find value for parameter {id} | The parameter name is incorrect or the parameter is not set ||
 || `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
 |#
 

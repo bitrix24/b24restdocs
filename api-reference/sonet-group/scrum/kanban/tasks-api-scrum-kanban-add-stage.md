@@ -18,7 +18,7 @@ Use this method only for active sprints, meaning with the field `"status": "acti
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Fields corresponding to the available list of fields [tasks.api.scrum.kanban.getFields](./tasks-api-scrum-kanban-get-fields.md) (detailed description provided [below](#parameter-fields)) ||
+[`object`](../../../data-types.md) | Fields corresponding to the available list of fields [tasks.api.scrum.kanban.getFields](./tasks-api-scrum-kanban-get-fields.md) (detailed description provided [below](#parametr-fields)) ||
 |#
 
 ### Parameter fields
@@ -35,7 +35,7 @@ Use this method only for active sprints, meaning with the field `"status": "acti
 || **type**
 [`string`](../../../data-types.md) | Type of the Kanban stage. Possible values: `NEW`, `WORK`, `FINISH` ||
 || **sort**
-[`integer`](../../../data-types.md) | Sort order. The value of the field must be a multiple of `100` ||
+[`integer`](../../../data-types.md) | Sort order. The field value must be a multiple of `100` ||
 || **color**
 [`string`](../../../data-types.md) | Color of the Kanban stage ||
 |#
@@ -69,6 +69,66 @@ Use this method only for active sprints, meaning with the field `"status": "acti
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.kanban.addStage',
+    		{
+    			"fields": {
+    				"sprintId": 1,
+    				"name": "First Stage",
+    				"type": "NEW",
+    				"color": "00C4FB",
+    				"sort": 100,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.kanban.addStage',
+                [
+                    'fields' => [
+                        'sprintId' => 1,
+                        'name' => 'First Stage',
+                        'type' => 'NEW',
+                        'color' => '00C4FB',
+                        'sort' => 100,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding stage: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.kanban.addStage',
         {
@@ -90,7 +150,7 @@ Use this method only for active sprints, meaning with the field `"status": "acti
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

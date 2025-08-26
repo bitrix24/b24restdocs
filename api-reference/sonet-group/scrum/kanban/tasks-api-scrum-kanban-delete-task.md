@@ -14,9 +14,9 @@ This method removes a task from the Scrum kanban. The task will remain in the sp
 || **Name**
 `type` | **Description** ||
 || **sprintId***
-[`integer`](../../../data-types.md) | Identifier of the sprint. You can obtain the identifier using the [tasks.api.scrum.sprint.list](../sprint/tasks-api-scrum-sprint-list.md) method ||
+[`integer`](../../../data-types.md) | Sprint identifier. You can obtain the identifier using the [tasks.api.scrum.sprint.list](../sprint/tasks-api-scrum-sprint-list.md) method ||
 || **taskId***
-[`integer`](../../../data-types.md) | Identifier of the task. You can obtain the identifier using the [tasks.task.list](../../../tasks/tasks-task-list.md) method ||
+[`integer`](../../../data-types.md) | Task identifier. You can obtain the identifier using the [tasks.task.list](../../../tasks/tasks-task-list.md) method ||
 |#
 
 ## Code Examples
@@ -48,6 +48,58 @@ This method removes a task from the Scrum kanban. The task will remain in the sp
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'tasks.api.scrum.kanban.deleteTask',
+    		{
+    			"sprintId": 5,
+    			"taskId": 751,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'tasks.api.scrum.kanban.deleteTask',
+                [
+                    "sprintId" => 5,
+                    "taskId"   => 751,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting task: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'tasks.api.scrum.kanban.deleteTask',
         {
@@ -64,7 +116,7 @@ This method removes a task from the Scrum kanban. The task will remain in the sp
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
