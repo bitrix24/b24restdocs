@@ -1,14 +1,14 @@
-# Set Full Field Visibility Settings rpa.fields.setSettings
+# Set Full Visibility Settings for Fields rpa.fields.setSettings
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method sets the full set of field visibility settings for the stage with the identifier `stageId` of the process with the identifier `typeId`.
+This method sets the full visibility settings for fields at the stage with the identifier `stageId` of the process with the identifier `typeId`.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,20 +18,90 @@ This method sets the full set of field visibility settings for the stage with th
 || **stageId** 
 [`number`](../../../data-types.md) | Identifier of the stage.
 
-Defaults to `0`, meaning — general settings ||
+Defaults to `0`, which means — general settings ||
 || **fields*** 
-[`object`](../../../data-types.md) | Array of field visibility settings.
+[`object`](../../../data-types.md) | Array with field visibility settings.
 
 If an empty `fields` is passed, all settings will be cleared ||
 |#
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'rpa.comment.add',
+    		{
+    			"typeId": 1,
+    			"fields": {
+    				"kanban": [
+    					"createdBy",
+    					"UF_RPA_1_NAME"
+    				]
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('response', result.answer);
+    	if(result.error())
+    		alert("Error: " + result.error());
+    	else
+    		console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'rpa.comment.add',
+                [
+                    'typeId' => 1,
+                    'fields' => [
+                        'kanban' => [
+                            'createdBy',
+                            'UF_RPA_1_NAME'
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        echo 'response: ' . $result['answer'];
+        if ($result['error']) {
+            echo 'Error: ' . $result['error'];
+        } else {
+            echo 'Data: ' . print_r($result['data'], true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding comment: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
