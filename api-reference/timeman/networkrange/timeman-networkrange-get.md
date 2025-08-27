@@ -182,7 +182,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_ERROR",
-    "error_description": "You don't have access to user this method"
+    "error_description": "You don't have access to use this method"
 }
 ```
 
@@ -192,7 +192,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_ERROR` | You don't have access to user this method | Method is available only to the administrator ||
+|| `ACCESS_ERROR` | You don't have access to use this method | Method is available only to the administrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
