@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing here — we will fill it in shortly.
 - edits needed for writing standards
 - missing response in case of success
 - missing response in case of error
-- links to pages that have not yet been created are not specified
+- links to pages not yet created are not specified
 - some fields lack descriptions
 
 {% endnote %}
@@ -37,6 +37,59 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.company.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.company.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching company fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.company.fields",
         {},
@@ -52,7 +105,7 @@ No parameters.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Fields
 
@@ -101,7 +154,7 @@ No parameters.
 || **HAS_PHONE**
 [`char`](../../data-types.md) | Phone field filled check | Read-only ||
 || **ID**
-[`integer`](../../data-types.md) | Company identifier | Read-only ||
+[`integer`](../../data-types.md) | Company ID | Read-only ||
 || **IM**
 [`crm_multifield`](../../data-types.md) | Messengers | Multiple ||
 || **INDUSTRY**
@@ -109,19 +162,19 @@ No parameters.
 || **IS_MY_COMPANY**
 [`char`](../../data-types.md) | | ||
 || **LEAD_ID**
-[`crm_lead`](../../data-types.md) | Identifier of the lead associated with the company | Read-only ||
+[`crm_lead`](../../data-types.md) | Lead ID associated with the company | Read-only ||
 || **LOGO**
 [`file`](../../data-types.md) | Logo | ||
 || **MODIFY_BY_ID**
-[`user`](../../data-types.md) | Identifier of the last modification author | Read-only ||
+[`user`](../../data-types.md) | ID of the last modification author | Read-only ||
 || **OPENED**
 [`char`](../../data-types.md) | Available to everyone | ||
 || **ORIGINATOR_ID**
-[`string`](../../data-types.md) | Identifier of the data source | Used only for linking to an external source. ||
+[`string`](../../data-types.md) | Data source ID | Used only for linking to an external source. ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the element in the data source | Used only for linking to an external source. ||
+[`string`](../../data-types.md) | Element ID in the data source | Used only for linking to an external source. ||
 || **ORIGIN_VERSION**
-[`string`](../../data-types.md) | Original version | Used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting. ||
+[`string`](../../data-types.md) | Original version | Used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, such data can be edited in CRM without fear that the next export will overwrite the data ||
 || **PHONE**
 [`crm_multifield`](../../data-types.md) | Company phone | Multiple ||
 || **REG_ADDRESS**
@@ -153,7 +206,7 @@ No parameters.
 || **UTM_MEDIUM**
 [`string`](../../data-types.md) | Traffic type | CPC (ads), CPM (banners) ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system | Google AdWords and others. ||
+[`string`](../../data-types.md) | Advertising system | Google-Adwords and others. ||
 || **UTM_TERM**
 [`string`](../../data-types.md) | Campaign search term | For example, keywords for contextual advertising. ||
 || **WEB**

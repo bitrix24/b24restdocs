@@ -1,8 +1,8 @@
-# Get Field Descriptions for Company-Contact Connection crm.company.contact.fields
+# Get Field Descriptions for Company-Contact crm.company.contact.fields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `crm.company.contact.fields` returns the field descriptions used by the methods in the `crm.company.contact.*` family, such as `crm.company.contact.items.get`, `crm.company.contact.items.set`, `crm.company.contact.add`, etc.
+The method `crm.company.contact.fields` returns the field descriptions for the company-contact relationship, used by methods in the `crm.company.contact.*` family, such as `crm.company.contact.items.get`, `crm.company.contact.items.set`, `crm.company.contact.add`, etc.
 
 ## Parameters
 
@@ -33,7 +33,53 @@ No parameters.
 {% list tabs %}
 
 - JS
-  
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.company.contact.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.company.contact.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching company contact fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         "crm.company.contact.fields",
@@ -50,4 +96,4 @@ No parameters.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../_includes/examples.md) %}

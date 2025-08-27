@@ -1,8 +1,8 @@
-# Set a common card for all users crm.company.details.configuration.forceCommonScopeForAll
+# Set a common company card for all users crm.company.details.configuration.forceCommonScopeForAll
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - examples are missing
-- success response is missing
-- error response is missing
+- no response in case of success
+- no response in case of error
 
 {% endnote %}
 
@@ -31,9 +31,55 @@ Without parameters
 {% list tabs %}
 
 - JS
-  
+
     ```js
-    //--- 
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.company.details.configuration.forceCommonScopeForAll",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.company.details.configuration.forceCommonScopeForAll',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting common company card for all users: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    //---
     //Set a common company card for all users.
     BX24.callMethod(
         "crm.company.details.configuration.forceCommonScopeForAll",
@@ -51,4 +97,4 @@ Without parameters
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../_includes/examples.md) %}

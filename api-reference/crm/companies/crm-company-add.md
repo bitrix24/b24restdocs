@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,11 +10,11 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
-- required parameters are not specified
-- examples are missing
-- response in case of success is missing
-- response in case of error is missing
+- edits needed for standard writing
+- required parameters not specified
+- examples missing
+- success response missing
+- error response missing
 
 {% endnote %}
 
@@ -31,7 +31,7 @@ The method `crm.company.add` creates a new company.
 #|
 || **Parameter** | **Description** ||
 || **fields**
-[`array`](../../data-types.md) | A set of fields - an array in the form array("field"=>"value"[, ...]), containing the values of the company fields. 
+[`array`](../../data-types.md) | Set of fields - an array in the form array("field"=>"value"[, ...]), containing the values of the company fields. 
 
 {% note info %}
 
@@ -40,7 +40,7 @@ To find out the required format of the fields, execute the method [crm.company.f
 {% endnote %}
  ||
 || **params**
-[`array`](../../data-types.md) | A set of parameters. REGISTER_SONET_EVENT - register the event of adding a company in the live feed. A notification will also be sent to the person responsible for the company. ||
+[`array`](../../data-types.md) | Set of parameters. REGISTER_SONET_EVENT - register the event of adding a company in the live feed. A notification will also be sent to the person responsible for the company. ||
 |#
 
 ## Examples
@@ -48,6 +48,79 @@ To find out the required format of the fields, execute the method [crm.company.f
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.company.add",
+    		{
+    			fields:
+    			{
+    				"TITLE": "LLC Smith",
+    				"COMPANY_TYPE": "CUSTOMER",
+    				"INDUSTRY": "MANUFACTURING",
+    				"EMPLOYEES": "EMPLOYEES_2",
+    				"CURRENCY_ID": "USD",
+    				"REVENUE" : 3000000,
+    				"LOGO": { "fileData": document.getElementById('logo') },
+    				"OPENED": "Y",
+    				"ASSIGNED_BY_ID": 1,
+    				"PHONE": [ { "VALUE": "555888", "VALUE_TYPE": "WORK" } ]     
+    			},
+    			params: { "REGISTER_SONET_EVENT": "Y" }        
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info("Company created with ID " + result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.company.add',
+                [
+                    'fields' => [
+                        'TITLE'         => 'LLC Smith',
+                        'COMPANY_TYPE'  => 'CUSTOMER',
+                        'INDUSTRY'      => 'MANUFACTURING',
+                        'EMPLOYEES'     => 'EMPLOYEES_2',
+                        'CURRENCY_ID'   => 'USD',
+                        'REVENUE'       => 3000000,
+                        'LOGO'          => ['fileData' => $_POST['logo']],
+                        'OPENED'        => 'Y',
+                        'ASSIGNED_BY_ID' => 1,
+                        'PHONE'         => [['VALUE' => '555888', 'VALUE_TYPE' => 'WORK']],
+                    ],
+                    'params' => ['REGISTER_SONET_EVENT' => 'Y'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Company created with ID ' . $result;
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating company: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -80,7 +153,7 @@ To find out the required format of the fields, execute the method [crm.company.f
 
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Continue Learning 
 

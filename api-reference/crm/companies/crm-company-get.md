@@ -41,6 +41,57 @@ The method `crm.company.get` returns a [company](./crm-company-add.md) by its id
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.company.get",
+    		{ id: id }
+    	);
+    
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = readline("Enter ID: ");
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.company.get',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting company: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     BX24.callMethod(
         "crm.company.get",
@@ -57,4 +108,4 @@ The method `crm.company.get` returns a [company](./crm-company-add.md) by its id
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}

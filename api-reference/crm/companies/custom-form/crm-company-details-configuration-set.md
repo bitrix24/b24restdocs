@@ -1,8 +1,8 @@
-# Set Parameters for the CRM Company Detail Card `crm.company.details.configuration.set`
+# Set Parameters for the CRM Company Detail Card crm.company.details.configuration.set
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -14,8 +14,8 @@ Some data may be missing here — we will complete it shortly.
 - parameter types not specified
 - parameter requirements not indicated
 - examples missing
-- success response missing
-- error response missing
+- success response not provided
+- error response not provided
 
 {% endnote %}
 
@@ -36,7 +36,7 @@ The method `crm.company.details.configuration.set` sets the settings for company
 - **C** - general settings.
  ||
 || **userId**
-[`unknown`](../../../data-types.md) | User identifier. If not specified, the current user is taken. Needed only when setting personal settings. ||
+[`unknown`](../../../data-types.md) | User identifier. If not specified, the current user is used. Required only when setting personal settings. ||
 || **data**
 [`unknown`](../../../data-types.md) | Array of parameters. ||
 |#
@@ -46,6 +46,116 @@ The method `crm.company.details.configuration.set` sets the settings for company
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.company.details.configuration.set",
+    		{
+    			scope: "P",
+    			userId: 1,
+    			data:
+    			[
+    				{
+    					name: "main",
+    					title: "About the Company",
+    					type: "section",
+    					elements:
+    					[
+    						{ name: "TITLE" },
+    						{ name: "LOGO" },
+    						{ name: "COMPANY_TYPE" },
+    						{ name: "POST" },
+    						{ name: "PHONE" },
+    						{ name: "EMAIL" },
+    						{ name: "CONTACT" }
+    					]
+    				},
+    				{
+    					name: "additional",
+    					title: "Additional Information",
+    					type: "section",
+    					elements:
+    					[
+    						{ name: "INDUSTRY" },
+    						{ name: "OPENED" },
+    						{ name: "ASSIGNED_BY_ID" },
+    						{ name: "COMMENTS" }
+    					]
+    				}
+    			]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.company.details.configuration.set',
+                [
+                    'scope' => 'P',
+                    'userId' => 1,
+                    'data' => [
+                        [
+                            'name' => 'main',
+                            'title' => 'About the Company',
+                            'type' => 'section',
+                            'elements' => [
+                                ['name' => 'TITLE'],
+                                ['name' => 'LOGO'],
+                                ['name' => 'COMPANY_TYPE'],
+                                ['name' => 'POST'],
+                                ['name' => 'PHONE'],
+                                ['name' => 'EMAIL'],
+                                ['name' => 'CONTACT']
+                            ]
+                        ],
+                        [
+                            'name' => 'additional',
+                            'title' => 'Additional Information',
+                            'type' => 'section',
+                            'elements' => [
+                                ['name' => 'INDUSTRY'],
+                                ['name' => 'OPENED'],
+                                ['name' => 'ASSIGNED_BY_ID'],
+                                ['name' => 'COMMENTS']
+                            ]
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting company details configuration: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     //Setting personal settings for the company card for the user with identifier 1.

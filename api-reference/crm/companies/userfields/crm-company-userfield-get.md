@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -43,6 +43,59 @@ The method `crm.company.userfield.get` returns the company user field by its ide
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.company.userfield.get",
+    		{
+    			id: id
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = $_POST['id'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.company.userfield.get',
+                [
+                    'id' => $id
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting company user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     BX24.callMethod(
         "crm.company.userfield.get",
@@ -61,4 +114,4 @@ The method `crm.company.userfield.get` returns the company user field by its ide
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Example notes](../../../../_includes/examples.md) %}
