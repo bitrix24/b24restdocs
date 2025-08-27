@@ -16,13 +16,13 @@ This method retrieves existing currency localizations.
 
 Corresponds to the ISO 4217 standard.
 
-The identifier can be obtained using the [crm.currency.list](../crm-currency-list.md) method.
+The identifier can be obtained using the [crm.currency.list](../crm-currency-list.md) method
  ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -32,7 +32,7 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":"RUB"}' \
+    -d '{"id":"USD"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.currency.localizations.get
     ```
 
@@ -42,17 +42,63 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":"RUB","auth":"**put_access_token_here**"}' \
+    -d '{"id":"USD","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.currency.localizations.get
     ```
 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.currency.localizations.get',
+    		{
+    			id: 'USD'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.currency.localizations.get',
+                [
+                    'id' => 'USD',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting currency localizations: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.currency.localizations.get",
         {
-            id: "RUB"
+            id: "USD"
         },
     )
     .then(
@@ -74,7 +120,7 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -82,7 +128,7 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
     $result = CRest::call(
         'crm.currency.localizations.get',
         [
-            'id' => 'RUB'
+            'id' => 'USD'
         ]
     );
 
@@ -101,17 +147,17 @@ HTTP Status: **200**
 {
     "result": {
         "en": {
-            "FORMAT_STRING": "&#8381;#",
-            "FULL_NAME": "Russian Ruble",
+            "FORMAT_STRING": "$#",
+            "FULL_NAME": "United States Dollar",
             "DEC_POINT": ".",
             "THOUSANDS_SEP": null,
             "DECIMALS": "2",
             "THOUSANDS_VARIANT": "C",
             "HIDE_ZERO": "Y"
         },
-        "ru": {
-            "FORMAT_STRING": "# &#8381;",
-            "FULL_NAME": "Russian Ruble",
+        "de": {
+            "FORMAT_STRING": "# $",
+            "FULL_NAME": "US-Dollar",
             "DEC_POINT": ".",
             "THOUSANDS_SEP": "&nbsp;",
             "DECIMALS": "2",
@@ -159,7 +205,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access rights ||
+|| Empty string | Access denied. | Insufficient access permissions ||
 || Empty string | The parameter id is invalid or not defined. | Empty currency identifier ||
 |#
 

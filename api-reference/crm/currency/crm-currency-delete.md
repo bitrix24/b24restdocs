@@ -16,9 +16,9 @@ This method deletes a currency.
 || **id***
 [`string`](../../data-types.md) | Currency identifier.
 
-Follows the ISO 4217 standard.
+Corresponds to the ISO 4217 standard.
 
-The identifier can be obtained using the [crm.currency.list](./crm-currency-list.md) method.
+The identifier can be obtained using the [crm.currency.list](./crm-currency-list.md) method
  ||
 |#
 
@@ -51,6 +51,56 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.currency.delete",
+    		{
+    			id: 'IDR'
+    		}
+    	);
+    
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.currency.delete',
+                [
+                    'id' => 'IDR',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting currency: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.currency.delete",
         {
@@ -76,7 +126,7 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -97,7 +147,7 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -127,7 +177,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -143,10 +193,10 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || Empty string | Access denied. | Insufficient access permissions ||
-|| Empty string | The "Currency" module not found! Please install the "Currency" module. |  ||
+|| Empty string | Currency module not found! Please install the currency module. |  ||
 || Empty string | Empty string | Currency identifier must consist of 3 characters ||
 || Empty string | Cannot delete the base currency. |  ||
-|| Empty string | Cannot delete the reporting currency. |  ||
+|| Empty string | Cannot delete the report currency. |  ||
 || `ERROR_CODE` | Other errors in the currency modification data |  ||
 |#
 

@@ -10,7 +10,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Example Notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,6 +37,52 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.currency.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.currency.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching currency fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.currency.fields",
         {},
@@ -60,7 +106,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -180,7 +226,7 @@ HTTP Status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Thousand Separator for Output"
+            "title": "Thousands Separator for Output"
         },
         "DECIMALS": {
             "type": "int",

@@ -18,7 +18,7 @@ This method updates localizations for a currency or adds them if the localizatio
 
 Corresponds to the ISO 4217 standard.
 
-The identifier can be obtained using the [crm.currency.list](../crm-currency-list.md) method.
+The identifier can be obtained using the [crm.currency.list](../crm-currency-list.md) method
  ||
 || **localizations***
 [`object`](../../../data-types.md) | Currency localization parameters.
@@ -40,7 +40,7 @@ Existing localizations that are not passed to the method will not be changed.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":"CLF","localizations":{"en":{"FULL_NAME":"Unidad de Fomento","FORMAT_STRING":"CLF#VALUE#","DEC_POINT":".","THOUSANDS_VARIANT":"C","DECIMALS":4},"en":{"FULL_NAME":"Unit of Development","FORMAT_STRING":"#VALUE# CLF","DEC_POINT":".","THOUSANDS_VARIANT":"B","DECIMALS":4}}}' \
+    -d '{"id":"CLF","localizations":{"en":{"FULL_NAME":"Unidad de Fomento","FORMAT_STRING":"CLF#VALUE#","DEC_POINT":".","THOUSANDS_VARIANT":"C","DECIMALS":4},"de":{"FULL_NAME":"Einheit der Entwicklung","FORMAT_STRING":"#VALUE# CLF","DEC_POINT":".","THOUSANDS_VARIANT":"B","DECIMALS":4}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.currency.localizations.set
     ```
 
@@ -50,11 +50,89 @@ Existing localizations that are not passed to the method will not be changed.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":"CLF","localizations":{"en":{"FULL_NAME":"Unidad de Fomento","FORMAT_STRING":"CLF#VALUE#","DEC_POINT":".","THOUSANDS_VARIANT":"C","DECIMALS":4},"en":{"FULL_NAME":"Unit of Development","FORMAT_STRING":"#VALUE# CLF","DEC_POINT":".","THOUSANDS_VARIANT":"B","DECIMALS":4}},"auth":"**put_access_token_here**"}' \
+    -d '{"id":"CLF","localizations":{"en":{"FULL_NAME":"Unidad de Fomento","FORMAT_STRING":"CLF#VALUE#","DEC_POINT":".","THOUSANDS_VARIANT":"C","DECIMALS":4},"de":{"FULL_NAME":"Einheit der Entwicklung","FORMAT_STRING":"#VALUE# CLF","DEC_POINT":".","THOUSANDS_VARIANT":"B","DECIMALS":4}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.currency.localizations.set
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.currency.localizations.set",
+    		{
+    			id: 'CLF',
+    			localizations: {
+    				en: {
+    					FULL_NAME: 'Unidad de Fomento',
+    					FORMAT_STRING: 'CLF#VALUE#',
+    					DEC_POINT: '.',
+    					THOUSANDS_VARIANT: 'C',
+    					DECIMALS: 4,
+    				},
+    				de: {
+    					FULL_NAME: 'Einheit der Entwicklung',
+    					FORMAT_STRING: '#VALUE# CLF',
+    					DEC_POINT: '.',
+    					THOUSANDS_VARIANT: 'B',
+    					DECIMALS: 4,
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.currency.localizations.set',
+                [
+                    'id' => 'CLF',
+                    'localizations' => [
+                        'en' => [
+                            'FULL_NAME'        => 'Unidad de Fomento',
+                            'FORMAT_STRING'    => 'CLF#VALUE#',
+                            'DEC_POINT'        => '.',
+                            'THOUSANDS_VARIANT' => 'C',
+                            'DECIMALS'         => 4,
+                        ],
+                        'de' => [
+                            'FULL_NAME'        => 'Einheit der Entwicklung',
+                            'FORMAT_STRING'    => '#VALUE# CLF',
+                            'DEC_POINT'        => '.',
+                            'THOUSANDS_VARIANT' => 'B',
+                            'DECIMALS'         => 4,
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting currency localizations: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -69,8 +147,8 @@ Existing localizations that are not passed to the method will not be changed.
                     THOUSANDS_VARIANT: 'C',
                     DECIMALS: 4,
                 },
-                en: {
-                    FULL_NAME: 'Unit of Development',
+                de: {
+                    FULL_NAME: 'Einheit der Entwicklung',
                     FORMAT_STRING: '#VALUE# CLF',
                     DEC_POINT: '.',
                     THOUSANDS_VARIANT: 'B',
@@ -98,7 +176,7 @@ Existing localizations that are not passed to the method will not be changed.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -115,8 +193,8 @@ Existing localizations that are not passed to the method will not be changed.
                     'THOUSANDS_VARIANT' => 'C',
                     'DECIMALS' => 4,
                 ],
-                'en' => [
-                    'FULL_NAME' => 'Unit of Development',
+                'de' => [
+                    'FULL_NAME' => 'Einheit der Entwicklung',
                     'FORMAT_STRING' => '#VALUE# CLF',
                     'DEC_POINT' => '.',
                     'THOUSANDS_VARIANT' => 'B',
@@ -135,7 +213,7 @@ Existing localizations that are not passed to the method will not be changed.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -160,7 +238,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Returns:
 - `true` — on success
-- `false` – if the operation failed, but there is no error, or the situation is not considered an error. Possible scenarios:
+- `false` – if the operation could not be completed, but there is no error, or the situation is not considered erroneous. Possible scenarios:
   - currency module is missing
   - an empty object with localizations was passed
   - no localization was added/changed
@@ -171,7 +249,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

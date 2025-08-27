@@ -8,7 +8,7 @@ This method retrieves currency data by its symbolic identifier `id` according to
 
 {% note info %}
 
-Localization parameters (settings that depend on the language) will be returned for the current account language.
+Localization parameters (settings dependent on language) will be returned for the current account language.
 
 {% endnote %}
 
@@ -24,7 +24,7 @@ Localization parameters (settings that depend on the language) will be returned 
 
 Corresponds to the ISO 4217 standard.
 
-Can be obtained using the [crm.currency.list](./crm-currency-list.md) method.
+Can be obtained using the [crm.currency.list](./crm-currency-list.md) method
  ||
 |#
 
@@ -57,6 +57,57 @@ Can be obtained using the [crm.currency.list](./crm-currency-list.md) method.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.currency.get",
+    		{
+    			id: "USD"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.currency.get',
+                [
+                    'id' => 'USD',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.currency.get: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.currency.get",
         {
@@ -82,7 +133,7 @@ Can be obtained using the [crm.currency.list](./crm-currency-list.md) method.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -103,7 +154,7 @@ Can be obtained using the [crm.currency.list](./crm-currency-list.md) method.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -114,10 +165,10 @@ HTTP status: **200**
         "SORT": "100",
         "BASE": "Y",
         "FULL_NAME": "United States Dollar",
-        "LID": "us",
+        "LID": "de",
         "FORMAT_STRING": "# $",
         "DEC_POINT": ".",
-        "THOUSANDS_SEP": ",",
+        "THOUSANDS_SEP": "&nbsp;",
         "DECIMALS": "2",
         "DATE_UPDATE": "2024-01-29T12:28:40+02:00",
         "LANG": {
@@ -128,6 +179,15 @@ HTTP status: **200**
                 "THOUSANDS_SEP": null,
                 "DECIMALS": "2",
                 "THOUSANDS_VARIANT": "C",
+                "HIDE_ZERO": "Y"
+            },
+            "de": {
+                "FORMAT_STRING": "# $",
+                "FULL_NAME": "United States Dollar",
+                "DEC_POINT": ".",
+                "THOUSANDS_SEP": "&nbsp;",
+                "DECIMALS": "2",
+                "THOUSANDS_VARIANT": "B",
                 "HIDE_ZERO": "Y"
             }
         }
@@ -150,14 +210,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`crm_currency`](../data-types.md#crm_currency) | Object containing currency data ||
+[`crm_currency`](../data-types.md#crm_currency) | Object with currency data ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

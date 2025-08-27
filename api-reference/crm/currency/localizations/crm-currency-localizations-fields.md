@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user with access to CRM settings
 
-This method retrieves the available fields for currency localization, which are settings dependent on the language.
+This method retrieves the available currency localization fields, which are settings dependent on the language.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,6 +37,52 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.currency.localizations.fields",
+    		{}
+    	);
+    
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.currency.localizations.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.currency.localizations.fields",
         {},
@@ -60,7 +106,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -169,7 +215,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | An object containing a list of available fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field_N` is the identifier of the [crm_currency_localization](../../data-types.md#crm_currency_localization) object, and `value` is an object of type [crm_rest_field_description](../../data-types.md#crm_rest_field_description). ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

@@ -1,10 +1,10 @@
-# Delete Currency Localizations crm.currency.localizations.delete
+# Delete currency localizations crm.currency.localizations.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user with access to modify CRM settings
 
-This method removes currency localizations for the specified languages.
+This method deletes currency localizations for the specified languages.
 
 ## Method Parameters
 
@@ -21,7 +21,7 @@ Corresponds to the ISO 4217 standard.
 The identifier can be obtained using the [crm.currency.list](../crm-currency-list.md) method.
  ||
 || **lids***
-[`array`](../../../data-types.md) | Array of language identifiers for which localizations need to be removed ||
+[`array`](../../../data-types.md) | Array of language identifiers for which localizations need to be deleted ||
 |#
 
 ## Code Examples
@@ -53,6 +53,60 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.currency.localizations.delete",
+    		{
+    			id: 'CLF',
+    			lids: [
+    				'en',
+    				'de'
+    			]
+    		}
+    	);
+    
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.currency.localizations.delete',
+                [
+                    'id'   => 'CLF',
+                    'lids' => [
+                        'en',
+                        'de'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting currency localizations: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.currency.localizations.delete",
         {
@@ -82,7 +136,7 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -103,7 +157,7 @@ The identifier can be obtained using the [crm.currency.list](../crm-currency-lis
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -128,10 +182,10 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Returns:
 - `true` — on success
-- `false` — if the operation could not be completed, but there is no error, or the situation is not considered an error. Possible reasons:
+- `false` — if the operation could not be completed, but there is no error, or the situation is not considered erroneous. Possible reasons:
   - currency module is missing
   - an empty array was passed in the `lids` parameter
-  - no localization was removed
+  - no localization was deleted
  ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
@@ -139,7 +193,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -154,7 +208,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access permissions ||
+|| Empty string | Access denied. | Insufficient access rights ||
 || Empty string | The parameter id is invalid or not defined | Empty currency identifier ||
 |#
 
