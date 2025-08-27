@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-The method `catalog.section.update` updates a section of the catalog.
+The method `catalog.section.update` modifies a section of the catalog.
 
 ## Method Parameters
 
@@ -101,6 +101,64 @@ Can be used to synchronize the current catalog section with a similar position i
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.section.update', 
+    		{
+    			id: 32,
+    			fields: {
+    				iblockId: 14,
+    				name: 'Children\'s Toys',
+    				description: "<H1>Children's Toys</H1> <p>Products for kids</p>",
+    				descriptionType: "html"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.section.update',
+                [
+                    'id' => 32,
+                    'fields' => [
+                        'iblockId'        => 14,
+                        'name'            => 'Children\'s Toys',
+                        'description'     => "<H1>Children's Toys</H1> <p>Products for kids</p>",
+                        'descriptionType' => "html",
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating catalog section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.section.update', 
         {
@@ -122,7 +180,7 @@ Can be used to synchronize the current catalog section with a similar position i
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -214,9 +272,9 @@ HTTP status: **400**
 || `200700300030` | No catalog section exists with such an identifier ||
 || `200700300040` | Violation of the uniqueness of the `code` field ||
 || `200700300050` | No information block exists with the specified `iblockId` ||
-|| `100` | The `id` parameter is not specified ||
-|| `100` | The `fields` parameter is not specified or is empty ||
-|| `0` | Required fields of the `fields` structure are not provided ||
+|| `100` | Parameter `id` not specified ||
+|| `100` | Parameter `fields` not specified or empty ||
+|| `0` | Required fields of the `fields` structure not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

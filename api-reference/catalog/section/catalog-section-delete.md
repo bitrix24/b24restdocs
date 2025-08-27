@@ -46,6 +46,63 @@ The method `catalog.section.delete` removes a section from the catalog.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'catalog.section.delete',
+            {
+                id: 31
+            }
+        );
+        
+        const result = response.getData().result;
+        if (result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.log(result);
+        }
+    }
+    catch(error)
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.section.delete',
+                [
+                    'id' => 31,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting catalog section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.section.delete', 
         { 
@@ -61,7 +118,7 @@ The method `catalog.section.delete` removes a section from the catalog.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -82,7 +139,7 @@ The method `catalog.section.delete` removes a section from the catalog.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -112,7 +169,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -128,7 +185,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `200040300050` | Insufficient permissions to delete the catalog section ||
-|| `200040300020` | Errors during deletion (e.g., fatal errors) ||
+|| `200040300020` | Errors during deletion (e.g., fatal) ||
 || `200700300030` | No catalog section exists with that identifier ||
 || `100` | Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||

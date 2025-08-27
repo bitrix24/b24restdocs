@@ -1,10 +1,10 @@
-# Add a section to the trade catalog catalog.section.add
+# Add a Section to the Catalog catalog.section.add
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `catalog.section.add` adds a section to the trade catalog.
+The method `catalog.section.add` adds a section to the catalog.
 
 ## Method Parameters
 
@@ -112,6 +112,72 @@ Default is `Y` ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.section.add', 
+    		{
+    			fields: {
+    				name: 'Children\'s Toys',
+    				iblockId: 14,
+    				iblockSectionId: 13,
+    				sort: '100',
+    				active: 'Y',
+    				code: 'toys',
+    				xmlId: 'myXmlId',
+    				description: "Products for children - toys",
+    				descriptionType: "text"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.section.add',
+                [
+                    'fields' => [
+                        'name'            => 'Children\'s Toys',
+                        'iblockId'        => 14,
+                        'iblockSectionId' => 13,
+                        'sort'            => '100',
+                        'active'          => 'Y',
+                        'code'            => 'toys',
+                        'xmlId'           => 'myXmlId',
+                        'description'     => "Products for children - toys",
+                        'descriptionType' => "text",
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding catalog section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.section.add', 
         {
@@ -137,7 +203,7 @@ Default is `Y` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -168,7 +234,7 @@ Default is `Y` ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -208,12 +274,12 @@ HTTP status: **200**
 || **section**
 [`catalog_section`](../data-types.md#catalog_section) | Object containing information about the added catalog section ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -228,7 +294,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300040` | No access to edit ||
+|| `200040300040` | No access to editing ||
 || `200700300000` | Errors while adding, for example, the identifier of the information block of the created section does not match the identifier of the parent section ||
 || `200700300040` | Violation of the uniqueness of the `code` field ||
 || `200700300050` | Information block with the specified `iblockId` does not exist ||

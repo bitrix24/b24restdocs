@@ -46,6 +46,56 @@ The method `catalog.section.get` returns the field values of the trade catalog s
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.section.get',
+    		{
+    			id: 31
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.section.get',
+                [
+                    'id' => 31
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting catalog section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.section.get',
         {
@@ -61,7 +111,7 @@ The method `catalog.section.get` returns the field values of the trade catalog s
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -143,8 +193,8 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `200040300040` | No access to read ||
-|| `200700300030` | The catalog section with such an identifier does not exist ||
-|| `100` | The parameter `id` is not specified ||
+|| `200700300030` | Catalog section with this identifier does not exist ||
+|| `100` | Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
