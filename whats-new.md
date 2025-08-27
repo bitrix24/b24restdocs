@@ -2,6 +2,12 @@
 
 ## 2025
 
+### August 27, 2025
+
+- Updated the main page of the [Client in the Waitlist](./api-reference/booking/waitlist/client/index.md) section in Booking. Added introductory information and an overview of methods and relationships
+- Updated documentation for the methods of working with task results [tasks.task.result.*](./api-reference/tasks/result/index.md) in Tasks
+- Added a new tutorial [How to get a list of activities from deals](./tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)
+
 ### August 20, 2025
 
 - Added methods for working with polls and votes [vote*](./api-reference/vote/index.md)

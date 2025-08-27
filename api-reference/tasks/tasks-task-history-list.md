@@ -170,6 +170,4 @@ Output the history of a specific task without using filters:
 
 {% endlist %}
 
-![Result](_images/tasks_task_history_list-2.png =865x)
-
 {% include [Examples Note](../../_includes/examples.md) %}

@@ -185,7 +185,7 @@ The keys of the object are the parameter codes specified when adding the handler
 
 The values of the object are the parameter values:
 - either filled in manually by the user when creating the payment system
-- or specified when adding the payment system via [sale.paysystem.add](./sale-paysystem-add.md)
+- or specified when adding the payment system via [sale.paysystem.add](./sale-pay-system-add.md)
 ||
 || **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||

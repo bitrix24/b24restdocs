@@ -36,8 +36,6 @@ The method `im.notify.confirm` interacts with notification buttons.
 
 For example, consider the notification:
 
-![Example buttons](./_images/buttons_example.png)
-
 - the **Accept** button has the value `'Y'`
 - the **Decline** button has the value `'N'`
 
