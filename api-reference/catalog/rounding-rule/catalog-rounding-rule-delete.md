@@ -46,11 +46,68 @@ This method deletes a price rounding rule.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'catalog.roundingRule.delete',
+            {
+                id: 1
+            }
+        );
+        
+        const result = response.getData().result;
+        if (result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.log(result);
+        }
+    }
+    catch(error)
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.roundingRule.delete',
+                [
+                    'id' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting rounding rule: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.roundingRule.delete', 
         { 
-    id: 1
-    }, 
+            id: 1
+        }, 
         function(result)
         {
             if(result.error())
@@ -61,7 +118,7 @@ This method deletes a price rounding rule.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -82,7 +139,7 @@ This method deletes a price rounding rule.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -112,12 +169,12 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
     "error": 200040300020,
-    "error_description": "Access Denied",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -129,9 +186,9 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `200040300020` | Insufficient permissions to delete
 ||
-|| `200900000000` | No price rounding rule exists with that identifier
+|| `200900000000` | Price rounding rule with this identifier does not exist
 ||
-|| `100` | Parameter `id` is missing
+|| `100` | Parameter `id` not specified
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

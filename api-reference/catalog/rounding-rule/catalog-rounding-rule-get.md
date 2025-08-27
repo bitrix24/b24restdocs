@@ -1,14 +1,14 @@
-# Get Values of the Price Rounding Rule catalog.roundingRule.get
+# Get Values of the Price Rounding Rule Fields catalog.roundingRule.get
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns information about the price rounding rule by its identifier.
+The method returns information about the price rounding rule by its identifier.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method returns information about the price rounding rule by its identifier.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,56 @@ This method returns information about the price rounding rule by its identifier.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.roundingRule.get',
+    		{
+    			id: 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.roundingRule.get',
+                [
+                    'id' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting rounding rule: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.roundingRule.get',
         {
@@ -61,7 +111,7 @@ This method returns information about the price rounding rule by its identifier.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -121,7 +171,7 @@ HTTP Status: **200**
 || **roundingRule**
 [`catalog_rounding_rule`](../data-types.md#catalog_rounding_rule) | Object containing information about the price rounding rule with the specified identifier ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -141,11 +191,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read
+|| `200040300010` | Insufficient rights to read
 ||
 || `200900000000` | No price rounding rule exists with this identifier 
 ||
-|| `100` | The `id` parameter is missing
+|| `100` | The `id` parameter is not specified
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

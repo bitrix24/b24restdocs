@@ -69,6 +69,68 @@ This method updates the price rounding rule.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.roundingRule.update', 
+    		{
+    			id: 1,
+    			fields: {
+    				catalogGroupId: 14,
+    				price: 1500,
+    				roundType: 2,
+    				roundPrecision: 10,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.roundingRule.update',
+                [
+                    'id' => 1,
+                    'fields' => [
+                        'catalogGroupId' => 14,
+                        'price' => 1500,
+                        'roundType' => 2,
+                        'roundPrecision' => 10,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating rounding rule: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.roundingRule.update', 
         {
@@ -90,7 +152,7 @@ This method updates the price rounding rule.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -154,7 +216,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **roundingRule**
-[`catalog_rounding_rule`](../data-types.md#catalog_rounding_rule) | Object with information about the updated price rounding rule ||
+[`catalog_rounding_rule`](../data-types.md#catalog_rounding_rule) | Object containing information about the updated price rounding rule ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -178,7 +240,7 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `200040300020` | Insufficient permissions to edit
 ||
-|| `200900000000` | Price rounding rule with this identifier does not exist
+|| `200900000000` | No price rounding rule exists with this identifier
 ||
 || `100` | Parameter `id` not specified
 ||
