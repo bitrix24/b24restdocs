@@ -1,4 +1,4 @@
-# Get enumeration items "Activity Types" crm.enum.activitytype
+# Get enumeration items "Types of activities" crm.enum.activitytype
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 {% note warning "Method development has been discontinued" %}
 
-The method `crm.enum.activitytype` continues to function, but it is related to deprecated methods [crm.activity.*](../../../timeline/activities/index.md). A more current alternative is the methods [crm.activity.todo.*](../../../timeline/activities/todo/index.md). 
+The method `crm.enum.activitytype` continues to function, but it is related to deprecated methods [crm.activity.*](../../../timeline/activities/index.md). A more current alternative is the methods [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
 
 {% endnote %}
 
@@ -21,21 +21,6 @@ No parameters.
 {% include [Examples note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.enum.activitytype",
-        {},
-        function(result) {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -57,7 +42,69 @@ No parameters.
          https://**put_your_bitrix24_address**/rest/crm.enum.activitytype
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.enum.activitytype",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.enum.activitytype',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.enum.activitytype: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.enum.activitytype",
+        {},
+        function(result) {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -119,7 +166,7 @@ HTTP status: **200**
     },
     {
      "ID": 6,
-     "NAME": "User Action",
+     "NAME": "Custom Action",
      "SYMBOL_CODE": null,
      "SYMBOL_CODE_SHORT": null
     }

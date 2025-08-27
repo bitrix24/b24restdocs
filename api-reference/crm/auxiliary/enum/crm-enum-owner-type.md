@@ -4,11 +4,11 @@
 >
 > Who can execute the method: any user
 
-The method `crm.enum.ownertype` returns the identifiers of CRM object types and smart processes. Use the `ID` of the object type as the value for the `entityTypeId` parameter in the methods [crm.item.*](../../universal/index.md), [crm.activity.*](../../timeline/activities/index.md).
+The method `crm.enum.ownertype` returns the identifiers of CRM object types and SPA. Use the `ID` of the object type as the value for the `entityTypeId` parameter in the methods [crm.item.*](../../universal/index.md), [crm.activity.*](../../timeline/activities/index.md).
 
 {% note info " " %}
 
-The identifiers for smart processes in each Bitrix24 are unique and may differ from those provided in the example.
+The identifiers of SPA in each Bitrix24 are unique and may differ from those provided in the example.
 
 {% endnote %}
 
@@ -21,21 +21,6 @@ No parameters.
 {% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.enum.ownertype",
-        {},
-        function(result) {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -57,7 +42,76 @@ No parameters.
          https://**put_your_bitrix24_address**/rest/crm.enum.ownertype
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.enum.ownertype',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.enum.ownertype',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.enum.ownertype: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.enum.ownertype",
+        {},
+        function(result) {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -173,7 +227,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md) | Array of owner types [(detailed description)](#result) ||
+[`array`](../../../data-types.md) | Array with owner types [(detailed description)](#result) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#

@@ -8,7 +8,7 @@ The method `crm.enum.getorderownertypes` returns a list of object types to which
 
 {% note info " " %}
 
-Currently, an [order binding](../../universal/order-entity/crm-order-entity-add.md) can only be performed to a [deal](../../deals/index.md).
+Currently, an [order binding](../../universal/order-entity/crm-order-entity-add.md) can only be done to a [deal](../../deals/index.md).
 
 {% endnote %}
 
@@ -18,24 +18,9 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.enum.getorderownertypes",
-        {},
-        function(result) {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -57,7 +42,76 @@ No parameters.
          https://**put_your_bitrix24_address**/rest/crm.enum.getorderownertypes
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.enum.getorderownertypes",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.enum.getorderownertypes',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching order owner types: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.enum.getorderownertypes",
+        {},
+        function(result) {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -76,7 +130,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {

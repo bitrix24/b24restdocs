@@ -6,11 +6,11 @@
 
 {% note warning "Method development has been discontinued" %}
 
-The method `crm.enum.activitydirection` continues to function, but it is considered deprecated in favor of the more current methods [crm.activity.*](../../../timeline/activities/index.md). A more relevant alternative is the methods [crm.activity.todo.*](../../../timeline/activities/todo/index.md). 
+The method `crm.enum.activitydirection` continues to function, but it is considered deprecated in favor of the more current methods [crm.activity.*](../../../timeline/activities/index.md). A more relevant alternative is the methods [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
 
 {% endnote %}
 
-The method `crm.enum.activitydirection` returns activity directions for the `DIRECTION` field of [deals, emails, and calls](../../../timeline/activities/index.md). 
+The method `crm.enum.activitydirection` returns activity directions for the `DIRECTION` field of [deals, e-mails, and calls](../../../timeline/activities/index.md).
 
 ## Method Parameters
 
@@ -21,21 +21,6 @@ No parameters.
 {% include [Examples Note](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.enum.activitydirection",
-        {},
-        function(result) {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -57,7 +42,69 @@ No parameters.
          https://**put_your_bitrix24_address**/rest/crm.enum.activitydirection
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.enum.activitydirection",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.enum.activitydirection',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.enum.activitydirection: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.enum.activitydirection",
+        {},
+        function(result) {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -119,7 +166,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | Array with activity directions [(detailed description)](#result) ||
+[`array`](../../../../data-types.md) | Array of activity directions [(detailed description)](#result) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#

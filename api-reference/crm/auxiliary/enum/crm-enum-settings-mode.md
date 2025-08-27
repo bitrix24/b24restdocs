@@ -16,17 +16,6 @@ No parameters.
 
 {% list tabs %}
 
-- JS
-
-    ```js
-    BX24.callMethod("crm.enum.settings.mode", result => {
-        if (result.error())
-            console.error(result.error());
-        else
-            console.dir(result.data());
-    });
-    ```
-
 - cURL (Webhook)
 
     ```bash
@@ -47,7 +36,61 @@ No parameters.
          https://**put_your_bitrix24_address**/rest/crm.enum.settings.mode
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod("crm.enum.settings.mode");
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.enum.settings.mode'
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.enum.settings.mode: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod("crm.enum.settings.mode", result => {
+        if (result.error())
+            console.error(result.error());
+        else
+            console.dir(result.data());
+    });
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -66,7 +109,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -89,8 +132,8 @@ HTTP status: **200**
     "finish": 1750153429.650327,
     "duration": 0.13342499732971191,
     "processing": 0.0002980232238769531,
-    "date_start": "2025-06-17T12:43:49+02:00",
-    "date_finish": "2025-06-17T12:43:49+02:00",
+    "date_start": "2025-06-17T12:43:49+03:00",
+    "date_finish": "2025-06-17T12:43:49+03:00",
     "operating_reset_at": 1750154029,
     "operating": 0
 }
