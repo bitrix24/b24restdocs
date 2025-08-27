@@ -1,14 +1,14 @@
-# Update the Translation of Price Type Name catalog.priceTypeLang.update
+# Update the translation of the price type name catalog.priceTypeLang.update
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method updates the translation of the price type name based on its identifier.
+This method updates the translation of the price type name by its identifier.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method updates the translation of the price type name based on its identifi
 [`object`](../../../data-types.md) | Field values for updating the price type name translation ||
 |#
 
-### Parameter fields
+### Fields Parameter
 
 #|
 || **Name**
@@ -27,14 +27,14 @@ This method updates the translation of the price type name based on its identifi
 || **catalogGroupId**
 [`catalog_price_type.id`](../../data-types.md#catalog_price_type) | Identifier of the price type.
 
-You can obtain the identifiers of price types using the method [catalog.priceType.list](../catalog-price-type-list.md)
+You can obtain the identifiers of price types using the [catalog.priceType.list](../catalog-price-type-list.md) method.
 ||
 || **name**
 [`string`](../../../data-types.md) | Translation of the price type name ||
 || **lang**
 [`catalog_language.lid`](../../data-types.md#catalog_language) | Language identifier.
 
-You can obtain language identifiers using the method [catalog.priceTypeLang.getLanguages](./catalog-price-type-lang-get-languages.md)
+You can obtain the identifiers of languages using the [catalog.priceTypeLang.getLanguages](./catalog-price-type-lang-get-languages.md) method.
 ||
 |#
 
@@ -42,7 +42,7 @@ At least one field must be specified in the `fields` parameter.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -69,6 +69,62 @@ At least one field must be specified in the `fields` parameter.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.priceTypeLang.update', 
+    		{
+    			id: 6,
+    			fields: {
+    				name: "Base Price",
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.priceTypeLang.update',
+                [
+                    'id' => 6,
+                    'fields' => [
+                        'name' => "Base Price",
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating price type language: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.priceTypeLang.update', 
         {
@@ -87,7 +143,7 @@ At least one field must be specified in the `fields` parameter.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -111,7 +167,7 @@ At least one field must be specified in the `fields` parameter.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -119,7 +175,7 @@ HTTP Status: **200**
         "priceTypeLang": {
             "catalogGroupId": 1,
             "id": 6,
-            "lang": "de",
+            "lang": "kz",
             "name": "Base Price"
         }
     },
@@ -150,7 +206,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -159,7 +215,7 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
@@ -167,11 +223,11 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200040300020` | Insufficient permissions to edit
 || 
-|| `201200000000` | No translation of the price type name with such an identifier exists
+|| `201200000000` | No translation of the price type name with such identifier exists
 || 
-|| `201200000010` | No language with the specified identifier exists
+|| `201200000010` | Language with the specified identifier does not exist
 || 
-|| `201000000000` | No price type with the specified identifier exists
+|| `201000000000` | Price type with the specified identifier does not exist
 || 
 || `400` | Translation for the specified pair: price type and language identifier already exists
 || 
@@ -179,13 +235,13 @@ HTTP Status: **400**
 || 
 || `100` | Parameter `fields` not specified or empty
 || 
-|| `0` | Required fields in the `fields` structure not provided
+|| `0` | Required fields of the `fields` structure not provided
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

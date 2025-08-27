@@ -1,10 +1,10 @@
-# Get Values of the Price Type Name Translation catalog.priceTypeLang.get
+# Get the values of the fields for the price type name translation catalog.priceTypeLang.get
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns information about the translation of the price type name by its identifier.
+The method returns information about the translation of the price type name by its identifier.
 
 ## Method Parameters
 
@@ -46,6 +46,56 @@ This method returns information about the translation of the price type name by 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.priceTypeLang.get',
+    		{
+    			id: 2
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.priceTypeLang.get',
+                [
+                    'id' => 2
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting price type language: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.priceTypeLang.get',
         {
@@ -61,7 +111,7 @@ This method returns information about the translation of the price type name by 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -114,7 +164,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **priceTypeLang**
-[`catalog_price_type_lang`](../../data-types.md#catalog_price_type_lang) | Object containing information about the translation of the price type name with the specified identifier ||
+[`catalog_price_type_lang`](../../data-types.md#catalog_price_type_lang) | Object with information about the translation of the price type name with the specified identifier ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -136,11 +186,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read
+|| `200040300010` | Insufficient rights to read
 || 
-|| `201200000000` | No translation of the price type name exists with this identifier
+|| `201200000000` | No translation of the price type name with such an identifier exists
 || 
-|| `100` | Parameter `id` is missing
+|| `100` | The parameter `id` is not specified
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

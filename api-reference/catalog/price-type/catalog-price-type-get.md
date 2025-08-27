@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method returns information about the price type by its identifier.
+The method returns information about the price type by its identifier.
 
 ## Method Parameters
 
@@ -46,6 +46,56 @@ This method returns information about the price type by its identifier.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.priceType.get',
+    		{
+    			id: 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.priceType.get',
+                [
+                    'id' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting price type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.priceType.get',
         {
@@ -61,7 +111,7 @@ This method returns information about the price type by its identifier.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -119,7 +169,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **priceType**
-[`catalog_price_type`](../data-types.md#catalog_price_type) | Object with information about the price type with the specified identifier ||
+[`catalog_price_type`](../data-types.md#catalog_price_type) | Object containing information about the price type with the specified identifier ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -145,7 +195,7 @@ HTTP Status: **400**
 ||
 || `201000000000` | Price type with such identifier does not exist 
 ||
-|| `100` | Parameter `id` is not specified
+|| `100` | Parameter `id` not specified
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

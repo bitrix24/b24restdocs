@@ -1,8 +1,8 @@
-# Delete Price Type Binding from Customer Group catalog.priceTypeGroup.delete
+# Delete price type binding to customer group catalog.priceTypeGroup.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ Some data may be missing — we will complete it shortly.
 catalog.priceTypeGroup.delete(id)
 ```
 
-This method removes the product price from the collection of product prices. If the operation is successful, it returns `true` in the response body.
+This method removes the product price from the collection of product prices. If the operation is successful, `true` is returned in the response body.
 
 ## Parameters
 
@@ -45,6 +45,63 @@ This method removes the product price from the collection of product prices. If 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.priceTypeGroup.delete',
+    		{
+    			id: 84
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error().ex);
+    	}
+    	else
+    	{
+    		console.log(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.priceTypeGroup.delete',
+                [
+                    'id' => 84
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting price type group: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

@@ -17,7 +17,7 @@ This method adds a new price type.
 [`object`](../../data-types.md)| Field values for creating a new price type ([detailed description](#fields)) ||
 |#
 
-### Parameter fields {#fields}
+### Field Parameter {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -27,7 +27,7 @@ This method adds a new price type.
 || **name***
 [`string`](../../data-types.md) | Code of the price type.
 
-To ensure stable operation of internal services, the price type code must be specified using only English characters.
+To ensure the stable operation of internal services, the price type code must be specified using only English characters.
 ||
 || **base**
 [`string`](../../data-types.md) | Indicates whether the price type is base. Possible values:
@@ -79,6 +79,66 @@ Can be used to synchronize the current price type with a similar position in an 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.priceType.add', 
+    		{
+    			fields: {
+    				name: "Wholesale price",
+    				base: "N",
+    				sort: 10,
+    				xmlId: "wholesale"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.priceType.add',
+                [
+                    'fields' => [
+                        'name'  => "Wholesale price",
+                        'base'  => "N",
+                        'sort'  => 10,
+                        'xmlId' => "wholesale",
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding price type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.priceType.add', 
         {
@@ -98,7 +158,7 @@ Can be used to synchronize the current price type with a similar position in an 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -161,9 +221,9 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **priceType**
-[`catalog_price_type`](../data-types.md#catalog_price_type) | Object containing information about the created price type ||
+[`catalog_price_type`](../data-types.md#catalog_price_type) | Object with information about the created price type ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

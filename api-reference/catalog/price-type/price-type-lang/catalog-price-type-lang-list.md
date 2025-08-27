@@ -1,4 +1,4 @@
-# Get a List of Translations for Price Type Names by Filter catalog.priceTypeLang.list
+# Get a list of translations for price type names by the filter catalog.priceTypeLang.list
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
@@ -13,16 +13,16 @@ The method returns a list of translations for price type names.
 `type` | **Description** ||
 || **select**
 [`array`](../../../data-types.md) | 
-An array of fields to select (see fields of the [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang) object).
+An array with the list of fields to select (see the fields of the object [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang)).
 
 If the array is not provided or an empty array is passed, all available fields of the price type name translations will be selected.
 ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering the selected price type name translations in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang) object.
+Possible values for `field` correspond to the fields of the object [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang). 
 
-An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
+An additional prefix can be set for the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -48,14 +48,14 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
 [`object`](../../../data-types.md) | 
 An object for sorting the selected price type name translations in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang) object.
+Possible values for `field` correspond to the fields of the object [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang).
 
 Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../../../data-types.md) | This parameter is used to control pagination.
 
 The page size of results is always static — 50 records.
 
@@ -63,13 +63,13 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page
+`start = (N-1) * 50`, where `N` — the desired page number
 ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -96,6 +96,87 @@ The formula for calculating the `start` parameter value:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'catalog.priceTypeLang.list',
+        {
+          select: ['name', 'lang'],
+          order: { 'lang': 'ASC' }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('catalog.priceTypeLang.list', {
+        select: ['name', 'lang'],
+        order: { 'lang': 'ASC' }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('catalog.priceTypeLang.list', {
+        select: ['name', 'lang'],
+        order: { 'lang': 'ASC' }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.priceTypeLang.list',
+                [
+                    'select' => [
+                        'name',
+                        'lang',
+                    ],
+                    'order' => [
+                        'lang' => 'ASC',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.priceTypeLang.list',
         {
@@ -118,7 +199,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -214,7 +295,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read
+|| `200040300010` | Insufficient rights to read
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

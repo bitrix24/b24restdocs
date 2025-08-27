@@ -16,7 +16,7 @@ This method modifies the values of the price type fields.
 || **id***
 [`catalog_price_type.id`](../data-types.md#catalog_price_type) | Identifier of the price type ||
 || **fields***
-[`object`](../../data-types.md) | Field values for updating the price type ([detailed description](#fields)) ||
+[`object`](../../data-types.md) | Field values to update the price type ([detailed description](#fields)) ||
 |#
 
 ### Parameter fields {#fields}
@@ -29,7 +29,7 @@ This method modifies the values of the price type fields.
 || **name***
 [`string`](../../data-types.md) | Code of the price type ||
 || **base**
-[`string`](../../data-types.md) | Indicates if the price type is basic. Possible values:
+[`string`](../../data-types.md) | Indicates if the price type is base. Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -71,6 +71,68 @@ Can be used to synchronize the current price type with a similar position in an 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.priceType.update', 
+    		{
+    			id: 2,
+    			fields: {
+    				name: "Base wholesale price",
+    				base: "Y",
+    				sort: 1,
+    				xmlId: "basewholesale"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.priceType.update',
+                [
+                    'id' => 2,
+                    'fields' => [
+                        'name'  => "Base wholesale price",
+                        'base'  => "Y",
+                        'sort'  => 1,
+                        'xmlId' => "basewholesale",
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating price type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.priceType.update', 
         {
@@ -92,7 +154,7 @@ Can be used to synchronize the current price type with a similar position in an 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

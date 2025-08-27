@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,8 +10,8 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameters are not specified
-- no response in case of error 
+- required parameter specifications are missing
+- no error response provided
 - no examples in other languages
   
 {% endnote %}
@@ -26,7 +26,7 @@ Some data may be missing here — we will complete it shortly.
 catalog.price.modify(fields)
 ```
 
-This method is used to modify elements of the product price collection.
+Method to modify elements of the product price collection.
 
 {% note info "" %}
 
@@ -53,6 +53,108 @@ If the operation is successful, a [price resource](resource.md) is returned in t
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.price.modify',
+    		{
+    			fields: {
+    				product: {
+    					id: 8,
+    					prices: [
+    						{
+    							catalogGroupId: 1,
+    							currency: 'USD',
+    							price: 2001,
+    							quantityFrom: 1,
+    							quantityTo: 2
+    						},
+    						{
+    							catalogGroupId: 1,
+    							currency: 'USD',
+    							price: 2001,                
+    							quantityFrom: 3,
+    							quantityTo: 4
+    						},
+    						{
+    							catalogGroupId: 1,
+    							currency: 'USD',
+    							price: 2001,                
+    							quantityFrom: 5,
+    							id: 122
+    						},
+    					]
+    				},
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.price.modify',
+                [
+                    'fields' => [
+                        'product' => [
+                            'id'     => 8,
+                            'prices' => [
+                                [
+                                    'catalogGroupId' => 1,
+                                    'currency'       => 'USD',
+                                    'price'          => 2001,
+                                    'quantityFrom'   => 1,
+                                    'quantityTo'     => 2
+                                ],
+                                [
+                                    'catalogGroupId' => 1,
+                                    'currency'       => 'USD',
+                                    'price'          => 2001,
+                                    'quantityFrom'   => 3,
+                                    'quantityTo'     => 4
+                                ],
+                                [
+                                    'catalogGroupId' => 1,
+                                    'currency'       => 'USD',
+                                    'price'          => 2001,
+                                    'quantityFrom'   => 5,
+                                    'id'             => 122
+                                ],
+                            ]
+                        ],
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error modifying price: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -99,4 +201,4 @@ If the operation is successful, a [price resource](resource.md) is returned in t
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}

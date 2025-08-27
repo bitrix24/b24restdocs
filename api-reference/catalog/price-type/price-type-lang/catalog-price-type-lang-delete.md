@@ -1,4 +1,4 @@
-# Delete Price Type Name Translation catalog.priceTypeLang.delete
+# Delete Translation of Price Type Name catalog.priceTypeLang.delete
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
@@ -30,7 +30,7 @@ This method deletes the translation of the price type name by its identifier.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":3}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.priceTypeLang.delete
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.priceTypeLang.delete
     ```
 
 - cURL (OAuth)
@@ -44,6 +44,56 @@ This method deletes the translation of the price type name by its identifier.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.priceTypeLang.delete',
+    		{
+    			id: 3
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.priceTypeLang.delete',
+                [
+                    'id' => 3,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting price type language: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -61,7 +111,7 @@ This method deletes the translation of the price type name by its identifier.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -131,7 +181,7 @@ HTTP Status: **400**
 || 
 || `201200000000` | No translation of the price type name with such an identifier exists
 || 
-|| `100` | The `id` parameter is missing
+|| `100` | Parameter `id` is missing
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

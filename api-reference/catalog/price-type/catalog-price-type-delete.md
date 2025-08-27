@@ -16,7 +16,7 @@ This method deletes a price type.
 || **id***
 [`catalog_price_type.id`](../data-types.md#catalog_price_type) | Identifier of the price type.
 
-The base price type cannot be deleted.
+The base price type cannot be deleted
 ||
 |#
 
@@ -49,11 +49,61 @@ The base price type cannot be deleted.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'catalog.priceType.delete',
+            {
+                id: 2
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch(error)
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.priceType.delete',
+                [
+                    'id' => 2
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting price type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.priceType.delete', 
         { 
-    id: 2
-    }, 
+            id: 2
+        }, 
         function(result)
         {
             if(result.error())
@@ -64,7 +114,7 @@ The base price type cannot be deleted.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -120,7 +170,7 @@ HTTP status: **400**
 ```json
 {
     "error": 200040300020,
-    "error_description": "Access Denied",
+    "error_description": "Access Denied"
 }
 ```
 
