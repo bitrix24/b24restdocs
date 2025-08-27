@@ -46,11 +46,68 @@ This method deletes a VAT rate.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'catalog.vat.delete',
+            {
+                id: 7
+            }
+        );
+        
+        const result = response.getData().result;
+        if (result.error())
+        {
+            console.error(result.error());
+        }
+        else
+        {
+            console.log(result);
+        }
+    }
+    catch(error)
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.vat.delete',
+                [
+                    'id' => 7
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting VAT: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.vat.delete', 
         { 
-    id: 7
-    }, 
+            id: 7
+        }, 
         function(result)
         {
             if(result.error())
@@ -61,7 +118,7 @@ This method deletes a VAT rate.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -117,7 +174,7 @@ HTTP status: **400**
 ```json
 {
     "error": 200040300020,
-    "error_description": "Access Denied",
+    "error_description": "Access Denied"
 }
 ```
 

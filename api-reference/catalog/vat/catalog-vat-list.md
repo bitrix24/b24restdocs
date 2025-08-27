@@ -21,7 +21,7 @@ If the array is not provided or an empty array is passed, all available fields o
 
 Possible values for `field` correspond to the fields of the [catalog_vat](../data-types.md#catalog_vat) object.
 
-An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -55,7 +55,7 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start** 
-[`integer`](../../data-types.md)| This parameter is used to manage pagination.
+[`integer`](../../data-types.md)| This parameter is used for managing pagination.
 
 The page size of results is always static — 50 records.
 
@@ -63,7 +63,7 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the value of the `start` parameter:
 
-`start = (N-1) * 50`, where `N` is the desired page number
+`start = (N-1) * 50`, where `N` — the desired page number
 ||
 |#
 
@@ -96,6 +96,118 @@ The formula for calculating the value of the `start` parameter:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'catalog.vat.list',
+        {
+          select: [
+            'id',
+            'name',
+            'rate'
+          ],
+          filter: {
+            '>=sort': 200
+          },
+          order: {
+            'id': "ASC"
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('catalog.vat.list', {
+        select: [
+          'id',
+          'name',
+          'rate'
+        ],
+        filter: {
+          '>=sort': 200
+        },
+        order: {
+          'id': "ASC"
+        }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('catalog.vat.list', {
+        select: [
+          'id',
+          'name',
+          'rate'
+        ],
+        filter: {
+          '>=sort': 200
+        },
+        order: {
+          'id': "ASC"
+        }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.vat.list',
+                [
+                    'select' => [
+                        'id',
+                        'name',
+                        'rate'
+                    ],
+                    'filter' => [
+                        '>=sort' => 200
+                    ],
+                    'order' => [
+                        'id' => "ASC"
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing VAT: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.vat.list',
         {
@@ -122,7 +234,7 @@ The formula for calculating the value of the `start` parameter:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -190,7 +302,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **vat**
-[`catalog_vat[]`](../data-types.md#catalog_vat) | Array of objects with information about the selected VAT rates
+[`catalog_vat[]`](../data-types.md#catalog_vat) | An array of objects with information about the selected VAT rates
 ||
 || **total**
 [`integer`](../../data-types.md#time) | Total number of records found ||

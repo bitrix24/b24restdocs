@@ -46,6 +46,56 @@ This method retrieves information about the VAT rate by its identifier.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.vat.get',
+    		{
+    			id: 7
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.vat.get',
+                [
+                    'id' => 7
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting VAT information: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.vat.get',
         {
@@ -61,7 +111,7 @@ This method retrieves information about the VAT rate by its identifier.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -143,7 +193,7 @@ HTTP Status: **400**
 ||
 || `200800000000` | No VAT rate exists with this identifier 
 ||
-|| `100` | Parameter `id` is missing
+|| `100` | Parameter `id` not specified
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 
