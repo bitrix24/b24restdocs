@@ -15,7 +15,7 @@ The method `biconnector.dataset.list` returns a list of datasets based on a filt
 [`string[]`](../../data-types.md) | A list of fields that must be populated in the datasets in the selection. By default, all fields are taken. 
 The `fields` parameter is not supported and will be ignored. ||
 || **filter**
-[`object`](../../data-types.md) | A filter for selecting datasets. Example format:
+[`object`](../../data-types.md) | Filter for selecting datasets. Example format:
 
 ```json
 {
@@ -33,18 +33,18 @@ Possible prefix values:
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
 - `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `=` — equal, exact match (used by default)
+- `=` — equals, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
 
 The list of available fields for filtering can be found using the method [biconnector.dataset.fields](./biconnector-dataset-fields.md).
 
-The filter does not support the `fields` parameter and will be ignored.
+The filter does not support the `fields` parameter and it will be ignored.
 ||
 || **order**
 [`object`](../../data-types.md) | Sorting parameters. Example format:
@@ -60,22 +60,22 @@ The filter does not support the `fields` parameter and will be ignored.
 
 where:
 - `field_n` — the name of the field by which the dataset selection will be sorted
-- `value_n` — a `string` value, equal to:
+- `value_n` — a `string` value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 ||
 || **page**
-[`integer`](../../data-types.md) | Controls pagination. The page size for results is 50 records. To navigate through the results, pass the page number. ||
+[`integer`](../../data-types.md) | Controls pagination. The page size of results is 50 records. To navigate through the results, pass the page number. ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
-Get a list of sources where:
+Get the list of sources where:
 - the name starts with `Sales`
 - the description is not empty
-- the source ID is equal to `2` or `4`
+- the source ID equals `2` or `4`
 
 For clarity, select only the necessary fields:
 - ID `id`
@@ -83,30 +83,6 @@ For clarity, select only the necessary fields:
 - Description `description`
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        'biconnector.dataset.list',
-        {
-            select: ["id", "name", "description"],
-            filter: {
-                '%=name': "Sales%",
-                '!description': "",
-                "@sourceId": [2, 4]
-            },
-            order: {
-                dateCreate: "DESC"
-            }
-        },
-        (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -149,7 +125,140 @@ For clarity, select only the necessary fields:
     https://**put_your_bitrix24_address**/rest/biconnector.dataset.list
     ```
 
+- JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'biconnector.dataset.list',
+        {
+          select: ["id", "name", "description"],
+          filter: {
+            '%=name': "Sales%",
+            '!description': "",
+            "@sourceId": [2, 4]
+          },
+          order: {
+            dateCreate: "DESC"
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('biconnector.dataset.list', {
+        select: ["id", "name", "description"],
+        filter: {
+          '%=name': "Sales%",
+          '!description': "",
+          "@sourceId": [2, 4]
+        },
+        order: {
+          dateCreate: "DESC"
+        }
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('biconnector.dataset.list', {
+        select: ["id", "name", "description"],
+        filter: {
+          '%=name': "Sales%",
+          '!description': "",
+          "@sourceId": [2, 4]
+        },
+        order: {
+          dateCreate: "DESC"
+        }
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'biconnector.dataset.list',
+                [
+                    'select' => ["id", "name", "description"],
+                    'filter' => [
+                        '%=name'      => "Sales%",
+                        '!description' => "",
+                        "@sourceId"   => [2, 4]
+                    ],
+                    'order'  => [
+                        'dateCreate' => "DESC"
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($response->getError()) {
+            error_log($response->getError());
+            echo 'Error: ' . $response->getError();
+        } else {
+            echo 'Success: ' . print_r($result, true);
+            // Your data processing logic
+            processData($result);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling biconnector.dataset.list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'biconnector.dataset.list',
+        {
+            select: ["id", "name", "description"],
+            filter: {
+                '%=name': "Sales%",
+                '!description': "",
+                "@sourceId": [2, 4]
+            },
+            order: {
+                dateCreate: "DESC"
+            }
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -208,7 +317,7 @@ HTTP status: **200**
 
 #|
 || **result**
-[`object`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the dataset fields. 
+[`object`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the fields of the datasets. 
 
 It should be noted that the structure of the fields may change due to the `select` parameter. ||
 || **time**

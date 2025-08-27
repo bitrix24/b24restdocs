@@ -1,14 +1,14 @@
-# Delete Source biconnector.source.delete
+# Delete source biconnector.source.delete
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.source.delete` removes an existing connection.
 
 A connection can be deleted if it has no datasets.
 
-## Method Parameters
+## Method parameters
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
@@ -16,28 +16,14 @@ A connection can be deleted if it has no datasets.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the connection, which can be obtained using the methods [biconnector.source.list](./biconnector-source-list.md) or [biconnector.source.add](./biconnector-source-add.md) ||
+[`integer`](../../data-types.md) | Identifier of the connection, can be obtained using the methods [biconnector.source.list](./biconnector-source-list.md) or [biconnector.source.add](./biconnector-source-add.md) ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        'biconnector.source.delete',
-        {
-            id: 4,
-        },
-        (result) => {
-            result.error() ? console.error(result.error()) : console.info(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -59,7 +45,71 @@ A connection can be deleted if it has no datasets.
     https://**put_your_bitrix24_address**/rest/biconnector.source.delete
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'biconnector.source.delete',
+    		{
+    			id: 4,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error() ? console.error(result.error()) : console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'biconnector.source.delete',
+                [
+                    'id' => 4,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting source: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'biconnector.source.delete',
+        {
+            id: 4,
+        },
+        (result) => {
+            result.error() ? console.error(result.error()) : console.info(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -78,7 +128,7 @@ A connection can be deleted if it has no datasets.
 
 {% endlist %}
 
-## Response Handling
+## Response handling
 
 HTTP status: **200**
 
@@ -96,7 +146,7 @@ HTTP status: **200**
 }
 ```
 
-### Returned Data
+### Returned data
 
 #|
 || **Name**
@@ -107,7 +157,7 @@ HTTP status: **200**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-## Error Handling
+## Error handling
 
 HTTP status: **200**
 
@@ -120,7 +170,7 @@ HTTP status: **200**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** | **Value** ||
@@ -132,7 +182,7 @@ HTTP status: **200**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](./biconnector-source-update.md)
 - [{#T}](./biconnector-source-get.md)

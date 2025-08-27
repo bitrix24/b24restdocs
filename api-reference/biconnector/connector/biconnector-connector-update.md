@@ -2,19 +2,19 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst's workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.connector.update` updates an existing connector.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | The identifier of the connector, which can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
+[`integer`](../../data-types.md) | Connector identifier, can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
 || **fields***
 [`object`](../../data-types.md) | An object containing the updated data. The object format: 
 
@@ -27,8 +27,8 @@ The method `biconnector.connector.update` updates an existing connector.
 }
 ```
 
-- `field_n` — the name of the field
-- `value_n` — the value of the field
+- `field_n` — field name
+- `value_n` — field value
 
 [Detailed description below](#fields) ||
 |#
@@ -39,68 +39,30 @@ The method `biconnector.connector.update` updates an existing connector.
 || **Name**
 `type` | **Description** ||
 || **title**
-[`string`](../../data-types.md) | The new name of the connector ||
+[`string`](../../data-types.md) | New connector name ||
 || **logo**
-[`string`](../../data-types.md) | The new logo of the connector. It can be passed as a link to an image or as a base64 formatted string, for example `data:image/svg+xml;base64,PHN2ZyB3...` ||
+[`string`](../../data-types.md) | New connector logo. Can be passed as a link to an image or a base64 formatted string, for example `data:image/svg+xml;base64,PHN2ZyB3...` ||
 || **description**
-[`string`](../../data-types.md) | The new description of the connector ||
+[`string`](../../data-types.md) | New connector description ||
 || **urlCheck**
-[`string`](../../data-types.md) | The new endpoint for checking the availability of the connector, [(detailed description)](./index.md#urlCheck) ||
+[`string`](../../data-types.md) | New endpoint for checking the connector's availability, [(detailed description)](./index.md#urlCheck) ||
 || **urlTableList**
-[`string`](../../data-types.md) | The new endpoint for obtaining the list of tables, [(detailed description)](./index.md#urlTableList) ||
+[`string`](../../data-types.md) | New endpoint for obtaining the list of tables, [(detailed description)](./index.md#urlTableList) ||
 || **urlTableDescription**
-[`string`](../../data-types.md) | The new endpoint for obtaining the description of a specific table, [(detailed description)](./index.md#urlTableDescription) ||
+[`string`](../../data-types.md) | New endpoint for obtaining the description of a specific table, [(detailed description)](./index.md#urlTableDescription) ||
 || **urlData**
-[`string`](../../data-types.md) | The new endpoint for obtaining data from the selected table, [(detailed description)](./index.md#urlData) ||
+[`string`](../../data-types.md) | New endpoint for obtaining data from the selected table, [(detailed description)](./index.md#urlData)  ||
 || **settings**
-[`array`](../../data-types.md) | The new list of connection parameters, [(detailed description)](./index.md#settings) ||
+[`array`](../../data-types.md) | New list of connection parameters, [(detailed description)](./index.md#settings) ||
 || **sort**
-[`int`](../../data-types.md) | The new sorting parameter of the connector ||
+[`int`](../../data-types.md) | New sorting parameter for the connector ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        'biconnector.connector.update',
-        {
-            id: 4,
-            fields: {
-                "title": "UPDATED REST CONNECTOR",
-                "logo": "data:image/svg+xml;base64,NEWLOGODATA",
-                "description": "Updated description",
-                "urlCheck": "http://example.com/api/new_check",
-                "urlTableList": "http://example.com/api/new_table_list",
-                "urlTableDescription": "http://example.com/api/new_table_description",
-                "urlData": "http://example.com/api/new_data",
-                "settings": [
-                    {
-                        "name": "Employee Identifier",
-                        "type": "STRING",
-                        "code": "id"
-                    },
-                    {
-                        "name": "Password",
-                        "type": "STRING",
-                        "code": "password"
-                    }
-                ],
-                "sort": 200
-            }
-        },
-        (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -171,7 +133,141 @@ The method `biconnector.connector.update` updates an existing connector.
          https://**put_your_bitrix24_address**/rest/biconnector.connector.update
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'biconnector.connector.update',
+    		{
+    			id: 4,
+    			fields: {
+    				"title": "UPDATED REST CONNECTOR",
+    				"logo": "data:image/svg+xml;base64,NEWLOGODATA",
+    				"description": "Updated description",
+    				"urlCheck": "http://example.com/api/new_check",
+    				"urlTableList": "http://example.com/api/new_table_list",
+    				"urlTableDescription": "http://example.com/api/new_table_description",
+    				"urlData": "http://example.com/api/new_data",
+    				"settings": [
+    					{
+    						"name": "Employee Identifier",
+    						"type": "STRING",
+    						"code": "id"
+    					},
+    					{
+    						"name": "Password",
+    						"type": "STRING",
+    						"code": "password"
+    					}
+    				],
+    				"sort": 200
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'biconnector.connector.update',
+                [
+                    'id' => 4,
+                    'fields' => [
+                        "title"               => "UPDATED REST CONNECTOR",
+                        "logo"                => "data:image/svg+xml;base64,NEWLOGODATA",
+                        "description"         => "Updated description",
+                        "urlCheck"            => "http://example.com/api/new_check",
+                        "urlTableList"        => "http://example.com/api/new_table_list",
+                        "urlTableDescription" => "http://example.com/api/new_table_description",
+                        "urlData"             => "http://example.com/api/new_data",
+                        "settings"            => [
+                            [
+                                "name" => "Employee Identifier",
+                                "type" => "STRING",
+                                "code" => "id"
+                            ],
+                            [
+                                "name" => "Password",
+                                "type" => "STRING",
+                                "code" => "password"
+                            ]
+                        ],
+                        "sort"                => 200
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating connector: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'biconnector.connector.update',
+        {
+            id: 4,
+            fields: {
+                "title": "UPDATED REST CONNECTOR",
+                "logo": "data:image/svg+xml;base64,NEWLOGODATA",
+                "description": "Updated description",
+                "urlCheck": "http://example.com/api/new_check",
+                "urlTableList": "http://example.com/api/new_table_list",
+                "urlTableDescription": "http://example.com/api/new_table_description",
+                "urlData": "http://example.com/api/new_data",
+                "settings": [
+                    {
+                        "name": "Employee Identifier",
+                        "type": "STRING",
+                        "code": "id"
+                    },
+                    {
+                        "name": "Password",
+                        "type": "STRING",
+                        "code": "password"
+                    }
+                ],
+                "sort": 200
+            }
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -202,7 +298,7 @@ The method `biconnector.connector.update` updates an existing connector.
                 ],
                 'sort' => 200
             ]
-        }
+        ]
     );
 
     echo '<PRE>';
@@ -236,9 +332,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | The root element of the response, contains `true` in case of success ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -260,7 +356,7 @@ HTTP status: **200**
 || **Code** | **Description** | **Value** ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
-|| `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields not passed in the request ||
+|| `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields were not passed in the request ||
 || `VALIDATION_UNKNOWN_PARAMETERS` | Unknown parameters: #LIST_OF_PARAMS# | Unknown parameters detected: list ||
 || `VALIDATION_READ_ONLY_FIELD` | Field "#TITLE#" is read only. | Field #TITLE# is read-only and cannot be modified ||
 || `VALIDATION_IMMUTABLE_FIELD` | Field "#TITLE#" is immutable. | Field #TITLE# is immutable ||

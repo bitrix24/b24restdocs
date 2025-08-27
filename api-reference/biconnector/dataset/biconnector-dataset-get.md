@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst's workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.dataset.get` returns information about a dataset by its identifier.
 
@@ -17,25 +17,9 @@ The method `biconnector.dataset.get` returns information about a dataset by its 
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        'biconnector.dataset.get',
-        {
-            id: 2,
-        },
-        (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -57,7 +41,75 @@ The method `biconnector.dataset.get` returns information about a dataset by its 
     https://**put_your_bitrix24_address**/rest/biconnector.dataset.get
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'biconnector.dataset.get',
+    		{
+    			id: 2,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'biconnector.dataset.get',
+                [
+                    'id' => 2,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting dataset: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'biconnector.dataset.get',
+        {
+            id: 2,
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -144,7 +196,7 @@ HTTP status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not provided ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `DATASET_NOT_FOUND` | Dataset was not found. | Dataset not found ||
 |#

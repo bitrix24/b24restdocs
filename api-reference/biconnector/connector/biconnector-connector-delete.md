@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's Workspace" section
+> Who can execute the method: user with access to the "Analyst Workspace" section
 
 The method `biconnector.connector.delete` removes an existing connector.
 
@@ -10,7 +10,7 @@ A connector can be deleted if it has no sources.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,23 +21,9 @@ A connector can be deleted if it has no sources.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        'biconnector.connector.delete',
-        {
-            id: 4,
-        },
-        (result) => {
-            result.error() ? console.error(result.error()) : console.info(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -64,7 +50,71 @@ A connector can be deleted if it has no sources.
          https://**put_your_bitrix24_address**/rest/biconnector.connector.delete
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'biconnector.connector.delete',
+    		{
+    			id: 4,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error() ? console.error(result.error()) : console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'biconnector.connector.delete',
+                [
+                    'id' => 4,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting connector: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'biconnector.connector.delete',
+        {
+            id: 4,
+        },
+        (result) => {
+            result.error() ? console.error(result.error()) : console.info(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,7 +135,7 @@ A connector can be deleted if it has no sources.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -109,12 +159,12 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {

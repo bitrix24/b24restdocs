@@ -2,7 +2,7 @@
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the "Analyst Workspace" section
+> Who can execute the method: user with access to the "Analyst's workspace" section
 
 The method `biconnector.source.update` updates an existing source.
 
@@ -16,7 +16,7 @@ The method `biconnector.source.update` updates an existing source.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the source, can be obtained using the methods [biconnector.source.list](./biconnector-source-list.md) and [biconnector.source.add](./biconnector-source-add.md) ||
 || **fields***
-[`object`](../../data-types.md) | An object containing the updated data.
+[`object`](../../data-types.md) | Object containing the updated data.
 Object format: 
 
 ```
@@ -46,7 +46,7 @@ Object format:
 || **active**
 [`boolean`](../../data-types.md) | Activity status of the source ||
 || **settings**
-[`object`](../../data-types.md) | A list of parameters for authorization, passed as an object where the key is the `code` of the parameter. 
+[`object`](../../data-types.md) | List of parameters for authorization, passed as an object where the key is the `code` of the parameter. 
 Parameters can be obtained using the methods [biconnector.connector.list](../connector/biconnector-connector-list.md) or [biconnector.connector.get](../connector/biconnector-connector-get.md) ||
 |#
 
@@ -56,31 +56,6 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
 
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        'biconnector.source.update',
-        {
-            id: 4,
-            fields: {
-                "title": "New source name",
-                "description": "Updated source description",
-                "active": false,
-                "settings": {
-                    "login": "new_admin",
-                    "password": "new_password"
-                }
-            }
-        },
-        (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -125,7 +100,105 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
     https://**put_your_bitrix24_address**/rest/biconnector.source.update
     ```
 
+- JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'biconnector.source.update',
+    		{
+    			id: 4,
+    			fields: {
+    				"title": "New source name",
+    				"description": "Updated source description",
+    				"active": false,
+    				"settings": {
+    					"login": "new_admin",
+    					"password": "new_password"
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'biconnector.source.update',
+                [
+                    'id' => 4,
+                    'fields' => [
+                        "title"       => "New source name",
+                        "description" => "Updated source description",
+                        "active"      => false,
+                        "settings"    => [
+                            "login"    => "new_admin",
+                            "password" => "new_password"
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating source: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'biconnector.source.update',
+        {
+            id: 4,
+            fields: {
+                "title": "New source name",
+                "description": "Updated source description",
+                "active": false,
+                "settings": {
+                    "login": "new_admin",
+                    "password": "new_password"
+                }
+            }
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -177,9 +250,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` on success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

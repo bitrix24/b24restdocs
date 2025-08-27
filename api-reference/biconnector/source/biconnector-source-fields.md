@@ -1,4 +1,4 @@
-# Get Source Fields biconnector.source.fields
+# Get Source Fields of biconnector.source.fields
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 > 
@@ -12,23 +12,9 @@ No parameters.
 
 ## Code Examples
 
-{% include [Footnote on Examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        'biconnector.source.fields',
-        {},
-        (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data());
-        },
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -50,7 +36,69 @@ No parameters.
     https://**put_your_bitrix24_address**/rest/biconnector.source.fields
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'biconnector.source.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'biconnector.source.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching source fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'biconnector.source.fields',
+        {},
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data());
+        },
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -69,7 +117,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {

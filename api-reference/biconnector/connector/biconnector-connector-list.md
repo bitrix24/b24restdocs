@@ -4,7 +4,7 @@
 >
 > Who can execute the method: user with access to the "Analyst's workspace" section
 
-The method `biconnector.connector.list` returns a list of connectors based on a filter. It is an implementation of the listing method for connectors.
+The method `biconnector.connector.list` returns a list of connectors based on a filter. It is an implementation of the list method for connectors.
 
 ## Method Parameters
 
@@ -29,10 +29,10 @@ Possible prefix values:
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN, an array is passed as the value
-- `!@` — NOT IN, an array is passed as the value
+- `@` — IN, an array is passed as a value
+- `!@` — NOT IN, an array is passed as a value
 - `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
 - `"mol%"` — searches for values starting with "mol"
 - `"%mol"` — searches for values ending with "mol"
 - `"%mol%"` — searches for values where "mol" can be in any position
@@ -61,13 +61,13 @@ The list of available fields for filtering can be found using the method [biconn
     - `DESC` — descending sort
 ||
 || **page**
-[`integer`](../../data-types.md) | Controls pagination. The page size of results is 50 records. To navigate through the results, pass the page number 
+[`integer`](../../data-types.md) | Controls pagination. The page size of results is 50 records. To navigate through results, pass the page number 
 ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Get the list of connectors where:
 - the name starts with `MyConnector`
@@ -80,34 +80,6 @@ Display only the necessary fields:
 - creation date `dateCreate`
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        'biconnector.connector.list',
-        {
-            select: [
-                "id",
-                "title",
-                "urlCheck",
-                "dateCreate"
-            ],
-            filter: {
-                '%=title': "MyConnector%",
-                '!description': ''
-            },
-            order: {
-                dateCreate: "DESC"
-            }
-        },
-        (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -158,7 +130,161 @@ Display only the necessary fields:
          https://**put_your_bitrix24_address**/rest/biconnector.connector.list
     ```
 
+- JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'biconnector.connector.list',
+        {
+          select: [
+            "id",
+            "title",
+            "urlCheck",
+            "dateCreate"
+          ],
+          filter: {
+            '%=title': "MyConnector%",
+            '!description': ''
+          },
+          order: {
+            dateCreate: "DESC"
+          }
+        },
+        (progress) => { 
+          result.error()
+            ? console.error(result.error())
+            : console.info(result.data());
+        }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('biconnector.connector.list', {
+        select: [
+          "id",
+          "title",
+          "urlCheck",
+          "dateCreate"
+        ],
+        filter: {
+          '%=title': "MyConnector%",
+          '!description': ''
+        },
+        order: {
+          dateCreate: "DESC"
+        }
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('biconnector.connector.list', {
+        select: [
+          "id",
+          "title",
+          "urlCheck",
+          "dateCreate"
+        ],
+        filter: {
+          '%=title': "MyConnector%",
+          '!description': ''
+        },
+        order: {
+          dateCreate: "DESC"
+        }
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'biconnector.connector.list',
+                [
+                    'select' => [
+                        "id",
+                        "title",
+                        "urlCheck",
+                        "dateCreate"
+                    ],
+                    'filter' => [
+                        '%=title'      => "MyConnector%",
+                        '!description' => ''
+                    ],
+                    'order' => [
+                        'dateCreate' => "DESC"
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling biconnector.connector.list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'biconnector.connector.list',
+        {
+            select: [
+                "id",
+                "title",
+                "urlCheck",
+                "dateCreate"
+            ],
+            filter: {
+                '%=title': "MyConnector%",
+                '!description': ''
+            },
+            order: {
+                dateCreate: "DESC"
+            }
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -224,9 +350,9 @@ HTTP status: **200**
 
 #|
 || **result**
-[`object`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the fields of the connectors. 
+[`object`](../../data-types.md) | The root element of the response. Contains an array of objects with information about the fields of connectors. 
 
-It should be noted that the structure of the fields may change due to the `select` parameter ||
+It should be noted that the structure of fields may change due to the `select` parameter ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#

@@ -8,34 +8,20 @@ The method `biconnector.connector.get` returns information about the connector b
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the connector, can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
+[`integer`](../../data-types.md) | The identifier of the connector, which can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        'biconnector.connector.get',
-        {
-            id: 4,
-        },
-        (result) => {
-            result.error() ? console.error(result.error()) : console.info(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -62,7 +48,71 @@ The method `biconnector.connector.get` returns information about the connector b
          https://**put_your_bitrix24_address**/rest/biconnector.connector.get
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'biconnector.connector.get',
+    		{
+    			id: 4,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error() ? console.error(result.error()) : console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'biconnector.connector.get',
+                [
+                    'id' => 4,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling biconnector.connector.get: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'biconnector.connector.get',
+        {
+            id: 4,
+        },
+        (result) => {
+            result.error() ? console.error(result.error()) : console.info(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -131,7 +181,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`item`](../../data-types.md) | Root element of the response. Contains information about the connector fields. Field descriptions can be found in the article [Connector: Overview of Methods](./index.md#fields) ||
+[`item`](../../data-types.md) | The root element of the response. Contains information about the connector fields. Field descriptions can be found in the article [Connector: Overview of Methods](./index.md#fields) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#                                                                         
