@@ -48,6 +48,56 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.offer.delete',
+    		{
+    			id: 1285,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.offer.delete',
+                [
+                    'id' => 1285,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting product offer: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.offer.delete',
         {
@@ -63,7 +113,7 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -106,7 +156,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of deleting the product variation ||
+[`boolean`](../../../data-types.md) | Result of the product variation deletion ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -132,7 +182,7 @@ HTTP status: **400**
 || 
 || `200040300040` | Insufficient permissions to delete the information block
 || 
-|| `200040300010` | Insufficient permissions to view the product catalog
+|| `200040300010` | Insufficient permissions to view the trade catalog
 || 
 || `200040300000` | Information block not found
 || 

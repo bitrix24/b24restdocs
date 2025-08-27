@@ -1,10 +1,10 @@
-# Download Head Product Files catalog.product.sku.download
+# Download the main product files catalog.product.sku.download
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method downloads head product files based on the provided parameters.
+This method downloads the main product files based on the provided parameters.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method downloads head product files based on the provided parameters.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values for downloading head product files ||
+[`object`](../../../data-types.md) | Field values for downloading the main product files ||
 |#
 
 ### Parameter fields
@@ -27,20 +27,20 @@ This method downloads head product files based on the provided parameters.
 || **fileId***
 [`integer`](../../../data-types.md) | Identifier of the registered file.
 
-To obtain the identifiers of head product files, use [catalog.product.sku.get](./catalog-product-sku-get.md) or [catalog.product.sku.list](./catalog-product-sku-list.md)
+To obtain the identifiers of the main product files, you need to use [catalog.product.sku.get](./catalog-product-sku-get.md) or [catalog.product.sku.list](./catalog-product-sku-list.md)
 ||
 || **productId***
-[`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the head product.
+[`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the main product.
 
-To obtain the identifiers of head products, use [catalog.product.sku.list](./catalog-product-sku-list.md)
+To obtain the identifiers of the main products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md)
 ||
 || **fieldName***
 [`string`](../../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored. Possible values:
 - `DETAIL_PICTURE` — detailed picture
 - `PREVIEW_PICTURE` — preview picture
-- `PROPERTY_N` — property, where `N` is the property identifier or code
+- `PROPERTY_N` — property where `N` is the property identifier or property code
 
-To obtain existing identifiers or codes of properties for head products, use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
+To obtain existing identifiers or property codes of the main products, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
 ||
 |#
 
@@ -73,6 +73,62 @@ To obtain existing identifiers or codes of properties for head products, use [ca
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.sku.download',
+    		{
+    			fields: {
+    				fileId: 6546,
+    				productId: 1289,
+    				fieldName: 'detailPicture',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.sku.download',
+                [
+                    'fields' => [
+                        'fileId'     => 6546,
+                        'productId'  => 1289,
+                        'fieldName'  => 'detailPicture',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error downloading product SKU: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.sku.download',
         {
@@ -92,7 +148,7 @@ To obtain existing identifiers or codes of properties for head products, use [ca
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -142,13 +198,13 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog
+|| `200040300010` | Insufficient rights to read the trade catalog
 || 
-|| `0` | Head product with the specified identifier does not exist
+|| `0` | The main product with the specified identifier does not exist
 || 
 || `0` | The specified property does not exist or is not a file
 || 
-|| `0` | File with the specified identifier does not exist
+|| `0` | The file with the specified identifier does not exist
 || 
 || `0` | Required fields are not provided
 || 

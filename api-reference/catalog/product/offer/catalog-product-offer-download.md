@@ -27,20 +27,20 @@ This method downloads product variation files based on the provided parameters.
 || **fileId***
 [`integer`](../../../data-types.md) | Identifier of the registered file.
 
-To obtain the identifiers of product variation files, you need to use [catalog.product.offer.get](./catalog-product-offer-get.md) or [catalog.product.offer.list](./catalog-product-offer-list.md)
+To obtain file identifiers for product variations, use [catalog.product.offer.get](./catalog-product-offer-get.md) or [catalog.product.offer.list](./catalog-product-offer-list.md)
 ||
 || **productId***
 [`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the product variation.
 
-To obtain the identifiers of product variations, you need to use [catalog.product.offer.list](./catalog-product-offer-list.md)
+To obtain identifiers for product variations, use [catalog.product.offer.list](./catalog-product-offer-list.md)
 ||
 || **fieldName***
 [`string`](../../../data-types.md) | The name of the field (property or field of the information block element) where the file is stored. Possible values:
 - `DETAIL_PICTURE` — detailed image
 - `PREVIEW_PICTURE` — preview image
-- `PROPERTY_N` — property, where `N` is the property identifier or property code
+- `PROPERTY_N` — property, where `N` is the property identifier or code
 
-To obtain existing identifiers or property codes of product variations, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
+To obtain existing identifiers or codes of properties for product variations, use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
 ||
 |#
 
@@ -73,6 +73,62 @@ To obtain existing identifiers or property codes of product variations, you need
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.offer.download',
+    		{
+    			fields: {
+    				fileId: 6538,
+    				productId: 1286,
+    				fieldName: 'detailPicture',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.offer.download',
+                [
+                    'fields' => [
+                        'fileId'     => 6538,
+                        'productId'  => 1286,
+                        'fieldName'  => 'detailPicture',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error downloading product offer: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.offer.download',
         {
@@ -92,7 +148,7 @@ To obtain existing identifiers or property codes of product variations, you need
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -119,7 +175,7 @@ To obtain existing identifiers or property codes of product variations, you need
 
 HTTP status: **200**
 
-The response returns a file based on the provided parameters.
+A file is returned based on the provided parameters.
 
 ### Returned Data
 
@@ -142,7 +198,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the trade catalog
+|| `200040300010` | Insufficient permissions to read the product catalog
 || 
 || `0` | The product variation with the specified identifier does not exist
 || 

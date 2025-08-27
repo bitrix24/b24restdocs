@@ -16,7 +16,7 @@ This method removes a product from the trade catalog.
 || **id*** 
 [`catalog_product.id`](../data-types.md#catalog_product)| Product identifier.
 
-To obtain product identifiers, use the method [catalog.product.list](./catalog-product-list.md)
+To obtain product identifiers, use the [catalog.product.list](./catalog-product-list.md)
  ||
 |#
 
@@ -49,40 +49,26 @@ To obtain product identifiers, use the method [catalog.product.list](./catalog-p
 - JS
 
     ```js
-    BX24.callMethod(
-        'catalog.product.delete',
-        {
-            id: 1242,
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
-        }
-    );
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.delete',
+    		{
+    			id: 1242,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
     ```
 
 - PHP
 
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'catalog.product.delete',
-        [
-            'id' => 1242
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
-  
     ```php       
     try {
         $productId = 123; // Replace with the actual product ID you want to delete
@@ -98,6 +84,41 @@ To obtain product identifiers, use the method [catalog.product.list](./catalog-p
     } catch (Throwable $e) {
         print("An error occurred: " . $e->getMessage());
     }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'catalog.product.delete',
+        {
+            id: 1242,
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.product.delete',
+        [
+            'id' => 1242
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}

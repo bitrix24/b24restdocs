@@ -60,6 +60,60 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.getFieldsByFilter', 
+    		{
+    			filter: {
+    				iblockId: 23,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.getFieldsByFilter',
+                [
+                    'filter' => [
+                        'iblockId' => 23,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product fields by filter: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.getFieldsByFilter', 
         {
@@ -76,7 +130,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -341,7 +395,7 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Sorting Index",
+                "name": "Sort Index",
                 "type": "integer"
             },
             "subscribe": {
@@ -407,8 +461,8 @@ HTTP status: **200**
         "finish": 1717598884.460406,
         "duration": 0.6462759971618652,
         "processing": 0.15173888206481934,
-        "date_start": "2024-06-05T17:48:03+03:00",
-        "date_finish": "2024-06-05T17:48:04+03:00"
+        "date_start": "2024-06-05T17:48:03+02:00",
+        "date_finish": "2024-06-05T17:48:04+02:00"
     }
 }
 ```
@@ -423,7 +477,7 @@ HTTP status: **200**
 || **product**
 [`object`](../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [`catalog_product`](../data-types.md#catalog_product), and `value` is an object of type [`rest_field_description`](../data-types.md). ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -444,8 +498,8 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `200040300010` | Insufficient rights to read the trade catalog ||
-|| `100` | Filter parameter is not specified or is empty ||
-|| `0` | Information block identifier is not specified ||
+|| `100` | Filter parameter not specified or empty ||
+|| `0` | Information block identifier not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

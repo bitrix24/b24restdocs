@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method returns service fields based on the filter.
+The method returns service fields based on the filter.
 
 ## Method Parameters
 
@@ -27,7 +27,7 @@ This method returns service fields based on the filter.
 || **iblockId***
 [`catalog_catalog.id`](../../data-types.md#catalog_catalog) | Identifier of the information block.
 
-To obtain existing identifiers of information blocks, you need to use [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
+To obtain existing identifiers of information blocks, use [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
 ||
 |#
 
@@ -60,6 +60,60 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.service.getFieldsByFilter',
+    		{
+    			filter: {
+    				iblockId: 14,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.service.getFieldsByFilter',
+                [
+                    'filter' => [
+                        'iblockId' => 14,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting fields by filter: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.service.getFieldsByFilter',
         {
@@ -76,7 +130,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -316,8 +370,8 @@ HTTP Status: **200**
         "finish": 1718363353.116101,
         "duration": 0.5652179718017578,
         "processing": 0.1428060531616211,
-        "date_start": "2024-06-14T14:09:12+03:00",
-        "date_finish": "2024-06-14T14:09:13+03:00"
+        "date_start": "2024-06-14T14:09:12+02:00",
+        "date_finish": "2024-06-14T14:09:13+02:00"
     }
 }
 ```
@@ -352,7 +406,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog
+|| `200040300010` | Insufficient rights to read the trade catalog
 || 
 || `100` | Parameter `filter` is not specified or is empty
 || 

@@ -16,7 +16,7 @@ The method returns the field values of the service by its identifier.
 || **id***
 [`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Service identifier.
 
-To obtain service identifiers, you need to use [catalog.product.service.list](./catalog-product-service-list.md) 
+To obtain service identifiers, use [catalog.product.service.list](./catalog-product-service-list.md) 
 ||
 |#
 
@@ -49,6 +49,53 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.service.get', {
+    			id: 1265
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.service.get',
+                [
+                    'id' => 1265
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product service: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.service.get', {
             id: 1265
@@ -63,7 +110,7 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -95,9 +142,9 @@ HTTP Status: **200**
             "bundle": "N",
             "code": "service",
             "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-            "dateActiveTo": "2024-05-29T10:00:00+03:00",
-            "dateCreate": "2024-05-27T10:00:00+03:00",
+            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
+            "dateActiveTo": "2024-05-29T10:00:00+02:00",
+            "dateCreate": "2024-05-27T10:00:00+02:00",
             "detailPicture": {
                 "id": "6497",
                 "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6497\u0026fields%5BproductId%5D=1265",
@@ -132,7 +179,7 @@ HTTP Status: **200**
                 }
             ],
             "sort": 100,
-            "timestampX": "2024-06-14T11:59:04+03:00",
+            "timestampX": "2024-06-14T11:59:04+02:00",
             "type": 7,
             "vatId": 1,
             "vatIncluded": "Y",
@@ -144,8 +191,8 @@ HTTP Status: **200**
         "finish": 1718363240.027938,
         "duration": 0.6721169948577881,
         "processing": 0.2661628723144531,
-        "date_start": "2024-06-14T14:07:19+03:00",
-        "date_finish": "2024-06-14T14:07:20+03:00"
+        "date_start": "2024-06-14T14:07:19+02:00",
+        "date_finish": "2024-06-14T14:07:20+02:00"
     }
 }
 ```
@@ -158,7 +205,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **service**
-[`catalog_product_service`](../../data-types.md#catalog_product_service) | Object containing service information ||
+[`catalog_product_service`](../../data-types.md#catalog_product_service) | Object with service information ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -184,7 +231,7 @@ HTTP Status: **400**
 || 
 || `200040300040` | Insufficient rights to read the information block element
 || 
-|| `200040300010` | Insufficient rights to read the trade catalog
+|| `200040300010` | Insufficient rights to read the product catalog
 || 
 || `100` | The `id` parameter is not specified
 || 

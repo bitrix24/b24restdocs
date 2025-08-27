@@ -1,10 +1,10 @@
-# Get a list of product variations catalog.product.offer.list
+# Get a List of Product Variations catalog.product.offer.list
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method returns a list of product variations based on the filter.
+This method returns a list of product variations based on the filter.
 
 ## Method Parameters
 
@@ -40,7 +40,7 @@ You can specify an additional prefix for the key that clarifies the behavior of 
 - `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
-    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
+    - `"%mol%"` — searches for values where the substring "mol" is not in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
 - `=` — equal, exact match (used by default). For IN search, you can pass multiple values as an array 
 - `!=` — not equal
@@ -62,7 +62,7 @@ The page size of results is always static — 50 records.
 
 To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
 
-The formula for calculating the value of the `start` parameter:
+The formula for calculating the `start` parameter value:
 
 `start = (N-1) * 50`, where `N` — the number of the desired page
 ||
@@ -95,6 +95,202 @@ The formula for calculating the value of the `start` parameter:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const selectFields = [
+        "id",
+        "iblockId",
+        "name",
+        "active",
+        "available",
+        "barcodeMulti",
+        "bundle",
+        "canBuyZero",
+        "code",
+        "createdBy",
+        "dateActiveFrom",
+        "dateActiveTo",
+        "dateCreate",
+        "detailPicture",
+        "detailText",
+        "detailTextType",
+        "height",
+        "iblockSectionId",
+        "length",
+        "measure",
+        "modifiedBy",
+        "previewPicture",
+        "previewText",
+        "previewTextType",
+        "purchasingCurrency",
+        "purchasingPrice",
+        "quantity",
+        "quantityReserved",
+        "quantityTrace",
+        "recurSchemeLength",
+        "recurSchemeType",
+        "sort",
+        "subscribe",
+        "timestampX",
+        "trialPriceId",
+        "type",
+        "vatId",
+        "vatIncluded",
+        "weight",
+        "width",
+        "withoutOrder",
+        "xmlId",
+        "parentId",
+        "property258",
+        "property259",
+    ];
+    
+    try {
+        const response = await $b24.callListMethod(
+            'catalog.product.offer.list',
+            {
+                "select": selectFields,
+                "filter": {
+                    "iblockId": 24,
+                    ">id": 10,
+                    "vatId": [1, 2],
+                },
+                "order": {
+                    "id": "desc",
+                }
+            },
+            (progress) => { console.log('Progress:', progress) }
+        );
+        const items = response.getData() || [];
+        for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+        const generator = $b24.fetchListMethod('catalog.product.offer.list', {
+            "select": selectFields,
+            "filter": {
+                "iblockId": 24,
+                ">id": 10,
+                "vatId": [1, 2],
+            },
+            "order": {
+                "id": "desc",
+            }
+        }, 'id');
+        for await (const page of generator) {
+            for (const entity of page) { console.log('Entity:', entity); }
+        }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+        const response = await $b24.callMethod('catalog.product.offer.list', {
+            "select": selectFields,
+            "filter": {
+                "iblockId": 24,
+                ">id": 10,
+                "vatId": [1, 2],
+            },
+            "order": {
+                "id": "desc",
+            }
+        }, 0);
+        const result = response.getData().result || [];
+        for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.offer.list',
+                [
+                    'select' => [
+                        'id',
+                        'iblockId',
+                        'name',
+                        'active',
+                        'available',
+                        'barcodeMulti',
+                        'bundle',
+                        'canBuyZero',
+                        'code',
+                        'createdBy',
+                        'dateActiveFrom',
+                        'dateActiveTo',
+                        'dateCreate',
+                        'detailPicture',
+                        'detailText',
+                        'detailTextType',
+                        'height',
+                        'iblockSectionId',
+                        'length',
+                        'measure',
+                        'modifiedBy',
+                        'previewPicture',
+                        'previewText',
+                        'previewTextType',
+                        'purchasingCurrency',
+                        'purchasingPrice',
+                        'quantity',
+                        'quantityReserved',
+                        'quantityTrace',
+                        'recurSchemeLength',
+                        'recurSchemeType',
+                        'sort',
+                        'subscribe',
+                        'timestampX',
+                        'trialPriceId',
+                        'type',
+                        'vatId',
+                        'vatIncluded',
+                        'weight',
+                        'width',
+                        'withoutOrder',
+                        'xmlId',
+                        'parentId',
+                        'property258',
+                        'property259',
+                    ],
+                    'filter' => [
+                        'iblockId' => 24,
+                        '>id'      => 10,
+                        'vatId'    => [1, 2],
+                    ],
+                    'order'  => [
+                        'id' => 'desc',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching product offers: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -165,7 +361,7 @@ The formula for calculating the value of the `start` parameter:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -350,9 +546,9 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200040300010` | Insufficient rights to read the trade catalog
 || 
-|| `0` | Fields `id`, `iblockId` not specified in the selection fields
+|| `0` | The fields `id`, `iblockId` are not specified in the selection fields
 || 
-|| `0` | Field `iblockId` not specified in the filter
+|| `0` | The `iblockId` field is not specified in the filter
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

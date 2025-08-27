@@ -12,7 +12,7 @@ This method retrieves a list of products from the trade catalog based on a filte
 || **Name**
 `type` | **Description** ||
 || **select** 
-[`array`](../../data-types.md)| An array containing the list of fields to select (see the fields of the [catalog_product](../data-types.md#catalog_product) object).
+[`array`](../../data-types.md)| An array containing the list of fields to select (see fields of the [catalog_product](../data-types.md#catalog_product) object).
 
 Required fields: `id`, `iblockId`
  ||
@@ -23,22 +23,22 @@ Possible values for `field` correspond to the fields of the [catalog_product](..
 
 Required fields: `iblockId`.
 
-An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
+An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for a substring at any position in the string.
-- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - `"mol%"` — searching for values starting with "mol"
   - `"%mol"` — searching for values ending with "mol"
-  - `"%mol%"` — searching for values where "mol" can be at any position
+  - `"%mol%"` — searching for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - `"mol%"` — searching for values not starting with "mol"
   - `"%mol"` — searching for values not ending with "mol"
-  - `"%mol%"` — searching for values where the substring "mol" is not present at any position
+  - `"%mol%"` — searching for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
 - `=` — equal, exact match (used by default). For IN search, multiple values can be passed as an array 
 - `!=` — not equal
@@ -55,15 +55,15 @@ Possible values for order:
 - `desc` — in descending order
  ||
 || **start** 
-[`string`](../../data-types.md)| This parameter is used to manage pagination.
+[`string`](../../data-types.md)| This parameter is used to control pagination.
 
 The page size of results is always static — 50 records.
 
 To select the second page of results, you need to pass the value — `50`. To select the third page of results, the value — `100`, and so on.
 
-The formula for calculating the `start` parameter value:
+The formula for calculating the value of the `start` parameter:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` — the number of the desired page
  ||
 |#
 
@@ -94,6 +94,234 @@ The formula for calculating the `start` parameter value:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'catalog.product.list',
+        {
+          "select": [
+            "id",
+            "iblockId",
+            "name",
+            "active",
+            "available",
+            "barcodeMulti",
+            "bundle",
+            "canBuyZero",
+            "code",
+            "createdBy",
+            "dateActiveFrom",
+            "dateActiveTo",
+            "dateCreate",
+            "detailPicture",
+            "detailText",
+            "detailTextType",
+            "height",
+            "iblockSectionId",
+            "length",
+            "measure",
+            "modifiedBy",
+            "previewPicture",
+            "previewText",
+            "previewTextType",
+            "purchasingCurrency",
+            "purchasingPrice",
+            "quantity",
+            "quantityReserved",
+            "quantityTrace",
+            "recurSchemeLength",
+            "recurSchemeType",
+            "sort",
+            "subscribe",
+            "timestampX",
+            "trialPriceId",
+            "type",
+            "vatId",
+            "vatIncluded",
+            "weight",
+            "width",
+            "withoutOrder",
+            "xmlId",
+            "property258",
+            "property259",
+          ],
+          "filter": {
+            "iblockId": 23,
+            ">id": 10,
+            "vatId": [1, 2],
+          },
+          "order": {
+            "id": "desc",
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('catalog.product.list', {
+        "select": [
+          "id",
+          "iblockId",
+          "name",
+          "active",
+          "available",
+          "barcodeMulti",
+          "bundle",
+          "canBuyZero",
+          "code",
+          "createdBy",
+          "dateActiveFrom",
+          "dateActiveTo",
+          "dateCreate",
+          "detailPicture",
+          "detailText",
+          "detailTextType",
+          "height",
+          "iblockSectionId",
+          "length",
+          "measure",
+          "modifiedBy",
+          "previewPicture",
+          "previewText",
+          "previewTextType",
+          "purchasingCurrency",
+          "purchasingPrice",
+          "quantity",
+          "quantityReserved",
+          "quantityTrace",
+          "recurSchemeLength",
+          "recurSchemeType",
+          "sort",
+          "subscribe",
+          "timestampX",
+          "trialPriceId",
+          "type",
+          "vatId",
+          "vatIncluded",
+          "weight",
+          "width",
+          "withoutOrder",
+          "xmlId",
+          "property258",
+          "property259",
+        ],
+        "filter": {
+          "iblockId": 23,
+          ">id": 10,
+          "vatId": [1, 2],
+        },
+        "order": {
+          "id": "desc",
+        }
+      }, 'id');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('catalog.product.list', {
+        "select": [
+          "id",
+          "iblockId",
+          "name",
+          "active",
+          "available",
+          "barcodeMulti",
+          "bundle",
+          "canBuyZero",
+          "code",
+          "createdBy",
+          "dateActiveFrom",
+          "dateActiveTo",
+          "dateCreate",
+          "detailPicture",
+          "detailText",
+          "detailTextType",
+          "height",
+          "iblockSectionId",
+          "length",
+          "measure",
+          "modifiedBy",
+          "previewPicture",
+          "previewText",
+          "previewTextType",
+          "purchasingCurrency",
+          "purchasingPrice",
+          "quantity",
+          "quantityReserved",
+          "quantityTrace",
+          "recurSchemeLength",
+          "recurSchemeType",
+          "sort",
+          "subscribe",
+          "timestampX",
+          "trialPriceId",
+          "type",
+          "vatId",
+          "vatIncluded",
+          "weight",
+          "width",
+          "withoutOrder",
+          "xmlId",
+          "property258",
+          "property259",
+        ],
+        "filter": {
+          "iblockId": 23,
+          ">id": 10,
+          "vatId": [1, 2],
+        },
+        "order": {
+          "id": "desc",
+        }
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php        
+    try {
+        $select = ['id', 'name', 'price', 'active', 'available', 'dateCreate'];
+        $filter = ['active' => 'Y'];
+        $order = ['name' => 'ASC'];
+        $start = 0;
+        $result = $serviceBuilder
+            ->getCatalogScope()
+            ->product()
+            ->list($select, $filter, $order, $start);
+        foreach ($result->getProducts() as $itemResult) {
+            print("ID: {$itemResult->id}\n");
+            print("Name: {$itemResult->name}\n");
+            print("Active: {$itemResult->active}\n");
+            print("Available: {$itemResult->available}\n");
+            print("Date Created: {$itemResult->dateCreate->format(DATE_ATOM)}\n");
+        }
+    } catch (Throwable $e) {
+        print("Error: {$e->getMessage()}\n");
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -164,7 +392,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -232,30 +460,6 @@ The formula for calculating the `start` parameter value:
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
-  
-    ```php        
-    try {
-        $select = ['id', 'name', 'price', 'active', 'available', 'dateCreate'];
-        $filter = ['active' => 'Y'];
-        $order = ['name' => 'ASC'];
-        $start = 0;
-        $result = $serviceBuilder
-            ->getCatalogScope()
-            ->product()
-            ->list($select, $filter, $order, $start);
-        foreach ($result->getProducts() as $itemResult) {
-            print("ID: {$itemResult->id}\n");
-            print("Name: {$itemResult->name}\n");
-            print("Active: {$itemResult->active}\n");
-            print("Available: {$itemResult->available}\n");
-            print("Date Created: {$itemResult->dateCreate->format(DATE_ATOM)}\n");
-        }
-    } catch (Throwable $e) {
-        print("Error: {$e->getMessage()}\n");
-    }
     ```
 
 {% endlist %}
@@ -356,11 +560,11 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **products**
-[`catalog_product[]`](../data-types.md#catalog_product) | An array of objects with information about the selected products ||
+[`catalog_product[]`](../data-types.md#catalog_product) | Array of objects with information about the selected products ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

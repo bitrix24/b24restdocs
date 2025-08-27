@@ -1,10 +1,10 @@
-# Delete Parent Product catalog.product.sku.delete
+# Delete Head Product catalog.product.sku.delete
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method deletes the parent product.
+This method deletes the head product.
 
 ## Method Parameters
 
@@ -14,9 +14,9 @@ This method deletes the parent product.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the parent product.
+[`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the head product.
 
-To obtain the identifiers of parent products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md) ||
+To obtain the identifiers of head products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md) ||
 |#
 
 ## Code Examples
@@ -48,6 +48,54 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'catalog.product.sku.delete',
+            {
+                id: 1288,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.sku.delete',
+                [
+                    'id' => 1288,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting product SKU: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.sku.delete',
         {
@@ -63,7 +111,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -84,7 +132,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -94,8 +142,8 @@ HTTP Status: **200**
         "finish": 1718630899.598307,
         "duration": 0.8025879859924316,
         "processing": 0.35277414321899414,
-        "date_start": "2024-06-17T16:28:18+03:00",
-        "date_finish": "2024-06-17T16:28:19+03:00"
+        "date_start": "2024-06-17T16:28:18+02:00",
+        "date_finish": "2024-06-17T16:28:19+02:00"
     }
 }
 ```
@@ -106,14 +154,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the parent product deletion ||
+[`boolean`](../../../data-types.md) | Result of deleting the head product ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {	
@@ -128,7 +176,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300040` | Insufficient permissions to delete the parent product
+|| `200040300040` | Insufficient permissions to delete the head product
 || 
 || `200040300040` | Insufficient permissions to delete the information block
 || 

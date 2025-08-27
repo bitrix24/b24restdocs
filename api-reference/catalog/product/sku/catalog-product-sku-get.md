@@ -1,27 +1,27 @@
-# Get Head Product Field Values catalog.product.sku.get
+# Get the values of the parent product fields catalog.product.sku.get
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method returns the field values of the head product by its identifier.
+The method returns the values of the parent product fields by identifier.
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note about required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the head product.
+[`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the parent product.
 
-To obtain the identifiers of head products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md) ||
+To obtain the identifiers of parent products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,6 +48,52 @@ To obtain the identifiers of head products, you need to use [catalog.product.sku
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.sku.get', {
+    			'id': 1289
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.sku.get',
+                [
+                    'id' => 1289
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        echo 'Info: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product SKU: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.sku.get', {
             'id': 1289
@@ -62,7 +108,7 @@ To obtain the identifiers of head products, you need to use [catalog.product.sku
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -83,7 +129,7 @@ To obtain the identifiers of head products, you need to use [catalog.product.sku
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -95,9 +141,9 @@ HTTP Status: **200**
             "canBuyZero": "Y",
             "code": "product_sku",
             "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-            "dateActiveTo": "2024-05-29T10:00:00+03:00",
-            "dateCreate": "2024-05-27T10:00:00+03:00",
+            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
+            "dateActiveTo": "2024-05-29T10:00:00+02:00",
+            "dateCreate": "2024-05-27T10:00:00+02:00",
             "detailPicture": {
                 "id": "6552",
                 "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6552\u0026fields%5BproductId%5D=1289",
@@ -112,7 +158,7 @@ HTTP Status: **200**
             "length": 100,
             "measure": 5,
             "modifiedBy": 1,
-            "name": "Head Product",
+            "name": "Parent Product",
             "previewPicture": {
                 "id": "6551",
                 "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6551\u0026fields%5BproductId%5D=1289",
@@ -139,7 +185,7 @@ HTTP Status: **200**
             "quantity": 10,
             "sort": 100,
             "subscribe": "Y",
-            "timestampX": "2024-06-17T16:03:20+03:00",
+            "timestampX": "2024-06-17T16:03:20+02:00",
             "type": 6,
             "vatId": 1,
             "vatIncluded": "Y",
@@ -153,8 +199,8 @@ HTTP Status: **200**
         "finish": 1718636891.096817,
         "duration": 0.6831381320953369,
         "processing": 0.27536606788635254,
-        "date_start": "2024-06-17T18:08:10+03:00",
-        "date_finish": "2024-06-17T18:08:11+03:00"
+        "date_start": "2024-06-17T18:08:10+02:00",
+        "date_finish": "2024-06-17T18:08:11+02:00"
     }
 }
 ```
@@ -167,14 +213,14 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **sku**
-[`catalog_product_sku`](../../data-types.md#catalog_product_sku) | Object containing information about the head product ||
+[`catalog_product_sku`](../../data-types.md#catalog_product_sku) | Object with information about the parent product ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -197,7 +243,7 @@ HTTP Status: **400**
 || 
 || `100` | The `id` parameter is not specified
 || 
-|| `0` | The head product does not exist
+|| `0` | The parent product does not exist
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

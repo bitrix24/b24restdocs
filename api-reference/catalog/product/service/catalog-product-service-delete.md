@@ -48,6 +48,56 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.service.delete',
+    		{
+    			id: 1264,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.service.delete',
+                [
+                    'id' => 1264,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting product service: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.service.delete',
         {
@@ -63,7 +113,7 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -84,7 +134,7 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -94,8 +144,8 @@ HTTP Status: **200**
         "finish": 1718362659.517447,
         "duration": 0.8405179977416992,
         "processing": 0.39598703384399414,
-        "date_start": "2024-06-14T13:57:38+03:00",
-        "date_finish": "2024-06-14T13:57:39+03:00"
+        "date_start": "2024-06-14T13:57:38+02:00",
+        "date_finish": "2024-06-14T13:57:39+02:00"
     }
 }
 ```
@@ -113,7 +163,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {	

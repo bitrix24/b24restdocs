@@ -39,7 +39,7 @@ To obtain product identifiers, use [catalog.product.list](./catalog-product-list
 
 - `DETAIL_PICTURE` — detailed picture
 - `PREVIEW_PICTURE` — preview picture
-- `PROPERTY_N` — property, where `N` is the property identifier or code
+- `PROPERTY_N` — property, where `N` is the property identifier or property code
 
 To obtain existing identifiers or property codes for products, use [catalog.productProperty.list](../product-property/catalog-product-property-list.md)
  ||
@@ -76,6 +76,62 @@ To obtain existing identifiers or property codes for products, use [catalog.prod
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.download',
+    		{
+    			fields: {
+    				fileId: 6439,
+    				productId: 1243,
+    				fieldName: 'detailPicture',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.download',
+                [
+                    'fields' => [
+                        'fileId'    => 6439,
+                        'productId' => 1243,
+                        'fieldName' => 'detailPicture',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error downloading product file: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.download',
         {
@@ -95,7 +151,7 @@ To obtain existing identifiers or property codes for products, use [catalog.prod
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -145,11 +201,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog ||
+|| `200040300010` | Insufficient rights to read the trade catalog ||
 || `0` | The product with the specified identifier does not exist ||
 || `0` | The specified property does not exist or is not a file ||
 || `0` | The file with the specified identifier does not exist ||
-|| `0` | Required fields were not provided ||
+|| `0` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

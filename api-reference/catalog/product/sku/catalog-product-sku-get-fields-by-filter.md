@@ -60,6 +60,60 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.sku.getFieldsByFilter',
+    		{
+    			filter: {
+    				iblockId: 23,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.sku.getFieldsByFilter',
+                [
+                    'filter' => [
+                        'iblockId' => 23,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting SKU fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.sku.getFieldsByFilter', 
         {
@@ -76,7 +130,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -130,7 +184,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Allow Purchase When Out of Stock",
+                "name": "Permission to Buy When Out of Stock",
                 "type": "char"
             },
             "code": {
@@ -299,14 +353,14 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Purchasing Price Currency",
+                "name": "Currency of Purchase Price",
                 "type": "string"
             },
             "purchasingPrice": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Purchasing Price",
+                "name": "Purchase Price",
                 "type": "string"
             },
             "quantity": {
@@ -327,7 +381,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Allow Subscription to Product",
+                "name": "Permission to Subscribe to Product",
                 "type": "char"
             },
             "timestampX": {
@@ -386,8 +440,8 @@ HTTP Status: **200**
         "finish": 1718694622.865668,
         "duration": 0.5645740032196045,
         "processing": 0.1382160186767578,
-        "date_start": "2024-06-18T10:10:22+03:00",
-        "date_finish": "2024-06-18T10:10:22+03:00"
+        "date_start": "2024-06-18T10:10:22+02:00",
+        "date_finish": "2024-06-18T10:10:22+02:00"
     }
 }
 ```
@@ -400,9 +454,9 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **sku**
-[`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_product_sku](../../data-types.md#catalog_product_sku), and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
+[`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` — identifier of the field of the [catalog_product_sku](../../data-types.md#catalog_product_sku) object, and `value` — object of type [rest_field_description](../../data-types.md#rest_field_description) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

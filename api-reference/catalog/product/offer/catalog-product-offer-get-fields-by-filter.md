@@ -60,6 +60,60 @@ To obtain existing identifiers of information blocks of trade catalogs, use [cat
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.offer.getFieldsByFilter', 
+    		{
+    			filter: {
+    				iblockId: 24,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.offer.getFieldsByFilter',
+                [
+                    'filter' => [
+                        'iblockId' => 24,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting fields by filter: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.offer.getFieldsByFilter', 
         {
@@ -76,7 +130,7 @@ To obtain existing identifiers of information blocks of trade catalogs, use [cat
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -130,7 +184,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Permission to Purchase When Out of Stock",
+                "name": "Permission to Buy When Out of Stock",
                 "type": "char"
             },
             "code": {
@@ -317,14 +371,14 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Currency of Purchase Price",
+                "name": "Purchasing Price Currency",
                 "type": "string"
             },
             "purchasingPrice": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Purchase Price",
+                "name": "Purchasing Price",
                 "type": "string"
             },
             "quantity": {
@@ -434,7 +488,7 @@ HTTP Status: **200**
 || **offer**
 [`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the field of the object [catalog_product_offer](../../data-types.md#catalog_product_offer), and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

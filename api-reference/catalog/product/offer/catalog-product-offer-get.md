@@ -1,10 +1,10 @@
-# Get Variation Field Values catalog.product.offer.get
+# Get Product Variation Field Values catalog.product.offer.get
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns the field values of a product variation by its identifier.
+This method returns the values of the product variation fields by identifier.
 
 ## Method Parameters
 
@@ -49,6 +49,53 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.offer.get', {
+    			'id': 1286
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.offer.get',
+                [
+                    'id' => 1286
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product offer: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.offer.get', {
             'id': 1286
@@ -63,7 +110,7 @@ To obtain the identifiers of product variations, you need to use [catalog.produc
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

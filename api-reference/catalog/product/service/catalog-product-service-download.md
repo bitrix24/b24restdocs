@@ -1,4 +1,4 @@
-# Download Service Files catalog.product.service.download
+# Download Files for Service catalog.product.service.download
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
@@ -27,20 +27,20 @@ This method downloads service files based on the provided parameters.
 || **fileId***
 [`integer`](../../../data-types.md) | Identifier of the registered file.
 
-To obtain the identifiers of service files, you need to use [catalog.product.service.get](./catalog-product-service-get.md) or [catalog.product.service.list](./catalog-product-service-list.md)
+To obtain file identifiers for the service, you need to use [catalog.product.service.get](./catalog-product-service-get.md) or [catalog.product.service.list](./catalog-product-service-list.md)
 ||
 || **productId***
 [`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Identifier of the service.
 
-To obtain the identifiers of the service, you need to use [catalog.product.service.list](./catalog-product-service-list.md)
+To obtain service identifiers, you need to use [catalog.product.service.list](./catalog-product-service-list.md)
 ||
 || **fieldName***
-[`string`](../../../data-types.md) | The name of the field (property or field of the information block element) where the file is stored. Possible values:
+[`string`](../../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored. Possible values:
 - `DETAIL_PICTURE` — detailed picture
 - `PREVIEW_PICTURE` — preview picture
-- `PROPERTY_N` — property, where `N` is the property identifier or code
+- `PROPERTY_N` — property, where `N` is the property identifier or property code
 
-To obtain existing identifiers or property codes of services, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
+To obtain existing identifiers or property codes for services, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
 ||
 |#
 
@@ -73,6 +73,62 @@ To obtain existing identifiers or property codes of services, you need to use [c
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.service.download',
+    		{
+    			fields: {
+    				fileId: 6497,
+    				productId: 1265,
+    				fieldName: 'detailPicture',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.product.service.download',
+                [
+                    'fields' => [
+                        'fileId'    => 6497,
+                        'productId' => 1265,
+                        'fieldName' => 'detailPicture',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error downloading product service: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.product.service.download',
         {
@@ -92,7 +148,7 @@ To obtain existing identifiers or property codes of services, you need to use [c
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -142,7 +198,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog
+|| `200040300010` | Insufficient rights to read the trade catalog
 || 
 || `0` | The service with the specified identifier does not exist
 || 

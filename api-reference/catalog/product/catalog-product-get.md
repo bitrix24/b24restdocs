@@ -49,40 +49,26 @@ To obtain product identifiers, you need to use [catalog.product.list](./catalog-
 - JS
 
     ```js
-    BX24.callMethod(
-        'catalog.product.get',
-        {
-            'id': 1243
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
-        }
-    );
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.product.get',
+    		{
+    			'id': 1243
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
     ```
 
 - PHP
 
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'catalog.product.get',
-        [
-            'id' => 1243
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
-  
     ```php       
     try {
         $productId = 123; // Replace with the actual product ID you want to retrieve
@@ -110,11 +96,46 @@ To obtain product identifiers, you need to use [catalog.product.list](./catalog-
     }
     ```
 
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'catalog.product.get',
+        {
+            'id': 1243
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.product.get',
+        [
+            'id' => 1243
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -207,7 +228,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
