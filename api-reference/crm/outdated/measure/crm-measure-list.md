@@ -8,9 +8,9 @@ The method returns a list of measurement units.
 
 See the description of [list methods](../../../how-to-call-rest-api/list-methods-pecularities.md).
 
-## Code Examples
+## Code examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -20,7 +20,7 @@ See the description of [list methods](../../../how-to-call-rest-api/list-methods
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"ID":"ASC"},"filter":{"IS_DEFAULT":"Y"},"select":["ID","CODE","STAGE_ID","SYMBOL_INTL","SYMBOL_RUS"]}' \
+    -d '{"order":{"ID":"ASC"},"filter":{"IS_DEFAULT":"Y"},"select":["ID","CODE","STAGE_ID","SYMBOL_INTL","SYMBOL_INTL"]}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.measure.list
     ```
 
@@ -30,11 +30,93 @@ See the description of [list methods](../../../how-to-call-rest-api/list-methods
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"order":{"ID":"ASC"},"filter":{"IS_DEFAULT":"Y"},"select":["ID","CODE","STAGE_ID","SYMBOL_INTL","SYMBOL_RUS"],"auth":"**put_access_token_here**"}' \
+    -d '{"order":{"ID":"ASC"},"filter":{"IS_DEFAULT":"Y"},"select":["ID","CODE","STAGE_ID","SYMBOL_INTL","SYMBOL_INTL"],"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.measure.list
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.measure.list',
+        {
+          order: {"ID": "ASC"},
+          filter: {"IS_DEFAULT": "Y"},
+          select: ["ID", "CODE", "STAGE_ID", "SYMBOL_INTL", "SYMBOL_INTL"]
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.measure.list', {
+        order: {"ID": "ASC"},
+        filter: {"IS_DEFAULT": "Y"},
+        select: ["ID", "CODE", "STAGE_ID", "SYMBOL_INTL", "SYMBOL_INTL"]
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.measure.list', {
+        order: {"ID": "ASC"},
+        filter: {"IS_DEFAULT": "Y"},
+        select: ["ID", "CODE", "STAGE_ID", "SYMBOL_INTL", "SYMBOL_INTL"]
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.measure.list',
+                [
+                    'order'  => ['ID' => 'ASC'],
+                    'filter' => ['IS_DEFAULT' => 'Y'],
+                    'select' => ['ID', 'CODE', 'STAGE_ID', 'SYMBOL_INTL', 'SYMBOL_INTL'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+        if ($result->more()) {
+            $result->next();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching measure list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -42,7 +124,7 @@ See the description of [list methods](../../../how-to-call-rest-api/list-methods
         {
             order: {"ID": "ASC"},
             filter: {"IS_DEFAULT": "Y"},
-            select: ["ID", "CODE", "STAGE_ID", "SYMBOL_INTL", "SYMBOL_RUS"]
+            select: ["ID", "CODE", "STAGE_ID", "SYMBOL_INTL", "SYMBOL_INTL"]
         },
         function (result)
         {
@@ -58,7 +140,7 @@ See the description of [list methods](../../../how-to-call-rest-api/list-methods
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -68,7 +150,7 @@ See the description of [list methods](../../../how-to-call-rest-api/list-methods
         [
             'order' => ['ID' => 'ASC'],
             'filter' => ['IS_DEFAULT' => 'Y'],
-            'select' => ['ID', 'CODE', 'STAGE_ID', 'SYMBOL_INTL', 'SYMBOL_RUS']
+            'select' => ['ID', 'CODE', 'STAGE_ID', 'SYMBOL_INTL', 'SYMBOL_INTL']
         ]
     );
 
@@ -79,7 +161,7 @@ See the description of [list methods](../../../how-to-call-rest-api/list-methods
 
 {% endlist %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](./crm-measure-add.md)
 - [{#T}](./crm-measure-update.md)

@@ -14,7 +14,7 @@ The method `crm.productsection.get` [returns the product section](./crm-product-
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the product section ||
+[`integer`](../../data-types.md) | Product section ID ||
 |#
 
 ## Code Examples
@@ -55,6 +55,57 @@ The method `crm.productsection.get` [returns the product section](./crm-product-
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.productsection.get",
+    		{ id: id }
+    	);
+    
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = $_POST['id'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.productsection.get',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     BX24.callMethod(
         "crm.productsection.get",
@@ -69,7 +120,7 @@ The method `crm.productsection.get` [returns the product section](./crm-product-
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

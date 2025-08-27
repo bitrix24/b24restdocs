@@ -4,6 +4,12 @@
 >
 > Who can execute the method: user with CRM administrator rights
 
+{% note warning "Method development halted" %}
+
+The method `crm.vat.update` is still operational, but there is a more relevant alternative [catalog.vat.update](../../../catalog/vat/catalog-vat-update.md).
+
+{% endnote %}
+
 The method `crm.vat.update` updates the parameters of an existing VAT rate.
 
 ## Method Parameters
@@ -14,18 +20,18 @@ The method `crm.vat.update` updates the parameters of an existing VAT rate.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../../data-types.md) | Identifier of the VAT rate to be updated. You can get a list of rates using the [crm.vat.list](./crm-vat-list.md) method. ||
+[`integer`](../../../data-types.md) | Identifier of the VAT rate to be updated. You can get a list of rates using the [crm.vat.list](./crm-vat-list.md) method ||
 || **fields*** 
 [`object`](../../../data-types.md) | Array of fields to update. The list of available fields is described [below](#fields)  ||
 |#
 
-### Fields Parameter {#fields}
+### Parameter fields {#fields}
 
 #|
 || **Name**
  `type` | **Description** ||
 || **ACTIVE** 
-[`string`](../../../data-types.md) | Activity status of the rate:
+[`string`](../../../data-types.md) | Activity of the rate:
 - `Y` — active,
 - `N` — inactive.
 ||
@@ -34,7 +40,7 @@ The method `crm.vat.update` updates the parameters of an existing VAT rate.
 || **NAME*** 
 [`string`](../../../data-types.md) | Name of the rate ||
 || **RATE*** 
-[`double`](../../../data-types.md) | Value of the VAT rate, % ||
+[`double`](../../../data-types.md) | VAT rate value, % ||
 |#
 
 ## Code Examples
@@ -42,27 +48,6 @@ The method `crm.vat.update` updates the parameters of an existing VAT rate.
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.vat.update",
-        {
-            id: 7,
-            fields: {
-                ACTIVE: "N",
-                NAME: "VAT 20% (inactive)"
-            }
-        },
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -84,7 +69,90 @@ The method `crm.vat.update` updates the parameters of an existing VAT rate.
     https://**put_your_bitrix24_address**/rest/crm.vat.update
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.vat.update",
+    		{
+    			id: 7,
+    		fields: {
+    				ACTIVE: "N",
+    				NAME: "VAT 20% (inactive)"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error()) {
+    		console.error(result.error());
+    	} else {
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.vat.update',
+                [
+                    'id' => 7,
+                    'fields' => [
+                        'ACTIVE' => 'N',
+                        'NAME' => 'VAT 20% (inactive)'
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating VAT: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.vat.update",
+        {
+            id: 7,
+            fields: {
+                ACTIVE: "N",
+                NAME: "VAT 20% (inactive)"
+            }
+        },
+        function(result) {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -159,7 +227,7 @@ HTTP Status: **400**
 || `400`     | `Invalid parameters.` | Invalid parameters were provided ||
 || `400`     | `Access denied.` | No rights to perform the operation ||
 || `400`     | `Invalid identifier.` | An invalid identifier was provided ||
-|| `400`     | `Error on updating VAT rate.` | Error while updating the VAT rate ||
+|| `400`     | `Error on updating VAT rate.` | Error updating the VAT rate ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -16,7 +16,7 @@ No parameters required.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -28,7 +28,7 @@ No parameters required.
     -H "Accept: application/json" \
     -d '{"id":10}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.product.property.types
-   ```
+    ```
 
 - cURL (OAuth)
 
@@ -41,6 +41,56 @@ No parameters required.
     ```
 
 - JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            "crm.product.property.types",
+            {
+                id: 10
+            }
+        );
+        
+        const result = response.getData().result;
+        console.dir(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.product.property.types',
+                [
+                    'id' => 10
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.product.property.types: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -58,7 +108,7 @@ No parameters required.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

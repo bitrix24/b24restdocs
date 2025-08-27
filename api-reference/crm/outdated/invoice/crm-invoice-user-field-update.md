@@ -10,7 +10,7 @@ The method is deprecated. It is recommended to use [`Universal methods for invoi
 
 {% endnote %}
 
-This method updates an existing custom field for invoices.
+The method updates an existing custom field for invoices.
 
 ## Method Parameters
 
@@ -20,14 +20,14 @@ This method updates an existing custom field for invoices.
 || **Name**
 `type` | **Description** ||
 || **id** | Identifier of the custom field ||
-|| **fields** | Set of fields - an array of the form `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values from the method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md) ||
-|| **LIST** | Contains a set of list values for custom fields of type List. Specified when creating/updating the field. Each value is an array with the following fields: 
-- **VALUE** - the value of the list item. This field is required when creating a new item  
+|| **fields** | Set of fields - an array of the form `array("updatable field"=>"value"[, ...])`, where "updatable field" can take values from the method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md) ||
+|| **LIST** | Contains a set of list values for custom fields of type List. Specified when creating/updating the field. Each value is an array with the fields: 
+- **VALUE** - value of the list item. This field is required when creating a new item  
 - **SORT** - sorting 
-- **DEF** - if equal to Y, the list item is the default value. For multiple fields, multiple DEF=Y are allowed. For non-multiple fields, the first one will be considered default  
+- **DEF** - if equal to Y, the list item is the default value. For multiple fields, multiple DEF=Y are allowed. For non-multiple fields, the first will be considered default  
 - **XML_ID** - external code of the value. This parameter is considered only when updating already existing values of the list item
 - **ID** - identifier of the value. If specified, it is considered that this is an update of an existing list item value, not the creation of a new one. Makes sense only when calling the `*.userfield.update` methods
-- **DEL** - if equal to Y, the existing list item will be deleted. Applied if the ID parameter is filled ||
+- **DEL** - if equal to Y, the existing list item will be deleted. Used if the ID parameter is filled  ||
 |#
 
 ## Code Examples
@@ -57,6 +57,71 @@ This method updates an existing custom field for invoices.
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const label = prompt("Enter new name");
+    
+    	const response = await $b24.callMethod(
+    		"crm.invoice.userfield.update",
+    		{
+    			id: id,
+    			fields: {
+    				"EDIT_FORM_LABEL": label,
+    				"LIST_COLUMN_LABEL": label
+    			}
+    		}
+    	);
+    
+    	const result = response.getData().result;
+    	console.dir(result);
+    	if (response.more())
+    		response.next();
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = $_POST['id'];
+    $label = $_POST['label'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.invoice.userfield.update',
+                [
+                    'id' => $id,
+                    'fields' => [
+                        'EDIT_FORM_LABEL'   => $label,
+                        'LIST_COLUMN_LABEL' => $label
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        if ($response->more()) {
+            $response->next();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     var label = prompt("Enter new name");
     BX24.callMethod(
@@ -82,7 +147,7 @@ This method updates an existing custom field for invoices.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

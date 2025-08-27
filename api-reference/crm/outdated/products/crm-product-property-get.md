@@ -6,13 +6,13 @@
 
 {% note warning "Method development has been halted" %}
 
-The method `crm.product.property.get` is still operational, but there is a more relevant alternative [catalog.productProperty.get](../../../catalog/product-property/catalog-product-property-get.md).
+The method `crm.product.property.get` continues to function, but there is a more relevant alternative [catalog.productProperty.get](../../../catalog/product-property/catalog-product-property-get.md).
 
 {% endnote %}
 
 The method `crm.product.property.get` returns the property of products by ID.
 
-## Method parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -23,7 +23,7 @@ The method `crm.product.property.get` returns the property of products by ID.
 [`integer`](../../../data-types.md) | Identifier of the product property ||
 |#
 
-## Code examples
+## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -36,7 +36,7 @@ The method `crm.product.property.get` returns the property of products by ID.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":"your_product_id"}' \ # Replace 'your_product_id' with the actual product ID
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.product.get
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.product.get
     ```
 
 - cURL (OAuth)
@@ -46,10 +46,64 @@ The method `crm.product.property.get` returns the property of products by ID.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":"your_property_id"}' \ # Replace 'your_property_id' with the actual property ID
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.product.property.get
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.product.property.get
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.product.property.get",
+    		{
+    			id: id
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = $_POST['id'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.product.property.get',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.product.property.get: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var id = prompt("Enter ID");
@@ -68,7 +122,7 @@ The method `crm.product.property.get` returns the property of products by ID.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

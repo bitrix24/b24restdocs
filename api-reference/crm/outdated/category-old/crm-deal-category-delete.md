@@ -1,4 +1,4 @@
-# Delete Deal Category crm.dealcategory.delete
+# Delete deal category crm.dealcategory.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -10,7 +10,7 @@ The method is deprecated. It is recommended to use [`crm.category.delete`](../..
 
 {% endnote %}
 
-This method deletes a deal category.
+The method deletes a deal category.
 
 ## Method Parameters
 
@@ -21,7 +21,6 @@ This method deletes a deal category.
 `type` | **Description** ||
 || **id** 
 [`integer`](../../../data-types.md)| Identifier of the category ||
-
 |#
 
 ## Code Examples
@@ -53,6 +52,64 @@ This method deletes a deal category.
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.dealcategory.delete",
+    		{ id: id }
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = readline("Enter ID");
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.dealcategory.delete',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting deal category: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     BX24.callMethod(
         "crm.dealcategory.delete",
@@ -67,7 +124,7 @@ This method deletes a deal category.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

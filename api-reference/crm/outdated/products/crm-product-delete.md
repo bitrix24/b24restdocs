@@ -6,13 +6,13 @@
 
 {% note warning "Method development has been halted" %}
 
-The method `crm.product.delete` continues to function, but there are more relevant alternatives [catalog.product.*](../../../catalog/product/index.md).
+The method `crm.product.delete` is still operational, but there are more relevant alternatives [catalog.product.*](../../../catalog/product/index.md).
 
 {% endnote %}
 
 The method `crm.product.delete` removes a product.
 
-## Method parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -23,7 +23,7 @@ The method `crm.product.delete` removes a product.
 [`integer`](../../../data-types.md) | Product identifier ||
 |#
 
-## Code examples
+## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -52,6 +52,46 @@ The method `crm.product.delete` removes a product.
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.product.delete",
+    		{ id: id }
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.info(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php        
+    try {
+        $productId = 123; // Example product ID
+        $result = $serviceBuilder->getCRMScope()->product()->delete($productId);
+        
+        if ($result->isSuccess()) {
+            print("Item deleted successfully.");
+        } else {
+            print("Failed to delete item.");
+        }
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage());
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     BX24.callMethod(
         "crm.product.delete",
@@ -66,7 +106,7 @@ The method `crm.product.delete` removes a product.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -83,23 +123,6 @@ The method `crm.product.delete` removes a product.
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
-
-    ```php        
-    try {
-        $productId = 123; // Example product ID
-        $result = $serviceBuilder->getCRMScope()->product()->delete($productId);
-        
-        if ($result->isSuccess()) {
-            print("Item deleted successfully.");
-        } else {
-            print("Failed to delete item.");
-        }
-    } catch (Throwable $e) {
-        print("An error occurred: " . $e->getMessage());
-    }
     ```
 
 {% endlist %}

@@ -1,4 +1,4 @@
-# Get Descriptions of Deal Category Fields crm.dealcategory.fields
+# Get descriptions of fields for deal categories crm.dealcategory.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -10,13 +10,13 @@ The method is deprecated. It is recommended to use [`crm.category.fields`](../..
 
 {% endnote %}
 
-The method returns the description of deal category fields.
+The method returns descriptions of fields for deal categories.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -43,6 +43,52 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.dealcategory.fields",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.dealcategory.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching deal category fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.dealcategory.fields",
         {},
@@ -56,7 +102,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -75,7 +121,7 @@ No parameters.
 
 ### Returned Data
 
-{% include [Note about required parameters](../../../../_includes/required.md) %}
+{% include [Footnote about required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -83,11 +129,11 @@ No parameters.
 || **CREATED_DATE** 
 [`datetime`](../../../data-types.md) | Creation date  ||
 || **ID** 
-[`integer`](../../../data-types.md)| Deal category identifier ||
+[`integer`](../../../data-types.md)| Identifier of the deal category ||
 || **IS_LOCKED**
-[`char`](../../../data-types.md) | Is locked  ||
+[`char`](../../../data-types.md) | Locked  ||
 || **NAME***
-[`string`](../../../data-types.md)| Category name  ||
+[`string`](../../../data-types.md)| Name of the category  ||
 || **SORT** 
 [`integer`](../../../data-types.md) | Sorting   ||
 |#

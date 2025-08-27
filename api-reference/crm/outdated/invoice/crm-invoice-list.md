@@ -14,12 +14,12 @@ The method returns a list of invoices. It is an implementation of the list metho
 
 When querying, use masks:
 
-- "*" — to select all fields (excluding custom ones)
+- "*" — to select all fields (excluding custom fields)
 - "UF_*" — to select all custom fields.
 
 The method does not return properties and line items of the invoice. To obtain properties and line items, use the method [crm.invoice.get](./crm-invoice-get.md).
 
-## Method Parameters
+## Method parameters
 
 See the description of [list methods](../../../how-to-call-rest-api/list-methods-pecularities.md).
 
@@ -34,11 +34,11 @@ See the description of [list methods](../../../how-to-call-rest-api/list-methods
  | Record sorting. Sorting is supported by the same fields as in the filter ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-This example outputs data to the console. If you need to display data differently, implement your own data handling for the results returned by `result.data()` and `result.error()`.
+The example outputs data to the console. If you need to output data differently, implement your own data handling based on the results returned by `result.data()` and `result.error()` calls.
 
 {% list tabs %}
 
@@ -65,6 +65,84 @@ This example outputs data to the console. If you need to display data differentl
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.invoice.list',
+        {
+          "order": { "DATE_INSERT": "ASC" },
+          "filter": { ">PRICE": 100 },
+          "select": [ "ID", "ACCOUNT_NUMBER", "ORDER_TOPIC", "DATE_INSERT", "STATUS_ID", "PRICE", "CURRENCY_ID" ]
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.invoice.list', { "order": { "DATE_INSERT": "ASC" }, "filter": { ">PRICE": 100 }, "select": [ "ID", "ACCOUNT_NUMBER", "ORDER_TOPIC", "DATE_INSERT", "STATUS_ID", "PRICE", "CURRENCY_ID" ] }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.invoice.list', { "order": { "DATE_INSERT": "ASC" }, "filter": { ">PRICE": 100 }, "select": [ "ID", "ACCOUNT_NUMBER", "ORDER_TOPIC", "DATE_INSERT", "STATUS_ID", "PRICE", "CURRENCY_ID" ] }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.invoice.list',
+                [
+                    'order' => ['DATE_INSERT' => 'ASC'],
+                    'filter' => ['>PRICE' => 100],
+                    'select' => ['ID', 'ACCOUNT_NUMBER', 'ORDER_TOPIC', 'DATE_INSERT', 'STATUS_ID', 'PRICE', 'CURRENCY_ID'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+            if ($result->more()) {
+                $result->next();
+            }
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching invoice list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.invoice.list",
         {
@@ -86,7 +164,7 @@ This example outputs data to the console. If you need to display data differentl
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -107,7 +185,7 @@ This example outputs data to the console. If you need to display data differentl
 
 {% endlist %}
 
-## Fields Returned by the Method
+## Fields returned by the method
 
 #|
 || **Field** / **Type** | **Description** | **Note** ||
@@ -130,13 +208,13 @@ This example outputs data to the console. If you need to display data differentl
 || **DATE_PAY_BEFORE**
 [`date`](../../../data-types.md) | Payment due date | ||
 || **DATE_PAYED**
-[`datetime`](../../../data-types.md) | Date moved to paid status | Read-only ||
+[`datetime`](../../../data-types.md) | Date changed to paid status | Read-only ||
 || **DATE_STATUS**
-[`datetime`](../../../data-types.md) | Date status changed | Read-only ||
+[`datetime`](../../../data-types.md) | Date of status change | Read-only ||
 || **DATE_UPDATE**
-[`datetime`](../../../data-types.md) | Date modified | Read-only ||
+[`datetime`](../../../data-types.md) | Date of update | Read-only ||
 || **EMP_PAYED_ID**
-[`integer`](../../../data-types.md) | Identifier of the user who last marked the invoice as "paid" | Read-only ||
+[`integer`](../../../data-types.md) | Identifier of the user who last marked the invoice as paid | Read-only ||
 || **EMP_STATUS_ID**
 [`integer`](../../../data-types.md) | Identifier of the user who last changed the invoice status | Read-only ||
 || **LID**
@@ -148,7 +226,7 @@ This example outputs data to the console. If you need to display data differentl
 || **ORDER_TOPIC**
 [`string`](../../../data-types.md) | Subject | Required ||
 || **PAY_SYSTEM_ID**
-[`integer`](../../../data-types.md) | Identifier of the printed form | Required ||
+[`integer`](../../../data-types.md) | Identifier of the payment form | Required ||
 || **PAY_VOUCHER_DATE**
 [`date`](../../../data-types.md) | Payment date | Specified if the invoice is paid ||
 || **PAY_VOUCHER_NUM**
@@ -184,9 +262,9 @@ This example outputs data to the console. If you need to display data differentl
 || **UF_COMPANY_ID**
 [`integer`](../../../data-types.md) | Company identifier | Specified if the payer is a "Legal entity" ||
 || **UF_CONTACT_ID**
-[`integer`](../../../data-types.md) | Contact identifier | Specified if the payer is an "Individual" or as a contact person for the company ||
+[`integer`](../../../data-types.md) | Contact identifier | Specified if the payer is a "Natural person" or as a contact person of the company ||
 || **UF_MYCOMPANY_ID**
-[`integer`](../../../data-types.md) | Identifier of your company | Specified as the company with the invoice details (link to the details is set separately) ||
+[`integer`](../../../data-types.md) | Identifier of your company | Specified as the company with invoice details (link to details is set separately) ||
 || **UF_DEAL_ID**
 [`integer`](../../../data-types.md) | Identifier of the related deal | ||
 || **UF_QUOTE_ID**

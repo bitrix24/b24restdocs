@@ -15,9 +15,9 @@ This method updates an existing measurement unit.
 `type` | **Description** ||
 || **id*** | Identifier of the measurement unit ||
 || **fields**
-[`array`](../../data-types.md) | [Set of fields](./crm-measure-add.md) — an array of the form `array("field_to_update"=>"value"[, ...])`, where the field to update can take values from the method [crm.measure.fields](./crm-measure-fields.md). 
+[`array`](../../data-types.md) | [Set of fields](./crm-measure-add.md) — an array of the form `array("field_to_update"=>"value"[, ...])`, where the field to update can take values returned by the method [crm.measure.fields](./crm-measure-fields.md). 
 
-To find out the required format of the fields, execute the method [crm.measure.fields](./crm-measure-fields.md) and check the format of the returned values for those fields 
+To find out the required format of the fields, execute the method [crm.measure.fields](./crm-measure-fields.md) and check the format of the returned values for these fields 
 ||
 |#
 
@@ -50,6 +50,71 @@ To find out the required format of the fields, execute the method [crm.measure.f
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const title = prompt("Enter new name for the measurement unit");
+    	
+    	const response = await $b24.callMethod(
+    		"crm.measure.update",
+    		{
+    			id: id,
+    			fields: {
+    				"MEASURE_TITLE": title
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = readline("Enter ID");
+    $title = readline("Enter new name for the measurement unit");
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.measure.update',
+                [
+                    'id' => $id,
+                    'fields' => [
+                        'MEASURE_TITLE' => $title
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating measure: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     var title = prompt("Enter new name for the measurement unit");
     BX24.callMethod(
@@ -70,7 +135,7 @@ To find out the required format of the fields, execute the method [crm.measure.f
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

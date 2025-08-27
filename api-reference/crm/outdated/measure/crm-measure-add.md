@@ -14,7 +14,7 @@ This method adds a new measurement unit.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`array`](../../data-types.md) | Set of fields — an array of the form `array("field"=>"value"[, ...])`, containing the values of the measurement unit fields. 
+[`array`](../../data-types.md) | Set of fields — an array of the form `array("field"=>"value"[, ...])`, containing the values of the measurement unit fields.
 
 To find out the required format of the fields, execute the method [crm.measure.fields](./crm-measure-fields.md) and check the format of the received values for these fields 
 ||
@@ -70,6 +70,66 @@ To find out the required format of the fields, execute the method [crm.measure.f
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.measure.add',
+    		{
+    			fields: {
+    				"CODE": "212",
+    				"MEASURE_TITLE": "Watt",
+    				"SYMBOL_RUS": "W",
+    				"SYMBOL_INTL": "W",
+    				"SYMBOL_LETTER_INTL": "WTT",
+    				"IS_DEFAULT": "N"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info('Created measurement unit with ID ' + result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.measure.add',
+                [
+                    'fields' => [
+                        'CODE'              => '212',
+                        'MEASURE_TITLE'     => 'Watt',
+                        'SYMBOL_RUS'        => 'W',
+                        'SYMBOL_INTL'       => 'W',
+                        'SYMBOL_LETTER_INTL' => 'WTT',
+                        'IS_DEFAULT'        => 'N',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Created measurement unit with ID ' . $result;
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating measurement unit: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.measure.add",
         {
@@ -87,12 +147,12 @@ To find out the required format of the fields, execute the method [crm.measure.f
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Measurement unit created with ID " + result.data());
+                console.info("Created measurement unit with ID " + result.data());
         }
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

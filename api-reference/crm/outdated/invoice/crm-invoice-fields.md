@@ -1,4 +1,4 @@
-# Get Invoice Fields and Associated Products crm.invoice.fields
+# Get invoice fields and the products included in it crm.invoice.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -10,13 +10,13 @@ The method is deprecated. It is recommended to use [`Universal methods for invoi
 
 {% endnote %}
 
-The method returns a description of the fields of the [invoice](./crm-invoice-add.md), including [custom](./crm-invoice-user-field-add.md).
+The method returns a description of the fields of the [invoice](./crm-invoice-add.md), including [custom fields](./crm-invoice-user-field-add.md).
 
 No parameters.
 
-## Code Examples
+## Code examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -43,6 +43,59 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.invoice.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.invoice.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching invoice fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.invoice.fields",
         {},
@@ -56,7 +109,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -73,9 +126,9 @@ No parameters.
 
 {% endlist %}
 
-### Returned Data
+### Returned data
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note about required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -95,17 +148,17 @@ No parameters.
 || **DATE_INSERT**
 [`datetime`](../../../data-types.md) | Creation date | ||
 || **DATE_MARKED**
-[`datetime`](../../../data-types.md) | Rejection date | Provided if the invoice is rejected ||
+[`datetime`](../../../data-types.md) | Rejection date | Specified if the invoice is rejected ||
 || **DATE_PAY_BEFORE**
 [`date`](../../../data-types.md) | Payment due date | ||
 || **DATE_PAYED**
 [`datetime`](../../../data-types.md) | Date changed to paid status | Read-only ||
 || **DATE_STATUS**
-[`datetime`](../../../data-types.md) | Date status changed | Read-only ||
+[`datetime`](../../../data-types.md) | Date of status change | Read-only ||
 || **DATE_UPDATE**
-[`datetime`](../../../data-types.md) | Date updated | Read-only ||
+[`datetime`](../../../data-types.md) | Date of modification | Read-only ||
 || **EMP_PAYED_ID**
-[`integer`](../../../data-types.md) | Identifier of the user who last marked the invoice as paid | Read-only ||
+[`integer`](../../../data-types.md) | Identifier of the user who last marked the invoice as "paid" | Read-only ||
 || **EMP_STATUS_ID**
 [`integer`](../../../data-types.md) | Identifier of the user who last changed the invoice status | Read-only ||
 || **LID**
@@ -115,11 +168,11 @@ No parameters.
 || **ORDER_TOPIC***
 [`string`](../../../data-types.md) | Subject |  ||
 || **PAY_SYSTEM_ID***
-[`integer`](../../../data-types.md) | Identifier of the payment form |  ||
+[`integer`](../../../data-types.md) | Identifier of the printed form |  ||
 || **PAY_VOUCHER_DATE**
-[`date`](../../../data-types.md) | Payment date | Provided if the invoice is paid ||
+[`date`](../../../data-types.md) | Payment date | Specified if the invoice is paid ||
 || **PAY_VOUCHER_NUM**
-[`string`](../../../data-types.md) | Payment document number | Provided if the invoice is paid ||
+[`string`](../../../data-types.md) | Payment document number | Specified if the invoice is paid ||
 || **PAYED**
 [`char`](../../../data-types.md) | Payment status | Read-only ||
 || **PERSON_TYPE_ID***
@@ -127,7 +180,7 @@ No parameters.
 || **PRICE**
 [`double`](../../../data-types.md) | Amount | Read-only ||
 || **REASON_MARKED**
-[`string`](../../../data-types.md) | Status comment | Provided if the invoice is paid or rejected ||
+[`string`](../../../data-types.md) | Status comment | Specified if the invoice is paid or rejected ||
 || **RESPONSIBLE_EMAIL**
 [`string`](../../../data-types.md) | Responsible person's e-mail | Read-only ||
 || **RESPONSIBLE_ID**
@@ -149,26 +202,26 @@ No parameters.
 || **TAX_VALUE**
 [`double`](../../../data-types.md) | Tax amount | Read-only ||
 || **UF_COMPANY_ID**
-[`integer`](../../../data-types.md) | Company identifier | Provided if the payer is a "Legal entity" ||
+[`integer`](../../../data-types.md) | Company identifier | Specified if the payer is a "Legal entity" ||
 || **UF_CONTACT_ID**
-[`integer`](../../../data-types.md) | Contact identifier | Provided if the payer is an "Individual" or as a contact person for the company ||
+[`integer`](../../../data-types.md) | Contact identifier | Specified if the payer is an "Individual", or as a contact person for the company ||
 || **UF_MYCOMPANY_ID**
-[`integer`](../../../data-types.md) | Identifier of your company | Provided as the company with invoice details (link to details is set separately) ||
+[`integer`](../../../data-types.md) | Identifier of your company | Specified as the company with the invoice details (link to the details is set separately) ||
 || **UF_DEAL_ID**
-[`integer`](../../../data-types.md) | Identifier of the associated deal | ||
+[`integer`](../../../data-types.md) | Identifier of the related deal | ||
 || **USER_DESCRIPTION**
 [`string`](../../../data-types.md) | Comment | ||
 || **PR_LOCATION**
-[`integer`](../../../data-types.md) | Location identifier | Required if using document tax mode ||
+[`integer`](../../../data-types.md) | Location identifier | Required if using tax mode on the document ||
 || **INVOICE_PROPERTIES**
-[`array`](../../../data-types.md) | List of properties | If the client is a company, the following keys may be specified (all values are of type string): 
+[`array`](../../../data-types.md) | List of properties | If the client is a company, the following keys can be specified (all values are of type string): 
 - **COMPANY** - Company name;
 - **COMPANY_ADR** - Address;
 - **CONTACT_PERSON** - Contact person;
 - **EMAIL** - E-mail;
 - **PHONE** - Phone;
 - **INN** - Tax ID;
-- **KPP** - Tax registration reason code.
+- **KPP** - Tax Registration Reason Code.
 
 If the client is a contact: 
 - **FIO** - Full name;
@@ -177,15 +230,15 @@ If the client is a contact:
 - **PHONE** - Phone. ||
 || **PRODUCT_ROWS**
 [`array`](../../../data-types.md) | List of product items | Fields of the product item:
-- **ID** - Identifier (integer), use 0 for a new record;
+- **ID** - Identifier (integer), specify 0 for a new record;
 - **PRICE** - Price (double);
 - **DISCOUNT_PRICE** - Discount per product unit (double);
 - **PRODUCT_ID** - Identifier of the product in the catalog (integer), 0 if not from the catalog;
 - **PRODUCT_NAME** - Name of the product item (string);
 - **VAT_RATE** - VAT rate coefficient (double);
 - **VAT_INCLUDED** - VAT included in the price ('Y' or 'N') (char);
-- **MEASURE_CODE** - Unit of measure code (integer);
-- **MEASURE_NAME** - Unit of measure designation (string);
+- **MEASURE_CODE** - Measurement unit code (integer);
+- **MEASURE_NAME** - Measurement unit designation (string);
 - **CATALOG_XML_ID** - External catalog code (string), read-only;
 - **PRODUCT_XML_ID** - External product item code (string), matches the external product code if it is from the catalog. Read-only.
 - **QUANTITY** - Quantity. ||

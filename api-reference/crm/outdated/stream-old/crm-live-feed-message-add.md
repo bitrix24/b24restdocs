@@ -1,4 +1,4 @@
-# Send a Message to the CRM Feed crm.livefeedmessage.add
+# Send a message to the CRM Feed crm.livefeedmessage.add
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -24,20 +24,20 @@ This method adds a message to the CRM feed.
     "CRMCOMPANY": ["CRMCOMPANY1", "CRMCOMPANY3"], // CRM companies
     "CRMDEAL": ["CRMDEAL3", "CRMDEAL5"], // CRM deals
     "CRMLEAD": ["CRMLEAD9", "CRMLEAD11"], // CRM leads
-    "SG": ["SG5", "SG9"], // social network working groups
+    "SG": ["SG5", "SG9"], // social network workgroups
     "U": ["U1", "U3"], // users
     "DR": ["DR1", "DR7"], // departments with subdivisions
 }
 ``` 
 ||
 || **ENTITYTYPEID** 
-[`integer`](../../../data-types.md)| Type of the entity in which the message is published:
+[`integer`](../../../data-types.md)| Type of the entity where the message is published:
 - 1 - lead;
 - 2 - deal;
 - 3 - contact;
 - 4 - company ||
 || **ENTITYID** 
-[`integer`](../../../data-types.md)| ID of the specific lead/deal/contact/company in which the message is published. ||
+[`integer`](../../../data-types.md)| ID of the specific lead/deal/contact/company where the message is published. ||
 || **FILES**
 [`file`](../../../data-types.md) | Message files ||
 |#
@@ -56,7 +56,7 @@ This method adds a message to the CRM feed.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"POST_TITLE":"A Bit About the Service","MESSAGE":"Bitrix24 is built on the Bitrix Framework.","SPERM":{"CRMCONTACT":["CRMCONTACT3","CRMCONTACT7"],"CRMCOMPANY":["CRMCOMPANY1","CRMCOMPANY3"],"CRMDEAL":["CRMDEAL3","CRMDEAL5"],"CRMLEAD":["CRMLEAD9","CRMLEAD11"],"SG":["SG5","SG9"],"U":["U1","U3"],"DR":["DR1","DR7"]},"ENTITYTYPEID":3,"ENTITYID":3}}' \
+    -d '{"fields":{"POST_TITLE":"A bit about the service","MESSAGE":"Bitrix24 is built on the Bitrix Framework platform.","SPERM":{"CRMCONTACT":["CRMCONTACT3","CRMCONTACT7"],"CRMCOMPANY":["CRMCOMPANY1","CRMCOMPANY3"],"CRMDEAL":["CRMDEAL3","CRMDEAL5"],"CRMLEAD":["CRMLEAD9","CRMLEAD11"],"SG":["SG5","SG9"],"U":["U1","U3"],"DR":["DR1","DR7"]},"ENTITYTYPEID":3,"ENTITYID":3}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.livefeedmessage.add
     ```
 
@@ -66,11 +66,86 @@ This method adds a message to the CRM feed.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"POST_TITLE":"A Bit About the Service","MESSAGE":"Bitrix24 is built on the Bitrix Framework.","SPERM":{"CRMCONTACT":["CRMCONTACT3","CRMCONTACT7"],"CRMCOMPANY":["CRMCOMPANY1","CRMCOMPANY3"],"CRMDEAL":["CRMDEAL3","CRMDEAL5"],"CRMLEAD":["CRMLEAD9","CRMLEAD11"],"SG":["SG5","SG9"],"U":["U1","U3"],"DR":["DR1","DR7"]},"ENTITYTYPEID":3,"ENTITYID":3},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"POST_TITLE":"A bit about the service","MESSAGE":"Bitrix24 is built on the Bitrix Framework platform.","SPERM":{"CRMCONTACT":["CRMCONTACT3","CRMCONTACT7"],"CRMCOMPANY":["CRMCOMPANY1","CRMCOMPANY3"],"CRMDEAL":["CRMDEAL3","CRMDEAL5"],"CRMLEAD":["CRMLEAD9","CRMLEAD11"],"SG":["SG5","SG9"],"U":["U1","U3"],"DR":["DR1","DR7"]},"ENTITYTYPEID":3,"ENTITYID":3},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.livefeedmessage.add
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.livefeedmessage.add",
+    		{
+    			fields:
+    			{
+    				"POST_TITLE": "A bit about the service",
+    				"MESSAGE": "Bitrix24 is built on the Bitrix Framework platform.",
+    				"SPERM": {
+    					"CRMCONTACT": ["CRMCONTACT3", "CRMCONTACT7"],
+    					"CRMCOMPANY": ["CRMCOMPANY1", "CRMCOMPANY3"],
+    					"CRMDEAL": ["CRMDEAL3", "CRMDEAL5"],
+    					"CRMLEAD": ["CRMLEAD9", "CRMLEAD11"],
+    					"SG": ["SG5", "SG9"],
+    					"U": ["U1", "U3"],
+    					"DR": ["DR1", "DR7"],
+    				},
+    				"ENTITYTYPEID": 3,
+    				"ENTITYID": 3,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info("Message created with ID " + result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.livefeedmessage.add',
+                [
+                    'fields' => [
+                        'POST_TITLE'   => 'A bit about the service',
+                        'MESSAGE'      => 'Bitrix24 is built on the Bitrix Framework platform.',
+                        'SPERM'        => [
+                            'CRMCONTACT'  => ['CRMCONTACT3', 'CRMCONTACT7'],
+                            'CRMCOMPANY'  => ['CRMCOMPANY1', 'CRMCOMPANY3'],
+                            'CRMDEAL'     => ['CRMDEAL3', 'CRMDEAL5'],
+                            'CRMLEAD'     => ['CRMLEAD9', 'CRMLEAD11'],
+                            'SG'          => ['SG5', 'SG9'],
+                            'U'           => ['U1', 'U3'],
+                            'DR'          => ['DR1', 'DR7'],
+                        ],
+                        'ENTITYTYPEID' => 3,
+                        'ENTITYID'     => 3,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Message created with ID ' . $result;
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating live feed message: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -78,8 +153,8 @@ This method adds a message to the CRM feed.
         {
             fields:
             {
-                "POST_TITLE": "A Bit About the Service",
-                "MESSAGE": "Bitrix24 is built on the Bitrix Framework.",
+                "POST_TITLE": "A bit about the service",
+                "MESSAGE": "Bitrix24 is built on the Bitrix Framework platform.",
                 "SPERM": {
                     "CRMCONTACT": ["CRMCONTACT3", "CRMCONTACT7"],
                     "CRMCOMPANY": ["CRMCOMPANY1", "CRMCOMPANY3"],
@@ -103,7 +178,7 @@ This method adds a message to the CRM feed.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -112,8 +187,8 @@ This method adds a message to the CRM feed.
         'crm.livefeedmessage.add',
         [
             'fields' => [
-                'POST_TITLE' => 'A Bit About the Service',
-                'MESSAGE' => 'Bitrix24 is built on the Bitrix Framework.',
+                'POST_TITLE' => 'A bit about the service',
+                'MESSAGE' => 'Bitrix24 is built on the Bitrix Framework platform.',
                 'SPERM' => [
                     'CRMCONTACT' => ['CRMCONTACT3', 'CRMCONTACT7'],
                     'CRMCOMPANY' => ['CRMCOMPANY1', 'CRMCOMPANY3'],
@@ -163,6 +238,79 @@ This method adds a message to the CRM feed.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.livefeedmessage.add",
+    		{
+    			fields:
+    			{
+    				"POST_TITLE": "POST_TITLE",
+    				"MESSAGE": "MESSAGE",
+    				"SPERM": {
+    					"CRMLEAD": ["CRMLEAD9", "CRMLEAD11"],
+    					"U": ["U1"],
+    				},
+    				"ENTITYTYPEID": 1,
+    				"ENTITYID": 56374,
+    				"FILES": [
+    					["1.gif", "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="],
+    					["2.gif", "..."]
+    				],
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info("Message created with ID " + result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.livefeedmessage.add',
+                [
+                    'fields' => [
+                        'POST_TITLE'   => 'POST_TITLE',
+                        'MESSAGE'      => 'MESSAGE',
+                        'SPERM'        => [
+                            'CRMLEAD' => ['CRMLEAD9', 'CRMLEAD11'],
+                            'U'       => ['U1'],
+                        ],
+                        'ENTITYTYPEID' => 1,
+                        'ENTITYID'     => 56374,
+                        'FILES'        => [
+                            ['1.gif', 'R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='],
+                            ['2.gif', '...'],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Message created with ID ' . $result;
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating message: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.livefeedmessage.add",
         {
@@ -192,7 +340,7 @@ This method adds a message to the CRM feed.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -224,6 +372,6 @@ This method adds a message to the CRM feed.
 
 {% endlist %}
 
-## Additional Information
+## Additional
 
 - [`crm.timeline.comment.add`](../../timeline/comments/crm-timeline-comment-add.md)

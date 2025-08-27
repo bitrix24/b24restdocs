@@ -1,4 +1,4 @@
-# Get Settings for the General Deal Direction crm.dealcategory.default.get
+# Get Settings for Default Deal Category crm.dealcategory.default.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -6,17 +6,17 @@
 
 {% note warning %}
 
-The method is deprecated. It is recommended to use the funnel methods [`crm.category.*`](../../universal/category/index.md)
+The method is deprecated. It is recommended to use funnel methods [`crm.category.*`](../../universal/category/index.md)
 
 {% endnote %}
 
-The method retrieves settings for the general deal direction.
+The method retrieves settings for the default deal category.
 
-No parameters
+Without parameters
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -43,6 +43,59 @@ No parameters
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.dealcategory.default.get',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.dealcategory.default.get',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting default deal category: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.dealcategory.default.get",
         {},
@@ -56,7 +109,7 @@ No parameters
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -76,5 +129,5 @@ No parameters
 ## Result:
 
 ```json
-{ID: 0, NAME: "General"}
+{ID: 0, NAME: "Default"}
 ```

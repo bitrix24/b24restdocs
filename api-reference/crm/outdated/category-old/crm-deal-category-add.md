@@ -1,4 +1,4 @@
-# Create a New Deal Category crm.dealcategory.add
+# Create a new deal category crm.dealcategory.add
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -10,11 +10,11 @@ The method is deprecated. It is recommended to use [`crm.category.add`](../../un
 
 {% endnote %}
 
-This method creates a new deal category.
+The method creates a new deal category.
 
-## Method Parameters
+## Method parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,13 +22,13 @@ This method creates a new deal category.
 || **fields**
 [`array`](../../../data-types.md) | Field values for creating a deal category.
 
-To find out the required format for the fields, execute the method [`crm.dealcategory.fields`](./crm-deal-category-fields.md) and check the format of the returned field values.
+To find out the required format of the fields, execute the method [`crm.dealcategory.fields`](./crm-deal-category-fields.md) and check the format of the returned values for these fields
 ||
 |#
 
-## Code Examples
+## Code examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -55,6 +55,63 @@ To find out the required format for the fields, execute the method [`crm.dealcat
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.dealcategory.add',
+    		{
+    			fields:
+    			{
+    				"NAME": "New Category",
+    				"SORT": "20"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info('Created category with ID ' + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.dealcategory.add',
+                [
+                    'fields' => [
+                        'NAME' => 'New Category',
+                        'SORT' => '20',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Created category with ID ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating deal category: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.dealcategory.add",
         {
@@ -69,12 +126,12 @@ To find out the required format for the fields, execute the method [`crm.dealcat
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Category created with ID " + result.data());
+                console.info("Created category with ID " + result.data());
         }
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

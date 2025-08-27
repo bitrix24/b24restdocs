@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator, user with the "Allow to change settings" access permission in CRM
 
-{% note warning "Method development has been halted" %}
+{% note warning "Method development halted" %}
 
 The method `crm.product.add` continues to function, but there are more relevant alternatives [catalog.product.*](../../../catalog/product/index.md).
 
@@ -22,7 +22,7 @@ The method `crm.product.add` creates a new product.
 || **fields**
 [`array`](../../../data-types.md) | Field values for creating a product.
 
-To find out the required field format, execute the method [crm.product.fields](./crm-product-fields.md) and check the format of the returned values for these fields ||
+To find out the required field format, execute the method [crm.product.fields](./crm-product-fields.md) and check the format of the returned field values ||
 |#
 
 {% note info %}
@@ -62,50 +62,31 @@ If the generated symbolic code exceeds 100 characters, it is automatically trunc
 - JS
 
     ```js
-    BX24.callMethod(
-        "crm.product.add",
-        {
-            fields:
+    try
+    {
+        const response = await $b24.callMethod(
+            'crm.product.add',
             {
-                "NAME": "Plastic Chair",
-                "CURRENCY_ID": "USD",
-                "PRICE": 4900,
-                "SORT": 500
+                fields:
+                {
+                    "NAME": "Plastic Chair",
+                    "CURRENCY_ID": "USD",
+                    "PRICE": 4900,
+                    "SORT": 500
+                }
             }
-        },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.info("Created new product with ID " + result.data());
-        }
-    );
+        );
+        
+        const result = response.getData().result;
+        console.info('Created new product with ID ' + result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.product.add',
-        [
-            'fields' => [
-                'NAME' => 'Plastic Chair',
-                'CURRENCY_ID' => 'USD',
-                'PRICE' => 4900,
-                'SORT' => 500
-            ]
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -132,6 +113,52 @@ If the generated symbolic code exceeds 100 characters, it is automatically trunc
     } catch (Throwable $e) {
         print("Error: " . $e->getMessage());
     }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.product.add",
+        {
+            fields:
+            {
+                "NAME": "Plastic Chair",
+                "CURRENCY_ID": "USD",
+                "PRICE": 4900,
+                "SORT": 500
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info("Created new product with ID " + result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.product.add',
+        [
+            'fields' => [
+                'NAME' => 'Plastic Chair',
+                'CURRENCY_ID' => 'USD',
+                'PRICE' => 4900,
+                'SORT' => 500
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}

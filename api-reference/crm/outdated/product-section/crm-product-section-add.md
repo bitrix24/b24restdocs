@@ -8,7 +8,7 @@ The method `crm.productsection.add` creates a new product section.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -26,16 +26,16 @@ To find out the required format of the fields, execute the method [crm.productse
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
     ```curl
-    catalogId=$(prompt "Enter Catalog ID")
-    sectionId=$(prompt "Enter Parent Section ID (0 if at root)")
-    sectionName=$(prompt "Enter Section Name")
+    catalogId=$(prompt "Enter catalog ID")
+    sectionId=$(prompt "Enter parent section ID (0 if at root)")
+    sectionName=$(prompt "Enter section name")
 
     curl -X POST \
     -H "Content-Type: application/json" \
@@ -53,9 +53,9 @@ To find out the required format of the fields, execute the method [crm.productse
 - cURL (OAuth)
 
     ```curl
-    catalogId=$(prompt "Enter Catalog ID")
-    sectionId=$(prompt "Enter Parent Section ID (0 if at root)")
-    sectionName=$(prompt "Enter Section Name")
+    catalogId=$(prompt "Enter catalog ID")
+    sectionId=$(prompt "Enter parent section ID (0 if at root)")
+    sectionName=$(prompt "Enter section name")
 
     curl -X POST \
     -H "Content-Type: application/json" \
@@ -74,9 +74,76 @@ To find out the required format of the fields, execute the method [crm.productse
 - JS
 
     ```js
-    var catalogId = prompt("Enter Catalog ID");
-    var sectionId = prompt("Enter Parent Section ID (0 if at root)");
-    var sectionName = prompt("Enter Section Name");
+    try
+    {
+    	const catalogId = prompt("Enter catalog ID");
+    	const sectionId = prompt("Enter parent section ID (0 if at root)");
+    	const sectionName = prompt("Enter section name");
+    
+    	const response = await $b24.callMethod(
+    		"crm.productsection.add",
+    		{
+    			fields:
+    			{
+    				CATALOG_ID: catalogId,
+    				NAME: sectionName,
+    				SECTION_ID: sectionId
+    			}
+    		}
+    	);
+    
+    	const result = response.getData().result;
+    	console.info("A new section has been created with ID " + result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $catalogId = readline("Enter catalog ID");
+        $sectionId = readline("Enter parent section ID (0 if at root)");
+        $sectionName = readline("Enter section name");
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                "crm.productsection.add",
+                [
+                    'fields' => [
+                        'CATALOG_ID' => $catalogId,
+                        'NAME' => $sectionName,
+                        'SECTION_ID' => $sectionId
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo "A new section has been created with ID " . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating product section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    var catalogId = prompt("Enter catalog ID");
+    var sectionId = prompt("Enter parent section ID (0 if at root)");
+    var sectionName = prompt("Enter section name");
     BX24.callMethod(
         "crm.productsection.add",
         {
@@ -97,14 +164,14 @@ To find out the required format of the fields, execute the method [crm.productse
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
 
-    $catalogId = readline("Enter Catalog ID: ");
-    $sectionId = readline("Enter Parent Section ID (0 if at root): ");
-    $sectionName = readline("Enter Section Name: ");
+    $catalogId = readline("Enter catalog ID: ");
+    $sectionId = readline("Enter parent section ID (0 if at root): ");
+    $sectionName = readline("Enter section name: ");
 
     $result = CRest::call(
         'crm.productsection.add',

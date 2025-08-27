@@ -6,7 +6,7 @@
 
 {% note warning %}
 
-The method is deprecated. It is recommended to use [`Universal Methods for Invoices`](../../universal/invoice.md)
+The method is deprecated. It is recommended to use [`Universal methods for invoices`](../../universal/invoice.md)
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ This method deletes a custom field of invoices.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ This method deletes a custom field of invoices.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -52,6 +52,64 @@ This method deletes a custom field of invoices.
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.invoice.userfield.delete",
+    		{id: id}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = readline("Enter ID");
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.invoice.userfield.delete',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     BX24.callMethod(
         "crm.invoice.userfield.delete",
@@ -66,7 +124,7 @@ This method deletes a custom field of invoices.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

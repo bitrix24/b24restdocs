@@ -1,4 +1,4 @@
-# Get Descriptions of Product Row Fields crm.productrow.fields
+# Get descriptions of fields for product items crm.productrow.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -10,7 +10,7 @@ The method is deprecated. It is recommended to use [`crm.item.productrow.fields`
 
 {% endnote %}
 
-The method retrieves information about the data structure of product rows in the CRM, including field types and their purposes.
+The method retrieves information about the data structure of product items in CRM, including field types and their purposes.
 
 No parameters.
 
@@ -43,6 +43,52 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.productrow.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.productrow.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching product row fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.productrow.fields",
         {},
@@ -56,7 +102,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

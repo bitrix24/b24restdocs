@@ -10,7 +10,7 @@ The method `crm.product.fields` continues to function, but there are more releva
 
 {% endnote %}
 
-The method `crm.product.fields` returns the description of product fields.
+The method `crm.product.fields` returns a description of the product fields.
 
 Without parameters.
 
@@ -43,35 +43,30 @@ Without parameters.
 - JS
 
     ```js
-    BX24.callMethod(
-        "crm.product.fields",
-        {},
-        function(result)
+    try
+    {
+        const response = await $b24.callMethod(
+            "crm.product.fields",
+            {}
+        );
+        
+        const result = response.getData().result;
+        if(result.error())
         {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
+            console.error(result.error());
         }
-    );
+        else
+        {
+            console.dir(result);
+        }
+    }
+    catch(error)
+    {
+        console.error('Error:', error);
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.product.fields',
-        []
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -91,6 +86,37 @@ Without parameters.
     } catch (Throwable $e) {
         print('Error: ' . $e->getMessage() . PHP_EOL);
     }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.product.fields",
+        {},
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.product.fields',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
@@ -121,7 +147,7 @@ Without parameters.
 || **ID**
 [`integer`](../../../data-types.md) | Product identifier  ||
 || **MEASURE**
-[`integer`](../../../data-types.md) | Unit of measure  ||
+[`integer`](../../../data-types.md) | Unit of measurement  ||
 || **MODIFIED_BY**
 [`integer`](../../../data-types.md) | Modified by  ||
 || **NAME***

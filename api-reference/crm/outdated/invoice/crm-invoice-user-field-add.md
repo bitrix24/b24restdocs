@@ -1,4 +1,4 @@
-# Create a Custom Field for Invoices crm.invoice.userfield.add
+# Create a custom field for invoices crm.invoice.userfield.add
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -10,11 +10,11 @@ The method is deprecated. It is recommended to use [`Universal methods for invoi
 
 {% endnote %}
 
-This method creates a new custom field for invoices.
+The method creates a new custom field for invoices.
 
-The system limit for the field name is 20 characters. The custom field name always has the prefix `UF_CRM_`, meaning the actual length of the name is 13 characters.
+The system limitation on the field name is 20 characters. The custom field name always has the prefix `UF_CRM_`, meaning the actual length of the name is 13 characters.
 
-## Method Parameters
+## Method parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -22,16 +22,16 @@ The system limit for the field name is 20 characters. The custom field name alwa
 || **Name**
 `type` | **Description** ||
 || **fields** | A set of fields - an array of the form `array("field"=>"value"[, ...])`, containing the description of the custom field. A complete description of the fields can be obtained by calling the method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md). ||
-|| **LIST** | Contains a set of list values for custom fields of type List. Specified when creating/updating the field. Each value is an array with the fields: 
+|| **LIST** | Contains a set of list values for custom fields of type List. It is specified when creating/updating the field. Each value is an array with the fields: 
 - **VALUE** - the value of the list item. This field is required when creating a new item.  
 - **SORT** - sorting. 
-- **DEF** - if equal to Y, then the list item is the default value. For multiple fields, several DEF=Y are allowed. For non-multiple fields, the first one will be considered default.  
-- **XML_ID** - external code of the value. This parameter is only considered when updating already existing values of the list item.
-- **ID** - the identifier of the value. If specified, it is considered an update of an existing list item value, not the creation of a new one. It only makes sense when calling the `*.userfield.update` methods.
-- **DEL** - if equal to Y, then the existing list item will be deleted. Used if the ID parameter is filled. ||
+- **DEF** - if equal to Y, the list item is the default value. For multiple fields, multiple DEF=Y are allowed. For non-multiple fields, the first will be considered default.  
+- **XML_ID** - external code of the value. This parameter is considered only when updating already existing list item values.
+- **ID** - the identifier of the value. If specified, it is considered an update of an existing list item value, not the creation of a new one. It only makes sense when calling the methods `*.userfield.update`.
+- **DEL** - if equal to Y, the existing list item will be deleted. It is applied if the ID parameter is filled. ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -60,6 +60,91 @@ The system limit for the field name is 20 characters. The custom field name alwa
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.paysystem.list',
+        {
+          order: {"SORT": "ASC"},
+          filter: {
+            "%NAME": "Estimate",
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.paysystem.list', {
+        order: {"SORT": "ASC"},
+        filter: {
+          "%NAME": "Estimate",
+        }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.paysystem.list', {
+        order: {"SORT": "ASC"},
+        filter: {
+          "%NAME": "Estimate",
+        }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.paysystem.list',
+                [
+                    'order' => ['SORT' => 'ASC'],
+                    'filter' => [
+                        '%NAME' => 'Estimate',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        if ($response->more()) {
+            $response->next();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing payment systems: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.paysystem.list", {
             order: {"SORT": "ASC"},
@@ -83,7 +168,7 @@ The system limit for the field name is 20 characters. The custom field name alwa
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

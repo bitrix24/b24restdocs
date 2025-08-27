@@ -1,4 +1,4 @@
-# Get Deal Direction crm.dealcategory.get
+# Get Deal Category crm.dealcategory.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -10,7 +10,7 @@ The method is deprecated. It is recommended to use [`crm.category.get`](../../un
 
 {% endnote %}
 
-The method returns the deal direction by its identifier.
+The method returns the deal category by its identifier.
 
 ## Method Parameters
 
@@ -20,7 +20,7 @@ The method returns the deal direction by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`integer`](../../../data-types.md)| Identifier of the direction ||
+[`integer`](../../../data-types.md)| Identifier of the category ||
 |#
 
 ## Code Examples
@@ -52,6 +52,65 @@ The method returns the deal direction by its identifier.
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.dealcategory.get",
+    		{ id: id }
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = $_POST['id'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.dealcategory.get',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting deal category: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     BX24.callMethod(
         "crm.dealcategory.get",
@@ -66,7 +125,7 @@ The method returns the deal direction by its identifier.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

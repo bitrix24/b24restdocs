@@ -1,10 +1,10 @@
-# Delete Measurement crm.measure.delete
+# Delete Measurement Unit crm.measure.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method deletes a measurement.
+This method deletes a measurement unit.
 
 ## Method Parameters
 
@@ -12,7 +12,7 @@ This method deletes a measurement.
 
 #|
 || **Name** | **Description** ||
-|| **id*** | Identifier of the measurement ||
+|| **id*** | Identifier of the measurement unit ||
 |#
 
 ## Code Examples
@@ -44,6 +44,63 @@ This method deletes a measurement.
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.measure.delete",
+    		{id: id}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = readline("Enter ID");
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.measure.delete',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting measure: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     BX24.callMethod(
         "crm.measure.delete",
@@ -58,7 +115,7 @@ This method deletes a measurement.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

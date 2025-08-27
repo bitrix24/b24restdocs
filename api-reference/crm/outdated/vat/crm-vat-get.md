@@ -4,6 +4,12 @@
 >
 > Who can execute the method: any user
 
+{% note warning "Method development has been halted" %}
+
+The method `crm.vat.get` is still operational, but there is a more relevant alternative [catalog.vat.get](../../../catalog/vat/catalog-vat-get.md).
+
+{% endnote %}
+
 The method `crm.vat.get` returns the VAT rate parameters by ID.
 
 ## Method Parameters
@@ -14,7 +20,7 @@ The method `crm.vat.get` returns the VAT rate parameters by ID.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../../data-types.md) | Identifier of the VAT rate. You can get a list of rates using the [crm.vat.list](./crm-vat-list.md) method ||
+[`integer`](../../../data-types.md) | Identifier of the VAT rate. You can get a list of rates using the method [crm.vat.list](./crm-vat-list.md) ||
 |#
 
 ## Code Examples
@@ -22,23 +28,6 @@ The method `crm.vat.get` returns the VAT rate parameters by ID.
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.vat.get",
-        {
-            id: 7
-        },
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -60,7 +49,81 @@ The method `crm.vat.get` returns the VAT rate parameters by ID.
     https://**put_your_bitrix24_address**/rest/crm.vat.get
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.vat.get',
+    		{
+    			id: 7
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.vat.get',
+                [
+                    'id' => 7,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting VAT information: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.vat.get",
+        {
+            id: 7
+        },
+        function(result) {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');

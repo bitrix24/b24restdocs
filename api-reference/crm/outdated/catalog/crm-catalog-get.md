@@ -1,4 +1,4 @@
-# Get Product Catalog by ID crm.catalog.get
+# Get product catalog by ID crm.catalog.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 The method returns the product catalog by ID.
 
-## Method Parameters
+## Method parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -17,7 +17,7 @@ The method returns the product catalog by ID.
 [`integer`](../../../data-types.md)| Identifier of the product catalog ||
 |#
 
-## Code Examples
+## Code examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -46,6 +46,57 @@ The method returns the product catalog by ID.
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.catalog.get",
+    		{ id: id }
+    	);
+    
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = $_POST['id'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.catalog.get',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.catalog.get: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     BX24.callMethod(
         "crm.catalog.get",
@@ -60,7 +111,7 @@ The method returns the product catalog by ID.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

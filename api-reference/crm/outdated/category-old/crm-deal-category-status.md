@@ -12,7 +12,7 @@ The method is deprecated. It is recommended to use the funnel methods [`crm.cate
 
 The method returns the identifier of the directory for storing stages based on the deal direction identifier.
 
-This is a string of the form `DEAL_STAGE_[Direction Identifier]`. For example, for a direction with identifier 1, the string `"DEAL_STAGE_1"` will be returned.
+This is a string of the format `DEAL_STAGE_[Direction Identifier]`. For example, for a direction with identifier 1, the string `"DEAL_STAGE_1"` will be returned.
 
 The identifier is intended for use with the family of methods [`crm.status.*`](.). For example, to create a new stage for a direction, it needs to be passed to the method [`crm.status.add`](../../status/crm-status-add.md) as the `ENTITY_ID` parameter.
 
@@ -56,6 +56,61 @@ The identifier is intended for use with the family of methods [`crm.status.*`](.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.dealcategory.status",
+    		{ id: id }
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.dealcategory.status',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching deal category status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.dealcategory.status",
         { id: id },
@@ -69,7 +124,7 @@ The identifier is intended for use with the family of methods [`crm.status.*`](.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

@@ -1,4 +1,4 @@
-# Update Deal Direction crm.dealcategory.update
+# Update deal category crm.dealcategory.update
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -10,7 +10,7 @@ The method is deprecated. It is recommended to use [`crm.category.update`](../..
 
 {% endnote %}
 
-This method updates an existing direction.
+The method updates an existing deal category.
 
 ## Parameters
 
@@ -18,16 +18,16 @@ This method updates an existing direction.
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`integer`](../../../data-types.md)| Identifier of the direction ||
+[`integer`](../../../data-types.md)| Identifier of the category ||
 || **fields**
-[`array`](../../../data-types.md) | Field values for updating the deal direction.
+[`array`](../../../data-types.md) | Field values for updating the deal category.
 
-To find out the required format of the fields, execute the method [`crm.dealcategory.fields`](./crm-deal-category-fields.md) and check the format of the returned values for these fields (except for fields marked with the attributes **isReadOnly** and **isImmutable**) ||
+To find out the required format of the fields, execute the method [`crm.dealcategory.fields`](./crm-deal-category-fields.md) and check the format of the incoming values of these fields (except for fields marked with the attributes **isReadOnly** and **isImmutable**) ||
 |#
 
-## Code Examples
+## Code examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -52,6 +52,80 @@ To find out the required format of the fields, execute the method [`crm.dealcate
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const sort = prompt("Enter sort order");
+    	const parsedSort = parseInt(sort);
+    	
+    	if(isNaN(parsedSort) || parsedSort < 0)
+    	{
+    		parsedSort = 0;
+    	}
+    	
+    	const response = await $b24.callMethod(
+    		"crm.dealcategory.update",
+    		{
+    			id: id,
+    			fields: { "SORT": parsedSort }
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = (int)readline("Enter ID");
+    $sort = (int)readline("Enter sort order");
+    if (is_nan($sort) || $sort < 0) {
+        $sort = 0;
+    }
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.dealcategory.update',
+                [
+                    'id'     => $id,
+                    'fields' => ['SORT' => $sort],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating deal category: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var id = prompt("Enter ID");
@@ -80,7 +154,7 @@ To find out the required format of the fields, execute the method [`crm.dealcate
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-{% note warning "Method development has been halted" %}
+{% note warning "Method development has been discontinued" %}
 
 The method `crm.product.list` continues to function, but there are more current alternatives [catalog.product.*](../../../catalog/product/index.md).
 
@@ -45,56 +45,58 @@ See the description of [list methods](../../../common/index.md).
 - JS
 
     ```js
-    var catalogId = prompt("Enter the catalog ID");
-    BX24.callMethod(
-        "crm.product.list",
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    var catalogId = prompt("Enter catalog ID");
+    try {
+      const response = await $b24.callListMethod(
+        'crm.product.list',
         {
-            order: { "NAME": "ASC" },
-            filter: { "CATALOG_ID": catalogId },
-            select: [ "ID", "NAME", "CURRENCY_ID", "PRICE" ]
+          order: { "NAME": "ASC" },
+          filter: { "CATALOG_ID": catalogId },
+          select: [ "ID", "NAME", "CURRENCY_ID", "PRICE" ]
         },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-            {
-                console.dir(result.data());
-                if(result.more())
-                    result.next();
-            }
-        }
-    );
-    ```
-
-    To get product properties, you need to specify `PROPERTY_*` in `select`.
-
-    ```js
-    $arFields['select'] = array('*', 'PROPERTY_*');
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    var catalogId = prompt("Enter catalog ID");
+    try {
+      const generator = $b24.fetchListMethod('crm.product.list', {
+        order: { "NAME": "ASC" },
+        filter: { "CATALOG_ID": catalogId },
+        select: [ "ID", "NAME", "CURRENCY_ID", "PRICE" ]
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    var catalogId = prompt("Enter catalog ID");
+    try {
+      const response = await $b24.callMethod('crm.product.list', {
+        order: { "NAME": "ASC" },
+        filter: { "CATALOG_ID": catalogId },
+        select: [ "ID", "NAME", "CURRENCY_ID", "PRICE" ]
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $catalogId = 'your_catalog_id'; // Replace 'your_catalog_id' with the actual catalog ID
-
-    $result = CRest::call(
-        'crm.product.list',
-        [
-            'order' => ['NAME' => 'ASC'],
-            'filter' => ['CATALOG_ID' => $catalogId],
-            'select' => ['ID', 'NAME', 'CURRENCY_ID', 'PRICE']
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -132,6 +134,58 @@ See the description of [list methods](../../../common/index.md).
     } catch (Throwable $e) {
         print("Error: " . $e->getMessage());
     }
+    ```
+
+- BX24.js
+
+    ```js
+    var catalogId = prompt("Enter catalog ID");
+    BX24.callMethod(
+        "crm.product.list",
+        {
+            order: { "NAME": "ASC" },
+            filter: { "CATALOG_ID": catalogId },
+            select: [ "ID", "NAME", "CURRENCY_ID", "PRICE" ]
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+            {
+                console.dir(result.data());
+                if(result.more())
+                    result.next();
+            }
+        }
+    );
+    ```
+
+    To get product properties, you need to specify `PROPERTY_*` in `select`.
+
+    ```js
+    $arFields['select'] = array('*', 'PROPERTY_*');
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $catalogId = 'your_catalog_id'; // Replace 'your_catalog_id' with the actual catalog ID
+
+    $result = CRest::call(
+        'crm.product.list',
+        [
+            'order' => ['NAME' => 'ASC'],
+            'filter' => ['CATALOG_ID' => $catalogId],
+            'select' => ['ID', 'NAME', 'CURRENCY_ID', 'PRICE']
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}

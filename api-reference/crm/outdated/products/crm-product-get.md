@@ -1,4 +1,4 @@
-# Get product by ID crm.product.get
+# Get Product by ID crm.product.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -16,7 +16,7 @@ The method `crm.product.get` returns a product by its ID.
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
-#| 
+#|
 || **Name**
 `type` | **Description** ||
 || **id**
@@ -52,40 +52,24 @@ The method `crm.product.get` returns a product by its ID.
 - JS
 
     ```js
-    var id = prompt("Enter ID");
-    BX24.callMethod(
-        "crm.product.get",
-        { id: id },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.product.get",
+    		{ id: id }
+    	);
+    
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $id = 'your_product_id'; // Replace 'your_product_id' with the actual product ID
-
-    $result = CRest::call(
-        'crm.product.get',
-        [
-            'id' => $id
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -118,6 +102,42 @@ The method `crm.product.get` returns a product by its ID.
     } catch (\Throwable $e) {
         print("Error: " . $e->getMessage() . "\n");
     }
+    ```
+
+- BX24.js
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.product.get",
+        { id: id },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $id = 'your_product_id'; // Replace 'your_product_id' with the actual product ID
+
+    $result = CRest::call(
+        'crm.product.get',
+        [
+            'id' => $id
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}

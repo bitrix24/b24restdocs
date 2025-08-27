@@ -6,15 +6,15 @@
 
 {% note warning "Method development has been halted" %}
 
-The method `crm.product.property.list` continues to function, but there is a more relevant alternative [catalog.productProperty.list](../../../catalog/product-property/catalog-product-property-list.md).
+The method `crm.product.property.list` continues to function, but there is a more current equivalent [catalog.productProperty.list](../../../catalog/product-property/catalog-product-property-list.md).
 
 {% endnote %}
 
 The method `crm.product.property.list` returns a list of product properties.
 
-## Method Parameters
+## Method parameters
 
-{% include [Note about required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -23,9 +23,9 @@ The method `crm.product.property.list` returns a list of product properties.
 || **filter** | Filter fields ||
 |#
 
-## Code Examples
+## Code examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -52,6 +52,95 @@ The method `crm.product.property.list` returns a list of product properties.
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.product.property.list',
+        {
+          order: { "SORT": "ASC" },
+          filter: {
+            "PROPERTY_TYPE": "S",
+            "USER_TYPE": "HTML"
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.product.property.list', {
+        order: { "SORT": "ASC" },
+        filter: {
+          "PROPERTY_TYPE": "S",
+          "USER_TYPE": "HTML"
+        }
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('crm.product.property.list', {
+        order: { "SORT": "ASC" },
+        filter: {
+          "PROPERTY_TYPE": "S",
+          "USER_TYPE": "HTML"
+        }
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.product.property.list',
+                [
+                    'order' => ['SORT' => 'ASC'],
+                    'filter' => [
+                        'PROPERTY_TYPE' => 'S',
+                        'USER_TYPE'    => 'HTML'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        if ($response->more()) {
+            $response->next();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching product properties: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.product.property.list", {
             order: {"SORT": "ASC"},
@@ -76,7 +165,7 @@ The method `crm.product.property.list` returns a list of product properties.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

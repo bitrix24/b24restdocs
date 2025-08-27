@@ -1,4 +1,4 @@
-# Get fields of additional settings for custom type crm.product.property.settings.fields
+# Get the fields of additional settings for the custom type crm.product.property.settings.fields
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -6,13 +6,13 @@
 
 {% note warning "Method development has been halted" %}
 
-The method `crm.product.property.settings.fields` is still operational, but there is a more relevant alternative [catalog.productPropertyFeature.*](../../../catalog/product-property-feature/index.md).
+The method `crm.product.property.settings.fields` continues to function, but there is a more relevant alternative [catalog.productPropertyFeature.*](../../../catalog/product-property-feature/index.md).
 
 {% endnote %}
 
 The method `crm.product.property.settings.fields` returns a description of the fields for additional settings of custom type product properties.
 
-## Method parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -23,7 +23,7 @@ The method `crm.product.property.settings.fields` returns a description of the f
 || **userType** | Custom property type ||
 |#
 
-## Code examples
+## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -52,6 +52,62 @@ The method `crm.product.property.settings.fields` returns a description of the f
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.product.property.settings.fields",
+    		{propertyType: "S", userType: "HTML"}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.product.property.settings.fields',
+                [
+                    'propertyType' => 'S',
+                    'userType'     => 'HTML',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching product property settings fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.product.property.settings.fields",
         {propertyType: "S", userType: "HTML"},
@@ -65,7 +121,7 @@ The method `crm.product.property.settings.fields` returns a description of the f
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

@@ -16,7 +16,7 @@ The method `crm.productsection.update` updates an existing product section.
 || **id***
 [`integer`](../../data-types.md) | Identifier of the product section ||
 || **fields**
-[`array`](../../data-types.md) | [Set of fields](./crm-product-section-add.md) — an array in the format `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values returned by the method [crm.productsection.fields](./crm-product-section-fields.md). 
+[`array`](../../data-types.md) | [Set of fields](./crm-product-section-add.md) — an array in the form `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values from the returned method [crm.productsection.fields](./crm-product-section-fields.md). 
 
 {% note info %}
 
@@ -72,6 +72,76 @@ To find out the required format of the fields, execute the method [crm.productse
 - JS
 
     ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const sectionName = prompt("Enter section name");
+    
+    	const response = await $b24.callMethod(
+    		"crm.productsection.update",
+    		{
+    			id: id,
+    			fields:
+    			{
+    				"NAME": sectionName
+    			}
+    		}
+    	);
+    
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = readline("Enter ID: ");
+    $sectionName = readline("Enter section name: ");
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.productsection.update',
+                [
+                    'id' => $id,
+                    'fields' => [
+                        'NAME' => $sectionName
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating product section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     var id = prompt("Enter ID");
     var sectionName = prompt("Enter section name");
     BX24.callMethod(
@@ -95,7 +165,7 @@ To find out the required format of the fields, execute the method [crm.productse
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
