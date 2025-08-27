@@ -1,8 +1,8 @@
-# Delete Prompt ai.prompt.unregister
+# Unregister AI Prompt ai.prompt.unregister
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,8 +12,8 @@ Some data may be missing here — we will complete it soon.
 
 - parameter types are not specified
 - examples are missing
-- success response is missing
-- error response is missing
+- success response is absent
+- error response is absent
 
 {% endnote %}
 
@@ -23,15 +23,15 @@ Some data may be missing here — we will complete it soon.
 >
 > Who can execute the method: administrator
 
-The method `ai.prompt.unregister` deletes a prompt.
+The method `ai.prompt.unregister` removes a prompt.
 
 #|
 || **Parameter** | **Description** ||
 || **code^*^**
-[`unknown`](../../data-types.md) | Unique code of the prompt. Always has the prefix `rest_`. This code is set once during registration and cannot be changed afterwards. ||
+[`unknown`](../../data-types.md) | Unique prompt code. Always has the prefix `rest_`. This code is set once during registration and cannot be changed afterwards ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -46,6 +46,54 @@ The method `ai.prompt.unregister` deletes a prompt.
     // example for cURL (OAuth)
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'ai.prompt.unregister',
+    		{
+    			code: 'rest_joke_wolf'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'ai.prompt.unregister',
+                [
+                    'code' => 'rest_joke_wolf'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unregistering AI prompt: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -67,18 +115,18 @@ The method `ai.prompt.unregister` deletes a prompt.
     );
     ```
 
-- PHP
+- PHP CRest
 
     // example for PHP
 
 {% endlist %}
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Examples Notes](../../../_includes/examples.md) %}
 
 ## Success Response
 
 ## Error Response
 
-## Typical Use-Cases and Scenarios
+## Typical use-cases and scenarios
 
 - [{#T}](../../../tutorials/ai/add-joke-prompt.md)

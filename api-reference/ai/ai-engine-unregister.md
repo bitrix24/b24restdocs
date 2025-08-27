@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ Some data may be missing here — we will fill it in shortly.
 - parameter types are not specified
 - parameter requirements are not indicated
 - examples are missing
-- response in case of error is absent
+- no response in case of error
 - links to pages that have not yet been created are not provided.
 
 {% endnote %}
@@ -25,7 +25,7 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: administrator
 
-Method for deleting [engine](./ai-engine-register.md).
+Method to delete [engine](./ai-engine-register.md).
 
 #|
 || **Parameters** | **Description** ||
@@ -40,10 +40,58 @@ Method for deleting [engine](./ai-engine-register.md).
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'ai.engine.unregister',
+    		{
+    			code: 'smith_gpt',
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'ai.engine.unregister',
+                [
+                    'code' => 'smith_gpt',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unregistering AI engine: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'ai.engine.unregister',
         {
-            code: 'john_doe_gpt',
+            code: 'smith_gpt',
         },
         function(result)
         {
@@ -65,4 +113,4 @@ Method for deleting [engine](./ai-engine-register.md).
 
 ## Response in case of success
 
-On success, it returns `true`.
+On success, returns `true`.
