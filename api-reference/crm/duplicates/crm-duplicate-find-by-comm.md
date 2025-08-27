@@ -8,7 +8,7 @@ The method `crm.duplicate.findbycomm` returns the identifiers of leads, contacts
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -36,11 +36,89 @@ If 20 or more duplicates are found for one object, the other types are not retur
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+         -H "Content-Type: application/json" \
+         -H "Accept: application/json" \
+         -d '{"entity_type":"CONTACT","type":"PHONE","values":["1234567","11223355"]}' \
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.duplicate.findbycomm
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+         -H "Content-Type: application/json" \
+         -H "Accept: application/json" \
+         -d '{"auth":"**put_access_token_here**","entity_type":"CONTACT","type":"PHONE","values":["1234567","11223355"]}' \
+         https://**put_your_bitrix24_address**/rest/crm.duplicate.findbycomm
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.duplicate.findbycomm',
+    		{
+    			entity_type: 'CONTACT',
+    			type: 'PHONE',
+    			values: ['1234567', '11223355']
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error()) {
+    		console.error(result.error());
+    	} else {
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.duplicate.findbycomm',
+                [
+                    'entity_type' => 'CONTACT',
+                    'type'        => 'PHONE',
+                    'values'      => ['1234567', '11223355'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Duplicate data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error finding duplicates by communication: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -59,27 +137,7 @@ If 20 or more duplicates are found for one object, the other types are not retur
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-         -H "Content-Type: application/json" \
-         -H "Accept: application/json" \
-         -d '{"entity_type":"CONTACT","type":"PHONE","values":["1234567","11223355"]}' \
-         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.duplicate.findbycomm
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-         -H "Content-Type: application/json" \
-         -H "Accept: application/json" \
-         -d '{"auth":"**put_access_token_here**","entity_type":"CONTACT","type":"PHONE","values":["1234567","11223355"]}' \
-         https://**put_your_bitrix24_address**/rest/crm.duplicate.findbycomm
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -154,10 +212,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `403` | `Access denied` | The user does not have permission to read CRM entities ||
-|| `400` | `Communication type is not defined` | The required parameter `type` is not specified ||
-|| `400` | `Communication type '{type}' is not supported in current context` | An unsupported communication type is specified ||
-|| `400` | `Communication values is not defined` | The required parameter `values` is not specified ||
+|| `403` | `Access denied` | User does not have permission to read CRM entities ||
+|| `400` | `Communication type is not defined` | Required parameter `type` is not specified ||
+|| `400` | `Communication type '{type}' is not supported in current context` | An unsupported communication type was specified ||
+|| `400` | `Communication values is not defined` | Required parameter `values` is not specified ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

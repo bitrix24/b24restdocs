@@ -8,7 +8,7 @@ The method `crm.entity.mergeBatch` merges multiple entities into one.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -17,7 +17,7 @@ The method `crm.entity.mergeBatch` merges multiple entities into one.
 [`object`](../../data-types.md) | Object containing the entities to merge [(detailed description)](#params) ||
 |#
 
-### Parameter params {#params}
+### Parameter params{#params}
 
 #|
 || **Name**
@@ -39,11 +39,11 @@ The method `crm.entity.mergeBatch` merges multiple entities into one.
 
 You can only merge entities of the same type: lead with lead, contact with contact, SPA element with ID 128 with another SPA element with ID 128.
 
-Full automatic merging is available in several cases:
+Full automatic merging is available in several cases: 
 - the entities are identical,
-- the entities are not identical, but the differences in field values do not require manual intervention. For example, if one entity has a filled field and the other has the same field empty, the value from the filled field will be retained.
+- the entities are not identical, but the differences in field values do not require manual processing. For example, if one entity has a field filled and the other has the same field empty — the value from the filled field will be retained.
 
-The main entity during the merge will be the one whose `ID` is specified first in the `entityIds` array. Information from other entities will be transferred to the main entity. All entities except the main one will be deleted after a successful merge.
+The main entity in the merge will be the one whose `ID` is specified first in the `entityIds` array. Information from other entities will be transferred to the main entity. All entities except the main one will be deleted after a successful merge.
 
 #### Manual Merging in Case of Conflict
 
@@ -53,40 +53,20 @@ If the method returns a status of `CONFLICT`, you can continue the merge manuall
 - Companies: `/crm/company/merge/?id=1,2,3`
 - Leads: `/crm/lead/merge/?id=1,2,3`
 - Deals: `/crm/deal/merge/?id=1,2,3`
-
-The `id` parameter contains the identifiers of the entities to be merged, separated by commas.
+  
+The `id` parameter contains the identifiers of the entities to be merged, separated by commas.  
 
 - Invoices: `/crm/type/31/merge/?id[]=1&id[]=2`
 - Estimates: `/crm/type/7/merge/?id[]=1&id[]=2`
 - SPAs: `/crm/type/128/merge/?id[]=1&id[]=2`
 
-The `id[]` parameter contains the identifiers of the merged elements, passed as a repeating parameter.
+The `id[]` parameter contains the identifiers of the entities to be merged, passed as a repeating parameter.
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        'crm.entity.mergeBatch',
-        {
-            params: {
-                entityTypeId: 3,
-                entityIds: [100, 101, 102]
-            }
-        },
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -108,7 +88,83 @@ The `id[]` parameter contains the identifiers of the merged elements, passed as 
          https://**put_your_bitrix24_address**/rest/crm.entity.mergeBatch
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.entity.mergeBatch',
+    		{
+    			params: {
+    				entityTypeId: 3,
+    				entityIds: [100, 101, 102]
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.entity.mergeBatch',
+                [
+                    'params' => [
+                        'entityTypeId' => 3,
+                        'entityIds'    => [100, 101, 102]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error merging entities: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'crm.entity.mergeBatch',
+        {
+            params: {
+                entityTypeId: 3,
+                entityIds: [100, 101, 102]
+            }
+        },
+        function(result) {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -187,7 +243,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `403` | `Access denied` | The user does not have permission to modify or delete CRM entities ||
-|| `400` | `The parameter entityTypeId is required.` | The required parameter `entityTypeId` is not specified ||
+|| `400` | `The parameter entityTypeId is required.` | The required parameter `entityTypeId` is missing ||
 || `400` | `The parameter entityIds does not contain valid elements.` | No elements were provided or found for merging ||
 || `400` | `The parameter entityIds must contain at least two elements.` | At least two elements are required for merging ||
 || `400` | `Owner was not found` | The object was not found ||

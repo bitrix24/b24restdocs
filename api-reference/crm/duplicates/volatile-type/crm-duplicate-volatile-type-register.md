@@ -1,14 +1,14 @@
-# Add a Field to the Duplicate Search crm.duplicate.volatileType.register
+# Add Field to Duplicate Search crm.duplicate.volatileType.register
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `crm.duplicate.volatileType.register` adds a field to the duplicate search functionality for leads, contacts, or companies.
+The method `crm.duplicate.volatileType.register` adds a field to the duplicate search functionality in leads, contacts, or companies.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,36 +19,18 @@ The method `crm.duplicate.volatileType.register` adds a field to the duplicate s
 - `3` — [contact](../../contacts/index.md)
 - `4` — [company](../../companies/index.md) ||
 || **fieldCode*** 
-[`string`](../../../data-types.md) | The code of the field to be added to the duplicate search. For example, `TITLE`, `RQ.DE.NAME`, `UF_CRM_1750854801`. You can obtain a list of available fields using the method [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md) ||
+[`string`](../../../data-types.md) | The code of the field to be added to the duplicate search. For example, `TITLE`, `RQ.DE.NAME`, `UF_CRM_1750854801`. You can get a list of available fields using the method [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md) ||
 |#
 
 ### Method Operation Features
 
-A total of 7 custom fields can be registered for duplicate searches. For example, if you have already added 3 fields for contacts and 4 fields for companies, attempting to add another field for any object type will result in the error `MAX_TYPES_COUNT_EXCEEDED`.
+A total of 7 custom fields can be registered for duplicate searches. For example, if you have already added 3 fields for contacts and 4 fields for companies, attempting to add another field for any object type will result in the error `MAX_TYPES_COUNT_EXCEEDED`. 
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.duplicate.volatileType.register",
-        {
-            entityTypeId: 1,
-            fieldCode: "TITLE"
-        },
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -70,7 +52,81 @@ A total of 7 custom fields can be registered for duplicate searches. For example
     https://**put_your_bitrix24_address**/rest/crm.duplicate.volatileType.register
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.duplicate.volatileType.register",
+    		{
+    			entityTypeId: 1,
+    			fieldCode: "TITLE"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.duplicate.volatileType.register',
+                [
+                    'entityTypeId' => 1,
+                    'fieldCode'    => 'TITLE',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error registering volatile type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.duplicate.volatileType.register",
+        {
+            entityTypeId: 1,
+            fieldCode: "TITLE"
+        },
+        function(result) {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -92,7 +148,7 @@ A total of 7 custom fields can be registered for duplicate searches. For example
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -124,7 +180,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
