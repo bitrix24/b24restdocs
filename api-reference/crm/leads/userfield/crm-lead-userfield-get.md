@@ -30,13 +30,66 @@ The method `crm.lead.userfield.get` returns a custom field of leads by its ident
 || **id**^*^ | Identifier of the custom field. ||
 |#
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.lead.userfield.get",
+    		{
+    			id: id
+    		}
+    	);
+    
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = $_POST['id'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.userfield.get',
+                [
+                    'id' => $id
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting lead user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var id = prompt("Enter ID");
@@ -57,4 +110,4 @@ The method `crm.lead.userfield.get` returns a custom field of leads by its ident
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}

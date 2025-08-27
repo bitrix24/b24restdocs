@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -23,20 +23,76 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.lead.userfield.delete` removes a custom field from leads.
+The method `crm.lead.userfield.delete` deletes a custom field from leads.
 
 #|
 || **Parameter** | **Description** ||
 || **id**^*^ | Identifier of the custom field. ||
 |#
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.lead.userfield.delete",
+    		{
+    			id: id
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.info(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = readline("Enter ID");
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.userfield.delete',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var id = prompt("Enter ID");
@@ -57,4 +113,4 @@ The method `crm.lead.userfield.delete` removes a custom field from leads.
 
 {% endlist %}
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}

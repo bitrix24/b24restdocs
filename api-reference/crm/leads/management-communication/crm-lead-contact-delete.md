@@ -1,4 +1,4 @@
-# Remove Contact Binding from Lead crm.lead.contact.delete
+# Remove contact binding from lead crm.lead.contact.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -14,9 +14,9 @@ This method removes the binding of a contact to the specified lead.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | The identifier of the lead from which to remove the contact binding. The lead identifier can be obtained using the [get lead list method](../crm-lead-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the lead from which to remove the contact binding. The lead identifier can be obtained using the [get lead list](../crm-lead-list.md) method. ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a contact to the lead in the following structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a contact to the lead in the form of a structure:
 
 ```js
 fields:
@@ -35,7 +35,7 @@ fields:
 || **Name**
 `type` | **Description** ||
 || **CONTACT_ID***
-[`integer`](../../../data-types.md) | The identifier of the contact ||
+[`integer`](../../../data-types.md) | Identifier of the contact ||
 |#
 
 ## Code Examples
@@ -63,7 +63,67 @@ fields:
     -d '{"id":1,"fields":{"CONTACT_ID":1010},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.lead.contact.delete
     ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.lead.contact.delete',
+    		{
+    			id: 1,
+    			fields: {
+    				'CONTACT_ID': 1010
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.contact.delete',
+                [
+                    'id'     => 1,
+                    'fields' => [
+                        'CONTACT_ID' => 1010,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting lead contact: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -84,7 +144,7 @@ fields:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -109,7 +169,7 @@ fields:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -118,8 +178,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-03T17:19:01+02:00",
+        "date_finish": "2024-05-03T17:19:01+02:00",
         "operating": 0
     }
 }
@@ -131,14 +191,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | The result of the operation ||
+[`boolean`](../../../data-types.md) | Result of the operation ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

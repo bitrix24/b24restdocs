@@ -4,7 +4,7 @@
 >
 > Who can execute the method: `any user`
 
-This method removes the contact list from a lead.
+This method deletes the contact list from a lead.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method removes the contact list from a lead.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the lead. The lead identifier can be obtained using the [get lead list method](../crm-lead-list.md) ||
+[`integer`](../../../data-types.md) | Lead identifier. The lead identifier can be obtained using the [get lead list method](../crm-lead-list.md) ||
 |#
 
 ## Code Examples
@@ -46,6 +46,63 @@ This method removes the contact list from a lead.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.lead.contact.items.delete",
+    		{
+    			id: 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.contact.items.delete',
+                [
+                    'id' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting lead contact items: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.lead.contact.items.delete",
         {
@@ -60,7 +117,7 @@ This method removes the contact list from a lead.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -103,7 +160,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the operation ||
+[`boolean`](../../../data-types.md) | Operation result ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -126,7 +183,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Item not found ||
+|| `NOT_FOUND` | Element not found ||
 || ` ` | Required fields not provided ||
 || ` ` | Other errors (e.g., fatal errors) ||
 |#

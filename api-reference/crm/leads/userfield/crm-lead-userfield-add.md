@@ -32,14 +32,14 @@ The system limitation on the field name is 20 characters. The custom field name 
 
 #|
 || **Parameter** | **Description** ||
-|| **fields** | A set of fields – an array of the form `array("field"=>"value"[, ...])`, containing the description of the custom field. ||
-|| **LIST** | Contains a set of list values for custom fields of type List. It is specified when creating/updating the field. Each value is an array with the fields: 
+|| **fields** | Set of fields – an array of the form `array("field"=>"value"[, ...])`, containing the description of the custom field. ||
+|| **LIST** | Contains a set of list values for custom fields of type List. Specified when creating/updating the field. Each value is an array with the fields: 
 - **VALUE** - the value of the list item. This field is required when creating a new item.
 - **SORT** - sorting. 
-- **DEF** - if equal to `Y`, the list item is the default value. For multiple fields, several `DEF=Y` are allowed. For non-multiple fields, the first will be considered default. 
-- **XML_ID** - external code of the value. This parameter is only considered when updating already existing list item values. 
+- **DEF** - if equal to `Y`, the list item is the default value. For multiple fields, multiple `DEF=Y` are allowed. For non-multiple, the first will be considered default. 
+- **XML_ID** - external code of the value. This parameter is considered only when updating already existing values of the list item. 
 - **ID** - identifier of the value. If specified, it is considered an update of an existing list item value, not the creation of a new one. It only makes sense when calling the `*.userfield.update` methods. 
-- **DEL** - if equal to Y, the existing list item will be deleted. This is applied if the ID parameter is filled. ||
+- **DEL** - if equal to Y, the existing list item will be deleted. Used if the ID parameter is filled. ||
 |#
 
 A complete description of the fields can be obtained by calling the method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md).
@@ -49,6 +49,74 @@ A complete description of the fields can be obtained by calling the method [crm.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.lead.userfield.add",
+    		{
+    			fields:
+    			{
+    				"FIELD_NAME": "MY_STRING",
+    				"EDIT_FORM_LABEL": "My String",
+    				"LIST_COLUMN_LABEL": "My String",
+    				"USER_TYPE_ID": "string",
+    				"XML_ID": "MY_STRING",
+    				"SETTINGS": { "DEFAULT_VALUE": "Hello, World!" }
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.userfield.add',
+                [
+                    'fields' => [
+                        'FIELD_NAME'       => 'MY_STRING',
+                        'EDIT_FORM_LABEL'  => 'My String',
+                        'LIST_COLUMN_LABEL' => 'My String',
+                        'USER_TYPE_ID'     => 'string',
+                        'XML_ID'           => 'MY_STRING',
+                        'SETTINGS'         => ['DEFAULT_VALUE' => 'Hello, World!'],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding lead user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -76,12 +144,84 @@ A complete description of the fields can be obtained by calling the method [crm.
 
 {% endlist %}
 
-Example of creating a field of type "list"
+Example of creating a list type field
 
 {% list tabs %}
 
 - JS
-  
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.lead.userfield.add",
+    		{
+    			fields:
+    			{
+    				"FIELD_NAME": "MY_LIST",
+    				"EDIT_FORM_LABEL": "My List",
+    				"LIST_COLUMN_LABEL": "My List",
+    				"USER_TYPE_ID": "enumeration",
+    				"LIST": [ { "VALUE": "Item #1" }, { "VALUE": "Item #2" }, { "VALUE": "Item #3" }, { "VALUE": "Item #4" }, { "VALUE": "Item #5" } ],
+    				"XML_ID": "MY_LIST",
+    				"SETTINGS": { "LIST_HEIGHT": 3 }
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.userfield.add',
+                [
+                    'fields' => [
+                        'FIELD_NAME'       => 'MY_LIST',
+                        'EDIT_FORM_LABEL'  => 'My List',
+                        'LIST_COLUMN_LABEL' => 'My List',
+                        'USER_TYPE_ID'     => 'enumeration',
+                        'LIST'             => [
+                            ['VALUE' => 'Item #1'],
+                            ['VALUE' => 'Item #2'],
+                            ['VALUE' => 'Item #3'],
+                            ['VALUE' => 'Item #4'],
+                            ['VALUE' => 'Item #5'],
+                        ],
+                        'XML_ID'           => 'MY_LIST',
+                        'SETTINGS'         => ['LIST_HEIGHT' => 3],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding lead user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         "crm.lead.userfield.add",
@@ -109,4 +249,4 @@ Example of creating a field of type "list"
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

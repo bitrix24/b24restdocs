@@ -1,8 +1,8 @@
-# Set Parameters for the CRM Lead Detail Card `crm.lead.details.configuration.set`
+# Set Parameters for crm.lead.details.configuration.set
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,12 +10,12 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- adjustments needed for standard writing
 - parameter types not specified
-- parameter requirements not indicated
+- parameter mandatory status not indicated
 - examples missing
-- success response missing
-- error response missing
+- success response not provided
+- error response not provided
 
 {% endnote %}
 
@@ -25,18 +25,18 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.lead.details.configuration.set` sets the settings for lead cards. This method records personal settings for the specified user’s card or general settings for all users.
+The method `crm.lead.details.configuration.set` sets the lead card settings. This method records the personal settings of the specified user’s card or the general settings for all users.
 
 {% note warning %}
 
-Please note that the settings for repeat leads may differ from those for simple leads. The parameter **leadCustomerType** is used to switch between lead card settings.
+Please note that the settings for repeat leads may differ from the settings for simple leads. The parameter **leadCustomerType** is used to switch between lead card settings.
 
 {% endnote %}
 
 #|
 || **Parameter** | **Description** ||
 || **scope**
-[`unknown`](../../../data-types.md) | The scope of the settings. Acceptable values:
+[`unknown`](../../../data-types.md) | The scope of the settings. Allowed values:
 
 - **P** - personal settings,
 - **C** - general settings.
@@ -44,7 +44,7 @@ Please note that the settings for repeat leads may differ from those for simple 
 || **userId**
 [`unknown`](../../../data-types.md) | User identifier. If not specified, the current user is used. Required only when setting personal settings. ||
 || **extras**
-[`unknown`](../../../data-types.md) | Additional parameters. Here, for leads, the parameter `leadCustomerType` can be specified, with acceptable values:
+[`unknown`](../../../data-types.md) | Additional parameters. Here, the parameter `leadCustomerType` can be specified for leads, with allowed values:
 
 - **1** - simple leads,
 - **2** - repeat leads.
@@ -56,6 +56,120 @@ Please note that the settings for repeat leads may differ from those for simple 
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.lead.details.configuration.set",
+    		{
+    			scope: "P",
+    			userId: 1,
+    			data:
+    			[
+    				{
+    					name: "main",
+    					title: "General Information",
+    					type: "section",
+    					elements:
+    					[
+    						{ name: "TITLE" },
+    						{ name: "STATUS_ID" },
+    						{ name: "NAME" },
+    						{ name: "BIRTHDATE" },
+    						{ name: "POST" },
+    						{ name: "PHONE" },
+    						{ name: "EMAIL" }
+    					]
+    				},
+    				{
+    					name: "additional",
+    					title: "Additional Information",
+    					type: "section",
+    					elements:
+    					[
+    						{ name: "SOURCE_ID" },
+    						{ name: "SOURCE_DESCRIPTION" },
+    						{ name: "OPENED" },
+    						{ name: "ASSIGNED_BY_ID" },
+    						{ name: "OBSERVER" },
+    						{ name: "COMMENTS" }
+    					]
+    				}
+    			]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.details.configuration.set',
+                [
+                    'scope' => 'P',
+                    'userId' => 1,
+                    'data' => [
+                        [
+                            'name' => 'main',
+                            'title' => 'General Information',
+                            'type' => 'section',
+                            'elements' => [
+                                ['name' => 'TITLE'],
+                                ['name' => 'STATUS_ID'],
+                                ['name' => 'NAME'],
+                                ['name' => 'BIRTHDATE'],
+                                ['name' => 'POST'],
+                                ['name' => 'PHONE'],
+                                ['name' => 'EMAIL'],
+                            ],
+                        ],
+                        [
+                            'name' => 'additional',
+                            'title' => 'Additional Information',
+                            'type' => 'section',
+                            'elements' => [
+                                ['name' => 'SOURCE_ID'],
+                                ['name' => 'SOURCE_DESCRIPTION'],
+                                ['name' => 'OPENED'],
+                                ['name' => 'ASSIGNED_BY_ID'],
+                                ['name' => 'OBSERVER'],
+                                ['name' => 'COMMENTS'],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting lead details configuration: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     //---
@@ -111,4 +225,4 @@ Please note that the settings for repeat leads may differ from those for simple 
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}

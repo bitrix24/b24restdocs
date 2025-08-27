@@ -1,4 +1,4 @@
-# Create a new lead crm.lead.add
+# Create a New Lead crm.lead.add
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
@@ -52,7 +52,7 @@ The list of available fields is described [below](#fields)
 || **ADDRESS_POSTAL_CODE**
 [`string`](../../data-types.md) | Postal code ||
 || **ADDRESS_PROVINCE**
-[`string`](../../data-types.md) | State ||
+[`string`](../../data-types.md) | Province ||
 || **ADDRESS_REGION**
 [`string`](../../data-types.md) | Region ||
 || **ASSIGNED_BY_ID**
@@ -150,14 +150,14 @@ The list of all possible stages from the directory can be obtained using the met
 || **UTM_MEDIUM**
 [`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners) ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google AdWords, and others ||
+[`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, and others ||
 || **UTM_TERM**
 [`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **WEB**
 [`crm_multifield`](../../data-types.md) | Website. Multiple ||
 || **UF_...** | Custom fields. For example, `UF_CRM_25534736`.  
 
-Depending on the portal settings, leads may have a set of custom fields of defined types. 
+Depending on the portal settings, leads may have a set of custom fields of specific types. 
 
 To create, modify, or delete custom fields in leads, use the methods [crm.lead.userfield.*](./userfield/index.md) ||
 |#
@@ -179,7 +179,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 || **Name**
 `type`  | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`](../../data-types.md) | Flag `Y`/`N` - register the event of adding a lead. Additionally, a notification will be sent to the person responsible for the lead ||
+[`boolean`](../../data-types.md) | Flag `Y`/`N` - register the lead addition event. Additionally, a notification will be sent to the responsible person for the lead ||
 |#
 
 ## Code Examples
@@ -194,7 +194,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"LLC Smith","NAME":"Gleb","SECOND_NAME":"Yegorovich","LAST_NAME":"Smith","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"}}' \
+    -d '{"fields":{"TITLE":"LLC Titov","NAME":"Gleb","SECOND_NAME":"Yegorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.lead.add
     ```
 
@@ -204,11 +204,108 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"LLC Smith","NAME":"Gleb","SECOND_NAME":"Yegorovich","LAST_NAME":"Smith","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TITLE":"LLC Titov","NAME":"Gleb","SECOND_NAME":"Yegorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.lead.add
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.lead.add',
+    		{
+    			fields:
+    			{
+    				TITLE: 'LLC Titov',
+    				NAME: 'Gleb',
+    				SECOND_NAME: 'Yegorovich',
+    				LAST_NAME: 'Titov',
+    				STATUS_ID: 'NEW',
+    				OPENED: 'Y',
+    				ASSIGNED_BY_ID: 1,
+    				CURRENCY_ID: 'USD',
+    				OPPORTUNITY: 12500,
+    				PHONE: [
+    					{ 
+    						VALUE: '555888',
+    						VALUE_TYPE: 'WORK',
+    					},
+    				],
+    				WEB: [
+    					{
+    						VALUE: 'www.mysite.com',
+    						VALUE_TYPE: 'WORK',
+    					}
+    				],
+    			},
+    			params: {
+    				REGISTER_SONET_EVENT: 'Y',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(`Lead created with ID ${result}`);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.add',
+                [
+                    'fields' => [
+                        'TITLE'          => 'LLC Titov',
+                        'NAME'           => 'Gleb',
+                        'SECOND_NAME'    => 'Yegorovich',
+                        'LAST_NAME'      => 'Titov',
+                        'STATUS_ID'      => 'NEW',
+                        'OPENED'         => 'Y',
+                        'ASSIGNED_BY_ID' => 1,
+                        'CURRENCY_ID'    => 'USD',
+                        'OPPORTUNITY'    => 12500,
+                        'PHONE'          => [
+                            [
+                                'VALUE'      => '555888',
+                                'VALUE_TYPE' => 'WORK',
+                            },
+                        ],
+                        'WEB'            => [
+                            [
+                                'VALUE'      => 'www.mysite.com',
+                                'VALUE_TYPE' => 'WORK',
+                            },
+                        ],
+                    ],
+                    'params' => [
+                        'REGISTER_SONET_EVENT' => 'Y',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Lead created with ID ' . $result;
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating lead: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -216,10 +313,10 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
         {
             fields:
             {
-                TITLE: "LLC Smith",
+                TITLE: "LLC Titov",
                 NAME: "Gleb",
                 SECOND_NAME: "Yegorovich",
-                LAST_NAME: "Smith",
+                LAST_NAME: "Titov",
                 STATUS_ID: "NEW",
                 OPENED: "Y",
                 ASSIGNED_BY_ID: 1,
@@ -255,7 +352,7 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -264,10 +361,10 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
         'crm.lead.add',
         [
             'fields' => [
-                'TITLE' => 'LLC Smith',
+                'TITLE' => 'LLC Titov',
                 'NAME' => 'Gleb',
                 'SECOND_NAME' => 'Yegorovich',
-                'LAST_NAME' => 'Smith',
+                'LAST_NAME' => 'Titov',
                 'STATUS_ID' => 'NEW',
                 'OPENED' => 'Y',
                 'ASSIGNED_BY_ID' => 1,

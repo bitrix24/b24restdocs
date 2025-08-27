@@ -1,10 +1,10 @@
-# Get a list of leads crm.lead.list
+# Get the list of leads crm.lead.list
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: user with read access permission for leads
 
-The method `crm.lead.list` returns a list of leads based on a filter. It is an implementation of the list method for leads.
+The method `crm.lead.list` returns a list of leads based on the filter. It is an implementation of the list method for leads.
 
 ## Method Parameters
 
@@ -14,29 +14,28 @@ The method `crm.lead.list` returns a list of leads based on a filter. It is an i
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see lead fields [crm-lead-fields](./crm-lead-fields.md)).
+[`array`](../../data-types.md) | The array contains a list of fields to select (see lead fields [crm-lead-fields](./crm-lead-fields.md)).
 
 When selecting, use masks:
 - "*" - to select all fields (excluding custom and multiple fields)
 - "UF_*" - to select all custom fields (excluding multiple fields)
 
 There are no masks for selecting multiple fields. To select multiple fields, specify the required ones in the selection list ("PHONE", "EMAIL", etc.).
-There is no option to add a logical OR condition to the filter if you need to select by several different fields.||
-
+There is no option to add a logical OR condition to the filter if you need to select by several different fields. ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected leads in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the lead fields [crm-lead-fields](./crm-lead-fields.md).
+Possible values for `field` correspond to lead fields [crm-lead-fields](./crm-lead-fields.md).
 
-An additional prefix can be assigned to the key to clarify the filter's behavior. Possible prefix values:
+The key can have an additional prefix that clarifies the behavior of the filter. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@` — NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The "%" symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string.
-- `=%` — LIKE, substring search. The "%" symbol must be passed in the value. Examples:
+- `%` — LIKE, substring search. The "%" symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The "%" symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values starting with "mol"
   - "%mol" — searching for values ending with "mol"
   - "%mol%" — searching for values where "mol" can be in any position
@@ -45,7 +44,7 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 
 - `!%` — NOT LIKE, substring search. The "%" symbol in the filter value does not need to be passed. The search goes from both sides.
 
-- `=%` — NOT LIKE, substring search. The "%" symbol must be passed in the value. Examples:
+- `=%` — NOT LIKE, substring search. The "%" symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values not starting with "mol"
   - "%mol" — searching for values not ending with "mol"
   - "%mol%" — searching for values where the substring "mol" is not in any position
@@ -56,14 +55,12 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `!=` - not equal
 - `!` — not equal
   ||
-
-|| **order**
+  || **order**
 Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order ||
-
-|| **start**
-[`integer`](../data-types.md) | This parameter is used to control pagination.
+  || **start**
+  [`integer`](../data-types.md) | This parameter is used to control pagination.
 
 The page size of results is always static: 50 records.
 
@@ -104,57 +101,68 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
 
 - JS
 
-    ```javascript 
-    BX24.callMethod(
-      'crm.lead.list',
-      {
-        select: ['*', 'UF_*'],
-        start: 50,
-        filter: {
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.lead.list',
+        {
+          select: ['*', 'UF_*'],
+          filter: {
             '=OPPORTUNITY': 15000,
+          },
+          order: {
+            STATUS_ID: 'ASC',
+          },
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.lead.list', {
+        select: ['*', 'UF_*'],
+        filter: {
+          '=OPPORTUNITY': 15000,
         },
         order: {
-            STATUS_ID: 'ASC',
-        }, 
-      },
-      (result) => {
-        if(result.error())
-        {
-          console.error(result.error());
-  
-          return;
-        }
-        
-        console.info(result.data());
+          STATUS_ID: 'ASC',
+        },
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
       }
-    );
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.lead.list', {
+        select: ['*', 'UF_*'],
+        filter: {
+          '=OPPORTUNITY': 15000,
+        },
+        order: {
+          STATUS_ID: 'ASC',
+        },
+      }, 50)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
     ```
 
 - PHP
-
-  ```php
-  require_once('crest.php');
-
-  $result = CRest::call(
-      'crm.lead.list',
-      [
-          'select' => ['*', 'UF_*'],
-          'start' => 50,
-          'filter' => [
-              '=OPPORTUNITY' => 15000,
-          ],
-          'order' => [
-              'STATUS_ID' => 'ASC',
-          ],
-      ]
-  );
-
-  echo '<PRE>';
-  print_r($result);
-  echo '</PRE>';
-  ```
-
-- PHP (B24PhpSdk)
 
   ```php      
   try {
@@ -188,13 +196,65 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
   }
   ```
 
+- BX24.js
+
+    ```javascript 
+    BX24.callMethod(
+      'crm.lead.list',
+      {
+        select: ['*', 'UF_*'],
+        start: 50,
+        filter: {
+            '=OPPORTUNITY': 15000,
+        },
+        order: {
+            STATUS_ID: 'ASC',
+        }, 
+      },
+      (result) => {
+        if(result.error())
+        {
+          console.error(result.error());
+  
+          return;
+        }
+        
+        console.info(result.data());
+      }
+    );
+    ```
+
+- PHP CRest
+
+  ```php
+  require_once('crest.php');
+
+  $result = CRest::call(
+      'crm.lead.list',
+      [
+          'select' => ['*', 'UF_*'],
+          'start' => 50,
+          'filter' => [
+              '=OPPORTUNITY' => 15000,
+          ],
+          'order' => [
+              'STATUS_ID' => 'ASC',
+          ],
+      ]
+  );
+
+  echo '<PRE>';
+  print_r($result);
+  echo '</PRE>';
+  ```
+
 {% endlist %}
 
 ## Some Practical Examples
 
 {% list tabs %}
 
-- Searching for unconverted leads with an amount greater than zero
+- Search for unconverted leads with an amount greater than zero
 
   ```js
   BX24.callMethod(
@@ -221,7 +281,7 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
   );
   ```
 
-- Searching for a lead by phone
+- Search for a lead by phone
 
   ```js
   BX24.callMethod(
@@ -264,11 +324,12 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
       ]
   );
   ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -386,7 +447,7 @@ HTTP status: **200**
       "UF_CRM_1708952993785": true
     },
     
-      48 more leads with a similar structure
+      48 more leads with similar structure
     
   ],
   "next": 50,
@@ -417,7 +478,7 @@ It should be noted that the structure of the fields may change due to the `selec
 || **total**
 [`integer`](../../data-types.md) | The total number of found items ||
 || **next**
-[`integer`](../../data-types.md) | Contains the value that needs to be passed in the next request in the `start` parameter to get the next batch of data.
+[`integer`](../../data-types.md) | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
 
 The `next` parameter appears in the response if the number of items matching your request exceeds `50` ||
 || **time**
@@ -426,7 +487,7 @@ The `next` parameter appears in the response if the number of items matching you
 
 ## Error Handling
 
-> HTTP status: 40x, 50x Error
+> HTTP Status: 40x, 50x Error
 
 ```json
 {

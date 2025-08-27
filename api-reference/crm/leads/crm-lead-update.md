@@ -10,11 +10,11 @@ The method `crm.lead.update` updates an existing lead.
 
 {% note warning %}
 
-It is strongly recommended to pass the complete set of address fields when updating the address in the update method. The specifics of updating address fields are described [here](../data-types.md).
+It is highly recommended to pass the complete set of address fields when updating the address in the update method. The specifics of updating address fields are described [here](../data-types.md).
 
 {% endnote %}
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -77,11 +77,11 @@ Only those fields that need to be changed should be passed in `fields`
 || **COMMENTS**
 [`string`](../../data-types.md) | Comments ||
 || **COMPANY_ID**
-[`crm_company`](../../data-types.md) | Link the lead to a company ||
+[`crm_company`](../../data-types.md) | Link of the lead to the company ||
 || **COMPANY_TITLE**
 [`string`](../../data-types.md) | Company name specified in the corresponding lead field. To link an existing company, pass its id in the COMPANY_ID field ||
 || **CONTACT_ID**
-[`crm_contact`](../../data-types.md) | Link the lead to a contact ||
+[`crm_contact`](../../data-types.md) | Link of the lead to the contact ||
 || **CONTACT_IDS**
 [`crm_contact`](../../data-types.md) | List of contacts linked to the lead.
 
@@ -89,7 +89,7 @@ Contacts can be added or removed using the group of methods [crm.lead.contact.*]
 || **CURRENCY_ID**
 [`crm_currency`](../../data-types.md) | Currency identifier ||
 || **EMAIL**
-[`crm_multifield`](../../data-types.md) | Email address. Multiple ||
+[`crm_multifield`](../../data-types.md) | E-mail address. Multiple ||
 || **HONORIFIC**
 [`crm_status`](../../data-types.md) | Salutation ||
 || **IM**
@@ -103,11 +103,11 @@ Contacts can be added or removed using the group of methods [crm.lead.contact.*]
 || **SECOND_NAME**
 [`string`](../../data-types.md) | Middle name ||
 || **OPENED**
-[`char`](../../data-types.md) | Indicates the availability of the lead for everyone. Acceptable values Y or N ||
+[`char`](../../data-types.md) | Indicates whether the lead is available to everyone. Acceptable values are Y or N ||
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicates manual mode for calculating the amount. Acceptable values Y or N||
+[`char`](../../data-types.md) | Indicates manual mode of calculating the amount. Acceptable values are Y or N||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
 || **ORIGIN_ID**
@@ -146,11 +146,11 @@ The list of all possible identifiers from the directory can be obtained using th
 
 #|
 ||STATUS_ID|Name||
-||NEW | Not processed||
-||IN_PROCESS | In progress||
+||NEW | New||
+||IN_PROCESS | In process||
 ||PROCESSED | Processed||
-||JUNK | Low-quality lead||
-||CONVERTED | High-quality lead||
+||JUNK | Junk lead||
+||CONVERTED | Qualified lead||
 |#
 
 The list of all possible stages from the directory can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=STATUS` ||
@@ -163,14 +163,14 @@ The list of all possible stages from the directory can be obtained using the met
 || **UTM_MEDIUM**
 [`string`](../../data-types.md) | Type of traffic. CPC (ads), CPM (banners) ||
 || **UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system. Google-Adwords and others ||
+[`string`](../../data-types.md) | Advertising system. Google Ads and others ||
 || **UTM_TERM**
 [`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **WEB**
 [`crm_multifield`](../../data-types.md) | Website. Multiple ||
 || **UF_...** | Custom fields. For example, `UF_CRM_25534736`.  
 
-Depending on the account settings, leads may have a set of custom fields of defined types. 
+Depending on the portal settings, leads may have a set of custom fields of specific types. 
 
 To change file fields, it is recommended to use the method [crm.item.update](../universal/crm-item-update.md).
 
@@ -179,7 +179,7 @@ To create, modify, or delete custom fields in leads, use the methods [crm.lead.u
 
 {% note info %}
 
-Additionally, to find out the required format of fields, you can execute the method [crm.lead.fields](./crm-lead-fields.md) and check the format of the incoming values of these fields.
+Additionally, to find out the required format of fields, you can execute the method [crm.lead.fields](./crm-lead-fields.md) and check the format of the received values of these fields.
 
 {% endnote %}
 
@@ -195,24 +195,24 @@ When changing a lead, you cannot explicitly set the repeat lead indicator (the `
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`char`](../../data-types.md) | Register the event of adding a lead in the activity stream. Additionally, a notification will be sent to the person responsible for the lead. Acceptable values `Y` or `N` ||
+[`char`](../../data-types.md) | Register an event of adding a lead in the activity stream. Additionally, a notification will be sent to the person responsible for the lead. Acceptable values are `Y` or `N` ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
-  
+
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1608,"fields":{"TITLE":"LLC Titov","NAME":"Gleb","SECOND_NAME":"Egorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"}}' \
+    -d '{"id":1608,"fields":{"TITLE":"IP Titov","NAME":"Gleb","SECOND_NAME":"Egorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.lead.update
     ```
 
@@ -222,11 +222,89 @@ When changing a lead, you cannot explicitly set the repeat lead indicator (the `
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1608,"fields":{"TITLE":"LLC Titov","NAME":"Gleb","SECOND_NAME":"Egorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":1608,"fields":{"TITLE":"IP Titov","NAME":"Gleb","SECOND_NAME":"Egorovich","LAST_NAME":"Titov","STATUS_ID":"NEW","OPENED":"Y","ASSIGNED_BY_ID":1,"CURRENCY_ID":"USD","OPPORTUNITY":12500,"PHONE":[{"VALUE":"555888","VALUE_TYPE":"WORK"}],"WEB":[{"VALUE":"www.mysite.com","VALUE_TYPE":"WORK"}]},"params":{"REGISTER_SONET_EVENT":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.lead.update
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.lead.update",
+    		{
+    			id: 1608,
+    			fields:
+    			{
+    				TITLE: "IP Titov",
+    				NAME: "Gleb",
+    				SECOND_NAME: "Egorovich",
+    				LAST_NAME: "Titov",
+    				STATUS_ID: "NEW",
+    				OPENED: "Y",
+    				ASSIGNED_BY_ID: 1,
+    				CURRENCY_ID: "USD",
+    				OPPORTUNITY: 12500,
+    				PHONE: [
+    					{
+    						VALUE: "555888",
+    						VALUE_TYPE: "WORK",
+    					},
+    				],
+    				WEB: [
+    					{
+    						VALUE: "www.mysite.com",
+    						VALUE_TYPE: "WORK",
+    					}
+    				],
+    			},
+    			params: {
+    				REGISTER_SONET_EVENT: "Y",
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php        
+    try {
+        $id = 123; // Example lead ID
+        $fields = [
+            'TITLE' => 'Updated Lead Title',
+            'NAME' => 'John',
+            'LAST_NAME' => 'Doe',
+            'BIRTHDATE' => (new DateTime('1980-01-01'))->format(DateTime::ATOM),
+            'COMPANY_TITLE' => 'Example Company',
+            'STATUS_ID' => 'NEW',
+            'COMMENTS' => 'Updated comments for the lead.',
+            'PHONE' => '1234567890',
+            'EMAIL' => 'john.doe@example.com',
+        ];
+        $params = [
+            'REGISTER_SONET_EVENT' => 'Y',
+        ];
+        $result = $serviceBuilder->getCRMScope()->lead()->update($id, $fields, $params);
+        if ($result->isSuccess()) {
+            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
+        } else {
+            print("Update failed.");
+        }
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage());
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -235,7 +313,7 @@ When changing a lead, you cannot explicitly set the repeat lead indicator (the `
             id: 1608,
             fields:
             {
-                TITLE: "LLC Titov",
+                TITLE: "IP Titov",
                 NAME: "Gleb",
                 SECOND_NAME: "Egorovich",
                 LAST_NAME: "Titov",
@@ -272,7 +350,7 @@ When changing a lead, you cannot explicitly set the repeat lead indicator (the `
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     $fields = [
@@ -296,36 +374,6 @@ When changing a lead, you cannot explicitly set the repeat lead indicator (the `
             'REGISTER_SONET_EVENT' => 'Y',
         ]     
     );
-    ```
-
-- PHP (B24PhpSdk)
-
-    ```php        
-    try {
-        $id = 123; // Example lead ID
-        $fields = [
-            'TITLE' => 'Updated Lead Title',
-            'NAME' => 'John',
-            'LAST_NAME' => 'Doe',
-            'BIRTHDATE' => (new DateTime('1980-01-01'))->format(DateTime::ATOM),
-            'COMPANY_TITLE' => 'Example Company',
-            'STATUS_ID' => 'NEW',
-            'COMMENTS' => 'Updated comments for the lead.',
-            'PHONE' => '1234567890',
-            'EMAIL' => 'john.doe@example.com',
-        ];
-        $params = [
-            'REGISTER_SONET_EVENT' => 'Y',
-        ];
-        $result = $serviceBuilder->getCRMScope()->lead()->update($id, $fields, $params);
-        if ($result->isSuccess()) {
-            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
-        } else {
-            print("Update failed.");
-        }
-    } catch (Throwable $e) {
-        print("Error: " . $e->getMessage());
-    }
     ```
 
 {% endlist %}
@@ -376,7 +424,7 @@ HTTP status: **200**
 
 #|  
 || **Error Text** | **Description** ||
-|| `ID is not defined or invalid` | The parameter `id` is not a positive integer ||
+|| `ID is not defined or invalid` | A non-integer number greater than zero was passed to the `id` parameter ||
 || `Not found` | The lead with the provided `id` does not exist ||
 || `Access denied` | The user does not have permission to edit the lead ||
 |#

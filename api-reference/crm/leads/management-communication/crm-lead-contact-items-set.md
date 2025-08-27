@@ -1,4 +1,4 @@
-# Attach a List of Contacts to a Lead crm.lead.contact.items.set
+# Attach a list of contacts to a lead crm.lead.contact.items.set
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -13,9 +13,9 @@ This method attaches a list of contacts to the specified lead.
 #|
 || **Name**
 `type` | **Description** ||
-|| **id***
+|| **id*** 
 [`integer`](../../../data-types.md) | Identifier of the lead. The lead identifier can be obtained using the [get lead list method](../crm-lead-list.md) ||
-|| **items***
+|| **items*** 
 [`object`](../../../data-types.md) | A set of contacts represented as an array of objects with the following fields:
 
 - **CONTACT_ID^*^** — identifier of the contact
@@ -53,6 +53,83 @@ This method attaches a list of contacts to the specified lead.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            "crm.lead.contact.items.set",
+            {
+                id: 1,
+                items: [
+                    {
+                        "CONTACT_ID": 1010,
+                        "SORT": 10,
+                        "IS_PRIMARY": "Y"
+                    },
+                    {
+                        "CONTACT_ID": 1020,
+                        "SORT": 20,
+                        "IS_PRIMARY": "N"
+                    }
+                ]
+            }
+        );
+        
+        const result = response.getData().result;
+        if (result.error())
+            console.error(result.error());
+        else
+            console.dir(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.contact.items.set',
+                [
+                    'id'    => 1,
+                    'items' => [
+                        [
+                            'CONTACT_ID' => 1010,
+                            'SORT'       => 10,
+                            'IS_PRIMARY' => 'Y',
+                        ],
+                        [
+                            'CONTACT_ID' => 1020,
+                            'SORT'       => 20,
+                            'IS_PRIMARY' => 'N',
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting lead contact items: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.lead.contact.items.set",
         {
@@ -79,7 +156,7 @@ This method attaches a list of contacts to the specified lead.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -121,8 +198,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-03T17:19:01+02:00",
+        "date_finish": "2024-05-03T17:19:01+02:00",
         "operating": 0
     }
 }

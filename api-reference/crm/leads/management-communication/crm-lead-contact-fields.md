@@ -4,13 +4,13 @@
 >
 > Who can execute the method: `any user`
 
-This method retrieves the description of the fields for the lead-contact relationship, used by methods in the `crm.lead.contact.*` family.
+This method retrieves the description of fields for the lead-contact relationship, used by methods in the `crm.lead.contact.*` family.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Example Notes](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,6 +37,51 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.lead.contact.fields'
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.contact.fields'
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching lead contact fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.lead.contact.fields",
         result => {
@@ -48,7 +93,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -101,8 +146,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-03T17:19:01+02:00",
+        "date_finish": "2024-05-03T17:19:01+02:00",
         "operating": 0
     }
 }
@@ -114,7 +159,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response containing the fields:
+[`object`](../../../data-types.md) | Root element of the response containing fields:
 
 - **SORT** — sorting index
 - **IS_PRIMARY** — primary contact flag

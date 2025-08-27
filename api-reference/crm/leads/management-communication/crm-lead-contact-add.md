@@ -14,9 +14,9 @@ This method adds a contact binding to the specified lead.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | The identifier of the lead to which the contact needs to be added. The lead identifier can be obtained using the [get lead list](../crm-lead-list.md) method. ||
+[`integer`](../../../data-types.md) | The identifier of the lead to which the contact should be added. The lead identifier can be obtained using the [get lead list method](../crm-lead-list.md)  ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a contact to the lead in the following structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a contact to the lead in the form of a structure:
 
 ```js
 fields:
@@ -37,16 +37,16 @@ fields:
 || **Name**
 `type` | **Description** ||
 || **CONTACT_ID***
-[`integer`](../../../data-types.md) | The identifier of the contact. ||
+[`integer`](../../../data-types.md) | The identifier of the contact ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting index. Defaults to `10`. ||
+[`integer`](../../../data-types.md) | Sort index. Defaults to `10`  ||
 || **IS_PRIMARY**
-[`string`](../../../data-types.md) | Primary contact flag.
+[`string`](../../../data-types.md) | Primary contact flag
 
 - `Y` — yes
 - `N` — no
 
-Defaults to `N`. ||
+Defaults to `N` ||
 |#
 
 ## Code Examples
@@ -78,6 +78,73 @@ Defaults to `N`. ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.lead.contact.add',
+    		{
+    			id: 1,
+    			fields: {
+    				'CONTACT_ID': 1010,
+    				'SORT': 10,
+    				'IS_PRIMARY': 'Y'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.contact.add',
+                [
+                    'id' => 1,
+                    'fields' => [
+                        'CONTACT_ID' => 1010,
+                        'SORT' => 10,
+                        'IS_PRIMARY' => 'Y',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding lead contact: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
             "crm.lead.contact.add",
             {
@@ -98,7 +165,7 @@ Defaults to `N`. ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -125,7 +192,7 @@ Defaults to `N`. ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -134,8 +201,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-03T17:19:01+02:00",
+        "date_finish": "2024-05-03T17:19:01+02:00",
         "operating": 0
     }
 }
@@ -147,14 +214,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | The result of the operation. ||
+[`boolean`](../../../data-types.md) | The result of the operation ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time. ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -169,10 +236,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions. ||
-|| `NOT_FOUND` | Element not found. ||
-|| ` ` | Required fields not provided. ||
-|| ` ` | Other errors (e.g., fatal errors). ||
+|| `ACCESS_DENIED` | Insufficient permissions ||
+|| `NOT_FOUND` | Element not found ||
+|| ` ` | Required fields not provided ||
+|| ` ` | Other errors (e.g., fatal errors) ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

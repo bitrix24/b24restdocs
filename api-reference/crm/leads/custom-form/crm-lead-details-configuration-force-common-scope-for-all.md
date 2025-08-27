@@ -1,4 +1,4 @@
-# Set a common card for all users crm.lead.details.configuration.forceCommonScopeForAll
+# Set a common lead card for all users crm.lead.details.configuration.forceCommonScopeForAll
 
 {% note warning "We are still updating this page" %}
 
@@ -28,7 +28,7 @@ The method `crm.lead.details.configuration.forceCommonScopeForAll` forcibly sets
 
 {% note warning %}
 
-Please note that the settings for repeat lead cards may differ from those for simple lead cards. The parameter **leadCustomerType** is used to switch between lead card settings.
+Please note that the settings for repeat leads may differ from the settings for simple leads. The parameter **leadCustomerType** is used to switch between lead card settings.
 
 {% endnote %}
 
@@ -47,6 +47,52 @@ Please note that the settings for repeat lead cards may differ from those for si
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.lead.details.configuration.forceCommonScopeForAll",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.lead.details.configuration.forceCommonScopeForAll',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting common lead card for all users: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     //---
