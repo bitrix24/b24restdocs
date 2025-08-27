@@ -1,4 +1,4 @@
-# Get Custom Fields of Estimates by ID crm.quote.userfield.get
+# Get Custom Fields of Quotes by ID crm.quote.userfield.get
 
 {% note warning "We are still updating this page" %}
 
@@ -24,12 +24,12 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.quote.userfield.get` returns the custom field of estimates by ID.
+The method `crm.quote.userfield.get` returns the custom field of quotes by ID.
 
 #|
 ||  **Parameter** / **Type**| **Description** ||
 || **id**
-[`unknown`](../../data-types.md) | Identifier of the custom field. ||
+[`unknown`](../../../data-types.md) | Identifier of the custom field. ||
 |#
 
 ## Example
@@ -37,7 +37,60 @@ The method `crm.quote.userfield.get` returns the custom field of estimates by ID
 {% list tabs %}
 
 - JS
-  
+
+
+    ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.quote.userfield.get",
+    		{ id: id }
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    $id = $_POST['id'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.quote.userfield.get',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     var id = prompt("Enter ID");        
     BX24.callMethod(
@@ -55,4 +108,4 @@ The method `crm.quote.userfield.get` returns the custom field of estimates by ID
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}

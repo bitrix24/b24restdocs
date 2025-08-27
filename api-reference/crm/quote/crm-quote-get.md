@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -26,10 +26,10 @@ Some data may be missing — we will complete it soon.
 
 The method `crm.quote.get` returns an estimate by its ID.
 
-#| 
-||  **Parameter** / **Type**| **Description** || 
-|| **id** 
-[`unknown`](../../data-types.md) | The identifier of the estimate. || 
+#|
+||  **Parameter** / **Type**| **Description** ||
+|| **id**
+[`unknown`](../../data-types.md) | The ID of the estimate. ||
 |#
 
 ## Example
@@ -37,6 +37,58 @@ The method `crm.quote.get` returns an estimate by its ID.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.quote.get",
+    		{ id: id }
+    	);
+    
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = $_POST['id'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.quote.get',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting quote: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     var id = prompt("Enter ID");

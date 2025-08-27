@@ -12,25 +12,9 @@ No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.quote.fields",
-        {},
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-            } else {
-                console.dir(result.data());
-            }
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -52,7 +36,67 @@ No parameters.
          https://**put_your_bitrix24_address**/rest/crm.quote.fields  
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.quote.fields",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.quote.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching quote fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.quote.fields",
+        {},
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.dir(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -418,7 +462,7 @@ HTTP status: **200**
       "isImmutable": false,
       "isMultiple": false,
       "isDynamic": false,
-      "title": "Advertising Campaign Designation"
+      "title": "Campaign Identifier"
     },
     "UTM_CONTENT": {
       "type": "string",
@@ -550,7 +594,7 @@ HTTP status: **200**
 || **MYCOMPANY_ID**  
 [`integer`](../../data-types.md) | Identifier of the company making the estimate ||
 || **OPENED**  
-[`char`](../../data-types.md) | Flag for the availability of the estimate to everyone ||
+[`char`](../../data-types.md) | Flag for availability of the estimate to everyone ||
 || **OPPORTUNITY**  
 [`double`](../../data-types.md) | Amount of the estimate ||
 || **PERSON_TYPE_ID**  
@@ -566,7 +610,7 @@ HTTP status: **200**
 || **TITLE**  
 [`string`](../../data-types.md) | Title of the estimate ||
 || **UTM_CAMPAIGN**  
-[`string`](../../data-types.md) | Advertising campaign designation ||
+[`string`](../../data-types.md) | dvertising campaign identifier ||
 || **UTM_CONTENT**  
 [`string`](../../data-types.md) | Content of the advertising campaign. For example, for contextual ads ||
 || **UTM_MEDIUM**  
@@ -588,7 +632,7 @@ You can add a custom field to the estimate using the method [crm.quote.userfield
 
 #### Deprecated Fields
 
-The following fields are retained only for compatibility and are not recommended for use.
+The following fields are kept only for compatibility and are not recommended for use.
 
 #|
 || **Name**
@@ -610,7 +654,6 @@ The following fields are retained only for compatibility and are not recommended
 || **CONTACT_ID**  
 [`integer`](../../data-types.md) | Identifier of the contact associated with the estimate ||
 |#
-
 
 ## Error Handling
 
