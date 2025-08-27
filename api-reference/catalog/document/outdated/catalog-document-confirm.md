@@ -52,6 +52,59 @@ The method `catalog.document.confirm` conducts the inventory management document
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.confirm',
+    		{
+    			'id': 42,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.log(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.confirm',
+                [
+                    'id' => 42,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error confirming document: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
     'catalog.document.confirm',
     {
@@ -67,7 +120,7 @@ The method `catalog.document.confirm` conducts the inventory management document
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

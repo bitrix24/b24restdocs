@@ -1,4 +1,4 @@
-# Get the list of product fields for the inventory management document catalog.document.element.getFields
+# Get a list of product fields for the inventory management document catalog.document.element.getFields
 
 {% note warning "We are still updating this page" %}
 
@@ -28,7 +28,7 @@ Some data may be missing here — we will fill it in shortly.
 catalog.document.element.getFields()
 ```
 
-This method returns a list of product fields for the inventory management document.
+The method returns a list of product fields for the inventory management document.
 
 ## Parameters
 
@@ -39,6 +39,52 @@ No parameters.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.element.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.element.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting document fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

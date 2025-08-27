@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameter specifications are missing
+- required parameters are not specified
 - no response in case of an error
 - no examples in other languages
   
@@ -28,7 +28,7 @@ Some data may be missing — we will complete it soon.
 catalog.document.mode.status()
 ```
 
-Method to retrieve information on whether inventory management is enabled.
+Method to get information on whether inventory management is enabled.
 Returns the status of inventory management:
 
 - `Y` - inventory management is enabled;
@@ -43,7 +43,53 @@ No parameters
 {% list tabs %}
 
 - JS
-  
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.mode.status',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.mode.status',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling catalog document mode status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'catalog.document.mode.status',
@@ -58,8 +104,8 @@ No parameters
     );
     ```
 
-- PHP
-  
+- PHP CRest
+
     ```php
     $result = CRest::call(
         'catalog.document.mode.status'
@@ -71,4 +117,4 @@ No parameters
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples note](../../../_includes/examples.md) %}

@@ -1,4 +1,4 @@
-# Update Inventory Management Document catalog.document.update
+# Update Inventory Document catalog.document.update
 
 {% note warning "We are still updating this page" %}
 
@@ -11,7 +11,7 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of error
+- no response in case of error 
 - no examples in other languages
 - clarify the type of the id parameter
   
@@ -27,7 +27,8 @@ Some data may be missing — we will complete it shortly.
 catalog.document.update(id, fields)
 ```
 
-Method for updating an inventory management document. If the operation is successful, it returns `true` for the added inventory.
+Method for updating the inventory document.
+If the operation is successful, `true` is returned for the added inventory.
 
 ## Parameters
 
@@ -39,14 +40,72 @@ Method for updating an inventory management document. If the operation is succes
 [`array`](../../data-types.md)|  Document parameters. ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
 - JS
-  
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.update',
+    		{
+    			'id': 42,
+    			'fields': {
+    				'total': '1000', // total amount of all PURCHASING_PRICE multiplied by AMOUNT
+    				'commentary': 'first document.',
+    				'title': 'New Document', //title (field available from catalog version 22.200.0)
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.update',
+                [
+                    'id'     => 42,
+                    'fields' => [
+                        'total'      => '1000', // total amount of all PURCHASING_PRICE multiplied by AMOUNT
+                        'commentary' => 'first document.',
+                        'title'      => 'New Document', //title (field available from catalog version 22.200.0)
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating document: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'catalog.document.update',
@@ -55,7 +114,7 @@ Method for updating an inventory management document. If the operation is succes
             'fields': {
                 'total': '1000', // total amount of all PURCHASING_PRICE multiplied by AMOUNT
                 'commentary': 'first document.',
-                'title': 'New document', //title (field available since catalog version 22.200.0)
+                'title': 'New Document', //title (field available from catalog version 22.200.0)
             }
         },
         function(result)
@@ -68,7 +127,7 @@ Method for updating an inventory management document. If the operation is succes
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     $result = CRest::call(
@@ -78,7 +137,7 @@ Method for updating an inventory management document. If the operation is succes
             'fields' => [
                 'total' => '1000',
                 'commentary' => 'first document.',
-                'title' => 'New document',
+                'title' => 'New Document',
             ],
         ]
     );
@@ -89,4 +148,4 @@ Method for updating an inventory management document. If the operation is succes
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../_includes/examples.md) %}

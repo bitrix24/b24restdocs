@@ -1,4 +1,4 @@
-# Get a list of product fields for the inventory management document catalog.document.element.fields
+# Get the list of product fields for the inventory management document catalog.document.element.fields
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 {% note warning "Method development has been halted" %}
 
-The method `catalog.document.element.fields` is still operational, but there is a more relevant alternative [catalog.document.element.getFields](../document-element/catalog-document-element-get-fields.md).
+The method `catalog.document.element.fields` continues to function, but there is a more current equivalent [catalog.document.element.getFields](../document-element/catalog-document-element-get-fields.md).
 
 {% endnote %}
 
@@ -18,7 +18,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -45,6 +45,52 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.element.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.element.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling catalog document element fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.document.element.fields',
         {},
@@ -58,7 +104,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

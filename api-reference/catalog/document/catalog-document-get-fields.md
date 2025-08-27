@@ -1,4 +1,4 @@
-# Get Inventory Management Document Fields catalog.document.getFields
+# Get Warehouse Accounting Document Fields catalog.document.getFields
 
 {% note warning "We are still updating this page" %}
 
@@ -29,7 +29,7 @@ Some data may be missing — we will complete it soon.
 catalog.document.getFields()
 ```
 
-This method returns a list of fields for inventory management documents.
+This method returns a list of fields for warehouse accounting documents.
 
 ## Parameters
 
@@ -40,6 +40,52 @@ No parameters.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting document fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -57,22 +103,22 @@ No parameters.
 
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
 #|
 || **Field** | **Description** | **Note** ||
 || **commentary** 
-[`char`](../../data-types.md) | Commentary. |  ||
+[`char`](../../data-types.md) | Comment. |  ||
 || **createdBy** 
-[`integer`](../../data-types.md) | Created by. |  Read-only field. ||
+[`integer`](../../data-types.md) | Created by. | Immutable field. ||
 || **currency^*^** 
-[`char`](../../data-types.md) | Currency. | Read-only field. ||
+[`char`](../../data-types.md) | Currency. | Immutable field. ||
 || **dateCreate** 
-[`datetime`](../../data-types.md) | Creation date. | Read-only field. ||
+[`datetime`](../../data-types.md) | Creation date. | Immutable field. ||
 || **dateDocument** 
-[`datetime`](../../data-types.md) | Document execution date. |  ||
+[`datetime`](../../data-types.md) | Document date. |  ||
 || **dateModify** 
 [`datetime`](../../data-types.md) | Modification date. |  ||
 || **dateStatus** 
@@ -81,11 +127,11 @@ No parameters.
 [`string`](../../data-types.md) | Document number. |  ||
 || **docType^*^**
 [`char`](../../data-types.md) | Document type:
-- `A` – Stock receipt of goods; 
-- `S` – Stock adjustment of goods; 
-- `M` – Transfer of goods between inventories; 
-- `R` – Return of goods; 
-- `D` – Write-off of goods. |  Read-only field. ||
+- `A` – Stock receipt; 
+- `S` – Stock adjustment; 
+- `M` – Transfers between warehouses; 
+- `R` – Product return; 
+- `D` – Write-offs. | Immutable field. ||
 || **id** 
 [`integer`](../../data-types.md) | Document identifier. | Read-only. ||
 || **modifiedBy** 
@@ -99,7 +145,7 @@ No parameters.
 || **title** 
 [`string`](../../data-types.md) | Document title. |  ||
 || **total** 
-[`double`](../../data-types.md) | Total amount of goods. |  ||
+[`double`](../../data-types.md) | Total amount of products. |  ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}

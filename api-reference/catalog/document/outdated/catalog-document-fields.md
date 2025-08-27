@@ -1,4 +1,4 @@
-# Get a list of document fields catalog.document.fields
+# Get the list of fields for the document catalog.document.fields
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 {% note warning "Method development has been halted" %}
 
-The method `catalog.document.fields` is still operational, but there is a more relevant alternative [catalog.document.getFields](../catalog-document-get-fields.md).
+The method `catalog.document.fields` continues to function, but there is a more relevant alternative [catalog.document.getFields](../catalog-document-get-fields.md).
 
 {% endnote %}
 
@@ -45,6 +45,52 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching catalog document fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.document.fields',
         {},
@@ -58,7 +104,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

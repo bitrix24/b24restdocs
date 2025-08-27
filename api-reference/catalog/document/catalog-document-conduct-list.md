@@ -1,8 +1,8 @@
-# Execute bulk processing of inventory management documents catalog.document.conductList
+# Conduct a group processing of inventory management documents catalog.document.conductList
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -28,23 +28,79 @@ Some data may be missing — we will complete it shortly
 catalog.document.conductList(documentIds)
 ```
 
-Method for bulk processing of inventory management documents.
+Method for group processing of inventory management documents.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **documentIds**
-[`array`](../../data-types.md)| Array of document identifiers to be processed. ||
+[`array`](../../data-types.md)| An array of document identifiers that need to be processed. ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.conductList',
+    		{
+    			"documentIds": [
+    				"114",
+    				"112"
+    			]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.conductList',
+                [
+                    'documentIds' => [
+                        '114',
+                        '112'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error conducting document list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -67,4 +123,4 @@ Method for bulk processing of inventory management documents.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}

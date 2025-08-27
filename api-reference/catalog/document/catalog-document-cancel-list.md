@@ -1,8 +1,8 @@
-# Perform a bulk cancellation of inventory accounting documents catalog.document.cancelList
+# Perform a group cancellation of inventory management documents catalog.document.cancelList
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon
 
 {% endnote %}
 
@@ -11,7 +11,7 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - required parameters are not specified
-- no response in case of an error
+- no response in case of error
 - no examples in other languages
   
 {% endnote %}
@@ -28,14 +28,14 @@ Some data may be missing — we will complete it shortly.
 catalog.document.cancelList(documentIds)
 ```
 
-Method for bulk cancellation of inventory accounting documents.
+Method for group cancellation of inventory management documents.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **documentIds**
-[`array`](../../data-types.md)| An array of document identifiers for which the cancellation is required. ||
+[`array`](../../data-types.md)| An array of document identifiers for which the processing needs to be canceled. ||
 |#
 
 {% include [Note on parameters](../../../_includes/required.md) %}
@@ -45,6 +45,64 @@ Method for bulk cancellation of inventory accounting documents.
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.cancelList',
+    		{
+    			"documentIds": [
+    				"114",
+    				"112"
+    			]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.cancelList',
+                [
+                    'documentIds' => [
+                        '114',
+                        '112'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error canceling document list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

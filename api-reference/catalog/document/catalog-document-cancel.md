@@ -1,8 +1,8 @@
-# Cancel the inventory management document catalog.document.cancel
+# Cancel the inventory document catalog.document.cancel
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ This method cancels the processing of the document by ID.
 #|
 || **Parameter** | **Description** ||
 || **id**
-[`integer`](../../data-types.md)| Identifier of the inventory management document. ||
+[`integer`](../../data-types.md)| Identifier of the inventory document. ||
 |#
 
 {% include [Footnote about parameters](../../../_includes/required.md) %}
@@ -45,6 +45,63 @@ This method cancels the processing of the document by ID.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.cancel',
+    		{
+    			id: 112
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error().ex);
+    	}
+    	else
+    	{
+    		console.log(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.cancel',
+                [
+                    'id' => 112
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error canceling document: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

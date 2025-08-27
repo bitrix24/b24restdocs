@@ -1,4 +1,4 @@
-# Cancel Document Processing catalog.document.unconfirm
+# Cancel Document catalog.document.unconfirm
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
@@ -52,6 +52,56 @@ The method `catalog.document.unconfirm` cancels the processing of a document.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.unconfirm',
+    		{
+    			'id': 42,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.unconfirm',
+                [
+                    'id' => 42,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unconfirming document: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.document.unconfirm',
         {
@@ -67,7 +117,7 @@ The method `catalog.document.unconfirm` cancels the processing of a document.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
