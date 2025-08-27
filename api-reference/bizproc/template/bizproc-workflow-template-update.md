@@ -35,7 +35,7 @@ You can update the fields: `NAME`, `DESCRIPTION`, `TEMPLATE_DATA`, `AUTO_EXECUTE
 || **TEMPLATE_DATA**
 [`file`](../../data-types.md) | Content of the file with the business process template in `.bpt` format.
 
-More details on file transfer methods can be found in the article [{#T}](../../files/how-to-update-files.md) ||
+More details on how to transfer files can be found in the article [{#T}](../../files/how-to-update-files.md) ||
 || **AUTO_EXECUTE**
 [`integer`](../../data-types.md) | Auto-execution settings for the template. Can have the following values:
 
@@ -66,6 +66,66 @@ Default is `0` ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'bizproc.workflow.template.update',
+    		{
+    			ID: 525,
+    			FIELDS: {
+    				NAME: 'Display Time',
+    				DESCRIPTION: 'Template shows a message with local and server time',
+    				AUTO_EXECUTE: 0,
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'bizproc.workflow.template.update',
+                [
+                    'ID'     => 525,
+                    'FIELDS' => [
+                        'NAME'        => 'Display Time',
+                        'DESCRIPTION' => 'Template shows a message with local and server time',
+                        'AUTO_EXECUTE' => 0,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating workflow template: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'bizproc.workflow.template.update',
         {
@@ -86,7 +146,7 @@ Default is `0` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -112,7 +172,7 @@ Default is `0` ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -122,8 +182,8 @@ HTTP status: **200**
         "finish": 1737534421.209758,
         "duration": 0.037085056304931641,
         "processing": 0.010869026184082031,
-        "date_start": "2025-01-22T11:27:01+02:00",
-        "date_finish": "2025-01-22T11:27:01+02:00",
+        "date_start": "2025-01-22T11:27:01+01:00",
+        "date_finish": "2025-01-22T11:27:01+01:00",
         "operating_reset_at": 1737535021,
         "operating": 0
     }
@@ -143,12 +203,12 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
     "error": "ERROR_TEMPLATE_NOT_OWNER",
-    "error_description": "You can update ONLY templates created by current application"
+    "error_description": "You can update ONLY templates created by current application",
 }
 ```
 
@@ -163,9 +223,9 @@ HTTP status: **400**
 || `ERROR_TEMPLATE_VALIDATION_FAILURE` | No fields to update. | No fields specified for update ||
 || `ERROR_TEMPLATE_NOT_FOUND` | Workflow template not found. | Template with the specified `ID` not found ||
 || `ERROR_TEMPLATE_NOT_OWNER` | You can update ONLY templates created by current application | This template cannot be edited through this application ||
-|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Empty template name! | An empty template name was specified ||
-|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Incorrect field AUTO_EXECUTE! | An incorrect auto-execution code was specified ||
-|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Incorrect field TEMPLATE_DATA! | Incorrect template data was specified ||
+|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Empty template name! | Empty template name specified ||
+|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Incorrect field AUTO_EXECUTE! | Invalid auto-execution code specified ||
+|| `ERROR_TEMPLATE_VALIDATION_FAILURE` | Incorrect field TEMPLATE_DATA! | Invalid template data specified ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

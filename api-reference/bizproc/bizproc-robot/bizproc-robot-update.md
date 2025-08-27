@@ -6,7 +6,7 @@
 
 This method updates the fields of a robot registered by the application.
 
-It works only in the context of the [application](../../app-installation/index.md).
+It only works in the context of the [application](../../app-installation/index.md).
 
 ## Method Parameters
 
@@ -29,7 +29,7 @@ It works only in the context of the [application](../../app-installation/index.m
 || **HANDLER***
 [`string`](../../data-types.md) | URL to which the robot will send data via the Bitrix24 queue server.
 
-The link must have the same domain as the one where the application is installed ||
+The link must have the same domain where the application is installed ||
 || **AUTH_USER_ID**
 [`integer`](../../data-types.md) | Identifier of the user whose token will be passed to the application ||
 || **USE_SUBSCRIPTION**
@@ -58,14 +58,14 @@ Can be a string or an associative array of localized strings like:
 
 ```js
 'DESCRIPTION': {
-    'de': 'Beschreibung des Roboters',
+    'de': 'Roboterbeschreibung',
     'en': 'robot description',
     ...
 },
 ```
  ||
 || **PROPERTIES**
-[`object`](../../data-types.md) | Object with robot parameters. Contains objects, each describing a [robot parameter](#property).
+[`object`](../../data-types.md) | Object with the robot's parameters. Contains objects, each describing a [robot parameter](#property).
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_` ||
 || **RETURN_PROPERTIES**
@@ -122,7 +122,7 @@ Examples:
     ```
 ||
 || **USE_PLACEMENT**
-[`boolean`](../../data-types.md) | Allows opening additional robot settings in the application slider. Possible values:
+[`boolean`](../../data-types.md) | Allows opening additional settings for the robot in the application slider. Possible values:
 - `Y` — yes
 - `N` — no  ||
 |#
@@ -240,58 +240,36 @@ Examples:
 
 - JS
 
+
     ```js
-    BX24.callMethod(
-        'bizproc.robot.update',
-        {
-            'CODE': 'test_robot',
-            'FIELDS': {
-                'NAME': 'Send message to author',
-                'USE_SUBSCRIPTION': 'N',
-                'FILTER': {
-                    INCLUDE: [
-                        ['crm', 'CCrmDocumentDeal']
-                    ]
-                }
-            },
-        },
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
-            else
-                alert("Success: " + result.data());
-        }
-    );
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'bizproc.robot.update',
+    		{
+    			'CODE': 'test_robot',
+    			'FIELDS': {
+    				'NAME': 'Send message to author',
+    				'USE_SUBSCRIPTION': 'N',
+    				'FILTER': {
+    					INCLUDE: [
+    						['crm', 'CCrmDocumentDeal']
+    					]
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'bizproc.robot.update',
-        [
-            'CODE' => 'test_robot',
-            'FIELDS' => [
-                'NAME' => 'Send message to author',
-                'USE_SUBSCRIPTION' => 'N',
-                'FILTER' => [
-                    'INCLUDE' => [
-                        ['crm', 'CCrmDocumentDeal']
-                    ]
-                ]
-            ]
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -318,6 +296,59 @@ Examples:
     } catch (Throwable $e) {
         print("An error occurred: " . $e->getMessage());
     }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'bizproc.robot.update',
+        {
+            'CODE': 'test_robot',
+            'FIELDS': {
+                'NAME': 'Send message to author',
+                'USE_SUBSCRIPTION': 'N',
+                'FILTER': {
+                    INCLUDE: [
+                        ['crm', 'CCrmDocumentDeal']
+                    ]
+                }
+            },
+        },
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'bizproc.robot.update',
+        [
+            'CODE' => 'test_robot',
+            'FIELDS' => [
+                'NAME' => 'Send message to author',
+                'USE_SUBSCRIPTION' => 'N',
+                'FILTER' => [
+                    'INCLUDE' => [
+                        ['crm', 'CCrmDocumentDeal']
+                    ]
+                ]
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
@@ -350,7 +381,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Returns `true` if the robot was successfully updated ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -371,13 +402,13 @@ HTTP status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `ACCESS_DENIED` | Application context required | Application context is required ||
-|| `ACCESS_DENIED` | Access denied! | Method executed by a non-administrator ||
+|| `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Robot code not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid robot code ||
 || `ERROR_ACTIVITY_NOT_FOUND` | Activity or Robot not found! | Robot not found ||
 || `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | Invalid handler protocol http, https ||
 || `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | Invalid handler URL ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | Incorrectly filled `PROPERTIES` or `RETURN_PROPERTIES` parameters ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | Incorrectly filled parameters `PROPERTIES` or `RETURN_PROPERTIES` ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong property key <key>! | Invalid property identifier ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty property NAME <key>! | Property name not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity FILTER! | Invalid filter ||

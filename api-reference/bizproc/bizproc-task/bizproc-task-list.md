@@ -1,10 +1,10 @@
-# Get a List of Workflow Tasks bizproc.task.list
+# Get the list of workflow tasks bizproc.task.list
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method retrieves a list of workflow tasks.
+The method retrieves a list of workflow tasks.
 
 An account administrator can request all tasks or tasks of any user. A regular user can request their own tasks or those of their subordinate.
 
@@ -18,18 +18,18 @@ To request their own tasks, the `USER_ID` filter does not need to be specified.
 || **Name**
 `type` | **Description** ||
 || **SELECT**
-[`array`](../../data-types.md) | An array containing the list of [fields](#fields) to select.
+[`array`](../../data-types.md) | The array contains a list of [fields](#fields) to be selected.
 
-You can specify only the fields that are necessary.
+Only the necessary fields can be specified.
 
 By default, it returns the fields `ENTITY`, `DOCUMENT_ID`, `ID`, `WORKFLOW_ID`, `DOCUMENT_NAME`, `NAME`, `DOCUMENT_URL` ||
 || **FILTER**
 [`object`](../../data-types.md) | An object for filtering the list of tasks in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#fields) of the task for filtering
-- `value_N` — value of the field
+- `value_N` — field value
 
-If the filter contains `USER_ID`, user subordination is checked:
-- a manager can request the list of tasks for their subordinates
+If `USER_ID` is present in the filter, user subordination is checked:
+- a manager can request the list of tasks of their subordinates
 - an administrator can request tasks of any users without restrictions 
 
 If the method is called by a non-administrator and the `USER_ID` filter is not specified, it defaults to selecting tasks of the current user
@@ -43,13 +43,13 @@ The sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
   
-You can specify multiple fields for sorting, for example, `{NAME: 'ASC', ID: 'DESC'}` ||
+Multiple fields can be specified for sorting, for example, `{NAME: 'ASC', ID: 'DESC'}` ||
 || **START**
-[`integer`](../../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../../data-types.md) | The parameter is used for managing pagination.
 
 The page size of results is always static — 50 records.
 
-To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
+To select the second page of results, the value `50` must be passed. To select the third page of results — the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
@@ -83,6 +83,206 @@ The formula for calculating the `start` parameter value:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const parameters = {
+        select: [
+            'ID',
+            'WORKFLOW_ID',
+            'DOCUMENT_NAME',
+            'DESCRIPTION',
+            'NAME',
+            'MODIFIED',
+            'WORKFLOW_STARTED',
+            'WORKFLOW_STARTED_BY',
+            'OVERDUE_DATE',
+            'WORKFLOW_TEMPLATE_ID',
+            'WORKFLOW_TEMPLATE_NAME',
+            'WORKFLOW_STATE',
+            'STATUS',
+            'USER_ID',
+            'USER_STATUS',
+            'MODULE_ID',
+            'ENTITY',
+            'DOCUMENT_ID',
+            'ACTIVITY',
+            'ACTIVITY_NAME',
+            'DOCUMENT_URL',
+            'PARAMETERS'
+        ],
+        order: {
+            ID: 'DESC'
+        },
+        filter: {
+            'USER_ID': 1,
+            'STATUS': 0,
+            'ACTIVITY': 'RequestInformationOptionalActivity'
+        }
+    };
+    
+    try {
+        const response = await $b24.callListMethod('bizproc.task.list', parameters);
+        const items = response.getData() || [];
+        for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    const parameters = {
+        select: [
+            'ID',
+            'WORKFLOW_ID',
+            'DOCUMENT_NAME',
+            'DESCRIPTION',
+            'NAME',
+            'MODIFIED',
+            'WORKFLOW_STARTED',
+            'WORKFLOW_STARTED_BY',
+            'OVERDUE_DATE',
+            'WORKFLOW_TEMPLATE_ID',
+            'WORKFLOW_TEMPLATE_NAME',
+            'WORKFLOW_STATE',
+            'STATUS',
+            'USER_ID',
+            'USER_STATUS',
+            'MODULE_ID',
+            'ENTITY',
+            'DOCUMENT_ID',
+            'ACTIVITY',
+            'ACTIVITY_NAME',
+            'DOCUMENT_URL',
+            'PARAMETERS'
+        ],
+        order: {
+            ID: 'DESC'
+        },
+        filter: {
+            'USER_ID': 1,
+            'STATUS': 0,
+            'ACTIVITY': 'RequestInformationOptionalActivity'
+        }
+    };
+    
+    try {
+        const generator = $b24.fetchListMethod('bizproc.task.list', parameters, 'ID');
+        for await (const page of generator) {
+            for (const entity of page) { console.log('Entity:', entity); }
+        }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    const parameters = {
+        select: [
+            'ID',
+            'WORKFLOW_ID',
+            'DOCUMENT_NAME',
+            'DESCRIPTION',
+            'NAME',
+            'MODIFIED',
+            'WORKFLOW_STARTED',
+            'WORKFLOW_STARTED_BY',
+            'OVERDUE_DATE',
+            'WORKFLOW_TEMPLATE_ID',
+            'WORKFLOW_TEMPLATE_NAME',
+            'WORKFLOW_STATE',
+            'STATUS',
+            'USER_ID',
+            'USER_STATUS',
+            'MODULE_ID',
+            'ENTITY',
+            'DOCUMENT_ID',
+            'ACTIVITY',
+            'ACTIVITY_NAME',
+            'DOCUMENT_URL',
+            'PARAMETERS'
+        ],
+        order: {
+            ID: 'DESC'
+        },
+        filter: {
+            'USER_ID': 1,
+            'STATUS': 0,
+            'ACTIVITY': 'RequestInformationOptionalActivity'
+        }
+    };
+    
+    try {
+        const response = await $b24.callMethod('bizproc.task.list', parameters, 0);
+        const result = response.getData().result || [];
+        for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'bizproc.task.list',
+                [
+                    'select' => [
+                        'ID',
+                        'WORKFLOW_ID',
+                        'DOCUMENT_NAME',
+                        'DESCRIPTION',
+                        'NAME',
+                        'MODIFIED',
+                        'WORKFLOW_STARTED',
+                        'WORKFLOW_STARTED_BY',
+                        'OVERDUE_DATE',
+                        'WORKFLOW_TEMPLATE_ID',
+                        'WORKFLOW_TEMPLATE_NAME',
+                        'WORKFLOW_STATE',
+                        'STATUS',
+                        'USER_ID',
+                        'USER_STATUS',
+                        'MODULE_ID',
+                        'ENTITY',
+                        'DOCUMENT_ID',
+                        'ACTIVITY',
+                        'ACTIVITY_NAME',
+                        'DOCUMENT_URL',
+                        'PARAMETERS'
+                    ],
+                    'order' => [
+                        'ID' => 'DESC'
+                    ],
+                    'filter' => [
+                        'USER_ID'  => 1,
+                        'STATUS'   => 0,
+                        'ACTIVITY' => 'RequestInformationOptionalActivity'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -131,7 +331,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -183,7 +383,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -195,14 +395,14 @@ HTTP Status: **200**
             "WORKFLOW_ID": "67a2ffdb2c57a3.35276854",
             "DOCUMENT_NAME": "Partner Conference",
             "DESCRIPTION": "",
-            "NAME": "Add Contractor Information",
+            "NAME": "Add contractor information",
             "MODIFIED": "2025-02-05T09:06:19+02:00",
             "WORKFLOW_STARTED": "2025-02-05T09:06:19+02:00",
             "WORKFLOW_STARTED_BY": "1",
             "OVERDUE_DATE": null,
             "WORKFLOW_TEMPLATE_ID": "565",
             "WORKFLOW_TEMPLATE_NAME": "Event Organization",
-            "WORKFLOW_STATE": "Waiting for Additional Information",
+            "WORKFLOW_STATE": "Waiting for additional information",
             "STATUS": "0",
             "USER_ID": "1",
             "USER_STATUS": "0",
@@ -213,7 +413,7 @@ HTTP Status: **200**
                 "CommentLabel": "Comment",
                 "CommentRequired": "Y",
                 "ShowComment": "Y",
-                "StatusOkLabel": "Save Result",
+                "StatusOkLabel": "Save result",
                 "Fields": [
                     {
                         "Id": "contractor",
@@ -239,7 +439,7 @@ HTTP Status: **200**
                     {
                         "Id": "phone_number",
                         "Type": "string",
-                        "Name": "Phone Number",
+                        "Name": "Phone number",
                         "Description": "",
                         "Multiple": false,
                         "Required": true,
@@ -286,7 +486,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the query execution time ||
 |#
 
 #### Task Fields {#fields}
@@ -335,7 +535,6 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 - `1` — approved
 - `2` — rejected
 - `3` — completed ||
-
 || **MODULE_ID**
 [`string`](../../data-types.md) | Module identifier by document ||
 || **ENTITY**
@@ -366,23 +565,23 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **CommentLabel**
 [`string`](../../data-types.md) | Name of the Comment field ||
 || **CommentRequired**
-[`string`](../../data-types.md) | Comment requirement. Possible values:
+[`string`](../../data-types.md) | Comment requirement. Allowed values:
 - `N` — no
 - `Y` — yes
 - `YA` — yes, upon approval
 - `YR` — yes, upon rejection
 ||
 || **ShowComment**
-[`boolean`](../../data-types.md) | Show comment. Possible values:
+[`boolean`](../../data-types.md) | Show comment. Allowed values:
 - `N` — no
 - `Y` — yes
 ||
 || **StatusOkLabel**
-[`string`](../../data-types.md) | Text for the Acknowledged button ||
+[`string`](../../data-types.md) | Text of the Acknowledged button ||
 || **StatusYesLabel**
-[`string`](../../data-types.md) | Text for the Approve button ||
+[`string`](../../data-types.md) | Text of the Approve button ||
 || **StatusNoLabel**
-[`string`](../../data-types.md) | Text for the Reject button ||
+[`string`](../../data-types.md) | Text of the Reject button ||
 || **Fields**
 [`array`](../../data-types.md) | An array of objects. Each object contains a description of the [field in the task](#task-fields) ||
 |#
@@ -426,9 +625,9 @@ Values depend on the parameter type. Examples:
 - for the List type `select`, these are the options of the list
 ```json
 "Options": {
-    "1": "First Option",
-    "2": "Second Option",
-    "3": "Third Option",
+    "1": "First option",
+    "2": "Second option",
+    "3": "Third option",
 },
 ```
 - for the CRM Binding type `'E:ECrm'`, these are the available object types
@@ -452,7 +651,7 @@ Values depend on the parameter type. Examples:
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -467,7 +666,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Access denied! | The method was called by a non-administrator or you cannot view the tasks of the specified employee ||
+|| `ACCESS_DENIED` | Access denied! | The method was not initiated by an administrator or you cannot view the tasks of the specified employee ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

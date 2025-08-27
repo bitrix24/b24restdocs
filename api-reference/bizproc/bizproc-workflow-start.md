@@ -27,8 +27,8 @@ Examples of entries for different document types:
 - Contact — `['crm', 'CCrmDocumentContact', 'CONTACT_777']`
 - Deal — `['crm', 'CCrmDocumentDeal', 'DEAL_777']`
 - Drive file — `['disk', 'Bitrix\\Disk\\BizProcDocument', '777']`
-- Document from the news feed — `['lists', 'BizprocDocument', '777']`
-- Document from lists — `['lists', 'Bitrix\\Lists\\BizprocDocumentLists', '777']`
+- News feed process document — `['lists', 'BizprocDocument', '777']`
+- Lists document — `['lists', 'Bitrix\\Lists\\BizprocDocumentLists', '777']`
 - Smart process element — `['crm', 'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic', 'DYNAMIC_147_1']`, where `147` is the `ID` of the smart process, and `1` is the `ID` of the smart process element
 - Invoice — `['crm', 'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice', 'SMART_INVOICE_3']`
 ||
@@ -74,6 +74,74 @@ PARAMETERS: {
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'bizproc.workflow.start',
+    		{
+    			TEMPLATE_ID: 1,
+    			DOCUMENT_ID: [
+    				'crm',
+    				'CCrmDocumentLead',
+    				'LEAD_1'
+    			],
+    			PARAMETERS: {
+    				'Parameter1': 'user_1'
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('response', result.answer);
+    	if (result.error())
+    		alert("Error: " + result.error());
+    	else
+    		console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'bizproc.workflow.start',
+                [
+                    'TEMPLATE_ID' => 1,
+                    'DOCUMENT_ID' => [
+                        'crm',
+                        'CCrmDocumentLead',
+                        'LEAD_1'
+                    ],
+                    'PARAMETERS' => [
+                        'Parameter1' => 'user_1'
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error starting workflow: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(	
         'bizproc.workflow.start',
         {
@@ -97,7 +165,7 @@ PARAMETERS: {
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -154,7 +222,7 @@ HTTP status: **200**
 
 Returns the identifier of the started business process ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

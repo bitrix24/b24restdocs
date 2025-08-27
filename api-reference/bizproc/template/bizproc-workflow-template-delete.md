@@ -1,12 +1,12 @@
-# Delete Workflow Template bizproc.workflow.template.delete
+# Delete Business Process Template bizproc.workflow.template.delete
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method deletes a workflow template.
+This method deletes a business process template.
 
-It allows you to remove templates that were created using the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md). These templates are tied to the application and can only be deleted in the context of the same [application](../../app-installation/index.md) that created them.
+It allows you to remove templates that were created using the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md). These templates are tied to the application and can only be deleted in the context of the same [application](../../app-installation/index.md) in which they were created.
 
 ## Method Parameters
 
@@ -16,8 +16,8 @@ It allows you to remove templates that were created using the method [bizproc.wo
 || **Name**
 `type` | **Description**||
 || **ID***
-[`integer`](../../data-types.md) | Identifier of the workflow template ||
-|#
+[`integer`](../../data-types.md) | Identifier of the business process template ||
+|#	
 
 ## Code Examples
 
@@ -38,39 +38,28 @@ It allows you to remove templates that were created using the method [bizproc.wo
 - JS
 
     ```js
-    BX24.callMethod(
-        'bizproc.workflow.template.delete',
-        {
-            ID: 525
-        },
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
-            else
-                console.log(result.data());
-        }
-    );
+    try
+    {
+        const response = await $b24.callMethod(
+            'bizproc.workflow.template.delete',
+            {
+                ID: 525
+            }
+        );
+        
+        const result = response.getData().result;
+        if(result.error())
+            alert("Error: " + result.error());
+        else
+            console.log(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'bizproc.workflow.template.delete',
-        [
-            'ID' => 525
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -89,11 +78,46 @@ It allows you to remove templates that were created using the method [bizproc.wo
     }
     ```
 
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'bizproc.workflow.template.delete',
+        {
+            ID: 525
+        },
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'bizproc.workflow.template.delete',
+        [
+            'ID' => 525
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -103,8 +127,8 @@ HTTP status: **200**
         "finish": 1737536737.3437879,
         "duration": 0.21924281120300293,
         "processing": 0.18391799926757812,
-        "date_start": "2025-01-22T12:05:37+01:00",
-        "date_finish": "2025-01-22T12:05:37+01:00",
+        "date_start": "2025-01-22T12:05:37+02:00",
+        "date_finish": "2025-01-22T12:05:37+02:00",
         "operating_reset_at": 1737537337,
         "operating": 0.18389892578125
     }
@@ -124,12 +148,12 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
     "error": "ERROR_TEMPLATE_NOT_FOUND",
-    "error_description": "Workflow template not found.",
+    "error_description": "Workflow template not found."
 }
 ```
 
@@ -146,7 +170,7 @@ HTTP status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Learning 
 
 - [{#T}](./index.md)
 - [{#T}](./bizproc-workflow-template-add.md)

@@ -50,42 +50,31 @@ The identifier can be obtained using the [bizproc.workflow.instances](./bizproc-
 - JS
 
     ```js
-    BX24.callMethod(
-        'bizproc.workflow.terminate',
-        {
-            ID: '65e5a449e8f135.21284909',
-            STATUS: 'Terminated by rest app.',
-        },
-        function(result) {
-            console.log('response', result.answer);
-            if(result.error())
-                alert("Error: " + result.error());
-            else
-                console.log(result.data());
-        }
-    );
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'bizproc.workflow.terminate',
+    		{
+    			ID: '65e5a449e8f135.21284909',
+    			STATUS: 'Terminated by rest app.',
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('response', result.answer);
+    	if(result.error())
+    		alert("Error: " + result.error());
+    	else
+    		console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
     ```
 
 - PHP
 
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'bizproc.workflow.terminate',
-        [
-            'ID' => '65e5a449e8f135.21284909',
-            'STATUS' => 'Terminated by rest app.'
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
-  
     ```php       
     try {
         $workflowId = 'your_workflow_id'; // Replace with actual workflow ID
@@ -102,6 +91,43 @@ The identifier can be obtained using the [bizproc.workflow.instances](./bizproc-
     } catch (Throwable $e) {
         print('Error: ' . $e->getMessage());
     }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'bizproc.workflow.terminate',
+        {
+            ID: '65e5a449e8f135.21284909',
+            STATUS: 'Terminated by rest app.',
+        },
+        function(result) {
+            console.log('response', result.answer);
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'bizproc.workflow.terminate',
+        [
+            'ID' => '65e5a449e8f135.21284909',
+            'STATUS' => 'Terminated by rest app.'
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}

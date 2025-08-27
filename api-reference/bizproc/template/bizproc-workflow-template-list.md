@@ -12,7 +12,7 @@ This method retrieves a list of business process templates.
 || **Name**
 `type` | **Description** ||
 || **SELECT**
-[`array`](../../data-types.md) | The array contains a list of [fields](#fields) to be selected.
+[`array`](../../data-types.md) | The array contains a list of [fields](#fields) to select.
 
 You can specify only the fields that are necessary.
 
@@ -29,11 +29,11 @@ You can specify the type of filtering before the name of the filtered field:
 - `>` — greater than
 - `>=` — greater than or equal to | ||
 || **ORDER**
-[`object`](../../data-types.md) | An object for sorting the list of running business processes in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
+[`object`](../../data-types.md) | An object for sorting the list of launched business processes in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#fields) of the template for sorting
 - `value_N` — sorting direction
 
-The sorting direction can take the values:
+Sorting direction can take the values:
 - `asc` — ascending
 - `desc` — descending
   
@@ -56,14 +56,14 @@ The formula for calculating the `start` parameter value:
 
 #|
 || **Name**
-`type` | **Description** ||
+`type` | **Description**||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the business process template ||
 || **MODULE_ID**
 [`string`](../../data-types.md) | Identifier of the module by document. Possible values:
 - `crm` — CRM
 - `lists` — universal lists
-- `disk` — disk ||
+- `disk` — drive ||
 || **ENTITY**
 [`string`](../../data-types.md) | Identifier of the object by document. Possible values:
 
@@ -80,7 +80,7 @@ Lists
 - `BizprocDocument` — processes in the news feed
 - `Bitrix\Lists\BizprocDocumentLists` — lists in groups
 
-Disk
+Drive
 - `Bitrix\Disk\BizProcDocument` ||
 || **DOCUMENT_TYPE**
 [`integer`](../../data-types.md) | Document type. Possible values:
@@ -96,16 +96,16 @@ crm:
 lists:
 - `iblock_XXX` — information block, where XXX — identifier of the information block
 
-disk:
-- `STORAGE_XXX` — disk storage, where XXX — identifier of the storage
+drive:
+- `STORAGE_XXX` — drive storage, where XXX — identifier of the storage
  ||
 || **AUTO_EXECUTE**
-[`integer`](../../data-types.md) | Auto-execution flag. Can take values:
+[`integer`](../../data-types.md) | Auto-execute flag. Can take values:
 
-- `0` — no auto-execution
-- `1` — trigger on creation
-- `2` — trigger on modification
-- `3` — trigger on creation and modification
+- `0` — no auto-execute
+- `1` — execute on creation
+- `2` — execute on modification
+- `3` — execute on creation and modification
 ||
 || **NAME**
 [`string`](../../data-types.md) | Template name ||
@@ -135,7 +135,7 @@ Needed for identifying typical business process templates or templates created b
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -161,64 +161,57 @@ Needed for identifying typical business process templates or templates created b
 
 - JS
 
+
     ```js
-    BX24.callMethod(
-        'bizproc.workflow.template.list',
-        {
-            select: [
-                'ID',
-                'NAME',
-                'USER_ID',
-                'SYSTEM_CODE'
-            ],
-            filter: {
-                MODULE_ID: 'lists',
-                AUTO_EXECUTE: 0
-            },
-            order: {
-                ID: 'DESC'
-            }
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). This method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const parameters = {
+        select: [
+            'ID',
+            'NAME',
+            'USER_ID',
+            'SYSTEM_CODE'
+        ],
+        filter: {
+            MODULE_ID: 'lists',
+            AUTO_EXECUTE: 0
         },
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
-            else
-                console.log(result.data());
+        order: {
+            ID: 'DESC'
         }
-    );
+    };
+    
+    try {
+        const response = await $b24.callListMethod('bizproc.workflow.template.list', parameters);
+        const items = response.getData() || [];
+        for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. This method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+        const generator = $b24.fetchListMethod('bizproc.workflow.template.list', parameters, 'ID');
+        for await (const page of generator) {
+            for (const entity of page) { console.log('Entity:', entity); }
+        }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+        const response = await $b24.callMethod('bizproc.workflow.template.list', parameters, 0);
+        const result = response.getData().result || [];
+        for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'bizproc.workflow.template.list',
-        [
-            'select' => [
-                'ID',
-                'NAME',
-                'USER_ID',
-                'SYSTEM_CODE'
-            ],
-            'filter' => [
-                'MODULE_ID' => 'lists',
-                'AUTO_EXECUTE' => 0
-            ],
-            'order' => [
-                'ID' => 'DESC'
-            ]
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
 	```php
 	try {
@@ -250,6 +243,65 @@ Needed for identifying typical business process templates or templates created b
 		print("Error: " . $e->getMessage() . "\n");
 	}
 	```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'bizproc.workflow.template.list',
+        {
+            select: [
+                'ID',
+                'NAME',
+                'USER_ID',
+                'SYSTEM_CODE'
+            ],
+            filter: {
+                MODULE_ID: 'lists',
+                AUTO_EXECUTE: 0
+            },
+            order: {
+                ID: 'DESC'
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                console.log(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'bizproc.workflow.template.list',
+        [
+            'select' => [
+                'ID',
+                'NAME',
+                'USER_ID',
+                'SYSTEM_CODE'
+            ],
+            'filter' => [
+                'MODULE_ID' => 'lists',
+                'AUTO_EXECUTE' => 0
+            ],
+            'order' => [
+                'ID' => 'DESC'
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
 
 {% endlist %}
 
@@ -320,7 +372,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Access denied! | The method was executed by a non-administrator ||
+|| `ACCESS_DENIED` | Access denied! | The method was not executed by an administrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

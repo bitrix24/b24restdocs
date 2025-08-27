@@ -1,14 +1,14 @@
-# Delete workflow action bizproc.activity.delete
+# Delete Action bizproc.activity.delete
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method removes an action for workflows that was added by the application.
+This method deletes an action for workflows that was added by the application.
 
 It only works in the context of the [application](../../app-installation/index.md).
 
-When an application is deleted or updated, the associated actions are removed from the list of actions in the workflow designer. If the action is used in a workflow, it is blocked and can only be removed from the scheme. Upon reinstallation of the application, the action becomes available again.
+When the application is deleted or updated, the associated actions are removed from the list of actions in the workflow designer. If the action is used in a workflow, it is blocked and can only be removed from the scheme. Upon reinstalling the application, the action becomes available again.
 
 ## Method Parameters
 
@@ -21,7 +21,7 @@ When an application is deleted or updated, the associated actions are removed fr
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -38,6 +38,59 @@ When an application is deleted or updated, the associated actions are removed fr
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'bizproc.activity.delete',
+    		{
+    			code: 'md5_action'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		alert('Error: ' + result.error());
+    	else
+    		alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'bizproc.activity.delete',
+                [
+                    'code' => 'md5_action',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting activity: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'bizproc.activity.delete',
         {
@@ -52,7 +105,7 @@ When an application is deleted or updated, the associated actions are removed fr
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -73,7 +126,7 @@ When an application is deleted or updated, the associated actions are removed fr
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -99,12 +152,12 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Returns `true` if the action was successfully deleted ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -120,10 +173,10 @@ HTTP status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `ACCESS_DENIED` | Application context required | Application context is required ||
-|| `ACCESS_DENIED` | Access denied! | The method was executed by a non-administrator ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | No action code specified ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid action code ||
-|| `ERROR_ACTIVITY_NOT_FOUND` | Activity or Automation rule not found! | Action or Automation rule not found ||
+|| `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Activity code is not specified ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid activity code ||
+|| `ERROR_ACTIVITY_NOT_FOUND` | Activity or Automation rule not found! | Activity or Automation rule not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

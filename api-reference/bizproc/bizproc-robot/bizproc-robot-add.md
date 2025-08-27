@@ -1,12 +1,12 @@
-# Register a New Automation Rule bizproc.robot.add
+# Register a new Automation rule bizproc.robot.add
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method registers a new Automation rule.
+This method registers a new automation rule.
 
-It only works in the context of the [application](../../app-installation/index.md).
+It works only in the context of the [application](../../app-installation/index.md).
 
 ## Method Parameters
 
@@ -16,56 +16,56 @@ It only works in the context of the [application](../../app-installation/index.m
 || **Name**
 `type` | **Description**||
 || **CODE***
-[`string`](../../data-types.md) | Internal identifier of the Automation rule. It must be unique within the application.
+[`string`](../../data-types.md) | Internal identifier of the automation rule. It must be unique within the application.
 
 Allowed characters are `a-z`, `A-Z`, `0-9`, dot, hyphen, and underscore `_` ||
 || **HANDLER***
-[`string`](../../data-types.md) | URL to which the Automation rule will send data via the Bitrix24 queue server.
+[`string`](../../data-types.md) | URL to which the automation rule will send data via the Bitrix24 queue server.
 
 The link must have the same domain as the one where the application is installed  ||
 || **AUTH_USER_ID**
 [`integer`](../../data-types.md) | Identifier of the user whose token will be passed to the application ||
 || **USE_SUBSCRIPTION**
-[`boolean`](../../data-types.md) | Should the Automation rule wait for a response from the application? Possible values:
+[`boolean`](../../data-types.md) | Should the automation rule wait for a response from the application. Possible values:
 - `Y` — yes
 - `N` — no
 
 ||
 || **NAME***
-[`string` \| `object`](../../data-types.md) | Name of the Automation rule.
+[`string` \| `object`](../../data-types.md) | Name of the automation rule.
 
 It can be a string or an associative array of localized strings like:
 
 ```js
 'NAME': {
     'de': 'Automatisierungsregel Name',
-    'en': 'Automation rule name',
+    'en': 'automation rule name',
     ...
 },
 ```
 
  ||
 || **DESCRIPTION**
-[`string` \| `object`](../../data-types.md) | Description of the Automation rule.
+[`string` \| `object`](../../data-types.md) | Description of the automation rule.
 
 It can be a string or an associative array of localized strings like:
 
 ```js
 'DESCRIPTION': {
     'de': 'Beschreibung der Automatisierungsregel',
-    'en': 'Automation rule description',
+    'en': 'automation rule description',
     ...
 },
 ```
  ||
 || **PROPERTIES**
-[`object`](../../data-types.md) | Object with parameters of the Automation rule. Contains objects, each describing a [parameter of the Automation rule](#property).
+[`object`](../../data-types.md) | Object with parameters of the automation rule. Contains objects, each of which describes a [parameter of the automation rule](#property).
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_` ||
 || **RETURN_PROPERTIES**
-[`object`](../../data-types.md) | Object with additional results of the Automation rule. Contains objects, each describing a [parameter of the Automation rule](#property).
+[`object`](../../data-types.md) | Object with additional results of the automation rule. Contains objects, each of which describes a [parameter of the automation rule](#property).
 
-This parameter controls the ability of the Automation rule to wait for a response from the application and work with the data that will [come in the response](./bizproc-event-send.md).
+This parameter controls the ability of the automation rule to wait for a response from the application and work with the data that will [come in the response](./bizproc-event-send.md).
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_`
 ||
@@ -86,26 +86,26 @@ Possible value options:
 
 ||
 || **FILTER**
-[`object`](../../data-types.md) | Object with rules for restricting the Automation rule by document type and edition.
+[`object`](../../data-types.md) | Object with rules for restricting the automation rule by document type and edition.
 
 It can contain keys:
-- `INCLUDE` — array of rules where the Automation rule will be displayed
-- `EXCLUDE` — array of rules where the Automation rule will be hidden
+- `INCLUDE` — array of rules where the automation rule will be displayed
+- `EXCLUDE` — array of rules where the automation rule will be hidden
 
 Each rule in the array can be a string or an array of document types in full or partial form.
 
-To restrict Automation rules by Bitrix24 edition, specify:
+To restrict automation rules by Bitrix24 edition, specify:
 - `b24` — for cloud
 - `box` — for on-premise
 
 Examples:
-1. Exclude the Automation rule for on-premise Bitrix24
+1. Exclude the automation rule for on-premise Bitrix24
     ```js
     'FILTER': {
         EXCLUDE: [ 'box' ]
     }
     ```
-2. Display the Automation rule only for deals and leads in CRM
+2. Display the automation rule only for deals and leads in CRM
     ```js
     'FILTER': {
         INCLUDE: [
@@ -116,7 +116,7 @@ Examples:
     ```
 ||
 || **USE_PLACEMENT**
-[`boolean`](../../data-types.md) | Allows opening additional settings for the Automation rule in the application slider. Possible values:
+[`boolean`](../../data-types.md) | Allows opening additional settings for the automation rule in the application slider. Possible values:
 - `Y` — yes
 - `N` — no  ||
 |#
@@ -154,18 +154,18 @@ Examples:
 ```
 ||
 || **Required**
-[`boolean`](../../data-types.md) | Parameter requirement. Possible values:
+[`boolean`](../../data-types.md) | Requirement of the parameter. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **Multiple**
-[`boolean`](../../data-types.md) | Parameter multiplicity. Possible values:
+[`boolean`](../../data-types.md) | Multiplicity of the parameter. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **Default**
 [`any`](../../data-types.md) | Default value of the parameter ||
 |#
 
-#### Examples of Objects
+#### Examples of objects
 
 ```js
 // example for select type
@@ -229,11 +229,86 @@ Examples:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CODE":"test_robot","HANDLER":"https://your_domain/robot.php","AUTH_USER_ID":1,"USE_SUBSCRIPTION":"Y","NAME":"Send Message","PROPERTIES":{"datetime":{"Name":"When","Type":"datetime"},"text":{"Name":"Text","Type":"text"},"user":{"Name":"To Whom","Type":"user","Default":"Author;"}},"FILTER":{"INCLUDE":[["crm","CCrmDocumentDeal"],["crm","CCrmDocumentLead"]]},"auth":"**put_access_token_here**"}' \
+    -d '{"CODE":"test_robot","HANDLER":"https://your_domain/robot.php","AUTH_USER_ID":1,"USE_SUBSCRIPTION":"Y","NAME":"Send message","PROPERTIES":{"datetime":{"Name":"When","Type":"datetime"},"text":{"Name":"Text","Type":"text"},"user":{"Name":"To whom","Type":"user","Default":"Author;"}},"FILTER":{"INCLUDE":[["crm","CCrmDocumentDeal"],["crm","CCrmDocumentLead"]]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/bizproc.robot.add
     ```
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'bizproc.robot.add',
+    		{
+    			'CODE': 'test_robot',
+    			'HANDLER': 'https://your_domain/robot.php',
+    			'AUTH_USER_ID': 1,
+    			'USE_SUBSCRIPTION': 'Y',
+    			'NAME': 'Send message',
+    			'PROPERTIES': {
+    				'datetime': {
+    					'Name': 'When',
+    					'Type': 'datetime'
+    				},
+    				'text': {
+    					'Name': 'Text',
+    					'Type': 'text'
+    				},
+    				'user': {
+    					'Name': 'To whom',
+    					'Type': 'user',
+    					'Default': 'Author;'
+    				}
+    			},
+    			'FILTER': {
+    				INCLUDE: [
+    					['crm', 'CCrmDocumentDeal'],
+    					['crm', 'CCrmDocumentLead']
+    				]
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	alert("Success: " + result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $result = $serviceBuilder
+            ->getBizProcScope()
+            ->robot()
+            ->add(
+                'robot_code', // string $code
+                'https://example.com/handler', // string $handlerUrl
+                1, // int $b24AuthUserId
+                ['en' => 'Robot Name'], // array $localizedRobotName
+                true, // bool $isUseSubscription
+                [], // array $properties
+                false, // bool $isUsePlacement
+                [] // array $returnProperties
+            );
+
+        if ($result->isSuccess()) {
+            print_r($result->getCoreResponse()->getResponseData()->getResult());
+        } else {
+            print("Failed to add automation rule.");
+        }
+    } catch (Throwable $e) {
+        print("Error: " . $e->getMessage());
+    }
+    ```
+
+- BX24.js
 
 	```js
     BX24.callMethod(
@@ -243,7 +318,7 @@ Examples:
             'HANDLER': 'https://your_domain/robot.php',
             'AUTH_USER_ID': 1,
             'USE_SUBSCRIPTION': 'Y',
-            'NAME': 'Send Message',
+            'NAME': 'Send message',
             'PROPERTIES': {
                 'datetime': {
                     'Name': 'When',
@@ -254,7 +329,7 @@ Examples:
                     'Type': 'text'
                 },
                 'user': {
-                    'Name': 'To Whom',
+                    'Name': 'To whom',
                     'Type': 'user',
                     'Default': 'Author;'
                 }
@@ -276,7 +351,7 @@ Examples:
     );
 	```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -288,7 +363,7 @@ Examples:
             'HANDLER' => 'https://your_domain/robot.php',
             'AUTH_USER_ID' => 1,
             'USE_SUBSCRIPTION' => 'Y',
-            'NAME' => 'Send Message',
+            'NAME' => 'Send message',
             'PROPERTIES' => [
                 'datetime' => [
                     'Name' => 'When',
@@ -299,51 +374,23 @@ Examples:
                     'Type' => 'text'
                 },
                 'user' => [
-                    'Name' => 'To Whom',
+                    'Name' => 'To whom',
                     'Type' => 'user',
                     'Default' => 'Author;'
                 ]
-            ],
+            },
             'FILTER' => [
                 'INCLUDE' => [
                     ['crm', 'CCrmDocumentDeal'],
                     ['crm', 'CCrmDocumentLead']
                 ]
-            ]
+            }
         ]
     );
 
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
-  
-    ```php
-    try {
-        $result = $serviceBuilder
-            ->getBizProcScope()
-            ->robot()
-            ->add(
-                'robot_code', // string $code
-                'https://example.com/handler', // string $handlerUrl
-                1, // int $b24AuthUserId
-                ['en' => 'Robot Name'], // array $localizedRobotName
-                true, // bool $isUseSubscription
-                [], // array $properties
-                false, // bool $isUsePlacement
-                [] // array $returnProperties
-            );
-
-        if ($result->isSuccess()) {
-            print_r($result->getCoreResponse()->getResponseData()->getResult());
-        } else {
-            print("Failed to add Automation rule.");
-        }
-    } catch (Throwable $e) {
-        print("Error: " . $e->getMessage());
-    }
     ```
 
 {% endlist %}
@@ -374,7 +421,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the Automation rule was successfully added ||
+[`boolean`](../../data-types.md) | Returns `true` if the automation rule was added successfully ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -398,20 +445,20 @@ HTTP status: **400**
 || **Code** | **Error Message** | **Description** ||
 || `ACCESS_DENIED` | Application context required | Application context is required ||
 || `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty data! | Required fields are missing ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty data! | Required fields with information are not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Automation rule code is not specified ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid Automation rule code ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid automation rule code ||
 || `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | Invalid handler protocol http, https ||
 || `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | Invalid handler URL ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity NAME! | Automation rule name is not specified ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | Incorrectly filled `PROPERTIES` or `RETURN_PROPERTIES` parameters ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | Incorrectly filled parameters `PROPERTIES` or `RETURN_PROPERTIES` ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong property key <key>! | Invalid property identifier ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty property NAME <key>! | Property name is not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity FILTER! | Invalid filter ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity DOCUMENT_TYPE! | Invalid `DOCUMENT_TYPE` ||
-|| `ERROR_ACTIVITY_ALREADY_INSTALLED` | Activity or Automation rule already installed! | An Automation rule with this code is already installed ||
-|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity or Automation rule already added! | Automation rule has already been added ||
-|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity save error! | Failed to save the Automation rule, system error ||
+|| `ERROR_ACTIVITY_ALREADY_INSTALLED` | Activity or Automation rule already installed! | An automation rule with this code is already installed ||
+|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity or Automation rule already added! | The automation rule has already been added ||
+|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity save error! | Failed to save the automation rule, system error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

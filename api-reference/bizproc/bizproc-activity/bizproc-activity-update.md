@@ -1,4 +1,4 @@
-# Update bizproc.activity.update
+# Update Action bizproc.activity.update
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 This method updates a business process action added by the application.
 
-It only works in the context of the [application](../../app-installation/index.md).
+It works only in the context of the [application](../../app-installation/index.md).
 
 ## Method Parameters
 
@@ -21,7 +21,7 @@ It only works in the context of the [application](../../app-installation/index.m
 [`object`](../../data-types.md) | Object with [fields](#parametr-fields) of the business process action ||
 |#
 
-### FIELDS Parameter {#parametr-fields}
+### Parameter FIELDS {#parametr-fields}
 
 #|
 || **Name**
@@ -33,14 +33,14 @@ The link must have the same domain where the application is installed ||
 || **AUTH_USER_ID**
 [`integer`](../../data-types.md) | Identifier of the user whose token will be passed to the application ||
 || **USE_SUBSCRIPTION**
-[`boolean`](../../data-types.md) | Should the action wait for a response from the application? Possible values:
+[`boolean`](../../data-types.md) | Should the action wait for a response from the application. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **NAME***
 [`string` \| `object`](../../data-types.md) | Name of the action.
 
-It can be a string or an associative array of localized strings like:
+Can be a string or an associative array of localized strings like:
 
 ```js
 'NAME': {
@@ -54,7 +54,7 @@ It can be a string or an associative array of localized strings like:
 || **DESCRIPTION**
 [`string` \| `object`](../../data-types.md) | Description of the action.
 
-It can be a string or an associative array of localized strings like:
+Can be a string or an associative array of localized strings like:
 
 ```js
 'DESCRIPTION': {
@@ -65,13 +65,13 @@ It can be a string or an associative array of localized strings like:
 ```
  ||
 || **PROPERTIES**
-[`object`](../../data-types.md) | Object with action parameters. Contains objects, each describing a [parameter of the action](#property).
+[`object`](../../data-types.md) | Object with parameters of the action. Contains objects, each describing a [parameter of the action](#property).
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_` ||
 || **RETURN_PROPERTIES**
 [`object`](../../data-types.md) | Object with additional results of the action. Contains objects, each describing a [parameter of the action](#property).
 
-This parameter controls the ability of the action to wait for a response from the application and work with the data that [comes in the response](../bizproc-robot/bizproc-event-send.md).
+This parameter controls the ability of the action to wait for a response from the application and work with the data that will [come in the response](../bizproc-robot/bizproc-event-send.md).
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_`
 ||
@@ -96,12 +96,12 @@ Possible value options:
     `['lists', 'BizprocDocument', 'iblock_XXX']` — processes in the news feed, where XXX is the identifier of the information block
     `['lists', 'Bitrix\Lists\BizprocDocumentLists', 'iblock_XXX']` — lists in groups, where XXX is the identifier of the information block
 
-- Disk Module
+- Drive Module
     `['disk', 'Bitrix\Disk\BizProcDocument', 'STORAGE_XXX']`, where XXX is the storage identifier
 
 ||
 || **FILTER**
-[`object`](../../data-types.md) | Object with rules for limiting the action by document type and edition.
+[`object`](../../data-types.md) | Object with rules to restrict the action by document type and edition.
 
 May contain keys:
 - `INCLUDE` — array of rules where the action will be displayed
@@ -109,7 +109,7 @@ May contain keys:
 
 Each rule in the array can be a string or an array of document types in full or partial form.
 
-To limit the action by Bitrix24 edition, specify:
+To restrict the action by Bitrix24 edition, specify:
 - `b24` — for cloud
 - `box` — for on-premise
 
@@ -139,12 +139,12 @@ Examples:
     ```
 ||
 || **USE_PLACEMENT**
-[`boolean`](../../data-types.md) | Allows opening additional settings for the action in the application slider. Possible values:
+[`boolean`](../../data-types.md) | Allows opening additional settings of the action in the application slider. Possible values:
 - `Y` — yes
 - `N` — no  ||
 |#
 
-### PROPERTY Object {#property}
+### Object PROPERTY {#property}
 
 #|
 || **Name**
@@ -258,59 +258,35 @@ Examples:
 - JS
 
     ```js
-    BX24.callMethod(
-        'bizproc.activity.update',
-        {
-            'CODE': 'action_test_code',
-            'FIELDS': {
-                'AUTH_USER_ID': 1,
-                'USE_SUBSCRIPTION': 'N',
-                'FILTER': {
-                    'INCLUDE': [
-                        ['lists'],
-                        ['crm', 'CCrmDocumentDeal']
-                    ]
-                }
-            },
-        },
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
-            else
-                alert("Success: " + result.data());
-        }
-    );
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'bizproc.activity.update',
+    		{
+    			'CODE': 'action_test_code',
+    			'FIELDS': {
+    				'AUTH_USER_ID': 1,
+    				'USE_SUBSCRIPTION': 'N',
+    				'FILTER': {
+    					'INCLUDE': [
+    						['lists'],
+    						['crm', 'CCrmDocumentDeal']
+    					]
+    				}
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	alert("Successfully: " + result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
     ```
 
-- PHP (CRest)
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'bizproc.activity.update',
-        [
-            'CODE' => 'action_test_code',
-            'FIELDS' => [
-                'AUTH_USER_ID' => 1,
-                'USE_SUBSCRIPTION' => 'N',
-                'FILTER' => [
-                    'INCLUDE' => [
-                        ['lists'],
-                        ['crm', 'CCrmDocumentDeal']
-                    ]
-                ]
-            ]
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
+- PHP
 
     ```php
     try {
@@ -339,6 +315,61 @@ Examples:
     } catch (Throwable $e) {
         print('Error: ' . $e->getMessage());
     }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'bizproc.activity.update',
+        {
+            'CODE': 'action_test_code',
+            'FIELDS': {
+                'AUTH_USER_ID': 1,
+                'USE_SUBSCRIPTION': 'N',
+                'FILTER': {
+                    'INCLUDE': [
+                        ['lists'],
+                        ['crm', 'CCrmDocumentDeal']
+                    ]
+                }
+            },
+        },
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Successfully: " + result.data());
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'bizproc.activity.update',
+        [
+            'CODE' => 'action_test_code',
+            'FIELDS' => [
+                'AUTH_USER_ID' => 1,
+                'USE_SUBSCRIPTION' => 'N',
+                'FILTER' => [
+                    'INCLUDE' => [
+                        ['lists'],
+                        ['crm', 'CCrmDocumentDeal']
+                    ]
+                ]
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
@@ -371,7 +402,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Returns `true` if the action was successfully updated ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -392,15 +423,15 @@ HTTP status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `ACCESS_DENIED` | Application context required | Application context is required ||
-|| `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Action code is not specified ||
+|| `ACCESS_DENIED` | Access denied! | Method executed by a non-administrator ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Action code not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid action code ||
-|| `ERROR_ACTIVITY_NOT_FOUND` | Activity or Automation rule not found! | Action or Automation rule not found ||
+|| `ERROR_ACTIVITY_NOT_FOUND` | Activity or Robot not found! | Action or robot not found ||
 || `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | Invalid handler protocol http, https ||
 || `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | Invalid handler URL ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | Incorrectly filled parameters `PROPERTIES` or `RETURN_PROPERTIES` ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong property key <key>! | Invalid property identifier ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty property NAME <key>! | Property name is not specified ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty property NAME <key>! | Property name not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity FILTER! | Invalid filter ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity DOCUMENT_TYPE! | Invalid `DOCUMENT_TYPE` ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | No fields to update | No fields to update ||

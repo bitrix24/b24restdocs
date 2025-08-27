@@ -1,4 +1,4 @@
-# Get a list of running workflows bizproc.workflow.instances
+# Get a List of Running Workflows bizproc.workflow.instances
 
 > Scope: [`bizproc`](../scopes/permissions.md)
 >
@@ -58,7 +58,7 @@ The sorting direction can take the following values:
   
 Default value: `{'MODIFIED': 'desc'}` ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../data-types.md) | This parameter is used for managing pagination.
 
 The page size of results is always static — 50 records.
 
@@ -66,13 +66,12 @@ To select the second page of results, you need to pass the value `50`. To select
 
 The formula for calculating the `start` parameter value:
 
-`start = (N - 1) * 50`, where `N` — the number of the desired page ||
-|#
+`start = (N - 1) * 50`, where `N` — the desired page number ||
 |#
 
 ## Code Examples
 
-{% include [Examples note](../../_includes/examples.md) %}
+{% include [Note on Examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -97,6 +96,88 @@ The formula for calculating the `start` parameter value:
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'bizproc.workflow.instances',
+    		{
+    			select: [
+    				'ID',
+    				'MODIFIED',
+    				'OWNED_UNTIL',
+    				'MODULE_ID',
+    				'ENTITY',
+    				'DOCUMENT_ID',
+    				'STARTED',
+    				'STARTED_BY',
+    				'TEMPLATE_ID'
+    			],
+    			order: {
+    				STARTED: 'DESC'
+    			},
+    			filter: {
+    				'>STARTED_BY': 0
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	alert("Error: " + error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'bizproc.workflow.instances',
+                [
+                    'select' => [
+                        'ID',
+                        'MODIFIED',
+                        'OWNED_UNTIL',
+                        'MODULE_ID',
+                        'ENTITY',
+                        'DOCUMENT_ID',
+                        'STARTED',
+                        'STARTED_BY',
+                        'TEMPLATE_ID'
+                    ],
+                    'order' => [
+                        'STARTED' => 'DESC'
+                    ],
+                    'filter' => [
+                        '>STARTED_BY' => 0
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching workflow instances: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -130,7 +211,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -167,7 +248,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -186,7 +267,7 @@ HTTP status: **200**
             "DOCUMENT_ID":"DEAL_1633",
             "ENTITY":"CCrmDocumentDeal",
             "ID":"658c4d3d6a2906.51542462",
-            "STARTED":"2023-12-27T19:13:49+02:00",
+            "STARTED":"2023-12-27T19:13:49+03:00",
             "MODULE_ID":"crm",
             "OWNED_UNTIL":null,
             "TEMPLATE_ID":"212",
@@ -215,17 +296,16 @@ HTTP status: **200**
 || **result**
 [`object`](../data-types.md) | The root element of the response. 
 
-Contains an array of objects with information about running workflows ||
+Contains an array of objects with information about the running workflows ||
 || **total**
 [`integer`](../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
- 
 ## Error Handling
 
-HTTP status: **403**
+HTTP Status: **403**
 
 ```json
 {

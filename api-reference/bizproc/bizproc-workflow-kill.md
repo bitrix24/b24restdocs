@@ -46,6 +46,49 @@ This method deletes the running workflow along with all process data.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'bizproc.workflow.kill',
+    		{
+    			ID: '65e5a449e8f135.21284909',
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('response', result.answer);
+    	if(result.error())
+    		alert("Error: " + result.error());
+    	else
+    		console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php     
+    try {
+        $workflowId = 'your_workflow_id'; // Replace with your actual workflow ID
+        $result = $serviceBuilder->getBizProcScope()
+            ->workflow()
+            ->kill($workflowId);
+        if ($result->isSuccess()) {
+            print_r($result->getCoreResponse()->getResponseData()->getResult());
+        } else {
+            print('Failed to kill workflow: ' . json_encode($result->getCoreResponse()->getResponseData()->getResult()));
+        }
+    } catch (Throwable $e) {
+        print('Error occurred: ' . $e->getMessage());
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'bizproc.workflow.kill',
         {
@@ -61,7 +104,7 @@ This method deletes the running workflow along with all process data.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -76,24 +119,6 @@ This method deletes the running workflow along with all process data.
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
-  
-    ```php     
-    try {
-        $workflowId = 'your_workflow_id'; // Replace with your actual workflow ID
-        $result = $serviceBuilder->getBizProcScope()
-            ->workflow()
-            ->kill($workflowId);
-        if ($result->isSuccess()) {
-            print_r($result->getCoreResponse()->getResponseData()->getResult());
-        } else {
-            print('Failed to kill workflow: ' . json_encode($result->getCoreResponse()->getResponseData()->getResult()));
-        }
-    } catch (Throwable $e) {
-        print('Error occurred: ' . $e->getMessage());
-    }
     ```
 
 {% endlist %}
@@ -148,8 +173,8 @@ HTTP status: **400**, **403**
 
 #|
 || **Status** |**Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator ||
-|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Empty workflow instance ID | An empty value was passed to the `ID` parameter ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
+|| `400` | `ERROR_WRONG_WORKFLOW_ID` | Empty workflow instance ID | Empty value was passed to the `ID` parameter ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

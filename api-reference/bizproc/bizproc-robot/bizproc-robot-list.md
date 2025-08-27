@@ -1,14 +1,14 @@
-# Get a List of Registered Application Automation Rules bizproc.robot.list
+# Get a list of registered application robots bizproc.robot.list
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns a list of automation rules registered by the application.
+The method returns a list of robots registered by the application.
 
-It only works in the context of the [application](../../app-installation/index.md).
+It works only in the context of the [application](../../app-installation/index.md).
 
-No parameters required.
+No parameters.
 
 ## Code Examples
 
@@ -29,35 +29,43 @@ No parameters required.
 - JS
 
     ```js
-    BX24.callMethod(
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
         'bizproc.robot.list',
         {},
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
-            else
-                alert("Success: " + result.data().join(', '));
-        }
-    );
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('bizproc.robot.list', {}, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('bizproc.robot.list', {}, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'bizproc.robot.list',
-        []
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -83,11 +91,42 @@ No parameters required.
     }
     ```
 
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'bizproc.robot.list',
+        {},
+        function(result)
+        {
+            if(result.error())
+                alert("Error: " + result.error());
+            else
+                alert("Success: " + result.data().join(', '));
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'bizproc.robot.list',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -114,14 +153,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | List of application automation rule identifiers ||
+[`array`](../../data-types.md) | List of application robot identifiers ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -137,7 +176,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `ACCESS_DENIED` | Application context required | Application context is required ||
-|| `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
+|| `ACCESS_DENIED` | Access denied! | The method was not executed by an administrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
