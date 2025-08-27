@@ -15,7 +15,7 @@ This method deletes a resource.
 `type` | **Description** ||
 || **resourceId*** | Resource identifier.
 
-You can obtain the identifier using the resource creation method [calendar.resource.add](./calendar-resource-add.md) or the resource listing method [calendar.resource.list](./calendar-resource-list.md) ||
+You can obtain the identifier using the resource creation method [calendar.resource.add](./calendar-resource-add.md) or the resource list retrieval method [calendar.resource.list](./calendar-resource-list.md) ||
 |#
 
 ## Code Examples
@@ -45,6 +45,51 @@ You can obtain the identifier using the resource creation method [calendar.resou
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.resource.delete',
+    		{
+    			resourceId: 521
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.resource.delete',
+                [
+                    'resourceId' => 521
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting calendar resource: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.resource.delete',
         {
@@ -53,7 +98,7 @@ You can obtain the identifier using the resource creation method [calendar.resou
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -76,7 +121,7 @@ You can obtain the identifier using the resource creation method [calendar.resou
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -98,17 +143,17 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the deletion is successful ||
+[`boolean`](../../data-types.md) | Returns `true` if the deletion was successful ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
     "error": "",
-    "error_description": "The required parameter 'resourceId' for the method 'calendar.resource.delete' is not set"
+    "error_description": "The required parameter "resourceId" for the method "calendar.resource.delete" is not set"
 }
 ```
 
@@ -118,8 +163,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter 'resourceId' for the method 'calendar.resource.delete' is not set | The required parameter `resourceId` was not provided ||
-|| Empty string | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
+|| Empty string | The required parameter "resourceId" for the method "calendar.resource.delete" is not set | The required parameter `resourceId` was not provided ||
+|| Empty string | Access denied | The method is called by an external user or the user is prohibited from modifying resources ||
 || Empty string | An error occurred while deleting the section | Another error ||
 |#
 

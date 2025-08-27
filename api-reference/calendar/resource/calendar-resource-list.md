@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-This method retrieves a list of all resources.
+The method retrieves a list of all resources.
 
 No parameters.
 
@@ -37,12 +37,53 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.resource.list'
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.resource.list',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching calendar resources: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.resource.list'
     )
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -93,7 +134,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array of objects. Each object contains a description of the [resource](#resource) ||
+[`array`](../../data-types.md) | Array of objects. Each object contains a description of the [resource](#resource) ||
 |#
 
 #### Resource Object {#resource}

@@ -26,11 +26,11 @@ For the company calendar, the `ownerId` parameter is `0` ||
 || **from***
 [`datetime`\|`date`](../../data-types.md) | Start date and time of the event.
 
-You can specify a date without a time. To do this, pass the value `Y` in the `skip_time` parameter ||
+You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
 || **to***
 [`datetime`\|`date`](../../data-types.md) | End date of the event.
 
-You can specify a date without a time. To do this, pass the value `Y` in the `skip_time` parameter ||
+You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
 || **from_ts**
 [`integer`](../../data-types.md) | Date and time in timestamp format. Can be used instead of the `from` parameter ||
 || **to_ts**
@@ -46,11 +46,11 @@ You can specify a date without a time. To do this, pass the value `Y` in the `sk
 
 Date format according to ISO-8601 ||
 || **timezone_from**
-[`string`](../../data-types.md) | Time zone of the event start date and time. Default is the current user's time zone.
+[`string`](../../data-types.md) | Timezone of the start date and time of the event. Default is the current user's timezone.
 
 The value should be passed as a string, for example, `Europe/Riga` ||
 || **timezone_to**
-[`string`](../../data-types.md) | Time zone of the event end date and time. Default value is the current user's time zone.
+[`string`](../../data-types.md) | Timezone of the end date and time of the event. Default value is the current user's timezone.
 
 The value should be passed as a string, for example, `Europe/Riga` ||
 || **description**
@@ -89,7 +89,7 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 - `Y` — meeting with participants
 - `N` — meeting without participants
 
-For a meeting with participants, you must specify the list of participants in `attendees` and the event organizer in `host`. Without filling in these fields, the event will not be created
+For a meeting with participants, you must specify the list of participants `attendees` and the event organizer `host`. Without filling in these fields, the event will not be created
 ||
 || **location**
 [`string`](../../data-types.md) | Location ||
@@ -149,7 +149,7 @@ For a meeting with participants, you must specify the list of participants in `a
 - `hour` – hours
 - `day` — days ||
 || **count**
-[`integer`](../../data-types.md) | Numerical value of the time interval ||
+[`integer`](../../data-types.md) | Numeric value of the time interval ||
 |#
 
 ### meeting Parameter {#meeting}
@@ -162,7 +162,7 @@ For a meeting with participants, you must specify the list of participants in `a
 || **reinvite**
 [`boolean`](../../data-types.md) | Flag for requesting re-confirmation of participation when editing the event ||
 || **allow_invite**
-[`boolean`](../../data-types.md) | Flag for allowing participants to invite others to the event ||
+[`boolean`](../../data-types.md) | Flag allowing participants to invite others to the event ||
 || **hide_guests**
 [`boolean`](../../data-types.md) | Flag for hiding the list of participants ||
 |#
@@ -180,7 +180,7 @@ For a meeting with participants, you must specify the list of participants in `a
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"type":"user","ownerId":2,"name":"New Event Name","description":"Description for event","from":"2024-06-14","to":"2024-06-14","skip_time":"Y","section":5,"color":"#9cbe1c","text_color":"#283033","accessibility":"absent","importance":"normal","is_meeting":"Y","private_event":"N","remind":[{"type":"min","count":20}],"location":"London","attendees":[1,2,3],"host":2,"meeting":{"notify":true,"reinvite":false,"allow_invite":false,"hide_guests":false},"rrule":{"FREQ":"WEEKLY","BYDAY":["MO","WE"],"COUNT":10,"INTERVAL":1},"crm_fields":["C_5","L_11"]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/calendar.event.add
     ```
 
 - cURL (OAuth)
@@ -194,6 +194,128 @@ For a meeting with participants, you must specify the list of participants in `a
     ```
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.event.add',
+    		{
+    			type: 'user',
+    			ownerId: 2,
+    			name: 'New Event Name',
+    			description: 'Description for event',
+    			from: '2024-06-14',
+    			to: '2024-06-14',
+    			skip_time: 'Y',
+    			section: 5,
+    			color: '#9cbe1c',
+    			text_color: '#283033',
+    			accessibility: 'absent',
+    			importance: 'normal',
+    			is_meeting: 'Y',
+    			private_event: 'N',
+    			remind: [
+    				{
+    					type: 'min',
+    					count: 20
+    				}
+    			],
+    			location: 'London',
+    			attendees: [1, 2, 3],
+    			host: 2,
+    			meeting: {
+    				notify: true,
+    				reinvite: false,
+    				allow_invite: false,
+    				hide_guests: false,
+    			},
+    			rrule: {
+    				FREQ: 'WEEKLY',
+    				BYDAY: ['MO', 'WE'],
+    				COUNT: 10,
+    				INTERVAL: 1,
+    			},
+    			crm_fields: ['C_5', 'L_11']
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('Created event with ID:', result);
+    	// Your data processing logic
+    	processResult(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.event.add',
+                [
+                    'type'          => 'user',
+                    'ownerId'       => 2,
+                    'name'          => 'New Event Name',
+                    'description'   => 'Description for event',
+                    'from'          => '2024-06-14',
+                    'to'            => '2024-06-14',
+                    'skip_time'     => 'Y',
+                    'section'       => 5,
+                    'color'         => '#9cbe1c',
+                    'text_color'    => '#283033',
+                    'accessibility' => 'absent',
+                    'importance'    => 'normal',
+                    'is_meeting'    => 'Y',
+                    'private_event' => 'N',
+                    'remind'        => [
+                        [
+                            'type'  => 'min',
+                            'count' => 20
+                        ]
+                    ],
+                    'location'      => 'London',
+                    'attendees'     => [1, 2, 3],
+                    'host'          => 2,
+                    'meeting'       => [
+                        'notify'      => true,
+                        'reinvite'    => false,
+                        'allow_invite' => false,
+                        'hide_guests' => false,
+                    ],
+                    'rrule'         => [
+                        'FREQ'     => 'WEEKLY',
+                        'BYDAY'    => ['MO', 'WE'],
+                        'COUNT'    => 10,
+                        'INTERVAL' => 1,
+                    ],
+                    'crm_fields'    => ['C_5', 'L_11']
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding calendar event: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -239,7 +361,7 @@ For a meeting with participants, you must specify the list of participants in `a
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -305,7 +427,7 @@ For a meeting with participants, you must specify the list of participants in `a
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"type":"company_calendar","ownerId":"","from":"2025-01-31T18:00:00","to":"2025-01-31T20:00:00","section":1,"name":"Important Meeting","skip_time":"N","timezone_from":"Europe/Berlin","timezone_to":"Europe/Berlin","description":"Event description","color":"#FF0000","text_color":"#000000","accessibility":"busy","importance":"high","private_event":"N","rrule":{"FREQ":"WEEKLY","COUNT":10,"INTERVAL":1,"BYDAY":["MO","WE","FR"]},"is_meeting":"Y","location":"Conference Room","remind":[{"type":"min","count":30}],"attendees":[29,93],"host":1,"meeting":{"notify":true,"reinvite":false,"allow_invite":true,"hide_guests":false}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/calendar.event.add
     ```
 
 - cURL (OAuth)
@@ -320,6 +442,120 @@ For a meeting with participants, you must specify the list of participants in `a
 
 - JS
 
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.event.add',
+    		{
+    			type: 'company_calendar',
+    			ownerId: '',
+    			from: '2025-01-31T18:00:00',
+    			to: '2025-01-31T20:00:00',
+    			section: 1,
+    			name: 'Important Meeting',
+    			skip_time: 'N',
+    			timezone_from: 'Europe/Berlin',
+    			timezone_to: 'Europe/Berlin',
+    			description: 'Event description',
+    			color: '%23FF0000',
+    			text_color: '%23000000',
+    			accessibility: 'busy',
+    			importance: 'high',
+    			private_event: 'N',
+    			rrule: {
+    				FREQ: 'WEEKLY',
+    				COUNT: 10,
+    				INTERVAL: 1,
+    				BYDAY: ['MO', 'WE', 'FR']
+    			},
+    			is_meeting: 'Y',
+    			location: 'Conference Room',
+    			remind: [
+    				{ type: 'min', count: 30 }
+    			],
+    			attendees: [29, 93],
+    			host: 1,
+    			meeting: {
+    				notify: true,
+    				reinvite: false,
+    				allow_invite: true,
+    				hide_guests: false
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('Event added successfully', result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.event.add',
+                [
+                    'type'           => 'company_calendar',
+                    'ownerId'        => '',
+                    'from'           => '2025-01-31T18:00:00',
+                    'to'             => '2025-01-31T20:00:00',
+                    'section'        => 1,
+                    'name'           => 'Important Meeting',
+                    'skip_time'      => 'N',
+                    'timezone_from'  => 'Europe/Berlin',
+                    'timezone_to'    => 'Europe/Berlin',
+                    'description'    => 'Event description',
+                    'color'          => '%23FF0000',
+                    'text_color'     => '%23000000',
+                    'accessibility'  => 'busy',
+                    'importance'     => 'high',
+                    'private_event'  => 'N',
+                    'rrule'          => [
+                        'FREQ'     => 'WEEKLY',
+                        'COUNT'    => 10,
+                        'INTERVAL' => 1,
+                        'BYDAY'    => ['MO', 'WE', 'FR']
+                    ],
+                    'is_meeting'     => 'Y',
+                    'location'       => 'Conference Room',
+                    'remind'         => [
+                        ['type' => 'min', 'count' => 30]
+                    ],
+                    'attendees'      => [29, 93],
+                    'host'           => 1,
+                    'meeting'        => [
+                        'notify'       => true,
+                        'reinvite'     => false,
+                        'allow_invite' => true,
+                        'hide_guests'  => false
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Event added successfully: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding event: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```javascript
     BX24.callMethod(
         'calendar.event.add',
@@ -331,8 +567,8 @@ For a meeting with participants, you must specify the list of participants in `a
             section: 1, // Calendar identifier
             name: 'Important Meeting', // Event name
             skip_time: 'N', // Use date and time (N)
-            timezone_from: 'Europe/Berlin', // Time zone of the event start
-            timezone_to: 'Europe/Berlin', // Time zone of the event end
+            timezone_from: 'Europe/Berlin', // Timezone of the start of the event
+            timezone_to: 'Europe/Berlin', // Timezone of the end of the event
             description: 'Event description', // Event description
             color: '%23FF0000', // Background color of the event (red)
             text_color: '%23000000', // Text color of the event (black)
@@ -369,7 +605,7 @@ For a meeting with participants, you must specify the list of participants in `a
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -384,8 +620,8 @@ For a meeting with participants, you must specify the list of participants in `a
             'section' => 1, // Calendar identifier (replace with actual)
             'name' => 'Important Meeting', // Event name
             'skip_time' => 'N', // Use date and time (N)
-            'timezone_from' => 'Europe/Berlin', // Time zone of the event start
-            'timezone_to' => 'Europe/Berlin', // Time zone of the event end
+            'timezone_from' => 'Europe/Berlin', // Timezone of the start of the event
+            'timezone_to' => 'Europe/Berlin', // Timezone of the end of the event
             'description' => 'Event description', // Event description
             'color' => '#FF0000', // Background color of the event (red)
             'text_color' => '#000000', // Text color of the event (black)
@@ -422,12 +658,11 @@ For a meeting with participants, you must specify the list of participants in `a
     }
     ```
 
-
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -454,7 +689,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -468,16 +703,16 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "type" for the method "calendar.event.add" is not set | The required parameter `type` is not provided ||
-|| Empty string | The required parameter "ownerId" for the method "calendar.event.add" is not set | The required parameter `ownerId` is not provided ||
-|| Empty string | The required parameter "name" for the method "calendar.event.add" is not set | The required parameter `name` is not provided ||
-|| Empty string | The required parameter "from" for the method "calendar.event.add" is not set | The required parameter `from` or `from_ts` is not provided ||
-|| Empty string | The required parameter "to" for the method "calendar.event.add" is not set | The required parameter `to` or `to_ts` is not provided ||
+|| Empty string | The required parameter "type" for the method "calendar.event.add" is not set | The required parameter `type` is not passed ||
+|| Empty string | The required parameter "ownerId" for the method "calendar.event.add" is not set | The required parameter `ownerId` is not passed ||
+|| Empty string | The required parameter "name" for the method "calendar.event.add" is not set | The required parameter `name` is not passed ||
+|| Empty string | The required parameter "from" for the method "calendar.event.add" is not set | The required parameter `from` or `from_ts` is not passed ||
+|| Empty string | The required parameter "to" for the method "calendar.event.add" is not set | The required parameter `to` or `to_ts` is not passed ||
 || Empty string | Invalid value for the parameter "name" | Incorrect data format in the `name` field ||
 || Empty string | Invalid value for the parameter "description" | Incorrect data format in the `description` field ||
-|| Empty string | Access denied | Creation of events in the specified calendar is prohibited ||
-|| Empty string | You have specified an invalid calendar section ID or the user does not have access to it | An identifier of an unavailable or non-existent calendar is provided ||
-|| Empty string | The event's CRM link list must be an array | Incorrect data format in the `crm_fields` field ||
+|| Empty string | Access denied | Creating events in the specified calendar is prohibited ||
+|| Empty string | You specified an invalid calendar section ID or the user does not have access to it | An identifier of an inaccessible or non-existent calendar is passed ||
+|| Empty string | The list of event links to CRM must be an array | Incorrect data format in the `crm_fields` field ||
 || Empty string | An error occurred while creating the event | Another error ||
 |#
 

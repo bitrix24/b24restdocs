@@ -1,10 +1,10 @@
-# Get the Participation Status of the Current User in the Event calendar.meeting.status.get
+# Get the participation status of the current user in the event calendar.meeting.status.get
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method retrieves the participation status of the current user in an event.
+This method retrieves the participation status of the current user in the event.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method retrieves the participation status of the current user in an event.
 || **Name**
 `type` | **Description** ||
 || **eventId***
-[`integer`](../../data-types.md) | Identifier of the event.
+[`integer`](../../data-types.md) | Event identifier.
 
 You can obtain the identifier using the [calendar.event.get](./calendar-event-get.md) or [calendar.event.get.nearest](./calendar-event-get-nearest.md) methods ||
 |#
@@ -48,6 +48,54 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.meeting.status.get',
+    		{
+    			eventId: 651
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.meeting.status.get',
+                [
+                    'eventId' => 651
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting meeting status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.meeting.status.get',
         {
@@ -56,7 +104,7 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -77,7 +125,7 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -99,16 +147,16 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`string`](../../data-types.md) | Participation status of the current user. Possible values:
-- `Y` — accepted
+[`string`](../../data-types.md) | The participation status of the current user. Possible values:
+- `Y` — agreed
 - `N` — declined
-- `Q` — invited, but not yet responded
+- `Q` — invited but not yet responded
  ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

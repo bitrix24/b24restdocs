@@ -1,4 +1,4 @@
-# Update Resource calendar.resource.update
+# Update resource calendar.resource.update
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
@@ -16,9 +16,9 @@ This method updates a resource.
 || **resourceId***
 [`integer`](../../data-types.md) | Resource identifier.
 
-You can obtain the identifier using the resource creation method [calendar.resource.add](./calendar-resource-add.md) or the resource list retrieval method [calendar.resource.list](./calendar-resource-list.md) ||
+You can obtain the identifier using the resource creation method [calendar.resource.add](./calendar-resource-add.md) or the resource listing method [calendar.resource.list](./calendar-resource-list.md) ||
 || **name***
-[`string`](../../data-types.md) | New name for the resource ||
+[`string`](../../data-types.md) | New name of the resource ||
 |#
 
 ## Code Examples
@@ -50,6 +50,53 @@ You can obtain the identifier using the resource creation method [calendar.resou
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.resource.update',
+    		{
+    			resourceId: 197,
+    			name: 'Changed Resource Name'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.resource.update',
+                [
+                    'resourceId' => 197,
+                    'name'       => 'Changed Resource Name',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating resource: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.resource.update',
         {
@@ -59,7 +106,7 @@ You can obtain the identifier using the resource creation method [calendar.resou
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -81,7 +128,7 @@ You can obtain the identifier using the resource creation method [calendar.resou
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -108,12 +155,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "name" for the method "calendar.resource.update" is missing"
+    "error_description": "The required parameter "name" for the method "calendar.resource.update" is not set"
 }
 ```
 {% include notitle [error handling](../../../_includes/error-info.md) %}
@@ -122,15 +169,15 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "id" for the method "calendar.resource.update" is missing | The required parameter `resourceId` was not provided ||
-|| Empty string | The required parameter "name" for the method "calendar.resource.update" is missing | The required parameter `name` was not provided ||
+|| Empty string | The required parameter "id" for the method "calendar.resource.update" is not set | The required parameter `resourceId` is missing ||
+|| Empty string | The required parameter "name" for the method "calendar.resource.update" is not set | The required parameter `name` is missing ||
 || Empty string | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
-|| Empty string | An error occurred while modifying the resource | Another error ||
+|| Empty string | An error occurred while updating the resource | Another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./calendar-resource-add.md)

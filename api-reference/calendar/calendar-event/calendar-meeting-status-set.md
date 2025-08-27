@@ -13,11 +13,11 @@ This method sets the participation status in an event for the current user.
 #|
 || **Name**
 `type` | **Description** ||
-|| **eventId***  
-[`integer`](../../data-types.md) | Identifier of the event.
+|| **eventId***
+[`integer`](../../data-types.md) | Event identifier.
 
-You can obtain the identifier using the [calendar.event.get](./calendar-event-get.md) or [calendar.event.get.nearest](./calendar-event-get-nearest.md) methods. ||
-|| **status***  
+You can obtain the identifier using the [calendar.event.get](./calendar-event-get.md) or [calendar.event.get.nearest](./calendar-event-get-nearest.md) methods ||
+|| **status***
 [`string`](../../data-types.md) | Participation status in the event. Possible values: 
 - `Y` — accepted
 - `N` — declined
@@ -53,6 +53,53 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.meeting.status.set',
+    		{
+    			eventId: 651,
+    			status: 'Y'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.meeting.status.set',
+                [
+                    'eventId' => 651,
+                    'status'  => 'Y',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting meeting status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.meeting.status.set',
         {
@@ -62,7 +109,7 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -108,7 +155,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Success of setting the status.
 
-Returns `true` if the status is set successfully. ||
+Returns `true` if the status is set successfully ||
 |#
 
 ## Error Handling
@@ -118,7 +165,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "status" for method "calendar.meeting.status.set" is not set."
+    "error_description": "The required parameter "status" for the method "calendar.meeting.status.set" is not set"
 }
 ```
 
@@ -128,9 +175,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "status" for method "calendar.meeting.status.set" is not set. | The required parameter `status` was not provided. ||
-|| Empty string | The required parameter "eventId" for method "calendar.meeting.status.set" is not set. | The required parameter `eventId` was not provided. ||
-|| Empty string | Invalid value for parameter "status" | The `status` parameter contains a value other than `Q`, `Y`, or `N`. ||
+|| Empty string | The required parameter "status" for the method "calendar.meeting.status.set" is not set | The required parameter `status` is not provided ||
+|| Empty string | The required parameter "eventId" for the method "calendar.meeting.status.set" is not set | The required parameter `eventId` is not provided ||
+|| Empty string | Invalid value for the parameter "status" | The value provided for the `status` parameter is different from `Q`, `Y`, or `N` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

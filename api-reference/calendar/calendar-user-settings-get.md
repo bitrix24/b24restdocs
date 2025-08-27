@@ -37,13 +37,57 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.user.settings.get',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('Result:', result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.user.settings.get',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting user calendar settings: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.user.settings.get',
         {}
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -62,7 +106,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -99,7 +143,7 @@ HTTP Status: **200**
                 }
             ]
         },
-        "timezoneName": "Europe/Riga",
+        "timezoneName": "Europe/Berlin",
         "timezoneOffsetUTC": 7200,
         "timezoneDefaultName": "",
         "work_time_start": "9.00",
@@ -124,7 +168,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../data-types.md) | Root element of the response ||
 || **view**
-[`string`](../data-types.md) | Default view for the calendar. Possible values:
+[`string`](../data-types.md) | Standard view for the calendar. Possible values:
 - `day` — day
 - `week` — week
 - `month` — month
@@ -167,8 +211,8 @@ Default value — `false` ||
 [`object`](../data-types.md) | Settings for preset calendars.
 
 The key of the settings object can be:
-- `user[id]` — type User Calendar with user identifier. For example, `user12` corresponds to the calendar of the user with identifier `12`
-- `group[id]` — type Group Calendar with group identifier. For example, `group36` corresponds to the calendar of the group with identifier `36`
+- `user[id]` — type User calendar with user identifier. For example, `user12` corresponds to the user calendar with identifier `12`
+- `group[id]` — type Group calendar with group identifier. For example, `group36` corresponds to the group calendar with identifier `36`
 
 The value of the object is the calendar identifier ||
 || **syncPeriodPast**
@@ -182,7 +226,7 @@ The value of the object is the calendar identifier ||
 || **timezoneOffsetUTC**
 [`integer`](../data-types.md) | Timezone offset relative to UTC in seconds ||
 || **timezoneDefaultName**
-[`string`](../data-types.md) | If the `timezoneName` parameter is not set, the timezone from the `timezoneOffsetUTC` parameter will be indicated here ||
+[`string`](../data-types.md) | If the `timezoneName` parameter is not set, the timezone from the `timezoneOffsetUTC` parameter will be specified here ||
 || **work_time_start**
 [`string`](../data-types.md) | Start time of the workday ||
 || **work_time_end**
@@ -206,7 +250,7 @@ The value of the object is the calendar identifier ||
 || **Name**
 `type` | **Description** ||
 || **type**
-[`string`](../data-types.md) | Time type of reminder. Possible values:
+[`string`](../data-types.md) | Time type of the reminder. Possible values:
 - `min` — minutes
 - `hour` — hours
 - `day` — days ||

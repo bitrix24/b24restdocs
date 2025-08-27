@@ -1,4 +1,4 @@
-# Get List of Calendars calendar.section.get
+# Get the list of calendars calendar.section.get
 
 > Scope: [`calendar`](../scopes/permissions.md)
 >
@@ -19,9 +19,9 @@ This method retrieves a list of calendars.
 - `group` — group calendar
 - `company_calendar` — company calendar 
 - `location` — meeting room calendar. Used for booking time in the meeting room calendar through a third-party application
-- other types, including custom ones ||
+- other types, including custom ||
 || **ownerId***
-[`integer`](../data-types.md) | Identifier of the calendar owner.
+[`integer`](../data-types.md) | Calendar owner identifier.
 
 For the `location` calendar type, the `ownerId` parameter must be set to `0` ||
 |#
@@ -55,6 +55,56 @@ For the `location` calendar type, the `ownerId` parameter must be set to `0` ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.section.get',
+    		{
+    			type: 'user',
+    			ownerId: 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.section.get',
+                [
+                    'type'    => 'user',
+                    'ownerId' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting calendar section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.section.get',
         {
@@ -64,7 +114,7 @@ For the `location` calendar type, the `ownerId` parameter must be set to `0` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -86,7 +136,7 @@ For the `location` calendar type, the `ownerId` parameter must be set to `0` ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -172,11 +222,11 @@ HTTP Status: **200**
 || **CAL_TYPE**
 [`string`](../data-types.md) | Calendar type ||
 || **OWNER_ID**
-[`string`](../data-types.md) | Identifier of the calendar owner. 
+[`string`](../data-types.md) | Calendar owner identifier. 
 
-For the user calendar type `user`, this field contains the user identifier. For the group calendar `group`, it contains the group identifier ||
+For the user calendar type `user`, the field contains the user identifier. For the group calendar `group`, it contains the group identifier ||
 || **CREATED_BY**
-[`string`](../data-types.md) | Identifier of the calendar creator ||
+[`string`](../data-types.md) | Calendar creator identifier ||
 || **DATE_CREATE**
 [`datetime`](../data-types.md) | Calendar creation date ||
 || **TIMESTAMP_X**
@@ -194,9 +244,9 @@ For the user calendar type `user`, this field contains the user identifier. For 
 
 The object key is the access permission identifier. You can get the name of the access permission using the [access.name](../common/system/access-name.md) method. Determine access permissions for the current user using the [user.access](../common/users/user-access.md) method.
 
-The object value contains a numeric identifier of the access permission. Access permission identifiers differ across different accounts. Currently, only the portal administrator in the on-premise version of Bitrix24 can retrieve all identifiers ||
+The object value contains the numerical identifier of the access permission. Access permission identifiers differ across different accounts. Currently, only the account administrator in the on-premise version of Bitrix24 can find out all identifiers ||
 || **IS_COLLAB**
-[`boolean`](../data-types.md) | Flag indicating whether the calendar belongs to a collaboration ||
+[`boolean`](../data-types.md) | Flag indicating whether the calendar belongs to collaboration ||
 || **PERM**
 [`object`](../data-types.md) | Object [access permissions](#perm) for the current user to the calendar ||
 |#
@@ -233,12 +283,12 @@ The object value contains a numeric identifier of the access permission. Access 
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "",
-    "error_description": "The required parameter 'type' for the method 'calendar.section.get' is not set"
+    "error_description": "The required parameter "type" for the method "calendar.section.get" is not set"
 }
 ```
 
@@ -248,8 +298,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter 'type' for the method 'calendar.section.get' is not set | The required parameter `type` was not provided ||
-|| Empty string | The required parameter 'ownerId' for the method 'calendar.section.get' is not set | The required parameter `ownerId` was not provided and the `type` parameter is not equal to `user` ||
+|| Empty string | The required parameter "type" for the method "calendar.section.get" is not set | The required parameter `type` was not provided ||
+|| Empty string | The required parameter "ownerId" for the method "calendar.section.get" is not set | The required parameter `ownerId` was not provided and the `type` parameter is not equal to `user` ||
 || Empty string | Access denied | Access to the method is denied for external users ||
 |#
 

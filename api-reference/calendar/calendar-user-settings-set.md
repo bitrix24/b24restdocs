@@ -4,17 +4,17 @@
 >
 > Who can execute the method: any user
 
-This method sets the user calendar settings for the current user.
+This method sets user calendar settings for the current user.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **settings***
-[`object`](../data-types.md) | An object containing the values of user [calendar settings](#settings) ||
+[`object`](../data-types.md) | An object with values for user [calendar settings](#settings) ||
 |#
 
 ### Parameter settings {#settings}
@@ -93,7 +93,7 @@ The value of the object is the calendar identifier ||
 || **Name**
 `type` | **Description** ||
 || **type**
-[`string`](../data-types.md) | Time type of the reminder. Possible values:
+[`string`](../data-types.md) | Time type of reminder. Possible values:
 - `min` — minutes
 - `hour` — hours
 - `day` — days ||
@@ -104,7 +104,7 @@ The value of the object is the calendar identifier ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -129,6 +129,124 @@ The value of the object is the calendar identifier ||
     ```
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.user.settings.set',
+    		{
+    			settings: {
+    				view: 'month',
+    				meetSection: '4',
+    				crmSection: '4',
+    				showDeclined: true,
+    				denyBusyInvitation: false,
+    				collapseOffHours: 'N',
+    				showWeekNumbers: 'N',
+    				showTasks: 'Y',
+    				syncTasks: 'N',
+    				showCompletedTasks: 'N',
+    				lastUsedSection: 'false',
+    				sendFromEmail: '',
+    				defaultSections: {
+    					user1: '4',
+    					group6: '49'
+    				},
+    				syncPeriodPast: '3',
+    				syncPeriodFuture: '12',
+    				defaultReminders: {
+    					fullDay: [
+    						{
+    							type: 'min',
+    							count: 15
+    						}
+    					],
+    					withTime: [
+    						{
+    							type: 'min',
+    							count: 50
+    						}
+    					]
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('Result:', result);
+    	// Your required data processing logic
+    	processResult(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.user.settings.set',
+                [
+                    'settings' => [
+                        'view'              => 'month',
+                        'meetSection'       => '4',
+                        'crmSection'        => '4',
+                        'showDeclined'      => true,
+                        'denyBusyInvitation' => false,
+                        'collapseOffHours'  => 'N',
+                        'showWeekNumbers'   => 'N',
+                        'showTasks'         => 'Y',
+                        'syncTasks'         => 'N',
+                        'showCompletedTasks' => 'N',
+                        'lastUsedSection'   => 'false',
+                        'sendFromEmail'     => '',
+                        'defaultSections'   => [
+                            'user1'  => '4',
+                            'group6' => '49'
+                        ],
+                        'syncPeriodPast'    => '3',
+                        'syncPeriodFuture'  => '12',
+                        'defaultReminders'  => [
+                            'fullDay'  => [
+                                [
+                                    'type'  => 'min',
+                                    'count' => 15
+                                ]
+                            ],
+                            'withTime' => [
+                                [
+                                    'type'  => 'min',
+                                    'count' => 50
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting user calendar settings: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -172,7 +290,7 @@ The value of the object is the calendar identifier ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -247,7 +365,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Returns `true` if the execution is successful ||
+[`boolean`](../data-types.md) | Returns `true` if the execution was successful ||
 |#
 
 ## Error Handling
@@ -257,7 +375,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter 'settings' for the method 'calendar.user.settings.set' is not set"
+    "error_description": "The required parameter "settings" for the method "calendar.user.settings.set" is not set"
 }
 ```
 {% include notitle [error handling](../../_includes/error-info.md) %}
@@ -266,7 +384,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter 'settings' for the method 'calendar.user.settings.set' is not set | The required parameter `settings` is not provided ||
+|| Empty string | The required parameter "settings" for the method "calendar.user.settings.set" is not set | The required parameter `settings` was not provided ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

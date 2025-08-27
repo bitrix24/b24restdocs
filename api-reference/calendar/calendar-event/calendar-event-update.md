@@ -23,7 +23,7 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 - `group` — group calendar
 - `company_calendar` — company calendar  ||
 || **ownerId***
-[`integer`](../../data-types.md) | Calendar owner identifier. 
+[`integer`](../../data-types.md) | Identifier of the calendar owner. 
 
 For the company calendar, the `ownerId` parameter is set to `0`. ||
 || **from**
@@ -47,7 +47,7 @@ You can specify the date without time. To do this, pass the value `Y` in the `sk
 - `Y` — use only the date
 - `N` — use date and time
 
-Date format follows the ISO-8601 standard. ||
+Date format according to ISO-8601 standard. ||
 || **timezone_from**
 [`string`](../../data-types.md) | Timezone of the event's start date and time. Default is the current user's timezone.
 
@@ -83,8 +83,8 @@ The `#` symbol in the color must be passed in unicode format — `%23`. ||
 - `N` — not private. ||
 || **recurrence_mode**
  [`string`](../../data-types.md) | Parameter for partial editing of a recurring event. Possible values:
- - `this` — changes apply only to the current event. `current_date_from` must be specified.
- - `next` — changes apply to the current and all subsequent events. `current_date_from` must be specified.
+ - `this` — changes apply only to the current event. `current_date_from` must be specified. 
+ - `next` — changes apply to the current and all subsequent events. `current_date_from` must be specified. 
  - `all` — changes apply to all events in the recurrence chain. ||
 || **current_date_from**
 [`date`](../../data-types.md) | Date of the current event for partial editing of a recurring event.
@@ -98,7 +98,7 @@ Required only for `recurrence_mode` with values `this` or `next`. ||
 - `Y` — meeting with participants
 - `N` — meeting without participants
 
-For a meeting with participants, you must specify the list of participants `attendees` and the event organizer `host`. Without filling in these fields, the event will not be created. ||
+For a meeting with participants, you must specify the list of participants in `attendees` and the event organizer in `host`. Without filling in these fields, the event will not be created. ||
 || **location**
 [`string`](../../data-types.md) | Location. ||
 || **remind**
@@ -110,7 +110,7 @@ For a meeting with participants, you must specify the list of participants `atte
 || **meeting**
 [`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting). ||
 || **crm_fields**
- [`array`](../../data-types.md) | Array of identifiers of CRM objects to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
+ [`array`](../../data-types.md) | Array of CRM object identifiers to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
  - `CO_` — company
  - `C_` — contact 
  - `L_` — lead
@@ -156,7 +156,7 @@ For a meeting with participants, you must specify the list of participants `atte
 - `hour` – hours
 - `day` — days. ||
 || **count**
-[`integer`](../../data-types.md) | Numerical value of the time interval. ||
+[`integer`](../../data-types.md) | Numeric value of the time interval. ||
 |#
 
 ### meeting Parameter {#meeting}
@@ -165,11 +165,11 @@ For a meeting with participants, you must specify the list of participants `atte
 || **Name**
 `type` | **Description** ||
 || **notify**
-[`boolean`](../../data-types.md) | Flag for notifying about confirmation or refusal of participants. ||
+[`boolean`](../../data-types.md) | Flag for notification of confirmation or refusal by participants. ||
 || **reinvite**
 [`boolean`](../../data-types.md) | Flag for requesting re-confirmation of participation when editing the event. ||
 || **allow_invite**
-[`boolean`](../../data-types.md) | Flag for allowing participants to invite others to the event. ||
+[`boolean`](../../data-types.md) | Flag allowing participants to invite others to the event. ||
 || **hide_guests**
 [`boolean`](../../data-types.md) | Flag for hiding the list of participants. ||
 |#
@@ -201,6 +201,132 @@ For a meeting with participants, you must specify the list of participants `atte
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.event.update',
+    		{
+    			id: 699,
+    			type: 'user',
+    			ownerId: 2,
+    			name: 'Changed Event Name',
+    			description: 'New description for event',
+    			from: '2024-06-17',
+    			to: '2024-06-17',
+    			skip_time: 'Y',
+    			section: 5,
+    			color: '#9cbe1c',
+    			text_color: '#283033',
+    			accessibility: 'free',
+    			importance: 'normal',
+    			is_meeting: 'Y',
+    			private_event: 'Y',
+    			recurrence_mode: 'next',
+    			current_date_from: '2024-12-04',
+    			remind: [
+    				{
+    					type: 'min',
+    					count: 10
+    				}
+    			],
+    			location: 'London',
+    			attendees: [1, 2, 3],
+    			host: 2,
+    			meeting: {
+    				notify: true,
+    				reinvite: false,
+    				allow_invite: false,
+    				hide_guests: false,
+    			},
+    			rrule: {
+    				FREQ: 'WEEKLY',
+    				BYDAY: ['MO', 'WE'],
+    				COUNT: 10,
+    				INTERVAL: 1,
+    			},
+    			crm_fields: ['C_5', 'L_11']
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('Updated event with ID:', result);
+    	// Your required data processing logic
+    	processResult(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.event.update',
+                [
+                    'id'              => 699,
+                    'type'            => 'user',
+                    'ownerId'         => 2,
+                    'name'            => 'Changed Event Name',
+                    'description'     => 'New description for event',
+                    'from'            => '2024-06-17',
+                    'to'              => '2024-06-17',
+                    'skip_time'       => 'Y',
+                    'section'         => 5,
+                    'color'           => '#9cbe1c',
+                    'text_color'      => '#283033',
+                    'accessibility'   => 'free',
+                    'importance'      => 'normal',
+                    'is_meeting'      => 'Y',
+                    'private_event'   => 'Y',
+                    'recurrence_mode' => 'next',
+                    'current_date_from' => '2024-12-04',
+                    'remind'          => [
+                        [
+                            'type'  => 'min',
+                            'count' => 10
+                        ]
+                    ],
+                    'location'        => 'London',
+                    'attendees'       => [1, 2, 3],
+                    'host'            => 2,
+                    'meeting'         => [
+                        'notify'      => true,
+                        'reinvite'    => false,
+                        'allow_invite' => false,
+                        'hide_guests' => false,
+                    ],
+                    'rrule'           => [
+                        'FREQ'     => 'WEEKLY',
+                        'BYDAY'    => ['MO', 'WE'],
+                        'COUNT'    => 10,
+                        'INTERVAL' => 1,
+                    ],
+                    'crm_fields'      => ['C_5', 'L_11']
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating calendar event: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -249,7 +375,7 @@ For a meeting with participants, you must specify the list of participants `atte
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -308,7 +434,7 @@ For a meeting with participants, you must specify the list of participants `atte
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 {% list tabs %}
 
@@ -334,7 +460,7 @@ HTTP status: **200**
     {
         "result": {
             "originalDate": "12/24/2024 05:59:00 pm",
-            "originalDavXmlId": "20241205T124346Z-e3ccab8aebc16d0c5cccecb63fef2bc3@b24evo.lan",
+            "originalDavXmlId": "20241205T124346Z-e3ccab8aebc16d0c5cccecb63fef2bc3@b24evo.com",
             "instanceTz": "Europe/Riga",
             "recEventId": 1261,
             "id": 1260
@@ -377,7 +503,7 @@ HTTP status: **200**
     || **originalDavXmlId**
     [`string`](../../data-types.md) | Event identifier for synchronization. ||
     || **instanceTz**
-    [`string`](../../data-types.md) | Event timezone. ||
+    [`string`](../../data-types.md) | Timezone of the event. ||
     || **recEventId**
     [`integer`](../../data-types.md) | Identifier of the new series of the recurring event. ||
     || **id**
@@ -388,7 +514,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -406,13 +532,13 @@ HTTP status: **400**
 || Empty string | The required parameter "id" for the method "calendar.event.update" is not set. | The required parameter `id` is not provided. ||
 || Empty string | The required parameter "ownerId" for the method "calendar.event.update" is not set. | The required parameter `ownerId` is not provided. ||
 || Empty string | The required parameter "type" for the method "calendar.event.update" is not set. | The required parameter `type` is not provided. ||
-|| Empty string | Invalid value for the parameter "name". | Incorrect data format in the `name` field. ||
-|| Empty string | Invalid value for the parameter "description". | Incorrect data format in the `description` field. ||
+|| Empty string | Invalid value for the "name" parameter. | Incorrect data format in the `name` field. ||
+|| Empty string | Invalid value for the "description" parameter. | Incorrect data format in the `description` field. ||
 || Empty string | Access denied. | Creation of events in the specified calendar is prohibited. ||
-|| Empty string | You specified an invalid calendar section ID or the user does not have access to it. | An identifier of an inaccessible or non-existent calendar is provided. ||
-|| Empty string | An invalid type of editing for the recurring event is specified. | An incorrect value for the `recurrence_mode` field is provided. ||
-|| Empty string | The list of CRM event links must be an array. | Incorrect data format in the `crm_fields` field. ||
-|| Empty string | An error occurred while modifying the event. | Another error occurred. ||
+|| Empty string | You have specified an invalid calendar section ID or the user does not have access to it. | An identifier of an inaccessible or non-existent calendar is provided. ||
+|| Empty string | An invalid editing type for the recurring event is specified. | An incorrect value for the `recurrence_mode` field is provided. ||
+|| Empty string | The event's CRM link list must be an array. | Incorrect data format in the `crm_fields` field. ||
+|| Empty string | An error occurred while changing the event. | Another error. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

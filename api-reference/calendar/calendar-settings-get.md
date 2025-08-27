@@ -1,16 +1,16 @@
-# Get Basic Calendar Settings calendar.settings.get
+# Get main calendar settings calendar.settings.get
 
 > Scope: [`calendar`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-This method retrieves the basic settings of the calendar. Only an account administrator can modify the basic settings.
+This method retrieves the main calendar settings. Only an administrator of the account can modify the main settings.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Examples Note](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,13 +37,56 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.settings.get',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.settings.get',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting calendar settings: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.settings.get',
         {}
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -129,25 +172,25 @@ HTTP status: **200**
 || **sync_by_push**
 [`boolean`](../data-types.md) | Flag for automatic calendar synchronization via subscription. Push events from Google/Office365 ||
 || **user_show_login**
-[`boolean`](../data-types.md) | Flag for displaying the user's login ||
+[`boolean`](../data-types.md) | Flag for displaying user login ||
 || **path_to_user**
-[`string`](../data-types.md) | Template link to the user profile ||
+[`string`](../data-types.md) | Template link to user profile ||
 || **path_to_user_calendar**
-[`string`](../data-types.md) | Template link to view the user's calendar ||
+[`string`](../data-types.md) | Template link to view user calendar ||
 || **path_to_group**
-[`string`](../data-types.md) | Template link to view the workgroup ||
+[`string`](../data-types.md) | Template link to view workgroup ||
 || **path_to_group_calendar**
-[`string`](../data-types.md) | Template link to view the group's calendar ||
+[`string`](../data-types.md) | Template link to view group calendar ||
 || **path_to_vr**
-[`string`](../data-types.md) | Template link to the video conference room ||
+[`string`](../data-types.md) | Template link to video conference room ||
 || **path_to_rm**
-[`string`](../data-types.md) | Template link to the meeting room ||
+[`string`](../data-types.md) | Template link to meeting room ||
 || **rm_iblock_type**
-[`string`](../data-types.md) | Type of the infoblock for booking meeting and video conference rooms ||
+[`string`](../data-types.md) | Type of infoblock for booking meeting and video conference rooms ||
 || **rm_iblock_id**
 [`string`](../data-types.md) | Identifier of the infoblock for booking meeting rooms ||
 || **dep_manager_sub**
-[`boolean`](../data-types.md) | Flag allowing managers to view the calendars of their subordinates ||
+[`boolean`](../data-types.md) | Flag allowing managers to view subordinates' calendars ||
 || **denied_superpose_types**
 [`array`](../data-types.md) | List of calendar types that cannot be added to favorites ||
 || **pathes_for_sites**
@@ -161,7 +204,7 @@ HTTP status: **200**
 || **path_to_type_location**
 [`string`](../data-types.md) | Template link to view meeting room bookings ||
 || **path_to_type_open_event**
-[`string`](../data-types.md) | Template link to view the open events calendar ||
+[`string`](../data-types.md) | Template link to view open event calendar ||
 |#
 
 ## Error Handling

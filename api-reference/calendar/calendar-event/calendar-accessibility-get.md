@@ -54,6 +54,59 @@ For example, `2024-12-20`  ||
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.accessibility.get',
+    		{
+    			from: '2024-06-20',
+    			to: '2024-12-20',
+    			users: [1, 2, 34]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	// Your logic for processing data
+    	processResult(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.accessibility.get',
+                [
+                    'from'  => '2024-06-20',
+                    'to'    => '2024-12-20',
+                    'users' => [1, 2, 34]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting calendar accessibility: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.accessibility.get',
         {
@@ -64,7 +117,7 @@ For example, `2024-12-20`  ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -168,9 +221,9 @@ The value is an array of objects, each describing an [event](#event) in which th
 - `Y` — all day
 - `N` — not all day ||
 || **TZ_FROM**
-[`integer`](../../data-types.md) | Timezone of the event's start date ||
+[`integer`](../../data-types.md) | Time zone of the event start date ||
 || **TZ_TO**
-[`integer`](../../data-types.md) | Timezone of the event's end date ||
+[`integer`](../../data-types.md) | Time zone of the event end date ||
 || **ACCESSIBILITY**
 [`integer`](../../data-types.md) | Availability of event participants. Possible values:
 
@@ -192,7 +245,8 @@ An event can be created through:
 - `#shared#` — calendar slots
 - `#shared_crm#` — CRM slots
 - `#collab#` — collaboration
-- `#shared_collab#` — collaboration slots ||
+- `#shared_collab#` — collaboration slots
+||
 |#
 
 ## Error Handling
@@ -202,7 +256,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "from" for the method "calendar.accessibility.get" is not set"
+    "error_description": "The required parameter "from" for the method "calendar.accessibility.get" is not set."
 }
 ```
 
@@ -212,9 +266,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "from" for the method "calendar.accessibility.get" is not set | The required parameter `from` is missing ||
-|| Empty string | The required parameter "to" for the method "calendar.accessibility.get" is not set | The required parameter `to` is missing ||
-|| Empty string | The required parameter "users" for the method "calendar.accessibility.get" is not set | The required parameter `users` is missing ||
+|| Empty string | The required parameter "from" for the method "calendar.accessibility.get" is not set. | The required parameter `from` is missing ||
+|| Empty string | The required parameter "to" for the method "calendar.accessibility.get" is not set. | The required parameter `to` is missing ||
+|| Empty string | The required parameter "users" for the method "calendar.accessibility.get" is not set. | The required parameter `users` is missing ||
 || Empty string | Access denied | Access to the method is prohibited for external users ||
 |#
 

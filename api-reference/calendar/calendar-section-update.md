@@ -22,15 +22,15 @@ This method updates the calendar.
 || **id***
 [`string`](../data-types.md) | Identifier of the calendar ||
 || **name**
-[`string`](../data-types.md) | Name of the calendar ||
+[`string`](../data-types.md) | Calendar name ||
 || **description**
-[`string`](../data-types.md) | Description of the calendar ||
+[`string`](../data-types.md) | Calendar description ||
 || **color**
-[`string`](../data-types.md) | Color of the calendar ||
+[`string`](../data-types.md) | Calendar color ||
 || **text_color**
 [`string`](../data-types.md) | Text color in the calendar ||
 || **export**
-[`object`](../data-types.md) | Object of [calendar export parameters](#export)
+[`object`](../data-types.md) | Object [export parameters for the calendar](#export)
 ||
 |#
 
@@ -78,6 +78,78 @@ This method updates the calendar.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.section.update',
+    		{
+    			id: 325,
+    			type: 'user',
+    			ownerId: 2,
+    			name: 'Changed Section Name',
+    			description: 'New description for section',
+    			color: '#9cbeAA',
+    			text_color: '#283099',
+    			export: [
+    				{
+    					ALLOW: false
+    				}
+    			]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('Updated calendar section with ID:', result);
+    	// Your logic for processing data
+    	processResult(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.section.update',
+                [
+                    'id'          => 325,
+                    'type'        => 'user',
+                    'ownerId'     => 2,
+                    'name'        => 'Changed Section Name',
+                    'description' => 'New description for section',
+                    'color'       => '#9cbeAA',
+                    'text_color'  => '#283099',
+                    'export'      => [
+                        [
+                            'ALLOW' => false
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating calendar section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.section.update',
         {
@@ -97,7 +169,7 @@ This method updates the calendar.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -129,7 +201,7 @@ This method updates the calendar.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -156,12 +228,12 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
     "error": "",
-    "error_description": "The required parameter "type" for the method "calendar.section.update" is missing"
+    "error_description": "The required parameter "type" for the method "calendar.section.update" is not set"
 }
 ```
 
@@ -171,12 +243,12 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter "type" for the method "calendar.section.update" is missing | The required parameter `type` was not provided ||
-|| Empty string | The required parameter "ownerId" for the method "calendar.section.update" is missing | The required parameter `ownerId` was not provided and the `type` parameter is not equal to 'user' ||
-|| Empty string | Section id is missing | The required parameter `id` was not provided ||
+|| Empty string | The required parameter "type" for the method "calendar.section.update" is not set | The required parameter `type` is missing ||
+|| Empty string | The required parameter "ownerId" for the method "calendar.section.update" is not set | The required parameter `ownerId` is missing and the `type` parameter is not equal to 'user' ||
+|| Empty string | Section ID is not set | The required parameter `id` is missing ||
 || Empty string | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
 || Empty string | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
-|| Empty string | Access denied | The calendar with the specified `id` does not exist or there are no permissions to edit the calendar ||
+|| Empty string | Access denied | The calendar with the specified `id` does not exist or there are no rights to edit the calendar ||
 || Empty string | An error occurred while updating the section | Another error ||
 |#
 

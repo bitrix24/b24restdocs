@@ -48,6 +48,51 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.event.delete',
+    		{
+    			id: 698
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.event.delete',
+                [
+                    'id' => 698
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting calendar event: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.event.delete',
         {
@@ -56,7 +101,7 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -117,7 +162,7 @@ HTTP status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || Empty string | Event id not specified | Required parameter `id` not provided ||
-|| Empty string | An error occurred while deleting the event | The user does not have access permission to the calendar, the calendar does not exist, or another error occurred ||
+|| Empty string | An error occurred while deleting the event | The user does not have access permission to the calendar, the calendar does not exist, or another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -1,4 +1,4 @@
-# Add New Resource calendar.resource.add
+# Add a new resource calendar.resource.add
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
@@ -46,6 +46,52 @@ This method adds a new resource.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'calendar.resource.add',
+    		{
+    			name: 'My resource title'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'calendar.resource.add',
+                [
+                    'name' => 'My resource title'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding resource: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'calendar.resource.add',
         {
@@ -54,7 +100,7 @@ This method adds a new resource.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -75,7 +121,7 @@ This method adds a new resource.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -102,12 +148,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "",
-    "error_description": "The required parameter 'name' for the method 'calendar.resource.add' is not set"
+    "error_description": "The required parameter "name" for the method "calendar.resource.add" is not set"
 }
 ```
 
@@ -117,7 +163,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | The required parameter 'name' for the method 'calendar.resource.add' is not set | The required parameter `name` was not provided ||
+|| Empty string | The required parameter "name" for the method "calendar.resource.add" is not set | The required parameter `name` was not provided ||
 || Empty string | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
 || Empty string | An error occurred while creating the resource | Another error ||
 |#
