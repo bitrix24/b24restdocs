@@ -2,11 +2,11 @@
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator with access to CRM in the application context
+> Who can execute the method: administrator with access to CRM in the application context 
 
 This method adds a trigger.
 
-The method can only be executed in the application context, as the added triggers are tied to this application.
+The method can only be executed in the application context, as the added triggers are tied to this application. 
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ The method can only be executed in the application context, as the added trigger
 || **CODE***
 [`string`](../../../data-types.md) | Internal unique (within the application) identifier of the trigger. Must match the pattern `[a-z0-9\.\-_]`.
 
-If an already existing trigger identifier `CODE` is provided, the trigger name `NAME` will be updated. ||
+If an existing trigger identifier `CODE` is provided, the trigger name `NAME` will be updated. ||
 || **NAME***
 [`string`](../../../data-types.md) | Name of the trigger ||
 |#
@@ -52,6 +52,58 @@ If an already existing trigger identifier `CODE` is provided, the trigger name `
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.automation.trigger.add',
+    		{
+    			"CODE": 'c5u4m',
+    			"NAME": 'trigger name'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.automation.trigger.add',
+                [
+                    'CODE' => 'c5u4m',
+                    'NAME' => 'trigger name',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding automation trigger: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.automation.trigger.add',
         {
@@ -68,7 +120,7 @@ If an already existing trigger identifier `CODE` is provided, the trigger name `
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -90,7 +142,7 @@ If an already existing trigger identifier `CODE` is provided, the trigger name `
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -119,7 +171,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -136,10 +188,10 @@ HTTP Status: **400**
 || **Code** | **Error Message** | **Description** ||
 || Empty string | Access denied. | User did not pass the preliminary access rights check for CRM ||
 || ACCESS_DENIED | Access denied! Admin permissions required | Admin rights check failed ||
-|| ACCESS_DENIED | Access denied! Application context required | Method called outside the application context ||
-|| Empty string | Empty trigger code! | Empty `CODE` parameter ||
-|| Empty string | Wrong trigger code! | `CODE` parameter does not match the pattern `[a-z0-9\.\-_]` ||
-|| Empty string | Empty trigger name! | Empty `NAME` parameter ||
+|| ACCESS_DENIED | Access denied! Application context required | Method called outside of application context ||
+|| Empty string | Empty trigger code! | Empty parameter `CODE` ||
+|| Empty string | Wrong trigger code! | Parameter `CODE` does not match the pattern `[a-z0-9\.\-_]` ||
+|| Empty string | Empty trigger name! | Empty parameter `NAME` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -2,19 +2,19 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to modify the target object `target`
+> Who can execute the method: a user with access permission to modify the target object `target`
 
-Bitrix24 allows users to create a special custom trigger "Track Incoming Webhook". The user is provided with a ready-made URL in the format 
+Bitrix24 allows users to create a special custom trigger "Track Incoming Webhook." The user is provided with a ready-made URL of the form 
 
 ```bash
 https://mydomain.bitrix24.com/rest/1/not_var{{PASSWORD}}/crm.automation.trigger/?target=DEAL_not_var{{ID}}&code=nwly5
 ```
 
-A request to this URL from an external source will trigger the automation rule and transition the CRM entity to another stage in the Sales Funnel.
+A call to this URL from an external source will trigger the automation and transition the CRM entity to another stage in the Sales Funnel.
 
-As you can see from the format of this URL, a [local incoming webhook](../../../local-integrations/local-webhooks.md) is effectively created within Bitrix24, which calls the method `crm.automation.trigger` specifying the particular CRM object and the unique symbolic code of the trigger that was created by Bitrix24 itself (in the example above, this is `nwly5`).
+As you can see from the format of this URL, a [local incoming webhook](../../../local-integrations/local-webhooks.md) is effectively created within Bitrix24, which calls the `crm.automation.trigger` method, specifying a specific CRM object and the unique symbolic code of the trigger that was created by Bitrix24 itself (in the example above, this is `nwly5`).
 
-You can use the method not only through the incoming webhook but also in the context of [local](../../../local-integrations/local-apps.md) and [mass-market](../../../market/index.md) applications. However, to invoke your own triggers created by your application, you need to use the method [crm.automation.trigger.execute](./triggers/crm-automation-trigger-execute.md).
+You can use the method not only via the incoming webhook but also in the context of [local](../../../local-integrations/local-apps.md) and [mass-market](../../../market/index.md) applications. However, to invoke your own triggers created by your application, you need to use the method [crm.automation.trigger.execute](./triggers/crm-automation-trigger-execute.md)
 
 ## Method Parameters
 
@@ -32,9 +32,9 @@ You can use the method not only through the incoming webhook but also in the con
 
 {% note info %}
 
-In rare cases, multiple triggers may be found for the specified `target` object. This occurs if:
+In rare cases, multiple triggers may be detected for the specified `target` object. This happens if:
 
-- the `code` is not passed in the request and there are old triggers on the account that do not have a `code`
+- `code` is not passed in the request and there are old triggers on the account that do not have a `code`
 - a `code` is passed that turns out to be the same for multiple triggers
 In this case, the first trigger that sets an earlier status for the CRM object will be activated.
 
@@ -71,6 +71,58 @@ It is also worth noting that triggers have "Conditions" and the option "Allow tr
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.automation.trigger",
+    		{
+    			target: 'DEAL_57',
+    			code: 'c5u4m',
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.automation.trigger',
+                [
+                    'target' => 'DEAL_57',
+                    'code'   => 'c5u4m',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error triggering automation: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.automation.trigger",
         {
@@ -87,7 +139,7 @@ It is also worth noting that triggers have "Conditions" and the option "Allow tr
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -131,7 +183,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of activating the trigger ||
+[`boolean`](../../data-types.md) | Result of trigger activation ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -156,8 +208,8 @@ HTTP Status: **400**
 || Empty string | Target is not set. | The required parameter `target` was not provided ||
 || Empty string | Incorrect target format. | The `target` parameter was not provided in the required format (Required format `TYPENAME_ID`) ||
 || Empty string | Target is not found. | An incorrect `TYPENAME` was provided in the `target` parameter ||
-|| `ACCESS_DENIED` | Access denied! There are no permissions to update the entity. | The user did not pass the permission check to trigger the automation rule.  ||
-|| Empty string | Access denied. | The user did not pass the preliminary access permission check for CRM ||
+|| `ACCESS_DENIED` | Access denied! There are no permissions to update the entity. | The user did not pass the permission check to trigger the automation. ||
+|| Empty string | Access denied. | The user did not pass the preliminary permission check for CRM access ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

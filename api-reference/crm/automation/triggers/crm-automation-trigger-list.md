@@ -1,4 +1,4 @@
-# Get a List of Triggers crm.automation.trigger.list
+# Get the list of triggers crm.automation.trigger.list
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -6,7 +6,7 @@
 
 This method retrieves a list of applications and triggers.
 
-The method can only be executed in the context of an application.
+The method can only be executed in the application context.
 
 No parameters.
 
@@ -39,6 +39,72 @@ No parameters.
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.automation.trigger.list',
+        {},
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in chunks and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.automation.trigger.list', {}, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('crm.automation.trigger.list', {}, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.automation.trigger.list',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching automation triggers: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.automation.trigger.list',
         {},
@@ -52,7 +118,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -71,7 +137,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -85,13 +151,13 @@ HTTP Status: **200**
             "CODE": "trigger2"
         }
     ],
-    "time":{
-        "start":1718952595.479501,
-        "finish":1718952595.594397,
-        "duration":0.11489605903625488,
-        "processing":0.007472038269042969,
-        "date_start":"2024-06-21T06:49:55+00:00",
-        "date_finish":"2024-06-21T06:49:55+00:00"
+    "time": {
+        "start": 1718952595.479501,
+        "finish": 1718952595.594397,
+        "duration": 0.11489605903625488,
+        "processing": 0.007472038269042969,
+        "date_start": "2024-06-21T06:49:55+00:00",
+        "date_finish": "2024-06-21T06:49:55+00:00"
     }
 }
 ```
@@ -109,12 +175,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":"ACCESS_DENIED",
-    "error_description":"Access denied! Admin permissions required"
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied! Admin permissions required"
 }
 ```
 

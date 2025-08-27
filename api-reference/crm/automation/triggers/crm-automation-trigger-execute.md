@@ -1,12 +1,12 @@
-# Execute the crm.automation.trigger.execute Method
+# Execute the Trigger crm.automation.trigger.execute
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator with access to CRM in the application context
 
-This method triggers the execution of a trigger.
+This method initiates the execution of a trigger.
 
-The method can only be executed within the application context.
+The method can only be called in the application context.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ The method can only be executed within the application context.
 || **Name**
 `type` | **Description** ||
 || **CODE***
-[`string`](../../../data-types.md) | Internal unique identifier (within the application) of the trigger. Must match the pattern `[a-z0-9\.\-_]` ||
+[`string`](../../../data-types.md) | Internal unique (within the application) identifier of the trigger. Must match the pattern `[a-z0-9\.\-_]` ||
 || **OWNER_TYPE_ID***
 [`integer`](../../../data-types.md) | Type of the CRM object according to the [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) reference (For example, `1` — lead)
 
@@ -55,6 +55,67 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.automation.trigger.execute',
+    		{
+    			CODE: 'c5u4m',
+    			OWNER_TYPE_ID: 2,
+    			OWNER_ID: 6
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.automation.trigger.execute',
+                [
+                    'CODE'         => 'c5u4m',
+                    'OWNER_TYPE_ID' => 2,
+                    'OWNER_ID'     => 6,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error executing automation trigger: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.automation.trigger.execute',
         {
@@ -72,7 +133,7 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -95,7 +156,7 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -117,14 +178,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns true if the trigger was successfully executed ||
+[`boolean`](../../../data-types.md) | Returns true if the trigger was successfully initiated ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -139,19 +200,19 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied. | User did not pass the preliminary access permission check for CRM ||
-|| ACCESS_DENIED | Access denied! Admin permissions required | Admin permission check failed ||
+|| Empty string | Access denied. | User did not pass the preliminary access rights check for CRM ||
+|| ACCESS_DENIED | Access denied! Admin permissions required | Admin rights check failed ||
 || ACCESS_DENIED | Access denied! Application context required | Method called outside of application context ||
 || Empty string | Empty trigger code! | Empty `CODE` parameter ||
 || Empty string | Wrong trigger code! | `CODE` parameter does not match the pattern `[a-z0-9\.\-_]` ||
 || Empty string | Trigger with code {$code} is not registered. | Application trigger not found ||
 || Empty string | Incorrect parameter OWNER_TYPE_ID. | Provided `owner_type_id` is not defined in CRM ||
-|| Empty string | Incorrect parameter OWNER_ID. | Provided `owner_id` value is incorrect (value is not positive) ||
+|| Empty string | Incorrect parameter OWNER_ID. | Provided `owner_id` parameter value is incorrect (value is not positive) ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./crm-automation-trigger-add.md)
 - [{#T}](./crm-automation-trigger-list.md)

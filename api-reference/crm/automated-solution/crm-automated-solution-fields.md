@@ -1,10 +1,10 @@
-# Get Fields of the Digital Workplace crm.automatedsolution.fields
+# Get fields of the digital workplace crm.automatedsolution.fields
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-This method returns information about the fields of the digital workplace settings.
+The method returns information about the fields of the digital workplace settings.
 
 No parameters.
 
@@ -35,6 +35,53 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.automatedsolution.fields",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.automatedsolution.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling automated solution fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.automatedsolution.fields",
         {},
@@ -48,7 +95,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -67,7 +114,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -108,8 +155,8 @@ HTTP Status: **200**
         "finish": 1715848631.898371,
         "duration": 0.33027005195617676,
         "processing": 0.0055119991302490234,
-        "date_start": "2024-05-16T11:37:11+03:00",
-        "date_finish": "2024-05-16T11:37:11+03:00",
+        "date_start": "2024-05-16T11:37:11+02:00",
+        "date_finish": "2024-05-16T11:37:11+02:00",
         "operating_reset_at": 1715849231,
         "operating": 0
     }
@@ -122,9 +169,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` represents the fields of the digital workplace, and `value` is an object of type `rest_field_description`. ||
+[`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` — fields of the digital workplace, and `value` — an object of type `rest_field_description`. ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

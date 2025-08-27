@@ -1,6 +1,6 @@
 # Typical use-cases and scenarios for REST API in CRM and tutorials
 
-How can you quickly connect a form on your website to the CRM? How can you automatically create deals with product items? How can you pass information for Sales Intelligence to Bitrix when creating a lead from your source?
+How can you quickly link a form on your website to the CRM? How can you automatically create deals with product items? How can you pass information for Sales Intelligence to Bitrix when creating a lead from your source?
 
 In this section, you will find ready-made examples for solving typical tasks related to CRM.
 
@@ -32,7 +32,7 @@ In this section, you will find ready-made examples for solving typical tasks rel
 ## How to find clients by phone; how to get all activities of a client and other examples of working with lists of entities
 
 - [{#T}](../../tutorials/crm/how-to-get-lists/search-by-phone-and-email.md)
-- [{#T}](../../tutorials/crm/how-to-get-lists/get-activity-list-by-contact.md)
+- [{#T}](../../tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)
 - [{#T}](../../tutorials/crm/how-to-get-lists/lead-statuses-with-semantics.md)
 - [{#T}](../../tutorials/crm/how-to-get-lists/quote-statuses-with-semantics.md)
 - [{#T}](../../tutorials/crm/how-to-get-lists/how-to-get-deal-funnels.md)

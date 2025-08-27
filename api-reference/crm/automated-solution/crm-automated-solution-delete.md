@@ -6,7 +6,7 @@
 
 This method deletes an existing digital workplace with the identifier `id`.
 
-Deletion of a digital workplace is only possible if there are no bound SPAs associated with it.
+Deletion of the digital workplace is only possible if there are no bound SPAs associated with it.
 
 If there are SPAs, they must first be unbound or reassigned to another workplace before deleting this digital workplace.
 
@@ -50,6 +50,56 @@ If there are SPAs, they must first be unbound or reassigned to another workplace
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.automatedsolution.delete',
+    		{
+    			"id": 5
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.automatedsolution.delete',
+                [
+                    'id' => 5,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting automated solution: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.automatedsolution.delete",
         {
@@ -65,7 +115,7 @@ If there are SPAs, they must first be unbound or reassigned to another workplace
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -96,8 +146,8 @@ HTTP Status: **200**
         "finish": 1715852366.078274,
         "duration": 0.3335409164428711,
         "processing": 0.01611018180847168,
-        "date_start": "2024-05-16T12:39:25+03:00",
-        "date_finish": "2024-05-16T12:39:26+03:00",
+        "date_start": "2024-05-16T12:39:25+02:00",
+        "date_finish": "2024-05-16T12:39:26+02:00",
         "operating_reset_at": 1715852966,
         "operating": 0
     }
@@ -122,7 +172,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions ||
-|| `HAS_BOUND_TYPES` | The digital workplace has bound SPAs. They must be unbound before deletion ||
+|| `HAS_BOUND_TYPES` | The digital workplace has bound SPAs. You must unbind the SPAs before deletion ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

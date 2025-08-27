@@ -1,4 +1,4 @@
-# Delete Trigger crm.automation.trigger.delete
+# Delete Trigger ctrigger.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -48,6 +48,63 @@ The method can only be executed in the application context.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.automation.trigger.delete',
+    		{
+    			"CODE": 'c5u4m'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.automation.trigger.delete',
+                [
+                    'CODE' => 'c5u4m',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting automation trigger: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.automation.trigger.delete',
         {
@@ -63,7 +120,7 @@ The method can only be executed in the application context.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -108,7 +165,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Returns `true` if deleted successfully ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -129,8 +186,8 @@ HTTP status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || Empty string | Access denied. | User did not pass the preliminary access rights check for CRM ||
-|| ACCESS_DENIED | Access denied! Admin permissions required | Administrator rights check failed ||
-|| ACCESS_DENIED | Access denied! Application context required | Method called outside the application context ||
+|| ACCESS_DENIED | Access denied! Admin permissions required | Admin rights check failed ||
+|| ACCESS_DENIED | Access denied! Application context required | Method called outside of application context ||
 || Empty string | Empty trigger code! | Empty `CODE` parameter ||
 || Empty string | Wrong trigger code! | `CODE` parameter does not match the pattern `[a-z0-9\.\-_]` ||
 || Empty string | Trigger not found | Trigger not found ||

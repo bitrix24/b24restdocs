@@ -1,14 +1,14 @@
-# Get Digital Workplace Data by ID crm.automatedsolution.get
+# Get data about the digital workplace by id crm.automatedsolution.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
 > Who can execute the method: users with administrative access to the CRM section
 
-This method returns information about the digital workplace with the identifier `id`.
+The method returns information about the digital workplace with the identifier `id`.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -44,6 +44,56 @@ This method returns information about the digital workplace with the identifier 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.automatedsolution.get',
+    		{
+    			'id': 393
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.automatedsolution.get',
+                [
+                    'id' => 393,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting automated solution: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.automatedsolution.get",
         {
@@ -59,7 +109,7 @@ This method returns information about the digital workplace with the identifier 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -80,7 +130,7 @@ This method returns information about the digital workplace with the identifier 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -102,8 +152,8 @@ HTTP Status: **200**
 		"finish": 1715849396.954623,
 		"duration": 0.31226396560668945,
 		"processing": 0.0068209171295166016,
-		"date_start": "2024-05-16T11:49:56+03:00",
-		"date_finish": "2024-05-16T11:49:56+03:00",
+		"date_start": "2024-05-16T11:49:56+02:00",
+		"date_finish": "2024-05-16T11:49:56+02:00",
 		"operating_reset_at": 1715849996,
 		"operating": 0
 	}
@@ -131,25 +181,25 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../data-types.md) | Unique identifier of the digital workplace ||
 || **title**
-[`string`](../../data-types.md) | Title of the digital workplace ||
+[`string`](../../data-types.md) | Name of the digital workplace ||
 || **typeIds**
-[`array`](../../data-types.md) | Identifiers of the SPA linked to the workplace ||
+[`array`](../../data-types.md) | Identifiers of the smart processes linked to the workplace ||
 |#
 
 {% note warning %}
 
-`Id` of the digital workplace and `id` of the `customSection` structures from the method [crm.type.get](../universal/user-defined-object-types/crm-type-get.md) do not match due to different storage organization.
+`Id` of the digital workplace and `id` of the `customSection` structures from the method [crm.type.get](../universal/user-defined-object-types/crm-type-get.md) do not match due to different storage organization
 
 {% endnote %}
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
     "error":"NOT_FOUND",
-    "error_description":"Digital workplace with this id not found"
+    "error_description":"Digital workplace with such id not found"
 }
 ```
 
@@ -160,7 +210,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Digital workplace with this `id` not found ||
+|| `NOT_FOUND` | Digital workplace with such `id` not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
