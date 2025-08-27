@@ -1,4 +1,4 @@
-# Delete Warehouse catalog.store.delete
+# Delete warehouse catalog.store.delete
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
@@ -48,6 +48,54 @@ You can obtain warehouse identifiers using the [catalog.store.list](./catalog-st
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'catalog.store.delete',
+            {
+                id: 1,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.store.delete',
+                [
+                    'id' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting warehouse: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.store.delete',
         {
@@ -63,7 +111,7 @@ You can obtain warehouse identifiers using the [catalog.store.list](./catalog-st
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -94,8 +142,8 @@ HTTP status: **200**
         "finish": 1729516191.799495,
         "duration": 0.5007679462432861,
         "processing": 0.16301894187927246,
-        "date_start": "2024-10-21T16:09:51+02:00",
-        "date_finish": "2024-10-21T16:09:51+02:00"
+        "date_start": "2024-10-21T16:09:51+03:00",
+        "date_finish": "2024-10-21T16:09:51+03:00"
     }
 }
 ```

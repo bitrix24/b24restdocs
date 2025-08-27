@@ -1,10 +1,10 @@
-# Get a List of Warehouses by Filter catalog.store.list
+# Get a list of inventories by filter catalog.store.list
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method returns a list of warehouses based on the filter.
+The method returns a list of inventories based on the filter.
 
 ## Method Parameters
 
@@ -15,7 +15,7 @@ The method returns a list of warehouses based on the filter.
 [`array`](../../data-types.md)| An array of fields to select (see fields of the [catalog_store](../data-types.md#catalog_store) object) 
 ||
 || **filter** 
-[`object`](../../data-types.md)| An object for filtering selected warehouses in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
+[`object`](../../data-types.md)| An object for filtering selected inventories in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_store](../data-types.md#catalog_store) object.
 
@@ -26,14 +26,14 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be included in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -43,7 +43,7 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `!` — not equal
 ||
 || **order**
-[`object`](../../data-types.md)| An object for sorting selected warehouses in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md)| An object for sorting selected inventories in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_store](../data-types.md#catalog_store) object.
 
@@ -53,7 +53,7 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start** 
-[`integer`](../../data-types.md)| This parameter is used for pagination control.
+[`integer`](../../data-types.md)| This parameter is used for managing pagination.
 
 The page size of results is always static — 50 records.
 
@@ -61,13 +61,13 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number
+`start = (N-1) * 50`, where `N` — the number of the desired page
 ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -92,6 +92,150 @@ The formula for calculating the `start` parameter value:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const selectFields = [
+        'id',
+        'title',
+        'active',
+        'address',
+        'description',
+        'gpsN',
+        'gpsS',
+        'imageId',
+        'dateModify',
+        'dateCreate',
+        'userId',
+        'modifiedBy',
+        'phone',
+        'schedule',
+        'xmlId',
+        'sort',
+        'email',
+        'issuingCenter',
+        'code',
+    ];
+    
+    try {
+        const response = await $b24.callListMethod(
+            'catalog.store.list',
+            {
+                select: selectFields,
+                filter: {
+                    '@userId': [1, 2],
+                    '<sort': 200,
+                    'modifiedBy': 1,
+                },
+                order: {
+                    id: 'desc',
+                },
+            },
+            (progress) => { console.log('Progress:', progress) }
+        );
+        const items = response.getData() || [];
+        for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+        const generator = $b24.fetchListMethod('catalog.store.list', {
+            select: selectFields,
+            filter: {
+                '@userId': [1, 2],
+                '<sort': 200,
+                'modifiedBy': 1,
+            },
+            order: {
+                id: 'desc',
+            },
+        }, 'id');
+        for await (const page of generator) {
+            for (const entity of page) { console.log('Entity:', entity); }
+        }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+        const response = await $b24.callMethod('catalog.store.list', {
+            select: selectFields,
+            filter: {
+                '@userId': [1, 2],
+                '<sort': 200,
+                'modifiedBy': 1,
+            },
+            order: {
+                id: 'desc',
+            },
+        }, 0);
+        const result = response.getData().result || [];
+        for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.store.list',
+                [
+                    'select' => [
+                        'id',
+                        'title',
+                        'active',
+                        'address',
+                        'description',
+                        'gpsN',
+                        'gpsS',
+                        'imageId',
+                        'dateModify',
+                        'dateCreate',
+                        'userId',
+                        'modifiedBy',
+                        'phone',
+                        'schedule',
+                        'xmlId',
+                        'sort',
+                        'email',
+                        'issuingCenter',
+                        'code',
+                    ],
+                    'filter' => [
+                        '@userId'    => [1, 2],
+                        '<sort'      => 200,
+                        'modifiedBy' => 1,
+                    ],
+                    'order'  => [
+                        'id' => 'desc',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching store list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -138,7 +282,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -187,7 +331,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -195,7 +339,7 @@ HTTP Status: **200**
         "stores": [
             {
                 "active": "Y",
-                "address": "Moscow Ave. 52",
+                "address": "Main St. 52",
                 "code": "store_1",
                 "dateCreate": "2024-10-18T16:30:45+02:00",
                 "dateModify": "2024-10-21T14:29:06+02:00",
@@ -239,16 +383,16 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **stores**
-[`catalog_store[]`](../data-types.md#catalog_store) | Array of objects with information about the selected warehouses ||
+[`catalog_store[]`](../data-types.md#catalog_store) | An array of objects with information about the selected inventories ||
 || **total**
 [`integer`](../../data-types.md#time) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -263,7 +407,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions for reading ||
+|| `200040300010` | Insufficient rights for reading ||
 || `0` | Other errors (e.g., fatal errors) || 
 |#
 

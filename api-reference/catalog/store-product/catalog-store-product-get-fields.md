@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing — we will complete it shortly.
 
 - no response in case of error
 - no response in case of success
-- required fields are not specified
+- required fields not specified
 - no examples in other languages
   
 {% endnote %}
@@ -29,7 +29,7 @@ Some data may be missing — we will complete it shortly.
 catalog.storeproduct.getFields()
 ```
 
-This method returns the fields for inventory balances.
+The method returns the fields for inventory balances.
 
 ## Parameters
 
@@ -40,6 +40,52 @@ No parameters.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.storeproduct.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.storeproduct.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting store product fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -56,7 +102,7 @@ No parameters.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Returned Fields
 
@@ -74,4 +120,4 @@ No parameters.
 [`integer`](../../data-types.md) | Identifier of the inventory | Read-only. ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}

@@ -1,10 +1,10 @@
-# Get Warehouse Field Values catalog.store.get
+# Get Store Field Values catalog.store.get
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method returns the values of the warehouse fields by its identifier.
+The method returns the field values of a store by its identifier.
 
 ## Method Parameters
 
@@ -14,9 +14,9 @@ The method returns the values of the warehouse fields by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_store.id`](../data-types.md#catalog_store) | Identifier of the warehouse.
+[`catalog_store.id`](../data-types.md#catalog_store) | Store identifier.
 
-You can obtain the identifiers of warehouses using the [catalog.store.list](./catalog-store-list.md) method ||
+You can obtain store identifiers using the [catalog.store.list](./catalog-store-list.md) method ||
 |#
 
 ## Code Examples
@@ -48,6 +48,55 @@ You can obtain the identifiers of warehouses using the [catalog.store.list](./ca
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.store.get', {
+    			id: 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.store.get',
+                [
+                    'id' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting store information: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.store.get', {
             id: 1
@@ -62,7 +111,7 @@ You can obtain the identifiers of warehouses using the [catalog.store.list](./ca
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -83,7 +132,7 @@ You can obtain the identifiers of warehouses using the [catalog.store.list](./ca
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -106,9 +155,9 @@ HTTP Status: **200**
             "issuingCenter": "N",
             "modifiedBy": 1,
             "phone": "+1 (495) 212 85 06",
-            "schedule": "Mon.-Fri. from 9:00 to 20:00, Sat.-Sun. from 11:00 to 18:00",
+            "schedule": "Mon.-Fri. from 9:00 AM to 8:00 PM, Sat.-Sun. from 11:00 AM to 6:00 PM",
             "sort": 100,
-            "title": "Warehouse 1",
+            "title": "Store 1",
             "userId": 1,
             "xmlId": null
         }
@@ -132,14 +181,14 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **store**
-[`catalog_store`](../data-types.md#catalog_store) | Object with information about the warehouse ||
+[`catalog_store`](../data-types.md#catalog_store) | Object containing store information ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -154,8 +203,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to view the warehouse ||
-|| `201100000000` | Warehouse with the specified identifier not found ||
+|| `200040300010` | Insufficient permissions to view the store ||
+|| `201100000000` | Store with the specified identifier not found ||
 || `100` | Parameter `id` not specified || 
 || `0` | Other errors (e.g., fatal errors) || 
 |#
