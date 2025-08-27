@@ -25,19 +25,19 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.deal.details.configuration.get` retrieves the settings of deal cards. The method reads the personal settings of the specified user or the general settings defined for all users.
+The method `crm.deal.details.configuration.get` retrieves the settings for deal cards. It reads the personal settings of the specified user or the general settings defined for all users.
 
 {% note warning %}
 
-Please note that the settings of deal cards for different categories (or funnels) may differ from each other. 
-To switch between the settings of deal cards for different categories, the parameter **dealCategoryId** is used.
+Please note that the settings for deal cards of different directions (or funnels) may differ from each other. 
+To switch between the settings of deal cards for different directions, the parameter **dealCategoryId** is used.
 
 {% endnote %}
 
 #|
 || **Parameter** | **Description** ||
 || **scope**
-[`unknown`](../../../data-types.md) | The scope of the settings. Allowed values:
+[`unknown`](../../../data-types.md) | The scope of the settings. Acceptable values:
 
 - **P** - personal settings,
 - **C** - general settings.
@@ -52,11 +52,83 @@ To switch between the settings of deal cards for different categories, the param
 
 {% list tabs %}
 
-- JS
+- PHP
+
+    ```php
+    try {
+        //Request personal settings for deal cards for the user with ID 1.
+        $response1 = $b24Service
+            ->core
+            ->call(
+                "crm.deal.details.configuration.get",
+                [
+                    'scope'  => "P",
+                    'userId' => 1
+                ]
+            );
+    
+        $result1 = $response1
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Personal deal details configuration for user 1: ' . print_r($result1, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting personal deal details configuration: ' . $e->getMessage();
+    }
+    
+    try {
+        //Request general settings for deal cards for the general direction.
+        $response2 = $b24Service
+            ->core
+            ->call(
+                "crm.deal.details.configuration.get",
+                [
+                    'scope' => "C"
+                ]
+            );
+    
+        $result2 = $response2
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Common deal details configuration for general direction: ' . print_r($result2, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting common deal details configuration: ' . $e->getMessage();
+    }
+    
+    try {
+        //Request general settings for deal cards for the direction with ID 1.
+        $response3 = $b24Service
+            ->core
+            ->call(
+                "crm.deal.details.configuration.get",
+                [
+                    'scope'  => "C",
+                    'extras' => ['dealCategoryId' => 1]
+                ]
+            );
+    
+        $result3 = $response3
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Common deal details configuration for direction with ID 1: ' . print_r($result3, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting common deal details configuration for direction with ID 1: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
-    //-- 
-    //Request personal settings of deal cards for the user with identifier 1.
+    //--
+    //Request personal settings for deal cards for the user with ID 1.
     BX24.callMethod(
         "crm.deal.details.configuration.get",
         {
@@ -71,7 +143,7 @@ To switch between the settings of deal cards for different categories, the param
                 console.dir(result.data());
         }
     );
-    //Request general settings of deal cards for the general category.
+    //Request general settings for deal cards for the general direction.
     BX24.callMethod(
         "crm.deal.details.configuration.get",
         {
@@ -85,7 +157,7 @@ To switch between the settings of deal cards for different categories, the param
                 console.dir(result.data());
         }
     );
-    //Request general settings of deal cards for the category with identifier 1.
+    //Request general settings for deal cards for the direction with ID 1.
     BX24.callMethod(
         "crm.deal.details.configuration.get",
         {
@@ -100,9 +172,9 @@ To switch between the settings of deal cards for different categories, the param
                 console.dir(result.data());
         }
     );
-    //-- 
+    //--
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../_includes/examples.md) %}

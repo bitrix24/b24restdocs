@@ -6,9 +6,9 @@
 
 The method `crm.deal.delete` removes a deal and all associated objects.
 
-Deleting a deal will result in the removal of all related objects, such as CRM activities, history, Timeline activities, and others.
+Deleting a deal will result in the removal of all related objects, such as activities, history, Timeline activities, and others.
 
-Objects are deleted if they are not linked to other entities or elements. If the objects are linked to other entities, only the link to the deleted deal will be removed.
+Objects are deleted if they are not linked to other entities or items. If the objects are linked to other entities, only the link to the deleted deal will be removed.
 
 ## Method Parameters
 
@@ -58,6 +58,59 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.deal.delete',
+    		{
+    			id: 12,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.delete',
+                [
+                    'id' => 12,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting deal: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.deal.delete',
         {
@@ -72,7 +125,7 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -118,7 +171,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -138,7 +191,7 @@ HTTP status: **400**
 
 #|
 || **Description** | **Value** ||
-|| `ID is not defined or invalid` | The `id` parameter is either not provided or is not a positive integer ||
+|| `ID is not defined or invalid` | The `id` parameter either has no value or is not a positive integer ||
 || `Access denied` | The user does not have permission to "delete" deals ||
 || `Not found` | A deal with the provided `id` does not exist ||
 |#

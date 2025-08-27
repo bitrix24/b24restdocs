@@ -1,8 +1,8 @@
-# Set Common Deal Card for All Users crm.deal.details.configuration.forceCommonScopeForAll
+# Set a common card for all users crm.deal.details.configuration.forceCommonScopeForAll
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,10 +11,10 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- parameter requirements are not indicated
+- parameter requirements are not specified
 - examples are missing
-- success response is absent
-- error response is absent
+- success response is missing
+- error response is missing
 
 {% endnote %}
 
@@ -28,8 +28,8 @@ The method `crm.deal.details.configuration.forceCommonScopeForAll` forcibly sets
 
 {% note warning %}
 
-Please note that the settings for deal cards of different categories (or funnels) may vary from each other. 
-To switch between the settings of deal cards for different categories, the parameter **dealCategoryId** is used.
+Please note that the settings for deal cards of different directions (or funnels) may differ from each other. 
+To switch between the settings of deal cards of different directions, the parameter **dealCategoryId** is used.
 
 {% endnote %}
 
@@ -46,8 +46,54 @@ To switch between the settings of deal cards for different categories, the param
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.deal.details.configuration.forceCommonScopeForAll",
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.details.configuration.forceCommonScopeForAll',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting common deal card scope for all users: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     //---
-    //Set a common deal card for all users in the general category.
+    //Set a common deal card for all users.
     BX24.callMethod(
         "crm.deal.details.configuration.forceCommonScopeForAll",
         {},
@@ -64,4 +110,4 @@ To switch between the settings of deal cards for different categories, the param
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}

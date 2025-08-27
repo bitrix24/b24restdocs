@@ -1,14 +1,14 @@
-# Get Custom Field of Deals by ID crm.deal.userfield.get
+# Get Custom Deal Field by ID crm.deal.userfield.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator
 
-The method `crm.deal.userfield.get` returns the custom field of deals by its identifier.
+The method `crm.deal.userfield.get` returns a custom deal field by its identifier.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,6 +48,59 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.deal.userfield.get',
+    		{
+    			id: 399,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.userfield.get',
+                [
+                    'id' => 399,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting deal user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.deal.userfield.get',
         {
@@ -62,7 +115,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -83,7 +136,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -243,14 +296,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response, contains information about the fields of the custom field. The final list of fields depends on the field type, detailed descriptions of the fields can be found in the method [crm.deal.userfield.add](./crm-deal-userfield-add.md)||
+[`object`](../../../data-types.md) | The root element of the response, contains information about the custom field. The final list of fields depends on the field type, detailed descriptions of the fields can be found in the method [crm.deal.userfield.add](./crm-deal-userfield-add.md) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -267,8 +320,8 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `403` | `Access denied` | Occurs when:
 - the user does not have administrative rights
-- the user attempts to access a custom field not associated with deals ||
-|| `400` | `ID is not defined or invalid` | The provided `id` is less than or equal to zero, or is not provided at all ||
+- the user attempts to access a custom field not linked to deals ||
+|| `400` | `ID is not defined or invalid` | The provided `id` is less than or equal to zero, or not provided at all ||
 || `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` was not found ||
 |#
 

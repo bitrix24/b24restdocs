@@ -1,4 +1,4 @@
-# Delete Custom Field of Deals crm.deal.userfield.delete
+# Delete Custom Field crm.deal.userfield.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `crm.deal.userfield.delete` removes a custom field from deals.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -48,38 +48,28 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
 - JS
 
     ```js
-    BX24.callMethod(
-        'crm.deal.userfield.delete',
-        {
-            id: 432,
-        },
-        (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data())
-            ;
-        },
-    );
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.deal.userfield.delete',
+    		{
+    			id: 432,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.deal.userfield.delete',
-        [
-            'id' => 432
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php
     try {
@@ -97,6 +87,40 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
     } catch (Throwable $e) {
         print("An error occurred: " . $e->getMessage());
     }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'crm.deal.userfield.delete',
+        {
+            id: 432,
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.deal.userfield.delete',
+        [
+            'id' => 432
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
@@ -128,7 +152,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -148,8 +172,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `400` | `ID is not defined or invalid` | The provided `id` is either less than or equal to zero or not provided at all ||
-|| `403` | `Access denied` | Occurs in cases when:
+|| `400` | `ID is not defined or invalid` | The provided `id` is either less than or equal to zero, or not provided at all ||
+|| `403` | `Access denied` | Occurs when:
 - the user does not have administrative rights
 - the user attempts to delete a custom field not associated with deals ||
 || `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` does not exist ||

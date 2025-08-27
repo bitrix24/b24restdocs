@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Some data may be missing — we will complete it shortly.
 
 The method `crm.deal.recurring.expose` creates a new deal from the template.
 
-#| 
+#|
 || **Parameter** | **Description** ||
 || **id**^*^ | Identifier of the recurring deal template setting. ||
 |#
@@ -37,6 +37,59 @@ The method `crm.deal.recurring.expose` creates a new deal from the template.
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.deal.recurring.expose",
+    		{
+    			id: id,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = $_POST['id'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.recurring.expose',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error exposing recurring deal: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var id = prompt("Enter ID");

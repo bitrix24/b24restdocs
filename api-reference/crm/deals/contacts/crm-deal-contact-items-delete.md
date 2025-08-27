@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -39,23 +39,33 @@ The method `crm.deal.contact.items.delete` clears the set of contacts associated
 - JS
 
     ```js
-    var id = prompt("Enter ID");
-    BX24.callMethod(
-        "crm.deal.contact.items.delete",
-        {
-            id: id
-        },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.info(result.data());
-        }
-    );
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.deal.contact.items.delete",
+    		{
+    			id: id
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.info(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
     ```
 
-- PHP (B24PhpSdk)
+- PHP
 
     ```php
     try {
@@ -70,6 +80,25 @@ The method `crm.deal.contact.items.delete` clears the set of contacts associated
     } catch (Throwable $e) {
         print("An error occurred: " . $e->getMessage());
     }
+    ```
+
+- BX24.js
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.deal.contact.items.delete",
+        {
+            id: id
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.info(result.data());
+        }
+    );
     ```
 
 {% endlist %}

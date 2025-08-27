@@ -1,4 +1,4 @@
-# Delete Existing Configuration for Recurring Deal Template crm.deal.recurring.delete
+# Delete existing settings for the recurring deal template crm.deal.recurring.delete
 
 {% note warning "We are still updating this page" %}
 
@@ -23,11 +23,11 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.deal.recurring.delete` removes the existing configuration for the recurring deal template.
+The method `crm.deal.recurring.delete` removes the existing settings for the recurring deal template.
 
 #|
 || **Parameter** | **Description** ||
-|| **id**^*^ | Identifier of the recurring deal template configuration. ||
+|| **id**^*^ | Identifier of the recurring deal template settings. ||
 |#
 
 {% include [Footnote about parameters](../../../../_includes/required.md) %}
@@ -37,6 +37,60 @@ The method `crm.deal.recurring.delete` removes the existing configuration for th
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.deal.recurring.delete",
+    		{ id: id }
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    		console.error(result.error());
+    	else
+    		console.info(result);
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    $id = $_POST['id'];
+    
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.recurring.delete',
+                [
+                    'id' => $id,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting recurring deal: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     var id = prompt("Enter ID");

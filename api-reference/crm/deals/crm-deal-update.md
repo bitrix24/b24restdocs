@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "modify" access permission for deals
+> Who can execute the method: any user with "edit" access permission for deals
 
 The method `crm.deal.update` updates an existing deal.
 
@@ -37,7 +37,7 @@ The list of available fields is described [below](#fields).
 
 An incorrect field in `fields` will be ignored.
 
-Only those fields that need to be changed should be passed in `fields`
+Only the fields that need to be changed should be passed in `fields`
 ||
 || **params** 
 [`object`](../../data-types.md)| Set of additional parameters ([detailed description](#params)) ||
@@ -59,9 +59,9 @@ The list of available deal types can be found using the method [crm.status.list]
 
 The list of available stages can be found using the method [crm.status.list](../status/crm-status-list.md) with the filter:
 - `{ ENTITY_ID: "DEAL_STAGE" }` — if the deal is in the general Sales Funnel
-- `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }` — if the deal is not in the general Sales Funnel, where `categoryId` is the identifier of the [funnel](../universal/category/index.md) and equals the `CATEGORY_ID` of the deal.
+- `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }` — if the deal is not in the general Sales Funnel, where `categoryId` is the identifier of the [funnel](../universal/category/index.md) and equals `CATEGORY_ID` of the deal.
   
-If it is necessary to change the funnel of the deal, use the method [crm.item.update](../universal/crm-item-update.md), `entityTypeId` of the deal — `2`
+If it is necessary to change the funnel of the deal, use the method [crm.item.update](../universal/crm-item-update.md), with the `entityTypeId` of the deal being `2`
 ||
 || **IS_RECURRING**
 [`char`](../../data-types.md) | Is the deal a template for a recurring deal? Possible values:
@@ -142,12 +142,12 @@ Used only for linking to an external source
 || **UTM_SOURCE**
 [`string`](../../data-types.md) | Advertising system (Google-Adwords and others) ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Traffic type. Possible values:
+[`string`](../../data-types.md) | Type of traffic. Possible values:
 - `CPC` — ads
 - `CPM` — banners
 ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Advertising campaign designation ||
+[`string`](../../data-types.md) | Identifier of the advertising campaign ||
 || **UTM_CONTENT**
 [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
@@ -160,11 +160,11 @@ Values of multiple fields are passed as an array.
   
 To change file fields, it is recommended to use the method [crm.item.update](../universal/crm-item-update.md).
 
-A custom field can be added to a deal using the method [crm.deal.userfield.add](./user-defined-fields/crm-deal-userfield-add.md) ||
+You can add a custom field to a deal using the method [crm.deal.userfield.add](./user-defined-fields/crm-deal-userfield-add.md) ||
 || **PARENT_ID_...**
 [`crm_entity`](../data-types.md) | Relationship fields. 
 
-If there are smart processes related to deals on the portal, there is a field for each such smart process that stores the relationship between this smart process and the deal. The field itself stores the identifier of the element of that smart process. 
+If there are smart processes related to deals on the portal, for each such smart process, there is a field that stores the relationship between this smart process and the deal. The field itself stores the identifier of the element of that smart process. 
 
 For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`, stores the identifier of the element of this smart process related to the current deal ||
 |#
@@ -202,7 +202,7 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":123,"FIELDS":{"TITLE":"New Deal Title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECURRING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"}}' \
+    -d '{"ID":123,"FIELDS":{"TITLE":"New deal title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECCURING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.update
     ```
 
@@ -212,11 +212,95 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":123,"FIELDS":{"TITLE":"New Deal Title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECURRING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"ID":123,"FIELDS":{"TITLE":"New deal title!","TYPE_ID":"GOODS","STAGE_ID":"WON","IS_RECCURING":"Y","IS_RETURN_CUSTOMER":"Y","OPPORTUNITY":9999.99,"IS_MANUAL_OPPORTUNITY":"Y","ASSIGNED_BY_ID":1,"UF_CRM_1725365197310":"String","PARENT_ID_1032":1},"PARAMS":{"REGISTER_SONET_EVENT":"N","REGISTER_HISTORY_EVENT":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.deal.update
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.deal.update',
+    		{
+    			id: 123,
+    			fields: {
+    				TITLE: "New deal title!",
+    				TYPE_ID: "GOODS",
+    				STAGE_ID: "WON",
+    				IS_RECCURING: "Y",
+    				IS_RETURN_CUSTOMER: "Y",
+    				OPPORTUNITY: 9999.99,
+    				IS_MANUAL_OPPORTUNITY: "Y",
+    				ASSIGNED_BY_ID: 1,
+    				UF_CRM_1725365197310: "String",
+    				PARENT_ID_1032: 1,
+    			},
+    			params: {
+    				REGISTER_SONET_EVENT: "N",
+    				REGISTER_HISTORY_EVENT: "N",
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error() ? console.error(result.error()) : console.info(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.update',
+                [
+                    'id' => 123,
+                    'fields' => [
+                        'TITLE'              => "New deal title!",
+                        'TYPE_ID'            => "GOODS",
+                        'STAGE_ID'           => "WON",
+                        'IS_RECCURING'       => "Y",
+                        'IS_RETURN_CUSTOMER' => "Y",
+                        'OPPORTUNITY'        => 9999.99,
+                        'IS_MANUAL_OPPORTUNITY' => "Y",
+                        'ASSIGNED_BY_ID'     => 1,
+                        'UF_CRM_1725365197310' => "String",
+                        'PARENT_ID_1032'     => 1,
+                    ],
+                    'params' => [
+                        'REGISTER_SONET_EVENT'   => "N",
+                        'REGISTER_HISTORY_EVENT' => "N",
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($response->getError()) {
+            echo 'Error: ' . $response->getError();
+        } else {
+            echo 'Success: ' . print_r($result, true);
+            // Your logic for processing data
+            processData($result);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating deal: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -224,10 +308,10 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
         {
             id: 123,
             fields: {
-                TITLE: "New Deal Title!",
+                TITLE: "New deal title!",
                 TYPE_ID: "GOODS",
                 STAGE_ID: "WON",
-                IS_RECURRING: "Y",
+                IS_RECCURING: "Y",
                 IS_RETURN_CUSTOMER: "Y",
                 OPPORTUNITY: 9999.99,
                 IS_MANUAL_OPPORTUNITY: "Y",
@@ -249,7 +333,7 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -259,10 +343,10 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
         [
             'ID' => 123,
             'FIELDS' => [
-                'TITLE' => 'New Deal Title!',
+                'TITLE' => 'New deal title!',
                 'TYPE_ID' => 'GOODS',
                 'STAGE_ID' => 'WON',
-                'IS_RECURRING' => 'Y',
+                'IS_RECCURING' => 'Y',
                 'IS_RETURN_CUSTOMER' => 'Y',
                 'OPPORTUNITY' => 9999.99,
                 'IS_MANUAL_OPPORTUNITY' => 'Y',
@@ -338,10 +422,10 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `-`     | `ID is not defined or invalid` | The parameter `id` is not a positive integer ||
-|| `-`     | `Not found` | The deal with the given `id` does not exist ||
+|| `-`     | `Not found` | The deal with the provided `id` does not exist ||
 || `-`     | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
 || `-`     | `Parameter 'params' must be array` | The parameter `params` is not an object ||
-|| `-`     | `Access denied` | The user does not have permission to "modify" deals ||
+|| `-`     | `Access denied` | The user does not have permission to "edit" deals ||
 || `-`     | Disk resource exhausted |> ||
 || `-`     | Invalid value for the "Currency" field |> ||
 |#

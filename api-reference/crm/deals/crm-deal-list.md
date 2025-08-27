@@ -1,4 +1,4 @@
-# Get the list of deals crm.deal.list
+# Get a list of deals crm.deal.list
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
@@ -12,7 +12,7 @@ The method `crm.deal.list` returns a list of deals based on a filter. It is an i
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | List of fields that should be filled for deals in the selection.
+[`string[]`](../../data-types.md) | A list of fields that should be filled for deals in the selection.
 
 You can use the following masks for selection:
 - `'*'` — to select all fields (excluding custom and multiple fields)
@@ -23,7 +23,7 @@ You can find the list of available fields for selection using the method [crm.de
 By default, all fields are taken — `'*'` + Custom fields — `'UF_*'`
 ||
 || **filter**
-[`object`](../../data-types.md) | Object format:
+[`object`](../../data-types.md) | An object in the format:
 
 ```
 {
@@ -38,7 +38,7 @@ where:
 - `field_n` — the name of the field by which the selection of elements will be filtered
 - `value_n` — the filter value
 
-You can add a prefix to the keys `field_n` to clarify the filter operation.
+You can add a prefix to the keys `field_n` to specify the filter operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -58,12 +58,12 @@ Possible prefix values:
 
 The LIKE filter does not work with fields of type `crm_status`, `crm_contact`, `crm_company` (deal type `TYPE_ID`, stage `STAGE_ID`, etc.).
 
-You can find the list of available fields for filtering using the method [crm.deal.fields](./crm-deal-fields.md). 
+You can find the list of available fields for filtering using the method [crm.deal.fields](./crm-deal-fields.md).
 
-The filter does not support the `CONTACT_IDS` field; for filtering by contacts, use the method [crm.item.list](../universal/crm-item-list.md)
+The filter does not support the field `CONTACT_IDS`, for filtering by contacts use the method [crm.item.list](../universal/crm-item-list.md)
 ||
 || **order**
-[`object`](../../data-types.md) | Object format:
+[`object`](../../data-types.md) | An object in the format:
 
 ```
 {
@@ -108,10 +108,10 @@ Also, see the description of [list methods](../../how-to-call-rest-api/list-meth
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 Get a list of deals where:
-1. the funnel ID equals `1`
-2. the deal type equals `COMPLEX`
+1. the funnel ID is `1`
+2. the deal type is `COMPLEX`
 3. the title ends with `a`
-4. the stage equals `C1:NEW`
+4. the stage is `C1:NEW`
 5. the amount is greater than 10000 but less than or equal to 20000
 6. manual mode for amount calculation is enabled
 7. the responsible person is either the user with `id = 1` or the user with `id = 6`
@@ -153,6 +153,199 @@ For clarity, select only the necessary fields:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const now = new Date();
+    const sixMonthAgo = new Date();
+    sixMonthAgo.setMonth(now.getMonth() - 6);
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.deal.list',
+        {
+          select: [
+            'ID',
+            'TITLE',
+            'TYPE_ID',
+            'CATEGORY_ID',
+            'STAGE_ID',
+            'OPPORTUNITY',
+            'IS_MANUAL_OPPORTUNITY',
+            'ASSIGNED_BY_ID',
+            'DATE_CREATE',
+          ],
+          filter: {
+            '=%TITLE': '%a',
+            CATEGORY_ID: 1,
+            TYPE_ID: 'COMPLEX',
+            STAGE_ID: 'C1:NEW',
+            '>OPPORTUNITY': 10000,
+            '<=OPPORTUNITY': 20000,
+            IS_MANUAL_OPPORTUNITY: 'Y',
+            '@ASSIGNED_BY_ID': [1, 6],
+            '>DATE_CREATE': sixMonthAgo,
+          },
+          order: {
+            TITLE: 'ASC',
+            OPPORTUNITY: 'ASC',
+          },
+        },
+        (result) => {
+          result.error()
+            ? console.error(result.error())
+            : console.info(result.data())
+          ;
+        },
+      );
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    const now = new Date();
+    const sixMonthAgo = new Date();
+    sixMonthAgo.setMonth(now.getMonth() - 6);
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.deal.list', {
+        select: [
+          'ID',
+          'TITLE',
+          'TYPE_ID',
+          'CATEGORY_ID',
+          'STAGE_ID',
+          'OPPORTUNITY',
+          'IS_MANUAL_OPPORTUNITY',
+          'ASSIGNED_BY_ID',
+          'DATE_CREATE',
+        ],
+        filter: {
+          '=%TITLE': '%a',
+          CATEGORY_ID: 1,
+          TYPE_ID: 'COMPLEX',
+          STAGE_ID: 'C1:NEW',
+          '>OPPORTUNITY': 10000,
+          '<=OPPORTUNITY': 20000,
+          IS_MANUAL_OPPORTUNITY: 'Y',
+          '@ASSIGNED_BY_ID': [1, 6],
+          '>DATE_CREATE': sixMonthAgo,
+        },
+        order: {
+          TITLE: 'ASC',
+          OPPORTUNITY: 'ASC',
+        },
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) {
+          console.log('Entity:', entity);
+        }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    const now = new Date();
+    const sixMonthAgo = new Date();
+    sixMonthAgo.setMonth(now.getMonth() - 6);
+    
+    try {
+      const response = await $b24.callMethod('crm.deal.list', {
+        select: [
+          'ID',
+          'TITLE',
+          'TYPE_ID',
+          'CATEGORY_ID',
+          'STAGE_ID',
+          'OPPORTUNITY',
+          'IS_MANUAL_OPPORTUNITY',
+          'ASSIGNED_BY_ID',
+          'DATE_CREATE',
+        ],
+        filter: {
+          '=%TITLE': '%a',
+          CATEGORY_ID: 1,
+          TYPE_ID: 'COMPLEX',
+          STAGE_ID: 'C1:NEW',
+          '>OPPORTUNITY': 10000,
+          '<=OPPORTUNITY': 20000,
+          IS_MANUAL_OPPORTUNITY: 'Y',
+          '@ASSIGNED_BY_ID': [1, 6],
+          '>DATE_CREATE': sixMonthAgo,
+        },
+        order: {
+          TITLE: 'ASC',
+          OPPORTUNITY: 'ASC',
+        },
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) {
+        console.log('Entity:', entity);
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.list',
+                [
+                    'select' => [
+                        'ID',
+                        'TITLE',
+                        'TYPE_ID',
+                        'CATEGORY_ID',
+                        'STAGE_ID',
+                        'OPPORTUNITY',
+                        'IS_MANUAL_OPPORTUNITY',
+                        'ASSIGNED_BY_ID',
+                        'DATE_CREATE',
+                    ],
+                    'filter' => [
+                        '=%TITLE'              => '%a',
+                        'CATEGORY_ID'          => 1,
+                        'TYPE_ID'              => 'COMPLEX',
+                        'STAGE_ID'             => 'C1:NEW',
+                        '>OPPORTUNITY'         => 10000,
+                        '<=OPPORTUNITY'        => 20000,
+                        'IS_MANUAL_OPPORTUNITY' => 'Y',
+                        '@ASSIGNED_BY_ID'      => [1, 6],
+                        '>DATE_CREATE'         => $sixMonthAgo,
+                    ],
+                    'order' => [
+                        'TITLE'       => 'ASC',
+                        'OPPORTUNITY' => 'ASC',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching deal list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     const now = new Date();
@@ -198,7 +391,7 @@ For clarity, select only the necessary fields:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -339,13 +532,13 @@ HTTP status: **200**
 || **result**
 [`deal[]`](crm-deal-get.md#deal) | The root element of the response. Contains an array of objects with information about the fields of deals. 
 
-It should be noted that the structure of fields may change due to the `select` parameter ||
+Note that the structure of fields may change due to the `select` parameter ||
 || **total**
-[`integer`](../../data-types.md) | The total number of found elements ||
+[`integer`](../../data-types.md) | The total number of found items ||
 || **next**
-[`integer`](../../data-types.md) | Contains the value that should be passed in the next request to the `start` parameter to get the next batch of data.
+[`integer`](../../data-types.md) | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
 
-The `next` parameter appears in the response if the number of elements matching your request exceeds `50` ||
+The `next` parameter appears in the response if the number of items matching your request exceeds `50` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#

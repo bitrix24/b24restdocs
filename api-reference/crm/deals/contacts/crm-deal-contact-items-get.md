@@ -24,7 +24,7 @@ Some data may be missing — we will complete it shortly.
 
 The method `crm.deal.contact.items.get` returns a set of contacts associated with the specified deal.
 
-#| 
+#|
 || **Parameter** | **Description** ||
 || **id**^*^ | Identifier of the deal. ||
 |#
@@ -38,23 +38,26 @@ The method `crm.deal.contact.items.get` returns a set of contacts associated wit
 - JS
 
     ```js
-    var id = prompt("Enter ID");
-    BX24.callMethod(
-        "crm.deal.contact.items.get",
-        {
-            id: id
-        },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
+    try
+    {
+    	const id = prompt("Enter ID");
+    	const response = await $b24.callMethod(
+    		"crm.deal.contact.items.get",
+    		{
+    			id: id
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
     ```
 
-- PHP (B24PhpSdk)
+- PHP
 
     ```php
     try {
@@ -75,6 +78,25 @@ The method `crm.deal.contact.items.get` returns a set of contacts associated wit
     }
     ```
 
+- BX24.js
+
+    ```js
+    var id = prompt("Enter ID");
+    BX24.callMethod(
+        "crm.deal.contact.items.get",
+        {
+            id: id
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
 {% endlist %}
 
 {% include [Footnote about examples](../../../../_includes/examples.md) %}
@@ -83,10 +105,10 @@ The method `crm.deal.contact.items.get` returns a set of contacts associated wit
 
 The result is returned as an array of objects, each containing the following fields:
 
-#| 
+#|
 || **Field** | **Description** ||
 || **CONTACT_ID** | Identifier of the contact ||
-|| **SORT** | Sorting index ||
-|| **ROLE_ID** | Role identifier (reserved) ||
-|| **IS_PRIMARY** | Primary contact flag ||
+|| **SORT** | Sort index ||
+|| **ROLE_ID** | Identifier of the role (reserved) ||
+|| **IS_PRIMARY** | Flag for primary contact ||
 |#

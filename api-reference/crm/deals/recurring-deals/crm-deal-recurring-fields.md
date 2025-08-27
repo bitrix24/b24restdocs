@@ -1,8 +1,8 @@
-# Get a list of fields for the recurring deal template crm.deal.recurring.fields
+# Get the list of fields for the recurring deal template crm.deal.recurring.fields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -13,7 +13,7 @@ Some data may be missing here — we will fill it in shortly.
 - examples are missing (in other languages)
 - success response is missing
 - error response is missing
-- links to yet-to-be-created pages are not specified
+- links to pages that have not yet been created are not specified
 
 {% endnote %}
 
@@ -23,13 +23,66 @@ Some data may be missing here — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-The method `crm.deal.recurring.fields` returns a list of fields for configuring the recurring deal template with descriptions.
+The method `crm.deal.recurring.fields` returns a list of fields for configuring the recurring deal template along with descriptions.
 
 ## Example
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.deal.recurring.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.recurring.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching recurring deal fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -47,14 +100,14 @@ The method `crm.deal.recurring.fields` returns a list of fields for configuring 
 
 {% endlist %}
 
-{% include [Example notes](../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../_includes/examples.md) %}
 
 ## Returned fields
 
 #|
 || **Field** | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the record in the recurring deal settings table. Read-only. ||
+[`integer`](../../../data-types.md) | Identifier of the record in the settings table for the recurring deal. Read-only. ||
 || **DEAL_ID**
 [`integer`](../../../data-types.md) | ID of the deal template. Immutable. ||
 || **BASED_ID**

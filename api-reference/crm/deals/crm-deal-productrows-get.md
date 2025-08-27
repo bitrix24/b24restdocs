@@ -1,4 +1,4 @@
-# Get Deal Products crm.deal.productrows.get
+# Get Deal Product Rows crm.deal.productrows.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
@@ -47,6 +47,59 @@ Get the product rows of the deal with `id = 5`
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.deal.productrows.get',
+    		{
+    			id: 5,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.productrows.get',
+                [
+                    'id' => 5,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting deal product rows: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.deal.productrows.get',
         {
@@ -61,7 +114,7 @@ Get the product rows of the deal with `id = 5`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -167,12 +220,12 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`productrow[]`](#productrow) | Root element of the response containing an array of product rows for the deal ||
+[`productrow[]`](#productrow) | Root element of the response containing an array of deal product rows ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-#### Type productrow {#productrow}
+#### Product Row Type {#productrow}
 
 #|
 || **Name**
@@ -182,7 +235,7 @@ HTTP Status: **200**
 || **OWNER_ID**
 [`integer`](../../data-types.md) | Identifier of the entity to which the product is linked. For this method, it will always equal the `id` of the deal ||
 || **OWNER_TYPE**
-[`string`](../../data-types.md) | String identifier of the type of entity to which the product is linked. For this method, it will always equal `D` ||
+[`string`](../../data-types.md) | String identifier of the entity type to which the product is linked. For this method, it will always equal `D` ||
 || **PRODUCT_ID**
 [`integer`](../../data-types.md) | Identifier of the product in the catalog. `0` if not from the catalog
 
@@ -234,13 +287,13 @@ Possible values:
 
 ||
 || **MEASURE_CODE**
-[`catalog_measure.code`](../../catalog/data-types.md#catalog_measure) | Unit of measure code ||
+[`catalog_measure.code`](../../catalog/data-types.md#catalog_measure) | Measure unit code ||
 || **MEASURE_NAME**
-[`string`](../../data-types.md) | Text representation of the unit of measure (e.g., pcs, kg, m, l, etc.) ||
+[`string`](../../data-types.md) | Text representation of the measure unit (e.g., pcs, kg, m, l, etc.) ||
 || **SORT**
 [`integer`](../../data-types.md) | Sorting ||
 || **XML_ID**
-[`string`](../../data-types.md) | External product code ||
+[`string`](../../data-types.md) | External code of the product ||
 || **TYPE**
 [`integer`](../../data-types.md) | Type of product
 Possible values: 
@@ -250,11 +303,11 @@ Possible values:
 
 ||
 || **STORE_ID**
-[`integer`](../../data-types.md) | Identifier of the warehouse. For detailed information about the warehouse, use [`catalog.store.get`](../../catalog/store/catalog-store-get.md) ||
+[`integer`](../../data-types.md) | Identifier of the inventory. For detailed information about the inventory, use [`catalog.store.get`](../../catalog/store/catalog-store-get.md) ||
 || **RESERVE_ID**
 [`integer`](../../data-types.md) | Identifier of the reserve ||
 || **DATE_RESERVE_END**
-[`date`](../../data-types.md) | Date of reservation end ||
+[`date`](../../data-types.md) | Date of reserve expiration ||
 || **RESERVE_QUANTITY**
 [`integer`](../../data-types.md) | Quantity of reserved product units ||
 |#
@@ -277,8 +330,8 @@ HTTP Status: **400**
 
 #|
 || **Description** | **Value** ||
-|| The parameter id is invalid or not defined. | The `id` parameter has an incorrect value ||
-|| Access denied | The user does not have "read" access permission for the deal  ||
+|| The parameter id is invalid or not defined. | The parameter `id` has an incorrect value ||
+|| Access denied | The user does not have permission to "read" the deal  ||
 || Not found | The deal with the provided `id` was not found ||
 |#
 

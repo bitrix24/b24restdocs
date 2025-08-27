@@ -8,7 +8,7 @@ The method `crm.deal.get` returns a deal by its identifier.
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ The method `crm.deal.get` returns a deal by its identifier.
 The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list.md) or [crm.deal.add](./crm-deal-add.md) ||
 |#
 
-{% note tip "Related Methods and Topics" %}
+{% note tip "Related methods and topics" %}
 
 [{#T}](./recurring-deals/crm-deal-recurring-get.md)
 
@@ -27,7 +27,7 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -54,6 +54,59 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.deal.get',
+    		{
+    			id: 410,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.get',
+                [
+                    'id' => 410,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Deal data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting deal: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.deal.get',
         {
@@ -68,7 +121,7 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -89,7 +142,7 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -176,7 +229,7 @@ HTTP Status: **200**
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | String identifier of the deal type. 
 
-To learn more about the obtained deal type, you can use the method [crm.status.list](../status/crm-status-list.md), passing in the filter:
+To learn more about the obtained deal type, you can use the method [crm.status.list](../status/crm-status-list.md), passing the filter:
 
 ```
 {
@@ -186,11 +239,11 @@ To learn more about the obtained deal type, you can use the method [crm.status.l
 ```
 ||
 || **CATEGORY_ID**
-[`crm_category`](../data-types.md) | Sales Funnel. To learn more about this funnel, you can use the method [crm.category.get](../universal/category/crm-category-get.md), passing `entityTypeId = 2` and `id = CATEGORY_ID` ||
+[`crm_category`](../data-types.md) | Funnel. To learn more about this funnel, you can use the method [crm.category.get](../universal/category/crm-category-get.md), passing `entityTypeId = 2` and `id = CATEGORY_ID` ||
 || **STAGE_ID**
 [`crm_status`](../data-types.md) | String identifier of the deal stage. 
 
-To learn more about the obtained stage, you can use the method [crm.status.list](../status/crm-status-list.md), passing in the filter:
+To learn more about the obtained stage, you can use the method [crm.status.list](../status/crm-status-list.md), passing the filter:
 
 ```
 {
@@ -200,10 +253,10 @@ To learn more about the obtained stage, you can use the method [crm.status.list]
 ```
 
 where:
-- `entityId` is:
+- `entityId` is equal to:
     - `DEAL_STAGE` if the deal is in the general funnel (`CATEGORY_ID = 0`)
     - `DEAL_STAGE_{categoryId}`, where `categoryId = CATEGORY_ID`
-- `statusId` is `STAGE_ID`
+- `statusId` is equal to `STAGE_ID`
 ||
 || **STAGE_SEMANTIC_ID**
 [`string`](../../data-types.md) | Stage group. Possible values:
@@ -249,7 +302,7 @@ To learn more about the company, you can use the method [crm.item.get](../univer
 || **CONTACT_IDS**
 [`crm_contact[]`](../../data-types.md) | List of contact identifiers. 
 
-To learn more about the list of contacts, you can use the method [crm.item.list](../universal/crm-item-list.md), passing `entityTypeId = 3` and filter `{ '@id': CONTACT_IDS }`
+To learn more about the list of contacts, you can use the method [crm.item.list](../universal/crm-item-list.md), passing `entityTypeId = 3` and the filter `{ '@id': CONTACT_IDS }`
 ||
 || **QUOTE_ID**
 [`crm_quote`](../data-types.md) | Identifier of the estimate based on which the deal was created. 
@@ -287,7 +340,7 @@ To learn more about the estimate, you can use the method [crm.item.get](../unive
 || **SOURCE_ID**
 [`crm_status`](../data-types.md) | Source. 
 
-To learn more about the obtained source, you can use the method [crm.status.list](../status/crm-status-list.md), passing in the filter:
+To learn more about the obtained source, you can use the method [crm.status.list](../status/crm-status-list.md), passing the filter:
 
 ```
 {
@@ -310,7 +363,7 @@ To learn more about the lead, you can use the method [crm.item.get](../universal
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | External source ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the item in the external source ||
+[`string`](../../data-types.md) | Identifier of the element in the external source ||
 || **UTM_SOURCE**
 [`string`](../../data-types.md) | Advertising system ||
 || **UTM_MEDIUM**
@@ -318,9 +371,9 @@ To learn more about the lead, you can use the method [crm.item.get](../universal
 || **UTM_CAMPAIGN**
 [`string`](../../data-types.md) | Advertising campaign designation ||
 || **UTM_CONTENT**
-[`string`](../../data-types.md) | Campaign content ||
+[`string`](../../data-types.md) | Content of the campaign ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Campaign search condition ||
+[`string`](../../data-types.md) | Search condition of the campaign ||
 || **LAST_ACTIVITY_TIME**
 [`datetime`](../../data-types.md) | Date of the last activity in the timeline ||
 || **LAST_ACTIVITY_BY**
@@ -328,18 +381,18 @@ To learn more about the lead, you can use the method [crm.item.get](../universal
 || **UF_CRM_...**
 [`any`](../../data-types.md) | User-defined fields. For example, `UF_CRM_25534736`. 
 
-Depending on the account settings, deals may have a set of user-defined fields of specific types. Read more in the section [about user-defined fields](./user-defined-fields/index.md) ||
+Depending on the portal settings, deals may have a set of user-defined fields of specific types. Read more in the section [about user-defined fields](./user-defined-fields/index.md) ||
 || **PARENT_ID_...**
 [`crm_entity`](../data-types.md) | Relationship fields. 
 
-If there are SPAs related to deals on the account, for each such SPA there is a field that stores the relationship between this SPA and the deal. The field itself stores the identifier of the item of that SPA. 
+If there are smart processes related to deals on the portal, for each such smart process, there is a field that stores the relationship between this smart process and the deal. The field itself stores the identifier of the element of that smart process. 
 
-For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`, stores the identifier of the item of that SPA related to the current deal ||
+For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`, stores the identifier of the element of this smart process related to the current deal ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -354,7 +407,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `ID is not defined or invalid` | The parameter `id` is either not provided or is not a positive integer ||
+|| `-`     | `ID is not defined or invalid` | The `id` parameter is either not provided or is not a positive integer ||
 || `-`     | `Access denied` | The user does not have permission to "read" this deal ||
 || `-`     | `Not found`      | No deal exists with the provided `id` ||
 |#

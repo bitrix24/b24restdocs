@@ -1,4 +1,4 @@
-# Create a New Deal crm.deal.add
+# Create a new deal crm.deal.add
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
@@ -41,26 +41,26 @@ The list of available fields is described [below](#fields)
 || **TITLE**
 [`string`](../../data-types.md) | Deal title.
 
-By default, it is generated using the template `Deal #{id}`, where `id` is the item identifier
+By default, it is generated using the template `Deal #{id}`, where `id` is the element identifier
 ||
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | String identifier of the deal type. 
 
-The list of available deal types can be obtained using the [crm.status.list](../status/crm-status-list.md) method with the filter `{ ENTITY_ID: 'DEAL_TYPE' }`.
+The list of available deal types can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: 'DEAL_TYPE' }`.
 
 By default — the first available deal type
 ||
 || **CATEGORY_ID**
-[`crm_category`](../data-types.md) | Funnel identifier. Must be greater than or equal to 0.
+[`crm_category`](../data-types.md) | Identifier of the funnel. Must be greater than or equal to 0.
 
-The list of available funnels can be obtained using the [crm.category.list](../universal/category/crm-category-list.md) method by passing `entityTypeId = 2`.
+The list of available funnels can be obtained using the method [crm.category.list](../universal/category/crm-category-list.md) by passing `entityTypeId = 2`.
 
-By default — the default funnel identifier
+By default — the identifier of the default funnel
 ||
 || **STAGE_ID**
-[`crm_status`](../data-types.md) | Deal stage. 
+[`crm_status`](../data-types.md) | Stage of the deal. 
 
-The list of available stages can be obtained using the [crm.status.list](../status/crm-status-list.md) method with the filter:
+The list of available stages can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter:
 - `{ ENTITY_ID: "DEAL_STAGE" }` — if the deal is in the general funnel (direction)
 - `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }` — if the deal is not in the general funnel, where `categoryId` is the identifier of the deal [funnel](../universal/category/index.md)  
 
@@ -73,7 +73,7 @@ By default — the first available stage relative to the funnel ||
 By default `N`
 ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Is the deal a repeat deal? Possible values:
+[`char`](../../data-types.md) | Is the deal a repeat? Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -91,14 +91,14 @@ By default `N`
 || **CURRENCY_ID**
 [`crm_currency`](../data-types.md#crm_currency) | Currency. 
 
-The list of available currencies can be obtained using the [crm.currency.list](../currency/crm-currency-list.md)
+The list of available currencies can be obtained using the method [crm.currency.list](../currency/crm-currency-list.md)
 ||
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount. 
 
 By default `0.00` ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Is manual calculation mode enabled? Possible values:
+[`char`](../../data-types.md) | Is manual calculation of the amount enabled? Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -112,23 +112,23 @@ By default `0.00`
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the company associated with the deal.
 
-The list of companies can be obtained using the [crm.item.list](../universal/crm-item-list.md) method by passing `entityTypeId = 4`
+The list of companies can be obtained using the method [crm.item.list](../universal/crm-item-list.md) by passing `entityTypeId = 4`
 ||
 || **CONTACT_ID**
 [`crm_contact`](../data-types.md) | Contact. Deprecated ||
 || **CONTACT_IDS**
 [`crm_contact[]`](../data-types.md) | List of contacts associated with the deal.
 
-The list of contacts can be obtained using the [crm.item.list](../universal/crm-item-list.md) method by passing `entityTypeId = 3`
+The list of contacts can be obtained using the method [crm.item.list](../universal/crm-item-list.md) by passing `entityTypeId = 3`
 ||
 || **BEGINDATE**
 [`date`](../../data-types.md) | Start date. 
 
-By default — the date the deal is created ||
+By default — the date of deal creation ||
 || **CLOSEDATE**
 [`date`](../../data-types.md) | Completion date. 
 
-By default — the date the deal is created plus 7 days
+By default — the date of deal creation plus 7 days
 ||
 || **OPENED**
 [`char`](../../data-types.md) | Is the deal available to everyone? Possible values:
@@ -154,7 +154,7 @@ By default — the user calling this method
 || **SOURCE_ID**
 [`crm_status`](../data-types.md) | String identifier of the source type. 
 
-The list of available sources can be obtained using the [crm.status.list](../status/crm-status-list.md) method with the filter `{ ENTITY_ID: "SOURCE" }`.
+The list of available sources can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
 
 By default — the first available source type
 ||
@@ -167,39 +167,39 @@ By default — the first available source type
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. 
 
-Used only for binding to an external source
+Used only for linking to an external source
 ||
 || **ORIGIN_ID**
-[`string`](../../data-types.md) | Identifier of the item in the data source.
+[`string`](../../data-types.md) | Identifier of the element in the data source.
 
-Used only for binding to an external source
+Used only for linking to an external source
 ||
 || **UTM_SOURCE**
 [`string`](../../data-types.md) | Advertising system (Google-Adwords and others) ||
 || **UTM_MEDIUM**
-[`string`](../../data-types.md) | Traffic type. Possible values:
+[`string`](../../data-types.md) | Type of traffic. Possible values:
 - `CPC` — ads
 - `CPM` — banners 
 ||
 || **UTM_CAMPAIGN**
-[`string`](../../data-types.md) | Advertising campaign designation ||
+[`string`](../../data-types.md) | Designation of the advertising campaign ||
 || **UTM_CONTENT**
-[`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
+[`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`](../../data-types.md) | Campaign search condition. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search term of the campaign. For example, keywords for contextual advertising ||
 || **TRACE**
 [`string`](../../data-types.md) | Information for Sales Intelligence — read more in the article [{#T}](../../../tutorials/crm/how-to-use-analitycs/info-to-analitics.md) ||
 || **UF_CRM_...** | Custom fields. For example, `UF_CRM_25534736`. 
 
-Depending on the portal settings, deals may have a set of custom fields of defined types. 
+Depending on the portal settings, deals may have a set of custom fields of specific types. 
 
-You can add a custom field to a deal using the [crm.deal.userfield.add](./user-defined-fields/crm-deal-userfield-add.md) method ||
+You can add a custom field to a deal using the method [crm.deal.userfield.add](./user-defined-fields/crm-deal-userfield-add.md) ||
 || **PARENT_ID_...**
 [`crm_entity`](../data-types.md) | Relationship fields. 
 
-If there are smart processes related to deals on the portal, there is a field for each such smart process that stores the relationship between this smart process and the deal. The field itself stores the identifier of the item of that smart process. 
+If there are SPAs related to deals on the portal, there is a field for each such SPA that stores the relationship between this SPA and the deal. The field itself stores the identifier of the element of that SPA. 
 
-For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`, stores the identifier of the item of this smart process related to the current deal ||
+For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`, stores the identifier of the element of this SPA related to the current deal ||
 |#
 
 ### Parameter params {#params}
@@ -242,6 +242,93 @@ By default `Y` ||
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const day = 60 * 60 * 24 * 1000;
+    	
+    	const now = new Date();
+    	const after10Days = new Date(now.getTime() + 10 * day);
+    	
+    	const response = await $b24.callMethod(
+    		'crm.deal.add',
+    		{
+    			fields: {
+    				TITLE: "New Deal #1",
+    				TYPE_ID: "COMPLEX",
+    				CATEGORY_ID: 0,
+    				STAGE_ID: "PREPARATION",
+    				IS_RECURRING: "N",
+    				IS_RETURN_CUSTOMER: "Y",
+    				IS_REPEATED_APPROACH: "Y",
+    				PROBABILITY: 99,
+    				CURRENCY_ID: "EUR",
+    				OPPORTUNITY: 1000000,
+    				IS_MANUAL_OPPORTUNITY: "Y",
+    				TAX_VALUE: 0.10,
+    				COMPANY_ID: 9,
+    				CONTACT_IDS: [84, 83],
+    				BEGINDATE: now.toISOString(),
+    				CLOSEDATE: after10Days.toISOString(),
+    				OPENED: "Y",
+    				CLOSED: "N",
+    				COMMENTS: "[B]Example comment[/B]",
+    				SOURCE_ID: "CALLBACK",
+    				SOURCE_DESCRIPTION: "Additional information about the source",
+    				ADDITIONAL_INFO: "Additional information",
+    				UTM_SOURCE: "google",
+    				UTM_MEDIUM: "CPC",
+    				PARENT_ID_1220: 22,
+    				UF_CRM_1721244482250: "Hello world!",
+    			},
+    			params: {
+    				REGISTER_SONET_EVENT: "N",
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php        
+    try {
+        $fields = [
+            'TITLE' => 'New Deal',
+            'TYPE_ID' => 'GIG',
+            'CATEGORY_ID' => '1',
+            'STAGE_ID' => 'C1:NEW',
+            'CURRENCY_ID' => 'USD',
+            'OPPORTUNITY' => '10000',
+            'BEGINDATE' => (new DateTime())->format(DateTime::ATOM),
+            'CLOSEDATE' => (new DateTime('+1 month'))->format(DateTime::ATOM),
+            'COMMENTS' => 'This is a test deal.',
+        ];
+        $params = [
+            'REGISTER_SONET_EVENT' => 'Y',
+        ];
+        $result = $serviceBuilder
+            ->getCRMScope()
+            ->deal()
+            ->add($fields, $params);
+        print($result->getId());
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
+    ```
+
+- BX24.js
 
     ```js
     const day = 60 * 60 * 24 * 1000;
@@ -293,7 +380,7 @@ By default `Y` ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -340,34 +427,6 @@ By default `Y` ||
     echo '</PRE>';
     ```
 
-- PHP (B24PhpSdk)
-  
-    ```php        
-    try {
-        $fields = [
-            'TITLE' => 'New Deal',
-            'TYPE_ID' => 'GIG',
-            'CATEGORY_ID' => '1',
-            'STAGE_ID' => 'C1:NEW',
-            'CURRENCY_ID' => 'USD',
-            'OPPORTUNITY' => '10000',
-            'BEGINDATE' => (new DateTime())->format(DateTime::ATOM),
-            'CLOSEDATE' => (new DateTime('+1 month'))->format(DateTime::ATOM),
-            'COMMENTS' => 'This is a test deal.',
-        ];
-        $params = [
-            'REGISTER_SONET_EVENT' => 'Y',
-        ];
-        $result = $serviceBuilder
-            ->getCRMScope()
-            ->deal()
-            ->add($fields, $params);
-        print($result->getId());
-    } catch (Throwable $e) {
-        print('Error: ' . $e->getMessage());
-    }
-    ```
-
 {% endlist %}
 
 ## Response Handling
@@ -397,7 +456,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../data-types.md) | Root element of the response, contains the identifier of the created deal ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -417,8 +476,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `Parameter 'fields' must be array` | The `fields` parameter is not an object ||
-|| `-`     | `Parameter 'params' must be array` | The `params` parameter is not an object ||
+|| `-`     | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
+|| `-`     | `Parameter 'params' must be array` | The parameter `params` is not an object ||
 || `-`     | `Access denied` | The user does not have permission to "add" deals ||
 || `-`     | Disk resource exhausted |> ||
 || `-`     | Invalid value for the "Currency" field |> ||

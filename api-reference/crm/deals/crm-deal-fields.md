@@ -4,7 +4,7 @@
 > 
 > Who can execute the method: any user
 
-The method `crm.deal.fields` returns the description of deal fields, including custom ones. A table with the description of standard fields can be found in the article [Fields of Main CRM Objects](../main-entities-fields.md).
+The method `crm.deal.fields` returns a description of the deal fields, including custom fields. A table with the description of standard fields can be found in the article [Fields of Main CRM Entities](../main-entities-fields.md).
 
 ## Method Parameters
 
@@ -39,34 +39,26 @@ No parameters.
 - JS
 
     ```js
-        BX24.callMethod(
+    try
+    {
+        const response = await $b24.callMethod(
             'crm.deal.fields',
-            {},
-            (result) => {
-                result.error()
-                    ? console.error(result.error())
-                    : console.info(result.data())
-                ;
-            },
+            {}
         );
+        
+        const result = response.getData().result;
+        result.error()
+            ? console.error(result.error())
+            : console.info(result)
+        ;
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.deal.fields',
-        []
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -91,6 +83,36 @@ No parameters.
     } catch (Throwable $e) {
         print("Error: " . $e->getMessage() . PHP_EOL);
     }
+    ```
+
+- BX24.js
+
+    ```js
+        BX24.callMethod(
+            'crm.deal.fields',
+            {},
+            (result) => {
+                result.error()
+                    ? console.error(result.error())
+                    : console.info(result.data())
+                ;
+            },
+        );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.deal.fields',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
@@ -334,7 +356,7 @@ HTTP status: **200**
             "isImmutable": false,
             "isMultiple": false,
             "isDynamic": false,
-            "title": "Responsible"
+            "title": "Assignee"
         },
         "CREATED_BY_ID": {
             "type": "user",
@@ -555,7 +577,6 @@ where:
 - `value_n` — information about the field in the format [crm_rest_field_description](../data-types.md#crm_rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
-
 |#
 
 ## Error Handling

@@ -38,7 +38,7 @@ All conditions for individual fields are combined using `AND`. See the [list of 
 ```
 
 - `field_n` — the name of the field by which the selection of elements will be sorted
-- `value_n` — a `string` value, equal to:
+- `value_n` — a `string` value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
@@ -93,31 +93,31 @@ By default:
 || **SORT**
 [`integer`](../../../data-types.md) | Sort index ||
 || **MULTIPLE**
-[`boolean`](../../../data-types.md) | Is the custom field multiple?
+[`boolean`](../../../data-types.md) | Whether the custom field is multiple.
 Possible values:
 - `Y` — yes
 - `N` — no ||
 || **MANDATORY**
-[`boolean`](../../../data-types.md) | Is the custom field mandatory? Possible values:
+[`boolean`](../../../data-types.md) | Whether the custom field is mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
-[`char`](../../../data-types.md) | Show in the list filter? Possible values:
+[`char`](../../../data-types.md) | Whether to show in the list filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
 - `S` — substring ||
 || **SHOW_IN_LIST**
-[`boolean`](../../../data-types.md) | Show in the list? Possible values:
+[`boolean`](../../../data-types.md) | Whether to show in the list. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **EDIT_IN_LIST**
-[`boolean`](../../../data-types.md) | Allow user editing? Possible values:
+[`boolean`](../../../data-types.md) | Whether to allow user editing. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_SEARCHABLE**
-[`boolean`](../../../data-types.md) | Are the field values searchable? Possible values:
+[`boolean`](../../../data-types.md) | Whether the field values are searchable. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **LANG**
@@ -131,12 +131,12 @@ Possible values:
 
 ## Code Examples
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 Get a list of custom fields that:
 - are multiple,
 - are mandatory,
-- have custom field labels in German. By filtering by the `LANG` parameter, we will additionally receive the field names in the response.
+- have custom field labels in German. Thanks to the filter by the `LANG` parameter, we will additionally receive field names in the response.
 
 {% list tabs %}
 
@@ -147,7 +147,7 @@ Get a list of custom fields that:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"filter":{"MULTIPLE":"Y","MANDATORY":"Y","LANG":"de"},"order":{"USER_TYPE_ID":"ASC","SORT":"ASC"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.userfield.list
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.deal.userfield.list
     ```
 
 - cURL (OAuth)
@@ -161,6 +161,121 @@ Get a list of custom fields that:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve
+    // the entire set of list data and the volume of records is relatively small
+    // (up to about 1000 items). The method loads all data at once, which
+    // can lead to high memory load when working with large volumes.
+    
+    try {
+    const response = await $b24.callListMethod(
+        'crm.deal.userfield.list',
+        {
+         filter: {
+            MULTIPLE: "Y",
+            MANDATORY: "Y",
+            LANG: "de",
+         },
+         order: {
+            USER_TYPE_ID: "ASC",
+            SORT: "ASC",
+         },
+        },
+        (progress: number) => { console.log('Progress:', progress) }
+    );
+    const items = response.getData() || [];
+    for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error: any) {
+    console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets.
+    // The method implements iterative selection using a generator, which
+    // allows processing data in parts and efficiently using memory.
+    
+    try {
+    const generator = $b24.fetchListMethod('crm.deal.userfield.list', {
+        filter: {
+         MULTIPLE: "Y",
+         MANDATORY: "Y",
+         LANG: "de",
+        },
+        order: {
+         USER_TYPE_ID: "ASC",
+         SORT: "ASC",
+        },
+    }, 'ID');
+    for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+    }
+    } catch (error: any) {
+    console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination
+    // of data retrieval through the start parameter. Suitable for scenarios where
+    // precise control over request batches is required. However, with large
+    // volumes of data, it may be less efficient compared to
+    // fetchListMethod.
+    
+    try {
+    const response = await $b24.callMethod('crm.deal.userfield.list', {
+        filter: {
+         MULTIPLE: "Y",
+         MANDATORY: "Y",
+         LANG: "de",
+        },
+        order: {
+         USER_TYPE_ID: "ASC",
+         SORT: "ASC",
+        },
+    }, 0);
+    const result = response.getData().result || [];
+    for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error: any) {
+    console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.deal.userfield.list',
+                [
+                    'filter' => [
+                        'MULTIPLE' => 'Y',
+                        'MANDATORY' => 'Y',
+                        'LANG' => 'de',
+                    ],
+                    'order' => [
+                        'USER_TYPE_ID' => 'ASC',
+                        'SORT' => 'ASC',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching deal user fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -185,7 +300,7 @@ Get a list of custom fields that:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -462,7 +577,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | The root element of the response, contains a list of custom fields.
 
-The structure of an individual custom field depends on its type. The fields `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned either as `string` when passing `filter.LANG`, or not returned at all. ||
+The structure of an individual custom field depends on its type. The fields `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned either as `string` when passing `filter.LANG`, or are not returned at all. ||
 || **total**
 [`integer`](../../../data-types.md) | The number of found custom fields ||
 || **time**
