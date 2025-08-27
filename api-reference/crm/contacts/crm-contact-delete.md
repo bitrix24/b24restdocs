@@ -1,4 +1,4 @@
-# Delete Contact crm.contact.delete
+# Delete contact crm.contact.delete
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `crm.contact.delete` removes a contact and all associated objects.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ The identifier can be obtained using the methods [`crm.contact.list`](crm-contac
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 Delete contact with `id = 50`
 
@@ -50,6 +50,59 @@ Delete contact with `id = 50`
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'crm.contact.delete',
+            {
+                id: 50,
+            }
+        );
+        
+        const result = response.getData().result;
+        result.error()
+            ? console.error(result.error())
+            : console.info(result)
+        ;
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.delete',
+                [
+                    'id' => 50,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Info: ' . $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting contact: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.contact.delete',
         {
@@ -64,7 +117,7 @@ Delete contact with `id = 50`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,7 +138,7 @@ Delete contact with `id = 50`
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -116,7 +169,7 @@ Returns `true` on success ||
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -131,7 +184,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not an integer greater than 0 ||
+|| `-`     | `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not a positive integer ||
 || `-`     | `Access denied` | The user does not have permission to "Delete" the contact ||
 || `ERROR_CORE` | Element not found | Contact with the provided `id` was not found ||
 |#

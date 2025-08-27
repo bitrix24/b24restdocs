@@ -16,7 +16,7 @@ It is recommended to pass the complete set of address fields when updating the a
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the contact to be updated.
+[`integer`][1] | Identifier of the contact to be changed.
 
 The identifier can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
 || **fields***
@@ -39,7 +39,7 @@ The list of available fields is described [below](#parameter-fields).
 
 An incorrect field in `fields` will be ignored.
 
-Only the fields that need to be changed should be passed in `fields`
+Only those fields that need to be changed should be passed in `fields`
 ||
 || **params**
 [`object`][1] | Object containing a set of additional parameters.
@@ -55,7 +55,7 @@ The structure and possible values are described [below](#parameter-params)
 || **HONORIFIC**
 [`crm_status`](../data-types.md) | Salutation.
 
-The list of available salutation types can be obtained using [`crm.status.list`][2], applying the filter `{ ENTITY_ID: "HONORIFIC" }` ||
+The list of available salutation types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONORIFIC" }` ||
 || **NAME**
 [`string`][1] | First name ||
 || **SECOND_NAME**
@@ -67,17 +67,17 @@ The list of available salutation types can be obtained using [`crm.status.list`]
 || **BIRTHDATE**
 [`date`][1] | Date of birth ||
 || **TYPE_ID**
-[`crm_status`](../data-types.md) | Type of contact.
-The list of available contact types can be obtained using [`crm.status.list`][2], applying the filter `{ ENTITY_ID: "CONTACT_TYPE" }` ||
+[`crm_status`](../data-types.md) | Contact type.
+The list of available contact types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "CONTACT_TYPE" }` ||
 || **SOURCE_ID**
 [`crm_status`](../data-types.md) | Source
-The list of available source types can be obtained using [`crm.status.list`][2], applying the filter `{ ENTITY_ID: "SOURCE" }` ||
+The list of available source types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "SOURCE" }` ||
 || **SOURCE_DESCRIPTION**
 [`string`][1] | Additional information about the source ||
 || **POST**
 [`string`][1] | Position ||
 || **COMMENTS**
-[`string`][1] | Comment. Supports bb-codes ||
+[`string`][1] | Comment. Supports BB codes ||
 || **OPENED**
 [`boolean`][1] | Is it available to everyone? Possible values:
 - `Y` — yes
@@ -97,7 +97,7 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, Facebook Ads, etc.) ||
+[`string`][1] | Advertising system (Google Ads, etc.) ||
 || **UTM_MEDIUM**
 [`string`][1] | Type of traffic. Possible values:
 - `CPC` — ads
@@ -118,21 +118,21 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 [`crm_multifield[]`](../data-types.md) | Messenger ||
 || **LINK**
 [`crm_multifield[]`](../data-types.md) | Links. Service field ||
-||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`.
+||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`. 
 
-Depending on the account settings, contacts may have a set of custom fields of defined types.
+Depending on the account settings, contacts may have a set of custom fields of specific types. 
 
 To change file fields, it is recommended to use the method [crm.item.update](../universal/crm-item-update.md).
 
 A custom field can be added to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md) ||
-||**PARENT_ID_...** | Relationship fields.
+||**PARENT_ID_...** | Relationship fields. 
 
-If there are SPAs related to contacts in the account, for each such SPA there is a field that stores the relationship between this SPA and the contact. The field itself stores the identifier of the element of that SPA.
+If there are smart processes related to contacts in the account, there is a field for each such smart process that stores the relationship between this smart process and the contact. The field itself stores the identifier of the element of that smart process. 
 
-For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the element of this SPA related to the current contact ||
+For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`. It stores the identifier of the element of this smart process related to the current contact ||
 |#
 
-**Fields for external data source relationships**
+**Fields for external data sources**
 
 If the contact was created by an external system, then:
 - the field `ORIGINATOR_ID` stores the string identifier of that system
@@ -143,11 +143,11 @@ If the contact was created by an external system, then:
 || **Name**
 `type` | **Description** ||
 || **ORIGINATOR_ID**
-[`string`][1] | Identifier of the external system that is the data source for this contact ||
+[`string`][1] | Identifier of the external system that is the source of data about this contact ||
 || **ORIGIN_ID**
-[`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system.
+[`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system. 
 
-If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
+If the data was imported and not changed in the external system, then such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 || **ORIGIN_VERSION**
 [`string`][1] | Version of the original ||
 |#
@@ -185,13 +185,13 @@ Address fields in the contact are deprecated and are only used in compatibility 
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`][1] | Should the contact update event be registered in the activity stream? Possible values:
+[`boolean`][1] | Should the update event of the contact be registered in the activity stream? Possible values:
 - `Y` — yes
 - `N` — no
 
 Default is `N` ||
 || **REGISTER_HISTORY_EVENT**
-[`boolean`][1] | Should the contact update be registered in history? Possible values:
+[`boolean`][1] | Should the update of the contact be registered in the history? Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -229,6 +229,81 @@ Update contact with `id = 43`
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.update',
+    		{
+    			id: 43,
+    			fields: {
+    				NAME: "John",
+    				BIRTHDATE: '11.11.1999',
+    				TYPE_ID: "RECOMMENDATION",
+    				SOURCE_ID: "WEB",
+    				POST: "Network Administrator",
+    				COMMENTS: "New comment",
+    				OPENED: "N",
+    				EXPORT: "Y",
+    				ASSIGNED_BY_ID: 1,
+    				COMPANY_ID: 12,
+    				COMPANY_IDS: [13, 15],
+    				UF_CRM_1720697698689: "Example of a new value for a custom field of type \"String\"",
+    				PARENT_ID_1224: 14,
+    			},
+    			params: {
+    				REGISTER_SONET_EVENT: "N",
+    				REGISTER_HISTORY_EVENT: "N",
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php        
+    try {
+        $contactId = 123; // Example contact ID
+        $fields = [
+            'NAME' => 'John',
+            'LAST_NAME' => 'Doe',
+            'BIRTHDATE' => (new DateTime('1990-01-01'))->format(DateTime::ATOM),
+            'PHONE' => '123456789',
+            'EMAIL' => 'john.doe@example.com',
+            'ADDRESS' => '123 Main St',
+            'ADDRESS_CITY' => 'Anytown',
+            'ADDRESS_COUNTRY' => 'USA',
+        ];
+        $params = [
+            'REGISTER_SONET_EVENT' => 'Y',
+        ];
+        $result = $serviceBuilder
+            ->getCRMScope()
+            ->contact()
+            ->update($contactId, $fields, $params);
+        if ($result->isSuccess()) {
+            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
+        } else {
+            print('Update failed.');
+        }
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.contact.update',
         {
@@ -262,7 +337,7 @@ Update contact with `id = 43`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -298,38 +373,6 @@ Update contact with `id = 43`
     echo '</PRE>';
     ```
 
-- PHP (B24PhpSdk)
-
-    ```php        
-    try {
-        $contactId = 123; // Example contact ID
-        $fields = [
-            'NAME' => 'John',
-            'LAST_NAME' => 'Doe',
-            'BIRTHDATE' => (new DateTime('1990-01-01'))->format(DateTime::ATOM),
-            'PHONE' => '123456789',
-            'EMAIL' => 'john.doe@example.com',
-            'ADDRESS' => '123 Main St',
-            'ADDRESS_CITY' => 'Anytown',
-            'ADDRESS_COUNTRY' => 'USA',
-        ];
-        $params = [
-            'REGISTER_SONET_EVENT' => 'Y',
-        ];
-        $result = $serviceBuilder
-            ->getCRMScope()
-            ->contact()
-            ->update($contactId, $fields, $params);
-        if ($result->isSuccess()) {
-            print($result->getCoreResponse()->getResponseData()->getResult()[0]);
-        } else {
-            print('Update failed.');
-        }
-    } catch (Throwable $e) {
-        print('Error: ' . $e->getMessage());
-    }
-    ```
-
 {% endlist %}
 
 ## Working with Multiple Fields
@@ -338,7 +381,7 @@ Update contact with `id = 43`
 
 To overwrite an existing value of a multiple field, pass the `ID` of the field you want to change and its new value/type.
 
-Let’s say there are the following values for the `PHONE` field:
+Suppose there are the following values for the `PHONE` field:
 
 ```json
 [
@@ -383,7 +426,7 @@ To change the value of the phone with `ID = 223`, pass the following `fields` pa
 
 To delete one of the values from a multiple field, pass their identifiers and either the parameter `DELETE = 'Y'` or an empty `VALUE`.
 
-Let’s say there are the following values for the `PHONE` field:
+Suppose there are the following values for the `PHONE` field:
 
 ```json
 [
@@ -414,7 +457,7 @@ Let’s say there are the following values for the `PHONE` field:
 ]
 ```
 
-Let’s consider ways to delete all values except for the phone with `ID = 225`:
+Let's consider ways to delete all values except for the phone with `ID = 225`:
 
 ```json
 {
@@ -470,7 +513,7 @@ Example of adding a new value `55555`:
 
 ### Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -499,7 +542,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -518,7 +561,7 @@ HTTP Status: **400**
 || `-`          | `Parameter 'params' must be array` | The `params` parameter is not an object ||
 || `-`          | `Access denied` | The user does not have permission to "Edit" contacts ||
 || `-`          | Disk resource exhausted | ||
-|| `ERROR_CORE` | The field `Work e-mail` contains an invalid address | ||
+|| `ERROR_CORE` | The field `Work e-mail` contains an incorrect address | ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

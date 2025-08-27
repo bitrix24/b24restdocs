@@ -50,6 +50,59 @@ Get the custom field with `id = 399`
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.userfield.get',
+    		{
+    			id: 399,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.userfield.get',
+                [
+                    'id' => 399,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting contact user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.contact.userfield.get',
         {
@@ -64,7 +117,7 @@ Get the custom field with `id = 399`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -111,40 +164,40 @@ HTTP Status: **200**
             "DEFAULT_VALUE": "Hello, World! Default value"
         },
         "EDIT_FORM_LABEL": {
-            "ar": "Field 'Hello, World!'",
-            "br": "Field 'Hello, World!'",
+            "ar": "Field \u0027Hello, World!\u0027",
+            "br": "Field \u0027Hello, World!\u0027",
             "en": "Hello, World! Edit",
-            "fr": "Field 'Hello, World!'",
-            "id": "Field 'Hello, World!'",
-            "it": "Field 'Hello, World!'",
-            "ja": "Field 'Hello, World!'",
-            "la": "Field 'Hello, World!'",
-            "ms": "Field 'Hello, World!'",
-            "pl": "Field 'Hello, World!'",
-            "de": "Hello, World! Edit",
-            "sc": "Field 'Hello, World!'",
-            "tc": "Field 'Hello, World!'",
-            "th": "Field 'Hello, World!'",
-            "tr": "Field 'Hello, World!'",
-            "vn": "Field 'Hello, World!'"
+            "fr": "Field \u0027Hello, World!\u0027",
+            "id": "Field \u0027Hello, World!\u0027",
+            "it": "Field \u0027Hello, World!\u0027",
+            "ja": "Field \u0027Hello, World!\u0027",
+            "la": "Field \u0027Hello, World!\u0027",
+            "ms": "Field \u0027Hello, World!\u0027",
+            "pl": "Field \u0027Hello, World!\u0027",
+            "ru": "Hello, World! Edit",
+            "sc": "Field \u0027Hello, World!\u0027",
+            "tc": "Field \u0027Hello, World!\u0027",
+            "th": "Field \u0027Hello, World!\u0027",
+            "tr": "Field \u0027Hello, World!\u0027",
+            "vn": "Field \u0027Hello, World!\u0027"
         },
         "LIST_COLUMN_LABEL": {
-            "ar": "Field 'Hello, World!'",
-            "br": "Field 'Hello, World!'",
+            "ar": "Field \u0027Hello, World!\u0027",
+            "br": "Field \u0027Hello, World!\u0027",
             "en": "Hello, World! Column",
-            "fr": "Field 'Hello, World!'",
-            "id": "Field 'Hello, World!'",
-            "it": "Field 'Hello, World!'",
-            "ja": "Field 'Hello, World!'",
-            "la": "Field 'Hello, World!'",
-            "ms": "Field 'Hello, World!'",
-            "pl": "Field 'Hello, World!'",
-            "de": "Hello, World! Column",
-            "sc": "Field 'Hello, World!'",
-            "tc": "Field 'Hello, World!'",
-            "th": "Field 'Hello, World!'",
-            "tr": "Field 'Hello, World!'",
-            "vn": "Field 'Hello, World!'"
+            "fr": "Field \u0027Hello, World!\u0027",
+            "id": "Field \u0027Hello, World!\u0027",
+            "it": "Field \u0027Hello, World!\u0027",
+            "ja": "Field \u0027Hello, World!\u0027",
+            "la": "Field \u0027Hello, World!\u0027",
+            "ms": "Field \u0027Hello, World!\u0027",
+            "pl": "Field \u0027Hello, World!\u0027",
+            "ru": "Hello, World! Column",
+            "sc": "Field \u0027Hello, World!\u0027",
+            "tc": "Field \u0027Hello, World!\u0027",
+            "th": "Field \u0027Hello, World!\u0027",
+            "tr": "Field \u0027Hello, World!\u0027",
+            "vn": "Field \u0027Hello, World!\u0027"
         },
         "LIST_FILTER_LABEL": {
             "ar": "Hello, World! Filter",
@@ -157,7 +210,7 @@ HTTP Status: **200**
             "la": "Hello, World! Filter",
             "ms": "Hello, World! Filter",
             "pl": "Hello, World! Filter",
-            "de": "Hello, World! Filter",
+            "ru": "Hello, World! Filter",
             "sc": "Hello, World! Filter",
             "tc": "Hello, World! Filter",
             "th": "Hello, World! Filter",
@@ -165,40 +218,40 @@ HTTP Status: **200**
             "vn": "Hello, World! Filter"
         },
         "ERROR_MESSAGE": {
-            "ar": "Field 'Hello, World!'",
-            "br": "Field 'Hello, World!'",
+            "ar": "Field \u0027Hello, World!\u0027",
+            "br": "Field \u0027Hello, World!\u0027",
             "en": "Hello, World! Error",
-            "fr": "Field 'Hello, World!'",
-            "id": "Field 'Hello, World!'",
-            "it": "Field 'Hello, World!'",
-            "ja": "Field 'Hello, World!'",
-            "la": "Field 'Hello, World!'",
-            "ms": "Field 'Hello, World!'",
-            "pl": "Field 'Hello, World!'",
-            "de": "Hello, World! Error",
-            "sc": "Field 'Hello, World!'",
-            "tc": "Field 'Hello, World!'",
-            "th": "Field 'Hello, World!'",
-            "tr": "Field 'Hello, World!'",
-            "vn": "Field 'Hello, World!'"
+            "fr": "Field \u0027Hello, World!\u0027",
+            "id": "Field \u0027Hello, World!\u0027",
+            "it": "Field \u0027Hello, World!\u0027",
+            "ja": "Field \u0027Hello, World!\u0027",
+            "la": "Field \u0027Hello, World!\u0027",
+            "ms": "Field \u0027Hello, World!\u0027",
+            "pl": "Field \u0027Hello, World!\u0027",
+            "ru": "Hello, World! Error",
+            "sc": "Field \u0027Hello, World!\u0027",
+            "tc": "Field \u0027Hello, World!\u0027",
+            "th": "Field \u0027Hello, World!\u0027",
+            "tr": "Field \u0027Hello, World!\u0027",
+            "vn": "Field \u0027Hello, World!\u0027"
         },
         "HELP_MESSAGE": {
-            "ar": "Field 'Hello, World!'",
-            "br": "Field 'Hello, World!'",
+            "ar": "Field \u0027Hello, World!\u0027",
+            "br": "Field \u0027Hello, World!\u0027",
             "en": "Hello, World! Help",
-            "fr": "Field 'Hello, World!'",
-            "id": "Field 'Hello, World!'",
-            "it": "Field 'Hello, World!'",
-            "ja": "Field 'Hello, World!'",
-            "la": "Field 'Hello, World!'",
-            "ms": "Field 'Hello, World!'",
-            "pl": "Field 'Hello, World!'",
-            "de": "Hello, World! Help",
-            "sc": "Field 'Hello, World!'",
-            "tc": "Field 'Hello, World!'",
-            "th": "Field 'Hello, World!'",
-            "tr": "Field 'Hello, World!'",
-            "vn": "Field 'Hello, World!'"
+            "fr": "Field \u0027Hello, World!\u0027",
+            "id": "Field \u0027Hello, World!\u0027",
+            "it": "Field \u0027Hello, World!\u0027",
+            "ja": "Field \u0027Hello, World!\u0027",
+            "la": "Field \u0027Hello, World!\u0027",
+            "ms": "Field \u0027Hello, World!\u0027",
+            "pl": "Field \u0027Hello, World!\u0027",
+            "ru": "Hello, World! Help",
+            "sc": "Field \u0027Hello, World!\u0027",
+            "tc": "Field \u0027Hello, World!\u0027",
+            "th": "Field \u0027Hello, World!\u0027",
+            "tr": "Field \u0027Hello, World!\u0027",
+            "vn": "Field \u0027Hello, World!\u0027"
         }
     },
     "time": {
@@ -250,8 +303,8 @@ In the case of methods `crm.contact.userfield.*`, the value `CRM_CONTACT` is aut
 - `address` — address
 - `enumeration` — list
 - `file` — file
-- `employee` — binding to an employee
-- `crm_status` — binding to the CRM directory
+- `employee` — employee binding
+- `crm_status` — binding to CRM directory
 - `iblock_section` — binding to information block sections
 - `iblock_element` — binding to information block elements
 - `crm` — binding to CRM elements
@@ -293,7 +346,7 @@ Possible values:
 - `N` — no
 ||
 || **IS_SEARCHABLE**
-[`boolean`][1] | Indicates whether the field values participate in the search.
+[`boolean`][1] | Indicates whether the field values participate in search.
 
 This parameter does not affect anything within `crm`.
 
@@ -304,7 +357,7 @@ Possible values:
 || **SETTINGS**
 [`object`][1] | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, which are described [below](#settings) ||
 || **LIST**
-[`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. For custom fields of other types, this parameter is not applicable ||
+[`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. For custom fields of other types, this parameter is meaningless ||
 || **EDIT_FORM_LABEL**
 [`lang_map`](../../data-types.md) | Label in the edit form ||
 || **LIST_COLUMN_LABEL**
@@ -528,7 +581,7 @@ Returned when the field type is custom ||
     || **DYNAMIC_...**
     [`boolean`][1] | Whether binding to a specific SPA is enabled.
 
-    Each such field has the form: `DYNAMIC_{entityTypeId}`, where `entityTypeId` is the identifier of the SPA to which the binding is enabled ||
+    Each such field has the form: `DYNAMIC_{entityTypeId}`, where `entityTypeId` is the identifier of the type of SPA to which the binding is enabled ||
     |#
 
 - money
@@ -588,9 +641,9 @@ Returned when the field type is custom ||
     || **LIST_HEIGHT**
     [`integer`][1] | Maximum height for display in the list ||
     || **MAX_SHOW_SIZE**
-    [`integer`][1] | Maximum allowable size for display in the list (0 — no limit) ||
+    [`integer`][1] | Maximum allowed size for display in the list (0 — no limit) ||
     || **MAX_ALLOWED_SIZE**
-    [`integer`][1] | Maximum allowable file size for upload (0 — do not check) ||
+    [`integer`][1] | Maximum allowed file size for upload (0 — do not check) ||
     || **EXTENSIONS**
     [`string[]`][1] | Allowed extensions ||
     || **TARGET_BLANK**
@@ -636,7 +689,7 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `-` | `Access denied` | Occurs when:
 - the user does not have administrative rights
-- the user tries to access a custom field not linked to contacts ||
+- the user attempts to access a custom field not linked to contacts ||
 || `-` | `ID is not defined or invalid` | The provided `id` is less than or equal to zero, or is not provided at all ||
 || `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` was not found ||
 |#

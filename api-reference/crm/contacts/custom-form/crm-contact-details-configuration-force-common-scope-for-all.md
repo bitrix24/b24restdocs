@@ -1,16 +1,16 @@
-# Set a Common Detail Form for All Users crm.contact.details.configuration.forceCommonScopeForAll
+# Set Common Contact Card for All Users crm.contact.details.configuration.forceCommonScopeForAll
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 > 
 > Who can execute the method: Administrator
 
-This method allows you to enforce a common contact detail form for all users.
+This method allows you to forcibly set a common contact card for all users.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,6 +37,55 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'crm.contact.details.configuration.forceCommonScopeForAll',
+            {}
+        );
+        
+        const result = response.getData().result;
+        result.error()
+            ? console.error(result.error())
+            : console.info(result)
+        ;
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.details.configuration.forceCommonScopeForAll',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling crm.contact.details.configuration.forceCommonScopeForAll: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.contact.details.configuration.forceCommonScopeForAll',
         {},
@@ -49,7 +98,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -69,7 +118,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -96,13 +145,13 @@ HTTP Status: **200**
 
 Returns `true` on success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

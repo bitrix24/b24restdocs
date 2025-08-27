@@ -50,38 +50,28 @@ Delete the custom field with `id = 432`
 - JS
 
     ```js
-    BX24.callMethod(
-        'crm.contact.userfield.delete',
-        {
-            id: 432,
-        },
-        (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data())
-            ;
-        },
-    );
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.userfield.delete',
+    		{
+    			id: 432,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.contact.userfield.delete',
-        [
-            'id' => 432
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php       
     try {
@@ -98,6 +88,40 @@ Delete the custom field with `id = 432`
     } catch (Throwable $e) {
         print("An error occurred: " . $e->getMessage());
     }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'crm.contact.userfield.delete',
+        {
+            id: 432,
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.contact.userfield.delete',
+        [
+            'id' => 432
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
@@ -149,7 +173,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `ID is not defined or invalid` | The provided `id` is either less than or equal to zero or not provided at all ||
+|| `-` | `ID is not defined or invalid` | The provided `id` is either less than or equal to zero, or not provided at all ||
 || `-` | `Access denied` | Occurs when:
 - the user does not have administrative rights
 - the user attempts to delete a custom field not associated with contacts ||

@@ -1,4 +1,4 @@
-# Delete Company from Specified Contact crm.contact.company.delete
+# Remove a company from the specified contact crm.contact.company.delete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -22,10 +22,10 @@ The identifier can be obtained using the methods [crm.contact.list](../crm-conta
 
 Contains a single key `COMPANY_ID` ||
 || **fields.COMPANY_ID***
-[`integer`][1] | Identifier of the company to be removed from the bindings ||
+[`integer`][1] | Identifier of the company that needs to be removed from the bindings ||
 |#
 
-{% note info "Remove Primary Binding" %}
+{% note info "Remove primary binding" %}
 
 If the primary binding is removed, the first available binding will become the new primary binding.
 
@@ -48,7 +48,7 @@ Example of removing the contact-company link, where:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":54,"fields":{"COMPANY_ID":32}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.company.delete
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/crm.contact.company.delete
     ```
 
 - cURL (OAuth)
@@ -62,6 +62,65 @@ Example of removing the contact-company link, where:
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.company.delete',
+    		{
+    			id: 54,
+    			fields: {
+    				COMPANY_ID: 32,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.company.delete',
+                [
+                    'id'     => 54,
+                    'fields' => [
+                        'COMPANY_ID' => 32,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting company from contact: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -81,7 +140,7 @@ Example of removing the contact-company link, where:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -105,7 +164,7 @@ Example of removing the contact-company link, where:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -128,16 +187,16 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`boolean`][1] | Root element of the response. Contains:
-- `true` — on success
-- `false` — on failure (most likely the company you are trying to remove is not linked to the contact)
+- `true` — in case of success
+- `false` — in case of failure (most likely the company you are trying to remove is not linked to the contact)
 ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`][1] | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -153,10 +212,10 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `-`     | `The parameter 'ownerEntityID' is invalid or not defined` | The provided `id` is less than 0 ||
-|| `-`     | `The parameter 'fields' must be array` | The `fields` parameter is not an object ||
+|| `-`     | `The parameter 'fields' must be array` | An object was not provided in `fields` ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit contacts ||
 || `-`     | `Not found` | Contact with the provided `id` was not found ||
-|| `-`     | `The parameter 'fields' is not valid` | May occur due to several reasons:
+|| `-`     | `The parameter 'fields' is not valid` | Can occur for several reasons:
 - if the required parameter `fields.COMPANY_ID` is not provided
 - if the provided parameter `fields.COMPANY_ID` is less than or equal to 0 ||
 |#

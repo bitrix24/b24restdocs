@@ -6,7 +6,7 @@
 
 The method `crm.contact.userfield.list` returns a list of custom fields for contacts based on a filter.
 
-It also outputs information about these fields, but without the name assigned by the user, only the internal identifier. If you need the custom field name, use the method [crm.contact.list](../crm-contact-list.md), which outputs both standard and custom fields.
+It also outputs information about these fields, but without the name assigned to the field by the user, only the internal identifier. If you need the user-defined field name, use the method [crm.contact.list](../crm-contact-list.md), which outputs both standard and custom fields.
 
 ## Method Parameters
 
@@ -66,7 +66,7 @@ By default:
 ||
 |#
 
-### Filterable Fields {#filterable}
+### Available Fields for Filtering {#filterable}
 
 #|
 || **Name**
@@ -104,21 +104,21 @@ By default:
 || **MANDATORY**
 [`boolean`][1] | Is the custom field mandatory (`Y` — yes / `N` — no) ||
 || **SHOW_FILTER**
-[`char`][1] | Should it be shown in the list filter. Possible values:
+[`char`][1] | Show in the list filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
 - `S` — substring
 ||
 || **SHOW_IN_LIST**
-[`boolean`][1] | Should it be shown in the list (`Y` — yes / `N` — no).
+[`boolean`][1] | Show in the list (`Y` — yes / `N` — no).
 
 This parameter does not affect anything within `crm`
 ||
 || **EDIT_IN_LIST**
 [`boolean`][1] | Allow user editing (`Y` — yes / `N` — no) ||
 || **IS_SEARCHABLE**
-[`boolean`][1] | Are the field values included in the search (`Y` — yes / `N` — no)
+[`boolean`][1] | Are field values included in the search (`Y` — yes / `N` — no)
 
 This parameter does not affect anything within `crm`
 ||
@@ -134,7 +134,7 @@ This parameter does not affect anything within `crm`
 
 ## Code Examples
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 Get a list of custom fields that:
 1. are multiple
@@ -168,6 +168,118 @@ Set the following sort order for this selection: field type and sort index in as
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.contact.userfield.list',
+        {
+          filter: {
+            MULTIPLE: "Y",
+            MANDATORY: "Y",
+            LANG: "de",
+          },
+          order: {
+            USER_TYPE_ID: "ASC",
+            SORT: "ASC",
+          },
+        },
+        (progress) => { 
+          result.error()
+            ? console.error(result.error())
+            : console.info(result.data())
+          ;
+        }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.contact.userfield.list', {
+        filter: {
+          MULTIPLE: "Y",
+          MANDATORY: "Y",
+          LANG: "de",
+        },
+        order: {
+          USER_TYPE_ID: "ASC",
+          SORT: "ASC",
+        },
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('crm.contact.userfield.list', {
+        filter: {
+          MULTIPLE: "Y",
+          MANDATORY: "Y",
+          LANG: "de",
+        },
+        order: {
+          USER_TYPE_ID: "ASC",
+          SORT: "ASC",
+        },
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.userfield.list',
+                [
+                    'filter' => [
+                        'MULTIPLE' => 'Y',
+                        'MANDATORY' => 'Y',
+                        'LANG' => 'de',
+                    ],
+                    'order' => [
+                        'USER_TYPE_ID' => 'ASC',
+                        'SORT' => 'ASC',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching user fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.contact.userfield.list',
         {
@@ -190,7 +302,7 @@ Set the following sort order for this selection: field type and sort index in as
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -395,7 +507,7 @@ HTTP status: **200**
 || **result**
 [`userfield[]`](crm-contact-userfield-get.md#userfield) | Root element of the response, contains a list of custom fields.
 
-The structure of an individual custom field is identical to [`userfield`](./crm-contact-userfield-get.md#userfield) except that the fields: `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned either as `string` when passing `filter.LANG`, or not returned at all ||
+The structure of an individual custom field is identical to [`userfield`](./crm-contact-userfield-get.md#userfield) except that the fields: `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned either as `string` when passing `filter.LANG`, or are not returned at all ||
 || **total**
 [`integer`][1] | Number of found custom fields ||
 || **time**

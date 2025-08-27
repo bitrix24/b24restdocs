@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user
 
-The method returns the description of contact fields, including custom fields.
+The method returns the description of contact fields, including custom ones.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -24,6 +24,7 @@ No parameters.
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.fields
     ```
   
+
 - cURL (OAuth)
 
     ```bash
@@ -37,6 +38,53 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info('Contact fields', result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Contact fields: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching contact fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "crm.contact.fields",
         {},
@@ -44,12 +92,12 @@ No parameters.
             if(result.error())
                 console.error(result.error());
             else
-                console.info("Contact Fields", result.data());
+                console.info("Contact fields", result.data());
         }
     );    
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -68,7 +116,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -191,7 +239,7 @@ HTTP Status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Address (Line 2)"
+        "title": "Address (line 2)"
         },
         "ADDRESS_CITY": {
         "type": "string",
@@ -227,7 +275,7 @@ HTTP Status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "State"
+        "title": "Province"
         },
         "ADDRESS_COUNTRY": {
         "type": "string",
@@ -281,7 +329,7 @@ HTTP Status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Included in Contact Export"
+        "title": "Participates in Contact Export"
         },
         "HAS_PHONE": {
         "type": "char",
@@ -549,11 +597,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 ||**ID**
-[`integer`](../../data-types.md) | Contact identifier. Read-only ||
+[`integer`](../../data-types.md) | Identifier of the contact. Read-only ||
 ||**HONORIFIC**
 [`crm_status`](../data-types.md) | Salutation.
 
-You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID=HONORIFIC` ||
+You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=HONORIFIC` ||
 ||**NAME**
 [`string`](../../data-types.md) | First Name ||
 ||**SECOND_NAME**
@@ -567,11 +615,11 @@ You can get the values of the directory using the method [crm.status.list](../st
 ||**TYPE_ID**
 [`crm_status`](../data-types.md)| Contact Type.
 
-You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID=CONTACT_TYPE` ||
+You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=CONTACT_TYPE` ||
 ||**SOURCE_ID**
 [`crm_status`](../data-types.md) | Source.
 
-You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID=SOURCE`||
+You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=SOURCE`||
 ||**SOURCE_DESCRIPTION**
 [`string`](../../data-types.md) | Additional Source Information ||
 ||**POST**
@@ -583,9 +631,9 @@ You can get the values of the directory using the method [crm.status.list](../st
 - `Y` — yes
 - `N` — no 
 
-Considered in the access permission work for roles with "All Open" access level ||
+Considered in the operation of access permissions for roles with "All Open" access level ||
 ||**EXPORT**
-[`char`](../../data-types.md) | Included in contact export. Possible values:
+[`char`](../../data-types.md) | Participates in contact export. Possible values:
 - `Y` — yes
 - `N` — no ||
 ||**HAS_PHONE**
@@ -619,7 +667,7 @@ Read-only ||
 ||**COMPANY_ID**
 [`crm_company`](../data-types.md) | Main company of the contact ||
 ||**COMPANY_IDS**
-[`crm_company`](../data-types.md) | Contact association with companies. Multiple. 
+[`crm_company`](../data-types.md) | Link of the contact to companies. Multiple. 
 
 In the methods [`crm.contact.update`](./crm-contact-update.md) and [`crm.contact.add`](./crm-contact-add.md) it is used to submit an array of companies. 
 
@@ -629,7 +677,7 @@ In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get
 ||**FACE_ID**
 [`integer`](../../data-types.md) | Link to faces from the FaceID module. Read-only ||
 ||**UTM_SOURCE**
-[`string`](../../data-types.md) | Advertising system (Google Ads, Facebook Ads, etc.) ||
+[`string`](../../data-types.md) | Advertising system (Google Ads, etc.) ||
 ||**UTM_MEDIUM**
 [`string`](../../data-types.md) | Traffic type. Possible values:
 - `CPC` — ads 
@@ -653,17 +701,17 @@ In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get
 ||**IM**
 [`crm_multifield`](../data-types.md) | Messengers. Multiple ||
 ||**LINK**
-[`crm_multifield`](../data-types.md) | Links. Multiple. Service. ||
+[`crm_multifield`](../data-types.md) | Links. Multiple. System field. ||
 ||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`. 
 
-Depending on the account settings, contacts may have a set of custom fields of defined types. 
+Depending on the account settings, contacts may have a set of custom fields of specific types. 
 
 You can add a custom field to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md)  ||
 ||**PARENT_ID_...** | Relationship fields. 
 
-If there are SPAs related to contacts in the account, for each such SPA there is a field that stores the relationship between this SPA and the contact. The field itself stores the identifier of the element of that SPA. 
+If there are smart processes related to contacts in the account, for each such smart process there is a field that stores the relationship between this smart process and the contact. The field itself stores the identifier of the element of that smart process. 
 
-For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the element of this SPA related to the current contact ||
+For example, the field `PARENT_ID_153` — relationship with the smart process `entityTypeId=153`. It stores the identifier of the element of this smart process associated with the current contact ||
 |#
 
 **Fields for External Data Sources**
@@ -690,7 +738,7 @@ If the data was imported and not changed in the external system, such data can b
 
 **Deprecated Fields**
 
-Address fields in the contact are deprecated and are only used for compatibility mode. For working with addresses, use [requisites](../requisites/index.md).
+Address fields in the contact are deprecated and are used only in compatibility mode. To work with the address, use [requisites](../requisites/index.md).
 
 #|
 || **Name**

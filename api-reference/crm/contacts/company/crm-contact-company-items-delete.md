@@ -8,7 +8,7 @@ The method `crm.contact.company.items.delete` clears the set of companies associ
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,9 +21,9 @@ The identifier can be obtained using the methods [crm.contact.list](../crm-conta
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../../_includes/examples.md) %}
 
-Example of removing all linked companies from a contact with `id = 54`
+Example of deleting all linked companies for a contact with `id = 54`
 
 {% list tabs %}
 
@@ -50,6 +50,59 @@ Example of removing all linked companies from a contact with `id = 54`
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.company.items.delete',
+    		{
+    			id: 54,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.company.items.delete',
+                [
+                    'id' => 54,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting contact company item: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.contact.company.items.delete',
         {
@@ -64,7 +117,7 @@ Example of removing all linked companies from a contact with `id = 54`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -109,7 +162,7 @@ HTTP status: **200**
 || **result**
 [`boolean`][1] | Root element of the response. Contains `true` in case of success ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`][1] | Information about the request execution time ||
 |#
 
 ## Error Handling

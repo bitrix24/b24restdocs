@@ -1,14 +1,14 @@
-# Set a set of companies associated with the specified contact crm.contact.company.items.set
+# Set the set of companies associated with the specified contact crm.contact.company.items.set
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user with "edit" access permission for contacts
 
-The method `crm.contact.company.items.set` sets a set of companies associated with the specified contact.
+The method `crm.contact.company.items.set` sets the set of companies associated with the specified contact.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,9 +22,9 @@ The identifier can be obtained using the methods [crm.contact.list](../crm-conta
 [`object[]`][1] | A set of objects that describe the associated companies for the contact. The structure of an individual binding object is described [below](#contact_company_binding) ||
 |#
 
-### Structure of the binding object {#contact_company_binding}
+### Structure of the Binding Object {#contact_company_binding}
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Parameter Note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -40,7 +40,7 @@ The identifier can be obtained using the method [crm.item.list](../../universal/
 
 If there is no binding with `IS_PRIMARY = Y`, it will be set for the first binding in `items`.
 
-If multiple bindings are provided with `IS_PRIMARY = Y`, the first binding with `IS_PRIMARY = Y` will be considered primary.
+If multiple bindings are provided with `IS_PRIMARY = Y`, the first binding with `IS_PRIMARY = Y` will be considered primary
 ||
 || **SORT**
 [`integer`][1] | Sort index.
@@ -52,7 +52,7 @@ If an existing binding is provided without the `SORT` parameter, the default val
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../../_includes/examples.md) %}
 
 Set the following associated companies for the contact with `id = 82`:
 - company with `id = 8`, make it primary and set `SORT = 100`
@@ -84,6 +84,91 @@ Set the following associated companies for the contact with `id = 82`:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.company.items.set',
+    		{
+    			id: 82,
+    			items: [
+    				{
+    					COMPANY_ID: 8,
+    					IS_PRIMARY: "Y",
+    					SORT: 100,
+    				},
+    				{
+    					COMPANY_ID: 9,
+    					SORT: 200,
+    				},
+    				{
+    					COMPANY_ID: 10,
+    					SORT: 400,
+    				}
+    			],
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.company.items.set',
+                [
+                    'id'    => 82,
+                    'items' => [
+                        [
+                            'COMPANY_ID' => 8,
+                            'IS_PRIMARY' => 'Y',
+                            'SORT'       => 100,
+                        ],
+                        [
+                            'COMPANY_ID' => 9,
+                            'SORT'       => 200,
+                        ],
+                        [
+                            'COMPANY_ID' => 10,
+                            'SORT'       => 400,
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+            // Your logic for processing data
+            processData($result->data());
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting company items for contact: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.contact.company.items.set',
         {
@@ -113,7 +198,7 @@ Set the following associated companies for the contact with `id = 82`:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -149,7 +234,7 @@ Set the following associated companies for the contact with `id = 82`:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -179,7 +264,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

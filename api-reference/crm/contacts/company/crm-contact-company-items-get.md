@@ -1,14 +1,14 @@
-# Get a Set of Companies Associated with the Specified Contact crm.contact.company.items.get
+# Get a set of companies associated with the specified contact crm.contact.company.items.get
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with "read" access to contacts
+> Who can execute the method: any user with "read" access permission for contacts
 
 The method `crm.contact.company.items.get` returns a set of companies associated with the specified contact.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ The identifier can be obtained using the methods [crm.contact.list](../crm-conta
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 Example of retrieving all associated companies for a contact with `id = 54`
 
@@ -50,6 +50,59 @@ Example of retrieving all associated companies for a contact with `id = 54`
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.company.items.get',
+    		{
+    			id: 54,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.company.items.get',
+                [
+                    'id' => 54,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting contact company items: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.contact.company.items.get',
         {
@@ -64,7 +117,7 @@ Example of retrieving all associated companies for a contact with `id = 54`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -85,7 +138,7 @@ Example of retrieving all associated companies for a contact with `id = 54`
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -150,7 +203,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {

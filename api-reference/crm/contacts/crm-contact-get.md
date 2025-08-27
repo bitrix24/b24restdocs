@@ -50,38 +50,28 @@ Get contact with `id = 23`
 - JS
 
     ```js
-    BX24.callMethod(
-        'crm.contact.get',
-        {
-            id: 23,
-        },
-        (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data())
-            ;
-        },
-    );
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.get',
+    		{
+    			id: 23,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
     ```
 
 - PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.contact.get',
-        [
-            'ID' => 23
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
 
     ```php        
     try {
@@ -102,6 +92,40 @@ Get contact with `id = 23`
     }
     ```
 
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'crm.contact.get',
+        {
+            id: 23,
+        },
+        (result) => {
+            result.error()
+                ? console.error(result.error())
+                : console.info(result.data())
+            ;
+        },
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.contact.get',
+        [
+            'ID' => 23
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -113,7 +137,7 @@ HTTP status: **200**
     "result": {
         "ID": "43",
         "POST": "Administrator",
-        "COMMENTS": "\nExample comment within the contact\n\n[B]Bold text[\/B]\n[I]Italic[\/I]\n[U]Underlined[\/U]\n[S]Strikethrough[\/S]\n[B][I][U][S]Mix[\/S][\/U][\/I][\/B]\n\n[LIST]\n[*]List item #1\n[*]List item #2\n[*]List item #3\n[\/LIST]\n\n[LIST=1]\n[*]Numbered list item #1\n[*]Numbered list item #2\n[*]Numbered list item #3\n[\/LIST]\n",
+        "COMMENTS": "\nExample comment inside the contact\n\n[B]Bold text[\/B]\n[I]Italic[\/I]\n[U]Underlined[\/U]\n[S]Strikethrough[\/S]\n[B][I][U][S]Mix[\/S][\/U][\/I][\/B]\n\n[LIST]\n[*]List item #1\n[*]List item #2\n[*]List item #3\n[\/LIST]\n\n[LIST=1]\n[*]Numbered list item #1\n[*]Numbered list item #2\n[*]Numbered list item #3\n[\/LIST]\n",
         "HONORIFIC": "HNR_EN_1",
         "NAME": "John",
         "SECOND_NAME": "Doe",
@@ -245,15 +269,15 @@ HTTP status: **200**
 - `Y` — yes
 - `N` — no ||
 || **HAS_PHONE**
-[`boolean`][1] | Whether a phone number is provided. Possible values:
+[`boolean`][1] | Whether a phone is set. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_EMAIL**
-[`boolean`][1] | Whether an e-mail is provided. Possible values:
+[`boolean`][1] | Whether an e-mail is set. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_IMOL**
-[`boolean`][1] | Whether an open channel is provided. Possible values:
+[`boolean`][1] | Whether an open channel is set. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **DATE_CREATE**
@@ -277,7 +301,7 @@ HTTP status: **200**
 || **LAST_ACTIVITY_BY**
 [`user`][1] | Who performed the last activity in the timeline ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, etc.) ||
+[`string`][1] | Advertising system (Google Ads, Facebook Ads, etc.) ||
 || **UTM_MEDIUM**
 [`string`][1] | Type of traffic. Possible values:
 - `CPC` — ads
@@ -300,7 +324,7 @@ HTTP status: **200**
 [`crm_multifield[]`](../data-types.md) | Links. Service field ||
 |#
 
-**Fields for connection with external data sources**
+**Fields for external data source connections**
 
 If the contact was created by an external system, then:
 - the field `ORIGINATOR_ID` stores the string identifier of that system
@@ -320,7 +344,7 @@ If the contact was created by an external system, then:
 
 **Deprecated Fields**
 
-Address fields in the contact are deprecated and are only used in compatibility mode. To work with the address, use [details](../requisites/index.md).
+Address fields in the contact are deprecated and are only used for compatibility mode. To work with the address, use [details](../requisites/index.md).
 
 #|
 || **Name**

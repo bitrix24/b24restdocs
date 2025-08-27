@@ -10,7 +10,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 Get the list of fields for the contact-company relationship
 
@@ -39,6 +39,55 @@ Get the list of fields for the contact-company relationship
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.company.fields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.company.fields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching contact company fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.contact.company.fields',
         {},
@@ -51,7 +100,7 @@ Get the list of fields for the contact-company relationship
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -70,7 +119,7 @@ Get the list of fields for the contact-company relationship
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -120,7 +169,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | An object in the format:
+[`object`][1] | Object in the format:
 ```
 {
     field_1: value_1,
@@ -131,7 +180,7 @@ HTTP Status: **200**
 ```
 
 where:
-- `field_n` — field of the entity
+- `field_n` — field of the element
 - `value_n` — information about the field in the format [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
 || **time**
 [`time`][1] | Information about the request execution time ||

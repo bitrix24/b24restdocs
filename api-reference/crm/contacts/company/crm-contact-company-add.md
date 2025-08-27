@@ -45,7 +45,7 @@ The list of available fields is described [below](#parameter-fields). ||
 || **Name**
 `type` | **Description** ||
 || **COMPANY_ID***
-[`crm_entity`][2] | Identifier of the company to be linked to the contact.
+[`crm_entity`][2] | Identifier of the company that will be linked to the contact.
 
 The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **IS_PRIMARY**
@@ -53,15 +53,14 @@ The identifier can be obtained using the method [crm.item.list](../../universal/
 - `Y` — yes
 - `N` — no
 
-For the first added element, `IS_PRIMARY` defaults to `Y`.
+For the first added element, `IS_PRIMARY` is `Y` by default.
 
-Passing `IS_PRIMARY = Y` for a new and non-first link overrides the existing primary link ||
+Passing `IS_PRIMARY = Y` for a new and not first link overrides the existing primary link ||
 || **SORT**
 [`integer`][1] | Sort index.
 
-Defaults to `i + 10`, where `i` is the maximum sort index of existing links for the current contact or `0` if none exist ||
+By default, `i + 10`, where `i` is the maximum sort index of existing links for the current contact or `0` if there are none ||
 |#
-
 
 ## Code Examples
 
@@ -96,6 +95,69 @@ Example of adding a contact-company link, where:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.company.add',
+    		{
+    			id: 54,
+    			fields: {
+    				COMPANY_ID: 32,
+    				IS_PRIMARY: "Y",
+    				SORT: 1000,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.company.add',
+                [
+                    'id' => 54,
+                    'fields' => [
+                        'COMPANY_ID' => 32,
+                        'IS_PRIMARY' => 'Y',
+                        'SORT' => 1000,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding contact company: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'crm.contact.company.add',
         {
@@ -115,7 +177,7 @@ Example of adding a contact-company link, where:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -188,8 +250,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `The parameter 'ownerEntityID' is invalid or not defined` | The provided `id` is less than 0 or not provided at all ||
-|| `-`     | `The parameter 'fields' must be array` | The `fields` parameter is not an object ||
+|| `-`     | `The parameter 'ownerEntityID' is invalid or not defined` | The `id` is less than 0 or not provided at all ||
+|| `-`     | `The parameter 'fields' must be array` | The `fields` is not an object ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit contacts ||
 || `-`     | `Not found` | Contact with the provided `id` not found ||
 || `-`     | `The parameter 'fields' is not valid` | Can occur for several reasons:

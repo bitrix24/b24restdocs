@@ -14,7 +14,7 @@ To get a list of companies associated with a contact, use the method [`crm.conta
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`][1] | A list of fields that must be filled in the contacts in the selection.
+[`string[]`][1] | A list of fields that should be filled for contacts in the selection.
 
 You can use masks in the selection:
 - `'*'` — to select all fields (excluding custom and multiple fields)
@@ -50,8 +50,8 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for a substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
@@ -60,7 +60,7 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-The fields Phone (`PHONE`), Email (`EMAIL`), Website (`WEB`), Messengers (`IM`), Links (`LINK`) — are multiple. Filters for them only work on exact matches.
+The fields Phone(`PHONE`), Email(`EMAIL`), Website(`WEB`), Messengers(`IM`), Links(`LINK`) — are multiple. Filters for them only work on exact matches.
 
 Also, the `LIKE` filter does not work with fields of type `crm_status`, `crm_contact`, `crm_company` — for example, Contact Type (`TYPE_ID`), Salutation (`HONORIFIC`), etc.
 
@@ -79,9 +79,9 @@ You can find the list of available fields for filtering using the method [`crm.c
 ```
 where:
 - `field_n` — the name of the field by which the selection of contacts will be sorted
-- `value_n` — a `string` value equal to:
-    - `ASC` — ascending order
-    - `DESC` — descending order
+- `value_n` — a `string` value, equal to:
+    - `ASC` — ascending sort
+    - `DESC` — descending sort
 
 You can find the list of available fields for sorting using the method [`crm.contact.fields`](crm-contact-fields.md)
 ||
@@ -110,17 +110,17 @@ Get a list of contacts where:
 3. first name or last name starts with "I"
 4. are participating in export
 5. e-mail equals 'special-for@example.com'
-6. the responsible person's ID is either 1 or 6
+6. the responsible ID is either 1 or 6
 7. created less than 6 months ago
 
 Set the following sort order for this selection: first name and last name in ascending order.
 
-For clarity, select only the necessary fields:
+To make it clear, select only the necessary fields:
 - Contact ID
 - First Name
 - Last Name
 - E-mail
-- Participating in Export
+- Participates in export
 - Responsible
 - Creation Date
 
@@ -147,6 +147,219 @@ For clarity, select only the necessary fields:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const sixMonthAgo = new Date();
+    sixMonthAgo.setMonth(new Date().getMonth() - 6);
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.contact.list',
+        {
+          filter: {
+            "SOURCE_ID": "CRM_FORM",
+            "!=NAME": "",
+            "!=LAST_NAME": "",
+            "0": {
+              "LOGIC": "OR",
+              "0": {
+                "=%NAME": "I%",
+              },
+              "1": {
+                "=%LAST_NAME": "I%",
+              },
+            },
+            "EMAIL": "special-for@example.com",
+            "@ASSIGNED_BY_ID": [1, 6],
+            "IMPORT": "Y",
+            ">=DATE_CREATE": sixMonthAgo.toISOString(),
+          },
+          order: {
+            LAST_NAME: "ASC",
+            NAME: "ASC",
+          },
+          select: [
+            "ID",
+            "NAME",
+            "LAST_NAME",
+            "EMAIL",
+            "EXPORT",
+            "ASSIGNED_BY_ID",
+            "DATE_CREATE",
+          ],
+        },
+        (result) => {
+          result.error()
+            ? console.error(result.error())
+            : console.info(result.data())
+          ;
+        }
+      );
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    const sixMonthAgo = new Date();
+    sixMonthAgo.setMonth(new Date().getMonth() - 6);
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.contact.list', {
+        filter: {
+          "SOURCE_ID": "CRM_FORM",
+          "!=NAME": "",
+          "!=LAST_NAME": "",
+          "0": {
+            "LOGIC": "OR",
+            "0": {
+              "=%NAME": "I%",
+            },
+            "1": {
+              "=%LAST_NAME": "I%",
+            },
+          },
+          "EMAIL": "special-for@example.com",
+          "@ASSIGNED_BY_ID": [1, 6],
+          "IMPORT": "Y",
+          ">=DATE_CREATE": sixMonthAgo.toISOString(),
+        },
+        order: {
+          LAST_NAME: "ASC",
+          NAME: "ASC",
+        },
+        select: [
+          "ID",
+          "NAME",
+          "LAST_NAME",
+          "EMAIL",
+          "EXPORT",
+          "ASSIGNED_BY_ID",
+          "DATE_CREATE",
+        ],
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) {
+          console.log('Entity:', entity);
+        }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    const sixMonthAgo = new Date();
+    sixMonthAgo.setMonth(new Date().getMonth() - 6);
+    
+    try {
+      const response = await $b24.callMethod('crm.contact.list', {
+        filter: {
+          "SOURCE_ID": "CRM_FORM",
+          "!=NAME": "",
+          "!=LAST_NAME": "",
+          "0": {
+            "LOGIC": "OR",
+            "0": {
+              "=%NAME": "I%",
+            },
+            "1": {
+              "=%LAST_NAME": "I%",
+            },
+          },
+          "EMAIL": "special-for@example.com",
+          "@ASSIGNED_BY_ID": [1, 6],
+          "IMPORT": "Y",
+          ">=DATE_CREATE": sixMonthAgo.toISOString(),
+        },
+        order: {
+          LAST_NAME: "ASC",
+          NAME: "ASC",
+        },
+        select: [
+          "ID",
+          "NAME",
+          "LAST_NAME",
+          "EMAIL",
+          "EXPORT",
+          "ASSIGNED_BY_ID",
+          "DATE_CREATE",
+        ],
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) {
+        console.log('Entity:', entity);
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $sixMonthAgo = new DateTime();
+        $sixMonthAgo->setDate((new DateTime())->getMonth() - 6);
+    
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.list',
+                [
+                    'filter' => [
+                        'SOURCE_ID'      => 'CRM_FORM',
+                        '!=NAME'         => '',
+                        '!=LAST_NAME'    => '',
+                        '0'              => [
+                            'LOGIC'    => 'OR',
+                            '0'        => [
+                                '=%NAME'     => 'I%',
+                            ],
+                            '1'        => [
+                                '=%LAST_NAME' => 'I%',
+                            ],
+                        ],
+                        'EMAIL'          => 'special-for@example.com',
+                        '@ASSIGNED_BY_ID' => [1, 6],
+                        'IMPORT'         => 'Y',
+                        '>=DATE_CREATE'  => $sixMonthAgo->format('Y-m-d\TH:i:s'),
+                    ],
+                    'order'  => [
+                        'LAST_NAME' => 'ASC',
+                        'NAME'      => 'ASC',
+                    ],
+                    'select' => [
+                        'ID',
+                        'NAME',
+                        'LAST_NAME',
+                        'EMAIL',
+                        'EXPORT',
+                        'ASSIGNED_BY_ID',
+                        'DATE_CREATE',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching contact list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     const sixMonthAgo = new Date();
@@ -196,7 +409,7 @@ For clarity, select only the necessary fields:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -248,7 +461,7 @@ For clarity, select only the necessary fields:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -356,7 +569,7 @@ HTTP Status: **200**
 
 The fields of an individual contact are configured by the `select` parameter ||
 || **total**
-[`integer`][1] | The total number of found contacts based on the specified conditions ||
+[`integer`][1] | The total number of contacts found based on the specified conditions ||
 || **next**
 [`integer`][1] | Contains the value that should be passed in the next request in the `start` parameter to get the next batch of data.
 
@@ -367,7 +580,7 @@ The `next` parameter appears in the response if the number of elements matching 
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

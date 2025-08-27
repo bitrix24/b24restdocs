@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with the "add|import" access permission for contacts
+> Who can execute the method: any user with "add|import" access permission for contacts
 
 The method `crm.contact.add` creates a new contact.
 
@@ -31,7 +31,7 @@ The list of available fields is described [below](#parameter-fields).
 
 An incorrect field in `fields` will be ignored ||
 || **params**
-[`object`][1] | An object containing a set of additional parameters.
+[`object`][1] | Object containing a set of additional parameters.
 
 The structure and possible values are described [below](#parameter-params) ||
 |#
@@ -74,13 +74,13 @@ Default — the first available source type ||
 || **POST**
 [`string`][1] | Position ||
 || **COMMENTS**
-[`string`][1] | Comment. Supports bb-codes ||
+[`string`][1] | Comment. Supports BB codes ||
 || **OPENED**
 [`boolean`][1] | Is it available to everyone? Possible values:
 - `Y` — yes
 - `N` — no
 
-Default `Y`. The default value can be changed in the CRM settings ||
+Default `Y`. The default value can be changed in CRM settings ||
 || **EXPORT**
 [`boolean`][1] | Is the contact included in the export? Possible values:
 - `Y` — yes
@@ -96,7 +96,7 @@ Default — the identifier of the user calling the method ||
 
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **COMPANY_IDS**
-[`crm_company[]`](../data-types.md) | Array of company identifiers to which the contact is linked.
+[`crm_company[]`](../data-types.md) | Array of identifiers of companies to which the contact is linked.
 
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **UTM_SOURCE**
@@ -123,19 +123,19 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 [`crm_multifield[]`](../data-types.md) | Messenger ||
 || **LINK**
 [`crm_multifield[]`](../data-types.md) | Links. Service field ||
-||**UF_...**  | User fields. For example, `UF_CRM_25534736`. 
+||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`. 
 
-Depending on the account settings, contacts may have a set of user fields of specific types. 
+Depending on the account settings, contacts may have a set of custom fields of specific types. 
 
-You can add a user field to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md) ||
+You can add a custom field to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md) ||
 ||**PARENT_ID_...** | Relationship fields. 
 
-If there are SPAs related to contacts in the account, there is a field for each such SPA that stores the relationship between this SPA and the contact. The field itself stores the identifier of the element of that SPA. 
+If there are SPAs related to contacts in the account, there is a field for each such SPA that stores the relationship between that SPA and the contact. The field itself stores the identifier of the element of that SPA. 
 
-For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the element of this SPA related to the current contact ||
+For example, the field `PARENT_ID_153` — relationship with the SPA `entityTypeId=153`. It stores the identifier of the element of that SPA related to the current contact ||
 |#
 
-**Fields for connections with external data sources**
+**Fields for linking with external data sources**
 
 If the contact is created by an external system, then:
 - the field `ORIGINATOR_ID` stores the string identifier of that system
@@ -150,14 +150,14 @@ If the contact is created by an external system, then:
 || **ORIGIN_ID**
 [`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system. 
 
-If the data was imported and not changed in the external system, such data can be edited in the CRM without fear that the next export will overwrite the data ||
+If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will overwrite the data ||
 || **ORIGIN_VERSION**
 [`string`][1] | Original version ||
 |#
 
 **Import**
 
-The data fields are available for filling when the parameter `IMPORT = 'Y'` is passed in the `params` parameter.
+The fields are available for filling when the parameter `IMPORT = 'Y'` is passed in the `params` parameter.
 
 #|
 || **Name**
@@ -167,8 +167,7 @@ The data fields are available for filling when the parameter `IMPORT = 'Y'` is p
 
 Available when `IMPORT = Y` is passed in `params`.
 
-Cannot be earlier than the creation date of the last created contact
-||
+Cannot be earlier than the creation date of the last created contact ||
 || **DATE_MODIFY**
 [`datetime`][1] | Modification date.
 
@@ -179,12 +178,13 @@ Available when `IMPORT = Y` is passed in `params` ||
 Available when `IMPORT = Y` is passed in `params` ||
 || **MODIFY_BY_ID**
 [`user`][1] | Modified by.
+
 Available when `IMPORT = Y` is passed in `params` ||
 |#
 
 **Deprecated fields**
 
-Address fields in the contact are deprecated and are only used in compatibility mode. To work with the address, use [details](../requisites/index.md).
+Address fields in the contact are deprecated and are only used in compatibility mode. To work with the address, use [requisites](../requisites/index.md).
 
 #|
 || **Name**
@@ -192,7 +192,7 @@ Address fields in the contact are deprecated and are only used in compatibility 
 || **ADDRESS**
 [`string`][1] | Address ||
 || **ADDRESS_2**
-[`string`][1] | Second address line ||
+[`string`][1] | Second line of the address ||
 || **ADDRESS_CITY**
 [`string`][1] | City ||
 || **ADDRESS_POSTAL_CODE**
@@ -224,14 +224,14 @@ Default `N` ||
 [`boolean`][1] | Is import mode enabled? Possible values:
 - `Y` — yes
 
-To pass the value "No", you must either not pass the parameter at all or pass the value `0`, `''`
+To pass the value `No`, you must either not pass the parameter at all or pass the value `0`, `''`
 
-Default "No" ||
+Default `No` ||
 |#
 
 ## Code Examples
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -241,7 +241,7 @@ Default "No" ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FIELDS":{"HONORIFIC":"HNR_EN_1","NAME":"John","SECOND_NAME":"Doe","LAST_NAME":"Smith","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+1234567890","VALUE_TYPE":"WORK"},{"VALUE":"+1987654321","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"john.smith@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"john.smith@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12}}' \
+    -d '{"FIELDS":{"HONORIFIC":"HNR_RU_1","NAME":"John","SECOND_NAME":"Ivanovich","LAST_NAME":"Ivanov","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+12333333555","VALUE_TYPE":"WORK"},{"VALUE":"+15599888666","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"ivanov@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"ivanov@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.contact.add
     ```
 
@@ -251,11 +251,109 @@ Default "No" ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"FIELDS":{"HONORIFIC":"HNR_EN_1","NAME":"John","SECOND_NAME":"Doe","LAST_NAME":"Smith","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+1234567890","VALUE_TYPE":"WORK"},{"VALUE":"+1987654321","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"john.smith@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"john.smith@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12},"auth":"**put_access_token_here**"}' \
+    -d '{"FIELDS":{"HONORIFIC":"HNR_RU_1","NAME":"John","SECOND_NAME":"Ivanovich","LAST_NAME":"Ivanov","PHOTO":{"fileData":"**put_photo_data_here**"},"BIRTHDATE":"11.11.2001","TYPE_ID":"PARTNER","SOURCE_ID":"WEB","SOURCE_DESCRIPTION":"*Additional information about the source*","POST":"Administrator","COMMENTS":"**put_comment_here**","OPENED":"Y","EXPORT":"N","ASSIGNED_BY_ID":6,"COMPANY_ID":12,"COMPANY_IDS":[12,13,15],"UTM_SOURCE":"google","UTM_MEDIUM":"CPC","UTM_CAMPAIGN":"summer_sale","UTM_CONTENT":"header_banner","UTM_TERM":"discount","PHONE":[{"VALUE":"+12333333555","VALUE_TYPE":"WORK"},{"VALUE":"+15599888666","VALUE_TYPE":"HOME"}],"EMAIL":[{"VALUE":"ivanov@example.mailing","VALUE_TYPE":"MAILING"},{"VALUE":"ivanov@example.work","VALUE_TYPE":"WORK"}],"UF_CRM_1720697698689":"Example value of a custom field with type \"String\"","PARENT_ID_1224":12},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.contact.add
     ```
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.contact.add',
+    		{
+    			fields: {
+    				HONORIFIC: "HNR_RU_1",
+    				NAME: "John",
+    				SECOND_NAME: "Ivanovich",
+    				LAST_NAME: "Ivanov",
+    				PHOTO: {
+    					fileData: document.getElementById('photo'),
+    				},
+    				BIRTHDATE: '11.11.2001',
+    				TYPE_ID: "PARTNER",
+    				SOURCE_ID: "WEB",
+    				SOURCE_DESCRIPTION: "*Additional information about the source*",
+    				POST: "Administrator",
+    				COMMENTS: comment,
+    				OPENED: "Y",
+    				EXPORT: "N",
+    				ASSIGNED_BY_ID: 6,
+    				COMPANY_ID: 12,
+    				COMPANY_IDS: [12, 13, 15],
+    				UTM_SOURCE: "google",
+    				UTM_MEDIUM: "CPC",
+    				UTM_CAMPAIGN: "summer_sale",
+    				UTM_CONTENT: "header_banner",
+    				UTM_TERM: "discount",
+    				PHONE: [
+    					{
+    						VALUE: "+12333333555",
+    						VALUE_TYPE: "WORK",
+    					},
+    					{
+    						VALUE: "+15599888666",
+    						VALUE_TYPE: "HOME",
+    					}
+    				],
+    				EMAIL: [
+    					{
+    						VALUE: "ivanov@example.mailing",
+    						VALUE_TYPE: "MAILING",
+    					},
+    					{
+    						VALUE: "ivanov@example.work",
+    						VALUE_TYPE: "WORK",
+    					}
+    				],
+    				UF_CRM_1720697698689: "Example value of a custom field with type \"String\"",
+    				PARENT_ID_1224: 12,
+    			},
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php        
+    try {
+        $fields = [
+            'NAME' => 'John',
+            'LAST_NAME' => 'Doe',
+            'BIRTHDATE' => (new DateTime('1990-01-01'))->format(DateTime::ATOM),
+            'PHONE' => '+1234567890',
+            'EMAIL' => 'john.doe@example.com',
+            'ADDRESS' => '123 Main St',
+            'ADDRESS_CITY' => 'Anytown',
+            'ADDRESS_COUNTRY' => 'USA',
+            'ASSIGNED_BY_ID' => '1',
+            'COMPANY_ID' => '2',
+        ];
+        $params = [
+            'REGISTER_SONET_EVENT' => 'N',
+        ];
+        $result = $serviceBuilder->getCRMScope()
+            ->contact()
+            ->add($fields, $params);
+        print($result->getId());
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
+    ```
+
+- BX24.js
 
     ```js
     const comment = `
@@ -284,10 +382,10 @@ Default "No" ||
         'crm.contact.add',
         {
             fields: {
-                HONORIFIC: "HNR_EN_1",
+                HONORIFIC: "HNR_RU_1",
                 NAME: "John",
-                SECOND_NAME: "Doe",
-                LAST_NAME: "Smith",
+                SECOND_NAME: "Ivanovich",
+                LAST_NAME: "Ivanov",
                 PHOTO: {
                     fileData: document.getElementById('photo'),
                 },
@@ -309,21 +407,21 @@ Default "No" ||
                 UTM_TERM: "discount",
                 PHONE: [
                     {
-                        VALUE: "+1234567890",
+                        VALUE: "+12333333555",
                         VALUE_TYPE: "WORK",
                     },
                     {
-                        VALUE: "+1987654321",
+                        VALUE: "+15599888666",
                         VALUE_TYPE: "HOME",
                     }
                 ],
                 EMAIL: [
                     {
-                        VALUE: "john.smith@example.mailing",
+                        VALUE: "ivanov@example.mailing",
                         VALUE_TYPE: "MAILING",
                     },
                     {
-                        VALUE: "john.smith@example.work",
+                        VALUE: "ivanov@example.work",
                         VALUE_TYPE: "WORK",
                     }
                 ],
@@ -340,7 +438,7 @@ Default "No" ||
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -349,10 +447,10 @@ Default "No" ||
         'crm.contact.add',
         [
             'FIELDS' => [
-                'HONORIFIC' => 'HNR_EN_1',
+                'HONORIFIC' => 'HNR_RU_1',
                 'NAME' => 'John',
-                'SECOND_NAME' => 'Doe',
-                'LAST_NAME' => 'Smith',
+                'SECOND_NAME' => 'Ivanovich',
+                'LAST_NAME' => 'Ivanov',
                 'PHOTO' => [
                     'fileData' => $_FILES['photo']
                 ],
@@ -374,21 +472,21 @@ Default "No" ||
                 'UTM_TERM' => 'discount',
                 'PHONE' => [
                     [
-                        'VALUE' => '+1234567890',
+                        'VALUE' => '+12333333555',
                         'VALUE_TYPE' => 'WORK',
                     ],
                     [
-                        'VALUE' => '+1987654321',
+                        'VALUE' => '+15599888666',
                         'VALUE_TYPE' => 'HOME',
                     ]
                 ],
                 'EMAIL' => [
                     [
-                        'VALUE' => 'john.smith@example.mailing',
+                        'VALUE' => 'ivanov@example.mailing',
                         'VALUE_TYPE' => 'MAILING',
                     ],
                     [
-                        'VALUE' => 'john.smith@example.work',
+                        'VALUE' => 'ivanov@example.work',
                         'VALUE_TYPE' => 'WORK',
                     ]
                 ],
@@ -401,34 +499,6 @@ Default "No" ||
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
-    ```
-
-- PHP (B24PhpSdk)
-
-    ```php        
-    try {
-        $fields = [
-            'NAME' => 'John',
-            'LAST_NAME' => 'Doe',
-            'BIRTHDATE' => (new DateTime('1990-01-01'))->format(DateTime::ATOM),
-            'PHONE' => '+1234567890',
-            'EMAIL' => 'john.doe@example.com',
-            'ADDRESS' => '123 Main St',
-            'ADDRESS_CITY' => 'Anytown',
-            'ADDRESS_COUNTRY' => 'USA',
-            'ASSIGNED_BY_ID' => '1',
-            'COMPANY_ID' => '2',
-        ];
-        $params = [
-            'REGISTER_SONET_EVENT' => 'N',
-        ];
-        $result = $serviceBuilder->getCRMScope()
-            ->contact()
-            ->add($fields, $params);
-        print($result->getId());
-    } catch (Throwable $e) {
-        print('Error: ' . $e->getMessage());
-    }
     ```
 
 {% endlist %}
@@ -479,8 +549,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `Parameter 'fields' must be array` | The `fields` parameter is not an object ||
-|| `-`     | `Parameter 'params' must be array` | The `params` parameter is not an object ||
+|| `-`     | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
+|| `-`     | `Parameter 'params' must be array` | The parameter `params` is not an object ||
 || `-`     | `Access denied` | The user does not have permission to "Add" or "Import" contacts ||
 || `-`     | Disk resource exhausted | ||
 || `ERROR_CORE` | The field `Work e-mail` contains an invalid address | ||
