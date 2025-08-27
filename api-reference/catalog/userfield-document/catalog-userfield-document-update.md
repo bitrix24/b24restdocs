@@ -1,8 +1,8 @@
-# Change Values of Custom Fields for Inventory Management Documents catalog.userfield.document.update
+# Update Values of Custom Fields for Inventory Documents catalog.userfield.document.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -14,7 +14,7 @@ Some data may be missing here — we will complete it shortly.
 - no response in case of error 
 - no examples in other languages
 - add a link to [`userfieldconfig.list`](.)
-
+  
 {% endnote %}
 
 {% endif %}
@@ -27,19 +27,19 @@ Some data may be missing here — we will complete it shortly.
 catalog.userfield.document.update(documentId, fields)
 ```
 
-This method updates the values of custom fields for inventory management documents.
+This method updates the values of custom fields for inventory documents.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description**  ||
 || **documentId** 
-[`integer`](../../data-types.md) | Identifier of the inventory management document. | ||
+[`integer`](../../data-types.md) | Identifier of the inventory document. | ||
 || **fields** 
-[`object`](../../data-types.md)| Fields to be updated and their new values. `documentType` must be specified – [type of inventory management documents](../enum/catalog-enum-get-store-document-types.md). | ||
+[`object`](../../data-types.md)| Fields to be updated and their new values. `documentType` must be specified – [type of inventory documents](../enum/catalog-enum-get-store-document-types.md). | ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ### Example
 
@@ -48,6 +48,66 @@ In the API, field names are represented as `field[Field ID in the database]` –
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.userfield.document.update',
+    		{
+    			documentId: 64,
+    			fields: {
+    				'documentType': 'S',
+    				'field287': 'new value'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.userfield.document.update',
+                [
+                    'documentId' => 64,
+                    'fields'     => [
+                        'documentType' => 'S',
+                        'field287'     => 'new value'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating document user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -71,4 +131,4 @@ In the API, field names are represented as `field[Field ID in the database]` –
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
