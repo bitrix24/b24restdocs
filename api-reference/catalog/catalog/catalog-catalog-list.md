@@ -1,10 +1,10 @@
-# Get a List of Trade Catalogs catalog.catalog.list
+# Get a list of trade catalogs catalog.catalog.list
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns a list of trade catalogs.
+The method returns a list of trade catalogs.
 
 ## Method Parameters
 
@@ -13,14 +13,14 @@ This method returns a list of trade catalogs.
 `type` | **Description** ||
 || **select**
 [`array`](../../data-types.md) | 
-An array of fields to select (see fields of the object [catalog_catalog](../data-types.md#catalog_catalog)).
+An array with the list of fields to select (see the fields of the [catalog_catalog](../data-types.md#catalog_catalog) object).
 
 If the array is not provided or an empty array is passed, all available fields of the trade catalogs will be selected.
 ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering the selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the object [catalog_catalog](../data-types.md#catalog_catalog). 
+Possible values for `field` correspond to the fields of the [catalog_catalog](../data-types.md#catalog_catalog) object.
 
 An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -30,13 +30,13 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
 - `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
 - `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol must be passed in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -46,16 +46,16 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
 - `!` — not equal ||
 || **order**
 [`object`](../../data-types.md) | 
-An object for sorting selected trade catalogs in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+An object for sorting the selected trade catalogs in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the object [catalog_catalog](../data-types.md#catalog_catalog).
+Possible values for `field` correspond to the fields of the [catalog_catalog](../data-types.md#catalog_catalog) object.
 
 Possible values for `order`:
-- `asc` — ascending order
-- `desc` — descending order
+- `asc` — in ascending order
+- `desc` — in descending order
 ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used for pagination control.
+[`integer`](../../data-types.md) | This parameter is used to control pagination.
 
 The page size of results is always static — 50 records.
 
@@ -63,13 +63,13 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` — the number of the desired page
 ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -94,6 +94,154 @@ The formula for calculating the `start` parameter value:
     ```
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    const parameters = {
+        "select": [
+            "iblockId",
+            "iblockTypeId",
+            "id",
+            "lid",
+            "name",
+            "productIblockId",
+            "skuPropertyId",
+            "subscription",
+            "vatId"
+        ],
+        "filter": {
+            ">id": 10,
+            "@vatId": [1, 2],
+            "skuPropertyId": 121,
+        },
+        "order": {
+            "id": "desc",
+        }
+    };
+    
+    try {
+        const response = await $b24.callListMethod(
+            'catalog.catalog.list',
+            parameters,
+            (progress) => { console.log('Progress:', progress) }
+        );
+        const items = response.getData() || [];
+        for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in chunks and efficiently using memory.
+    
+    const parameters = {
+        "select": [
+            "iblockId",
+            "iblockTypeId",
+            "id",
+            "lid",
+            "name",
+            "productIblockId",
+            "skuPropertyId",
+            "subscription",
+            "vatId"
+        ],
+        "filter": {
+            ">id": 10,
+            "@vatId": [1, 2],
+            "skuPropertyId": 121,
+        },
+        "order": {
+            "id": "desc",
+        }
+    };
+    
+    try {
+        const generator = $b24.fetchListMethod('catalog.catalog.list', parameters, 'ID');
+        for await (const page of generator) {
+            for (const entity of page) { console.log('Entity:', entity); }
+        }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    const parameters = {
+        "select": [
+            "iblockId",
+            "iblockTypeId",
+            "id",
+            "lid",
+            "name",
+            "productIblockId",
+            "skuPropertyId",
+            "subscription",
+            "vatId"
+        ],
+        "filter": {
+            ">id": 10,
+            "@vatId": [1, 2],
+            "skuPropertyId": 121,
+        },
+        "order": {
+            "id": "desc",
+        }
+    };
+    
+    try {
+        const response = await $b24.callMethod('catalog.catalog.list', parameters, 0);
+        const result = response.getData().result || [];
+        for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+        console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.catalog.list',
+                [
+                    'select' => [
+                        'iblockId',
+                        'iblockTypeId',
+                        'id',
+                        'lid',
+                        'name',
+                        'productIblockId',
+                        'skuPropertyId',
+                        'subscription',
+                        'vatId',
+                    ],
+                    'filter' => [
+                        '>id'          => 10,
+                        '@vatId'       => [1, 2],
+                        'skuPropertyId' => 121,
+                    ],
+                    'order' => [
+                        'id' => 'desc',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching catalog list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -128,7 +276,7 @@ The formula for calculating the `start` parameter value:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -178,7 +326,7 @@ HTTP status: **200**
                 "iblockTypeId": 0,
                 "id": 24,
                 "lid": "s1",
-                "name": "Trade Catalog CRM (offers)",
+                "name": "Product Catalog CRM (offers)",
                 "productIblockId": 23,
                 "skuPropertyId": 97,
                 "subscription": "N",
@@ -206,11 +354,11 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **catalogs**
-[`catalog_catalog[]`](../data-types.md#catalog_catalog) | An array of objects with information about the selected trade catalogs ||
+[`catalog_catalog[]`](../data-types.md#catalog_catalog) | Array of objects with information about the selected trade catalogs ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -230,9 +378,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read trade catalogs
+|| `200040300010` | Insufficient rights to read trade catalogs
 || 
-|| `200040300030` | Insufficient permissions to read trade catalogs
+|| `200040300030` | Insufficient rights to read trade catalogs
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 
@@ -242,9 +390,6 @@ HTTP status: **400**
 
 ## Continue Learning
 
-- [{#T}](./catalog-catalog-add.md)
-- [{#T}](./catalog-catalog-update.md)
 - [{#T}](./catalog-catalog-get.md)
 - [{#T}](./catalog-catalog-is-offers.md)
-- [{#T}](./catalog-catalog-delete.md)
 - [{#T}](./catalog-catalog-get-fields.md)

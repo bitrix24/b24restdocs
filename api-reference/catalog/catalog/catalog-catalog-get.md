@@ -4,11 +4,11 @@
 >
 > Who can execute the method: administrator
 
-This method returns the values of all fields in the trade catalog.
+The method returns the values of all fields in the trade catalog.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -19,7 +19,7 @@ This method returns the values of all fields in the trade catalog.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,52 @@ This method returns the values of all fields in the trade catalog.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.catalog.get', {
+    			'id': 23
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.catalog.get',
+                [
+                    'id' => 23
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        echo 'Info: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting catalog: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.catalog.get', {
             'id': 23
@@ -60,7 +106,7 @@ This method returns the values of all fields in the trade catalog.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -117,7 +163,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **catalog**
-[`catalog_catalog`](../data-types.md#catalog_catalog) | Object containing information about the trade catalog ||
+[`catalog_catalog`](../data-types.md#catalog_catalog) | Object with information about the trade catalog ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -143,7 +189,7 @@ HTTP Status: **400**
 || 
 || `200040300030` | Insufficient permissions to read the trade catalog
 || 
-|| `100` | Parameter `id` is missing
+|| `100` | Parameter `id` not specified
 || 
 || `0` | Trade catalog with the specified identifier does not exist
 || 
@@ -155,9 +201,6 @@ HTTP Status: **400**
 
 ## Continue Learning
 
-- [{#T}](./catalog-catalog-add.md)
-- [{#T}](./catalog-catalog-update.md)
 - [{#T}](./catalog-catalog-list.md)
 - [{#T}](./catalog-catalog-is-offers.md)
-- [{#T}](./catalog-catalog-delete.md)
 - [{#T}](./catalog-catalog-get-fields.md)

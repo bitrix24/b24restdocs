@@ -46,6 +46,56 @@ The method checks if the trade catalog is a variation catalog.
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'catalog.catalog.isOffers',
+            {
+                id: 23,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.catalog.isOffers',
+                [
+                    'id' => 23,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Info: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error checking if catalog is offers: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "catalog.catalog.isOffers",
         {
@@ -61,7 +111,7 @@ The method checks if the trade catalog is a variation catalog.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -130,9 +180,9 @@ HTTP status: **400**
 || 
 || `200040300030` | Insufficient permissions to read the trade catalog
 || 
-|| `100` | The `id` parameter is missing
+|| `100` | Parameter `id` not specified
 || 
-|| `0` | The trade catalog with the specified identifier does not exist
+|| `0` | Trade catalog with the specified identifier does not exist
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 
@@ -140,7 +190,7 @@ HTTP status: **400**
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](./catalog-catalog-get.md)
 - [{#T}](./catalog-catalog-list.md)
