@@ -1,32 +1,104 @@
-# Get the list of participants for the call crm.calllist.items.get
+# Get the list of call participants crm.calllist.items.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with read access permission for CRM entities
+> Who can execute the method: a user with read access permission to CRM entities
 
 The method `crm.calllist.items.get` returns a list of participants, contacts, or companies, along with the call status.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **LIST_ID***
-[`integer`](../../data-types.md) | Identifier of the call, which can be obtained using the methods [crm.calllist.add](./crm-calllist-add.md) and [crm.calllist.list](./crm-calllist-list.md) ||
+[`integer`](../../data-types.md) | Identifier of the call list, which can be obtained using the methods [crm.calllist.add](./crm-calllist-add.md) and [crm.calllist.list](./crm-calllist-list.md) ||
 || **FILTER**
 [`object`](../../data-types.md) | Filter by the call status of the item: `{ STATUS: "status_code" }`. 
-You can get the status code values using the method [crm.calllist.statuslist](./crm-calllist-statuslist.md) ||
+You can get the status code values using the method [crm.calllist.statuslist](./crm-calllist-statuslist.md)||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+         -H "Content-Type: application/json" \
+         -d '{"LIST_ID":13,"FILTER":{"STATUS":"IN_WORK"}}' \
+         https://**your_bitrix24**/rest/**user_id**/**webhook**/crm.calllist.items.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+         -H "Content-Type: application/json" \
+         -d '{"LIST_ID":13,"FILTER":{"STATUS":"IN_WORK"},"auth":"**put_access_token_here**"}' \
+         https://**your_bitrix24**/rest/crm.calllist.items.get
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"crm.calllist.items.get",
+    		{
+    			LIST_ID: 13,
+    			FILTER: {
+    				STATUS: "IN_WORK"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.calllist.items.get',
+                [
+                    'LIST_ID' => 13,
+                    'FILTER' => [
+                        'STATUS' => 'IN_WORK'
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting call list items: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -47,25 +119,7 @@ You can get the status code values using the method [crm.calllist.statuslist](./
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-         -H "Content-Type: application/json" \
-         -d '{"LIST_ID":13,"FILTER":{"STATUS":"IN_WORK"}}' \
-         https://**your_bitrix24**/rest/**user_id**/**webhook**/crm.calllist.items.get
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-         -H "Content-Type: application/json" \
-         -d '{"LIST_ID":13,"FILTER":{"STATUS":"IN_WORK"},"auth":"**put_access_token_here**"}' \
-         https://**your_bitrix24**/rest/crm.calllist.items.get
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -126,7 +180,7 @@ HTTP status: **200**
 || **result**
 [`array`](../../data-types.md) | Array of items with call statuses and object types ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -146,9 +200,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `400` | `Incorrect list id` | Incorrect call identifier ||
+|| `400` | `Incorrect list id` | Incorrect call list identifier ||
 || `400` | `Incorrect status` | Incorrect call status ||
-|| `403` | `Access denied` | No access to the list items ||
+|| `403` | `Access denied` | No access to list items ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -4,11 +4,11 @@
 >
 > Who can execute the method: user with read access permission for CRM elements
 
-The method `crm.calllist.list` returns a list of call activities.
+The method `crm.calllist.list` returns a list of call list activities.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,8 +33,8 @@ List of fields to retrieve:
 }
 ```
 
-- `field_n` — the name of the field by which the call list will be filtered
-- `value_n` — the filter value
+- `field_n` — name of the field by which the call list will be filtered
+- `value_n` — filter value
 
 List of fields for filtering:
 - `ID`,
@@ -64,19 +64,103 @@ An additional prefix can be assigned to the field to specify the filter behavior
 }
 ```
 
-- `field_n` — the name of the field by which the call list will be sorted
-- `value_n` — a `string` value, equal to:
+- `field_n` — name of the field by which the call list will be sorted
+- `value_n` — value of type `string`, equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"SELECT":["ID","CREATED_BY_ID"],"FILTER":{"ENTITY_TYPE_ID":3},"ORDER":{"ID":"DESC"}}' https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.calllist.list
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"SELECT":["ID","CREATED_BY_ID"],"FILTER":{"ENTITY_TYPE_ID":3},"ORDER":{"ID":"DESC"},"auth":"**put_access_token_here**"}' https://**put_your_bitrix24_address**/rest/crm.calllist.list
+    ```
+
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'crm.calllist.list',
+        {
+          SELECT: ["ID", "CREATED_BY_ID"],
+          FILTER: { "ENTITY_TYPE_ID": 3 },
+          ORDER: { "ID": "DESC" }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative retrieval using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('crm.calllist.list', { SELECT: ["ID", "CREATED_BY_ID"], FILTER: { "ENTITY_TYPE_ID": 3 }, ORDER: { "ID": "DESC" } }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('crm.calllist.list', { SELECT: ["ID", "CREATED_BY_ID"], FILTER: { "ENTITY_TYPE_ID": 3 }, ORDER: { "ID": "DESC" } }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.calllist.list',
+                [
+                    'SELECT' => ['ID', 'CREATED_BY_ID'],
+                    'FILTER' => ['ENTITY_TYPE_ID' => 3],
+                    'ORDER'  => ['ID' => 'DESC'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching call list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -96,19 +180,7 @@ An additional prefix can be assigned to the field to specify the filter behavior
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"SELECT":["ID","CREATED_BY_ID"],"FILTER":{"ENTITY_TYPE_ID":3},"ORDER":{"ID":"DESC"}}' https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.calllist.list
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"SELECT":["ID","CREATED_BY_ID"],"FILTER":{"ENTITY_TYPE_ID":3},"ORDER":{"ID":"DESC"},"auth":"**put_access_token_here**"}' https://**put_your_bitrix24_address**/rest/crm.calllist.list
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -172,9 +244,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | The root element of the response. Contains an array of objects with information about call activities. 
+[`array`](../../data-types.md) | Root element of the response. Contains an array of objects with information about call lists. 
 
-The structure of the fields depends on the `select` parameter ||
+The structure of fields depends on the `select` parameter ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -197,7 +269,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `400` | `Invalid parameters` | Invalid parameters were provided ||
-|| `100` | `Unknown field definition "TITLE"` | Unknown parameter "Parameter name" ||
+|| `100` | `Unknown field definition "TITLE"` | Unknown parameter "Field name" ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

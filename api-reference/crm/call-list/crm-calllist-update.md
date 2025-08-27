@@ -2,13 +2,13 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with read access permissions for CRM entities
+> Who can execute the method: user with read access permission for CRM entities
 
-The method `crm.calllist.update` allows you to add or remove participants from an existing call list and update the associated CRM form.
+The `crm.calllist.update` method allows you to add or remove participants from an existing call list and update the associated CRM form.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -16,11 +16,11 @@ The method `crm.calllist.update` allows you to add or remove participants from a
 || **LIST_ID***
 [`integer`](../../data-types.md) | Identifier of the call list ||
 || **ENTITY_TYPE***
-[`string`](../../data-types.md) | Type of the entity: 
+[`string`](../../data-types.md) | Type of entity: 
 - `CONTACT` — contact,
 - `COMPANY` — company ||
 || **ENTITIES***
-[`array`](../../data-types.md) | Array of `ID`s of contacts or companies, which can be obtained using the method [crm.item.list](../universal/crm-item-list.md) ||
+[`array`](../../data-types.md) | Array of `ID`s of contacts or companies, which can be obtained using the [crm.item.list](../universal/crm-item-list.md) method ||
 || **WEBFORM_ID**
 [`integer`](../../data-types.md) | `ID` of the CRM form that will be displayed in the call form. 
 The `ID` can be found in the list of forms in Bitrix24 https://your-domain.com/crm/webform/ ||
@@ -40,33 +40,13 @@ To remove an element, send only those `ID`s that should remain in the list:
 5. Remove: [2].
 6. Send: [1,3].
 
-The method overwrites the `WEBFORM_ID` field. If the `WEBFORM_ID` field is not provided when calling the method, the field will be cleared.
+The method overwrites the `WEBFORM_ID` field. If the `WEBFORM_ID` field is not provided when calling the method, it will be cleared.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.calllist.update",
-        {
-            LIST_ID: 123,
-            ENTITY_TYPE: "CONTACT",
-            ENTITIES: [1,2,3],
-            WEBFORM_ID: 5
-        },
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -86,7 +66,87 @@ The method overwrites the `WEBFORM_ID` field. If the `WEBFORM_ID` field is not p
          https://**your_bitrix24**/rest/crm.calllist.update
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.calllist.update',
+    		{
+    			LIST_ID: 123,
+    			ENTITY_TYPE: 'CONTACT',
+    			ENTITIES: [1, 2, 3],
+    			WEBFORM_ID: 5
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error()) {
+    		console.error(result.error());
+    	} else {
+    		console.dir(result);
+    	}
+    }
+    catch (error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.calllist.update',
+                [
+                    'LIST_ID'     => 123,
+                    'ENTITY_TYPE' => 'CONTACT',
+                    'ENTITIES'    => [1, 2, 3],
+                    'WEBFORM_ID'  => 5,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating call list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.calllist.update",
+        {
+            LIST_ID: 123,
+            ENTITY_TYPE: "CONTACT",
+            ENTITIES: [1,2,3],
+            WEBFORM_ID: 5
+        },
+        function(result) {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -110,7 +170,7 @@ The method overwrites the `WEBFORM_ID` field. If the `WEBFORM_ID` field is not p
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -141,7 +201,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -157,11 +217,11 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `400` | `Invalid parameters` | Invalid parameters were provided ||
-|| `400` | `Incorrect entity type` | An unsupported entity type was specified ||
+|| `400` | `Incorrect entity type` | Unsupported entity type specified ||
 || `400` | `Entities is not array` | The ENTITIES parameter is not an array ||
-|| `400` | `Incorrect entities id` | Invalid IDs of entities were provided ||
+|| `400` | `Incorrect entities id` | Invalid IDs of elements were provided ||
 || `400` | `Incorrect list id or access denied` | Invalid list identifier or no access ||
-|| `400` | `Discrepancy between the type of call participants and incoming type` | Mismatch between the type of participants and the provided type ||
+|| `400` | `Discrepancy between the type of call participants and incoming type` | Mismatch between participant type and provided type ||
 || `400` | `Incorrect webform id` | Invalid ID of the CRM form ||
 |#
 

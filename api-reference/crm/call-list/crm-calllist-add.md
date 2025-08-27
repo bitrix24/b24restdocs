@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with read access permissions for CRM entities
+> Who can execute the method: user with access permission to read CRM entities
 
 The method `crm.calllist.add` creates a new call list.
 
@@ -18,10 +18,10 @@ The method `crm.calllist.add` creates a new call list.
 - `CONTACT` — contact,
 - `COMPANY` — company ||
 || **ENTITIES***
-[`array`](../../data-types.md) | Array of `ID`s of contacts or companies, which can be obtained using the method [crm.item.list](../universal/crm-item-list.md) ||
+[`array`](../../data-types.md) | Array of `ID` of contacts or companies, which can be obtained using the [crm.item.list](../universal/crm-item-list.md) method ||
 || **WEBFORM_ID**
 [`integer`](../../data-types.md) | `ID` of the CRM form that will be displayed in the call list form. 
-The `ID` can be found in the list of forms on Bitrix24 https://your-domain.com/crm/webform/ ||
+The `ID` can be found in the list of forms in Bitrix24 https://your-domain.com/crm/webform/ ||
 |#
 
 ## Code Examples
@@ -29,25 +29,6 @@ The `ID` can be found in the list of forms on Bitrix24 https://your-domain.com/c
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "crm.calllist.add",
-        {
-            ENTITY_TYPE: "CONTACT",
-            ENTITIES: [9,17,19],
-            WEBFORM_ID: 1
-        },
-        function(result) {
-            if(result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -67,7 +48,84 @@ The `ID` can be found in the list of forms on Bitrix24 https://your-domain.com/c
          https://**your_bitrix24**/rest/crm.calllist.add
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'crm.calllist.add',
+    		{
+    			ENTITY_TYPE: 'CONTACT',
+    			ENTITIES: [9, 17, 19],
+    			WEBFORM_ID: 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error()) {
+    		console.error(result.error());
+    	} else {
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.calllist.add',
+                [
+                    'ENTITY_TYPE' => 'CONTACT',
+                    'ENTITIES'    => [9, 17, 19],
+                    'WEBFORM_ID'  => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding call list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "crm.calllist.add",
+        {
+            ENTITY_TYPE: "CONTACT",
+            ENTITIES: [9,17,19],
+            WEBFORM_ID: 1
+        },
+        function(result) {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -140,7 +198,7 @@ HTTP status: **400**
 || `400` | `Invalid parameters` | Invalid parameters were provided ||
 || `400` | `Incorrect entity type` | An unsupported object type was specified ||
 || `400` | `Entities is not array` | The `ENTITIES` parameter is not an array ||
-|| `400` | `Incorrect entities id` | Invalid `ID`s of elements were provided ||
+|| `400` | `Incorrect entities id` | Invalid `ID` of elements were provided ||
 || `403` | `You don't have access to these entities` | No access to the specified elements ||
 || `400` | `Incorrect webform id` | Invalid `ID` of the CRM form ||
 |#
