@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -39,7 +39,7 @@ Method to access the value of section settings for product properties or variati
 [`integer`](../../data-types.md)| Identifier of the product property or variation. ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
@@ -47,22 +47,72 @@ Method to access the value of section settings for product properties or variati
 
 - JS
 
-```js
-BX24.callMethod(
-    'catalog.productPropertySection.get',
+    ```js
+    try
     {
-        propertyId: 128
-    },
-    function(result)
-    {
-        if(result.error())
-            console.error(result.error().ex);
-        else
-            console.log(result.data());
+    	const response = await $b24.callMethod(
+    		'catalog.productPropertySection.get',
+    		{
+    			propertyId: 128
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
     }
-);
-```
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.productPropertySection.get',
+                [
+                    'propertyId' => 128
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product property section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'catalog.productPropertySection.get',
+        {
+            propertyId: 128
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error().ex);
+            else
+                console.log(result.data());
+        }
+    );
+    ```
 
 {% endlist %}
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

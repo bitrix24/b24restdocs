@@ -1,8 +1,8 @@
-# Get Product Property or Variation Fields catalog.productProperty.getFields
+# Get Product or Variation Property Fields catalog.productProperty.getFields
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ Some data may be missing — we will fill it in shortly.
 catalog.productProperty.getFields()
 ```
 
-The method returns the fields of product properties or variations.
+The method returns the fields of product or variation properties.
 
 ## Parameters
 
@@ -63,6 +63,59 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.productProperty.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error().ex);
+    	}
+    	else
+    	{
+    		console.log(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.productProperty.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product property fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.productProperty.getFields',
         {},
@@ -76,7 +129,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -95,7 +148,7 @@ No parameters.
 
 ## Returned Fields
 
-#| 
+#|
 || **Field** | **Description** | **Note** ||
 || **active** 
 [`char`](../../data-types.md) | Is the property active. | ||
@@ -116,7 +169,7 @@ No parameters.
 || **isRequired** 
 [`char`](../../data-types.md) | Is it required. | ||
 || **linkIblockId** 
-[`integer`](../../data-types.md) | Identifier of the information block associated with the value. Currently, this field is not used (this field is intended for types that are not yet supported in REST). | ||
+[`integer`](../../data-types.md) | Identifier of the information block linked to the value. Currently, this field is not used (it is intended for types that are not yet supported in REST). | ||
 || **listType**
 [`char`](../../data-types.md) | Appearance. | Only for "List" type fields. ||
 || **multiple** 

@@ -1,8 +1,8 @@
-# Get the values of product or variation property fields catalog.productProperty.get
+# Get the values of product property fields or variations catalog.productProperty.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- the required parameter specifications are missing
+- the required parameters are not specified
 - there is no response in case of an error
 - no examples in other languages
   
@@ -28,23 +28,80 @@ Some data may be missing — we will fill it in shortly.
 catalog.productProperty.get(id)
 ```
 
-Method to access the value of product or variation property fields.
+Method to access the value of product property fields or variations.
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** ||
 || **id** 
-[`integer`](../../data-types.md)| Identifier of the product or variation property. ||
+[`integer`](../../data-types.md)| Identifier of the product property or variation. ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.productProperty.get',
+    		{
+    			id: 128
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error().ex);
+    	}
+    	else
+    	{
+    		console.log(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.productProperty.get',
+                [
+                    'id' => 128,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product property: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -64,4 +121,4 @@ Method to access the value of product or variation property fields.
 
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}

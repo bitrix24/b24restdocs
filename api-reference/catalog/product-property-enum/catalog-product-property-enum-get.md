@@ -1,8 +1,8 @@
-# Get the value of the list property by identifier catalog.productPropertyEnum.get
+# Get the value of the list property by ID catalog.productPropertyEnum.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -45,6 +45,65 @@ Method to access the value of the list property by ID.
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.productPropertyEnum.get',
+    		{
+    			id: 121
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error().ex);
+    	}
+    	else
+    	{
+    		console.log(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.productPropertyEnum.get',
+                [
+                    'id' => 121,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product property enum: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(

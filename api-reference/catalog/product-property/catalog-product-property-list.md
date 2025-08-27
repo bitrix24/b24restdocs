@@ -10,7 +10,7 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- required parameter specifications are missing
+- required parameters are not specified
 - no response in case of an error
 - no examples in other languages
   
@@ -42,13 +42,100 @@ The method retrieves a list of product properties or variations. If the operatio
 [`string`](../../data-types.md)| Page number for output. Works for HTTPS requests. ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'catalog.productProperty.list',
+        {
+          select: ['id'],
+          filter: {
+            iblockId: 16
+          },
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('catalog.productProperty.list', {
+        select: ['id'],
+        filter: {
+          iblockId: 16
+        },
+      }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('catalog.productProperty.list', {
+        select: ['id'],
+        filter: {
+          iblockId: 16
+        },
+      }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.productProperty.list',
+                [
+                    'select' => ['id'],
+                    'filter' => [
+                        'iblockId' => 16
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+            $result->next();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing product properties: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -78,4 +165,4 @@ Example HTTPS request
 https://your_account/rest/catalog.productProperty.list?auth=_authorization_key_&start=50
 ```
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../_includes/examples.md) %}

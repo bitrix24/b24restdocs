@@ -1,8 +1,8 @@
-# Change Values of List Properties catalog.productPropertyEnum.update
+# Update Values of List Properties catalog.productPropertyEnum.update
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -46,6 +46,80 @@ Method for updating values of list properties.
 {% list tabs %}
 
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.productPropertyEnum.update',
+    		{
+    			id: 122,
+    			fields: {
+    				propertyId: 128,
+    				value: "Medium",
+    				def: "Y",
+    				sort: 1234,
+    				xmlId: "M"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error().ex);
+    	}
+    	else
+    	{
+    		console.log(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.productPropertyEnum.update',
+                [
+                    'id' => 122,
+                    'fields' => [
+                        'propertyId' => 128,
+                        'value' => "Medium",
+                        'def' => "Y",
+                        'sort' => 1234,
+                        'xmlId' => "M",
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating product property enum: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(

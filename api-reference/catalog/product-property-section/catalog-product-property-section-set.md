@@ -22,12 +22,12 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method sets (creates or updates) the section settings for product properties or variations.
+The method sets (creates or updates) section settings for product properties or variations.
 
 #|
 || **Parameter** | **Description** ||
 || **propertyId**
- `integer`  | Identifier of the product property or variation. ||
+ `integer`  | Identifier of the product or variation property. ||
 || **fields**
 `object` | An array containing the following fields:
 - **smartFilter** – show in smart filter (Y/N);
@@ -44,6 +44,73 @@ This method sets (creates or updates) the section settings for product propertie
 {% list tabs %}
 
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.productPropertySection.set',
+    		{
+    			propertyId: 128,
+    			fields: {
+    				displayType: "F",
+    				displayExpanded: "Y",
+    				filterHint: "Product Size"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error().ex);
+    	}
+    	else
+    	{
+    		console.log(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.productPropertySection.set',
+                [
+                    'propertyId' => 128,
+                    'fields' => [
+                        'displayType'     => "F",
+                        'displayExpanded' => "Y",
+                        'filterHint'      => "Product Size"
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting product property section: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
