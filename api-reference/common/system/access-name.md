@@ -14,7 +14,7 @@ The method `access.name` retrieves the names of access permissions.
 || **Name**
 `type` | **Description** ||
 || **ACCESS***
-[`array`](../../data-types.md) | A list of permission identifiers for which names need to be retrieved ||
+[`array`](../../data-types.md) | List of permission identifiers for which names need to be retrieved ||
 |#
 
 ## Code Examples
@@ -51,6 +51,57 @@ The method `access.name` retrieves the names of access permissions.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'access.name',
+    		{
+    			'ACCESS': ['G2', 'AU']
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'access.name',
+                [
+                    'ACCESS' => ['G2', 'AU']
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling access.name: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "access.name",
         {
@@ -66,7 +117,7 @@ The method `access.name` retrieves the names of access permissions.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -121,7 +172,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Objects describing the permissions ||
+[`object`](../../data-types.md) | Objects describing permissions ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#

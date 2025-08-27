@@ -1,4 +1,4 @@
-# Get a List of Available Methods
+# Get a List of Available Methods methods
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
@@ -14,7 +14,7 @@ This method is deprecated; it is strongly recommended to use [method.get](./meth
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,14 +22,14 @@ This method is deprecated; it is strongly recommended to use [method.get](./meth
 || **full**
 [`boolean`](../../data-types.md) | If the parameter is set to `true`, the method will return a list of all methods ||
 || **scope**
-[`string`](../../data-types.md) | Displays methods included in the specified permission. If the parameter is provided without a value (`methods?scope=&auth=xxxxx`), all common methods will be displayed. ||
+[`string`](../../data-types.md) | Shows methods included in the specified permission. If the parameter is provided without a value (`methods?scope=&auth=xxxxx`), all common methods will be displayed. ||
 |#
 
 > If the method is called without parameters, it will return a list of all methods available to the current application.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -61,6 +61,57 @@ This method is deprecated; it is strongly recommended to use [method.get](./meth
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"methods",
+    		{
+    			"scope": "user"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'methods',
+                [
+                    'scope' => 'user',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling method: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "methods",
         {
@@ -76,7 +127,7 @@ This method is deprecated; it is strongly recommended to use [method.get](./meth
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -133,7 +184,7 @@ HTTP Status: **200**
 || **result**
 [`array`](../../data-types.md) | An array containing the list of permissions ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

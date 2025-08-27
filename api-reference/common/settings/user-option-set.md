@@ -6,7 +6,7 @@
 
 The method `user.option.set` binds data to the application and user.
 
-The application can be bound to the installing user if it is a [no UI application](../../../local-integrations/serverside-local-app-with-no-ui.md) or to the user it interacts with if it is a [UI application](../../../local-integrations/serverside-local-app-with-ui.md).
+The application can be bound to the user who installed it if it is a [headless application](../../../local-integrations/serverside-local-app-with-no-ui.md) or to the user with whom it interacts if it is a [UI application](../../../local-integrations/serverside-local-app-with-ui.md).
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ The application can be bound to the installing user if it is a [no UI applicatio
 || **Name**
 `type` | **Description** ||
 || **options***
-[`array`](../../data-types.md) | An array where the key is the name of the property to be saved, and the value is the property value. If a value with a new key is passed, the method will write it, and if an existing one, it will update it. ||
+[`array`](../../data-types.md) | An array where the key is the name of the property to be saved, and the value is the property value. If a value with a new key is passed, the method will write it; if an existing one, it will update it. ||
 |#
 
 ## Code Examples
@@ -59,6 +59,62 @@ The application can be bound to the installing user if it is a [no UI applicatio
 - JS
 
     ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'user.option.set',
+            {
+                "options": {
+                    "data": "value",
+                    "data2": "value2",
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch( error )
+    {
+        console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.option.set',
+                [
+                    'options' => [
+                        'data'  => 'value',
+                        'data2' => 'value2',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting user options: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'user.option.set',
         {
@@ -77,7 +133,7 @@ The application can be bound to the installing user if it is a [no UI applicatio
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

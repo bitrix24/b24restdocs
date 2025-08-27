@@ -1,4 +1,4 @@
-# Get a List of Available Methods method.get
+# Get a list of available methods method.get
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
@@ -53,6 +53,56 @@ The `method.get` method returns two parameters `isExisting` and `isAvailable`, w
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"method.get",
+    		{
+    			"name": "user.get"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'method.get',
+                [
+                    'name' => 'user.get',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling method: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "method.get",
         {
@@ -68,7 +118,7 @@ The `method.get` method returns two parameters `isExisting` and `isAvailable`, w
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -89,7 +139,7 @@ The `method.get` method returns two parameters `isExisting` and `isAvailable`, w
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {

@@ -14,7 +14,7 @@ The `app.option.set` method binds data to the application.
 || **Name**
 `type` | **Description** ||
 || **options***
-[`array`](../../data-types.md) | An array where the key is the name of the property being saved, and the value is the property value. If a value with a new key is passed, the method will write it; if an existing one, it will update it. ||
+[`array`](../../data-types.md) | An array where the key is the name of the property to be saved, and the value is the property value. If a value with a new key is passed, the method will write it; if an existing one, it will update it. ||
 |#
 
 ## Code Examples
@@ -57,6 +57,62 @@ The `app.option.set` method binds data to the application.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'app.option.set',
+    		{
+    			"options": {
+    				"data": "value",
+    				"data2": "value2",
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'app.option.set',
+                [
+                    'options' => [
+                        'data'  => 'value',
+                        'data2' => 'value2',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo $result->data();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting app options: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'app.option.set',
         {
@@ -75,7 +131,7 @@ The `app.option.set` method binds data to the application.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');

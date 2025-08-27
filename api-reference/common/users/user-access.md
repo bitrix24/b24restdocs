@@ -1,10 +1,10 @@
-# Determine User Access Rights `user.access`
+# Determine the user.access permissions set
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `user.access` checks if the current user has at least one of the access rights specified in the `ACCESS` parameter.
+The `user.access` method checks if the current user has at least one of the permissions specified in the `ACCESS` parameter.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ The method `user.access` checks if the current user has at least one of the acce
 || **Name**
 `type` | **Description** ||
 || **ACCESS***
-[`array`](../../data-types.md) | Identifier or list of identifiers of the rights to check access for ||
+[`array`](../../data-types.md) | Identifier or list of identifiers of the permissions to check access for ||
 |#
 
 ## Code Examples
@@ -51,10 +51,60 @@ The method `user.access` checks if the current user has at least one of the acce
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'user.access',
+    		{
+    			"'ACCESS": ["G2", "AU"]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.access',
+                [
+                    "'ACCESS" => ["G2", "AU"]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling user.access: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "user.access",
         {
-            "ACCESS": ["G2", "AU"]
+            "'ACCESS": ["G2", "AU"]
         },
         function(result)
         {
@@ -66,7 +116,7 @@ The method `user.access` checks if the current user has at least one of the acce
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -87,7 +137,7 @@ The method `user.access` checks if the current user has at least one of the acce
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -110,7 +160,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the current user has at least one of the rights listed in the `ACCESS` parameter, `false` otherwise ||
+[`boolean`](../../data-types.md) | Returns `true` if the current user has at least one of the permissions listed in the `ACCESS` parameter, `false` otherwise ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#

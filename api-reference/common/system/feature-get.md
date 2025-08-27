@@ -1,4 +1,4 @@
-# Get Information on Feature Availability on Account feature.get
+# Get information about feature availability on the account feature.get
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
@@ -53,6 +53,56 @@ The method `feature.get` returns information about the availability of features 
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"feature.get",
+    		{
+    			"CODE": "rest_offline_extended"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'feature.get',
+                [
+                    'CODE' => 'rest_offline_extended'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting feature: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         "feature.get",
         {
@@ -68,7 +118,7 @@ The method `feature.get` returns information about the availability of features 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -114,11 +164,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The object contains information about the availability of the method:
+[`object`](../../data-types.md) | The object contains information about the method's availability:
 - `value` — (Y/N) presence of the feature on the account
 - `lang_selfhosted` — *lang* is replaced with en, de, ua, kz, etc. (used for on-premise *Bitrix24*) ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
