@@ -21,9 +21,9 @@ Pass the `createdWithin` object inside the filter to filter by creation date, [(
 ### Parameter createdWithin {#createdWithin}
 
 #|
-|| **from*** 
+|| **from***
 [`string`](../../data-types.md) | Start date of the filtering period in the format `dd.mm.yyyy`, inclusive ||
-|| **to*** 
+|| **to***
 [`string`](../../data-types.md) | End date of the filtering period in the format `dd.mm.yyyy`, exclusive ||
 |#
 
@@ -32,28 +32,6 @@ Pass the `createdWithin` object inside the filter to filter by creation date, [(
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "booking.v1.waitlist.list",
-        {
-            filter: {
-                createdWithin: {
-                    from: "01.04.2025", 
-                    to: "16.04.2025", //exclusive, records with the latest date of 15.04.2025 will be selected
-                }
-            }
-        },
-        result => {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -75,7 +53,124 @@ Pass the `createdWithin` object inside the filter to filter by creation date, [(
     https://**put_your_bitrix24_address**/rest/booking.v1.waitlist.list
     ```
 
+- JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'booking.v1.waitlist.list',
+        {
+          filter: {
+            createdWithin: {
+              from: "01.04.2025",
+              to: "16.04.2025",
+            }
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in chunks and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('booking.v1.waitlist.list', {
+        filter: {
+          createdWithin: {
+            from: "01.04.2025",
+            to: "16.04.2025",
+          }
+        }
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('booking.v1.waitlist.list', {
+        filter: {
+          createdWithin: {
+            from: "01.04.2025",
+            to: "16.04.2025",
+          }
+        }
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.waitlist.list',
+                [
+                    'filter' => [
+                        'createdWithin' => [
+                            'from' => '01.04.2025',
+                            'to'   => '16.04.2025', //exclusive, records with the latest date of 15.04.2025 will be selected
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing waitlist: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "booking.v1.waitlist.list",
+        {
+            filter: {
+                createdWithin: {
+                    from: "01.04.2025", 
+                    to: "16.04.2025", //exclusive, records with the latest date of 15.04.2025 will be selected
+                }
+            }
+        },
+        result => {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -135,9 +230,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response. Contains an array of records in the waitlist. The structure is described [below](#waitList) ||
+[`object`](../../data-types.md) | Root element of the response. Contains an array of records in the waitlist. The structure is described [below](#waitList) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Record in the waitlist {#waitList} 
@@ -148,6 +243,7 @@ HTTP status: **200**
 || **note**
 [`string`](../../data-types.md) | Note associated with the record in the waitlist. Can be `null` ||
 |#
+
 
 ## Error Handling
 
@@ -166,7 +262,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | `Required fields: ` | A required parameter inside `createdWithin` was not provided ||
+|| `0` | `Required fields: ` | Required parameter not provided within `createdWithin` ||
 || `422` | `Invalid date` | Invalid date ||
 |#
 

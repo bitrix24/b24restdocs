@@ -8,7 +8,7 @@ The method `booking.v1.waitlist.add` adds an entry to the waitlist.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,33 +24,14 @@ The method `booking.v1.waitlist.add` adds an entry to the waitlist.
 `type` | **Description** ||
 || **note***
 [`string`](../../data-types.md) | Note for the waitlist entry. 
-Default value — empty string ||
+Default value — an empty string ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "booking.v1.waitlist.add",
-        {
-            fields: {
-                note: "Note",
-            }
-        },
-        result => {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -72,7 +53,87 @@ Default value — empty string ||
     https://**put_your_bitrix24_address**/rest/booking.v1.waitlist.add
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'booking.v1.waitlist.add',
+    		{
+    			fields: {
+    				note: 'Note',
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.waitlist.add',
+                [
+                    'fields' => [
+                        'note' => 'Note',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding to waitlist: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "booking.v1.waitlist.add",
+        {
+            fields: {
+                note: "Note",
+            }
+        },
+        result => {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -120,9 +181,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | Root element of the response, contains the identifier of the added entry in the waitlist ||
+[`integer`](../../data-types.md) | The root element of the response, contains the identifier of the added entry in the waitlist ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

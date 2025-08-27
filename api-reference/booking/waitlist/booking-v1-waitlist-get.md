@@ -1,4 +1,4 @@
-# Get a record from the waitlist booking.v1.waitlist.get
+# Get a Record from the Waitlist booking.v1.waitlist.get
 
 > Scope: [`booking`](../../scopes/permissions.md)
 >
@@ -8,37 +8,20 @@ The method `booking.v1.waitlist.get` returns information about a waitlist record
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the waitlist record. It can be obtained from the methods [booking.v1.waitlist.add](./booking-v1-waitlist-add.md) and [booking.v1.waitlist.list](./booking-v1-waitlist-list.md) ||
+[`integer`](../../data-types.md) | Identifier of the waitlist record. Can be obtained from the methods [booking.v1.waitlist.add](./booking-v1-waitlist-add.md) and [booking.v1.waitlist.list](./booking-v1-waitlist-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "booking.v1.waitlist.get",
-        {
-            id: 15
-        },
-        result => {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -60,7 +43,77 @@ The method `booking.v1.waitlist.get` returns information about a waitlist record
     https://**put_your_bitrix24_address**/rest/booking.v1.waitlist.get
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"booking.v1.waitlist.get",
+    		{
+    			id: 15
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.waitlist.get',
+                [
+                    'id' => 15
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting waitlist: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "booking.v1.waitlist.get",
+        {
+            id: 15
+        },
+        result => {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -81,7 +134,7 @@ The method `booking.v1.waitlist.get` returns information about a waitlist record
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -111,7 +164,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response. Contains information about the fields of the waitlist record. The structure is described [below](#waitList) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Waitlist Record {#waitList} 
@@ -120,12 +173,12 @@ HTTP status: **200**
 || **id**
 [`integer`](../../data-types.md) | Identifier of the waitlist record ||
 || **note**
-[`string`](../../data-types.md) | Note associated with the waitlist record. It can be `null` ||
+[`string`](../../data-types.md) | Note associated with the waitlist record. Can be `null` ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

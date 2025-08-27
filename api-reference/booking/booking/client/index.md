@@ -1,12 +1,12 @@
-# Booking Client: Overview of Methods
+# Client in Booking: Overview of Methods
 
-You can add a client to a resource booking: either a contact or a company. Messages regarding the appointment, such as confirmation, reminders, and feedback requests, are sent to the client's phone number.
+You can add a client to a resource booking: either a contact or a company. Messages regarding the appointment, such as confirmations, reminders, and feedback requests, are sent to the client's phone number.
 
-> Quick navigation: [all methods](#all-methods) 
+> Quick navigation: [all methods](#all-methods)
 
 ## Connection with Other Objects
 
-**Booking.** Use the `ID` of the booking in the `bookingId` parameter of the [booking.v1.booking.client.*](./index.md) methods to add or replace a client. You can obtain the `ID` of the booking using the [creation](../booking-v1-booking-add.md) or [filtering](../booking-v1-booking-list.mdl) methods.
+**Booking.** Use the `ID` of the booking in the `bookingId` parameter of the [booking.v1.booking.client.*](./index.md) methods to add or replace a client. You can obtain the `ID` of the booking using the [creation](../booking-v1-booking-add.md) or [filtering](../booking-v1-booking-list.md) methods.
 
 **Contact.** To attach a contact to the booking, pass the `ID` of the contact in the [booking.v1.booking.client.set](./booking-v1-booking-client-set) method. You can obtain the `ID` of the contact using the [crm.item.list](../../../crm/universal/crm-item-list.md) method with the `entityTypeId = 3` parameter.
 
@@ -25,7 +25,7 @@ If the client is new, first add them to the CRM using the [crm.item.add](../../.
 > Who can perform the method: any user
 
 #|
-|| [booking.v1.booking.client.list](./booking-v1-booking-client-list.md) | Retrieves a list of booking clients ||
-|| [booking.v1.booking.client.set](./booking-v1-booking-client-set.md) | Adds a client to the booking ||
-|| [booking.v1.booking.client.unset](./booking-v1-booking-client-unset.md) | Removes clients from the booking ||
+|| [booking.v1.booking.client.list](./booking-v1-booking-client-list.md) | Returns the contact and company associated with the booking ||
+|| [booking.v1.booking.client.set](./booking-v1-booking-client-set.md) | Adds a contact or company to the booking ||
+|| [booking.v1.booking.client.unset](./booking-v1-booking-client-unset.md) | Removes a contact or company from the booking ||
 |#

@@ -8,38 +8,21 @@ The method `booking.v1.waitlist.createfrombooking` creates a waitlist entry base
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **bookingId***
 [`integer`](../../data-types.md) | The identifier of the booking from which the waitlist entry is created. 
-Can be obtained using the methods [booking.v1.booking.add](../booking/booking-v1-booking-add.md) and [booking.v1.booking.list](../booking/booking-v1-booking-list.md) ||
+It can be obtained using the methods [booking.v1.booking.add](../booking/booking-v1-booking-add.md) and [booking.v1.booking.list](../booking/booking-v1-booking-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "booking.v1.waitlist.createfrombooking",
-        {
-            bookingId: 5
-        },
-        result => {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -61,7 +44,78 @@ Can be obtained using the methods [booking.v1.booking.add](../booking/booking-v1
     https://**put_your_bitrix24_address**/rest/booking.v1.waitlist.createfrombooking
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"booking.v1.waitlist.createfrombooking",
+    		{
+    			bookingId: 5
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.waitlist.createfrombooking',
+                [
+                    'bookingId' => 5
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating waitlist from booking: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "booking.v1.waitlist.createfrombooking",
+        {
+            bookingId: 5
+        },
+        result => {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');

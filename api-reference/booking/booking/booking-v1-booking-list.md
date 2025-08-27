@@ -4,7 +4,7 @@
 >
 > Who can execute the method: any user
 
-The method `booking.v1.booking.list` returns a list of bookings based on a filter. It is an implementation of the list method for bookings.
+The method `booking.v1.booking.list` returns a list of bookings based on the filter. It is an implementation of the listing method for bookings.
 
 ## Method Parameters
 
@@ -60,7 +60,195 @@ If the object is provided, all parameters within it are required ||
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"filter":{"within":{"dateFrom":0,"dateTo":1739262600},"client":{"entities":[{"code":"CONTACT","module":"crm","id":"1"},{"code":"COMPANY","module":"crm","id":"1"}]}},"order":{"id":"ASC","dateFrom":"DESC","dateTo":"ASC"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.list
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"filter":{"within":{"dateFrom":0,"dateTo":1739262600},"client":{"entities":[{"code":"CONTACT","module":"crm","id":"1"},{"code":"COMPANY","module":"crm","id":"1"}]}},"order":{"id":"ASC","dateFrom":"DESC","dateTo":"ASC"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.booking.list
+    ```
+
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'booking.v1.booking.list',
+        {
+          filter: {
+            within: {
+              dateFrom: 0,
+              dateTo: 1739262600,
+            },
+            client: {
+              entities: [
+                {
+                  "code": "CONTACT",
+                  "module": "crm",
+                  "id": "1"
+                },
+                {
+                  "code": "COMPANY",
+                  "module": "crm",
+                  "id": "1"
+                }
+              ]
+            }
+          },
+          order: {
+            id: "ASC",
+            dateFrom: "DESC",
+            dateTo: "ASC",
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in chunks and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('booking.v1.booking.list', {
+        filter: {
+          within: {
+            dateFrom: 0,
+            dateTo: 1739262600,
+          },
+          client: {
+            entities: [
+              {
+                "code": "CONTACT",
+                "module": "crm",
+                "id": "1"
+              },
+              {
+                "code": "COMPANY",
+                "module": "crm",
+                "id": "1"
+              }
+            ]
+          }
+        },
+        order: {
+          id: "ASC",
+          dateFrom: "DESC",
+          dateTo: "ASC",
+        }
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('booking.v1.booking.list', {
+        filter: {
+          within: {
+            dateFrom: 0,
+            dateTo: 1739262600,
+          },
+          client: {
+            entities: [
+              {
+                "code": "CONTACT",
+                "module": "crm",
+                "id": "1"
+              },
+              {
+                "code": "COMPANY",
+                "module": "crm",
+                "id": "1"
+              }
+            ]
+          }
+        },
+        order: {
+          id: "ASC",
+          dateFrom: "DESC",
+          dateTo: "ASC",
+        }
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.booking.list',
+                [
+                    'filter' => [
+                        'within' => [
+                            'dateFrom' => 0,
+                            'dateTo'   => 1739262600,
+                        ],
+                        'client' => [
+                            'entities' => [
+                                [
+                                    'code'   => 'CONTACT',
+                                    'module' => 'crm',
+                                    'id'     => '1',
+                                ],
+                                [
+                                    'code'   => 'COMPANY',
+                                    'module' => 'crm',
+                                    'id'     => '1',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'order' => [
+                        'id'       => 'ASC',
+                        'dateFrom' => 'DESC',
+                        'dateTo'   => 'ASC',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching booking list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -101,27 +289,7 @@ If the object is provided, all parameters within it are required ||
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"filter":{"within":{"dateFrom":0,"dateTo":1739262600},"client":{"entities":[{"code":"CONTACT","module":"crm","id":"1"},{"code":"COMPANY","module":"crm","id":"1"}]}},"order":{"id":"ASC","dateFrom":"DESC","dateTo":"ASC"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.list
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"filter":{"within":{"dateFrom":0,"dateTo":1739262600},"client":{"entities":[{"code":"CONTACT","module":"crm","id":"1"},{"code":"COMPANY","module":"crm","id":"1"}]}},"order":{"id":"ASC","dateFrom":"DESC","dateTo":"ASC"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.booking.list
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -140,7 +308,7 @@ If the object is provided, all parameters within it are required ||
                             'code' => 'CONTACT',
                             'module' => 'crm',
                             'id' => '1'
-                        ],
+                        },
                         [
                             'code' => 'COMPANY',
                             'module' => 'crm',
@@ -215,14 +383,14 @@ HTTP status: **200**
 
 Contains an array of objects with information about bookings. The structure is described [below](#booking)  ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the time taken to execute the request ||
 |#
 
 #### Booking {#booking}
 
 #|
 || **datePeriod**
-[`object`](../../data-types.md) | Time period of the booking. Contains fields `from` and `to` with information about the start and end times of the booking ||
+[`object`](../../data-types.md) | Period of time for the booking. Contains fields `from` and `to` with information about the start and end times of the booking ||
 || **description**
 [`string`](../../data-types.md) | Description of the booking. Can be `null` ||
 || **id**

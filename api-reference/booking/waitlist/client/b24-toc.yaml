@@ -1,11 +1,11 @@
-title: Waitlist Client  
+title: Client on the Waitlist  
 href: index.md  
 items:   
   - name: Overview of Methods  
     href: index.md  
-  - name: Add Clients to Waitlist Entry  
+  - name: Add Contact or Company to Record  
     href: booking-v1-waitlist-client-set.md  
-  - name: Remove Clients from Waitlist Entry  
+  - name: Remove Contact or Company from Record  
     href: booking-v1-waitlist-client-unset.md  
-  - name: Get List of Clients in Waitlist Entry  
+  - name: Get Contact and Company from Record  
     href: booking-v1-waitlist-client-list.md  

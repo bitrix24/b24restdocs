@@ -8,7 +8,7 @@ The method `booking.v1.resource.slots.list` returns the configuration of time sl
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -20,26 +20,9 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "booking.v1.resource.slots.list",
-        {
-            resourceId: 257,
-        },
-        result => {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -61,7 +44,92 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
     https://**put_your_bitrix24_address**/rest/booking.v1.resource.slots.list
     ```
 
+- JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'booking.v1.resource.slots.list',
+        { resourceId: 257 },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('booking.v1.resource.slots.list', { resourceId: 257 }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('booking.v1.resource.slots.list', { resourceId: 257 }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.resource.slots.list',
+                [
+                    'resourceId' => 257,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing resource slots: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "booking.v1.resource.slots.list",
+        {
+            resourceId: 257,
+        },
+        result => {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -106,8 +174,8 @@ HTTP Status: **200**
      "finish": 1724068028.726591,
      "duration": 0.3953571319580078,
      "processing": 0.13033390045166016,
-     "date_start": "2025-01-21T13:47:08+02:00",
-     "date_finish": "2025-01-21T13:47:08+02:00",
+     "date_start": "2025-01-21T13:47:08+01:00",
+     "date_finish": "2025-01-21T13:47:08+01:00",
      "operating": 0
     }
 }
@@ -134,9 +202,9 @@ Contains an array of objects with information about the slots. The structure is 
 || **id**
 [`integer`](../../../data-types.md) | Identifier of the slot settings ||
 || **from**
-[`integer`](../../../data-types.md) | Time from which slot booking is available during the day. Value in the range from 0 to 1440. For example, `540` means booking is available from 9:00 ||
+[`integer`](../../../data-types.md) | Time from which slots are available for booking during the day. Value in the range from 0 to 1440. For example, `540` means slots are available for booking from 9:00 ||
 || **to**
-[`integer`](../../../data-types.md) | End time of the slot in minutes. Value in the range from 0 to 1440, greater than or equal to the `from` value. For example, `1080` means booking is available until 18:00 ||
+[`integer`](../../../data-types.md) | End time of the slot in minutes. Value in the range from 0 to 1440, greater than or equal to the value of `from`. For example, `1080` means slots are available for booking until 18:00 ||
 || **timezone**
 [`string`](../../../data-types.md) | Timezone relative to which the slot time is set ||
 || **weekDays**

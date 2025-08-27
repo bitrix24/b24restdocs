@@ -4,42 +4,25 @@
 >
 > Who can execute the method: any user
 
-The method `booking.v1.waitlist.client.unset` removes clients from the specified entry in the waitlist.
+The method `booking.v1.waitlist.client.unset` removes clients for the specified entry in the waitlist.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **waitListId***
-[`integer`](../../../data-types.md) | The identifier of the waitlist entry. 
+[`integer`](../../../data-types.md) | Identifier of the waitlist entry. 
 Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitlist-add.md) and [booking.v1.waitlist.list](../booking-v1-waitlist-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "booking.v1.waitlist.client.unset",
-        {
-            waitListId: 14,
-        },
-        result => {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -61,7 +44,77 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.waitlist.client.unset
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'booking.v1.waitlist.client.unset',
+    		{
+    			waitListId: 14,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.waitlist.client.unset',
+                [
+                    'waitListId' => 14,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error unsetting waitlist client: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "booking.v1.waitlist.client.unset",
+        {
+            waitListId: 14,
+        },
+        result => {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -105,7 +158,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | The root element of the response, contains `true` on success ||
+[`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -128,7 +181,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `1040` | `Wait list not found` | The waitlist with the specified `id` was not found ||
-|| `100` | `Could not find value for parameter` | A required parameter was not provided ||
+|| `100` | `Could not find value for parameter` | Required parameter was not provided ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

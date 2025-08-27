@@ -1,4 +1,4 @@
-# Add a new resource booking.v1.resource.add
+# Add a New Resource booking.v1.resource.add
 
 > Scope: [`booking`](../../scopes/permissions.md)
 >
@@ -27,7 +27,7 @@ The method `booking.v1.resource.add` adds a new resource.
 || **description**
 [`string`](../../data-types.md) | The description of the resource.
 
-Defaults to an empty string ||
+By default, an empty string ||
 || **typeId***
 [`integer`](../../data-types.md) | The identifier of the resource type.
 
@@ -37,37 +37,37 @@ A list of available types can be obtained using the method [booking.v1.resourceT
 - `Y` — in the schedule columns
 - `N` — when resources overlap
 
-Defaults to `Y` ||
+By default, `Y` ||
 || **isInfoNotificationOn**
 [`string`](../../data-types.md) | Message to the client about the booking. Possible values:
 - `Y` — enabled
 - `N` — disabled
 
-Defaults to `Y` ||
+By default, `Y` ||
 || **templateTypeInfo**
-[`string`](../../data-types.md) | The type of the booking message template. Possible values:
+[`string`](../../data-types.md) | The type of the booking notification message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
 - `animate` — template for booking specialists
 
-Defaults to `inanimate` ||
+By default, `inanimate` ||
 || **isConfirmationNotificationOn**
 [`string`](../../data-types.md) | Automatic confirmation of the booking. Possible values:
 - `Y` — enabled
 - `N` — disabled
 
-Defaults to `Y` ||
+By default, `Y` ||
 || **templateTypeConfirmation**
 [`string`](../../data-types.md) | The type of the confirmation message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
 - `animate` — template for booking specialists
 
-Defaults to `inanimate` ||
+By default, `inanimate` ||
 || **isReminderNotificationOn**
 [`string`](../../data-types.md) | Reminder about the booking. Possible values:
 - `Y` — enabled
 - `N` — disabled
 
-Defaults to `Y` ||
+By default, `Y` ||
 || **templateTypeReminder**
 [`string`](../../data-types.md) | The type of the reminder message template. Possible values: `base` ||
 || **isFeedbackNotificationOn**
@@ -75,57 +75,57 @@ Defaults to `Y` ||
 - `Y` — enabled
 - `N` — disabled
 
-Defaults to `Y` ||
+By default, `Y` ||
 || **templateTypeFeedback**
 [`string`](../../data-types.md) | The type of the feedback request message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
 - `animate` — template for booking specialists
 
-Defaults to `inanimate` ||
+By default, `inanimate` ||
 || **isDelayedNotificationOn**
 [`string`](../../data-types.md) | Reminder when the client is late. Possible values:
 - `Y` — enabled
 - `N` — disabled
 
-Defaults to `Y`||
+By default, `Y`||
 || **templateTypeDelayed**
 [`string`](../../data-types.md) | The type of the delay message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
 - `animate` — template for booking specialists
 
-Defaults to `inanimate` ||
+By default, `inanimate` ||
 || **infoDelay**
 [`integer`](../../data-types.md) | The delay after which the client receives a booking message. Specified in seconds.
 
-Defaults to 300 ||
+By default, 300 ||
 || **reminderDelay**
 [`integer`](../../data-types.md) | The time before the booking when the client receives a reminder. Specified in seconds.
 
-Defaults to -1, in the morning on the day of the booking ||
+By default, -1, in the morning on the day of the booking ||
 || **delayedDelay**
-[`integer`](../../data-types.md) | The time after which to send a delay message to the client. Specified in seconds.
+[`integer`](../../data-types.md) | The time after which to send the client a message about being late. Specified in seconds.
 
-Defaults to 300 ||
+By default, 300 ||
 || **delayedCounterDelay**
 [`integer`](../../data-types.md) | The time after which to enable the counter in the calendar. Specified in seconds.
 
-Defaults to 7200 ||
+By default, 7200 ||
 || **confirmationDelay**
 [`integer`](../../data-types.md) | The time before the booking when the client receives the first confirmation message. Specified in seconds.
 
-Defaults to 86400 ||
+By default, 86400 ||
 || **confirmationRepetitions**
 [`integer`](../../data-types.md) | The number of messages sent to the client for booking confirmation, excluding the first.
 
-Defaults to 0 ||
+By default, 0 ||
 || **confirmationRepetitionsInterval**
 [`integer`](../../data-types.md) | The interval between confirmation messages. Specified in seconds.
 
-Defaults to 0 ||
+By default, 0 ||
 || **confirmationCounterDelay**
 [`integer`](../../data-types.md) | The time before the booking after which the counter for unconfirmed bookings lights up. Specified in seconds.
 
-Defaults to 7200 ||
+By default, 7200 ||
 |#
 
 ## Code Examples
@@ -134,7 +134,128 @@ Defaults to 7200 ||
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"name":"Name","description":"Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoDelay":60,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":1,"confirmationRepetitionsInterval":3600,"confirmationCounterDelay":7200}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resource.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"name":"Name","description":"Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoDelay":60,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":1,"confirmationRepetitionsInterval":3600,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.resource.add
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'booking.v1.resource.add',
+    		{
+    			fields: {
+    				name: 'Name',
+    				description: 'Description',
+    				typeId: 1,
+    				isMain: 'N',
+    				isInfoNotificationOn: 'Y',
+    				templateTypeInfo: 'inanimate',
+    				isConfirmationNotificationOn: 'Y',
+    				templateTypeConfirmation: 'animate',
+    				isReminderNotificationOn: 'N',
+    				templateTypeReminder: 'base',
+    				isFeedbackNotificationOn: 'Y',
+    				templateTypeFeedback: 'inanimate',
+    				isDelayedNotificationOn: 'Y',
+    				templateTypeDelayed: 'inanimate',
+    				infoDelay: 60,
+    				reminderDelay: -1,
+    				delayedDelay: 300,
+    				delayedCounterDelay: 7200,
+    				confirmationDelay: 86400,
+    				confirmationRepetitions: 1,
+    				confirmationRepetitionsInterval: 3600,
+    				confirmationCounterDelay: 7200
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.resource.add',
+                [
+                    'fields' => [
+                        'name' => 'Name',
+                        'description' => 'Description',
+                        'typeId' => 1,
+                        'isMain' => 'N',
+                        'isInfoNotificationOn' => 'Y',
+                        'templateTypeInfo' => 'inanimate',
+                        'isConfirmationNotificationOn' => 'Y',
+                        'templateTypeConfirmation' => 'animate',
+                        'isReminderNotificationOn' => 'N',
+                        'templateTypeReminder' => 'base',
+                        'isFeedbackNotificationOn' => 'Y',
+                        'templateTypeFeedback' => 'inanimate',
+                        'isDelayedNotificationOn' => 'Y',
+                        'templateTypeDelayed' => 'inanimate',
+                        'infoDelay' => 60,
+                        'reminderDelay' => -1,
+                        'delayedDelay' => 300,
+                        'delayedCounterDelay' => 7200,
+                        'confirmationDelay' => 86400,
+                        'confirmationRepetitions' => 1,
+                        'confirmationRepetitionsInterval' => 3600,
+                        'confirmationCounterDelay' => 7200,
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding resource: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -174,28 +295,7 @@ Defaults to 7200 ||
     );
     ```
 
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"fields":{"name":"Name","description":"Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoDelay":60,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":1,"confirmationRepetitionsInterval":3600,"confirmationCounterDelay":7200}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resource.add
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"fields":{"name":"Name","description":"Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoDelay":60,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":1,"confirmationRepetitionsInterval":3600,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.resource.add
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -239,7 +339,7 @@ Defaults to 7200 ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -271,7 +371,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

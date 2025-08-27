@@ -8,7 +8,7 @@ The method `booking.v1.booking.createfromwaitlist` creates a booking based on an
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -17,7 +17,7 @@ The method `booking.v1.booking.createfromwaitlist` creates a booking based on an
 [`integer`](../../data-types.md) | Identifier of the entry in the waitlist. 
 Can be obtained using the methods [booking.v1.waitlist.add](../waitlist/booking-v1-waitlist-add.md) and [booking.v1.waitlist.list](../waitlist/booking-v1-waitlist-list.md) ||
 || **fields**
-[`object`](../../data-types.md) | An object containing field values for creating a booking [(detailed description)](#fields) ||
+[`object`](../../data-types.md) | Object containing field values for creating a booking [(detailed description)](#fields) ||
 |#
 
 ### Parameter fields {#fields}
@@ -26,7 +26,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../waitlist/booking-
 || **Name**
 `type` | **Description** ||
 || **resourceIds***
-[`array`](../../data-types.md#array) | An array of resource identifiers for the booking. 
+[`array`](../../data-types.md#array) | Array of resource identifiers for the booking. 
 Resource IDs can be obtained using the method [booking.v1.resource.list](../resource/booking-v1-resource-list.md) ||
 || **name**
 [`string`](../../data-types.md) | Name of the booking. 
@@ -35,7 +35,7 @@ Default value is an empty string ||
 [`string`](../../data-types.md) | Description of the booking. 
 Default value is an empty string ||
 || **datePeriod***
-[`object`](../../data-types.md#object) | An object containing the booking time [(detailed description)](#datePeriod) ||
+[`object`](../../data-types.md#object) | Object containing the booking time [(detailed description)](#datePeriod) ||
 |#
 
 ### Parameter datePeriod {#datePeriod}
@@ -51,11 +51,111 @@ Default value is an empty string ||
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"waitListId":10,"fields":{"resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.createfromwaitlist
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"waitListId":10,"fields":{"resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.booking.createfromwaitlist
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"booking.v1.booking.createfromwaitlist",
+    		{
+    			waitListId: 10,
+    			fields: {
+    				resourceIds: [1, 2, 3],
+    				datePeriod: {
+    					from: {
+    						timestamp: 1723446900,
+    						timezone: "Europe/Berlin"
+    					},
+    					to: {
+    						timestamp: 1723447800,
+    						timezone: "Europe/Berlin"
+    					}
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.booking.createfromwaitlist',
+                [
+                    'waitListId' => 10,
+                    'fields'     => [
+                        'resourceIds' => [1, 2, 3],
+                        'datePeriod'  => [
+                            'from' => [
+                                'timestamp' => 1723446900,
+                                'timezone'  => 'Europe/Berlin',
+                            ],
+                            'to'   => [
+                                'timestamp' => 1723447800,
+                                'timezone'  => 'Europe/Berlin',
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error creating booking from waitlist: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -85,27 +185,7 @@ Default value is an empty string ||
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"waitListId":10,"fields":{"resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.createfromwaitlist
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"waitListId":10,"fields":{"resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.booking.createfromwaitlist
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -164,7 +244,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../../data-types.md) | Root element of the response, contains the identifier of the added booking ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

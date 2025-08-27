@@ -17,7 +17,7 @@ The method `booking.v1.booking.externalData.set` establishes connections for the
 [`integer`](../../../data-types.md) | Booking identifier.
 Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking-add.md) and [booking.v1.booking.list](../booking-v1-booking-list.md) ||
 || **externalData***
-[`array`](../../../data-types.md) | Array of objects containing objects for binding [(detailed description)](#externalData) ||
+[`array`](../../../data-types.md) | An array of objects containing objects for binding [(detailed description)](#externalData) ||
 |#
 
 ### Parameter externalData {#externalData}
@@ -39,7 +39,90 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"bookingId":14,"externalData":{"moduleId":"crm","entityTypeId":"DEAL","value":"1"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.booking.externalData.set
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"bookingId":14,"externalData":{"moduleId":"crm","entityTypeId":"DEAL","value":"1"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.externalData.set
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		"booking.v1.booking.externalData.set",
+    		{
+    			bookingId: 14,
+    			externalData: {
+    				moduleId: "crm",
+    				entityTypeId: "DEAL",
+    				value: "1"
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.booking.externalData.set',
+                [
+                    'bookingId'    => 14,
+                    'externalData' => [
+                        'moduleId'     => 'crm',
+                        'entityTypeId' => 'DEAL',
+                        'value'        => '1',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting external data: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -61,27 +144,7 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"bookingId":14,"externalData":{"moduleId":"crm","entityTypeId":"DEAL","value":"1"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.booking.externalData.set
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"bookingId":14,"externalData":{"moduleId":"crm","entityTypeId":"DEAL","value":"1"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.externalData.set
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -130,7 +193,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response, contains `true` on success ||
+[`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#

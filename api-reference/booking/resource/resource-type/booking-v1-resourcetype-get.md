@@ -8,7 +8,7 @@ The method `booking.v1.resourceType.get` returns information about the resource 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -20,26 +20,9 @@ Can be obtained from the methods [booking.v1.resourceType.add](./booking-v1-reso
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- JS
-
-    ```js
-    BX24.callMethod(
-        "booking.v1.resourceType.get",
-        {
-            id: 15
-        },
-        result => {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
 
 - cURL (Webhook)
 
@@ -61,7 +44,74 @@ Can be obtained from the methods [booking.v1.resourceType.add](./booking-v1-reso
     https://**put_your_bitrix24_address**/rest/booking.v1.resourceType.get
     ```
 
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'booking.v1.resourceType.get',
+    		{
+    			id: 15
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.resourceType.get',
+                [
+                    'id' => 15
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting resource type: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        "booking.v1.resourceType.get",
+        {
+            id: 15
+        },
+        result => {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.dir(result.data());
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -128,9 +178,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response. Contains information about the fields of the resource type. The structure is described [below](#resource) ||
+[`object`](../../../data-types.md) | The root element of the response. Contains information about the resource type fields. The structure is described [below](#resource) ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Resource Type {#resource}
@@ -139,23 +189,23 @@ HTTP status: **200**
 || **code**
 [`string`](../../../data-types.md) | Code of the resource type ||
 || **confirmationCounterDelay**
-[`integer`](../../../data-types.md) | Time until the record in seconds, after which the unconfirmed record counter is activated ||
+[`integer`](../../../data-types.md) | Time until the counter for unconfirmed bookings is activated, in seconds ||
 || **confirmationDelay**
-[`integer`](../../../data-types.md) | Time until the record in seconds, when the client receives the first message for confirmation of the record ||
+[`integer`](../../../data-types.md) | Time until the first message for booking confirmation is sent to the client, in seconds ||
 || **confirmationRepetitions**
-[`integer`](../../../data-types.md) | Number of messages that the client receives for confirmation of the record, excluding the first one ||
+[`integer`](../../../data-types.md) | Number of messages sent to the client for booking confirmation, excluding the first one ||
 || **confirmationRepetitionsInterval**
-[`integer`](../../../data-types.md) | Interval between confirmation messages, in seconds ||
+[`integer`](../../../data-types.md) | Interval between booking confirmation messages, in seconds ||
 || **delayedCounterDelay**
-[`integer`](../../../data-types.md) | Time in seconds after which to turn on the counter in the calendar ||
+[`integer`](../../../data-types.md) | Time in seconds after which the counter in the calendar is activated ||
 || **delayedDelay**
-[`integer`](../../../data-types.md) | Time in seconds after which to send a message to the client about the delay ||
+[`integer`](../../../data-types.md) | Time in seconds after which a message about the delay is sent to the client ||
 || **id**
 [`integer`](../../../data-types.md) | Identifier of the resource ||
 || **infoDelay**
-[`integer`](../../../data-types.md) | Delay in seconds after which the client receives a message about the record ||
+[`integer`](../../../data-types.md) | Delay in seconds after which a message about the booking is sent to the client ||
 || **isConfirmationNotificationOn**
-[`string`](../../../data-types.md) | Automatic confirmation of the record. Possible values:
+[`string`](../../../data-types.md) | Automatic booking confirmation. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **isDelayedNotificationOn**
@@ -167,26 +217,26 @@ HTTP status: **200**
 - `Y` — enabled
 - `N` — disabled ||
 || **isReminderNotificationOn**
-[`string`](../../../data-types.md) | Reminder about the record. Possible values:
+[`string`](../../../data-types.md) | Booking reminder. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **name**
 [`string`](../../../data-types.md) | Name of the resource ||
 || **reminderDelay**
-[`integer`](../../../data-types.md) | Time until the record in seconds, when the client receives a reminder about the record.
-Value `-1` — in the morning on the day of the record ||
+[`integer`](../../../data-types.md) | Time until the reminder about the booking is sent to the client, in seconds.
+Value `-1` means in the morning on the day of the booking ||
 || **templateTypeConfirmation**
-[`string`](../../../data-types.md) | Type of the confirmation message template. Possible values:
+[`string`](../../../data-types.md) | Type of the booking confirmation message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for appointments with specialists ||
+- `animate` — template for booking specialists ||
 || **templateTypeDelayed**
 [`string`](../../../data-types.md) | Type of the delay message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for appointments with specialists ||
+- `animate` — template for booking specialists ||
 || **templateTypeFeedback**
 [`string`](../../../data-types.md) | Type of the feedback request message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for appointments with specialists ||
+- `animate` — template for booking specialists ||
 || **templateTypeReminder**
 [`string`](../../../data-types.md) | Type of the reminder message template. Possible values: `base` ||
 |#

@@ -8,7 +8,7 @@ The method `booking.v1.booking.client.set` sets clients for the specified bookin
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -17,7 +17,7 @@ The method `booking.v1.booking.client.set` sets clients for the specified bookin
 [`integer`](../../../data-types.md) | Booking identifier.
 Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking-add.md) and [booking.v1.booking.list](../booking-v1-booking-list.md)  ||
 || **clients***
-[`array`](../../../data-types.md) | Array of objects containing information about clients [(detailed description)](#clients) ||
+[`array`](../../../data-types.md) | An array of objects containing information about clients [(detailed description)](#clients) ||
 |#
 
 ### Parameter clients {#clients}
@@ -33,16 +33,119 @@ Possible values for `code`:
 - `CONTACT` — [CRM contact](../../../crm/contacts/index.md)
 - `COMPANY` — [CRM company](../../../crm/companies/index.md)
   
-The structure of the object is returned by the method [booking.v1.clienttype.list](../../booking-v1-clienttype-list.md) ||
+The object structure is returned by the method [booking.v1.clienttype.list](../../booking-v1-clienttype-list.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+{% include [Example Notes](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"bookingId":14,"clients":[{"id":1,"type":{"module":"crm","code":"CONTACT"}},{"id":2,"type":{"module":"crm","code":"CONTACT"}}],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.booking.client.set
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"bookingId":14,"clients":[{"id":1,"type":{"module":"crm","code":"CONTACT"}},{"id":2,"type":{"module":"crm","code":"CONTACT"}}]}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.client.set
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'booking.v1.booking.client.set',
+    		{
+    			bookingId: 14,
+    			clients: [
+    				{
+    					id: 1,
+    					type: {
+    						module: 'crm',
+    						code: 'CONTACT'
+    					}
+    				},
+    				{
+    					id: 2,
+    					type: {
+    						module: 'crm',
+    						code: 'CONTACT'
+    					}
+    				}
+    			]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.booking.client.set',
+                [
+                    'bookingId' => 14,
+                    'clients'   => [
+                        [
+                            'id'   => 1,
+                            'type' => [
+                                'module' => 'crm',
+                                'code'   => 'CONTACT',
+                            ],
+                        ],
+                        [
+                            'id'   => 2,
+                            'type' => [
+                                'module' => 'crm',
+                                'code'   => 'CONTACT',
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting booking client: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -75,27 +178,7 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"bookingId":14,"clients":[{"id":1,"type":{"module":"crm","code":"CONTACT"}},{"id":2,"type":{"module":"crm","code":"CONTACT"}}],"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.booking.client.set
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"bookingId":14,"clients":[{"id":1,"type":{"module":"crm","code":"CONTACT"}},{"id":2,"type":{"module":"crm","code":"CONTACT"}}]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.client.set
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -132,7 +215,7 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -162,7 +245,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

@@ -8,7 +8,7 @@ The method `booking.v1.booking.update` updates the booking information.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -48,11 +48,121 @@ Resource IDs can be obtained using the method [booking.v1.resource.list](../reso
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":10,"fields":{"name":"Name","description":"Description","resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.update
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":10,"fields":{"name":"Name","description":"Description","resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.booking.update
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'booking.v1.booking.update',
+    		{
+    			id: 10,
+    			fields: {
+    				name: 'Name',
+    				description: 'Description',
+    				resourceIds: [1, 2, 3],
+    				datePeriod: {
+    					from: {
+    						timestamp: 1723446900,
+    						timezone: 'Europe/Berlin'
+    					},
+    					to: {
+    						timestamp: 1723447800,
+    						timezone: 'Europe/Berlin'
+    					}
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.dir(result);
+    	}
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.booking.update',
+                [
+                    'id' => 10,
+                    'fields' => [
+                        'name' => 'Name',
+                        'description' => 'Description',
+                        'resourceIds' => [1, 2, 3],
+                        'datePeriod' => [
+                            'from' => [
+                                'timestamp' => 1723446900,
+                                'timezone' => 'Europe/Berlin'
+                            ],
+                            'to' => [
+                                'timestamp' => 1723447800,
+                                'timezone' => 'Europe/Berlin'
+                            ]
+                        ]
+                    ]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+            // Your required data processing logic
+            processData($result->data());
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating booking: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -84,27 +194,7 @@ Resource IDs can be obtained using the method [booking.v1.resource.list](../reso
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"id":10,"fields":{"name":"Name","description":"Description","resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.update
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"id":10,"fields":{"name":"Name","description":"Description","resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.booking.update
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -140,7 +230,7 @@ Resource IDs can be obtained using the method [booking.v1.resource.list](../reso
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -163,14 +253,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` on success ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -185,7 +275,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `1019` | `Booking not found` | Record with such `id` not found ||
+|| `1019` | `Booking not found` | Entry with such `id` not found ||
 || `1018` | `Empty resource collection` | Resources unavailable for the specified time period, empty resource array or such resources do not exist ||
 || `0` | `Required fields:` | Required parameter not passed within `fields` ||
 || `100` | `Could not find value for parameter ` | Required parameter not passed ||

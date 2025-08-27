@@ -8,7 +8,7 @@ The method `booking.v1.booking.add` adds a new booking for a resource.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -48,11 +48,110 @@ Default value is an empty string ||
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"name":"Name","description":"Description","resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"name":"Name","description":"Description","resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.booking.add
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'booking.v1.booking.add',
+    		{
+    			fields: {
+    				name: 'Name',
+    				description: 'Description',
+    				resourceIds: [1, 2, 3],
+    				datePeriod: {
+    					from: {
+    						timestamp: 1723446900,
+    						timezone: 'Europe/Berlin'
+    					},
+    					to: {
+    						timestamp: 1723447800,
+    						timezone: 'Europe/Berlin'
+    					}
+    				}
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if (result.error())
+    		console.error(result.error());
+    	else
+    		console.dir(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.booking.add',
+                [
+                    'fields' => [
+                        'name'        => 'Name',
+                        'description' => 'Description',
+                        'resourceIds' => [1, 2, 3],
+                        'datePeriod'  => [
+                            'from' => [
+                                'timestamp' => 1723446900,
+                                'timezone'  => 'Europe/Berlin',
+                            ],
+                            'to'   => [
+                                'timestamp' => 1723447800,
+                                'timezone'  => 'Europe/Berlin',
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your required data processing logic
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding booking: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -83,27 +182,7 @@ Default value is an empty string ||
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"fields":{"name":"Name","description":"Description","resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.add
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"fields":{"name":"Name","description":"Description","resourceIds":[1,2,3],"datePeriod":{"from":{"timestamp":1723446900,"timezone":"Europe/Berlin"},"to":{"timestamp":1723447800,"timezone":"Europe/Berlin"}}},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.booking.add
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -185,9 +264,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `1018` | `Empty resource collection` | Resources are unavailable for the specified time period, empty resource array or such resources do not exist ||
-|| `0` | `Required fields:` | A required parameter is missing within `fields` ||
-|| `100` | `Could not find value for parameter ` | A required parameter is missing ||
+|| `1018` | `Empty resource collection` | Resources are unavailable for the specified time period, empty array of resources or such resources do not exist ||
+|| `0` | `Required fields:` | A required parameter inside `fields` was not provided ||
+|| `100` | `Could not find value for parameter ` | A required parameter was not provided ||
 || `422` | `Invalid date period` | Incorrect time period ||
 |#
 

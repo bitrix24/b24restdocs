@@ -10,15 +10,15 @@ The method `booking.v1.resourceType.list` returns a list of resource types based
 
 #|
 || **FILTER**
-[`object`](../../../data-types.md) | Object for filtering the list of resource types in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
+[`object`](../../../data-types.md) | An object for filtering the list of resource types in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#filter) of the resource type for filtering
 - `value_N` — field value ||
 || **ORDER**
-[`object`](../../../data-types.md) | Object for sorting the list of resource types in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
+[`object`](../../../data-types.md) | An object for sorting the list of resource types in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#order) of the resource type for sorting
-- `value_N` — sorting direction
+- `value_N` — sort direction
 
-The sorting direction can take the following values:
+The sort direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
   
@@ -31,7 +31,7 @@ The default value is `{ID: 'ASC'}` ||
 || **Name**
 `type` | **Description** ||
 || **searchQuery**
-[`string`](../../../data-types.md) | Search query. Searches by substring in the resource type name ||
+[`string`](../../../data-types.md) | Search query. Searches for a substring in the resource type name ||
 || **moduleId**
 [`string`](../../../data-types.md) | Resource type module ||
 || **name**
@@ -57,11 +57,138 @@ Use either `searchQuery` for substring search or `name` for exact match search.
 
 ## Code Examples
 
-{% include [Examples Note](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"filter":{"searchQuery":"res","moduleId":"booking"},"order":{"id":"ASC","name":"DESC","code":"DESC"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resourceType.list
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"filter":{"searchQuery":"res","moduleId":"booking"},"order":{"id":"ASC","name":"DESC","code":"DESC"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.resourceType.list
+    ```
+
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'booking.v1.resourceType.list',
+        {
+          filter: {
+            "searchQuery": "res",
+            "moduleId": "booking"
+          },
+          order: {
+            id: "ASC",
+            name: "DESC",
+            code: "DESC"
+          }
+        },
+        (progress) => { console.log('Progress:', progress) }
+      );
+      const items = response.getData() || [];
+      for (const entity of items) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in chunks and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('booking.v1.resourceType.list', {
+        filter: {
+          "searchQuery": "res",
+          "moduleId": "booking"
+        },
+        order: {
+          id: "ASC",
+          name: "DESC",
+          code: "DESC"
+        }
+      }, 'ID');
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity); }
+      }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('booking.v1.resourceType.list', {
+        filter: {
+          "searchQuery": "res",
+          "moduleId": "booking"
+        },
+        order: {
+          id: "ASC",
+          name: "DESC",
+          code: "DESC"
+        }
+      }, 0);
+      const result = response.getData().result || [];
+      for (const entity of result) { console.log('Entity:', entity); }
+    } catch (error) {
+      console.error('Request failed', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'booking.v1.resourceType.list',
+                [
+                    'filter' => [
+                        'searchQuery' => 'res',
+                        'moduleId'    => 'booking',
+                    ],
+                    'order'  => [
+                        'id'   => 'ASC',
+                        'name' => 'DESC',
+                        'code' => 'DESC',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing resource types: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -86,27 +213,7 @@ Use either `searchQuery` for substring search or `name` for exact match search.
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"filter":{"searchQuery":"res","moduleId":"booking"},"order":{"id":"ASC","name":"DESC","code":"DESC"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resourceType.list
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"filter":{"searchQuery":"res","moduleId":"booking"},"order":{"id":"ASC","name":"DESC","code":"DESC"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.resourceType.list
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -204,11 +311,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response. 
+[`object`](../../../data-types.md) | The root element of the response. 
 
 Contains an array of objects with information about resource types. The structure is described [below](#resource) ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Type {#resource}
@@ -217,23 +324,23 @@ Contains an array of objects with information about resource types. The structur
 || **code**
 [`string`](../../../data-types.md) | Resource type code ||
 || **confirmationCounterDelay**
-[`integer`](../../../data-types.md) | Time until the unconfirmed booking counter is activated in seconds ||
+[`integer`](../../../data-types.md) | Time until the record is made in seconds, after which the unconfirmed record counter lights up ||
 || **confirmationDelay**
-[`integer`](../../../data-types.md) | Time until the first confirmation message is sent to the client in seconds ||
+[`integer`](../../../data-types.md) | Time until the record in seconds when the client receives the first message for confirmation ||
 || **confirmationRepetitions**
 [`integer`](../../../data-types.md) | Number of messages sent to the client for confirmation, excluding the first one ||
 || **confirmationRepetitionsInterval**
 [`integer`](../../../data-types.md) | Interval between confirmation messages, in seconds ||
 || **delayedCounterDelay**
-[`integer`](../../../data-types.md) | Time in seconds after which to activate the counter in the calendar ||
+[`integer`](../../../data-types.md) | Time in seconds after which to turn on the counter in the calendar ||
 || **delayedDelay**
-[`integer`](../../../data-types.md) | Time in seconds after which to send a delay message to the client ||
+[`integer`](../../../data-types.md) | Time in seconds after which to send a message to the client about being late ||
 || **id**
 [`integer`](../../../data-types.md) | Resource type identifier ||
 || **infoDelay**
-[`integer`](../../../data-types.md) | Delay in seconds after which the client receives a booking message ||
+[`integer`](../../../data-types.md) | Delay in seconds after which the client receives a message about the record ||
 || **isConfirmationNotificationOn**
-[`string`](../../../data-types.md) | Automatic booking confirmation. Possible values:
+[`string`](../../../data-types.md) | Automatic confirmation of the record. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **isDelayedNotificationOn**
@@ -245,26 +352,26 @@ Contains an array of objects with information about resource types. The structur
 - `Y` — enabled
 - `N` — disabled ||
 || **isReminderNotificationOn**
-[`string`](../../../data-types.md) | Booking reminder. Possible values:
+[`string`](../../../data-types.md) | Reminder about the record. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **name**
 [`string`](../../../data-types.md) | Resource name ||
 || **reminderDelay**
-[`integer`](../../../data-types.md) | Time until the client receives a reminder about the booking in seconds.
-Value `-1` means in the morning on the day of the booking ||
+[`integer`](../../../data-types.md) | Time until the record in seconds, for which the client receives a reminder about the record.
+Value `-1` — in the morning on the day of the record ||
 || **templateTypeConfirmation**
 [`string`](../../../data-types.md) | Type of confirmation message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
+- `animate` — template for appointments with specialists ||
 || **templateTypeDelayed**
-[`string`](../../../data-types.md) | Type of delay message template. Possible values:
+[`string`](../../../data-types.md) | Type of delayed message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
+- `animate` — template for appointments with specialists ||
 || **templateTypeFeedback**
 [`string`](../../../data-types.md) | Type of feedback request message template. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
+- `animate` — template for appointments with specialists ||
 || **templateTypeReminder**
 [`string`](../../../data-types.md) | Type of reminder message template. Possible values: `base` ||
 |#
