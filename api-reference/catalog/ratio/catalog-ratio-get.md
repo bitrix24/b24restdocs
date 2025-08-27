@@ -1,10 +1,10 @@
-# Get Unit of Measurement Ratio Field Values catalog.ratio.get
+# Get Unit of Measure Ratio Field Values catalog.ratio.get
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns the field values of the unit of measurement ratio by its identifier.
+The method returns the values of the unit of measure ratio fields by identifier.
 
 ## Method Parameters
 
@@ -14,9 +14,9 @@ This method returns the field values of the unit of measurement ratio by its ide
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_ratio.id`](../data-types.md#catalog_ratio) | Identifier of the unit of measurement ratio.
+[`catalog_ratio.id`](../data-types.md#catalog_ratio) | Identifier of the unit of measure ratio.
 
-To obtain the identifiers of unit of measurement ratios, use the [catalog.ratio.list](./catalog-ratio-list.md) method.
+To obtain the identifiers of unit of measure ratios, use the [catalog.ratio.list](./catalog-ratio-list.md) method.
 ||
 |#
 
@@ -49,6 +49,53 @@ To obtain the identifiers of unit of measurement ratios, use the [catalog.ratio.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.ratio.get', {
+    			id: 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.info(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.ratio.get',
+                [
+                    'id' => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting catalog ratio: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.ratio.get', {
             id: 1,
@@ -63,7 +110,7 @@ To obtain the identifiers of unit of measurement ratios, use the [catalog.ratio.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -101,8 +148,8 @@ HTTP Status: **200**
         "finish": 1729601857.530307,
         "duration": 0.7805190086364746,
         "processing": 0.07734394073486328,
-        "date_start": "2024-10-22T15:57:36+02:00",
-        "date_finish": "2024-10-22T15:57:37+02:00"
+        "date_start": "2024-10-22T15:57:36+03:00",
+        "date_finish": "2024-10-22T15:57:37+03:00"
     }
 }
 ```
@@ -115,9 +162,9 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **ratio**
-[`catalog_ratio`](../data-types.md#catalog_ratio) | Object containing information about the unit of measurement ratio ||
+[`catalog_ratio`](../data-types.md#catalog_ratio) | Object containing information about the unit of measure ratio ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -137,11 +184,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to view the unit of measurement ratio
+|| `200040300010` | Insufficient permissions to view the unit of measure ratio
 ||
-|| `100` | Parameter `id` is missing
+|| `100` | Parameter `id` not specified
 ||
-|| `0` | The unit of measurement ratio does not exist
+|| `0` | Unit of measure ratio does not exist
 ||
 || `0` | Other errors (e.g., fatal errors)
 || 
