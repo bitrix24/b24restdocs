@@ -13,7 +13,7 @@ The method returns a list of measurement units.
 `type` | **Description** ||
 || **select**
 [`array`](../../data-types.md) | 
-An array of fields to select (see the fields of the [catalog_measure](../data-types.md#catalog_measure) object).
+An array with the list of fields to select (see the fields of the [catalog_measure](../data-types.md#catalog_measure) object).
 
 If the array is not provided or an empty array is passed, all available fields of measurement units will be selected.
 ||
@@ -22,21 +22,21 @@ If the array is not provided or an empty array is passed, all available fields o
 
 Possible values for `field` correspond to the fields of the [catalog_measure](../data-types.md#catalog_measure) object. 
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string.
+- `=%` — LIKE, substring search. The `%` character must be included in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search goes from both sides.
+- `!=%` — NOT LIKE, substring search. The `%` character must be included in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -96,6 +96,85 @@ The formula for calculating the value of the `start` parameter:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'catalog.measure.list',
+        {
+          select: ["id", "code", "symbolIntl"],
+          filter: {
+            '<=code': 200
+          },
+          order: {'code': 'DESC'}
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('catalog.measure.list', { select: ["id", "code", "symbolIntl"], filter: {'<=code': 200}, order: {'code': 'DESC'} }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    try {
+      const response = await $b24.callMethod('catalog.measure.list', { select: ["id", "code", "symbolIntl"], filter: {'<=code': 200}, order: {'code': 'DESC'} }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.measure.list',
+                [
+                    'select' => ["id", "code", "symbolIntl"],
+                    'filter' => [
+                        '<=code' => 200
+                    ],
+                    'order' => ['code' => 'DESC']
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error calling catalog.measure.list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.measure.list', 
         {
@@ -115,7 +194,7 @@ The formula for calculating the value of the `start` parameter:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -138,7 +217,7 @@ The formula for calculating the value of the `start` parameter:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -185,7 +264,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **measure**
-[`catalog_measure[]`](../data-types.md#catalog_measure) | An array of objects with information about the selected measurement units ||
+[`catalog_measure[]`](../data-types.md#catalog_measure) | Array of objects with information about the selected measurement units ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
@@ -194,7 +273,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

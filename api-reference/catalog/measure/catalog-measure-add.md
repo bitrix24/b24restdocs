@@ -27,7 +27,7 @@ This method adds a new measurement unit.
 || **code***
 [`integer`](../../data-types.md) | Unique code for the measurement unit ||
 || **isDefault**
-[`string`](../../data-types.md) | Whether the current measurement unit is used as the default unit for new products. Possible values:
+[`string`](../../data-types.md) | Indicates whether the current measurement unit is used as the default measurement unit for new products. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -78,6 +78,66 @@ Only one measurement unit from the entire directory can have the value `Y`
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.measure.add', 
+    		{
+    			fields: {
+    				code: 715,
+    				measureTitle: "Pair",
+    				symbol: 'pair',
+    				symbolLetterIntl: 'NPR',
+    				symbolIntl: 'pr; 2',
+    				isDefault: 'N'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.measure.add',
+                [
+                    'fields' => [
+                        'code'            => 715,
+                        'measureTitle'    => "Pair",
+                        'symbol'          => 'pair',
+                        'symbolLetterIntl' => 'NPR',
+                        'symbolIntl'      => 'pr; 2',
+                        'isDefault'       => 'N',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding measure: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.measure.add', 
         {
@@ -99,7 +159,7 @@ Only one measurement unit from the entire directory can have the value `Y`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -127,7 +187,7 @@ Only one measurement unit from the entire directory can have the value `Y`
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -169,7 +229,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

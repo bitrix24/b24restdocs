@@ -46,6 +46,56 @@ This method deletes a measurement unit.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.measure.delete',
+    		{
+    			id: 6
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.measure.delete',
+                [
+                    'id' => 6,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting measure: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.measure.delete', 
         { 
@@ -61,7 +111,7 @@ This method deletes a measurement unit.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -131,7 +181,7 @@ HTTP Status: **400**
 ||
 || `200600000020` | Measurement unit with this identifier does not exist 
 ||
-|| `100` | Parameter `id` is not specified
+|| `100` | Parameter `id` not specified
 ||
 || `0` | Other errors (e.g., fatal errors)
 || 

@@ -1,10 +1,10 @@
-# Get Margin Field Values by Identifier catalog.extra.get
+# Get Margin Field Values by ID catalog.extra.get
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method returns information about the margin by its identifier.
+The method returns information about the margin by its ID.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ The method returns information about the margin by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_extra.id`](../data-types.md#catalog_extra) | Margin identifier ||
+[`catalog_extra.id`](../data-types.md#catalog_extra) | Margin ID ||
 |#
 
 ## Code Examples
@@ -46,6 +46,63 @@ The method returns information about the margin by its identifier.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.extra.get',
+    		{
+    			id: 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	if(result.error())
+    	{
+    		console.error(result.error());
+    	}
+    	else
+    	{
+    		console.log(result);
+    	}
+    }
+    catch(error)
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.extra.get',
+                [
+                    'id' => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting catalog extra: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.extra.get',
         {
@@ -61,7 +118,7 @@ The method returns information about the margin by its identifier.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -113,7 +170,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **extra**
-[`catalog_extra`](../data-types.md#catalog_price_type) | Object with information about the margin with the specified identifier ||
+[`catalog_extra`](../data-types.md#catalog_price_type) | Object with information about the margin with the specified ID ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -137,7 +194,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200040300010` | Insufficient permissions to read
 ||
-|| `202000000000` | No margin exists with this identifier 
+|| `202000000000` | No margin exists with this ID 
 ||
 || `100` | Parameter `id` not specified
 || 

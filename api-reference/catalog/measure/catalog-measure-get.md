@@ -1,25 +1,25 @@
-# Get Information About a Measurement Unit by ID catalog.measure.get
+# Get Information About a Unit of Measurement by ID catalog.measure.get
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns information about a measurement unit by its ID.
+The method returns information about a unit of measurement by its ID.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_measure.id`](../data-types.md#catalog_measure) | Measurement unit ID ||
+[`catalog_measure.id`](../data-types.md#catalog_measure) | Identifier of the unit of measurement ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -46,6 +46,56 @@ This method returns information about a measurement unit by its ID.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.measure.get',
+    		{
+    			id: 6
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.measure.get',
+                [
+                    'id' => 6
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting measure: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.measure.get',
         {
@@ -61,7 +111,7 @@ This method returns information about a measurement unit by its ID.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -117,9 +167,9 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **measure**
-[`catalog_measure`](../data-types.md#catalog_measure) | Object containing information about the measurement unit with the specified ID ||
+[`catalog_measure`](../data-types.md#catalog_measure) | Object containing information about the unit of measurement with the specified ID ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -141,7 +191,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200040300010` | No access to read
 ||
-|| `200600000020` | Measurement unit with this ID does not exist 
+|| `200600000020` | Unit of measurement with this ID does not exist 
 ||
 || `100` | Parameter `id` not specified
 ||

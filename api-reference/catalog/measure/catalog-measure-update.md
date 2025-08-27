@@ -1,10 +1,10 @@
-# Update Unit of Measurement catalog.measure.update
+# Update Measurement Unit catalog.measure.update
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method updates the unit of measurement.
+This method updates the measurement unit.
 
 ## Method Parameters
 
@@ -14,9 +14,9 @@ This method updates the unit of measurement.
 || **Name**
 `type` | **Description** ||
 || **Id***
-[`catalog_measure.id`](../data-types.md#catalog_measure) | Identifier of the unit of measurement ||
+[`catalog_measure.id`](../data-types.md#catalog_measure) | Identifier of the measurement unit ||
 || **fields***
-[`object`](../../data-types.md) | Field values for updating the unit of measurement ||
+[`object`](../../data-types.md) | Field values for updating the measurement unit ||
 |#
 
 ### Parameter fields
@@ -25,16 +25,16 @@ This method updates the unit of measurement.
 || **Name**
 `type` | **Description** ||
 || **code**
-[`integer`](../../data-types.md) | Unique code of the unit of measurement ||
+[`integer`](../../data-types.md) | Unique code of the measurement unit ||
 || **isDefault**
-[`string`](../../data-types.md) | Whether the current unit of measurement is used as the default unit for new products. Possible values:
+[`string`](../../data-types.md) | Whether the current measurement unit is used as the default measurement unit for new products. Possible values:
 - `Y` — yes
 - `N` — no
 
-Only one unit of measurement from the entire directory can have the value `Y`
+Only one measurement unit from the entire directory can have the value `Y`
 ||
 || **measureTitle**
-[`string`](../../data-types.md) | Title of the unit of measurement
+[`string`](../../data-types.md) | Name of the measurement unit
 ||
 || **symbol**
 [`string`](../../data-types.md) | Conditional designation 
@@ -76,6 +76,66 @@ Only one unit of measurement from the entire directory can have the value `Y`
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.measure.update', 
+    		{
+    			id: 8,
+    			fields: {
+    				symbol: 'pair',
+    				symbolLetterIntl: 'nrp',
+    				symbolIntl: 'pr. 2'
+    			}
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.measure.update',
+                [
+                    'id' => 8,
+                    'fields' => [
+                        'symbol'           => 'pair',
+                        'symbolLetterIntl' => 'nrp',
+                        'symbolIntl'       => 'pr. 2',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating measure: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.measure.update', 
         {
@@ -96,7 +156,7 @@ Only one unit of measurement from the entire directory can have the value `Y`
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -157,7 +217,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **measure**
-[`catalog_measure`](../data-types.md#catalog_measure) | Object with information about the updated unit of measurement ||
+[`catalog_measure`](../data-types.md#catalog_measure) | Object with information about the updated measurement unit ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -181,17 +241,17 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `200040300020` | No access to edit
 ||
-|| `200600000000` | A unit of measurement with the specified `code` already exists
+|| `200600000000` | Measurement unit with the specified `code` already exists
 ||
-|| `200600000010` | A unit of measurement with the `isDefault` parameter set to `Y` already exists
+|| `200600000010` | Measurement unit with the `isDefault` parameter set to `Y` already exists
 ||
-|| `200600000020` | A unit of measurement with the specified identifier does not exist
+|| `200600000020` | Measurement unit with such an identifier does not exist
 ||
-|| `100` | The `id` parameter is not specified
+|| `100` | Parameter `id` not specified
 ||
-|| `100` | The `fields` parameter is not specified or is empty
+|| `100` | Parameter `fields` not specified or empty
 ||
-|| `0` | Required fields in the `fields` structure are not provided
+|| `0` | Required fields of the `fields` structure not provided
 ||
 || `0` | Other errors (e.g., fatal errors)
 || 
