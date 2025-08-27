@@ -10,9 +10,9 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
-- parameter types are not specified
-- examples are missing
+- edits needed for standard writing
+- parameter types not specified
+- examples missing
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.message.add` sends a message from the current user to a chat.
+The `im.message.add` method sends a message from the current user to a chat.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -36,7 +36,7 @@ or
 [`text`](../../data-types.md) | `Message text` | The text of the message.
 [Formatting](./index.html) is supported | 18 ||
 || **SYSTEM**
-[`boolean`](../../data-types.md) | `N` | Whether to display messages as a system message or not, optional field, defaults to 'N' | 18 ||
+[`boolean`](../../data-types.md) | `N` | Whether to display messages as system messages or not, optional field, defaults to 'N' | 18 ||
 || **ATTACH**
 [`object`](../../data-types.md) | [Example](./attachments/index.html) | Attachment | 18 ||
 || **URL_PREVIEW**
@@ -47,11 +47,11 @@ or
 [`object`](../../data-types.md) | [Example](./menu.html) | Context menu | 18 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Examples Notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -78,6 +78,75 @@ or
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.message.add',
+    		{
+    			DIALOG_ID: "chat5",
+    			MESSAGE: "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",
+    			ATTACH: [
+    				{
+    					MESSAGE: "API will be available in update [B]im 24.0.0[/B]"
+    				},
+    			],
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('response', result.answer);
+    	if (result.error())
+    		alert("Error: " + result.error());
+    	else
+    		console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.message.add',
+                [
+                    'DIALOG_ID' => "chat5",
+                    'MESSAGE' => "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",
+                    'ATTACH' => [
+                        [
+                            'MESSAGE' => "API will be available in update [B]im 24.0.0[/B]"
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        echo 'response: ' . $result['answer'];
+    
+        if ($result['error']) {
+            echo 'Error: ' . $result['error'];
+        } else {
+            echo 'Data: ' . print_r($result['data'], true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding message: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(    
         'im.message.add',
         {
@@ -99,7 +168,7 @@ or
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -109,10 +178,10 @@ or
         [
             "DIALOG_ID" => "chat20921",
             "MESSAGE"   => "Message [B]with attachment[/B] in primary color and supporting [I]bb-codes[/I]",
-            "ATTACH"   => [
+            "ATTACH" => [
                 [
                     "MESSAGE" => "API will be available in update [B]im 24.0.0[/B]"
-                },
+                ],
             ],
         ]
     );
@@ -130,7 +199,7 @@ or
 
 {% endnote %}
 
-## Success Response
+## Successful Response
 
 ```json
 {
@@ -160,14 +229,14 @@ or
 || **Code** | **Description** ||
 || **USER_ID_EMPTY** | Recipient identifier is not specified when sending a message in a one-on-one chat ||
 || **CHAT_ID_EMPTY** | Recipient chat identifier is not specified when sending a message in a chat ||
-|| **ACCESS_ERROR** | Insufficient permissions to send a message ||
+|| **ACCESS_ERROR** | Insufficient permissions to send the message ||
 || **MESSAGE_EMPTY** | Message text is not provided ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | The maximum allowable size of the attachment (30 KB) has been exceeded ||
+|| **ATTACH_OVERSIZE** | The maximum allowed attachment size (30 KB) has been exceeded ||
 || **KEYBOARD_ERROR** | The entire provided keyboard object failed validation ||
-|| **KEYBOARD_OVERSIZE** | The maximum allowable size of the keyboard (30 KB) has been exceeded ||
+|| **KEYBOARD_OVERSIZE** | The maximum allowed keyboard size (30 KB) has been exceeded ||
 || **MENU_ERROR** | The entire provided menu object failed validation ||
-|| **MENU_OVERSIZE** | The maximum allowable size of the menu (30 KB) has been exceeded ||
+|| **MENU_OVERSIZE** | The maximum allowed menu size (30 KB) has been exceeded ||
 || **PARAMS_ERROR** | Something went wrong ||
 |#
 

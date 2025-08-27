@@ -11,8 +11,8 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- examples missing
+- parameter types are not specified
+- examples are missing
 
 {% endnote %}
 
@@ -42,11 +42,56 @@ If the `ID` key is not provided, data for the current user will be selected.
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.user.list.get',
+    		{ID: [4,5]}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.user.list.get',
+                [
+                    'ID' => [4, 5],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting user list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -65,9 +110,9 @@ If the `ID` key is not provided, data for the current user will be selected.
     );
     ```
 
-- PHP
+- PHP CRest
 
-    {% include [Explanation of restCommand](../_includes/rest-command.md) %}
+    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
     ```php
     $result = restCommand(
@@ -81,9 +126,13 @@ If the `ID` key is not provided, data for the current user will be selected.
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Examples Notes](../../../_includes/examples.md) %}
 
 ## Successful Response
 
@@ -108,7 +157,7 @@ If the `ID` key is not provided, data for the current user will be selected.
             "external_auth_id": "default",
             "status": "online",
             "idle": false,
-            "last_activity_date": "2018-01-29T17:35:31+03:00",
+            "last_activity_date": "2018-01-29T17:35:31+01:00",
             "desktop_last_date": false,
             "mobile_last_date": false,
             "departments": [
@@ -131,16 +180,16 @@ If the `ID` key is not provided, data for the current user will be selected.
 - `name` – user's full name
 - `first_name` – user's first name
 - `last_name` – user's last name
-- `work_position` – job title
+- `work_position` – position
 - `color` – user's color in hex format
-- `avatar` – link to the avatar (if empty, avatar is not set)
-- `avatar_hr` – link to the high-resolution avatar (available only when requested with the parameter `AVATAR_HR = 'Y'`)
+- `avatar` – link to avatar (if empty, avatar is not set)
+- `avatar_hr` – link to high-resolution avatar (available only when requested with the parameter `AVATAR_HR = 'Y'`)
 - `gender` – user's gender
 - `birthday` – user's birthday in DD-MM format, if empty – not set
 - `extranet` – indicator of external extranet user (`true/false`)
 - `network` – indicator of Bitrix24.Network user (`true/false`)
 - `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open lines user (`true/false`)
+- `connector` – indicator of open channel user (`true/false`)
 - `external_auth_id` – external authorization code
 - `status` – selected user status
 - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
@@ -162,12 +211,12 @@ If the `ID` key is not provided, data for the current user will be selected.
 
 ### Key Descriptions
 
-- `error` – error code
-- `error_description` – brief description of the error
+- `error` – code of the occurred error
+- `error_description` – brief description of the occurred error
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| **INVALID_FORMAT** | Incorrect format for the ID field ||
+|| **INVALID_FORMAT** | Incorrect format of the ID field ||
 |#

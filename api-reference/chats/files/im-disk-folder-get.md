@@ -2,17 +2,17 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- examples are missing
+- parameter types not specified
+- examples missing
 
 {% endnote %}
 
@@ -24,10 +24,10 @@ Some data may be missing — we will complete it shortly.
 
 The method `im.disk.folder.get` retrieves information about the file storage folder for a chat.
 
-#|
+#| 
 || **Parameter** | **Example** | **Description** | **Revision** ||
-|| **CHAT_ID^*^**
-[`unknown`](../../data-types.md) | `17` | Chat identifier | 18 ||
+|| **CHAT_ID^*^** 
+[`unknown`](../../data-types.md) | `17` | Identifier of the chat | 18 ||
 |#
 
 {% include [Footnote about parameters](../../../_includes/required.md) %}
@@ -36,11 +36,56 @@ The method `im.disk.folder.get` retrieves information about the file storage fol
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'im.disk.folder.get', {
+                'CHAT_ID': 17,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch( error )
+    {
+        console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.disk.folder.get',
+                [
+                    'CHAT_ID' => 17,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting disk folder: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -60,7 +105,7 @@ The method `im.disk.folder.get` retrieves information about the file storage fol
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -76,11 +121,15 @@ The method `im.disk.folder.get` retrieves information about the file storage fol
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Successful response
+## Response on success
 
 ```json
 {
@@ -90,7 +139,7 @@ The method `im.disk.folder.get` retrieves information about the file storage fol
 }
 ```
 
-## Error response
+## Response on error
 
 ```json
 {
@@ -106,9 +155,9 @@ The method `im.disk.folder.get` retrieves information about the file storage fol
 
 ## Possible error codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || **CHAT_ID_EMPTY** | Chat identifier not provided ||
-|| **ACCESS_ERROR** | The current user does not have access permission to the dialog ||
+|| **ACCESS_ERROR** | The current user does not have access permissions to the dialog ||
 || **INTERNAL_ERROR** | Server error, please contact [technical support](../../../bitrix-support.md) ||
 |#

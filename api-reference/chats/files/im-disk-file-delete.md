@@ -1,17 +1,17 @@
-# Delete File from Chat Folder im.disk.file.delete
+# Delete file from chat folder im.disk.file.delete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
-- parameter types not specified
+- edits needed for writing standards
+- parameter types are not specified
 - examples are missing
 
 {% endnote %}
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `im.disk.file.delete` removes files from within the chat folder.
+The method `im.disk.file.delete` deletes files within the chat folder.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -32,17 +32,65 @@ The method `im.disk.file.delete` removes files from within the chat folder.
 [`unknown`](../../data-types.md) | `112` | File identifier | 18 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.disk.file.delete',
+    		{
+    			'CHAT_ID': 17,
+    			'DISK_ID': 112,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.disk.file.delete',
+                [
+                    'CHAT_ID' => 17,
+                    'DISK_ID' => 112,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting file: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -64,7 +112,7 @@ The method `im.disk.file.delete` removes files from within the chat folder.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -81,11 +129,15 @@ The method `im.disk.file.delete` removes files from within the chat folder.
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Successful Response
+## Response on success
 
 ```json
 {
@@ -93,7 +145,7 @@ The method `im.disk.file.delete` removes files from within the chat folder.
 }
 ```
 
-## Error Response
+## Response on error
 
 ```json
 {
@@ -102,12 +154,12 @@ The method `im.disk.file.delete` removes files from within the chat folder.
 }
 ```
 
-### Key Descriptions
+### Description of keys
 
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
+- `error` – error code
+- `error_description` – brief description of the error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||

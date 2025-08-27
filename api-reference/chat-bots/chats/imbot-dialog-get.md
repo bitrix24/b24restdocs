@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -30,21 +30,65 @@ The method `imbot.dialog.get` retrieves information about a dialog.
 [`unknown`](../../data-types.md) | `chat29`
 or
 `256` | Identifier of the dialog. Format:
-- **chatXXX** – chat of the recipient, if the message is for a chat
-- **XXX** – identifier of the recipient, if the message is for a private dialog | 24 ||
+- **chatXXX** – recipient's chat if the message is for a chat
+- **XXX** – recipient's identifier if the message is for a private dialog | 24 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'imbot.dialog.get',
+    		{
+    			DIALOG_ID: 'chat29'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imbot.dialog.get',
+                [
+                    'DIALOG_ID' => 'chat29',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting dialog: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -65,7 +109,7 @@ or
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -81,9 +125,13 @@ or
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Successful Response
 
@@ -110,21 +158,20 @@ or
 
 ### Key Descriptions
 
-- **id** – identifier of the chat
-- **title** – name of the chat
-- **owner** – identifier of the user who owns the chat
+- **id** – chat identifier
+- **title** – chat title
+- **owner** – identifier of the chat owner
 - **extranet** – indicator of external extranet user participation in the chat (`true/false`)
-- **color** – color of the chat in hex format
+- **color** – chat color in hex format
 - **avatar** – link to the avatar (if empty, the avatar is not set)
-- **type** – type of chat (group chat, call chat, open line chat, etc.)
+- **type** – type of chat (group chat, call chat, open channel chat, etc.)
 - **entity_type** – external code for the chat – type
 - **entity_id** – external code for the chat – identifier
 - **entity_data_1** – external data for the chat
 - **entity_data_2** – external data for the chat
 - **entity_data_3** – external data for the chat
-- **date_create** – creation date of the chat in ATOM format
-- **message_type** – type of messages in the chat
-
+- **date_create** – chat creation date in ATOM format
+- **message_type** – type of chat messages
 
 ## Error Response
 
@@ -145,5 +192,5 @@ or
 #|
 || **Code** | **Description** ||
 || **DIALOG_ID_EMPTY** | Dialog identifier not provided ||
-|| **ACCESS_ERROR** | The current user does not have access permission to the dialog ||
+|| **ACCESS_ERROR** | Current user does not have access permission to the dialog ||
 |#

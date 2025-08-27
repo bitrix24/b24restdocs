@@ -2,15 +2,15 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -36,11 +36,57 @@ The method `im.search.last.delete` removes an item from the last search history.
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.search.last.delete',
+    		{
+    			'DIALOG_ID': 'chat17'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.search.last.delete',
+                [
+                    'DIALOG_ID' => 'chat17'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting last search: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -61,7 +107,7 @@ The method `im.search.last.delete` removes an item from the last search history.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -77,11 +123,15 @@ The method `im.search.last.delete` removes an item from the last search history.
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Successful Response
+## Response on Success
 
 ```json
 {
@@ -89,7 +139,7 @@ The method `im.search.last.delete` removes an item from the last search history.
 }
 ```
 
-## Error Response
+## Response on Error
 
 ```json
 {
@@ -107,5 +157,5 @@ The method `im.search.last.delete` removes an item from the last search history.
 
 #|
 || **Code** | **Description** ||
-|| **DIALOG_ID_EMPTY** | Dialog identifier was not provided. ||
+|| **DIALOG_ID_EMPTY** | Dialog identifier not provided. ||
 |#

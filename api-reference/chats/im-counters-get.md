@@ -2,13 +2,13 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
 - examples are missing
@@ -24,17 +24,61 @@ Some data may be missing here — we will complete it shortly.
 
 The method `im.counters.get` retrieves counters.
 
-Without parameters.
+No parameters.
 
 ## Examples
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.counters.get',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.counters.get',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting IM counters: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -53,23 +97,27 @@ Without parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](./_includes/rest-command.md) %}
 
     ```php
     $result = restCommand(
         'im.counters.get',
-        array(),
+        Array(),
         $_REQUEST[
             "auth"
         ]
     );    
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Note about examples](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 ## Response on Success
 

@@ -24,7 +24,7 @@ Some data may be missing — we will fill it in shortly.
 
 The method `im.dialog.get` retrieves information about a dialog.
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -32,17 +32,79 @@ The method `im.dialog.get` retrieves information about a dialog.
 [`string`](../data-types.md) | `chat29`
 or
 `256` | Identifier of the dialog. Format:
-- **chatXXX** – chat of the recipient, if the message is for a chat
-- **XXX** – identifier of the recipient, if the message is for a private dialog | 24 ||
+- **chatXXX** – recipient's chat if the message is for a chat
+- **XXX** – recipient's identifier if the message is for a private dialog | 24 ||
 |#
 
 ## Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"DIALOG_ID":"chat1"}' https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.dialog.get
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"DIALOG_ID":"chat1","auth":"**put_access_token_here**"}' https://**put_your_bitrix24_address**/rest/im.dialog.get
+    ```
+
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.dialog.get',
+    		{
+    			DIALOG_ID: 'chat1'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.dialog.get',
+                [
+                    'DIALOG_ID' => 'chat1'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting dialog: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -63,19 +125,7 @@ or
     );
     ```
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"DIALOG_ID":"chat1"}' https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.dialog.get
-    ```
-
-- cURL (OAuth)
-
-    ```bash
-    curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"DIALOG_ID":"chat1","auth":"**put_access_token_here**"}' https://**put_your_bitrix24_address**/rest/im.dialog.get
-    ```
-
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -122,7 +172,7 @@ or
 - `id` – chat identifier
 - `title` – chat title
 - `owner` – identifier of the user who owns the chat
-- `extranet` – indicates whether an external extranet user is participating in the chat (`true/false`)
+- `extranet` – indicator of external extranet user participation in the chat (`true/false`)
 - `color` – chat color in hex format
 - `avatar` – link to the avatar (if empty, it means no avatar is set)
 - `type` – type of chat (group chat, call chat, open channel chat, etc.)

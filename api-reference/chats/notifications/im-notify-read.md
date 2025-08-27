@@ -1,4 +1,4 @@
-# Read a notification or all notifications with the specified im.notify.read
+# Read notification or all notifications with specified im.notify.read
 
 {% note warning "We are still updating this page" %}
 
@@ -13,7 +13,7 @@ Some data may be missing — we will fill it in shortly
 - edits needed for writing standards
 - parameter types not specified
 - examples missing
-- response in case of error missing
+- response in case of error is absent
 
 {% endnote %}
 
@@ -23,7 +23,7 @@ Some data may be missing — we will fill it in shortly
 >
 > Who can execute the method: any user
 
-The `im.notify.read` method sets a mark for read notifications.
+The method `im.notify.read` sets a mark for read notifications.
 
 ## Parameters
 
@@ -43,11 +43,47 @@ The `im.notify.read` method sets a mark for read notifications.
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.notify.read',
+    		{
+    			'ID': 17,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php       
+    try {
+        $notificationIds = [1, 2, 3]; // Example notification IDs
+        $result = $serviceBuilder
+            ->getIMScope()
+            ->notify()
+            ->markMessagesAsUnread($notificationIds);
+        if ($result->isSuccess()) {
+            print_r($result->getCoreResponse()->getResponseData()->getResult());
+        } else {
+            print("Failed to mark messages as unread.");
+        }
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage());
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -68,7 +104,7 @@ The `im.notify.read` method sets a mark for read notifications.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -84,24 +120,9 @@ The `im.notify.read` method sets a mark for read notifications.
     );    
     ```
 
-- PHP (B24PhpSdk)
+- cURL
 
-    ```php       
-    try {
-        $notificationIds = [1, 2, 3]; // Example notification IDs
-        $result = $serviceBuilder
-            ->getIMScope()
-            ->notify()
-            ->markMessagesAsUnread($notificationIds);
-        if ($result->isSuccess()) {
-            print_r($result->getCoreResponse()->getResponseData()->getResult());
-        } else {
-            print("Failed to mark messages as unread.");
-        }
-    } catch (Throwable $e) {
-        print("An error occurred: " . $e->getMessage());
-    }
-    ```
+    // example for cURL
 
 {% endlist %}
 

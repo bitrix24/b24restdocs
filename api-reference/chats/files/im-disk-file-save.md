@@ -1,8 +1,8 @@
-# Save file to your disk im.disk.file.save
+# Save file to your Drive im.disk.file.save
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing here — we will complete it soon
 >
 > Who can execute the method: any user
 
-The method `im.disk.file.save` saves a file to your Bitrix24.Disk.
+The method `im.disk.file.save` saves a file to your Bitrix24.Drive.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -36,11 +36,57 @@ The method `im.disk.file.save` saves a file to your Bitrix24.Disk.
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.disk.file.save',
+    		{
+    			'DISK_ID': 112,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.disk.file.save',
+                [
+                    'DISK_ID' => 112,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error saving disk file: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -61,7 +107,7 @@ The method `im.disk.file.save` saves a file to your Bitrix24.Disk.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -77,9 +123,13 @@ The method `im.disk.file.save` saves a file to your Bitrix24.Disk.
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Examples notes](../../../_includes/examples.md) %}
 
 ## Response on success
 

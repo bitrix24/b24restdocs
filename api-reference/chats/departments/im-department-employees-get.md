@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- adjustments needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -40,11 +40,59 @@ The method `im.department.employees.get` retrieves a list of employees in the de
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.department.employees.get',
+    		{
+    			ID: [7],
+    			USER_DATA: 'Y'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log('users', result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.department.employees.get',
+                [
+                    'ID'       => [7],
+                    'USER_DATA' => 'Y',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'users: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting department employees: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -66,7 +114,7 @@ The method `im.department.employees.get` retrieves a list of employees in the de
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -83,13 +131,17 @@ The method `im.department.employees.get` retrieves a list of employees in the de
     );    
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Successful response
 
-When `USER_DATA = N`:
+With the option `USER_DATA = N`:
 
 ```json
 {
@@ -99,7 +151,7 @@ When `USER_DATA = N`:
 }    
 ```
 
-When `USER_DATA = Y`:
+With the option `USER_DATA = Y`:
 
 ```json
 {    
@@ -108,7 +160,7 @@ When `USER_DATA = Y`:
             "id": 1,
             "name": "Eugene Shelenkov",
             "first_name": "Eugene",
-            "last_name": "Shelankov",
+            "last_name": "Shelenkov",
             "work_position": "",
             "color": "#df532d",
             "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
@@ -145,7 +197,7 @@ When `USER_DATA = Y`:
 - `first_name` – user's first name
 - `last_name` – user's last name
 - `work_position` – position
-- `color` – user color in hex format
+- `color` – user's color in hex format
 - `avatar` – link to avatar (if empty, avatar is not set)
 - `gender` – user's gender
 - `birthday` – user's birthday in DD-MM format, if empty – not set
@@ -154,7 +206,7 @@ When `USER_DATA = Y`:
 - `bot` – indicator of bot (`true/false`)
 - `connector` – indicator of open channel user (`true/false`)
 - `external_auth_id` – external authorization code
-- `status` – user status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users.
+- `status` – user status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users
 - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
 - `last_activity_date` – date of the user's last action in ATOM format
 - `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)

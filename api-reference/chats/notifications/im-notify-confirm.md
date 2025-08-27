@@ -11,8 +11,8 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- examples are missing
+- parameter types not specified
+- examples missing
 
 {% endnote %}
 
@@ -32,9 +32,11 @@ The method `im.notify.confirm` interacts with notification buttons.
 [`unknown`](../../data-types.md) | `'Y'` | Value of the selected response (button value) | `30` ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 For example, consider the notification:
+
+![Example buttons](./_images/buttons_example.png)
 
 - the **Accept** button has the value `'Y'`
 - the **Decline** button has the value `'N'`
@@ -46,26 +48,26 @@ For example, consider the notification:
 - JS
 
     ```js
-    BX24.callMethod(
-        'im.notify.confirm',
-        {
-            ID: 288,
-            NOTIFY_VALUE: 'Y'
-        },
-        res => {
-            if (res.error())
+    try
+    {
+        const response = await $b24.callMethod(
+            'im.notify.confirm',
             {
-            console.error(result.error().ex);
+                ID: 288,
+                NOTIFY_VALUE: 'Y'
             }
-            else
-            {
-            console.log(res.data())
-            }
-        }
-    );
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
     ```
 
-- PHP (B24PhpSdk)
+- PHP
 
     ```php
     try {
@@ -87,11 +89,33 @@ For example, consider the notification:
     }
     ```
 
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'im.notify.confirm',
+        {
+            ID: 288,
+            NOTIFY_VALUE: 'Y'
+        },
+        res => {
+            if (res.error())
+            {
+                console.error(result.error().ex);
+            }
+            else
+            {
+                console.log(res.data())
+            }
+        }
+    );
+    ```
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Response on Success
 
 ```json
 {
@@ -101,7 +125,7 @@ For example, consider the notification:
 }
 ```
 
-## Error Response
+## Response on Error
 
 ```json
 {
@@ -110,7 +134,7 @@ For example, consider the notification:
 }
 ```
 
-### Key Descriptions
+### Description of Keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
@@ -119,6 +143,6 @@ For example, consider the notification:
 
 #|
 || **Code** | **Description** ||
-|| **ID_ERROR** | Parameter `ID` is not provided or is not a number ||
-|| **NOTIFY_VALUE_ERROR** | Parameter `NOTIFY_VALUE` is not specified or is empty ||
+|| **ID_ERROR** | Parameter `ID` not provided or is not a number ||
+|| **NOTIFY_VALUE_ERROR** | Parameter `NOTIFY_VALUE` not specified or is empty ||
 |#

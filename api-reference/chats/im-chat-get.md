@@ -8,7 +8,7 @@ Some data may be missing — we will fill it in shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - edits needed for writing standards
 - parameter types not specified
@@ -51,6 +51,63 @@ The method `im.chat.get` retrieves the chat ID.
 
 - JS
 
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.chat.get',
+    		{
+    			ENTITY_TYPE: "LINES",
+    			ENTITY_ID: "telegrambot|2|209607941|744"
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	result.error()
+    		? console.error(result.error())
+    		: console.info(result)
+    	;
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.chat.get',
+                [
+                    'ENTITY_TYPE' => "LINES",
+                    'ENTITY_ID'   => "telegrambot|2|209607941|744"
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Data: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting chat information: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'im.chat.get',
@@ -68,7 +125,7 @@ The method `im.chat.get` retrieves the chat ID.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     $result = restCommand(

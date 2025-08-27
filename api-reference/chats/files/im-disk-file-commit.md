@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -29,22 +29,22 @@ The method `im.disk.file.commit` publishes the uploaded file to the chat.
 || **CHAT_ID^*^**
 [`unknown`](../../data-types.md) | `17` | Identifier of the chat | 18 ||
 || **UPLOAD_ID^*^**
-[`unknown`](../../data-types.md) | `213` | Identifier of the uploaded file through the DISK module methods | 18 ||
+[`unknown`](../../data-types.md) | `213` | Identifier of the uploaded file via DISK module methods | 18 ||
 || **DISK_ID^*^**
 [`unknown`](../../data-types.md) | `112` | Identifier of the file available from the local disk | 18 ||
 || **MESSAGE**
 [`unknown`](../../data-types.md) | `Important document` | Description of the file that will be published in the chat | 18 ||
 || **SILENT_MODE**
-[`unknown`](../../data-types.md) | `N` | Parameter for Open Lines chat, indicates whether information about the file will be sent to the client or not | 18 ||
+[`unknown`](../../data-types.md) | `N` | Parameter for Open Channel chats, indicates whether the file information will be sent to the client or not | 18 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
-To successfully call the API, you need to specify `CHAT_ID` and **one of the two** fields – `UPLOAD_ID` or `DISK_ID`.
+To successfully call the API, you need to specify `CHAT_ID` and **one of two** fields – `UPLOAD_ID` or `DISK_ID`.
 
 {% note warning %}
 
-The file must be uploaded in advance using the [disk.folder.uploadfile](../../disk/folder/disk-folder-upload-file.md) method.
+The file must be uploaded in advance using the method [disk.folder.uploadfile](../../disk/folder/disk-folder-upload-file.md).
 
 {% endnote %}
 
@@ -52,11 +52,59 @@ The file must be uploaded in advance using the [disk.folder.uploadfile](../../di
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.disk.file.commit',
+    		{
+    			'CHAT_ID': 17,
+    			'UPLOAD_ID': 112,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.disk.file.commit',
+                [
+                    'CHAT_ID'  => 17,
+                    'UPLOAD_ID' => 112,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error committing file: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -78,7 +126,7 @@ The file must be uploaded in advance using the [disk.folder.uploadfile](../../di
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -94,11 +142,16 @@ The file must be uploaded in advance using the [disk.folder.uploadfile](../../di
         ]
     );
     ```
+
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Success Response
+## Response on Success
 
 ```json
 {
@@ -106,7 +159,7 @@ The file must be uploaded in advance using the [disk.folder.uploadfile](../../di
 }
 ```
 
-## Error Response
+## Response on Error
 
 ```json
 {
@@ -115,7 +168,7 @@ The file must be uploaded in advance using the [disk.folder.uploadfile](../../di
 }
 ```
 
-### Key Descriptions
+### Description of Keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
@@ -125,6 +178,6 @@ The file must be uploaded in advance using the [disk.folder.uploadfile](../../di
 #|
 || **Code** | **Description** ||
 || **CHAT_ID_EMPTY** | Chat identifier not provided ||
-|| **ACCESS_ERROR** | Current user does not have access permission to the dialog ||
+|| **ACCESS_ERROR** | The current user does not have access permission to the dialog ||
 || **FILES_ERROR** | File identifiers not provided ||
 |#

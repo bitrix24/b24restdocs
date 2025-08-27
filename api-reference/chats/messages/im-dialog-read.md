@@ -2,15 +2,15 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -30,23 +30,73 @@ The method `im.dialog.read` changes the read status of messages. All messages up
 [`unknown`](../../data-types.md) | `chat29`
 or
 `256` | Identifier of the dialog. Format:
-- **chatXXX** – recipient's chat if the message is for a chat
-- **XXX** – recipient's identifier if the message is for a private dialog | 21 ||
+- **chatXXX** – chat of the recipient, if the message is for a chat
+- **XXX** – identifier of the recipient, if the message is for a private dialog | 21 ||
 || **MESSAGE_ID^*^**
 [`unknown`](../../data-types.md) | `12` | Identifier of the last read message in the dialog | 21 ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 ## Examples 
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.dialog.read',
+    		{
+    			'DIALOG_ID': chat29,
+    			'MESSAGE_ID': 12,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.dialog.read',
+                [
+                    'DIALOG_ID' => $chat29,
+                    'MESSAGE_ID' => 12,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error reading dialog: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -68,7 +118,7 @@ or
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -85,11 +135,15 @@ or
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Successful Response
+## Response on success
 
 ```json
 {
@@ -108,7 +162,7 @@ or
 - **counter** – number of unread messages after executing the method
 - **lastId** – last read message
 
-If the method fails to set the new read mark:
+If the method could not set the new read mark:
 
 ```json
 {
@@ -116,7 +170,7 @@ If the method fails to set the new read mark:
 }
 ```
 
-## Error Response
+## Response on error
 
 ```json
 {
@@ -125,15 +179,15 @@ If the method fails to set the new read mark:
 }
 ```
 
-### Key Descriptions
+### Description of keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
-|| **MESSAGE_ID_ERROR** | An incorrect message identifier was provided ||
-|| **DIALOG_ID_EMPTY** | An incorrect dialog identifier was provided ||
+|| **MESSAGE_ID_ERROR** | An incorrect message identifier was specified ||
+|| **DIALOG_ID_EMPTY** | An incorrect dialog identifier was specified ||
 |#

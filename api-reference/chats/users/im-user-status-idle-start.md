@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -47,11 +47,28 @@ This method was designed for the previous version of the chat. In the current M1
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.user.status.idle.start',
+    		{
+    			'AGO': 10
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -72,7 +89,7 @@ This method was designed for the previous version of the chat. In the current M1
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -87,6 +104,10 @@ This method was designed for the previous version of the chat. In the current M1
         ]
     );
     ```
+
+- cURL
+
+    // example for cURL
 
 {% endlist %}
 

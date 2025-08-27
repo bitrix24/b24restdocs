@@ -2,16 +2,16 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not deployed to prod_" %}
+{% note alert "TO-DO _not exported to prod_" %}
 
-- adjustments needed for writing standards
-- parameter types not specified
+- edits needed for writing standards
+- parameter types are not specified
 - examples are missing
 
 {% endnote %}
@@ -29,20 +29,66 @@ The method `im.search.last.add` adds an item to the history of the last search.
 || **DIALOG_ID^*^**
 [`unknown`](../../data-types.md) | `chat17`
 or
-`256` | Identifier of the dialog. Format: **chatXXX** – chat of the recipient if the message is for a chat, or **XXX** – identifier of the recipient if the message is for a private dialog | 18 ||
+`256` | Identifier of the dialog. Format: **chatXXX** – chat of the recipient if the message is for a chat or **XXX** – identifier of the recipient if the message is for a private dialog | 18 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.search.last.add',
+    		{
+    			'DIALOG_ID': 'chat17'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.search.last.add',
+                [
+                    'DIALOG_ID' => 'chat17',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding last search: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -63,9 +109,9 @@ or
     );
     ```
 
-- PHP
+- PHP CRest
 
-    {% include [Explanation of restCommand](../_includes/rest-command.md) %}
+    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
     ```php
     $result = restCommand(
@@ -79,11 +125,15 @@ or
     );    
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
-## Successful Response
+## Success Response
 
 ```json
 {
@@ -109,5 +159,5 @@ or
 
 #|
 || **Code** | **Description** ||
-|| **DIALOG_ID_EMPTY** | Dialog identifier was not provided. ||
+|| **DIALOG_ID_EMPTY** | Dialog identifier not provided. ||
 |#

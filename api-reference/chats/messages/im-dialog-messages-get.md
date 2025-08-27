@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.dialog.messages.get` retrieves a list of the most recent messages in the chat.
+The method `im.dialog.messages.get` retrieves the list of recent messages in the chat.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -37,10 +37,10 @@ or
 || **FIRST_ID**
 [`unknown`](../../data-types.md) | `454322` | Identifier of the first loaded message | 19 ||
 || **LIMIT**
-[`unknown`](../../data-types.md) | `20` | Limit on the number of messages retrieved in the dialog | 19 ||
+[`unknown`](../../data-types.md) | `20` | Limit on the selection of messages in the dialog | 19 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 - If the keys `LAST_ID` and `FIRST_ID` are not provided, the last 20 messages of the chat will be loaded.
 - To load the previous 20 messages, you need to pass `LAST_ID` with the identifier of the minimum message ID obtained from the last selection.
@@ -57,11 +57,57 @@ Due to the potentially large volume of data, this method does not support standa
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.dialog.messages.get',
+    		{
+    			DIALOG_ID: 'chat29'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.dialog.messages.get',
+                [
+                    'DIALOG_ID' => 'chat29'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting dialog messages: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -82,9 +128,9 @@ Due to the potentially large volume of data, this method does not support standa
     );
     ```
 
-- PHP
+- PHP CRest
 
-    {% include [Explanation of restCommand](../_includes/rest-command.md) %}
+    {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
     ```php
     $result = restCommand(
@@ -98,11 +144,15 @@ Due to the potentially large volume of data, this method does not support standa
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Examples Notes](../../../_includes/examples.md) %}
+{% include [Examples notes](../../../_includes/examples.md) %}
 
-## Successful Response
+## Successful response
 
 ```json
 {
@@ -166,19 +216,19 @@ Due to the potentially large volume of data, this method does not support standa
             "chat_id": 29,
             "author_id": 0,
             "date": "2018-01-25T15:15:22+02:00",
-            "text": "John Smith changed the chat topic to \"Big Chat\"",
+            "text": "Eugene Shelenkov changed the chat topic to \"Big chat\"",
             "params": null
          }
         ],
         "users": [
          {
             "id": 1,
-            "name": "John Smith",
-            "first_name": "John",
-            "last_name": "Smith",
+            "name": "Eugene Shelenkov",
+            "first_name": "Eugene",
+            "last_name": "Shelankov",
             "work_position": "",
             "color": "#df532d",
-            "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/smith.png",
+            "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
             "gender": "M",
             "birthday": "",
             "extranet": false,
@@ -246,7 +296,7 @@ Due to the potentially large volume of data, this method does not support standa
                 "status": "done",
                 "progress": 100,
                 "authorId": 1,
-                "authorName": "John Smith",
+                "authorName": "Eugene Shelenkov",
                 "urlPreview": "http://192.168.2.232/bitrix/components/bitrix/im.messenger/show.file.php?fileId=540&preview=Y&fileName=1176297_698081120237288_696773366_n.jpeg",
                 "urlShow": "http://192.168.2.232/bitrix/components/bitrix/im.messenger/show.file.php?fileId=540&fileName=1176297_698081120237288_696773366_n.jpeg",
                 "urlDownload": "http://192.168.2.232/bitrix/components/bitrix/im.messenger/download.file.php?fileId=540"
@@ -257,7 +307,7 @@ Due to the potentially large volume of data, this method does not support standa
 }
 ```
 
-### Description of Keys
+### Description of keys
 
 - `messages` – array of messages:
 
@@ -266,7 +316,7 @@ Due to the potentially large volume of data, this method does not support standa
     - `author_id` – message author (0 - if the message is system)
     - `date` – message date in ATOM format
     - `text` – message text
-    - `params` – message parameters, an object of parameters, if parameters are not provided `null` (main types will be described below)
+    - `params` – message parameters, object of parameters, if parameters are not provided `null` (the main types will be described below)
 
 - `users` – objects describing user data:
 
@@ -275,22 +325,22 @@ Due to the potentially large volume of data, this method does not support standa
     - `first_name` – user's first name
     - `last_name` – user's last name
     - `work_position` – position
-    - `color` – user color in hex format
-    - `avatar` – link to avatar (if empty, avatar is not set)
+    - `color` – user's color in hex format
+    - `avatar` – link to avatar (if empty, it means the avatar is not set)
     - `gender` – user's gender
     - `birthday` – user's birthday in DD-MM format, if empty – not set
     - `extranet` – indicator of external extranet user (`true/false`)
     - `network` – indicator of Bitrix24.Network user (`true/false`)
     - `bot` – indicator of bot (`true/false`)
-    - `connector` – indicator of open lines user (`true/false`)
+    - `connector` – indicator of open channel user (`true/false`)
     - `external_auth_id` – external authorization code
     - `status` – selected user status
     - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
     - `last_activity_date` – date of the user's last action in ATOM format
-    - `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
+    - `mobile_last_date` – date of the last action in the mobile application in ATOM format (if not set, `false`)
     - `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
 
-- `files` – object describing files in selected messages:
+- `files` – object describing files in the selected messages:
 
     - `id` – file identifier
     - `chatId` – chat identifier
@@ -311,7 +361,7 @@ Due to the potentially large volume of data, this method does not support standa
 
 - `chat_id` – chat identifier
 
-### Description of Additional Parameters
+### Description of additional parameters
 
 - `ATTACH` – object containing rich formatting
 - `KEYBOARD` – object containing keyboard description
@@ -320,7 +370,7 @@ Due to the potentially large volume of data, this method does not support standa
 - `FILE_ID` – array of file identifiers
 - `LIKE` – array of user identifiers who voted for the message
 
-## Error Response
+## Error response
 
 ```json
 {
@@ -329,12 +379,12 @@ Due to the potentially large volume of data, this method does not support standa
 }
 ```
 
-### Description of Keys
+### Description of keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||

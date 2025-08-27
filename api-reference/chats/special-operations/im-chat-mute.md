@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -27,22 +27,70 @@ The method `im.chat.mute` disables notifications in the chat.
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **CHAT_ID^*^**
-[`unknown`](../../data-types.md) | `17` | Identifier of the chat | 19 ||
+[`unknown`](../../data-types.md) | `17` | Chat identifier | 19 ||
 || **MUTE^*^**
-[`unknown`](../../data-types.md) | `Y` | Options for the MUTE key: `Y` to disable notifications and `N` to enable. | 19 ||
+[`unknown`](../../data-types.md) | `Y` | MUTE key options: `Y` to disable notifications and `N` to enable. | 19 ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.chat.mute',
+    		{
+    			'CHAT_ID': 17,
+    			'MUTE': 'Y'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.chat.mute',
+                [
+                    'CHAT_ID' => 17,
+                    'MUTE'    => 'Y',
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error muting chat: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -64,7 +112,7 @@ The method `im.chat.mute` disables notifications in the chat.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -81,9 +129,13 @@ The method `im.chat.mute` disables notifications in the chat.
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 

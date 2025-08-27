@@ -1,8 +1,8 @@
-# Get Information About the Department im.department.get
+# Get information about the department im.department.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- adjustments needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.department.get` retrieves data about a department.
+The method `im.department.get` retrieves data about the department.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -32,7 +32,7 @@ The method `im.department.get` retrieves data about a department.
 [`unknown`](../../data-types.md) | `N` | Load user data | 18 ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 - If the parameter `USER_DATA = Y` is passed, data about the manager will be included in the result.
 
@@ -40,11 +40,57 @@ The method `im.department.get` retrieves data about a department.
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.department.get',
+    		{
+    			ID: [51]
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.department.get',
+                [
+                    'ID' => [51]
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting department information: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -65,7 +111,7 @@ The method `im.department.get` retrieves data about a department.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -81,11 +127,15 @@ The method `im.department.get` retrieves data about a department.
     );    
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Response on Success
+## Response on success
 
 ```json
 {
@@ -100,7 +150,7 @@ The method `im.department.get` retrieves data about a department.
 }    
 ```
 
-### Key Descriptions
+### Description of keys
 
 - `id` – department identifier
 - `name` – short name of the department
@@ -118,7 +168,7 @@ The method `im.department.get` retrieves data about a department.
 - `extranet` – indicator of external extranet user (`true/false`)
 - `network` – indicator of Bitrix24.Network user (`true/false`)
 - `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open lines user (`true/false`)
+- `connector` – indicator of open channel user (`true/false`)
 - `external_auth_id` – external authorization code
 - `status` – user status. Always displayed as online, even if the user has set the status to "Do Not Disturb". The "Do Not Disturb" status only affects notification receipt and is not visible to other users.
 - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
@@ -126,7 +176,7 @@ The method `im.department.get` retrieves data about a department.
 - `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
 - `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
 
-## Response on Error
+## Response on error
 
 ```json
 {
@@ -135,14 +185,14 @@ The method `im.department.get` retrieves data about a department.
 }
 ```
 
-### Key Descriptions
+### Description of keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
-|| **INVALID_FORMAT** | Incorrect format of identifiers passed ||
+|| **INVALID_FORMAT** | An incorrect format of identifiers was passed ||
 |#

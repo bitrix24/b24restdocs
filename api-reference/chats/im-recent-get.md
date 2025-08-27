@@ -1,8 +1,8 @@
-# Get a Shortened List of Recent Chats im.recent.get
+# Get a shortened list of recent chats im.recent.get
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -11,9 +11,9 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- examples are missing
-- response in case of error is absent
+- parameter types not specified
+- examples missing
+- response in case of error missing
 
 {% endnote %}
 
@@ -45,11 +45,57 @@ The method `im.recent.get` retrieves a list of the user's recent conversations.
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.recent.get',
+    		{
+    			'SKIP_OPENLINES': 'Y'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch(error)
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.recent.get',
+                [
+                    'SKIP_OPENLINES' => 'Y'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting recent messages: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -70,7 +116,7 @@ The method `im.recent.get` retrieves a list of the user's recent conversations.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](./_includes/rest-command.md) %}
 
@@ -86,11 +132,15 @@ The method `im.recent.get` retrieves a list of the user's recent conversations.
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
 {% include [Footnote about examples](../../_includes/examples.md) %}
 
-## Response in Case of Success
+## Response in case of success
 
 ```json
 {
@@ -171,32 +221,32 @@ The method `im.recent.get` retrieves a list of the user's recent conversations.
 }
 ```
 
-### Description of Keys
+### Description of keys
 
-- `id` – identifier of the dialog (number if user; chatXXX if it's a chat)
-- `type` – type of record (`user` – if user, `chat` – if it's a chat)
+- `id` – identifier of the dialog (number if user; chatXXX if it is a chat)
+- `type` – type of record (`user` – if user, `chat` – if it is a chat)
 - `avatar` – object describing the avatar of the record:
-  - `url` – link to the avatar (if empty, then the avatar is not set)
+  - `url` – link to the avatar (if empty, the avatar is not set)
   - `color` – color of the dialog in hex format
 - `title` – title of the record (First name, last name – for user, chat name – for chat)
 - `message` – object describing the message:
   - `id` – identifier of the message
   - `text` – text of the message (without BB codes and line breaks)
-  - `file` – presence of files (`true/false`)
-  - `attach` – presence of attachments (`true/false`)
+  - `file` – files present (`true/false`)
+  - `attach` – attachments present (`true/false`)
   - `author_id` – author of the message
   - `date` – date of the message in ATOM format
 - `counter` – counter of unread messages
 - `user` – object describing user data (not available if the record type is chat):
-  - `id` – user identifier
-  - `name` – user's full name
-  - `first_name` – user's first name
-  - `last_name` – user's last name
+  - `id` – identifier of the user
+  - `name` – full name of the user
+  - `first_name` – first name of the user
+  - `last_name` – last name of the user
   - `work_position` – position
-  - `color` – user's color in hex format
-  - `avatar` – link to the avatar (if empty, then the avatar is not set)
-  - `gender` – user's gender
-  - `birthday` – user's birthday in DD-MM format, if empty – not set
+  - `color` – color of the user in hex format
+  - `avatar` – link to the avatar (if empty, the avatar is not set)
+  - `gender` – gender of the user
+  - `birthday` – birthday of the user in DD-MM format, if empty – not set
   - `extranet` – indicator of external extranet user (`true/false`)
   - `network` – indicator of Bitrix24.Network user (`true/false`)
   - `bot` – indicator of bot (`true/false`)
@@ -208,12 +258,12 @@ The method `im.recent.get` retrieves a list of the user's recent conversations.
   - `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
   - `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
 - `chat` – object describing chat data (not available if the record type is user):
-  - `id` – chat identifier
-  - `title` – chat name
+  - `id` – identifier of the chat
+  - `title` – name of the chat
   - `owner` – identifier of the user who owns the chat
   - `extranet` – indicator of participation in the chat of an external extranet user (`true/false`)
   - `color` – color of the chat in hex format
-  - `avatar` – link to the avatar (if empty, then the avatar is not set)
+  - `avatar` – link to the avatar (if empty, the avatar is not set)
   - `type` – type of chat (group chat, call chat, open line chat, etc.)
   - `entity_type` – external code for the chat – type
   - `entity_id` – external code for the chat – identifier

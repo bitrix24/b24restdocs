@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types are not specified
-- examples are missing
+- parameter types not specified
+- examples missing
 
 {% endnote %}
 
@@ -34,7 +34,7 @@ The method `im.search.chat.list` performs a search for chats.
 [`unknown`](../../data-types.md) | `10` | User sample limit | 19 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 - The search is conducted across the following fields: **Title**, **First Name**, and **Last Name** of chat participants.
 - The method supports standard pagination of the Bitrix24 Rest API, but in addition, it allows navigation using the `OFFSET` and `LIMIT` parameters.
@@ -43,11 +43,74 @@ The method `im.search.chat.list` performs a search for chats.
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'im.search.chat.list',
+        {
+          FIND: 'Mint'
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative sampling using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('im.search.chat.list', { FIND: 'Mint' }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('im.search.chat.list', { FIND: 'Mint' }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.search.chat.list',
+                [
+                    'FIND' => 'Mint'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'users: ' . print_r($result->data(), true);
+        echo 'total: ' . $result->total();
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error searching chat list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -69,7 +132,7 @@ The method `im.search.chat.list` performs a search for chats.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -85,9 +148,13 @@ The method `im.search.chat.list` performs a search for chats.
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Examples Notes](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Successful Response
 
@@ -120,8 +187,8 @@ The method `im.search.chat.list` performs a search for chats.
 - `title` – chat title
 - `owner` – identifier of the user who owns the chat
 - `color` – chat color in hex format
-- `avatar` – link to the avatar (if empty, the avatar is not set)
-- `type` – type of chat (group chat, call chat, open line chat, etc.)
+- `avatar` – link to the avatar (if empty, it means the avatar is not set)
+- `type` – type of chat (group chat, call chat, open channel chat, etc.)
 - `entity_type` – external code for the chat – type
 - `entity_id` – external code for the chat – identifier
 - `entity_data_1` – external data for the chat
@@ -148,5 +215,5 @@ The method `im.search.chat.list` performs a search for chats.
 
 #|
 || **Code** | **Description** ||
-|| **FIND_SHORT** | The search phrase is too short; searching requires at least three characters. ||
+|| **FIND_SHORT** | Search phrase is too short; the search requires at least three characters. ||
 |#

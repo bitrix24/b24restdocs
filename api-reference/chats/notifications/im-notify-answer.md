@@ -1,8 +1,8 @@
-# Responding to a notification that supports quick reply im.notify.answer
+# Responding to a notification that supports quick response im.notify.answer
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it shortly
 
 {% endnote %}
 
@@ -22,14 +22,14 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The `im.notify.answer` method provides a response to a notification that supports quick replies.
+The `im.notify.answer` method provides a response to a notification that supports quick response.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **ID^*^**
-[`unknown`](../../data-types.md) | `270` | Identifier of the notification that supports quick reply | `30` ||
+[`unknown`](../../data-types.md) | `270` | Identifier of the notification that supports quick response | `30` ||
 || **ANSWER_TEXT^*^**
-[`unknown`](../../data-types.md) | `'Hello'` | Text of the quick reply | `30` ||
+[`unknown`](../../data-types.md) | `'Hello'` | Text of the quick response | `30` ||
 |#
 
 {% include [Footnote about parameters](../../../_includes/required.md) %}
@@ -41,26 +41,26 @@ The `im.notify.answer` method provides a response to a notification that support
 - JS
 
     ```js
-    BX24.callMethod(
-        'im.notify.answer',
-        {
-            ID: 270,
-            ANSWER_TEXT: 'Hello'
-        },
-        res => {
-            if (res.error())
+    try
+    {
+        const response = await $b24.callMethod(
+            'im.notify.answer',
             {
-            console.error(result.error().ex);
+                ID: 270,
+                ANSWER_TEXT: 'Hello'
             }
-            else
-            {
-            console.log(res.data())
-            }
-        }
-    )
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
     ```
 
-- PHP (B24PhpSdk)
+- PHP
 
     ```php
     try {
@@ -82,11 +82,33 @@ The `im.notify.answer` method provides a response to a notification that support
     }
     ```
 
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'im.notify.answer',
+        {
+            ID: 270,
+            ANSWER_TEXT: 'Hello'
+        },
+        res => {
+            if (res.error())
+            {
+                console.error(result.error().ex);
+            }
+            else
+            {
+                console.log(res.data())
+            }
+        }
+    )
+    ```
+
 {% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Successful response
+## Response in case of success
 
 ```json
 {
@@ -98,7 +120,7 @@ The `im.notify.answer` method provides a response to a notification that support
 
 An array of messages regarding your response is returned.
 
-Example of a response if a notification identifier that does not support quick reply is passed:
+Example of a response if a notification identifier that does not support quick response is provided:
 
 ```json
 {
@@ -106,7 +128,7 @@ Example of a response if a notification identifier that does not support quick r
 }
 ```
 
-## Error response
+## Response in case of error
 
 ```json
 {
@@ -124,6 +146,6 @@ Example of a response if a notification identifier that does not support quick r
 
 #|
 || **Code** | **Description** ||
-|| **ID_ERROR** | Parameter `ID` not provided or it is not a number ||
-|| **ANSWER_TEXT_ERROR** | Parameter `ANSWER_TEXT` not provided or it is not a non-empty string ||
+|| **ID_ERROR** | The `ID` parameter was not provided or it is not a number ||
+|| **ANSWER_TEXT_ERROR** | The `ANSWER_TEXT` parameter was not provided or it is not a non-empty string ||
 |#

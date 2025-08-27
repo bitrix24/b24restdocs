@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- adjustments needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `im.recent.pin` pins a conversation at the top of the chat list.
+The `im.recent.pin` method pins a dialog at the top of the chat list.
 
 ## Parameters
 
@@ -38,7 +38,7 @@ or
 [`unknown`](../../data-types.md) | `Y` | Pin or unpin the dialog | 19 ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 - If the parameter `PIN = N` is specified, the pinned dialog will be unpinned.
 
@@ -46,11 +46,59 @@ or
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.recent.pin',
+    		{
+    			'DIALOG_ID': 'chat17',
+    			'PIN': 'Y'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.recent.pin',
+                [
+                    'DIALOG_ID' => 'chat17',
+                    'PIN'       => 'Y'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error pinning recent dialog: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -72,7 +120,7 @@ or
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -89,9 +137,13 @@ or
     );    
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../_includes/examples.md) %}
 
 ## Response on success
 
@@ -119,5 +171,5 @@ or
 
 #|
 || **Code** | **Description** ||
-|| **DIALOG_ID_EMPTY** | Dialog ID was not provided. ||
+|| **DIALOG_ID_EMPTY** | Dialog identifier not provided. ||
 |#

@@ -1,8 +1,8 @@
-# Find Users im.search.user.list
+# Find users im.search.user.list
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
-- parameter types not specified
-- examples missing
+- adjustments needed for writing standards
+- parameter types are not specified
+- examples are missing
 
 {% endnote %}
 
@@ -38,20 +38,83 @@ The method `im.search.user.list` performs a search for users.
 [`unknown`](../../data-types.md) | `10` | Limit for user selection | 19 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Parameter notes](../../../_includes/required.md) %}
 
 - The search is conducted across the following fields: **First Name**, **Last Name**, **Position**, **Department**.
-- The method supports standard pagination of the Bitrix24 Rest API, but in addition, it allows navigation using the `OFFSET` and `LIMIT` parameters.
+- The method supports standard pagination of the Bitrix24 Rest API, but in addition, it allows for navigation using the `OFFSET` and `LIMIT` parameters.
 
 ## Examples
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'im.search.user.list',
+        {
+          FIND: 'Eugene'
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('im.search.user.list', { FIND: 'Eugene' }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('im.search.user.list', { FIND: 'Eugene' }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.search.user.list',
+                [
+                    'FIND' => 'Eugene'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'users: ' . print_r($result->data(), true);
+        echo 'total: ' . $result->total();
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error searching for users: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -73,7 +136,7 @@ The method `im.search.user.list` performs a search for users.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -89,11 +152,15 @@ The method `im.search.user.list` performs a search for users.
     );    
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Examples notes](../../../_includes/examples.md) %}
 
-## Successful Response
+## Response on success
 
 ```json
 {    
@@ -102,7 +169,7 @@ The method `im.search.user.list` performs a search for users.
             "id": 1,
             "name": "Eugene Shelenkov",
             "first_name": "Eugene",
-            "last_name": "Shelankov",
+            "last_name": "Shelkov",
             "work_position": "",
             "color": "#df532d",
             "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
@@ -115,7 +182,7 @@ The method `im.search.user.list` performs a search for users.
             "external_auth_id": "default",
             "status": "online",
             "idle": false,
-            "last_activity_date": "2018-01-29T17:35:31+03:00",
+            "last_activity_date": "2018-01-29T17:35:31+02:00",
             "desktop_last_date": false,
             "mobile_last_date": false,
             "departments": [
@@ -128,7 +195,7 @@ The method `im.search.user.list` performs a search for users.
 }    
 ```
 
-### Key Descriptions
+### Key descriptions
 
 - `id` – user identifier
 - `name` – user's full name
@@ -137,7 +204,7 @@ The method `im.search.user.list` performs a search for users.
 - `work_position` – position
 - `color` – user's color in hex format
 - `avatar` – link to avatar (if empty, avatar is not set)
-- `avatar_hr` – link to high-resolution avatar (available only when requested with `AVATAR_HR = 'Y'`)
+- `avatar_hr` – link to high-resolution avatar (available only when requested with the parameter `AVATAR_HR = 'Y'`)
 - `gender` – user's gender
 - `birthday` – user's birthday in DD-MM format, if empty – not set
 - `extranet` – indicator of external extranet user (`true/false`)
@@ -148,11 +215,11 @@ The method `im.search.user.list` performs a search for users.
 - `status` – selected user status
 - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
 - `last_activity_date` – date of the user's last action in ATOM format
-- `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
-- `desktop_last_date` – date of the last action in the desktop app in ATOM format (if not set, `false`)
-- `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
+- `mobile_last_date` – date of the last action in the mobile application in ATOM format (if not set, `false`)
+- `desktop_last_date` – date of the last action in the desktop application in ATOM format (if not set, `false`)
+- `absent` – date until when the user is on vacation, in ATOM format (if not set, `false`)
 
-## Error Response
+## Response on error
 
 ```json
 {
@@ -161,14 +228,14 @@ The method `im.search.user.list` performs a search for users.
 }
 ```
 
-### Key Descriptions
+### Key descriptions
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Code** | **Description** ||
-|| **FIND_SHORT** | Search phrase is too short; search requires at least three characters. ||
+|| **FIND_SHORT** | Search phrase is too short; search is conducted from three characters. ||
 |#

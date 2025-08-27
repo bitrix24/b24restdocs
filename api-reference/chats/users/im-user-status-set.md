@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing here — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for writing standards
-- parameter types not specified
-- examples missing
+- parameter types are not specified
+- examples are missing
 - response in case of error is absent
 
 {% endnote %}
@@ -23,7 +23,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The method `im.user.status.set` sets the user's status.
+The method `im.user.status.set` sets the user status.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -36,7 +36,7 @@ The method `im.user.status.set` sets the user's status.
 The following statuses are available:
 
 - `online` – Online
-- `dnd` – Do Not Disturb
+- `dnd` – Do not disturb
 - `away` – Away
 
 {% note info "" %}
@@ -50,11 +50,58 @@ The status `away` was used in the previous version of the chat. In the current v
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.user.status.set',
+    		{
+    			STATUS: 'online'
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.user.status.set',
+                [
+                    'STATUS' => 'online'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting user status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -75,7 +122,7 @@ The status `away` was used in the previous version of the chat. In the current v
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -90,6 +137,10 @@ The status `away` was used in the previous version of the chat. In the current v
         ]
     );
     ```
+
+- cURL
+
+    // example for cURL
 
 {% endlist %}
 

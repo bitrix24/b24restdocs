@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it soon.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed for writing standards
+- adjustments needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -22,19 +22,19 @@ Some data may be missing — we will complete it soon.
 >
 > Who can execute the method: any user
 
-The method `im.message.delete` retrieves information about the dialog.
+The method `im.message.delete` removes a message in the chat.
 
-#| 
+#|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **MESSAGE_ID^*^**
 [`unknown`](../../data-types.md) | `1` | Message identifier | 18 ||
 |#
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Explanation about restCommand](../_includes/rest-command.md) %}
+{% include [Explanation of restCommand](../_includes/rest-command.md) %}
 
 {% list tabs %}
 
@@ -54,7 +54,7 @@ The method `im.message.delete` retrieves information about the dialog.
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -75,14 +75,14 @@ The method `im.message.delete` retrieves information about the dialog.
 }
 ```
 
-### Key Descriptions
+### Description of Keys
 
 - `error` – code of the occurred error
 - `error_description` – brief description of the occurred error
 
 ### Possible Error Codes
 
-#| 
+#|
 || **Code** | **Description** ||
 || **MESSAGE_ID_ERROR** | Message identifier not provided ||
 || **CANT_EDIT_MESSAGE** | You do not have access to this message ||

@@ -8,12 +8,12 @@ Some data may be missing here — we will fill it in shortly.
 
 {% if build == 'dev' %}
 
-{% note alert "TO-DO _not exported to prod_" %}
+{% note alert "TO-DO _not deployed to prod_" %}
 
 - edits needed for writing standards
 - parameter types not specified
 - examples missing
-- response in case of error is absent
+- response in case of error missing
 
 {% endnote %}
 
@@ -25,17 +25,59 @@ Some data may be missing here — we will fill it in shortly.
 
 The method `im.user.status.get` retrieves information about the user's set status.
 
-No parameters.
+No parameters required.
 
 ## Examples
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.user.status.get',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.user.status.get',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting user status: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -54,7 +96,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -68,11 +110,15 @@ No parameters.
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
-## Response in Case of Success
+## Response on Success
 
 ```json
 {
@@ -80,7 +126,7 @@ No parameters.
 }
 ```
 
-### Description of the Result
+### Result Description
 
 - `online` – Online
 - `dnd` – Do Not Disturb

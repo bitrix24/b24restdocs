@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,9 +10,9 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
-- parameter types are not specified
-- examples are missing
+- edits needed for writing standards
+- parameter types not specified
+- examples missing
 
 {% endnote %}
 
@@ -38,11 +38,53 @@ The method `im.search.last.get` retrieves a list of items from the last search.
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.search.last.get',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.search.last.get',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting last search: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -61,7 +103,7 @@ The method `im.search.last.get` retrieves a list of items from the last search.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -75,9 +117,13 @@ The method `im.search.last.get` retrieves a list of items from the last search.
     );    
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Note about examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 ## Response on Success
 
@@ -96,26 +142,26 @@ The method `im.search.last.get` retrieves a list of items from the last search.
                 "id": 1,
                 "name": "Eugene Shelenkov",
                 "first_name": "Eugene",
-                "last_name": "Shelenkov",
+                "last_name": "Shelankov",
                 "work_position": "",
                 "color": "#df532d",
                 "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
                 "gender": "M",
                 "birthday": "",
-                "extranet": `false`,
-                "network": `false`,
-                "bot": `false`,
-                "connector": `false`,
+                "extranet": false,
+                "network": false,
+                "bot": false,
+                "connector": false,
                 "external_auth_id": "default",
                 "status": "online",
-                "idle": `false`,
-                "last_activity_date": "2018-01-29T17:35:31+03:00",
-                "desktop_last_date": `false`,
-                "mobile_last_date": `false`,
+                "idle": false,
+                "last_activity_date": "2018-01-29T17:35:31+01:00",
+                "desktop_last_date": false,
+                "mobile_last_date": false,
                 "departments": [
                  50
                 ],
-                "absent": `false`,
+                "absent": false,
                 "phones": {
                  "work_phone": "",
                  "personal_mobile": "",
@@ -129,15 +175,15 @@ The method `im.search.last.get` retrieves a list of items from the last search.
 
 ### Description of Keys
 
-- `id` – identifier of the dialog (number if user, chatXXX if it's a chat)
-- `name` – type of record (`user` – if user, `chat` – if it's a chat)
+- `id` – identifier of the dialog (number if user, chatXXX if it is a chat)
+- `name` – type of record (`user` – if user, `chat` – if it is a chat)
 - `avatar` – object describing the avatar of the record:
   - `url` – link to the avatar (if empty, the avatar is not set)
   - `color` – color of the dialog in hex format
 - `title` – title of the record
 - `user` – object describing user data (not available if the record type is chat):
   - `id` – user identifier
-  - `name` – user's first and last name
+  - `name` – user's full name
   - `first_name` – user's first name
   - `last_name` – user's last name
   - `work_position` – position

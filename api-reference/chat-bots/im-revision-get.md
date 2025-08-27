@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -12,7 +12,7 @@ Some data may be missing here — we will complete it soon.
 
 - edits needed for writing standards
 - examples are missing
-- response in case of error is missing
+- response in case of error is absent
 
 {% endnote %}
 
@@ -28,11 +28,53 @@ The method `im.revision.get` retrieves information about API revisions.
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'im.revision.get',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.revision.get',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error()->ex);
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting IM revision: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -51,8 +93,8 @@ The method `im.revision.get` retrieves information about API revisions.
     );
     ```
 
-- PHP
-    
+- PHP CRest
+
     {% include [Explanation about restCommand](./_includes/rest-command.md) %}
 
     ```php
@@ -67,6 +109,10 @@ The method `im.revision.get` retrieves information about API revisions.
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
 {% include [Footnote about examples](../../_includes/examples.md) %}
@@ -78,7 +124,7 @@ The method `im.revision.get` retrieves information about API revisions.
     "result": {
         "rest": 18,
         "web": 117,
-        "mobile": 9,
+        "mobile": 9
     }
 }
 ```

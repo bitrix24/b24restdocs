@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- edits needed to meet writing standards
+- edits needed for writing standards
 - parameter types are not specified
 - examples are missing
 
@@ -36,21 +36,84 @@ The method `im.search.department.list` performs a search for departments.
 [`unknown`](../../data-types.md) | `10` | Limit for user selection | 19 ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
-- If the parameter `USER_DATA = Y` is passed, data about the manager will be loaded into the result.
-- The search is conducted on the following fields: **Full department name**.
+- If the parameter `USER_DATA = Y` is passed, data about the manager will be loaded with the result.
+- The search is conducted on the following field: **Full department name**.
 - The method supports standard pagination of the Bitrix24 Rest API, but in addition, it allows navigation using the `OFFSET` and `LIMIT` parameters.
 
 ## Examples
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'im.search.department.list',
+        {
+          FIND: 'Moscow'
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('im.search.department.list', { FIND: 'Moscow' }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('im.search.department.list', { FIND: 'Moscow' }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.search.department.list',
+                [
+                    'FIND' => 'Moscow'
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'users: ' . print_r($result->data(), true);
+        echo 'total: ' . $result->total();
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error searching department list: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -72,7 +135,7 @@ The method `im.search.department.list` performs a search for departments.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     $result = restCommand(
@@ -86,9 +149,13 @@ The method `im.search.department.list` performs a search for departments.
     );    
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
-{% include [Examples Notes](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 ## Successful Response
 
@@ -124,7 +191,7 @@ The method `im.search.department.list` performs a search for departments.
 - `extranet` – indicator of external extranet user (`true/false`)
 - `network` – indicator of Bitrix24.Network user (`true/false`)
 - `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open lines user (`true/false`)
+- `connector` – indicator of open channel user (`true/false`)
 - `external_auth_id` – external authorization code
 - `status` – selected user status
 - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
@@ -143,12 +210,12 @@ The method `im.search.department.list` performs a search for departments.
 
 ### Key Descriptions
 
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
+- `error` – error code
+- `error_description` – brief description of the error
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| **FIND_SHORT** | The search phrase is too short; the search requires at least three characters. ||
+|| **FIND_SHORT** | Search phrase is too short; searching starts from three characters. ||
 |#

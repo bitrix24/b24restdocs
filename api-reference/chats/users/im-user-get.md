@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -24,11 +24,11 @@ Some data may be missing here — we will complete it soon.
 
 The method `im.user.get` retrieves user data.
 
-#|
+#| 
 || **Parameter** | **Example** | **Description** | **Revision** ||
-|| **ID**
+|| **ID** 
 [`unknown`](../../data-types.md) | `5` | User identifier | 18 ||
-|| **AVATAR_HR**
+|| **AVATAR_HR** 
 [`unknown`](../../data-types.md) | `N` | Generate avatar in high resolution | 18 ||
 |#
 
@@ -38,11 +38,57 @@ If the `ID` key is not provided, data for the current user will be selected.
 
 {% list tabs %}
 
-- cURL
-
-    // example for cURL
-
 - JS
+
+    ```js
+    try
+    {
+        const response = await $b24.callMethod(
+            'im.user.get',
+            {
+                ID: 5
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
+    }
+    catch(error)
+    {
+        console.error(error.ex);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'im.user.get',
+                [
+                    'ID' => 5
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            echo 'Error: ' . $result->error()->ex;
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting user information: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```javascript
     BX24.callMethod(
@@ -63,7 +109,7 @@ If the `ID` key is not provided, data for the current user will be selected.
     );
     ```
 
-- PHP
+- PHP CRest
 
     {% include [Explanation about restCommand](../_includes/rest-command.md) %}
 
@@ -79,6 +125,10 @@ If the `ID` key is not provided, data for the current user will be selected.
     );
     ```
 
+- cURL
+
+    // example for cURL
+
 {% endlist %}
 
 {% include [Footnote about examples](../../../_includes/examples.md) %}
@@ -91,7 +141,7 @@ If the `ID` key is not provided, data for the current user will be selected.
         "id": 5,
         "name": "Eugene Shelenkov",
         "first_name": "Eugene",
-        "last_name": "Shelenkov",
+        "last_name": "Shelankov",
         "work_position": "",
         "color": "#df532d",
         "avatar": "http://192.168.2.232/upload/resize_cache/main/1d3/100_100_2/shelenkov.png",
@@ -104,7 +154,7 @@ If the `ID` key is not provided, data for the current user will be selected.
         "external_auth_id": "default",
         "status": "online",
         "idle": false,
-        "last_activity_date": "2018-01-29T17:35:31+03:00",
+        "last_activity_date": "2018-01-29T17:35:31+02:00",
         "desktop_last_date": false,
         "mobile_last_date": false,
         "departments": [
@@ -126,22 +176,22 @@ If the `ID` key is not provided, data for the current user will be selected.
 - `name` – user's full name
 - `first_name` – user's first name
 - `last_name` – user's last name
-- `work_position` – job title
-- `color` – user's color in hex format
-- `avatar` – link to the avatar (if empty, the avatar is not set)
-- `avatar_hr` – link to the high-resolution avatar (available only when requested with the parameter `AVATAR_HR = 'Y'`)
+- `work_position` – position
+- `color` – user color in hex format
+- `avatar` – link to avatar (if empty, avatar is not set)
+- `avatar_hr` – link to high-resolution avatar (available only when requesting with parameter `AVATAR_HR = 'Y'`)
 - `gender` – user's gender
 - `birthday` – user's birthday in DD-MM format, if empty – not set
 - `extranet` – indicator of external extranet user (`true/false`)
 - `network` – indicator of Bitrix24.Network user (`true/false`)
 - `bot` – indicator of bot (`true/false`)
-- `connector` – indicator of open lines user (`true/false`)
+- `connector` – indicator of open channel user (`true/false`)
 - `external_auth_id` – external authorization code
 - `status` – selected user status
 - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
 - `last_activity_date` – date of the user's last action in ATOM format
 - `mobile_last_date` – date of the last action in the mobile app in ATOM format (if not set, `false`)
-- `departments` – identifiers of the department
+- `departments` – department identifiers
 - `desktop_last_date` – date of the last action in the desktop app in ATOM format (if not set, `false`)
 - `absent` – date until which the user is on vacation, in ATOM format (if not set, `false`)
 - `phones` – array of phone numbers: `work_phone` – work phone, `personal_mobile` – mobile phone, `personal_phone` – home phone
@@ -157,12 +207,12 @@ If the `ID` key is not provided, data for the current user will be selected.
 
 ### Key Descriptions
 
-- `error` – code of the occurred error
-- `error_description` – brief description of the occurred error
+- `error` – error code
+- `error_description` – brief description of the error
 
 ### Possible Error Codes
 
-#|
+#| 
 || **Code** | **Description** ||
 || **ID_EMPTY** | User identifier not provided ||
 || **USER_NOT_EXISTS** | User with the specified identifier not found ||
