@@ -1,4 +1,4 @@
-# Get a List of Product Images catalog.productImage.list
+# Get the list of product images catalog.productImage.list
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
@@ -58,6 +58,92 @@ To obtain existing identifiers, use the following methods:
 - JS
 
     ```js
+    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
+    
+    try {
+      const response = await $b24.callListMethod(
+        'catalog.productImage.list',
+        {
+          productId: 1,
+          select: [
+            'id',
+            'name',
+            'productId',
+            'type',
+            'createTime',
+            'downloadUrl',
+            'detailUrl',
+          ],
+        },
+        (progress) => { console.log('Progress:', progress) }
+      )
+      const items = response.getData() || []
+      for (const entity of items) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    
+    try {
+      const generator = $b24.fetchListMethod('catalog.productImage.list', { productId: 1, select: ['id', 'name', 'productId', 'type', 'createTime', 'downloadUrl', 'detailUrl'] }, 'ID')
+      for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
+      }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    
+    try {
+      const response = await $b24.callMethod('catalog.productImage.list', { productId: 1, select: ['id', 'name', 'productId', 'type', 'createTime', 'downloadUrl', 'detailUrl'] }, 0)
+      const result = response.getData().result || []
+      for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+      console.error('Request failed', error)
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.productImage.list',
+                [
+                    'productId' => 1,
+                    'select'    => [
+                        'id',
+                        'name',
+                        'productId',
+                        'type',
+                        'createTime',
+                        'downloadUrl',
+                        'detailUrl',
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing product images: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.productImage.list',
         {
@@ -83,7 +169,7 @@ To obtain existing identifiers, use the following methods:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -113,7 +199,7 @@ To obtain existing identifiers, use the following methods:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -159,7 +245,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -174,11 +260,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to view the product catalog
+|| `200040300010` | Insufficient rights to view the trade catalog
 ||
 || `200040300010` | Insufficient rights to view the product
 || 
-|| `100` | The `productId` parameter is missing or empty
+|| `100` | The `productId` parameter is not specified or is empty
 || 
 || `0` | The product with the specified identifier was not found
 || 

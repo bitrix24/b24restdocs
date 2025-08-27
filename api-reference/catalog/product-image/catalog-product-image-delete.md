@@ -58,6 +58,58 @@ To obtain existing identifiers, use the following methods:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.productImage.delete',
+    		{
+    			productId: 1,
+    			id: 1
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.productImage.delete',
+                [
+                    'productId' => 1,
+                    'id'        => 1
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error deleting product image: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.productImage.delete',
         {
@@ -74,7 +126,7 @@ To obtain existing identifiers, use the following methods:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -96,7 +148,7 @@ To obtain existing identifiers, use the following methods:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -125,7 +177,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {	
@@ -140,9 +192,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300020` | Insufficient rights to modify the trade catalog
+|| `200040300020` | Insufficient permissions to modify the trade catalog
 ||
-|| `200040300020` | Insufficient rights to modify the product
+|| `200040300020` | Insufficient permissions to modify the product
 ||
 || `100` | Parameter `productId` is missing or empty
 ||

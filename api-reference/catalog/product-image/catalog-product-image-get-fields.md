@@ -4,13 +4,13 @@
 >
 > Who can execute the method: administrator
 
-The method returns the available fields of a product image, main product, variation, or service.
+This method returns the available fields for a product image, main product, variation, or service.
 
 No parameters.
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -37,6 +37,52 @@ No parameters.
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.productImage.getFields',
+    		{}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.productImage.getFields',
+                []
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product image fields: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.productImage.getFields',
         {},
@@ -50,7 +96,7 @@ No parameters.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -69,7 +115,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -138,14 +184,14 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **productImage**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_product_image](../data-types.md#catalog_product_image), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the field of the [catalog_product_image](../data-types.md#catalog_product_image), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

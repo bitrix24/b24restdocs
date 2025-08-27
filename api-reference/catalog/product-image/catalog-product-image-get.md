@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-The method returns information about a specific product image, parent product, variation, or service.
+This method returns information about a specific product image, main product, variation, or service.
 
 ## Method Parameters
 
@@ -17,11 +17,11 @@ The method returns information about a specific product image, parent product, v
 [`catalog_product.id`](../data-types.md#catalog_product)\|
 [`catalog_product_sku.id`](../data-types.md#catalog_product_sku)\|
 [`catalog_product_offer.id`](../data-types.md#catalog_product_offer)\|
-[`catalog_product_service.id`](../data-types.md#catalog_product_service) | Identifier of the product, parent product, variation, or service.
+[`catalog_product_service.id`](../data-types.md#catalog_product_service) | Identifier of the product, main product, variation, or service.
 
 To obtain existing identifiers, use the following methods:
 - for products — [catalog.product.list](../product/catalog-product-list.md)
-- for parent products — [catalog.product.sku.list](../product/sku/catalog-product-sku-list.md)
+- for main products — [catalog.product.sku.list](../product/sku/catalog-product-sku-list.md)
 - for product variations — [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md)
 - for services — [catalog.product.service.list](../product/service/catalog-product-service-list.md)
 ||
@@ -58,6 +58,58 @@ To obtain existing identifiers, use the following methods:
 - JS
 
     ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.productImage.get', 
+    		{
+    			productId: 1,
+    			id: 1,
+    		}
+    	);
+    	
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch( error )
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.productImage.get',
+                [
+                    'productId' => 1,
+                    'id'        => 1,
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting product image: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
     BX24.callMethod(
         'catalog.productImage.get', 
         {
@@ -74,7 +126,7 @@ To obtain existing identifiers, use the following methods:
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -156,9 +208,9 @@ HTTP Status: **400**
 ||
 || `200040300010` | Insufficient permissions to view the product 
 ||
-|| `100` | Parameter `productId` is missing
+|| `100` | Parameter `productId` not specified
 || 
-|| `100` | Parameter `id` is missing
+|| `100` | Parameter `id` not specified
 || 
 || `0` | Product with the specified identifier not found
 || 
