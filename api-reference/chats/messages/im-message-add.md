@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will fill it in shortly.
 
 {% endnote %}
 
@@ -11,8 +11,8 @@ Some data may be missing — we will complete it shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - edits needed for standard writing
-- parameter types not specified
-- examples missing
+- parameter types are not specified
+- examples are missing
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-The `im.message.add` method sends a message from the current user to a chat.
+The method `im.message.add` sends a message from the current user to a chat.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -30,28 +30,30 @@ The `im.message.add` method sends a message from the current user to a chat.
 [`string`](../../data-types.md) | `chat13`
 or
 `256` | Identifier of the dialog. Format:
-- **chatXXX** – chat of the recipient if the message is for chats
-- **XXX** – identifier of the recipient if the message is for a private dialog | 18 ||
+- **chatXXX** – chat of the recipient, if the message is for chats
+- **XXX** – identifier of the recipient, if the message is for a private dialog | 18 ||
 || **MESSAGE^*^**
 [`text`](../../data-types.md) | `Message text` | The text of the message.
 [Formatting](./index.html) is supported | 18 ||
 || **SYSTEM**
-[`boolean`](../../data-types.md) | `N` | Whether to display messages as system messages or not, optional field, defaults to 'N' | 18 ||
+[`boolean`](../../data-types.md) | `N` | Display messages as a system message. Default is 'N'.
+ 
+A message marked as system cannot be changed or deleted | 18 ||
 || **ATTACH**
 [`object`](../../data-types.md) | [Example](./attachments/index.html) | Attachment | 18 ||
 || **URL_PREVIEW**
-[`boolean`](../../data-types.md) | `Y` | Convert links to rich links, optional field, defaults to 'Y' | 18 ||
+[`boolean`](../../data-types.md) | `Y` | Convert links to rich links, optional field, default is 'Y' | 18 ||
 || **KEYBOARD**
 [`object`](../../data-types.md) | [Example](./keyboards.html) | Keyboard | 18 ||
 || **MENU**
 [`object`](../../data-types.md) | [Example](./menu.html) | Context menu | 18 ||
 |#
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../_includes/required.md) %}
 
 ## Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Examples Notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -229,14 +231,14 @@ or
 || **Code** | **Description** ||
 || **USER_ID_EMPTY** | Recipient identifier is not specified when sending a message in a one-on-one chat ||
 || **CHAT_ID_EMPTY** | Recipient chat identifier is not specified when sending a message in a chat ||
-|| **ACCESS_ERROR** | Insufficient permissions to send the message ||
+|| **ACCESS_ERROR** | Insufficient permissions to send a message ||
 || **MESSAGE_EMPTY** | Message text is not provided ||
 || **ATTACH_ERROR** | The entire provided attachment object failed validation ||
-|| **ATTACH_OVERSIZE** | The maximum allowed attachment size (30 KB) has been exceeded ||
+|| **ATTACH_OVERSIZE** | Exceeded maximum allowable attachment size (30 KB) ||
 || **KEYBOARD_ERROR** | The entire provided keyboard object failed validation ||
-|| **KEYBOARD_OVERSIZE** | The maximum allowed keyboard size (30 KB) has been exceeded ||
+|| **KEYBOARD_OVERSIZE** | Exceeded maximum allowable keyboard size (30 KB) ||
 || **MENU_ERROR** | The entire provided menu object failed validation ||
-|| **MENU_OVERSIZE** | The maximum allowed menu size (30 KB) has been exceeded ||
+|| **MENU_OVERSIZE** | Exceeded maximum allowable menu size (30 KB) ||
 || **PARAMS_ERROR** | Something went wrong ||
 |#
 

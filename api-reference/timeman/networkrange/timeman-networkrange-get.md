@@ -120,7 +120,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -157,7 +157,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Root element of the response.
+[`array`](../../data-types.md) | The root element of the response.
 
 Contains a list of objects. Each object contains a description of the [network address range](#ip_range) ||
 || **time**
@@ -170,14 +170,14 @@ Contains a list of objects. Each object contains a description of the [network a
 || **Name**
 `type` | **Description** ||
 || **ip_range**
- [`string`](../../data-types.md) | Network address range ||
+ [`string`](../../data-types.md) | The range of network addresses ||
 || **name**
- [`string`](../../data-types.md) | Name of the range ||
+ [`string`](../../data-types.md) | The name of the range ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -192,7 +192,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_ERROR` | You don't have access to use this method | Method is available only to the administrator ||
+|| `ACCESS_ERROR` | You don't have access to use this method | The method is only available to the administrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -1,4 +1,4 @@
-# Get Price List by Filter catalog.price.list
+# Get a list of prices by filter catalog.price.list
 
 {% note warning "We are still updating this page" %}
 
@@ -35,13 +35,13 @@ If the operation is successful, a list of prices is returned in the response bod
 #|
 || **Parameter** | **Description** ||
 || **select** 
-[`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-get-fields.md).||
+[`array`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-get-fields.md).||
 || **filter** 
 [`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-get-fields.md). ||
 || **order**
 [`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-get-fields.md). ||
 || **start** 
-[`string`](../../data-types.md)| Page number for output. Works for HTTPS requests. ||
+[`string`](../../data-types.md)| Page number for output. Works for https requests. ||
 |#
 
 {% include [Note on parameters](../../../_includes/required.md) %}
@@ -60,9 +60,9 @@ If the operation is successful, a list of prices is returned in the response bod
       const response = await $b24.callListMethod(
         'catalog.price.list',
         {
-          select: {
-            id
-          },
+          select: [
+            'id'
+          ],
           filter: {
             productId: 8
           },
@@ -78,10 +78,10 @@ If the operation is successful, a list of prices is returned in the response bod
       console.error('Request failed', error)
     }
     
-    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
     
     try {
-      const generator = $b24.fetchListMethod('catalog.price.list', { select: { id }, filter: { productId: 8 }, order: { id: 'ASC' } }, 'ID')
+      const generator = $b24.fetchListMethod('catalog.price.list', { select: [ 'id' ], filter: { productId: 8 }, order: { id: 'ASC' } }, 'ID')
       for await (const page of generator) {
         for (const entity of page) { console.log('Entity:', entity) }
       }
@@ -92,7 +92,7 @@ If the operation is successful, a list of prices is returned in the response bod
     // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
     
     try {
-      const response = await $b24.callMethod('catalog.price.list', { select: { id }, filter: { productId: 8 }, order: { id: 'ASC' } }, 0)
+      const response = await $b24.callMethod('catalog.price.list', { select: [ 'id' ], filter: { productId: 8 }, order: { id: 'ASC' } }, 0)
       const result = response.getData().result || []
       for (const entity of result) { console.log('Entity:', entity) }
     } catch (error) {
@@ -145,9 +145,9 @@ If the operation is successful, a list of prices is returned in the response bod
     BX24.callMethod(
         'catalog.price.list',
         {
-            select: {
-                id
-            },
+            select: [
+                'id'
+            ],
             filter: {
                 productId: 8
             },

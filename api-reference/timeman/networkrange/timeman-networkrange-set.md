@@ -48,7 +48,7 @@ The range can contain:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"ranges":[{"ip_range":"10.0.0.0-10.255.255.255","name":"Office Network 10.x.x.x"},{"ip_range":"172.16.0.0-172.31.255.255","name":"Office Network 172.x.x.x"},{"ip_range":"192.168.0.0-192.168.255.255","name":"Office Network 192.168.x.x"}]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/timeman.networkrange.set
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/timeman.networkrange.set
     ```
 
 - cURL (OAuth)
@@ -256,7 +256,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../data-types.md) | Root element of the response. Can have values:
-- `true` — all ranges successfully set
+- `true` — all ranges were successfully set
 - `false` — there are ranges with errors ||
 || **error_range**
  [`array`](../../data-types.md) | Array of [ranges](#ip_range) where errors were found ||
@@ -292,8 +292,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_ERROR` | You don't have access to use this method | Method is available only to the administrator ||
-|| `INVALID_FORMAT` | A wrong format for the RANGES field is passed | An incorrect format was provided in the `RANGES` parameter ||
+|| `ACCESS_ERROR` | You don't have access to use this method | The method is only available to the administrator ||
+|| `INVALID_FORMAT` | A wrong format for the RANGES field is passed | An incorrect format was passed in the `RANGES` parameter ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

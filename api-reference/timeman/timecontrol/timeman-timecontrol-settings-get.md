@@ -117,7 +117,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -161,7 +161,7 @@ HTTP Status: **200**
 || **register_offline**
 [`boolean`](../../data-types.md) | Register offline status ||
 || **register_idle**
-[`boolean`](../../data-types.md) | Register idle status ||
+[`boolean`](../../data-types.md) | Register away status ||
 || **register_desktop**
 [`boolean`](../../data-types.md) | Register desktop application status ||
 || **report_request_type**
@@ -197,7 +197,7 @@ Filled if `report_full_type` is set to `user` ||
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

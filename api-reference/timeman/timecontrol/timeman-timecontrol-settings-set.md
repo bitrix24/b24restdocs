@@ -25,7 +25,7 @@ The method `timeman.timecontrol.settings.set` sets the settings for the time con
 || **REGISTER_DESKTOP**
 [`boolean`](../../data-types.md) | Register desktop application status ||
 || **REPORT_REQUEST_TYPE**
-[`string`](../../data-types.md) | Type of report request. Possible values:
+[`string`](../../data-types.md) | Type of report requests. Possible values:
 - `all` — for everyone
 - `user` — for specific users
 - `none` — for no one ||
@@ -222,7 +222,7 @@ HTTP Status: **200**
 
 Returns `true` if the settings are successfully saved ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

@@ -23,9 +23,9 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 - `group` — group calendar
 - `company_calendar` — company calendar  ||
 || **ownerId***
-[`integer`](../../data-types.md) | Identifier of the calendar owner. 
+[`integer`](../../data-types.md) | Calendar owner identifier. 
 
-For the company calendar, the `ownerId` parameter is set to `0`. ||
+For the company calendar, the `ownerId` parameter is `0`. ||
 || **from**
 [`datetime`\|`date`](../../data-types.md) | Start date and time of the event.
 
@@ -49,13 +49,17 @@ You can specify the date without time. To do this, pass the value `Y` in the `sk
 
 Date format according to ISO-8601 standard. ||
 || **timezone_from**
-[`string`](../../data-types.md) | Timezone of the event's start date and time. Default is the current user's timezone.
+[`string`](../../data-types.md) | Timezone of the start date and time of the event. Default is the current user's timezone.
 
-The value should be passed as a string, for example, `Europe/Riga`. ||
+The value should be passed as a string, for example, `Europe/Riga`.
+
+[Timezone handling features](#timezone-features) ||
 || **timezone_to**
-[`string`](../../data-types.md) | Timezone of the event's end date and time. Default value is the current user's timezone.
+[`string`](../../data-types.md) | Timezone of the end date and time of the event. Default value is the current user's timezone.
 
-The value should be passed as a string, for example, `Europe/Riga`. ||
+The value should be passed as a string, for example, `Europe/Riga`.
+
+[Timezone handling features](#timezone-features) ||
 || **description**
 [`text`](../../data-types.md) | Event description. ||
 || **color**
@@ -67,7 +71,7 @@ The `#` symbol in the color must be passed in unicode format — `%23`. ||
 
 The `#` symbol in the color must be passed in unicode format — `%23`. ||
 || **accessibility**
-[`string`](../../data-types.md) | Availability during the event: 
+[`string`](../../data-types.md) | Availability during the event time: 
 - `busy` — busy 
 - `absent` — absent 
 - `quest` — tentative 
@@ -76,35 +80,35 @@ The `#` symbol in the color must be passed in unicode format — `%23`. ||
 [`string`](../../data-types.md) | Event importance: 
 - `high` — high 
 - `normal` — medium 
-- `low` — low. ||
+- `low` — low ||
 || **private_event**
 [`string`](../../data-types.md) | Mark indicating that the event is private. Possible values:
 - `Y` — private
-- `N` — not private. ||
+- `N` — not private ||
 || **recurrence_mode**
  [`string`](../../data-types.md) | Parameter for partial editing of a recurring event. Possible values:
- - `this` — changes apply only to the current event. `current_date_from` must be specified. 
- - `next` — changes apply to the current and all subsequent events. `current_date_from` must be specified. 
+ - `this` — changes apply only to the current event. Must specify `current_date_from`. 
+ - `next` — changes apply to the current and all following events. Must specify `current_date_from`. 
  - `all` — changes apply to all events in the recurrence chain. ||
 || **current_date_from**
 [`date`](../../data-types.md) | Date of the current event for partial editing of a recurring event.
 
 Required only for `recurrence_mode` with values `this` or `next`. ||
 || **rrule**
-[`object`](../../data-types.md) | Recurrence of the event in the form of an object in terms of the iCalendar standard. The structure is described [below](#rrule). ||
+[`object`](../../data-types.md) | Recurrence of the event in the form of an object according to the iCalendar standard. The structure is described [below](#rrule). ||
 || **is_meeting**
 [`string`](../../data-types.md) | Indicator of a meeting with event participants. Possible values:
 
 - `Y` — meeting with participants
 - `N` — meeting without participants
 
-For a meeting with participants, you must specify the list of participants in `attendees` and the event organizer in `host`. Without filling in these fields, the event will not be created. ||
+For a meeting with participants, you must specify the list of participants in `attendees` and the event organizer in `host`. Without filling these fields, the event will not be created. ||
 || **location**
 [`string`](../../data-types.md) | Location. ||
 || **remind**
 [`array`](../../data-types.md) | Array of objects describing reminders for the event. The structure is described [below](#remind). ||
 || **attendees***
-[`array`](../../data-types.md) | List of identifiers of event participants. This field is required if `is_meeting` = `Y`. ||
+[`array`](../../data-types.md) | List of participant identifiers for the event. This field is required if `is_meeting` = `Y`. ||
 || **host***
 [`string`](../../data-types.md) | Identifier of the event organizer. This field is required if `is_meeting` = `Y`. ||
 || **meeting**
@@ -117,6 +121,39 @@ For a meeting with participants, you must specify the list of participants in `a
  - `D_` — deal. ||
 |#
 
+### Timezone Handling Features {#timezone-features}
+
+When working with event dates and times, you can use two approaches:
+
+1. Full date format with timezone.
+
+    Use the ISO-8601 format with timezone specified in the `from` and `to` parameters:
+    - `2025-03-20T15:00:00+02:00` — with offset
+    - `2025-08-05T10:00:00+11:00` — with offset
+    - `2025-08-04T23:00:00Z` — with UTC specified
+
+    The `timezone_from` and `timezone_to` parameters are ignored since the timezone is already specified in the date.
+
+2. Simple date format with separate timezone parameters.
+
+    Use the simple format in the `from` and `to` parameters:
+    - `2025-03-20 15:00:00`
+    - `2025-08-05 10:00:00`
+    - `2025-08-05T10:00:00`
+
+    Specify the timezone in the `timezone_from` and `timezone_to` parameters:
+    - `Europe/Moscow`
+    - `America/New_York`
+    - `Asia/Tokyo`
+
+    If only `timezone_from` is specified, its value will be used for `timezone_to`.
+
+Priority of timezone parameter processing:
+
+- **Highest priority.** If the `from` and `to` parameters are specified in full format with timezone, the `timezone_from` and `timezone_to` parameters are ignored.
+- **Medium priority.** If a simple date format is used and `timezone_from` and `timezone_to` parameters are specified, they are used.
+- **Lowest priority.** If the date format is simple and timezone parameters are not specified, the current user's timezone is used.
+
 ### rrule Parameter {#rrule}
 
 #|
@@ -127,7 +164,8 @@ For a meeting with participants, you must specify the list of participants in `a
 - `DAILY` — daily
 - `WEEKLY` — weekly
 - `MONTHLY` — monthly
-- `YEARLY` — yearly. ||
+- `YEARLY` — yearly
+||
 || **COUNT**
 [`integer`](../../data-types.md) | Number of recurrences. ||
 || **INTERVAL**
@@ -151,12 +189,12 @@ For a meeting with participants, you must specify the list of participants in `a
 || **Name**
 `type` | **Description** ||
 || **type**
-[`string`](../../data-types.md) | Time type of the reminder
+[`string`](../../data-types.md) | Time type of reminder
 - `min` — minutes
 - `hour` – hours
 - `day` — days. ||
 || **count**
-[`integer`](../../data-types.md) | Numeric value of the time interval. ||
+[`integer`](../../data-types.md) | Numerical value of the time interval. ||
 |#
 
 ### meeting Parameter {#meeting}
@@ -165,7 +203,7 @@ For a meeting with participants, you must specify the list of participants in `a
 || **Name**
 `type` | **Description** ||
 || **notify**
-[`boolean`](../../data-types.md) | Flag for notification of confirmation or refusal by participants. ||
+[`boolean`](../../data-types.md) | Flag for notification of confirmation or refusal from participants. ||
 || **reinvite**
 [`boolean`](../../data-types.md) | Flag for requesting re-confirmation of participation when editing the event. ||
 || **allow_invite**
@@ -252,7 +290,7 @@ For a meeting with participants, you must specify the list of participants in `a
     	
     	const result = response.getData().result;
     	console.log('Updated event with ID:', result);
-    	// Your required data processing logic
+    	// Your data processing logic
     	processResult(result);
     }
     catch( error )
@@ -317,7 +355,7 @@ For a meeting with participants, you must specify the list of participants in `a
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your data processing logic
         processData($result);
     
     } catch (Throwable $e) {
@@ -434,7 +472,7 @@ For a meeting with participants, you must specify the list of participants in `a
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 {% list tabs %}
 
@@ -460,7 +498,7 @@ HTTP Status: **200**
     {
         "result": {
             "originalDate": "12/24/2024 05:59:00 pm",
-            "originalDavXmlId": "20241205T124346Z-e3ccab8aebc16d0c5cccecb63fef2bc3@b24evo.com",
+            "originalDavXmlId": "20241205T124346Z-e3ccab8aebc16d0c5cccecb63fef2bc3@b24evo.lan",
             "instanceTz": "Europe/Riga",
             "recEventId": 1261,
             "id": 1260
@@ -503,7 +541,7 @@ HTTP Status: **200**
     || **originalDavXmlId**
     [`string`](../../data-types.md) | Event identifier for synchronization. ||
     || **instanceTz**
-    [`string`](../../data-types.md) | Timezone of the event. ||
+    [`string`](../../data-types.md) | Event timezone. ||
     || **recEventId**
     [`integer`](../../data-types.md) | Identifier of the new series of the recurring event. ||
     || **id**
@@ -514,7 +552,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -534,10 +572,10 @@ HTTP Status: **400**
 || Empty string | The required parameter "type" for the method "calendar.event.update" is not set. | The required parameter `type` is not provided. ||
 || Empty string | Invalid value for the "name" parameter. | Incorrect data format in the `name` field. ||
 || Empty string | Invalid value for the "description" parameter. | Incorrect data format in the `description` field. ||
-|| Empty string | Access denied. | Creation of events in the specified calendar is prohibited. ||
-|| Empty string | You have specified an invalid calendar section ID or the user does not have access to it. | An identifier of an inaccessible or non-existent calendar is provided. ||
+|| Empty string | Access denied. | Creating events in the specified calendar is prohibited. ||
+|| Empty string | You specified an invalid calendar section ID or the user does not have access to it. | An identifier of an inaccessible or non-existent calendar is provided. ||
 || Empty string | An invalid editing type for the recurring event is specified. | An incorrect value for the `recurrence_mode` field is provided. ||
-|| Empty string | The event's CRM link list must be an array. | Incorrect data format in the `crm_fields` field. ||
+|| Empty string | The event's CRM links list must be an array. | Incorrect data format in the `crm_fields` field. ||
 || Empty string | An error occurred while changing the event. | Another error. ||
 |#
 

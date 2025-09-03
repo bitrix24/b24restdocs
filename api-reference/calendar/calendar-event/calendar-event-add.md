@@ -22,15 +22,15 @@ This method adds a new event to the calendar.
 || **ownerId***
 [`integer`](../../data-types.md) | Identifier of the calendar owner. 
 
-For the company calendar, the `ownerId` parameter is `0` ||
+For the company calendar, the `ownerId` parameter is set to `0`||
 || **from***
 [`datetime`\|`date`](../../data-types.md) | Start date and time of the event.
 
-You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
+You can specify a date without a time. To do this, pass the value `Y` in the `skip_time` parameter ||
 || **to***
 [`datetime`\|`date`](../../data-types.md) | End date of the event.
 
-You can specify a date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
+You can specify a date without a time. To do this, pass the value `Y` in the `skip_time` parameter ||
 || **from_ts**
 [`integer`](../../data-types.md) | Date and time in timestamp format. Can be used instead of the `from` parameter ||
 || **to_ts**
@@ -48,11 +48,15 @@ Date format according to ISO-8601 ||
 || **timezone_from**
 [`string`](../../data-types.md) | Timezone of the start date and time of the event. Default is the current user's timezone.
 
-The value should be passed as a string, for example, `Europe/Riga` ||
+The value should be passed as a string, for example, `Europe/Riga`.
+
+[Timezone handling features](#timezone-features) ||
 || **timezone_to**
 [`string`](../../data-types.md) | Timezone of the end date and time of the event. Default value is the current user's timezone.
 
-The value should be passed as a string, for example, `Europe/Riga` ||
+The value should be passed as a string, for example, `Europe/Riga`.
+
+[Timezone handling features](#timezone-features) ||
 || **description**
 [`text`](../../data-types.md) | Event description ||
 || **color**
@@ -71,7 +75,7 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 - `free` — free 
 ||
 || **importance**
-[`string`](../../data-types.md) | Event importance: 
+[`string`](../../data-types.md) | Importance of the event: 
 - `high` — high 
 - `normal` — medium 
 - `low` — low ||
@@ -81,7 +85,7 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 - `N` — not private
 ||
 || **rrule**
-[`object`](../../data-types.md) | Event recurrence as an object in terms of the iCalendar standard. The structure is described [below](#rrule)
+[`object`](../../data-types.md) | Recurrence of the event as an object in terms of the iCalendar standard. The structure is described [below](#rrule)
 ||
 || **is_meeting**
 [`string`](../../data-types.md) | Indicator of a meeting with event participants. Possible values:
@@ -102,12 +106,45 @@ For a meeting with participants, you must specify the list of participants `atte
 || **meeting**
 [`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting) ||
 || **crm_fields**
- [`array`](../../data-types.md) | Array of CRM object identifiers to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
+ [`array`](../../data-types.md) | Array of identifiers of CRM objects to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
  - `CO_` — company
  - `C_` — contact 
  - `L_` — lead
  - `D_` — deal ||
 |#
+
+### Timezone Handling Features {#timezone-features}
+
+When working with event dates and times, you can use two approaches:
+
+1. Full date format with timezone.
+
+    Use the ISO-8601 format with timezone specified in the `from` and `to` parameters:
+    - `2025-03-20T15:00:00+02:00` — with offset
+    - `2025-08-05T10:00:00+11:00` — with offset
+    - `2025-08-04T23:00:00Z` — with UTC specified
+
+    The `timezone_from` and `timezone_to` parameters are ignored, as the timezone is already specified in the date.
+
+2. Simple date format with separate timezone parameters.
+
+    Use a simple format in the `from` and `to` parameters:
+    - `2025-03-20 15:00:00`
+    - `2025-08-05 10:00:00`
+    - `2025-08-05T10:00:00`
+
+    Specify the timezone in the `timezone_from` and `timezone_to` parameters:
+    - `Europe/Moscow`
+    - `America/New_York`
+    - `Asia/Tokyo`
+
+    If only `timezone_from` is specified, its value will be used for `timezone_to`.
+
+Priority of timezone parameter processing:
+
+- **Highest priority.** If the `from` and `to` parameters are specified in full format with timezone, the `timezone_from` and `timezone_to` parameters are ignored
+- **Medium priority.** If a simple date format is used and `timezone_from` and `timezone_to` parameters are specified, they are used
+- **Lowest priority.** If the date format is simple and timezone parameters are not specified, the current user's timezone is used
 
 ### rrule Parameter {#rrule}
 
@@ -149,7 +186,7 @@ For a meeting with participants, you must specify the list of participants `atte
 - `hour` – hours
 - `day` — days ||
 || **count**
-[`integer`](../../data-types.md) | Numeric value of the time interval ||
+[`integer`](../../data-types.md) | Numerical value of the time interval ||
 |#
 
 ### meeting Parameter {#meeting}
@@ -162,7 +199,7 @@ For a meeting with participants, you must specify the list of participants `atte
 || **reinvite**
 [`boolean`](../../data-types.md) | Flag for requesting re-confirmation of participation when editing the event ||
 || **allow_invite**
-[`boolean`](../../data-types.md) | Flag allowing participants to invite others to the event ||
+[`boolean`](../../data-types.md) | Flag for allowing participants to invite others to the event ||
 || **hide_guests**
 [`boolean`](../../data-types.md) | Flag for hiding the list of participants ||
 |#
@@ -573,9 +610,9 @@ For a meeting with participants, you must specify the list of participants `atte
             color: '%23FF0000', // Background color of the event (red)
             text_color: '%23000000', // Text color of the event (black)
             accessibility: 'busy', // Availability during the event: busy
-            importance: 'high', // Event importance: high
+            importance: 'high', // Importance of the event: high
             private_event: 'N', // Event is not private
-            rrule: { // Event recurrence parameters
+            rrule: { // Recurrence parameters of the event
                 FREQ: 'WEEKLY', // Recurrence frequency: weekly
                 COUNT: 10, // Number of recurrences
                 INTERVAL: 1, // Interval between recurrences
@@ -626,9 +663,9 @@ For a meeting with participants, you must specify the list of participants `atte
             'color' => '#FF0000', // Background color of the event (red)
             'text_color' => '#000000', // Text color of the event (black)
             'accessibility' => 'busy', // Availability during the event: busy
-            'importance' => 'high', // Event importance: high
+            'importance' => 'high', // Importance of the event: high
             'private_event' => 'N', // Event is not private
-            'rrule' => [ // Event recurrence parameters
+            'rrule' => [ // Recurrence parameters of the event
                 'FREQ' => 'WEEKLY', // Recurrence frequency: weekly
                 'COUNT' => 10, // Number of recurrences
                 'INTERVAL' => 1, // Interval between recurrences
@@ -708,11 +745,11 @@ HTTP status: **400**
 || Empty string | The required parameter "name" for the method "calendar.event.add" is not set | The required parameter `name` is not passed ||
 || Empty string | The required parameter "from" for the method "calendar.event.add" is not set | The required parameter `from` or `from_ts` is not passed ||
 || Empty string | The required parameter "to" for the method "calendar.event.add" is not set | The required parameter `to` or `to_ts` is not passed ||
-|| Empty string | Invalid value for the parameter "name" | Incorrect data format in the `name` field ||
-|| Empty string | Invalid value for the parameter "description" | Incorrect data format in the `description` field ||
-|| Empty string | Access denied | Creating events in the specified calendar is prohibited ||
-|| Empty string | You specified an invalid calendar section ID or the user does not have access to it | An identifier of an inaccessible or non-existent calendar is passed ||
-|| Empty string | The list of event links to CRM must be an array | Incorrect data format in the `crm_fields` field ||
+|| Empty string | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
+|| Empty string | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
+|| Empty string | Access denied | Creation of events in the specified calendar is prohibited ||
+|| Empty string | You have specified an invalid calendar section ID or the user does not have access to it | An identifier of an unavailable or non-existent calendar is passed ||
+|| Empty string | The event's CRM link list must be an array | Incorrect data format in the `crm_fields` field ||
 || Empty string | An error occurred while creating the event | Another error ||
 |#
 

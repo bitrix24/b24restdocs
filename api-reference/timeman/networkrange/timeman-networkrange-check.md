@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-The method `timeman.networkrange.check` checks if an IP address falls within the ranges of the office network.
+The method `timeman.networkrange.check` checks whether an IP address falls within the ranges of the office network.
 
 For the method to work correctly, at least one range must be set.
 
@@ -21,7 +21,7 @@ If not specified, the check will be performed for the current IP address ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
