@@ -18,7 +18,7 @@ An array of fields to select (see fields of the [catalog_product_service](../../
 Required fields: `id`, `iblockId`
 ||
 || **filter**
-[`object`](../../../data-types.md) | An object for filtering selected services in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../../data-types.md) | An object for filtering the selected services in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object. 
 
@@ -29,24 +29,24 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
-    - `"%mol%"` — searches for values where the substring "mol" is not present in any position.
+    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default). For IN search, multiple values can be passed as an array.
+- `=` — equal, exact match (used by default). For IN search, multiple values can be passed as an array 
 - `!=` — not equal
-- `!` — not equal. For NOT IN search, multiple values can be passed as an array. ||
+- `!` — not equal. For NOT IN search, multiple values can be passed as an array ||
 || **order**
 [`object`](../../../data-types.md) | 
-An object for sorting selected services in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+An object for sorting the selected services in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_product_service](../../data-types.md#catalog_product_service) object.
 
@@ -66,6 +66,12 @@ The formula for calculating the `start` parameter value:
 `start = (N-1) * 50`, where `N` — the desired page number
 ||
 |#
+
+{% note warning "Working with service prices" %}
+
+To get service prices, use the [catalog.price.*](../../price/index.md) methods.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -417,7 +423,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -489,7 +495,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -504,7 +510,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the trade catalog
+|| `200040300010` | Insufficient rights to read the commercial catalog
 || 
 || `0` | Fields `id`, `iblockId` not specified in the selection fields
 || 

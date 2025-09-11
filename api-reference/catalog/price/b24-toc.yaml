@@ -3,22 +3,20 @@ href: index.md
 items: 
   - name: Overview of methods
     href: index.md
-  - name: Price resource
-    href: resource.md
   - name: Add price
     href: catalog-price-add.md
+  - name: Update price
+    href: catalog-price-update.md 
+  - name: Refresh price collection
+    href: catalog-price-modify.md
+  - name: Get price fields
+    href: catalog-price-get-fields.md
+  - name: Get price list
+    href: catalog-price-list.md           
   - name: Delete price
     href: catalog-price-delete.md
   - name: Get price field values
-    href: catalog-price-get.md
-  - name: Get price fields
-    href: catalog-price-get-fields.md
-  - name: Get list of prices
-    href: catalog-price-list.md
-  - name: Modify price collection items
-    href: catalog-price-modify.md
-  - name: Update price
-    href: catalog-price-update.md
+    href: catalog-price-get.md    
   - name: Events
     include:
       path: events/b24-toc.yaml

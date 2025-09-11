@@ -68,8 +68,8 @@ where
 [`string`](../data-types.md) | Type of the multifield value.
 Can take values `WORK`, `MOBILE`, `FAX`, `HOME`, `PAGER`, `MAILING`, `OTHER` for phone,
 `WORK`, `HOME`, `MAILING`, `OTHER` for email,
-`WORK`, `HOME`, `FACEBOOK`, `VK`, `LIVEJOURNAL`, `TWITTER`, `OTHER` for website,
-`FACEBOOK`, `TELEGRAM`, `VK`, `SKYPE`, `VIBER`, `INSTAGRAM`, `BITRIX24`, `OPENLINE`, `IMOL`, `ICQ`, `MSN`, `JABBER`, `OTHER` for messenger. ||
+`WORK`, `HOME`, `FACEBOOK`, `LIVEJOURNAL`, `TWITTER`, `OTHER` for website,
+`FACEBOOK`, `TELEGRAM`, `SKYPE`, `VIBER`, `INSTAGRAM`, `BITRIX24`, `OPENLINE`, `IMOL`, `ICQ`, `MSN`, `JABBER`, `OTHER` for messenger. ||
 |#
 
 ### crm_item_product_row

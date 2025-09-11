@@ -1,10 +1,10 @@
-# Get a List of Product Variations catalog.product.offer.list
+# Get a list of product variations catalog.product.offer.list
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method returns a list of product variations based on the filter.
+The method returns a list of product variations based on the filter.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ Required fields: `id`, `iblockId`
 Possible values for `field` correspond to the fields of the [catalog_product_offer](../../data-types.md#catalog_product_offer) object. 
 
 Required fields: `iblockId` — the identifier of the information block of the trade catalog for variations. 
-To obtain existing identifiers of trade catalog information blocks, you need to use [catalog.catalog.list](../../catalog/catalog-catalog-list.md). The variations information block has the `productIblockId` field filled.
+To obtain existing identifiers of information blocks of trade catalogs, you need to use [catalog.catalog.list](../../catalog/catalog-catalog-list.md). The variations information block has the `productIblockId` field filled.
 
-You can specify an additional prefix for the key that clarifies the behavior of the filter. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -40,11 +40,11 @@ You can specify an additional prefix for the key that clarifies the behavior of 
 - `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
-    - `"%mol%"` — searches for values where the substring "mol" is not in any position
+    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default). For IN search, you can pass multiple values as an array 
+- `=` — equals, exact match (used by default). For IN search, multiple values can be passed as an array 
 - `!=` — not equal
-- `!` — not equal. For NOT IN search, you can pass multiple values as an array ||
+- `!` — not equal. For NOT IN search, multiple values can be passed as an array ||
 || **order**
 [`object`](../../../data-types.md) | 
 An object for sorting the selected product variations in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
@@ -64,13 +64,19 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page
+`start = (N-1) * 50`, where `N` — the desired page number
 ||
 |#
 
+{% note warning "Working with product price" %}
+
+To get the prices of variations, use the methods [catalog.price.*](../../price/index.md).
+
+{% endnote %}
+
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -436,7 +442,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -518,18 +524,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response ||
+[`object`](../../../data-types.md) | Root element of the response ||
 || **offers**
-[`catalog_product_offer[]`](../../data-types.md#catalog_product_offer) | An array of objects with information about the selected product variations ||
+[`catalog_product_offer[]`](../../data-types.md#catalog_product_offer) | Array of objects with information about the selected product variations ||
 || **total**
-[`integer`](../../../data-types.md) | The total number of records found ||
+[`integer`](../../../data-types.md) | Total number of records found ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -546,9 +552,9 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `200040300010` | Insufficient rights to read the trade catalog
 || 
-|| `0` | The fields `id`, `iblockId` are not specified in the selection fields
+|| `0` | Fields `id`, `iblockId` not specified in the selection fields
 || 
-|| `0` | The `iblockId` field is not specified in the filter
+|| `0` | Field `iblockId` not specified in the filter
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

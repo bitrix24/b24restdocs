@@ -2,6 +2,11 @@
 
 ## 2025
 
+### September 11, 2025
+
+- Updated the documentation for pricing methods [catalog.price.*](./api-reference/catalog/price/index.md) in the Trade catalog.
+- Added new features for embedding [CRM_XXX_DETAIL_ACTIVITY](./api-reference/widgets/crm/detail-activity-area.md).
+
 ### August 27, 2025
 
 - Updated the main page of the [Client in the Waitlist](./api-reference/booking/waitlist/client/index.md) section in Booking. Added introductory information and an overview of methods and relationships

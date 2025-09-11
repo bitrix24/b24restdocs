@@ -16,9 +16,15 @@ This method retrieves information about a product in the trade catalog by its `I
 || **id*** 
 [`catalog_product.id`](../data-types.md#catalog_product)| Product identifier.
 
-To obtain product identifiers, you need to use [catalog.product.list](./catalog-product-list.md)
+To obtain product identifiers, use [catalog.product.list](./catalog-product-list.md)
  ||
 |#
+
+{% note warning "Working with Product Price" %}
+
+To get product prices, use the methods [catalog.price.*](../price/index.md).
+
+{% endnote %}
 
 ## Code Examples
 
@@ -135,7 +141,7 @@ To obtain product identifiers, you need to use [catalog.product.list](./catalog-
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -228,7 +234,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

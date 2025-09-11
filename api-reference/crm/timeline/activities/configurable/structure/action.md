@@ -8,7 +8,7 @@ If a relative link to standard Bitrix24 objects that support opening in a slider
 
 ### Parameters
 
-{% include [Parameters Note](../../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -32,14 +32,14 @@ If a relative link to standard Bitrix24 objects that support opening in a slider
 Calling the action will generate the event **onCrmTimelineItemAction**. When the event occurs, handlers will be triggered only for the application that created this timeline record. The context will always be passed to the handler:
 
 - **id** - event identifier,
-- **entityTypeId** - identifier of the object type to which the activity is linked,
+- **entityTypeId** - identifier of the object type to which the deal is linked,
 - **entityId** - identifier of the element of this object,
-- **activityId** - identifier of the activity,
+- **activityId** - identifier of the deal,
 - **userId** - identifier of the user who triggered the action.
 
 ### Parameters
 
-{% include [Parameters Note](../../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -53,10 +53,10 @@ Calling the action will generate the event **onCrmTimelineItemAction**. When the
 [`string`](../../../../data-types.md) | Animation that will be shown during event processing, for example `disable` ||
 |#
 
-In some cases, sending the event implies that the handler for this event should change the appearance of the record in the timeline. For example, adding new blocks or changing the set of buttons.
+In some cases, sending the event implies that the handler of this event should change the appearance of the record in the timeline. For example, adding new blocks or changing the set of buttons.
 
-To ensure the user sees the update, the `animationType` parameter can be used. If `animationType` is set to **loader** — the timeline record will be locked and a loader will appear on top of it. The lock will last until the record is updated via [crm.activity.configurable.update](../crm-activity-configurable-update.md). 
-If the action is triggered by clicking a button at the bottom of the timeline and `animationType` is set to `disable` — this button will be locked until the record is updated via [crm.activity.configurable.update](../crm-activity-configurable-update.md).
+To ensure the user sees the update, the `animationType` parameter can be used. If `animationType` is set to **loader** — the timeline record will be blocked and a loader will appear on top of it. The blocking will last until the record is updated via [crm.activity.configurable.update](../crm-activity-configurable-update.md). 
+If the action is triggered by clicking a button at the bottom of the timeline and `animationType` is set to `disable` — this button will be blocked until the record is updated via [crm.activity.configurable.update](../crm-activity-configurable-update.md).
 
 ### Example
 
@@ -73,7 +73,7 @@ If the action is triggered by clicking a button at the bottom of the timeline an
 ```
 
 The action is assigned to a button. Clicking it will trigger the event handler `onCrmTimelineItemAction`, registered by the application that created the timeline record. 
-The standard parameters `id=resetButtonClick`, `entityTypeId`, `entityId`, `activityId`, `userId` and parameters defined by the developer — `myId=123` and `someImportant=qwerty` will be passed to the handler. The button will be locked from the moment it is clicked until the timeline record is updated via `crm.activity.configurable.update`.
+The standard parameters `id=resetButtonClick`, `entityTypeId`, `entityId`, `activityId`, `userId` and the parameters defined by the developer — `myId=123` and `someImportant=qwerty` will be passed to the handler. The button will be blocked from the moment it is clicked until the timeline record is updated via `crm.activity.configurable.update`.
 
 ## Opening the Application Slider
 
@@ -85,13 +85,13 @@ The action is not supported in the mobile application.
 
 Calling the action will open the slider of the application that created the timeline record. The context will be passed to the slider:
 
-- **entityTypeId** - identifier of the object type to which the activity is linked,
+- **entityTypeId** - identifier of the object type to which the deal is linked,
 - **entityId** - identifier of the element of this object,
-- **activityId** - identifier of the activity.
+- **activityId** - identifier of the deal.
 
 ### Parameters
 
-{% include [Parameters Note](../../../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -113,9 +113,6 @@ Calling the action will open the slider of the application that created the time
         "someImportant": "qwerty"
     },
     "sliderParams": {
-        "labelText": "this application",
-        "labelColor": "#c3b3ff",
-        "labelBgColor": "violet",
         "title": "This is the application slider title",
         "width": 700
     }
@@ -131,18 +128,12 @@ Calling the action will open the slider of the application that created the time
 || **width**
 [`int`](../../../../data-types.md) | Width of the slider, `px` | Cannot be used simultaneously with `leftBoundary` ||
 || **leftBoundary**
-[`int`](../../../../data-types.md) | Slider across the full width of the browser window with a left margin, `px` | Cannot be used simultaneously with `width` ||
-|| **labelBgColor**
-[`string`](../../../../data-types.md) | Background color code of the slider close button | Can only take values `aqua`, `green`, `orange`, `brown`, `pink`, `blue`, `grey`, `violet` ||
-|| **labelColor**
-[`string`](../../../../data-types.md) | Color code of the slider close button | In `hex` format ||
-|| **labelText**
-[`string`](../../../../data-types.md) | Text of the slider close button | ||
+[`int`](../../../../data-types.md) | Slider spans the full width of the browser window with a left margin, `px` | Cannot be used simultaneously with `width` ||
 || **title**
 [`string`](../../../../data-types.md) | Text of the browser window title when opening the slider | ||
 |#
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](./layout.md)
 - [{#T}](./icon.md)

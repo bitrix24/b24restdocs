@@ -1,4 +1,4 @@
-# Embed Widget in CRM Detail Form
+# Embed Widget in CRM Card
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >

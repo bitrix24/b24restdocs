@@ -1,107 +1,156 @@
-# Get a list of prices by filter catalog.price.list
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- required parameters are not specified
-- no response in case of error
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
+# Get a List of Prices by Filter catalog.price.list
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with the "View product catalog" access permission
 
-```http
-catalog.price.list(select, filter, order, start)
-```
+The method `catalog.price.list` returns a list of product prices based on the filter.
 
-The method retrieves a list of prices based on the filter.
-
-If the operation is successful, a list of prices is returned in the response body.
-
-## Parameters
+## Method Parameters
 
 #|
-|| **Parameter** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **select** 
-[`array`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-get-fields.md).||
+[`array`](../../data-types.md)| An array of fields from [catalog_price](../data-types.md#catalog_price) that need to be selected.
+
+If the array is not provided or an empty array is passed, all available price fields will be selected.
+||
 || **filter** 
-[`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-get-fields.md). ||
+[`object`](../../data-types.md)| An object for filtering the selected product prices in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
+
+Possible values for `field` correspond to the fields of the [catalog_price](../data-types.md#catalog_price) object.
+
+An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+- `>=` — greater than or equal to
+- `>` — greater than
+- `<=` — less than or equal to
+- `<` — less than
+- `@` — IN, an array is passed as the value
+- `!@` — NOT IN, an array is passed as the value
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+    - `"mol%"` — searches for values starting with "mol"
+    - `"%mol"` — searches for values ending with "mol"
+    - `"%mol%"` — searches for values where "mol" can be in any position
+- `%=` — LIKE (similar to `=%`)
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+    - `"mol%"` — searches for values not starting with "mol"
+    - `"%mol"` — searches for values not ending with "mol"
+    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
+- `!%=` — NOT LIKE (similar to `!=%`)
+- `=` — equal, exact match (used by default)
+- `!=` — not equal
+- `!` — not equal
+||
 || **order**
-[`object`](../../data-types.md)| Fields corresponding to the available list of fields [`fields`](catalog-price-get-fields.md). ||
+[`object`](../../data-types.md)| An object for sorting the selected product prices in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+
+Possible values for `field` correspond to the fields of the [catalog_price](../data-types.md#catalog_price) object.
+
+Possible values for `order`:
+
+- `asc` — in ascending order
+- `desc` — in descending order
+||
 || **start** 
-[`string`](../../data-types.md)| Page number for output. Works for https requests. ||
+[`integer`](../../data-types.md)| This parameter is used to manage pagination.
+
+The page size of results is always static — 50 records.
+
+To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
+
+The formula for calculating the value of the `start` parameter:
+
+`start = (N-1) * 50`, where `N` — the number of the desired page
+||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+## Code Examples
 
-## Examples
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- JS
+- cURL (Webhook)
 
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"select":["id","productId","catalogGroupId","price","currency"],"filter":{"productId":1},"order":{"id":"ASC"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.price.list
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"select":["id","productId","catalogGroupId","price","currency"],"filter":{"productId":1},"order":{"id":"ASC"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.price.list
+    ```
+
+- JS
 
     ```js
     // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
     
+    const parameters = {
+        select: ['id', 'productId', 'catalogGroupId', 'price', 'currency'],
+        filter: { 'productId': 1 },
+        order: { 'id': 'ASC' }
+    };
+    
     try {
-      const response = await $b24.callListMethod(
-        'catalog.price.list',
-        {
-          select: [
-            'id'
-          ],
-          filter: {
-            productId: 8
-          },
-          order: {
-            id: 'ASC'
-          }
-        },
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
+        const response = await $b24.callListMethod(
+            'catalog.price.list',
+            parameters,
+            (progress) => { console.log('Progress:', progress) }
+        );
+        const items = response.getData() || [];
+        for (const entity of items) { console.log('Entity:', entity); }
     } catch (error) {
-      console.error('Request failed', error)
+        console.error('Request failed', error);
     }
     
     // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
     
+    const parameters = {
+        select: ['id', 'productId', 'catalogGroupId', 'price', 'currency'],
+        filter: { 'productId': 1 },
+        order: { 'id': 'ASC' }
+    };
+    
     try {
-      const generator = $b24.fetchListMethod('catalog.price.list', { select: [ 'id' ], filter: { productId: 8 }, order: { id: 'ASC' } }, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-      }
+        const generator = $b24.fetchListMethod('catalog.price.list', parameters, 'ID');
+        for await (const page of generator) {
+            for (const entity of page) { console.log('Entity:', entity); }
+        }
     } catch (error) {
-      console.error('Request failed', error)
+        console.error('Request failed', error);
     }
     
-    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    
+    const parameters = {
+        select: ['id', 'productId', 'catalogGroupId', 'price', 'currency'],
+        filter: { 'productId': 1 },
+        order: { 'id': 'ASC' }
+    };
     
     try {
-      const response = await $b24.callMethod('catalog.price.list', { select: [ 'id' ], filter: { productId: 8 }, order: { id: 'ASC' } }, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
+        const response = await $b24.callMethod('catalog.price.list', parameters, 0);
+        const result = response.getData().result || [];
+        for (const entity of result) { console.log('Entity:', entity); }
     } catch (error) {
-      console.error('Request failed', error)
+        console.error('Request failed', error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -111,31 +160,31 @@ If the operation is successful, a list of prices is returned in the response bod
                 'catalog.price.list',
                 [
                     'select' => [
-                        'id'
+                        'id',
+                        'productId',
+                        'catalogGroupId',
+                        'price',
+                        'currency'
                     ],
                     'filter' => [
-                        'productId' => 8
+                        'productId' => 1
                     ],
                     'order' => [
                         'id' => 'ASC'
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error()->ex);
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-            $result->next();
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
+        $result->next();
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error fetching price list: ' . $e->getMessage();
+        echo 'Error fetching prices: ' . $e->getMessage();
     }
     ```
 
@@ -145,20 +194,24 @@ If the operation is successful, a list of prices is returned in the response bod
     BX24.callMethod(
         'catalog.price.list',
         {
-            select: [
-                'id'
+            select:[
+                'id',
+                'productId',
+                'catalogGroupId',
+                'price',
+                'currency'
             ],
-            filter: {
-                productId: 8
+            filter:{
+                'productId': 1
             },
-            order: {
-                id: 'ASC'
+            order:{
+                'id': 'ASC'
             }
         },
         function(result)
         {
             if(result.error())
-                console.error(result.error().ex);
+                console.error(result.error());
             else
                 console.log(result.data());
             result.next();
@@ -166,12 +219,118 @@ If the operation is successful, a list of prices is returned in the response bod
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.price.list',
+        [
+            'select' => [
+                'id',
+                'productId',
+                'catalogGroupId',
+                'price',
+                'currency'
+            ],
+            'filter' => [
+                'productId' => 1
+            ],
+            'order' => [
+                'id' => 'ASC'
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-Example HTTPS request
+## Response Handling
 
-```
-https://your_account/rest/catalog.price.list?auth=_authorization_key_&start=50
+HTTP Status: **200**
+
+```json
+{
+    "result": {
+        "prices": [
+            {
+                "catalogGroupId": 3,
+                "currency": "USD",
+                "id": 381,
+                "price": 50,
+                "productId": 6461
+            },
+            {
+                "catalogGroupId": 1,
+                "currency": "EUR",
+                "id": 787,
+                "price": 100.5,
+                "productId": 6461
+            }
+        ]
+    },
+    "total": 2,
+    "time": {
+        "start": 1756796975.535775,
+        "finish": 1756796975.569925,
+        "duration": 0.034150123596191406,
+        "processing": 0.0042951107025146484,
+        "date_start": "2025-09-02T10:09:35+02:00",
+        "date_finish": "2025-09-02T10:09:35+02:00",
+        "operating_reset_at": 1756797575,
+        "operating": 0
+    }
+}
 ```
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response ||
+|| **prices**
+[`catalog_price[]`](../data-types.md#catalog_price) | An array of objects with information about the selected product prices, structure depends on the `select` parameter ||
+|| **total**
+[`integer`](../../data-types.md#time) | Total number of records found ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": 200040300010,
+    "error_description": "Access Denied"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `200040300010` | Access Denied | Insufficient permissions to read ||
+|| `0` | | Other errors || 
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./catalog-price-add.md)
+- [{#T}](./catalog-price-update.md)
+- [{#T}](./catalog-price-get.md)
+- [{#T}](./catalog-price-delete.md)
+- [{#T}](./catalog-price-get-fields.md)
+- [{#T}](./catalog-price-modify.md)

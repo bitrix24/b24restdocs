@@ -6,9 +6,9 @@
 
 This method adds a handler for the widget placement.
 
-It can be called at any time during the application's operation; however, it is usually more convenient to register your widgets during the [application installation](../app-installation/index.md).
+It can be called at any time during the application's operation; however, it is often more convenient to register your widgets during the [application installation](../app-installation/index.md).
 
-It is important to note that until the application installation is complete, the widgets you register will not be available to regular users in the Bitrix24 interface - they can only be seen by users with administrative rights.
+It is important to note that until the application installation is complete, the widgets you register will not be available to regular users in the Bitrix24 interface - they will only be visible to users with administrative rights.
 
 It is recommended to familiarize yourself with the principles of [application installation](../app-installation/index.md) in Bitrix24.
 
@@ -24,11 +24,11 @@ It is recommended to familiarize yourself with the principles of [application in
 || **HANDLER***
 [`string`](../data-types.md) | URL of the widget placement handler ||
 || **TITLE**
-[`string`](../data-types.md) | Name of the widget in the interface. Depending on the specific placement location, this may be the name of a tab in a form, a menu item, etc. ||
+[`string`](../data-types.md) | Name of the widget in the interface. Depending on the specific placement location, this may be the name of a tab in a form, the name of a menu item, etc. ||
 || **DESCRIPTION**
 [`string`](../data-types.md) | Description of the widget in the interface. Not used in practice ||
 || **GROUP_NAME**
-[`string`](../data-types.md) | Allows grouping UI elements for multiple handlers of the same widget type into a group. For example, several dropdown menu items in the [top button of the CRM card](./crm/detail-toolbar.md). Supported only by certain types of widgets ||
+[`string`](../data-types.md) | Allows grouping UI elements for multiple handlers of the same type of widget. For example, several items in a dropdown menu in the [top button of the CRM card](./crm/detail-toolbar.md). Supported only by some types of widgets ||
 || **LANG_ALL**
 [`object`](../data-types.md) | Array of parameters `TITLE`, `DESCRIPTION`, and `GROUP_NAME` for specified languages. Users who have selected one of these languages in the Bitrix24 interface will see localized versions of `TITLE`, `DESCRIPTION`, and `GROUP_NAME`: 
 
@@ -41,9 +41,9 @@ It is recommended to familiarize yourself with the principles of [application in
             "GROUP_NAME": "group"
         },
         "de": {
-            "TITLE": "title",
-            "DESCRIPTION": "description",
-            "GROUP_NAME": "group"
+            "TITLE": "Überschrift",
+            "DESCRIPTION": "Beschreibung",
+            "GROUP_NAME": "Gruppe"
         }
     }
 
@@ -51,7 +51,7 @@ It is recommended to familiarize yourself with the principles of [application in
 
 ||
 || **OPTIONS**
-[`object`](../data-types.md) | Additional display parameters for the widget. Specific values depend on the widget placement location. Currently used in widgets for messengers and in the widget [`PAGE_BACKGROUND_WORKER`](./universal/background-worker.md)
+[`object`](../data-types.md) | Additional display parameters for the widget. Specific values depend on the widget placement location. Currently used in widgets for messengers, in the widget [`PAGE_BACKGROUND_WORKER`](./universal/background-worker.md), and in the widget [CRM_XXX_DETAIL_ACTIVITY](../widgets/crm/detail-activity-area.md)
 
 ||
 || **USER_ID**
@@ -76,7 +76,7 @@ If you attempt to register a placement in other widgets, you will receive the er
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"PLACEMENT":"PLACEMENT_CODE","HANDLER":"http://myapp.com/handler/?type=1","OPTIONS":{"errorHandlerUrl":"http://myapp.com/error/"},"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group","LANG_ALL":{"en":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"},"de":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"}}}' \
+    -d '{"PLACEMENT":"PLACEMENT_CODE","HANDLER":"http://myapp.com/handler/?type=1","OPTIONS":{"errorHandlerUrl":"http://myapp.com/error/"},"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group","LANG_ALL":{"en":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"},"de":{"TITLE":"Überschrift","DESCRIPTION":"Beschreibung","GROUP_NAME":"Gruppe"}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/placement.bind
     ```
 
@@ -86,7 +86,7 @@ If you attempt to register a placement in other widgets, you will receive the er
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"PLACEMENT":"PLACEMENT_CODE","HANDLER":"http://myapp.com/handler/?type=1","OPTIONS":{"errorHandlerUrl":"http://myapp.com/error/"},"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group","LANG_ALL":{"en":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"},"de":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"}},"auth":"**put_access_token_here**"}' \
+    -d '{"PLACEMENT":"PLACEMENT_CODE","HANDLER":"http://myapp.com/handler/?type=1","OPTIONS":{"errorHandlerUrl":"http://myapp.com/error/"},"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group","LANG_ALL":{"en":{"TITLE":"title","DESCRIPTION":"description","GROUP_NAME":"group"},"de":{"TITLE":"Überschrift","DESCRIPTION":"Beschreibung","GROUP_NAME":"Gruppe"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/placement.bind
     ```
 
@@ -113,9 +113,9 @@ If you attempt to register a placement in other widgets, you will receive the er
     					"GROUP_NAME": "group",
     				},
     				"de": {
-    					"TITLE": "title",
-    					"DESCRIPTION": "description",
-    					"GROUP_NAME": "group",
+    					"TITLE": "Überschrift",
+    					"DESCRIPTION": "Beschreibung",
+    					"GROUP_NAME": "Gruppe",
     				}
     			}
     		}
@@ -157,9 +157,9 @@ If you attempt to register a placement in other widgets, you will receive the er
                             'GROUP_NAME' => 'group',
                         ],
                         'de' => [
-                            'TITLE' => 'title',
-                            'DESCRIPTION' => 'description',
-                            'GROUP_NAME' => 'group',
+                            'TITLE' => 'Überschrift',
+                            'DESCRIPTION' => 'Beschreibung',
+                            'GROUP_NAME' => 'Gruppe',
                         ]
                     ]
                 ]
@@ -202,9 +202,9 @@ If you attempt to register a placement in other widgets, you will receive the er
                     "GROUP_NAME": "group",
                 },
                 "de": {
-                    "TITLE": "title",
-                    "DESCRIPTION": "description",
-                    "GROUP_NAME": "group",
+                    "TITLE": "Überschrift",
+                    "DESCRIPTION": "Beschreibung",
+                    "GROUP_NAME": "Gruppe",
                 }
             }
         },
@@ -241,9 +241,9 @@ If you attempt to register a placement in other widgets, you will receive the er
                     'GROUP_NAME' => 'group'
                 ],
                 'de' => [
-                    'TITLE' => 'title',
-                    'DESCRIPTION' => 'description',
-                    'GROUP_NAME' => 'group'
+                    'TITLE' => 'Überschrift',
+                    'DESCRIPTION' => 'Beschreibung',
+                    'GROUP_NAME' => 'Gruppe'
                 ]
             ]
         ]
@@ -316,19 +316,19 @@ HTTP status: **400**, **403**, **200**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ERROR_PLACEMENT_MAX_COUNT` | Attempted to re-register the handler for the `PAGE_BACKGROUND_WORKER` widget | 200 ||
-|| `ERROR_ARGUMENT` | The value of a required field is not specified. The code of the required field is returned in `argument`| 200 ||
+|| `ERROR_PLACEMENT_MAX_COUNT` | An attempt was made to re-register the handler for the widget `PAGE_BACKGROUND_WORKER` | 200 ||
+|| `ERROR_ARGUMENT` | A required field value is missing. The code of the required field is returned in `argument`| 200 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
 ## Widget Handler
 
-Thus, a successful call to the `placement.bind` method allowed you to register the widget handler. It is important that the HANDLER_URL parameter you specified points to a real and accessible URL.
+Thus, a successful call to the method `placement.bind` allowed you to register the widget handler. It is important that the HANDLER_URL parameter you specify points to a real and accessible URL.
 
 {% note warning "Important" %}
 
-The handler URL **must** be accessible from the external network. Links to localhost, local domains, and similar ways of accessing a local web server are not acceptable. Check the availability of the URL you specified using special services that monitor website accessibility!
+The handler URL must be **accessible** from the external network. Links to localhost, local domains, and similar ways of accessing a local web server are not acceptable. Check the availability of the URL you specified using special services that monitor website accessibility!
 
 {% endnote %}
 

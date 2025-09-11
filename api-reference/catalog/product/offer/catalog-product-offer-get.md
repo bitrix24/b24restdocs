@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method returns the values of the product variation fields by identifier.
+The method returns the field values of a product variation by its identifier.
 
 ## Method Parameters
 
@@ -19,6 +19,12 @@ This method returns the values of the product variation fields by identifier.
 To obtain the identifiers of product variations, you need to use [catalog.product.offer.list](./catalog-product-offer-list.md)
  ||
 |#
+
+{% note warning "Working with Product Price" %}
+
+To get the prices of variations, use the methods [catalog.price.*](../../price/index.md).
+
+{% endnote %}
 
 ## Code Examples
 

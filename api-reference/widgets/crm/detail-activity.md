@@ -1,24 +1,24 @@
-# Button above the timeline of the CRM entity card CRM_XXX_DETAIL_ACTIVITY, CRM_DYNAMIC_XXX_DETAIL_ACTIVITY
+# Button above the timeline of the CRM_XXX_DETAIL_ACTIVITY, CRM_DYNAMIC_XXX_DETAIL_ACTIVITY card
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
 You can add your item to the timeline menu of CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
 
-![Widget as a timeline menu item in Lead](./_images/CRM_DEAL_DETAIL_ACTIVITY.png "Widget as a timeline menu item in Lead")
-
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-## Where the widget is embedded
+Extended capabilities of the button above the timeline are described in the article [Additional integration capabilities in CRM_XXX_DETAIL_ACTIVITY](./detail-activity-area.md)
+
+## Where the widget is integrated
 
 #|
-|| **Widget code** | **Location** ||
-|| `CRM_LEAD_DETAIL_ACTIVITY` | Menu item in the timeline of [lead](../../crm/leads/index.md) ||
-|| `CRM_CONTACT_DETAIL_ACTIVITY` | Menu item in the timeline of [contact](../../crm/contacts/index.md) ||
-|| `CRM_COMPANY_DETAIL_ACTIVITY` | Menu item in the timeline of [company](../../crm/companies/index.md) ||
-|| `CRM_DEAL_DETAIL_ACTIVITY` | Menu item in the timeline of [deal](../../crm/deals/index.md) ||
-|| `CRM_QUOTE_DETAIL_ACTIVITY` | Menu item in the timeline of [estimate](../../crm/quote/index.md) ||
-|| `CRM_SMART_INVOICE_DETAIL_ACTIVITY` | Menu item in the timeline of [invoices](../../crm/universal/invoice.md) ||
-|| `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY` | Menu item in the timeline of custom CRM object types. Instead of XXX, you need to specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
+|| **Widget Code** | **Location** ||
+|| `CRM_LEAD_DETAIL_ACTIVITY` | Timeline menu item for [lead](../../crm/leads/index.md) ||
+|| `CRM_CONTACT_DETAIL_ACTIVITY` | Timeline menu item for [contact](../../crm/contacts/index.md) ||
+|| `CRM_COMPANY_DETAIL_ACTIVITY` | Timeline menu item for [company](../../crm/companies/index.md) ||
+|| `CRM_DEAL_DETAIL_ACTIVITY` | Timeline menu item for [deal](../../crm/deals/index.md) ||
+|| `CRM_QUOTE_DETAIL_ACTIVITY` | Timeline menu item for [estimate](../../crm/quote/index.md) ||
+|| `CRM_SMART_INVOICE_DETAIL_ACTIVITY` | Timeline menu item for [invoices](../../crm/universal/invoice.md) ||
+|| `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY` | Timeline menu item for custom CRM object type. Instead of XXX, you need to specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
 |#
 
 ## What the handler receives
@@ -191,7 +191,7 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 || **ID*** 
 [`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
 
-It can be used to obtain additional information using the corresponding methods:
+It can be used to retrieve additional information using the corresponding methods:
 
 - any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
@@ -200,13 +200,14 @@ It can be used to obtain additional information using the corresponding methods:
 - company [crm.company.get](../../crm/companies/crm-company-get.md)
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
 
-In the case of embedding the widget in a custom type object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
+In the case of integrating the widget into a custom object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
 
 ||
 |#
 
 ## Continue exploring
 
+- [{#T}](./detail-activity-area.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../ui-interaction/crm-card.md)

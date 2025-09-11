@@ -4,7 +4,7 @@
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of products from the trade catalog based on a filter.
+This method retrieves a list of products from the trade catalog based on the filter.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ Possible values for `field` correspond to the fields of the [catalog_product](..
 
 Required fields: `iblockId`.
 
-An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
+An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -61,15 +61,21 @@ The page size of results is always static — 50 records.
 
 To select the second page of results, you need to pass the value — `50`. To select the third page of results, the value — `100`, and so on.
 
-The formula for calculating the value of the `start` parameter:
+The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page
+`start = (N-1) * 50`, where `N` — the desired page number
  ||
 |#
 
+{% note warning "Working with product price" %}
+
+To get product prices, use the methods [catalog.price.*](../price/index.md).
+
+{% endnote %}
+
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -231,7 +237,7 @@ The formula for calculating the value of the `start` parameter:
       console.error('Request failed', error);
     }
     
-    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    // callMethod provides manual control over the pagination data retrieval process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
     
     try {
       const response = await $b24.callMethod('catalog.product.list', {
@@ -564,7 +570,7 @@ HTTP status: **200**
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

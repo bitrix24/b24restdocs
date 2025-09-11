@@ -4,7 +4,7 @@ B24PhpSDK is the official and recommended library for working with the Bitrix24 
 
 1. Support for code autocompletion and internal structures in VSCode, PHPStorm, PyCharm;
 2. Built-in conversion of REST API data to corresponding PHP types (specifically, date/time and money);
-3. Efficient use of PHP capabilities - utilizing generators when executing batch requests to save memory, event-driven model for handling special situations like updating authorization tokens, etc.;
+3. Efficient use of PHP capabilities - utilizing generators for batch requests to save memory, an event-driven model for handling special situations like token refreshes, etc.;
 4. Auto-generation and "passing through" of unique identifiers for outgoing requests, simplifying debugging in case of lost outgoing events;
 5. And many more.
 
@@ -16,7 +16,7 @@ To install B24PhpSDK, you can clone the [appropriate repository](https://github.
 composer require bitrix24/b24phpsdk
 ```
 
-As a result, you will get the correct file structure, which will be convenient to work with later. For example, for a local application, it might look like this:
+As a result, you will get the correct file structure, which will be convenient to work with later. For example, for a local application, it may look like this:
 
 ```
 /vendor
@@ -84,7 +84,7 @@ $result = $B24->getCRMScope()->deal()->add([
 ])->getId();
 ```
 
-If there is no ready-made "wrapper" for the method you need in the SDK, you can use a universal way to call REST API methods:
+If there is no ready-made "wrapper" in the SDK for the method you need, you can use a universal way to call REST API methods:
 
 ```php
 $result = $B24->core->call('crm.deal.add', [
@@ -97,6 +97,10 @@ $result = $B24->core->call('crm.deal.add', [
 In this case, code autocompletion in the IDE does not work, and type casting does not occur in the received data.
 
 [Download example](https://helpdesk.bitrix24.com/examples/b24phpsdk-webhook-example.zip)
+
+### B24PHPSDK Quick Start, Incoming Webhook
+
+@[youtube](https://youtu.be/H5rBky_DJ4c?si=YPzS64M0JaVDABIJ)
 
 ## Using in Local and Mass-Market Applications
 
@@ -129,7 +133,7 @@ In the case of a local application, you will need to take the values for `BITRIX
 
 The code provided above also assumes that the application is opened "inside" Bitrix24 either as the main interface or as a widget. Other scenarios for using the SDK, such as external applications, require different initialization methods.
 
-Once the `$B24` object is initialized, you can use it to call various REST API methods. In the example below, the variable `$result` will receive the value of the deal identifier as a result of its creation:
+Once you have initialized the `$B24` object, you can use it to call various REST API methods. In the example below, the variable `$result` will receive the value of the deal identifier as a result of its creation:
 
 ```php
 $result = $B24->getCRMScope()->deal()->add([
@@ -138,6 +142,12 @@ $result = $B24->getCRMScope()->deal()->add([
     'STAGE_ID' => 'NEW'
 ])->getId();
 ```
-
-
 [Download example](https://helpdesk.bitrix24.com/examples/b24phpsdk-local-app-example.zip)
+
+### B24PHPSDK Quick Start, local application
+
+@[youtube](https://youtu.be/bgbzmq63EsM?si=zpfCrZhmfaJqfDhA)
+
+### B24PHPSDK Quick Start, local application with token storage
+
+@[youtube](https://youtu.be/eE-YqwxmzBk?si=3seaxKPX70N_jokI)

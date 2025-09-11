@@ -2,11 +2,10 @@
 
 A product can have one or more prices. For each price, the following is specified:
 
-- currency: US dollar, euro
+- currency: US dollar, euro,
+- type: retail, wholesale, partner.
 
-- type: retail, wholesale, partner
-
-This allows for pricing to be configured based on the type of client, region, or terms of cooperation.
+This allows for pricing to be configured based on the type of customer, region, or terms of cooperation.
 
 > Quick navigation: [all methods and events](#all-methods) 
 >
@@ -16,11 +15,11 @@ This allows for pricing to be configured based on the type of client, region, or
 
 **Price Type.** Each price belongs to a specific price type. The price type can be set and changed using the methods [catalog.priceType.*](../price-type/index.md).
 
-**Currency.** The price is specified in the chosen currency. You can work with currencies through the methods [crm.currency.*](../../crm/currency/index.md).
+**Currency.** The price is specified in the selected currency. You can work with currencies through the methods [crm.currency.*](../../crm/currency/index.md).
 
-**Margin.** It affects the formation of the price. The margin can be obtained using the method [catalog.extra.get](../extra/catalog-extra-get.md).
+**Markup.** It affects the formation of the price. The markup can be obtained using the method [catalog.extra.get](../extra/catalog-extra-get.md). The use of markup is available only in Bitrix24 with the active option for advanced price management, which is now deprecated.
 
-**Product.** The price is always tied to a product. You can create and edit a product using groups of methods:
+**Product.** The price is always tied to a product. You can create and edit a product using the following groups of methods:
 
 - [catalog.product.*](../product/index.md) — for simple products
 
@@ -46,7 +45,7 @@ This allows for pricing to be configured based on the type of client, region, or
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: depending on the method
 
 {% list tabs %}
 
@@ -55,12 +54,12 @@ This allows for pricing to be configured based on the type of client, region, or
     #|
     || **Method** | **Description** ||
     || [catalog.price.add](./catalog-price-add.md) | Adds a product price ||
-    || [catalog.price.delete](./catalog-price-delete.md) | Deletes a product price ||
-    || [catalog.price.get](./catalog-price-get.md) | Returns the price field values of a product by ID ||
+    || [catalog.price.update](./catalog-price-update.md) | Updates a product price ||
+    || [catalog.price.modify](./catalog-price-modify.md) | Updates the collection of product prices ||    
     || [catalog.price.getFields](./catalog-price-get-fields.md) | Returns the fields of product prices ||
     || [catalog.price.list](./catalog-price-list.md) | Returns a list of product prices by filter ||
-    || [catalog.price.modify](./catalog-price-modify.md) | Modifies elements of the product price collection ||
-    || [catalog.price.update](./catalog-price-update.md) | Updates the fields of a product price ||
+    || [catalog.price.get](./catalog-price-get.md) | Returns the values of the product price fields by identifier ||
+    || [catalog.price.delete](./catalog-price-delete.md) | Deletes a product price ||
     |#
 
 - Events

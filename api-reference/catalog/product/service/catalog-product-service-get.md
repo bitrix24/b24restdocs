@@ -14,11 +14,17 @@ The method returns the field values of the service by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Service identifier.
+[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Identifier of the service.
 
 To obtain service identifiers, use [catalog.product.service.list](./catalog-product-service-list.md) 
 ||
 |#
+
+{% note warning "Working with Service Prices" %}
+
+To get service prices, use the methods [catalog.price.*](../../price/index.md).
+
+{% endnote %}
 
 ## Code Examples
 
@@ -205,7 +211,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **service**
-[`catalog_product_service`](../../data-types.md#catalog_product_service) | Object with service information ||
+[`catalog_product_service`](../../data-types.md#catalog_product_service) | Object containing service information ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -231,7 +237,7 @@ HTTP Status: **400**
 || 
 || `200040300040` | Insufficient rights to read the information block element
 || 
-|| `200040300010` | Insufficient rights to read the product catalog
+|| `200040300010` | Insufficient rights to read the trade catalog
 || 
 || `100` | The `id` parameter is not specified
 || 
