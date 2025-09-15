@@ -21,24 +21,7 @@ For the OAuth server, authorization indicates that the user has granted access t
 
 The protocol consists of several steps:
 
-```mermaid
-%%{init: { "theme": "forest" } }%%
-sequenceDiagram
-    actor User
-    User->>Application: provides their Bitrix24 address
-    Note over User,Application: https://xxx.bitrix24.yyy
-    Application-->>User: redirects the user to their Bitrix24 for authorization
-    Note over User,Application: https://xxx.bitrix24.yyy/oauth/authorize/?client_id=app.zzz
-    User->>Bitrix24: Authorizes
-    Bitrix24-->>Application: Sends the authorization code to the application's URL
-    Note over Bitrix24,Application: https://myapp.com/?code=1232311&domain=xxx.bitrix24.yyy&...
-    Application-->>Authorization Server: Sends the authorization code, client_id, and client_secret
-    Note over Application,Authorization Server: https://oauth.bitrix.info/oauth/token/?grant_type=authorization_code<br/>&client_id=app.zzz&client_secret=LJSl0lNB76B5YY<br/>&code=1232311
-    Authorization Server-->>Application: Returns access_token and refresh_token to the application
-    Note over Authorization Server,Application: "access_token": "s1morf609228iwyjjpvfv6wsvuja4p8u",<br/>"refresh_token": "4f9k4jpmg13usmybzuqknt2v9fh0q6rl"
-    Application-->>Bitrix24: Uses access_token for REST API calls
-    Note over Application,Bitrix24: https://xxx.bitrix24.yyy/rest/<br/>app.info?auth=s1morf609228iwyjjpvfv6wsvuja4p8u
-```
+![How the Protocol Works](./_images/how_the_protocol_works.png "How the Protocol Works")
 
 1. The user provides your application with their Bitrix24 address.
 2. The application sends the user to their Bitrix24 to authorize, adding its `client_id` to the request.

@@ -37,16 +37,7 @@ First, the application uses the [event.bind](event-bind.md) method to set up the
 
 Then, when a user performs the corresponding action (creates a task, modifies a task, etc.), Bitrix24 automatically notifies the application through the queue server:
 
-```mermaid
-%%{init: { "theme": "forest" } }%%
-sequenceDiagram
-    autonumber
-    actor User
-    Application->>Bitrix24: Registers handler / event.bind
-    User-->>Bitrix24: Performs action XXX
-    Bitrix24-->>Authorization Server: Notifies about event XXX
-    Authorization Server-)Application: Sends information about event XXX
-```
+![How Events Work](./_images/how_events_work.png "How Events Work")
 
 ## What Bitrix24 Sends to the Handler
 

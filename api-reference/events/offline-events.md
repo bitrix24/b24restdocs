@@ -43,17 +43,7 @@ That is why Bitrix24 does not log every change of the same object in the offline
 
 ## How to Build Work with Offline Events
 
-```mermaid
-%%{init: { "theme": "forest" } }%%
-sequenceDiagram
-    autonumber
-    Application->>Bitrix24: Polls the queue
-    Note over Application,Bitrix24: event.offline.get
-    Application-->>External system: Sends changed data
-    External system-->>Application: Confirms processing of changes
-    Application->>Bitrix24: Clears the queue
-    Note over Application,Bitrix24: event.offline.clear
-```
+![How to Build Work with Offline Events](./_images/how_to_build_work_with_offline_events.png "How to Build Work with Offline Events")
 
 At regular intervals, your application should request a list of occurred events.
 
@@ -75,18 +65,7 @@ Consequently, there may be a situation where your application made a request to 
 
 To ensure the processing of all offline events, you can call the `event.offline.get` method with the parameter `clear = 0`. In this case, the batch of returned events will not be deleted in Bitrix24. Instead, it will be marked with a unique identifier `process_id` and "hidden."
 
-```mermaid
-%%{init: { "theme": "forest" } }%%
-sequenceDiagram
-    autonumber
-    Application->>Bitrix24: event.offline.get?clear=0
-    Note over Application,Bitrix24: receives a batch of events (process_id = 565)
-    Application-->>External system: Sends changed data
-    Note over Application,External system: "remembers" process_id = 565
-    External system-->>Application: Confirms processing of changes
-    Application->>Bitrix24: event.offline.clear?process_id=565
-    Note over Application,Bitrix24: Entries marked with process_id = 565, deleted
-```
+![Method event.offline.get](./_images/method_event_offline_get.png "Method event.offline.get")
 
 After processing the received events, the application must inform Bitrix24 that these events can be deleted.
 
@@ -98,24 +77,7 @@ Imagine a situation where your application receives an event about a deal change
 
 Then it requests the current information about the deal using the corresponding REST API method. After that, it wants to change the same deal in Bitrix24 based on its business logic. For this, the application calls the `crm.deal.update` method.
 
-```mermaid
-%%{init: { "theme": "forest" } }%%
-sequenceDiagram
-    autonumber
-    actor User
-    Application->>Bitrix24: Registers handler
-    Note over Application,Bitrix24: event.bind
-    User->>Bitrix24: Changed the deal
-    Note over User,Bitrix24: Deal 435 changed
-    loop Infinite loop
-        Bitrix24-->>Application: Calls event handler
-        Note over Bitrix24,Application: ONCRMDEALUPDATE
-        Application-->>Bitrix24: Requests deal data
-        Note over Bitrix24,Application: crm.deal.get?id=435
-        Application-->>Bitrix24: Makes changes to the same deal
-        Note over Application,Bitrix24: crm.deal.update?id=435
-    end
-```
+![How to Avoid Cycles](./_images/how_to_avoid_cycles.png "How to Avoid Cycles")
 
 In the case of regular events, as soon as the application calls the `crm.deal.update` method, Bitrix24 immediately sends the `ONCRMDEALUPDATE` event to the handler registered by the application.
 
@@ -129,24 +91,7 @@ This creates a separate queue of offline events tied to a specific data exchange
 
 Then, you need to use this same parameter when you call `crm.deal.update` if you want to change data in Bitrix24 without triggering a repeated offline event.
 
-```mermaid
-%%{init: { "theme": "forest" } }%%
-sequenceDiagram
-    autonumber
-    actor User
-    Application->>Bitrix24: Registers handler / event.bind
-    Note over User,Bitrix24: auth_type = offline and auth_connector = myapp 
-    User->Bitrix24: Changed the deal
-    Note over User,Bitrix24: Deal 435 changed
-    Bitrix24-->>Bitrix24: Saves event in the queue
-    Note over Bitrix24: ONCRMDEALUPDATE
-    Application-->>Bitrix24: Requests list of events
-    Note over Bitrix24,Application: event.offline.get?clear=0&auth_connector=myapp
-    Application->>Bitrix24: Makes changes to the same deal
-    Note over Application,Bitrix24: crm.deal.update?id=435&auth_connector=myapp
-    Application-->>Bitrix24: Clears event queue
-    Note over Application,Bitrix24: event.offline.clear?auth_connector=myapp
-```
+![How to Avoid Cycles 2](./_images/how_to_avoid_cycles_2.png "How to Avoid Cycles 2")
 
 The entire scheme using the `auth_connector` parameter is designed so that when the application modifies data, it informs Bitrix24: do not notify me about changes that I initiated myself.
 
