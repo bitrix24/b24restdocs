@@ -15,4 +15,4 @@ extensions:
   - './extensions/feedback-control'
 
 feedbackControl:
-  endpoint: https://util.1c-bitrix.ru/rest-doc/feedback-control.php
+  endpoint: https://util.bitrixsoft.com/rest-doc/feedback-control.php
