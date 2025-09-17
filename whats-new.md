@@ -2,6 +2,11 @@
 
 ## 2025
 
+### September 17, 2025
+
+- Updated the documentation for the methods [tasks.task.mute](./api-reference/tasks/tasks-task-mute.md), [tasks.task.unmute](./api-reference/tasks/tasks-task-unmute.md), [tasks.task.startwatch](./api-reference/tasks/tasks-task-start-watch.md), [tasks.task.stopwatch](./api-reference/tasks/tasks-task-stop-watch.md) in Tasks
+- Updated the documentation for the task status change methods [tasks.task.complete](./api-reference/tasks/tasks-task-complete.md), [tasks.task.pause](./api-reference/tasks/tasks-task-pause.md), [tasks.task.start](./api-reference/tasks/tasks-task-start.md), [tasks.task.defer](./api-reference/tasks/tasks-task-defer.md), [tasks.task.renew](./api-reference/tasks/tasks-task-renew.md) in Tasks
+
 ### September 11, 2025
 
 - Updated the documentation for pricing methods [catalog.price.*](./api-reference/catalog/price/index.md) in the Trade catalog.

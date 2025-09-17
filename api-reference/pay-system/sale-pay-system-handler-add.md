@@ -205,7 +205,7 @@ Form data (the `FIELDS` values from `FORM_DATA`) will be sent to `ACTION_URI`. I
 || **ACTION_URI*** 
 [`string`](../data-types.md) | URL to which the form is sent ||
 || **METHOD**
-[`string`](../data-types.md) | HTTP method used when sending the form. Default is empty, in which case the [GET](https://htmlbook.ru/html/form/method) method is used ||
+[`string`](../data-types.md) | HTTP method used when sending the form. Default is empty, in which case the GET method is used ||
 || **FIELDS**
 [`object`](../data-types.md) | Description of form fields (detailed description provided [below](#parametr-fields)) ||
 || **PARAMS**

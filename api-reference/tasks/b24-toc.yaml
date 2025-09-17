@@ -17,12 +17,8 @@ items:
     href: tasks-task-files-attach.md
   - name: Accept task
     href: tasks-task-approve.md
-  - name: Move task to "completed" status
-    href: tasks-task-complete.md
   - name: Get user counters
     href: tasks-task-counters-get.md
-  - name: Move task to "deferred" status
-    href: tasks-task-defer.md
   - name: Delegate task
     href: tasks-task-delegate.md
   - name: Delete task
@@ -39,19 +35,23 @@ items:
     href: tasks-task-get-access.md
   - name: Task history
     href: tasks-task-history-list.md
-  - name: Move task to "waiting for execution" status
+  - name: Start watching task
+    href: tasks-task-start-watch.md
+  - name: Stop watching task
+    href: tasks-task-stop-watch.md
+  - name: Move task to In Progress status
+    href: tasks-task-start.md
+  - name: Move task to Waiting for execution status
     href: tasks-task-pause.md
+  - name: Move task to Deferred status
+    href: tasks-task-defer.md
+  - name: Move task to Completed status
+    href: tasks-task-complete.md
   - name: Renew task after completion
     href: tasks-task-renew.md
-  - name: Move task to "in progress" status
-    href: tasks-task-start.md
-  - name: Enable task watching
-    href: tasks-task-start-watch.md
-  - name: Disable task watching
-    href: tasks-task-stop-watch.md
-  - name: Enable "Silent" mode
+  - name: Enable Silent mode
     href: tasks-task-mute.md
-  - name: Disable "Silent" mode
+  - name: Disable Silent mode
     href: tasks-task-unmute.md
   - name: Create dependency between tasks
     href: task-dependence-add.md
@@ -81,11 +81,11 @@ items:
     include:
       path: user-field/b24-toc.yaml
       mode: link
-  - name: Kanban stages and "Planner"
+  - name: Kanban stages and Planner
     include:
       path: stages/b24-toc.yaml
       mode: link
-  - name: Tasks in "Daily Planner"
+  - name: Tasks in Day Planner
     include:
       path: planner/b24-toc.yaml
       mode: link

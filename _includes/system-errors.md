@@ -22,7 +22,7 @@ Wrong authorization data | Invalid [access token](/api-reference/oauth/index.htm
 || `400` | `INVALID_REQUEST`
 Https required. | The methods must be called using the HTTPS protocol. ||
 || `503` | `OVERLOAD_LIMIT`
-REST API is blocked due to overload | The REST API is blocked due to overload. This is a manual individual block; to lift it, you need to contact [Bitrix24 technical support](../bitrix-support.md). ||
+REST API is blocked due to overload | The REST API is blocked due to overload. This is a manual individual block; to lift it, you need to contact [Bitrix24 technical support](/bitrix-support.html). ||
 || `403` | `ACCESS_DENIED`
 REST API is available only on commercial plans | The REST API is available only on commercial plans. ||
 || `403` | `INVALID_CREDENTIALS`
