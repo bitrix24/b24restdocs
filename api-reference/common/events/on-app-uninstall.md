@@ -1,4 +1,4 @@
-# Event on Application Uninstallation onAppUninstall
+# Event on Application Uninstall onAppUninstall
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
@@ -14,7 +14,7 @@ Data is sent as a POST request {.b24-info}
 {
     "event": "ONAPPUNINSTALL",
     "data": {
-        "LANGUAGE_ID" => "de",
+        "LANGUAGE_ID" => "en",
         "CLEAN": 1
     },
     "ts": "1466439714",
@@ -57,7 +57,7 @@ The structure is described [below](#auth) ||
 || **Name**
 `type` | **Description** ||
 || **LANGUAGE_ID***
-[`string`](../../data-types.md) | Set language: `de`, `en`, and others ||
+[`string`](../../data-types.md) | Set language: `en`, `de`, and others ||
 || **CLEAN***
 [`integer`](../../data-types.md) | Value of the "Clear application data" option set by the user when uninstalling the application. Values: `1` or `0` ||
 |#
@@ -74,9 +74,9 @@ The structure is described [below](#auth) ||
 || **server_endpoint***
 [`string`](../../data-types.md) | Authorization server address for token renewal ||
 || **client_endpoint***
-[`string`](../../data-types.md) | General path for API method calls for the account ||
+[`string`](../../data-types.md) | General path for API method calls ||
 || **member_id***
-[`string`](../../data-types.md) | Unique identifier of the account ||
+[`string`](../../data-types.md) | Unique account identifier ||
 || **application_token***
 [`string`](../../data-types.md) | Token for secure event processing ||
 |#

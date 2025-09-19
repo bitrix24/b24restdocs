@@ -1,10 +1,10 @@
-# Delete CRM Item crm.item.delete
+# Delete CRM Item - crm.item.delete
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "delete" access permission for CRM entity items
+> Who can execute the method: any user with the "delete" access permission for CRM object items
 
-This method deletes a CRM entity item by its item ID and entity type ID.
+This method deletes a CRM object item by its item ID and item type ID.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method deletes a CRM entity item by its item ID and entity type ID.
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | The ID of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) of the item we want to delete ||
+[`integer`][1] | The ID of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose item we want to delete ||
 || **id***
 [`integer`][1] | The ID of the item to be deleted.
 
@@ -209,5 +209,6 @@ HTTP Status: **400**, **403**
 - [{#T}](crm-item-get.md)
 - [{#T}](crm-item-list.md)
 - [{#T}](crm-item-fields.md)
+- [{#T}](./object-fields.md)
 
 [1]: ./../data-types.md

@@ -2,6 +2,14 @@
 
 ## 2025
 
+### September 19, 2025
+
+- Updated the main page of the [Chats](./api-reference/imopenlines/openlines/chats/index.md) section in Open Lines. Added introductory information as well as an overview of methods and connections.
+- Updated the main page of events in the [Currencies](./api-reference/crm/currency/events/index.md) section. Added introductory information and an overview of events.
+- Added the article [Completing Application Installation](./api-reference/app-installation/installation-finish.md).
+- Updated the documentation for the methods [tasks.task.favorite.add](./api-reference/tasks/tasks-task-favorite-add.md), [tasks.task.favorite.remove](./api-reference/tasks/tasks-task-favorite-remove.md), [tasks.task.getaccess](./api-reference/tasks/tasks-task-get-access.md), [tasks.task.delete](./api-reference/tasks/tasks-task-delete.md), [tasks.task.delegate](./api-reference/tasks/tasks-task-delegate.md), [tasks.task.approve](./api-reference/tasks/tasks-task-approve.md), [tasks.task.disapprove](./api-reference/tasks/tasks-task-disapprove.md) in Tasks.
+- Updated the documentation for the methods [catalog.storeproduct.*](./api-reference/catalog/store-product/index.md) in the Trade Catalog.
+
 ### September 17, 2025
 
 - Updated the documentation for the methods [tasks.task.mute](./api-reference/tasks/tasks-task-mute.md), [tasks.task.unmute](./api-reference/tasks/tasks-task-unmute.md), [tasks.task.startwatch](./api-reference/tasks/tasks-task-start-watch.md), [tasks.task.stopwatch](./api-reference/tasks/tasks-task-stop-watch.md) in Tasks

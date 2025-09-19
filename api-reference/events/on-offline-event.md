@@ -9,7 +9,7 @@ The application can subscribe to two types of events.
 - Regular: the event triggers an external URL and performs an action defined by that address.
 - Offline: instead of calling an external URL, events are locally saved on the account, from where they can later be retrieved using the methods [event.offline.*](./index.md#all-methods).
 
-For the `onOfflineEvent`, the necessity of sending a notification is determined based on the local saving, and then it is sent as a regular event to the external URL.
+For the `onOfflineEvent`, the necessity of sending a notification is calculated based on the local saving, and then it is sent as a regular event to the external URL.
 
 ## What the Handler Receives
 
@@ -48,13 +48,13 @@ Data is transmitted in the form of a POST request {.b24-info}
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../data-types.md) | Symbolic event code — `ONOFFLINEEVENT` ||
+[`string`](../data-types.md) | Symbolic code of the event — `ONOFFLINEEVENT` ||
 || **data***
 [`array`](../data-types.md) | Data about the event in the queue.
 
 The structure is described [below](#data) ||
 || **ts***
-[`timestamp`](../data-types.md) | Date and time of event sending ||
+[`timestamp`](../data-types.md) | Date and time of the event sending ||
 || **auth***
 [`array`](../data-types.md) | Authorization and account data.
 
@@ -71,14 +71,14 @@ The structure is described [below](#auth) ||
 || **type***
 [`string`](../data-types.md) | Type of change: `add`, `remove`, `update` ||
 || **event***
-[`string`](../data-types.md) | Event name. For example, `onTaskAdd` ||
+[`string`](../data-types.md) | Name of the event. For example, `onTaskAdd` ||
 || **handler***
-[`string`](../data-types.md) | Event handler URL ||
+[`string`](../data-types.md) | URL of the event handler ||
 || **minTimeout**
-[`integer`](../data-types.md) | Minimum delay before sending the event in seconds. Used for event grouping. Default is 1 sec. If the parameter value:
+[`integer`](../data-types.md) | Minimum delay before sending the event in seconds. Used for grouping events. Default is 1 sec. If the parameter value:
 - is `0`, regardless of the number of events added to the offline queue, only one event will be sent to the handler's address within a single hit
-- is greater than `0`, upon the first trigger, it sends one event. Then it pauses for at least the timeout duration before sending the next event
-  
+- is greater than `0`, upon the first trigger, it sends one event. Then, it pauses for at least the timeout duration before sending the next event
+
 The `minTimeout` field appears only if the event was added to the queue with a delay ||
 |#
 
@@ -111,14 +111,14 @@ The `minTimeout` field appears only if the event was added to the queue with a d
 || **member_id***
 [`string`](../data-types.md) | Identifier of Bitrix24 where the event occurred ||
 || **refresh_token***
-[`string`](../data-types.md) | Token for renewing authorization [OAuth 2.0](../oauth/index.md) ||
+[`string`](../data-types.md) | Token for extending authorization [OAuth 2.0](../oauth/index.md) ||
 || **application_token***
 [`string`](../data-types.md) | Token for secure event processing ||
 |#
 
-offline_event — the application is not always in a position to receive events. It may be hidden behind firewalls, live in an internal network, and so on. In this case, the offline event mechanism is used, where the application subscribes to events but does not specify a handler URL.
+offline_event — the application is not always in a position to receive events. It may be hidden behind firewalls, reside in an internal network, and so on. In this case, the offline events mechanism is used, where the application subscribes to events but does not specify a handler URL.
 
-## Continue Exploring
+## Continue Learning
 
 - [{#T}](./events.md)
 - [{#T}](./event-bind.md)

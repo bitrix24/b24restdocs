@@ -8,9 +8,9 @@ This method retrieves a list of elements of a specific type of CRM entity.
 
 CRM entity elements will not be included in the final selection if the user does not have "read" access permission for these elements.  
 
-## Method Parameters
+## Method parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,7 +22,7 @@ CRM entity elements will not be included in the final selection if the user does
 
 Can contain only field names or `'*'`.
 
-The list of available fields for selection can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method
+A list of all available fields for selection can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method. A list of standard fields is available in the article [CRM Object Fields](./object-fields.md)
 ||
 || **filter**
 [`object`][1] |
@@ -36,13 +36,13 @@ Object format:
 }
 ```
 where
-- `field_n` — name of the field by which the selection of elements will be filtered
+- `field_n` — the name of the field by which the selection of elements will be filtered
 - `value_n` — filter value
 
 The filter can have unlimited nesting and number of conditions.
-By default, all conditions are combined with `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
+By default, all conditions are combined using `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
 
-You can add a prefix to the keys `field_n` to specify the filter operation.
+You can add a prefix to the `field_n` keys to clarify the filter operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -50,14 +50,14 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for a substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -66,7 +66,7 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-The list of available fields for filtering can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method
+A list of all available fields for filtering can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method. A list of standard fields is available in the article [CRM Object Fields](./object-fields.md)
 ||
 || **order**
 [`object`][1] |
@@ -80,12 +80,12 @@ Object format:
 }
 ```
 where
-- `field_n` — name of the field by which the selection of elements will be sorted
-- `value_n` — value of type `string` equal to:
-  - `ASC` — ascending order
-  - `DESC` — descending order
+- `field_n` — the name of the field by which the selection of elements will be sorted
+- `value_n` — a `string` value equal to:
+  - `ASC` — ascending sort
+  - `DESC` — descending sort
 
-The list of available fields for sorting can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method
+A list of all available fields for sorting can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method. A list of standard fields is available in the article [CRM Object Fields](./object-fields.md)
 ||
 || **start**
 [`integer`][1] | This parameter is used to manage pagination.
@@ -96,7 +96,7 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the number of the desired page
+`start = (N-1) * 50`, where `N` — the desired page number
 ||
 || **useOriginalUfNames**
 [`boolean`][1] | Parameter to control the format of user field names in the request and response.   
@@ -108,27 +108,27 @@ Possible values:
 Default — `N` ||
 |#
 
-## Code Examples
+## Code examples
 
 **Get a list of leads where:**
 1. First name or last name is not empty
 2. They are in the status "In Progress" or "Unprocessed".
 3. They came from sources "Advertising" or "Website".
-4. They are assigned to managers with identifiers 1 or 6.
+4. They are assigned to managers with IDs 1 or 6.
 5. They have a deal amount from 5000 to 20000.
 6. The calculation mode for the amount is manual.
 
 **Set the following sort order for this selection:**
-* First name and last name in ascending order.
+* First name and last name in ascending order
 
-**For clarity, we will choose only the fields we need:**
+**For clarity, let's select only the fields we need:**
 * Identifier `id`
 * Title `title`
 * First name `name`
 * Last name `lastName`
-* Stage identifier `stageId`
-* Source identifier `sourceId`
-* Responsible identifier `assignedById`
+* Stage ID `stageId`
+* Source ID `sourceId`
+* Responsible ID `assignedById`
 * Amount `opportunity`
 * Amount calculation mode `isManualOpportunity`
 
@@ -205,7 +205,7 @@ Default — `N` ||
       console.error('Request failed', error);
     }
     
-    // fetchListMethod is preferred when working with large data sets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
     
     try {
       const generator = $b24.fetchListMethod('crm.item.list', {
@@ -427,7 +427,7 @@ Default — `N` ||
 
 {% endlist %}
 
-## Response Handling
+## Response handling
 
 HTTP status: **200**
 
@@ -494,7 +494,7 @@ HTTP status: **200**
 }
 ```
 
-### Returned Data
+### Returned data
 
 #|
 || **Name**
@@ -502,13 +502,13 @@ HTTP status: **200**
 || **result**
 [`object`][1] | Root element of the response. Contains a single key `items` ||
 || **items**
-[`item[]`](./crm-item-add.md#item) | Array containing information about the found elements.
+[`item[]`](./object-fields.md) | Array with information about found elements.
 
-Fields of a single [`item`](./crm-item-add.md#item) are configured by the `select` parameter ||
+Returned fields depend on the `select` parameter, [field descriptions](./object-fields.md) ||
 || **total**
 [`integer`][1] | Total number of found elements ||
 || **next**
-[`integer`][1] | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
+[`integer`][1] | Contains the value that needs to be passed in the next request in the `start` parameter to get the next batch of data.
 
 The `next` parameter appears in the response if the number of elements matching your request exceeds `50`. ||
 || **time**
@@ -522,7 +522,7 @@ When passing the `useOriginalUfNames` parameter with the value `Y`, user fields 
 
 {% endnote %}
 
-## Error Handling
+## Error handling
 
 HTTP status: **400**, **403**
 
@@ -535,12 +535,12 @@ HTTP status: **400**, **403**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible error codes
 
 #|
 || **Status** | **Code**                          | **Description**                                             | **Value**                                          ||
-|| `403`      | `allowed_only_intranet_user`     | Action is allowed only for intranet users                 | User is not an intranet user                       ||
-|| `400`      | `NOT_FOUND`                      | Smart process not found                                    | Occurs when an invalid `entityTypeId` is passed    ||
+|| `403`      | `allowed_only_intranet_user`     | Action is allowed only for intranet users                 | User is not an intranet user                      ||
+|| `400`      | `NOT_FOUND`                      | Smart process not found                                    | Occurs when an invalid `entityTypeId` is passed   ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' is not allowed in filter | The field `field` passed in `filter` is not available for filtering ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' has invalid value        | The value passed for the field `field` in `filter` is incorrect ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid order: field '`field`' is not allowed in order   | The field `field` passed in `order` is not available for sorting ||
@@ -549,13 +549,14 @@ HTTP status: **400**, **403**
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
 
-## Continue Learning
+## Continue learning
 
 - [{#T}](crm-item-add.md)
 - [{#T}](crm-item-update.md)
 - [{#T}](crm-item-get.md)
 - [{#T}](crm-item-delete.md)
 - [{#T}](crm-item-fields.md)
+- [{#T}](./object-fields.md)
 - [{#T}](../../../tutorials/tasks/how-to-connect-task-to-spa.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)

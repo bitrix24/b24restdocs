@@ -1,4 +1,4 @@
-# Get an item by Id crm.item.get
+# Get Item by Id crm.item.get
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
@@ -8,17 +8,17 @@ The method returns information about an item based on the item identifier and th
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) for which we want to retrieve the item ||
+[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose item we want to retrieve ||
 || **id***
-[`integer`][1] | Identifier of the item whose information we want to retrieve.
+[`integer`][1] | Identifier of the item whose information we want to obtain.
 
-Can be obtained using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
+Can be retrieved using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
 || **useOriginalUfNames**
 [`boolean`][1] | This parameter is used to control the format of custom field names in the response.   
 Possible values:
@@ -31,7 +31,7 @@ Default is `N` ||
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 Get information about a lead with `id = 250`
 
@@ -180,7 +180,7 @@ Get information about a lead with `id = 250`
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -205,7 +205,7 @@ HTTP status: **200**
             "opportunity": 999.9,
             "currencyId": "USD",
             "sourceId": "TRADE_SHOW",
-            "sourceDescription": "Admin exhibition",
+            "sourceDescription": "Admin Exhibition",
             "title": "Lead #250",
             "name": "Admin",
             "lastName": "Adminov",
@@ -214,7 +214,7 @@ HTTP status: **200**
             "companyTitle": "Administrative Company",
             "post": "Admin",
             "address": null,
-            "comments": "[B]Comment about admin[/B]",
+            "comments": "[B]Comment about the admin[/B]",
             "webformId": 0,
             "originatorId": null,
             "originId": null,
@@ -226,7 +226,7 @@ HTTP status: **200**
             "hasImol": "N",
             "login": null,
             "isReturnCustomer": "N",
-            "searchContent": "250 Lead #250 Adminov Admin Adminovich Administrative Company 999.90 US dollar 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In progress Exhibition Exhibition about admins g Admin [O]Comment about admin[/O] 321",
+            "searchContent": "250 Lead #250 Adminov Admin Adminovich Administrative Company 999.90 US Dollar 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In Progress Exhibition Exhibition about Admins City Admin [O]Comment about the admin[/O] 321",
             "isManualOpportunity": "Y",
             "movedBy": 1,
             "movedTime": "2024-07-22T17:00:08+02:00",
@@ -284,7 +284,7 @@ HTTP status: **200**
 || **result**
 [`object`][1] | Root element of the response. Contains a single key `item` ||
 || **item**
-[`item`](./crm-item-add.md#item) | Information about the item ||
+[`item`](./object-fields.md) | Information about the item, [field descriptions](./object-fields.md) ||
 || **time**
 [`time`][1] | Object containing information about the request execution time ||
 |#
@@ -298,7 +298,7 @@ When passing the parameter `useOriginalUfNames` with the value `Y`, custom field
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -313,10 +313,10 @@ HTTP status: **400**, **403**
 
 #|
 || **Status** | **Code**                          | **Description**                                     | **Value**                                                    ||
-|| `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users            | User is not an intranet user                                 ||
-|| `400`      | `NOT_FOUND`                      | SPA not found                                      | Occurs when an invalid `entityTypeId` is passed             ||
-|| `400`      | `NOT_FOUND`                      | Item not found                                    | Item with the provided `id` of type `entityTypeId` does not exist ||
-|| `400`      | `ACCESS_DENIED`                  | You do not have permission to view this item      | User does not have read access permission for items of type `entityTypeId` ||
+|| `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users | User is not an intranet user                 ||
+|| `400`      | `NOT_FOUND`                      | Smart process not found                          | Occurs when an invalid `entityTypeId` is passed              ||
+|| `400`      | `NOT_FOUND`                      | Item not found                                | Item with the provided `id` of type `entityTypeId` does not exist     ||
+|| `400`      | `ACCESS_DENIED`                  | You do not have permission to view this item        | User does not have read access permission for items of type `entityTypeId` ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
@@ -328,5 +328,6 @@ HTTP status: **400**, **403**
 - [{#T}](./crm-item-list.md)
 - [{#T}](./crm-item-delete.md)
 - [{#T}](./crm-item-fields.md)
+- [{#T}](./object-fields.md)
 
 [1]: ../data-types.md

@@ -4,13 +4,13 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-Write an article that outlines which fields can be modified and which can only be read. Mention that system fields can only be modified with admin rights and explain why. Additionally, specify how the connection with CRM is implemented.
+Write an article that describes which fields can be modified and which can only be read. Mention that system fields can only be modified with admin rights and why. Specify how the connection with CRM is implemented.
 
 {% endnote %}
 
 {% endif %}
 
-The recording and modification of fields are carried out according to business logic and taking into account user permissions. This means it depends on the user's role, group permission settings, hierarchy, task status, and certain flags in the task, such as `allowChangeDeadline`.
+The recording and modification of fields are carried out according to business logic and taking into account user permissions. This means it depends on the user's role, group permission settings, hierarchy, task status, and some flags in the task, for example, `allowChangeDeadline`.
 
 #|
 || **Name**
@@ -36,15 +36,15 @@ Has a value of `null` if there is no parent task ||
 - `1` — medium
 - `0` — low ||
 || **multitask**
-[`string`](../data-types.md) | Indicator of "base task with subtasks." Possible values: 
+[`string`](../data-types.md) | Indicates "base task with subtasks". Possible values: 
 - `Y` — yes
 - `N` — no  ||
 || **notViewed**
-[`string`](../data-types.md) | Indicator of "not viewed." Possible values: 
+[`string`](../data-types.md) | Indicates "not viewed". Possible values: 
 - `Y` — not viewed
 - `N` — viewed  ||
 || **replicate**
-[`string`](../data-types.md) | Indicator of "repeat task." Possible values: 
+[`string`](../data-types.md) | Indicates "repeat task". Possible values: 
 - `Y` — yes, make the task recurring
 - `N` — do not repeat ||
 || **stageId**
@@ -120,11 +120,11 @@ Has a value of `null` if there is no parent task ||
 || **siteId**
 [`string`](../data-types.md) | Identifier of the site ||
 || **subordinate**
-[`string`](../data-types.md) | Indicator that the task is a subtask. Possible values: 
+[`string`](../data-types.md) | Indicates that the task is a subtask. Possible values: 
 - `Y` — yes
 - `N` — no ||
 || **exchangeModified**
-[`string`](../data-types.md) | Date of modification by synchronization in `ISO 8601` format ||
+[`string`](../data-types.md) | Date of synchronization modification in `ISO 8601` format ||
 || **exchangeId**
 [`string`](../data-types.md) | Synchronization identifier ||
 || **outlookVersion**
@@ -136,15 +136,15 @@ Has a value of `null` if there is no parent task ||
 || **durationFact**
 [`string`](../data-types.md) | Actual duration ||
 || **isMuted**
-[`string`](../data-types.md) | Indicator of "muted." Possible values: 
+[`string`](../data-types.md) | Indicates "muted". Possible values: 
 - `Y` — enabled
 - `N` — disabled ||
 || **isPinned**
-[`string`](../data-types.md) | Indicator of "pinned." Possible values: 
+[`string`](../data-types.md) | Indicates "pinned". Possible values: 
 - `Y` — enabled
 - `N` — disabled ||
 || **isPinnedInGroup**
-[`string`](../data-types.md) | Indicator of "pinned in group." Possible values: 
+[`string`](../data-types.md) | Indicates "pinned in group". Possible values: 
 - `Y` — pinned
 - `N` — not pinned  ||
 || **flowId**
@@ -167,13 +167,13 @@ Has a value of `null` if there is no parent task ||
 || **durationType**
 [`string`](../data-types.md) | Unit of planned duration. Possible values: `secs`, `mins`, `hours`, `days`, `weeks`, `monts`, `years` ||
 || **favorite**
-[`string`](../data-types.md) | Indicator of "favorite." Possible values: 
+[`string`](../data-types.md) | Indicates "favorite". Possible values: 
 - `Y` — added to favorites
 - `N` — not added to favorites ||
 || **groupId**
 [`string`](../data-types.md) | Identifier of the group to which the task is linked ||
 || **auditors**
-[`array`](../data-types.md) | List of user identifiers — observers of the task ||
+[`array`](../data-types.md) | List of user identifiers — task observers ||
 || **accomplices**
 [`array`](../data-types.md) | List of user identifiers — participants ||
 || **checklist**
@@ -183,13 +183,13 @@ Has a value of `null` if there is no parent task ||
 || **creator**
 [`object`](../data-types.md) | Object with [user description](#user) — task creator ||
 || **responsible**
-[`object`](../data-types.md) | Object with [user description](#user) — responsible for the task ||
+[`object`](../data-types.md) | Object with [user description](#user) — responsible person ||
 || **accomplicesData**
 [`array`](../data-types.md) | Object with descriptions of users — participants. 
 
 Key of the object — user identifier, and value — object with [user description](#user) ||
 || **auditorsData**
-[`object`](../data-types.md) | Object with descriptions of users — observers of the task. 
+[`object`](../data-types.md) | Object with descriptions of users — task observers. 
 
 Key of the object — user identifier, and value — object with [user description](#user) ||
 || **newCommentsCount**
@@ -199,7 +199,7 @@ Key of the object — user identifier, and value — object with [user descripti
 || **checkListTree**
 [`object`](../data-types.md) | Object with [checklist tree description](#checklisttree) ||
 || **checkListCanAdd**
-[`boolean`](../data-types.md) | Can add checklist items ||
+[`boolean`](../data-types.md) | Can items be added to the checklist ||
 || **UF_CRM_TASK**
 [`array`](../data-types.md) | List of bindings to CRM entities in the format:
 - `L_XX` — lead,
@@ -211,7 +211,7 @@ Key of the object — user identifier, and value — object with [user descripti
 || **UF_TASK_WEBDAV_FILES**
 [`array`](../data-types.md) | List of files from Drive | ||
 || **UF_MAIL_MESSAGE**
-[`string`](../data-types.md) | e-mail | ||
+[`string`](../data-types.md) | E-mail message | ||
 || **UF_\***
 [`any`](../data-types.md) | Custom fields. 
 
@@ -236,17 +236,17 @@ To retrieve custom task fields, use the selection methods [tasks.task.get](./tas
 || **createdBy**
 [`string`](../data-types.md) | Identifier of the item author ||
 || **parentId**
-[`string`](../data-types.md) | Parent item. A value of `0` indicates a root item ||
+[`string`](../data-types.md) | Parent item. A value of `0` means root item ||
 || **title**
 [`string`](../data-types.md) | Item title ||
 || **sortIndex**
 [`string`](../data-types.md) | Sorting index ||
 || **isComplete**
-[`string`](../data-types.md) | Completion indicator. Possible values: 
+[`string`](../data-types.md) | Completion status. Possible values: 
 - `Y` — item completed
 - `N` — item not completed ||
 || **isImportant**
-[`string`](../data-types.md) | Importance indicator. Possible values: 
+[`string`](../data-types.md) | Importance status. Possible values: 
 - `Y` — important
 - `N` — not important ||
 || **toggledBy**
@@ -254,7 +254,7 @@ To retrieve custom task fields, use the selection methods [tasks.task.get](./tas
 || **toggledDate**
 [`string`](../data-types.md) | Date of status change in `ISO 8601` format ||
 || **ufChecklistFiles**
-[`boolean`](../data-types.md) | Indicator of the presence of files in the item ||
+[`boolean`](../data-types.md) | Indicates presence of files in the item ||
 || **members**
 [`array`](../data-types.md) | List of item participants ||
 || **attachments**
@@ -292,13 +292,13 @@ To retrieve custom task fields, use the selection methods [tasks.task.get](./tas
 || **name**
 [`string`](../data-types.md) | Group name ||
 || **opened**
-[`boolean`](../data-types.md) | Indicator of an open group ||
+[`boolean`](../data-types.md) | Indicates an open group ||
 || **membersCount**
 [`integer`](../data-types.md) | Number of group members ||
 || **image**
 [`string`](../data-types.md) | URL of the group image ||
 || **additionalData**
-[`array`](../data-types.md) | Additional group data ||
+[`array`](../data-types.md) | Additional data of the group ||
 |#
 
 ## Object with user description {#user}
@@ -324,15 +324,15 @@ To retrieve custom task fields, use the selection methods [tasks.task.get](./tas
 || **Name**
 `type` | **Description** ||
 || **accept**
-[`boolean`](../data-types.md) | Accepting the task is available ||
+[`boolean`](../data-types.md) | Accepting the task is available. Deprecated field, no longer used ||
 || **decline**
-[`boolean`](../data-types.md) | Declining the task is available ||
+[`boolean`](../data-types.md) | Declining the task is available. Deprecated field, no longer used ||
 || **complete**
 [`boolean`](../data-types.md) | Completing the task is available ||
 || **approve**
 [`boolean`](../data-types.md) | Approving the work of the assignee on the task is available when `taskControl` is enabled ||
 || **disapprove**
-[`boolean`](../data-types.md) | Selecting what the assignee needs to finish on the task is available when `taskControl` is enabled ||
+[`boolean`](../data-types.md) | Indicating what the assignee needs to finish on the task is available when `taskControl` is enabled ||
 || **start**
 [`boolean`](../data-types.md) | Starting execution is available ||
 || **pause**
@@ -340,7 +340,7 @@ To retrieve custom task fields, use the selection methods [tasks.task.get](./tas
 || **delegate**
 [`boolean`](../data-types.md) | Delegation is available ||
 || **remove**
-[`boolean`](../data-types.md) | Removing the task is available ||
+[`boolean`](../data-types.md) | Removal of the task is available ||
 || **edit**
 [`boolean`](../data-types.md) | Editing is available ||
 || **defer**
@@ -387,7 +387,7 @@ To retrieve custom task fields, use the selection methods [tasks.task.get](./tas
 || **nodeId**
 [`integer`](../data-types.md) | Identifier of the root node of the checklist tree ||
 || **fields**
-[`object`](../data-types.md) | Object with [node field description](#checklisttree-fields) ||
+[`object`](../data-types.md) | Object with [description of node fields](#checklisttree-fields) ||
 || **action**
 [`array`](../data-types.md) | Array of available actions for the node ||
 || **descendants**
@@ -412,15 +412,15 @@ To retrieve custom task fields, use the selection methods [tasks.task.get](./tas
 || **parentId**
 [`string`](../data-types.md) | Identifier of the parent ||
 || **title**
-[`string`](../data-types.md) | Item title ||
+[`string`](../data-types.md) | Title of the item ||
 || **sortIndex**
 [`string`](../data-types.md) | Sorting index ||
 || **displaySortIndex**
 [`string`](../data-types.md) | Displayed sorting index ||
 || **isComplete**
-[`boolean`](../data-types.md) | Indicator of item completion ||
+[`boolean`](../data-types.md) | Indicates completion status of the item ||
 || **isImportant**
-[`boolean`](../data-types.md) | Indicator of item importance ||
+[`boolean`](../data-types.md) | Indicates importance of the item ||
 || **completedCount**
 [`integer`](../data-types.md) | Number of completed sub-items ||
 || **members**
@@ -428,7 +428,7 @@ To retrieve custom task fields, use the selection methods [tasks.task.get](./tas
 || **attachments**
 [`array`](../data-types.md) | Array of item attachments ||
 || **nodeId**
-[`string`](../data-types.md) | Node identifier ||
+[`string`](../data-types.md) | Identifier of the node ||
 |#
 
 {% if build == 'dev' %}
@@ -440,7 +440,7 @@ To retrieve custom task fields, use the selection methods [tasks.task.get](./tas
 || **ID**
 [`integer`](../data-types.md) | Task identifier. | ||
 || **PARENT_ID**
-[`integer`](../data-types.md) | ID of the parent task. | Default — 0 ||
+[`integer`](../data-types.md) | ID of the parent task. | Defaults to 0 ||
 || **TITLE^*^**
 [`string`](../data-types.md) | Title. The length of the TITLE field must not exceed 460 characters. Otherwise, the task title will be truncated from the end without warning. | ||
 || **DESCRIPTION**
@@ -448,37 +448,37 @@ To retrieve custom task fields, use the selection methods [tasks.task.get](./tas
 || **MARK**
 [`enum`](../data-types.md) | Rating. | N — Negative,
 P — Positive.
-Default — null ||
+Defaults to null ||
 || **PRIORITY**
 [`enum`](../data-types.md) | Priority. | 2 — High,
 1 — Medium,
 0 — Low.
-Default — 1 ||
+Defaults to 1 ||
 || **STATUS**
 [`enum`](../data-types.md) | Status. | 2 — Waiting for execution,
 3 — In progress,
 4 — Awaiting control,
 5 — Completed,
 6 — Postponed.
-Default — 2 ||
+Defaults to 2 ||
 || **MULTITASK**
 [`enum`](../data-types.md) | Multitask. | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **NOT_VIEWED**
 [`enum`](../data-types.md) | NOT_VIEWED | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **REPLICATE**
 [`enum`](../data-types.md) | Repeating task. | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **GROUP_ID**
-[`integer`](../data-types.md) | Group or project | Default — 0 ||
+[`integer`](../data-types.md) | Group or project | Defaults to 0 ||
 || **FLOW_ID**
 [`integer`](../data-types.md) | Flow | null ||
 || **STAGE_ID**
-[`integer`](../data-types.md) | Stage. | Default — 0 ||
+[`integer`](../data-types.md) | Stage. | Defaults to 0 ||
 || **CREATED_BY^*^**
 [`integer`](../data-types.md) | Creator. | ||
 || **CREATED_DATE**
@@ -494,11 +494,11 @@ Default — No. ||
 || **CHANGED_DATE**
 [`integer`](../data-types.md) | Modification date. | ||
 || **STATUS_CHANGED_BY**
-[`integer`](../data-types.md) | Changed status by. | ||
+[`integer`](../data-types.md) | Status changed by. | ||
 || **CLOSED_BY**
 [`integer`](../data-types.md) | Closed by. | ||
 || **CLOSED_DATE**
-[`datetime`](../data-types.md) | Closing date. | ||
+[`datetime`](../data-types.md) | Closure date. | ||
 || **DATE_START**
 [`datetime`](../data-types.md) | Start date. | null ||
 || **DEADLINE**
@@ -518,23 +518,23 @@ Default — No. ||
 || **ALLOW_CHANGE_DEADLINE**
 [`enum`](../data-types.md) | Allow changing deadlines. | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **ALLOW_TIME_TRACKING**
 [`enum`](../data-types.md) | Allow time tracking for the task | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **TASK_CONTROL**
 [`enum`](../data-types.md) | Accept work. | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **ADD_IN_REPORT**
 [`enum`](../data-types.md) | Add to report. | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **FORKED_BY_TEMPLATE_ID**
 [`enum`](../data-types.md) | Created from a template. | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **TIME_ESTIMATE**
 [`integer`](../data-types.md) | Time allocated for the task. | ||
 || **TIME_SPENT_IN_LOGS**
@@ -550,7 +550,7 @@ Default — No. ||
 || **SUBORDINATE**
 [`enum`](../data-types.md) | Subordinate task. | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **FAVORITE**
 [`enum`](../data-types.md) | Added to Favorites. | ||
 || **EXCHANGE_MODIFIED**
@@ -577,7 +577,7 @@ Default — No. ||
 \[4\] => weeks
 \[5\] => monts
 \[6\] => years.
-Default — 3 ||
+Defaults to 3 ||
 || **UF_CRM_TASK**
 [`crm`](../data-types.md) | Binding to CRM entities
 L_XX — lead,
@@ -586,19 +586,19 @@ D_XX — deal | ||
 || **UF_TASK_WEBDAV_FILES**
 [`disk_file`](../data-types.md) | File (Drive). | ||
 || **UF_MAIL_MESSAGE**
-[`mail_message`](../data-types.md) | e-mail. | ||
+[`mail_message`](../data-types.md) | E-mail message. | ||
 || **IS_MUTED**
 [`enum`](../data-types.md) | Notifications. | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **IS_PINNED**
 [`enum`](../data-types.md) | Pinned. | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **IS_PINNED_IN_GROUP**
 [`enum`](../data-types.md) | Pinned in group. | Y — Yes,
 N — No.
-Default — No. ||
+Defaults to No. ||
 || **SERVICE_COMMENTS_COUNT**
 [`integer`](../data-types.md) | SERVICE_COMMENTS_COUNT | ||
 |#

@@ -1,60 +1,57 @@
 # Get Inventory Balances Fields catalog.storeproduct.getFields
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- no response in case of error
-- no response in case of success
-- required fields not specified
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with "View product catalog" access permission
 
-## Description
+The method `catalog.storeproduct.getFields` returns the fields of product inventory balances.
 
-```js
-catalog.storeproduct.getFields()
-```
-
-The method returns the fields for inventory balances.
-
-## Parameters
+## Method Parameters
 
 No parameters.
 
-## Examples
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.storeproduct.getFields
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.storeproduct.getFields
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'catalog.storeproduct.getFields',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+      const response = await $b24.callMethod(
+        'catalog.storeproduct.getFields',
+        {}
+      );
+      
+      const result = response.getData().result;
+      console.log(result);
     }
     catch( error )
     {
-    	console.error(error.ex);
+      console.error(error);
     }
     ```
 
@@ -68,17 +65,17 @@ No parameters.
                 'catalog.storeproduct.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
-            error_log($result->error()->ex);
+            error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting store product fields: ' . $e->getMessage();
@@ -89,35 +86,124 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        'catalog.storeproduct.getFields',
+        'catalog.storeproduct.getFields', 
         {},
-        function(result) {
-            if(result.error())
-                console.error(result.error().ex);
+        function(result)
+        {
+            if (result.error())
+                console.error(result.error());
             else
                 console.log(result.data());
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.storeproduct.getFields',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Returned Fields
+HTTP status: **200**
+
+```json
+{
+    "result": {
+        "storeProduct": {
+            "amount": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "double"
+            },
+            "id": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "productId": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "quantityReserved": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "double"
+            },
+            "storeId": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "integer"
+            }
+        }
+    },
+    "time": {
+        "start": 1758088849.185919,
+        "finish": 1758088849.224685,
+        "duration": 0.038765907287597656,
+        "processing": 0.0013179779052734375,
+        "date_start": "2025-09-17T09:00:49+02:00",
+        "date_finish": "2025-09-17T09:00:49+02:00",
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
 
 #|
-|| **Field** | **Description** | **Note** ||
-|| **amount** 
-[`double`](../../data-types.md) | Quantity | Read-only. ||
-|| **id** 
-[`integer`](../../data-types.md) | Primary key of the record | Read-only. ||
-|| **productId** 
-[`integer`](../../data-types.md) | Identifier of the product or variation | Read-only. ||
-|| **quantityReserved** 
-[`double`](../../data-types.md) | Reserved quantity | Read-only. ||
-|| **storeId** 
-[`integer`](../../data-types.md) | Identifier of the inventory | Read-only. ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response ||
+|| **storeProduct**
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [catalog_storeproduct](../data-types.md#catalog_storeproduct) field, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": 200040300010,
+    "error_description": "Access Denied"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `200040300010` | Access Denied | Insufficient permissions to read ||
+|| `0` | | Other errors || 
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./catalog-store-product-get.md)
+- [{#T}](./catalog-store-product-list.md)

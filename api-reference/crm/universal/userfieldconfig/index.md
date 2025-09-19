@@ -1,8 +1,6 @@
 # Custom Fields
 
-Currently, this API is available only for the [rpa](../../../outdated/rpa/index.md) and [crm](../../../crm/index.md) modules.
-
-Physically, the controller is located in the **main** module. However, it has been extracted as a separate **scope** for REST (it can be accessed via AJAX as *main.userfieldconfig*).
+Physically, the controller is located in the **main** module. However, it has been extracted as a separate **scope** for REST (it can be accessed via AJAX as *main.userfieldconfig.*).
 
 {% note info "" %}
 

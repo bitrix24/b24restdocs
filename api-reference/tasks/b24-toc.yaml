@@ -13,39 +13,39 @@ items:
     href: tasks-task-get.md
   - name: Get list of tasks
     href: tasks-task-list.md
+  - name: Delete task
+    href: tasks-task-delete.md
+  - name: Get list of fields
+    href: tasks-task-get-fields.md
+  - name: Check access to task
+    href: tasks-task-get-access.md
   - name: Attach files to task
     href: tasks-task-files-attach.md
-  - name: Accept task
-    href: tasks-task-approve.md
   - name: Get user counters
     href: tasks-task-counters-get.md
   - name: Delegate task
     href: tasks-task-delegate.md
-  - name: Delete task
-    href: tasks-task-delete.md
+  - name: Accept task
+    href: tasks-task-approve.md
   - name: Reject task
     href: tasks-task-disapprove.md
   - name: Add task to Favorites
     href: tasks-task-favorite-add.md
   - name: Remove task from Favorites
     href: tasks-task-favorite-remove.md
-  - name: Get list of fields
-    href: tasks-task-get-fields.md
-  - name: Check access to task
-    href: tasks-task-get-access.md
   - name: Task history
     href: tasks-task-history-list.md
   - name: Start watching task
     href: tasks-task-start-watch.md
   - name: Stop watching task
     href: tasks-task-stop-watch.md
-  - name: Move task to In Progress status
+  - name: Change task status to In Progress
     href: tasks-task-start.md
-  - name: Move task to Waiting for execution status
+  - name: Change task status to Waiting for Execution
     href: tasks-task-pause.md
-  - name: Move task to Deferred status
+  - name: Change task status to Deferred
     href: tasks-task-defer.md
-  - name: Move task to Completed status
+  - name: Change task status to Completed
     href: tasks-task-complete.md
   - name: Renew task after completion
     href: tasks-task-renew.md
@@ -85,7 +85,7 @@ items:
     include:
       path: stages/b24-toc.yaml
       mode: link
-  - name: Tasks in Day Planner
+  - name: Tasks in Daily Planner
     include:
       path: planner/b24-toc.yaml
       mode: link

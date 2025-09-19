@@ -8,7 +8,7 @@ The method `tasks.task.result.list` retrieves the list of results associated wit
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -21,7 +21,7 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -66,8 +66,8 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
     }
 
     // fetchListMethod is preferable when working with large datasets.
-    // The method implements iterative selection using a generator, which
-    // allows processing data in chunks and efficiently using memory.
+    // The method implements iterative sampling using a generator, which
+    // allows processing data in parts and efficiently using memory.
 
     try {
     const generator = $b24.fetchListMethod('tasks.task.result.list', { taskId: 8017 }, 'ID');
@@ -218,7 +218,14 @@ HTTP status: **200**
 || **updatedAt**
 [`string`](../../data-types.md) | The date and time of the last modification of the result in ISO 8601 format ||
 || **status**
-[`integer`](../../data-types.md) | The status of the result ||
+[`integer`](../../data-types.md) | The status of the result. Possible values:
+- `0` — result is open
+- `1` — result is closed
+
+The result becomes closed after the task is completed and retains this status after the task is resumed. Only new results in an unfinished task will be open.
+
+A comment with an open result cannot be added again to the result. If the result is closed, adding is possible
+ ||
 || **text**
 [`string`](../../data-types.md) | The text of the result ||
 || **formattedText**
@@ -228,7 +235,7 @@ HTTP status: **200**
 
 Contains an empty array if there are no files in the comment ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the time taken for the request ||
 |#
 
 ## Error Handling
@@ -249,7 +256,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `0` | Access denied. | The user does not have access to the task or a task with such `ID` does not exist ||
-|| `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | An invalid type value was passed in the `taskId` parameter. It should be a value of type `integer` ||
+|| `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | An invalid type value was passed in the `taskId` parameter. It should be of type `integer` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

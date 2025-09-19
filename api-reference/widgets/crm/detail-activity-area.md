@@ -153,7 +153,7 @@ General structure of a block:
 | `text` | [Text](#text) |
 | `link` | [Link](#link) |
 | `withTitle` | [Block with Title](#withTitle) |
-| `lineOfBlocks` | [Multiple content blocks in one line](lineOfBlocks) |
+| `lineOfBlocks` | [Multiple content blocks in one line](#lineOfBlocks) |
 | `dropdownMenu` | [Dropdown Menu](#dropdownMenu) |
 | `input` | [Text Input Field](#input) |
 | `textarea` | [Multiline Text Input Field](#textarea) |
@@ -210,6 +210,8 @@ Default is `false` ||
 }
 ```
 
+![text](_images/text.png)
+
 ##### Link {#link}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -243,6 +245,8 @@ Default is `false` ||
   }
 }
 ```
+
+![link](_images/link.png)
 
 ##### Block with Title {#withTitle}
 
@@ -283,6 +287,8 @@ Example with a content block of type text:
 }
 ```
 
+![withTitle1](_images/withTitle1.png)
+
 Example with a content block of type link:
 
 ```json
@@ -304,6 +310,8 @@ Example with a content block of type link:
   }
 }
 ```
+
+![withTitle2](_images/withTitle2.png)
 
 ##### Multiple Content Blocks in One Line {#lineOfBlocks}
 
@@ -351,6 +359,8 @@ The block displays multiple content blocks of type text or link in one line. Thi
 }
 ```
 
+![lineOfBlocks](_images/lineOfBlocks.png)
+
 ##### Dropdown Menu {#dropdownMenu}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -377,6 +387,8 @@ The block displays multiple content blocks of type text or link in one line. Thi
   }
 }
 ```
+
+![dropdownMenu](_images/dropdownMenu.png)
 
 To track value changes, register the callback:
 
@@ -416,6 +428,8 @@ When the value changes, the callback will receive the `id` of the dropdown block
 }
 ```
 
+![input](_images/input.png)
+
 To track value changes, register the callback:
 
 - `BX24.placement.call('bindValueChangeCallback', null, Callback)` to receive changes in any of the blocks
@@ -451,6 +465,8 @@ When the value changes, the callback will receive the `id` of the text input fie
   }
 }
 ```
+
+![textarea](_images/textarea.png)
 
 To track value changes, register the callback:
 
@@ -492,6 +508,9 @@ When the value changes, the callback will receive the `id` of the text input fie
   }
 }
 ```
+
+![select](_images/select.png)
+
 To track value changes, register the callback:
 
 - `BX24.placement.call('bindValueChangeCallback', null, Callback)` to receive changes in any of the blocks
@@ -545,6 +564,8 @@ When the value changes, the callback will receive the `id` of the field and its 
 }
 ```
 
+![list](_images/list.png)
+
 ##### Section {#section}
 
 The block displays a grouped set of blocks. An option with an image is possible.
@@ -580,7 +601,7 @@ Example with multiple blocks and an image:
   "type": "section",
   "properties": {
     "type": "withBorder",
-    "imageSrc": "https://www.quickbooks.com/images/content_en/products/box/bus.png",
+    "imageSrc": "https://helpdesk.bitrix24.com/examples/section.png",
     "blocks": {
       "header": {
         "type": "text",
@@ -626,6 +647,8 @@ Example with multiple blocks and an image:
 }
 ```
 
+![section](_images/section.png)
+
 Example with a single block without an image:
 
 ```json
@@ -645,6 +668,8 @@ Example with a single block without an image:
 	}
 }
 ```
+
+![section2](_images/section2.png)
 
 ### ButtonDto {#buttondto}
 
@@ -774,7 +799,7 @@ Calling the action will open the slider of the application that registered the i
 			"type": "section",
 			"properties": {
 				"type": "withBorder",
-				"imageSrc": "https://www.quickbooks.com/images/content_en/products/box/bus.png",
+				"imageSrc": "https://helpdesk.bitrix24.com/examples/section.png",
 				"blocks": {
 					"header": {
 						"type": "text",
@@ -818,6 +843,8 @@ Calling the action will open the slider of the application that registered the i
 }
 ```
 
+![example1](_images/example1.png)
+
 ```json
 {
 	"blocks": {
@@ -835,6 +862,8 @@ Calling the action will open the slider of the application that registered the i
 }
 ```
 
+![example2](_images/example2.png)
+
 ```json
 {
 	"blocks": {
@@ -846,6 +875,8 @@ Calling the action will open the slider of the application that registered the i
 	"secondaryButton": {"title": "Cancel"}
 }
 ```
+
+![example3](_images/example3.png)
 
 ## Continue Learning
 

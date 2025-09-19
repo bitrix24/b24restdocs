@@ -22,7 +22,7 @@ array(
     'ts' => '1696527000',
     'auth' => array(
         'domain' => 'some-domain.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/',   
+        'server_endpoint' => 'https://oauth.bitrix.info/rest/',    
         'status' => 'F',
         'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',   
         'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
@@ -39,7 +39,7 @@ array(
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic event code. In this case — `ONAPPINSTALL` ||
+[`string`](../../data-types.md) | Symbolic code of the event. In this case — `ONAPPINSTALL` ||
 || **data***
 [`object`](../../data-types.md) | Data about the installed application.
 
@@ -47,7 +47,7 @@ The structure is described [below](#data) ||
 || **ts***
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
 || **auth***
-[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -70,7 +70,7 @@ Possible values:
 `Y` — active
 `N` — inactive ||
 || **INSTALLED***
-[`string`](../../data-types.md) | Is the application ready for use. 
+[`string`](../../data-types.md) | Whether the application is ready for use. 
 
 Possible values: 
 `Y` — ready
@@ -89,18 +89,18 @@ Possible values:
 || **server_endpoint***
 [`string`](../../data-types.md) | Address of the authorization server for token renewal ||
 || **status***
-[`string`](/api-reference/data-types.html) | Status of the application that subscribed to this event:
+[`string`](../../data-types.md) | Status of the application that subscribed to this event:
 
 - `L` — local application
 - `F` — free mass-market application
 - `S` — subscription mass-market application
 ||
 || **client_endpoint***
-[`string`](../../data-types.md) | General path for API method calls to the account ||
+[`string`](../../data-types.md) | General path for API method calls of the account ||
 || **member_id***
 [`string`](../../data-types.md) | Unique identifier of the account ||
 || **application_token***
-[`string`](../../data-types.md) | Token for secure event processing ||
+[`string`](../../data-types.md) | Token for secure event handling ||
 |#
 
 {% note warning "" %}
@@ -109,7 +109,7 @@ Possible values:
 
 {% endnote %}
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

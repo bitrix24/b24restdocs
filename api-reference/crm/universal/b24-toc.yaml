@@ -21,6 +21,8 @@ items:
     href: crm-item-delete.md
   - name: Get Entity Fields
     href: crm-item-fields.md
+  - name: CRM Object Fields
+    href: object-fields.md   
   - name: Events
     include:
       path: events/b24-toc.yaml
@@ -45,7 +47,7 @@ items:
     include:
       path: import/b24-toc.yaml
       mode: link
-  - name: CRM Connection with Online Store Orders
+  - name: Linking CRM with Online Store Orders
     include:
       path: order-entity/b24-toc.yaml
       mode: link
@@ -57,7 +59,7 @@ items:
     include:
       path: delivery/b24-toc.yaml
       mode: link
-  - name: Manage Entity Detail Forms
+  - name: Managing Item Detail Forms
     include:
       path: item-details-configuration/b24-toc.yaml
       mode: link

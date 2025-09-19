@@ -1,63 +1,76 @@
 # Delete Task tasks.task.delete
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- parameter requirements are not indicated
-- examples are missing (there should be three examples - curl, js, php)
-- no response in case of error
-- no response in case of success
- 
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it soon
-
-{% endnote %}
-
 > Scope: [`task`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with permission to delete a task
 
-The method `tasks.task.delete` deletes a task.
+The method `tasks.task.delete` removes a task.
+
+You can check the permission to delete a task using the [check access to task](./tasks-task-get-access.md) method.
+
+## Method Parameters
+
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **taskId**
-[`unknown`](../data-types.md) | Task identifier. ||
+|| **Name**
+`type` | **Description** ||
+|| **taskId***
+[`integer`](../data-types.md) | Task identifier.
+
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [getting the list of tasks](./tasks-task-list.md) method ||
 |#
 
-## Example
+## Code Examples
+
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"taskId":8131}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/tasks.task.delete
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"taskId":8131,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/tasks.task.delete
+    ```
+
 - JS
 
-
-    ```js
+    ```javascript
     try
     {
-    	const response = await $b24.callMethod(
-    		'tasks.task.delete',
-    		{taskId: 1}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'tasks.task.delete',
+            {
+                taskId: 8131,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Deleted task with ID:', result);
+        
+        processResult(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -66,16 +79,17 @@ The method `tasks.task.delete` deletes a task.
             ->call(
                 'tasks.task.delete',
                 [
-                    'taskId' => 1,
+                    'taskId' => 8131
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . $result['answer']['result'];
-    
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting task: ' . $e->getMessage();
@@ -87,11 +101,99 @@ The method `tasks.task.delete` deletes a task.
     ```js
     BX24.callMethod(
         'tasks.task.delete',
-        {taskId:1},
-        function(res){console.log(res.answer.result);}
+        {
+            'taskId': 8131
+        },
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
     );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'tasks.task.delete',
+        [
+            'taskId' => 8131
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": {
+        "task": true
+    },
+    "time": {
+        "start": 1758184832.67041,
+        "finish": 1758184832.961555,
+        "duration": 0.29114508628845215,
+        "processing": 0.2604410648345947,
+        "date_start": "2025-09-18T11:40:32+03:00",
+        "date_finish": "2025-09-18T11:40:32+03:00",
+        "operating_reset_at": 1758185432,
+        "operating": 0.2604219913482666
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../data-types.md) | Root element of the response ||
+|| **task**
+[`boolean`](../data-types.md) | Returns `true` if the task was successfully deleted ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error":"1048582",
+    "error_description":"No access to delete the task"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `0` | wrong task id | The `taskId` parameter has an invalid type ||
+|| `1048582` | No access to delete the task | The user does not have access to the task or does not have permission to delete the task ||
+|| `100` | CTaskItem All parameters in the constructor must have real class type | The required parameter `taskId` is missing ||
+|#
+
+{% include [system errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./tasks-task-add.md)
+- [{#T}](./tasks-task-update.md)
+- [{#T}](./tasks-task-get.md)
+- [{#T}](./tasks-task-list.md)
+- [{#T}](./tasks-task-get-fields.md)

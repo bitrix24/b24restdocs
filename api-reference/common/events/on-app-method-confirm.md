@@ -4,7 +4,7 @@
 >
 > Who can subscribe: any user
 
-The `onAppMethodConfirm` event is triggered upon receiving the [administrator's decision](../../scopes/confirmation.md) from the account to use the methods.
+The `onAppMethodConfirm` event is triggered upon receiving the [administrator's decision](../../scopes/confirmation.md) of the account to use the methods.
 
 ## What the handler receives
 
@@ -44,7 +44,7 @@ Data is transmitted in the form of a POST request {.b24-info}
 
 The structure is described [below](#data) ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time of the event sent ||
+[`timestamp`](../../data-types.md) | Date and time of event sending ||
 || **auth***
 [`array`](../../data-types.md) | Authorization and account data.
 
@@ -87,7 +87,7 @@ The structure is described [below](#auth) ||
 [`string`](../../data-types.md) | Token for secure event processing ||
 |#
 
-## Continue exploring
+## Continue your exploration
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

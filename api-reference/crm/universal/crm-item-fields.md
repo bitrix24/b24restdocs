@@ -1,4 +1,4 @@
-# Get Fields of CRM Item `crm.item.fields`
+# Get CRM Item Fields
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
@@ -20,13 +20,13 @@ Items belonging to different types of CRM objects will have different sets of fi
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./index.md) or [user-defined type](./user-defined-object-types/index.md) whose fields we want to retrieve ||
+[`integer`][1] | Identifier of the [system](./index.md) or [custom type](./user-defined-object-types/index.md) whose fields we want to retrieve ||
 || **useOriginalUfNames**
-[`boolean`][1] | This parameter controls the format of user-defined field names in the response.   
+[`boolean`][1] | This parameter controls the format of custom field names in the response.   
 Possible values:
 
-- `Y` — original names of user-defined fields, e.g., `UF_CRM_2_1639669411830`
-- `N` — user-defined field names in camelCase, e.g., `ufCrm2_1639669411830`
+- `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
+- `N` — custom field names in camelCase, e.g., `ufCrm2_1639669411830`
 
 Default is `N` ||
 |#
@@ -35,7 +35,7 @@ Default is `N` ||
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
-Retrieve the list of fields for items in the SPA with `entityTypeId = 1268`.
+Get the list of fields for items in the SPA with `entityTypeId = 1268`
 
 {% list tabs %}
 
@@ -249,7 +249,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Available to All",
+                "title": "Available to Everyone",
                 "upperName": "OPENED"
             },
             "webformId": {
@@ -543,9 +543,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response. Contains a single key `fields` ||
+[`object`][1] | The root element of the response. Contains a single key `fields` ||
 || **fields**
-[`object`][1] | Object in the format:
+[`object`][1] | An object in the format:
 ```
 {
     field_1: value_1,
@@ -566,8 +566,8 @@ where:
 
 {% note info " " %}
 
-By default, user-defined field names are returned in camelCase, e.g., `ufCrm2_1639669411830`.
-When passing the parameter `useOriginalUfNames` with the value `Y`, user-defined fields will be returned with original names, e.g., `UF_CRM_2_1639669411830`.
+By default, custom field names are returned in camelCase, e.g., `ufCrm2_1639669411830`.
+When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
@@ -603,5 +603,6 @@ HTTP Status: **400**, **403**
 - [{#T}](crm-item-get.md)
 - [{#T}](crm-item-list.md)
 - [{#T}](crm-item-delete.md)
+- [{#T}](./object-fields.md)
 
 [1]: ../data-types.md

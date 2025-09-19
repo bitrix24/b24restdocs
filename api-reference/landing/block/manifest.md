@@ -505,8 +505,6 @@ In the standard mechanism for animation to work, it is necessary:
 
 {% note alert "TO-DO _not deployed to prod_" %}
 
-[*knowleadge]: ![Knowledge_Base](./_images/menu_landing.png)
-
 {% endnote %}
 
 {% endif %}

@@ -50,7 +50,7 @@ BX24.callMethod(
 
 - [How to accept payments from clients and work with receipts in Bitrix24](https://helpdesk.bitrix24.com/open/23570150/)
 - [How to add products to deals, leads, and estimates](https://helpdesk.bitrix24.com/open/14303190/)
-- [How to use your company details](ttps://helpdesk.bitrix24.com/open/16059544/)
+- [How to use your company details](https://helpdesk.bitrix24.com/open/16059544/)
 
 {% endnote %}
 

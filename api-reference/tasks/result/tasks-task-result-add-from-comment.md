@@ -16,7 +16,7 @@ A user can only attach their own comment as a result. An administrator can attac
 || **Name**
 `type` | **Description** ||
 || **commentId***
-[`integer`](../../data-types.md) | The identifier of the comment to be attached as the result.
+[`integer`](../../data-types.md) | The identifier of the comment to be attached as a result.
 
 The comment identifier can be obtained when [adding a new comment](../comment-item/task-comment-item-add.md) or by using the [method to get the list of comments](../comment-item/task-comment-item-get-list.md) ||
 |#
@@ -173,7 +173,7 @@ HTTP status: **200**
 || **taskId**
 [`integer`](../../data-types.md) | The identifier of the task ||
 || **commentId**
-[`integer`](../../data-types.md) | The identifier of the comment attached as the result ||
+[`integer`](../../data-types.md) | The identifier of the comment attached as a result ||
 || **createdBy**
 [`integer`](../../data-types.md) | The identifier of the user who attached the result ||
 || **createdAt**
@@ -181,15 +181,22 @@ HTTP status: **200**
 || **updatedAt**
 [`string`](../../data-types.md) | The date and time of the last update to the result in ISO 8601 format ||
 || **status**
-[`integer`](../../data-types.md) | The status of the result ||
+[`integer`](../../data-types.md) | The status of the result. Possible values:
+- `0` — result is open
+- `1` — result is closed
+
+The result becomes closed after the task is completed and retains this status after the task is resumed. Only new results in an unfinished task will be open.
+
+A comment with an open result cannot be re-added to the result. If the result is closed, adding is possible
+ ||
 || **text**
 [`string`](../../data-types.md) | The text of the result ||
 || **formattedText**
 [`string`](../../data-types.md) | The formatted text of the result ||
 || **files**
-`null` | Has the value `null`. 
+`null` | Has a value of `null`. 
 
-The list of files attached to the result can be obtained using the [tasks.task.result.list](./tasks-task-result-list.md) method ||
+The list of files attached to the result can be obtained using the method [tasks.task.result.list](./tasks-task-result-list.md) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -213,8 +220,8 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `0` | Access denied. | The user does not have permission to access the task or the comment does not belong to the user ||
 || `0` | Result already exists. | The comment is already attached as a result ||
-|| `100` | Invalid value {value} to match with parameter {commentId}. Should be a value of type int. | An invalid type value was provided for the `commentId` parameter. It should be of type `integer` ||
-|| `0` | Comment not found. | No comment exists with that identifier ||
+|| `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | An invalid type value was passed in the `commentId` parameter. It should be of type `integer` ||
+|| `0` | Comment not found. | A comment with this identifier does not exist ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

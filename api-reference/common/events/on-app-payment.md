@@ -19,12 +19,12 @@ Data is sent as a POST request {.b24-info}
         "STATUS": "S",
         "PAYMENT_EXPIRED": "N",
         "DAYS": 28,
-        "LANGUAGE_ID": "de",
+        "LANGUAGE_ID": "en",
     },
     "ts": "1466439714",
     "auth": {
         "domain": "some-domain.bitrix24.com",
-        "server_endpoint": "https://oauth.bitrix.info/rest/", 
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/", 
     }
 }
@@ -44,7 +44,7 @@ Data is sent as a POST request {.b24-info}
 
 The structure is described [below](#data) ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time of event sending from the queue ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
 || **auth***
 [`array`](../../data-types.md) | Authorization and account data.
 
@@ -66,14 +66,14 @@ The structure is described [below](#auth) ||
 [`string`](../../data-types.md) | Application status. Possible values:
 - `F` (Free) — free
 - `D` (Demo) — demo version
-- `T` (Trial) — trial version, time-limited
+- `T` (Trial) — time-limited trial version
 - `P` (Paid) — paid application ||
 || **PAYMENT_EXPIRED***
 [`string`](../../data-types.md) | [Y\|N] Flag indicating whether the paid period or trial period has expired ||
 || **DAYS***
 [`integer`](../../data-types.md) | Number of days remaining until the end of the paid period or trial period ||
 || **LANGUAGE_ID***
-[`string`](../../data-types.md) | Set language: `de`, `en`, and others ||
+[`string`](../../data-types.md) | Installed language: `en`, `de`, and others ||
 |#
 
 ### Parameter auth {#auth}
@@ -88,7 +88,7 @@ The structure is described [below](#auth) ||
 || **server_endpoint***
 [`string`](../../data-types.md) | Authorization server address for token renewal ||
 || **client_endpoint***
-[`string`](../../data-types.md) | General path for API method calls ||
+[`string`](../../data-types.md) | Common path for API method calls ||
 || **member_id***
 [`string`](../../data-types.md) | Unique account identifier ||
 |#
