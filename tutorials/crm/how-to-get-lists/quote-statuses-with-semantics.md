@@ -55,7 +55,7 @@ Example of retrieving all statuses of estimates with semantics.
 
     {% note info %}
 
-    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../first-steps/how-to-use-examples.md)
 
     {% endnote %}
 

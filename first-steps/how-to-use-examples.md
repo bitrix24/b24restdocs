@@ -6,7 +6,7 @@ The documentation includes code examples for various programming languages in th
 
 When using the Bitrix24 REST API via curl, no libraries or SDKs are required. You can create parameters for calling any REST method. You just need to be careful about the correct formation of parameters, especially when it comes to parameters that accept arrays or structures as values.
 
-Example of making a request to the Bitrix24 REST API via curl using a temporary access token [OAuth 2.0](./api-reference/oauth/index.md):
+Example of making a request to the Bitrix24 REST API via curl using a temporary access token [OAuth 2.0](../api-reference/oauth/index.md):
 
 ```bash
 curl -X POST \
@@ -22,7 +22,7 @@ auth=YOUR_ACCESS_TOKEN
 https://your-domain.bitrix24.com/rest/crm.deal.add.json
 ```
 
-Example of making a request to the Bitrix24 REST API via curl using an [incoming webhook](./local-integrations/local-webhooks.md):
+Example of making a request to the Bitrix24 REST API via curl using an [incoming webhook](../local-integrations/local-webhooks.md):
 
 ```bash
 curl -X POST \
@@ -45,7 +45,7 @@ To use the examples, you need to include the corresponding library or SDK in you
 
 ### JavaScript Using bx24.js
 
-Examples using the standard [bx24.js library](./api-reference/bx24-js-sdk/index.md) are intended for use within [local](./local-integrations/local-apps.md) or [mass-market applications](./market/index.md). Unfortunately, you cannot simply use it by including the library on an external site or local HTML page.
+Examples using the standard [bx24.js library](../api-reference/bx24-js-sdk/index.md) are intended for use within [local](../local-integrations/local-apps.md) or [mass-market applications](../market/index.md). Unfortunately, you cannot simply use it by including the library on an external site or local HTML page.
 
 However, once you understand the concept of a local or even mass-market application, using the JavaScript examples from the documentation will become very straightforward. To use the JavaScript examples, you only need to include the following script:
 
@@ -79,13 +79,13 @@ BX24.callMethod(
 </script>
 ```
 
-Additional information about BX24.js can be found in the section [{#T}](./api-reference/bx24-js-sdk/index.md). Note that this library can only be used within applications that open in frames in the Bitrix24 user interface. Read more about this in the section on [widgets](./api-reference/widgets/index.md).
+Additional information about BX24.js can be found in the section [{#T}](../api-reference/bx24-js-sdk/index.md). Note that this library can only be used within applications that open in frames in the Bitrix24 user interface. Read more about this in the section on [widgets](../api-reference/widgets/index.md).
 
 ### JavaScript Using B24JsSDK
 
 Unlike bx24.js, B24JsSDK can be used in any web applications, both as front-end and back-end on Node.js.
 
-This distinction requires a slightly different approach to including the library. Detailed information can be found in [{#T}](./api-reference/b24jssdk/index.md). Here is an example of including B24JsSDK as a browser UMD library:
+This distinction requires a slightly different approach to including the library. Detailed information can be found in [{#T}](../api-reference/b24jssdk/index.md). Here is an example of including B24JsSDK as a browser UMD library:
 
 ```html
 <script src="https://unpkg.com/@bitrix24/b24jssdk@latest/dist/umd/index.min.js"></script>
@@ -141,7 +141,7 @@ The library also supports working with incoming webhooks. However, in this case,
 
 ### PHP Using B24PhpSDK
 
-To start using it, you need to install and include B24PhpSDK. Detailed information can be found in [{#T}](./api-reference/b24phpsdk/index.md).
+To start using it, you need to install and include B24PhpSDK. Detailed information can be found in [{#T}](../api-reference/b24phpsdk/index.md).
 
 Example of using B24PhpSDK with an incoming webhook:
 
@@ -169,7 +169,7 @@ $result = $B24->getCRMScope()->deal()->add([
 
 ### PHP Using CRest SDK
 
-To use the PHP examples, you need to install and include the CRest SDK. Detailed information can be found in [{#T}](./api-reference/crest-php-sdk/index.md).
+To use the PHP examples, you need to install and include the CRest SDK. Detailed information can be found in [{#T}](../api-reference/crest-php-sdk/index.md).
 
 Example of using CRest SDK:
 

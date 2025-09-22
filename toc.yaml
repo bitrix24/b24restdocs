@@ -3,17 +3,13 @@ href: index.yaml
 items: 
   - name: What the Bitrix24 REST API Allows
     href: developing-with-rest-api.md
-  - name: Getting Started
-    href: about.md
-  - name: How to Access the REST API 
-    href: access-to-rest-api.md
-  - name: How to Make Your First API Request 
-    href: first-rest-api-call.md
+  - name: First steps 
+    include:
+      path: first-steps/b24-toc.yaml
+      mode: link      
   - name: Page 404
     href: 404.yaml
     hidden: true
-  - name: How to Use Examples 
-    href: how-to-use-examples.md
   - name: Typical Use-Cases and Scenarios 
     include:
       path: tutorials/b24-toc.yaml
@@ -24,6 +20,7 @@ items:
     href: error-codes.md       
   - name: What's New
     href: whats-new.md
+    hidden: true    
   - name: Developer Meetups
     href: meetups.md
   - name: Support and Community for Developers
@@ -60,15 +57,15 @@ navigation:
       - text: 'Getting Started'
         type: 'link'
         url: '/about.html'
+      - text: 'API Reference'
+        type: 'link'
+        url: '/api-reference/index.html'        
       - text: 'Whats New'
         type: 'link'
         url: '/whats-new.html'     
       - text: 'Typical Use-Cases'
         type: 'link'
         url: '/tutorials/index.html'  
-      - text: 'API Methods'
-        type: 'link'
-        url: '/api-reference/index.html'
       - text: 'GitHub'
         type: 'link'
         url: 'https://github.com/bitrix24/bitrix24-dev-hub'

@@ -4,7 +4,7 @@
 
 The example consists of the [CRest SDK](https://github.com/bitrix-tools/crest/) and a PHP file with an example that you need to place on your web server before adding the application to your Bitrix24. The application can obtain user authorization from Bitrix24 and, while being outside of Bitrix24, access the REST API to retrieve the full name of the user who installed it.
 
-> **Attention!** This example is based on the *CRest SDK*. Before using the example, you need to open the **checkserver.php** file in your browser and verify the correctness of your server settings. [Learn more](../how-to-use-examples.md).
+> **Attention!** This example is based on the *CRest SDK*. Before using the example, you need to open the **checkserver.php** file in your browser and verify the correctness of your server settings. [Learn more](../first-steps/how-to-use-examples.md).
 
 [Download archive](https://helpdesk.bitrix24.com/examples/server-no-ui-crest.zip)
 
@@ -34,7 +34,7 @@ In Bitrix24, you can go to the **Integrations** list (*Applications > Developer 
 
 ## Usage
 
-> **Attention!** This example is based on the *CRest SDK*. Before using the example, you need to open the **checkserver.php** file in your browser and verify the correctness of your server settings. [Learn more](../how-to-use-examples.md).
+> **Attention!** This example is based on the *CRest SDK*. Before using the example, you need to open the **checkserver.php** file in your browser and verify the correctness of your server settings. [Learn more](../first-steps/how-to-use-examples.md).
 
 Open the **index.php** file from the example in your browser via your URL.
 

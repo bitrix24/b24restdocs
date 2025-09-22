@@ -24,7 +24,7 @@ Tutorials consist of:
 
 ## Tips for Beginners
 
-Explore the sections [Getting Started](../about.md), [How to Make Your First Request](../first-rest-api-call.md).
+Explore the sections [Getting Started](../first-steps/index.md), [How to Make Your First Request](../first-steps/first-rest-api-call.md).
 
 Start with simple scenarios, such as filtering data in the tutorial [How to Filter Elements by Stage Name](./crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md). It does not use methods for modifying or deleting entities, so the data within the entities will be safe.
 

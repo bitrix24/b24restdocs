@@ -6,7 +6,7 @@ This example is universal for workflow actions and Automation rules. The only di
 
 In the example code, the method `bizproc.activity.add` is used. If you want to create an Automation rule, replace the method with `bizproc.robot.add`.
 
-To use the example, configure the `CRest` class and include the `crest.php` file in the files where this class is used. More details in the article [{#T}](../../how-to-use-examples.md).
+To use the example, configure the `CRest` class and include the `crest.php` file in the files where this class is used. More details in the article [{#T}](../../first-steps/how-to-use-examples.md).
 
 ## Action Registration File
 

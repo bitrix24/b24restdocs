@@ -14,7 +14,7 @@ In particular, if you are using PHP and curl, depending on the settings, a POST 
 
 {% note info %}
 
-These features of working with the REST API are already taken into account in the [Bitrix SDK](../../how-to-use-examples.md).
+These features of working with the REST API are already taken into account in the [Bitrix SDK](../../first-steps/how-to-use-examples.md).
 
 {% endnote %}
 

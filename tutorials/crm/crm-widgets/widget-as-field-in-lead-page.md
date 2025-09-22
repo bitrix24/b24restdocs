@@ -62,7 +62,7 @@ The property installation code is called once. The variable `handlerUrl` is the 
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../first-steps/how-to-use-examples.md)
 
     {% endnote %}
 
@@ -179,7 +179,7 @@ The handler file that you specified in the `handlerUrl` variable in the code abo
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../first-steps/how-to-use-examples.md)
 
     {% endnote %}
 

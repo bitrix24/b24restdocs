@@ -2,7 +2,7 @@
 
 The application utilizes a simplified version of OAuth 2.0 and is displayed as an additional page that shows the full name of the current user. The archive of the example consists of the [CRest SDK](https://github.com/bitrix-tools/crest/), a [modification of the CRest SDK](../api-reference/crest-php-sdk/using-in-users-context.md) for the simplified use of OAuth 2.0, and a PHP file index.php containing the example code. You need to place the files from the example archive on your web server before installing it in Bitrix24.
 
-> **Attention!** This example operates based on the *CRest SDK*. Before using the example, you must open the file **checkserver.php** in your browser and verify the correctness of your server settings. [Learn more](../how-to-use-examples.md).
+> **Attention!** This example operates based on the *CRest SDK*. Before using the example, you must open the file **checkserver.php** in your browser and verify the correctness of your server settings. [Learn more](../first-steps/how-to-use-examples.md).
 
 [Download the archive](https://helpdesk.bitrix24.com/examples/local-server-ui-index.zip)
 

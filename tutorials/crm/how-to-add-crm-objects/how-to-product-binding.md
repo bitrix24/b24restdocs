@@ -150,7 +150,7 @@ Examples of creating various objects while simultaneously adding products to the
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../first-steps/how-to-use-examples.md)
 
     {% endnote %}
 
@@ -382,7 +382,7 @@ Examples of creating various objects while simultaneously adding products to the
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../first-steps/how-to-use-examples.md)
 
     {% endnote %}
 
@@ -602,7 +602,7 @@ Examples of creating various objects while simultaneously adding products to the
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../first-steps/how-to-use-examples.md)
 
     {% endnote %}
 
@@ -847,7 +847,7 @@ Examples of creating various objects while simultaneously adding products to the
 
     {% note info %}
 
-    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../how-to-use-examples.md)
+    To use the PHP examples, configure the *CRest* class and include the **crest.php** file in the files where this class is used. [More details](../../../first-steps/how-to-use-examples.md)
 
     {% endnote %}
 

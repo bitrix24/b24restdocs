@@ -8,7 +8,7 @@ https://your-domain.bitrix24.com/rest/method-name?param1=value1&param2=value2...
 
 Most methods support passing an array of parameters as a `POST` request in `JSON` format. All methods support the `GET` protocol and `POST` in `multipart/form-data` format.
 
-In response to a request, the REST API returns the result in `JSON` or `XML` format depending on what the user requested, containing meaningful data or [error information](../../error-codes.md). We recommend trying to [make a simple request](../../first-rest-api-call.md) before you start exploring the Bitrix24 REST API in depth.
+In response to a request, the REST API returns the result in `JSON` or `XML` format depending on what the user requested, containing meaningful data or [error information](../../error-codes.md). We recommend trying to [make a simple request](../../first-steps/first-rest-api-call.md) before you start exploring the Bitrix24 REST API in depth.
 
 ## Request Result
 

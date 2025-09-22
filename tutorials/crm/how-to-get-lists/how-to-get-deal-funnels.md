@@ -81,7 +81,7 @@ This example outputs all existing deal directions along with the semantics for e
 
     {% note info %}
 
-    To use the examples in PHP, set up the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../how-to-use-examples.md)
+    To use the examples in PHP, set up the *CRest* class and include the **crest.php** file in the files where this class is used. [Learn more](../../../first-steps/how-to-use-examples.md)
 
     {% endnote %}
 

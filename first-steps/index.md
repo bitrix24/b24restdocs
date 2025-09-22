@@ -10,12 +10,12 @@ The Bitrix24 REST API documentation provides developers with all the necessary i
 
 - Once you have mastered the basics, check out the section [{#T}](./how-to-use-examples.md). Here, you will find examples of using the Bitrix24 REST API in various programming languages. This will help you understand the nuances of working with the API across different platforms and apply the examples in your projects.
 
-- If you want to delve deeper into integration and customization, pay attention to the section [{#T}](./local-integrations/index.md). Here, you will find information on setting up integrations with other systems and automating processes in your Bitrix24.
+- If you want to delve deeper into integration and customization, pay attention to the section [{#T}](../local-integrations/index.md). Here, you will find information on setting up integrations with other systems and automating processes in your Bitrix24.
 
-- If you are looking for ready-made solutions and use-case scenarios for the REST API, refer to the section [{#T}](./tutorials/index.md). Here, you will find a large set of examples and scenarios that will help you quickly understand the capabilities of the API and apply them in your projects.
+- If you are looking for ready-made solutions and use-case scenarios for the REST API, refer to the section [{#T}](../tutorials/index.md). Here, you will find a large set of examples and scenarios that will help you quickly understand the capabilities of the API and apply them in your projects.
 
-- To understand the capabilities of the Bitrix24 app Market, refer to the section [{#T}](./market/index.md). Here, you will find information on developing and publishing applications, as well as monetization and promotion opportunities in the Bitrix24 Market.
+- To understand the capabilities of the Bitrix24 app Market, refer to the section [{#T}](../market/index.md). Here, you will find information on developing and publishing applications, as well as monetization and promotion opportunities in the Bitrix24 Market.
 
-- Finally, move on to the section [{#T}](./api-reference/index.md), where you will find detailed information about the features and specifics of the Bitrix24 REST API. Here, you will find rules for working with OAuth 2.0 authorization tokens, information about REST API events, and other important aspects that will help you make the most effective use of the API.
+- Finally, move on to the section [{#T}](../api-reference/index.md), where you will find detailed information about the features and specifics of the Bitrix24 REST API. Here, you will find rules for working with OAuth 2.0 authorization tokens, information about REST API events, and other important aspects that will help you make the most effective use of the API.
 
 By following this sequence, you will systematically master the Bitrix24 REST API and use it for various tasks and integrations.
