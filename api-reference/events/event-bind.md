@@ -15,7 +15,7 @@ Since requests will come from Bitrix servers, any URL must be accessible for GET
 
 {% endnote %}
 
-The interface for this method is [BX24.callBind](../bx24-js-sdk/how-to-call-rest-methods/bx24-call-bind.md).
+The interface for this method is [BX24.callBind](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-bind.md).
 
 {% note info %}
 

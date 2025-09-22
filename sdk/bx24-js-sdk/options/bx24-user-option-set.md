@@ -14,9 +14,9 @@ The method `BX24.userOption.set` sets the `value` of the setting named `name` fo
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Parameter code ||
+[`string`](../../../api-reference/data-types.md) | Parameter code ||
 || **value***
-[`mixed`](../../data-types.md) | Parameter value ||
+[`mixed`](../../../api-reference/data-types.md) | Parameter value ||
 |#
 
 

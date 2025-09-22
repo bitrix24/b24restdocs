@@ -39,13 +39,13 @@ Starting from version 22.300, it can open SPAs.
 #|
 || **Parameter** | **Description** | **Available since** ||
 || **path**
-[`unknown`](../../data-types.md) | The path within the account, which can start with: 
+[`unknown`](../../../api-reference/data-types.md) | The path within the account, which can start with: 
 ```
 ^\/(crm\/(deal|lead|contact|company|type)|marketplace|company\/personal\/user\/[0-9]+|workgroups\/group\/[0-9]+)\/
 ```
  | ||
 || **callback**
-[`unknown`](../../data-types.md) | The function is called in 2 cases:
+[`unknown`](../../../api-reference/data-types.md) | The function is called in 2 cases:
 - when there is an error opening
 - if the specified path cannot be opened: `{result: "error", errorCode: "PATH_NOT_AVAILABLE"}`
 - in the mobile application: `{result: "error", errorCode: "METHOD_NOT_SUPPORTED_ON_DEVICE"}`

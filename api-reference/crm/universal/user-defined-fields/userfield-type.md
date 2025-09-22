@@ -45,7 +45,7 @@ When creating a field with a custom type, you may encounter the error `Error! 40
 
    - If the method returned `INSTALLED = true`, the application is installed correctly.
 
-   - If the method returned `INSTALLED = false`, execute the method [BX24.installFinish](../../../bx24-js-sdk/system-functions/bx24-install-finish.md) on the application page. This method will complete the installation of the application with the interface.
+   - If the method returned `INSTALLED = false`, execute the method [BX24.installFinish](../../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md) on the application page. This method will complete the installation of the application with the interface.
 
     ```javascript
     BX24.init(function(){

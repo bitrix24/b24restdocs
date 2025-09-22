@@ -6,14 +6,30 @@ items:
   - name: First steps 
     include:
       path: first-steps/b24-toc.yaml
-      mode: link      
-  - name: Page 404
-    href: 404.yaml
-    hidden: true
+      mode: link   
   - name: Typical Use-Cases and Scenarios 
     include:
       path: tutorials/b24-toc.yaml
       mode: link
+  - name: Local solutions 
+    include:
+      path: local-integrations/b24-toc.yaml
+      mode: link
+  - name: Software Development Kit
+    include:
+      path: sdk/b24-toc.yaml
+      mode: link  
+  - name: Bitrix24 Market
+    include:
+      path: market/b24-toc.yaml
+      mode: link
+  - name: API Reference
+    include:
+      path: api-reference/b24-toc.yaml
+      mode: link          
+  - name: Page 404
+    href: 404.yaml
+    hidden: true
   - name: REST API Limits
     href: limits.md
   - name: Error Codes
@@ -33,18 +49,6 @@ items:
     hidden: true     
   - name: Feedback
     href: feedback.md
-  - name: Local Integrations and Customization 
-    include:
-      path: local-integrations/b24-toc.yaml
-      mode: link
-  - name: Bitrix24 Market
-    include:
-      path: market/b24-toc.yaml
-      mode: link
-  - name: API Reference
-    include:
-      path: api-reference/b24-toc.yaml
-      mode: link 
 navigation:
   logo:
     url: '/'

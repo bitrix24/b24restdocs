@@ -26,4 +26,4 @@ The method `BX24.isAdmin` determines whether the current user has administrator 
 
 ## See also
 
-- [user.admin](../../common/users/user-admin.md)
+- [user.admin](../../../api-reference/common/users/user-admin.md)

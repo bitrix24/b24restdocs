@@ -26,5 +26,5 @@ The method `BX24.im.phoneTo` makes a call to the phone number.
 #|
 || **Parameter** | **Description** ||
 || **number**
-[`string`](../../data-types.md) | Phone number. The number can be in the format: `84012112233` or `8 (495) 711-22-33`. || 
+[`string`](../../../api-reference/data-types.md) | Phone number. The number can be in the format: `84012112233` or `8 (495) 711-22-33`. || 
 |#

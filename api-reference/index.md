@@ -31,8 +31,8 @@ To facilitate the process of studying and using the Bitrix24 REST API, the follo
 7. [{#T}](events/index.md): This section is dedicated to the REST API event mechanism, which allows tracking changes in data and responding to them with special server handlers.
 8. [{#T}](interactivity/index.md): It discusses ways to create interactive applications that utilize the REST API capabilities for interaction between back-end applications and their front-end.
 9. [{#T}](performance/limits.md): Important aspects related to application performance and limitations imposed on the use of the REST API.
-10. [{#T}](bx24-js-sdk/index.md): A section dedicated to the JavaScript SDK, which simplifies working with the REST API on the client side.
-11. [{#T}](crest-php-sdk/index.md): An overview of the PHP SDK for working with the REST API, providing convenient tools for server-side development.
+10. [{#T}](../sdk/bx24-js-sdk/index.md): A section dedicated to the JavaScript SDK, which simplifies working with the REST API on the client side.
+11. [{#T}](../sdk/crest-php-sdk/index.md): An overview of the PHP SDK for working with the REST API, providing convenient tools for server-side development.
 12. [{#T}](cloud-and-on-premise/index.md): It clarifies the key differences between cloud and on-premise versions of the platform in terms of using the REST API.
 13. [{#T}](common/index.md): A description of common methods available in the REST API that can be used in various applications.
 

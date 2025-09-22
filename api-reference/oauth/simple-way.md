@@ -1,6 +1,6 @@
 # Simplified Method for Obtaining OAuth 2.0 Tokens
 
-The simplest scenario for accessing the REST API is when the application operates within the Bitrix24 interface. In this case, all necessary authorization data is provided to the application upon opening, and there is also the option to use the [js library](../bx24-js-sdk/index.md) for making API calls.
+The simplest scenario for accessing the REST API is when the application operates within the Bitrix24 interface. In this case, all necessary authorization data is provided to the application upon opening, and there is also the option to use the [js library](../../sdk/bx24-js-sdk/index.md) for making API calls.
 
 The application receives the following array of POST data:
 
@@ -36,7 +36,7 @@ array (
 
 Using the value of the **AUTH_ID** parameter, you can immediately make requests to the API.
 
-As mentioned above, applications in the interface can make API requests on the client side, that is, the user's browser, by connecting the js library and using the methods [BX24.callMethod](../bx24-js-sdk/how-to-call-rest-methods/bx24-call-method.md) and [BX24.callBatch](../bx24-js-sdk/how-to-call-rest-methods/bx24-call-batch.md). In this case, the authorization process will occur automatically.
+As mentioned above, applications in the interface can make API requests on the client side, that is, the user's browser, by connecting the js library and using the methods [BX24.callMethod](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-method.md) and [BX24.callBatch](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-batch.md). In this case, the authorization process will occur automatically.
 
 Thus, a simple scenario for obtaining user authorization tokens upon application installation becomes available. As you know (this was demonstrated in the [relevant example](../app-installation/local-apps/installation-master.md)), public mass-market solutions have the option to specify a separate installation script, which will be shown to the user installing your solution in a frame once — at the time of installation. In this frame, Bitrix24 transmits the same data in the POST request as in the usual case. Therefore, you can design the installation script to save tokens (most importantly, the `refresh_token` as well) on your application's side to later implement the scenario for automatic token renewal.
 

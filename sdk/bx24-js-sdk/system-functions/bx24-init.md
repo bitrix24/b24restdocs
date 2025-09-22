@@ -14,7 +14,7 @@ The `BX24.init` function adds an event handler for the "library ready" event. Du
 || **Name**
 `type` | **Description** ||
 || **someCallback**
-[`function`](../../data-types.md) | Accepts a function that will be executed upon success ||
+[`function`](../../../api-reference/data-types.md) | Accepts a function that will be executed upon success ||
 |#
 
 ## Example

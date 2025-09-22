@@ -14,7 +14,7 @@ The method `BX24.appOption.get` returns a setting by its code.
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Parameter code ||
+[`string`](../../../api-reference/data-types.md) | Parameter code ||
 |#
 
 ## Code Examples

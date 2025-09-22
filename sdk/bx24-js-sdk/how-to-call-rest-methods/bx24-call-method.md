@@ -23,11 +23,11 @@ If called before [BX24.init](../system-functions/bx24-init.md), the request exec
 || **Name**
 `type` | **Description** ||
 || **method***
-[`string`](../../data-types.md) | The name of the REST API method to be called ||
+[`string`](../../../api-reference/data-types.md) | The name of the REST API method to be called ||
 || **params**
-[`object`](../../data-types.md) | Parameters passed to the method. Must match the expected parameters of the called method ||
+[`object`](../../../api-reference/data-types.md) | Parameters passed to the method. Must match the expected parameters of the called method ||
 || **callback**
-[`function`](../../data-types.md) | The callback function that will be executed after receiving a response from the server ||
+[`function`](../../../api-reference/data-types.md) | The callback function that will be executed after receiving a response from the server ||
 |#
 
 ## Example

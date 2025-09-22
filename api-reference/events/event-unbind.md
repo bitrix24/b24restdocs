@@ -141,7 +141,7 @@ The method returns the number of event handlers removed upon invocation.
 
 ## See Also
 
-- [{#T}](../bx24-js-sdk/how-to-call-rest-methods/bx24-call-unbind.md)
+- [{#T}](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-unbind.md)
 
 ## Continue Learning
 

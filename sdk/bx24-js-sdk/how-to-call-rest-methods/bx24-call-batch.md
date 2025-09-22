@@ -20,13 +20,13 @@ The function `BX24.callBatch` sends a batch of requests to the REST service. If 
 || **Name**
 `type` | **Description** ||
 || **calls***
-[`object`](../../data-types.md)\|[`array`](../../data-types.md) | A regular or associative array (object) with requests. Each request is either an array `[method_name, method_parameters]` or an object `{method: method_name, params: method_parameters}`. 
+[`object`](../../../api-reference/data-types.md)\|[`array`](../../../api-reference/data-types.md) | A regular or associative array (object) with requests. Each request is either an array `[method_name, method_parameters]` or an object `{method: method_name, params: method_parameters}`. 
 
 In the method parameters, macros can be used to access the results of previous requests in the current batch. A macro can be constructed like this: `$result[request_identifier][response_field]`, where the request identifier is its key in the request batch array ||
 || **callback**
-[`function`](../../data-types.md) | A handler function for the batch request result. It will receive an array or associative array (object) of [ajaxResult](./bx24-call-method.md#ajax-result) objects with keys corresponding to the keys from the request batch ||
+[`function`](../../../api-reference/data-types.md) | A handler function for the batch request result. It will receive an array or associative array (object) of [ajaxResult](./bx24-call-method.md#ajax-result) objects with keys corresponding to the keys from the request batch ||
 || **bHaltOnError**
-[`boolean`](../../data-types.md) | Flag "halt execution of the batch in case of an error". Default is `false` (do not halt) ||
+[`boolean`](../../../api-reference/data-types.md) | Flag "halt execution of the batch in case of an error". Default is `false` (do not halt) ||
 |#
 
 ## Example

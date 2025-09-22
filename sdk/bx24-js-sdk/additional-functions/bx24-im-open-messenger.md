@@ -29,7 +29,7 @@ The method `BX24.im.openMessenger` opens the messenger window.
 #|
 || **Parameter** | **Description** ||
 || **dialogId**
-[`unknown`](../../data-types.md) | Identifier of the dialog:
+[`unknown`](../../../api-reference/data-types.md) | Identifier of the dialog:
 - **userId** or **chatXXX** - chat, where XXX is the chat identifier, which can simply be a number.
 - **sgXXX** - group chat, where XXX is the social network group number (the chat must be enabled in this group).
 - **imol|XXXX** - open line, where XXX is the code obtained via the Rest method imopenlines.network.join.

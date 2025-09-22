@@ -14,9 +14,9 @@ If a string is passed as the handler, it is treated as a link to a js file that 
 || **Name**
 `type` | **Description** ||
 || **someCallback**
-[`function`](../../data-types.md) | Accepts a function that will be executed upon success ||
+[`function`](../../../api-reference/data-types.md) | Accepts a function that will be executed upon success ||
 || **someCallback**
-[`string`](../../data-types.md)  | If a string is provided, it is the path to the js file. The file will be loaded first, then the [BX24.installFinish](./bx24-install-finish.md) function will be called ||
+[`string`](../../../api-reference/data-types.md)  | If a string is provided, it is the path to the js file. The file will be loaded first, then the [BX24.installFinish](./bx24-install-finish.md) function will be called ||
 |#
 
 ## Example

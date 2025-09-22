@@ -31,7 +31,7 @@ The method `BX24.im.callTo` initiates a call via internal communication.
 #|
 || **Parameter** | **Description** ||
 || **userId**
-[`unknown`](../../data-types.md) | The identifier of the account user. ||
+[`unknown`](../../../api-reference/data-types.md) | The identifier of the account user. ||
 || **video**
-[`unknown`](../../data-types.md) | **true** - video call, **false** - audio call. Optional parameter. ||
+[`unknown`](../../../api-reference/data-types.md) | **true** - video call, **false** - audio call. Optional parameter. ||
 |#

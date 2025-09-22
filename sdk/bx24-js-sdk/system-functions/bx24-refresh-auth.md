@@ -12,7 +12,7 @@ The `BX24.refreshAuth` function forcefully updates the authorization key. The ha
 || **Name**
 `type` | **Description** ||
 || **someCallback**
-[`function`](../../data-types.md) | Accepts a function that will be executed upon success ||
+[`function`](../../../api-reference/data-types.md) | Accepts a function that will be executed upon success ||
 |#
 
 ## Example

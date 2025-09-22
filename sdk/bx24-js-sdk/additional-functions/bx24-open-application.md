@@ -36,17 +36,17 @@ When the method `BX24.openApplication` is called, a popup window will open with 
 #|
 || **Parameter** | **Description** ||
 || **parameters**
-[`unknown`](../../data-types.md) | An object with parameters that will be passed to the opened application as a JSON string ||
+[`unknown`](../../../api-reference/data-types.md) | An object with parameters that will be passed to the opened application as a JSON string ||
 || **closeCallback**
-[`unknown`](../../data-types.md) | The application close handler ||
+[`unknown`](../../../api-reference/data-types.md) | The application close handler ||
 || **bx24_width**
-[`unknown`](../../data-types.md) | The width of the slider ||
+[`unknown`](../../../api-reference/data-types.md) | The width of the slider ||
 || **bx24_label**
-[`unknown`](../../data-types.md) | The title of the label ||
+[`unknown`](../../../api-reference/data-types.md) | The title of the label ||
 || **bx24_title**
-[`unknown`](../../data-types.md) | The title of the page ||
+[`unknown`](../../../api-reference/data-types.md) | The title of the page ||
 || **bx24_leftBoundary**
-[`unknown`](../../data-types.md) | The slider spans the full width with a left margin. Cannot be used simultaneously with bx24_width. ||
+[`unknown`](../../../api-reference/data-types.md) | The slider spans the full width with a left margin. Cannot be used simultaneously with bx24_width. ||
 |#
 
 For placements `CRM_*_LIST_MENU`, it is blocked.

@@ -14,7 +14,7 @@ The method `BX24.userOption.get` returns the value of the setting with the name 
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Parameter code ||
+[`string`](../../../api-reference/data-types.md) | Parameter code ||
 |#
 
 ## Code Examples

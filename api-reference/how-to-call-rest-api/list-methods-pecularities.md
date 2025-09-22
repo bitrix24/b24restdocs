@@ -23,6 +23,6 @@ When calling list methods, REST returns additional values in the response:
 }
 ```
 
-To retrieve the next batch of entities, you need to execute the same request, specifying an additional parameter `start` with the value received in the `next` parameter of the response. When using [SDK BX24.js](../bx24-js-sdk/index.md), obtaining the next batch is done using the method `result.next()`.
+To retrieve the next batch of entities, you need to execute the same request, specifying an additional parameter `start` with the value received in the `next` parameter of the response. When using [SDK BX24.js](../../sdk/bx24-js-sdk/index.md), obtaining the next batch is done using the method `result.next()`.
 
 Executing list methods can be quite "heavy" in terms of performance for *Bitrix24*, as the volume of processed data can be very large. To ensure your applications stay within the [limits of the REST API](../performance/limits.md), we recommend [reading the article](../performance/huge-data.md).

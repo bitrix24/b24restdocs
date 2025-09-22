@@ -1,6 +1,6 @@
 # Open Standard Bitrix24 Pages from Application Widgets
 
-To avoid creating your own interfaces for displaying information about CRM entities, tasks, etc., and to show users the standard and familiar Bitrix24 pages, you can use the method [openPath](../bx24-js-sdk/additional-functions/bx24-open-path.md).
+To avoid creating your own interfaces for displaying information about CRM entities, tasks, etc., and to show users the standard and familiar Bitrix24 pages, you can use the method [openPath](../../sdk/bx24-js-sdk/additional-functions/bx24-open-path.md).
 
 This significantly simplifies development and speeds up the application creation process. In your application, you can display lists of deals, tasks, contacts, companies, etc., based on your required business logic. By clicking on a list item, you can open the standard entity page in Bitrix24 using the `openPath` method.
 

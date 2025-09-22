@@ -4,7 +4,7 @@
 
 The example works only with application authorization. It will not work when using webhooks.
 
-To use the example, configure the CRest class. For detailed information, read the article [Loading and Using CRest PHP SDK](../../api-reference/crest-php-sdk/index.md).
+To use the example, configure the CRest class. For detailed information, read the article [Loading and Using CRest PHP SDK](../../sdk/crest-php-sdk/index.md).
 
 {% endnote %}
 

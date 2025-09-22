@@ -14,7 +14,7 @@ The `BX24.selectUsers` method displays the standard multiple user selection dial
 || **Name**
 `type` | **Description** ||
 || **callback***
-[`callable`](../../data-types.md) | Callback function.
+[`callable`](../../../api-reference/data-types.md) | Callback function.
 
 The `callback` handler will receive an array of objects in the format `{id: integer, name: string}`, where: 
 - `id` — user identifier

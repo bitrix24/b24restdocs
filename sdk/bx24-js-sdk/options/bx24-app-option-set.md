@@ -16,11 +16,11 @@ Setting application values is only available to users with application managemen
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Parameter code ||
+[`string`](../../../api-reference/data-types.md) | Parameter code ||
 || **value***
-[`mixed`](../../data-types.md) | Parameter value ||
+[`mixed`](../../../api-reference/data-types.md) | Parameter value ||
 || **callback**
-[`function`](../../data-types.md) | Callback after saving. The current application settings will be passed as an argument ||
+[`function`](../../../api-reference/data-types.md) | Callback after saving. The current application settings will be passed as an argument ||
 |#
 
 ## Code Example

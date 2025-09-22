@@ -32,7 +32,7 @@ The method `BX24.im.openHistory` opens the history window.
 #|
 || **Parameter** | **Description** ||
 || **dialogId**
-[`unknown`](../../data-types.md) | Identifier of the dialog:
+[`unknown`](../../../api-reference/data-types.md) | Identifier of the dialog:
 - **userId** or **chatXXX** - chat, where XXX is the chat identifier, which can simply be a number.
 - **imol\|XXXX** - open line, where XXX is the session number of the open line. ||
 |#

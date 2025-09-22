@@ -14,16 +14,16 @@ The function `BX24.selectCRM` invokes the system dialog for selecting a CRM enti
 || **Name**
 `type` | **Description** ||
 || **entityType**
-[`array`](../../data-types.md) | Which types of objects to display in the dialog. Possible values: 
+[`array`](../../../api-reference/data-types.md) | Which types of objects to display in the dialog. Possible values: 
 - lead — Leads
 - contact — Contacts
 - company — Companies
 - deal — Deals
 - quote — Estimates ||
 || **multiple**
-[`boolean`](../../data-types.md) | Whether multiple objects can be selected. Default is `false`. ||
+[`boolean`](../../../api-reference/data-types.md) | Whether multiple objects can be selected. Default is `false`. ||
 || **value**
-[`array`](../../data-types.md) | Which objects to initially add to the selected in the dialog. Works only if `multiple = true`. ||
+[`array`](../../../api-reference/data-types.md) | Which objects to initially add to the selected in the dialog. Works only if `multiple = true`. ||
 |#
 
 What the handler receives:

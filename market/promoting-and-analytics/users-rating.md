@@ -37,8 +37,8 @@ You can create a pop-up window that prompts users to rate and opens the detailed
 
 **Implementing functionality at the code level**
 
-- Connect the special [js-library](../../api-reference/bx24-js-sdk/index.md) for working with the Bitrix24 REST API.
-- Call the [openPath](../../api-reference/bx24-js-sdk/additional-functions/bx24-open-path.md) function, passing the path to the detailed page of your application on the Market showcase.
+- Connect the special [js-library](../../sdk/bx24-js-sdk/index.md) for working with the Bitrix24 REST API.
+- Call the [openPath](../../sdk/bx24-js-sdk/additional-functions/bx24-open-path.md) function, passing the path to the detailed page of your application on the Market showcase.
 
 You can download the code example [here](https://bitrix24.team/~UkhoQ).
 

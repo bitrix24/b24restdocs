@@ -14,7 +14,7 @@ The `BX24.selectUser` method displays the standard single user selection dialog.
 || **Name**
 `type` | **Description** ||
 || **callback***
-[`callable`](../../data-types.md) | Callback function.
+[`callable`](../../../api-reference/data-types.md) | Callback function.
 
 The `callback` handler will receive an object of the form `{id: integer, name: string}`, where: 
 - `id` — user identifier

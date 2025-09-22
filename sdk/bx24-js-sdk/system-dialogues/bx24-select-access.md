@@ -15,9 +15,9 @@ The function `BX24.selectAccess` displays a standard access permission selection
 || **Name**
 `type` | **Description** ||
 || **value**
-[`array`](../../data-types.md) | "Blocked" access permissions that should not be selected (non-starting value) ||
+[`array`](../../../api-reference/data-types.md) | "Blocked" access permissions that should not be selected (non-starting value) ||
 || **callback***
-[`callable`](../../data-types.md) | Callback function.
+[`callable`](../../../api-reference/data-types.md) | Callback function.
 
 The `callback` handler will receive an array of objects in the form `{id: string, name: string}`, where: 
 - `id` — access permission identifier. Examples of identifiers:

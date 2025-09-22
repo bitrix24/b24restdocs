@@ -11,7 +11,7 @@ BX24.callUnbind(
 );
 ```
 
-The interface for the method [event.unbind](../../events/event-unbind.md), which removes a registered [event](../../common/events/index.md) handler.
+The interface for the method [event.unbind](../../../api-reference/events/event-unbind.md), which removes a registered [event](../../../api-reference/common/events/index.md) handler.
 
 {% note info %}
 
@@ -27,11 +27,11 @@ Works only when authorized as a user with administrative rights on the account.
 || **Name**
 `type` | **Description** ||
 || **event**
-[`string`](../../data-types.md) | Event name ||
+[`string`](../../../api-reference/data-types.md) | Event name ||
 || **handler**
-[`string`](../../data-types.md) | Link to the event handler ||
+[`string`](../../../api-reference/data-types.md) | Link to the event handler ||
 || **auth_type**
-[`integer`](../../data-types.md) | Identifier of the user under which the event handler is authorized. 
+[`integer`](../../../api-reference/data-types.md) | Identifier of the user under which the event handler is authorized. 
 
 {% note info %}
 
@@ -41,7 +41,7 @@ If you need to remove event handlers set with an empty *auth_type* (authorized o
 
  ||
 || **callback**
-[`function`](../../data-types.md) | Function to handle the result of the method call ||
+[`function`](../../../api-reference/data-types.md) | Function to handle the result of the method call ||
 |#
 
 ## Example

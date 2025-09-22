@@ -55,8 +55,8 @@ Generally speaking, to avoid such complexities, we strongly recommend using read
 
 Bitrix24 offers developers several SDKs for working with the REST API in different programming languages:
 
-* [B24PhpSdk](../b24phpsdk/index.md) and [CRest PHP SDK](../crest-php-sdk/index.md) for PHP;
-* [B24JsSDK](../b24jssdk/index.md) for JavaScript;
+* [B24PhpSdk](../../sdk/b24phpsdk/index.md) and [CRest PHP SDK](../../sdk/crest-php-sdk/index.md) for PHP;
+* [B24JsSDK](../../sdk/b24jssdk/index.md) for JavaScript;
 
 {% endnote %}
 

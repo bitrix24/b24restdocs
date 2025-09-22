@@ -44,6 +44,6 @@ Thank you for setting up, we will be happy to help. If you have any questions, f
 
 {% note info %}
 
-`restCommand` is a method for sending data to *Bitrix24*, this method is available in [EchoBot](https://github.com/bitrix24com/bots) and is presented here as an example. You can use your own function or the javascript method [BX24.callMethod](../../first-steps/how-to-use-examples.md), as well as [bitrix24-php-sdk](https://github.com/mesilov/bitrix24-php-sdk). You can also open such a support channel through the javascript method [BX24.im.openMessenger](../../api-reference/bx24-js-sdk/additional-functions/bx24-im-open-messenger.md).
+`restCommand` is a method for sending data to *Bitrix24*, this method is available in [EchoBot](https://github.com/bitrix24com/bots) and is presented here as an example. You can use your own function or the javascript method [BX24.callMethod](../../first-steps/how-to-use-examples.md), as well as [bitrix24-php-sdk](https://github.com/mesilov/bitrix24-php-sdk). You can also open such a support channel through the javascript method [BX24.im.openMessenger](../../sdk/bx24-js-sdk/additional-functions/bx24-im-open-messenger.md).
 
 {% endnote %}
