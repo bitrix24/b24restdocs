@@ -27,7 +27,7 @@ Some data may be missing — we will fill it in shortly.
 
 The method `crm.quote.list` returns a list of estimates by filter. It is an implementation of the list method for estimates.
 
-See the description of [list methods](../../how-to-call-rest-api/list-methods-pecularities.md).
+See the description of [list methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 ## Example
 

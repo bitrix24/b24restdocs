@@ -6,7 +6,7 @@
 
 This method removes a robot registered by the application.
 
-It only works in the context of the [application](../../app-installation/index.md).
+It only works in the context of the [application](../../../settings/app-installation/index.md).
 
 When the application is deleted or updated, the associated robots are removed from the list of robots. If the robot is in use, it is blocked and can only be removed from the workflow. Upon reinstalling the application, the robot becomes available again.
 

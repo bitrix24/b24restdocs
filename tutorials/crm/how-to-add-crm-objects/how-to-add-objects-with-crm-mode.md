@@ -146,7 +146,7 @@ if (!empty($sCompanyTitle)) {
 
 ### Creating a lead and retrieving lead data
 
-We will use the batch method [CRest::callBatch()](../../../api-reference/how-to-call-rest-api/batch.md) to sequentially execute two methods in one request: creating a lead and retrieving lead data. We will collect the methods in the array `$arData[]`.
+We will use the batch method [CRest::callBatch()](../../../settings/how-to-call-rest-api/batch.md) to sequentially execute two methods in one request: creating a lead and retrieving lead data. We will collect the methods in the array `$arData[]`.
 
 To add a lead, we will use the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method. In the `fields` object, we will pass the fields:
 

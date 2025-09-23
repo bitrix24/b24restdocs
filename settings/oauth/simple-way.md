@@ -83,7 +83,7 @@ The request fields contain information about the event (**event**), event data (
 - **server_endpoint** — address of the server's REST interface
 - **status** — status of the application on the account
 
-For more detailed information on working with events in Bitrix24, you can refer to the [Events](../events/index.md) section.
+For more detailed information on working with events in Bitrix24, you can refer to the [Events](../../api-reference/events/index.md) section.
 
 {% note info %}
 

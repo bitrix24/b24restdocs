@@ -8,7 +8,7 @@ This method adds a business process template from a file.
 
 The business process template must be pre-configured. Export the completed template [to a file](https://helpdesk.bitrix24.com/open/8605753/) with the `.bpt` extension. The resulting file can be added as a template to the desired Bitrix24.
 
-The method works only in the context of an [application](../../app-installation/index.md). The system binds the new template to the application.
+The method works only in the context of an [application](../../../settings/app-installation/index.md). The system binds the new template to the application.
 
 ## Method Parameters
 

@@ -6,7 +6,7 @@
 
 The method `sign.b2e.mysafe.tail` returns a list of signed documents in the company's safe.
 
-The method works only in the context of [application](../app-installation/index.md) authorization.
+The method works only in the context of [application](../../settings/app-installation/index.md) authorization.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The parameter accepts a value from 1 to 50.
 
 By default, 20 records are displayed per page ||
 || **offset**
-[`integer`](../data-types.md) | This parameter is used to manage pagination. It is similar to the standard [start](../performance/huge-data.md) parameter.
+[`integer`](../data-types.md) | This parameter is used to manage pagination. It is similar to the standard [start](../../settings/performance/huge-data.md) parameter.
 
 The page size of results depends on the **limit** parameter
 ||

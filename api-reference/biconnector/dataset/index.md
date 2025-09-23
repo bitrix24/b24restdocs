@@ -6,7 +6,7 @@ A dataset is an object of the BIconnector module. Datasets are used to display a
 
 {% note info "" %}
 
-Methods work only in the context of the [application](../../app-installation/index.md)
+Methods work only in the context of the [application](../../../settings/app-installation/index.md)
 
 {% endnote %}
 

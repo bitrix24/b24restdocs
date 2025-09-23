@@ -4,7 +4,7 @@
 
 The `event.unbind` method cancels a registered event handler.
 
-This method works only in the context of [application](../app-installation/index.md) authorization and only when authorized under a user with administrative rights to the account.
+This method works only in the context of [application](../../settings/app-installation/index.md) authorization and only when authorized under a user with administrative rights to the account.
 
 ## Method Parameters
 

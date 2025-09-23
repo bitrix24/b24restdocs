@@ -12,7 +12,7 @@ You can subscribe to workgroup events through:
 
 -  [outgoing webhook](../../../local-integrations/local-webhooks.md)
 
--  [application](../../app-installation/index.md) and the method [event.bind](../../events/event-bind.md)
+-  [application](../../../settings/app-installation/index.md) and the method [event.bind](../../events/event-bind.md)
 
 An example of a handler for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../events/test-handler.md).
 

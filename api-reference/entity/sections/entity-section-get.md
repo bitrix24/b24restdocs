@@ -66,7 +66,7 @@ The default value `Array("SORT"=>"ASC")` means that the result will be sorted in
 - **MODIFIED_BY** - by the code of the user who modified the section;
 - **CREATED_BY** - by creator;
 All filterable fields can contain a type of filter check before the name. Optional. By default, records are not filtered. ||
-|| **start** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
+|| **start** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 {% include [Parameter notes](../../../_includes/required.md) %}

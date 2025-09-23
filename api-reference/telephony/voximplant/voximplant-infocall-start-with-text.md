@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 
 The method `voximplant.infocall.startwithtext` makes a call to the specified number with automatic pronunciation of the given text. This method is available to the holder of the [access permission](https://helpdesk.bitrix24.com/open/18216960/) `Outgoing call - Execution - any`.
 
-To access the method, the application must request the call permission. The permission is specified during [application registration](../../app-installation/index.md).
+To access the method, the application must request the call permission. The permission is specified during [application registration](../../../settings/app-installation/index.md).
 
 #|
 || **Parameter** | **Description** ||

@@ -25,7 +25,7 @@
 || **mailservice** | [Mail Services](../mailservice/index.md) | Mail Services ||
 || **messageservice** | [Message Service](../messageservice/index.md) | Message Service ||
 || **pay_system** | [Payment Systems](../pay-system/index.md) | Payment Systems ||
-|| **pull** | [Pull&Push](../interactivity/push-and-pull/index.md) | Pull&Push ||
+|| **pull** | [Pull&Push](../../settings/interactivity/push-and-pull/index.md) | Pull&Push ||
 || **rpa** | [Business Automation](../outdated/rpa/index.md) | Business Automation ||
 || **sale** | [Online Store](../sale/index.md) | Online Store ||
 || **sign.b2e** | [e-Signature for HR + Government Key](../sign/index.md) | e-Signature for HR, Signature ||

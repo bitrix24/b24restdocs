@@ -33,7 +33,7 @@ Developers can integrate actions with external systems, such as time tracking or
 
 ### Smart Scripts in Automation Rules
 
-[Smart scripts](./api-reference/app-installation/smart-scripts-installation.md) offer even more flexible automation. This low-code application allows you to set a sequence of actions for automation rules. The automation rules will pass parameters and report intermediate results of individual actions.
+[Smart scripts](./settings/app-installation/smart-scripts-installation.md) offer even more flexible automation. This low-code application allows you to set a sequence of actions for automation rules. The automation rules will pass parameters and report intermediate results of individual actions.
 
 Smart scripts work in sales funnels and leads, as well as in contacts and companies. They can be triggered for groups of CRM entities. For example, you can set up a script that analyzes client behavior on the website based on data from the CRM contact and sends personalized offers based on the client's interests.
 

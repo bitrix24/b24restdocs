@@ -6,7 +6,7 @@ The documentation includes code examples for various programming languages in th
 
 When using the Bitrix24 REST API via curl, no libraries or SDKs are required. You can create parameters for calling any REST method. You just need to be careful about the correct formation of parameters, especially when it comes to parameters that accept arrays or structures as values.
 
-Example of making a request to the Bitrix24 REST API via curl using a temporary access token [OAuth 2.0](../api-reference/oauth/index.md):
+Example of making a request to the Bitrix24 REST API via curl using a temporary access token [OAuth 2.0](../settings/oauth/index.md):
 
 ```bash
 curl -X POST \

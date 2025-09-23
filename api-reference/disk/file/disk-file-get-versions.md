@@ -37,7 +37,7 @@ The method `disk.file.getVersions` returns a list of file versions. The versions
 
 {% note info %}
 
-See also the description of [list methods](../../how-to-call-rest-api/list-methods-pecularities.md).
+See also the description of [list methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 {% endnote %}
 

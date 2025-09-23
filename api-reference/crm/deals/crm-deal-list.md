@@ -95,7 +95,7 @@ The formula for calculating the `start` parameter value:
 ||
 |#
 
-Also, see the description of [list methods](../../how-to-call-rest-api/list-methods-pecularities.md).
+Also, see the description of [list methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 {% note tip "Related methods and topics" %}
 

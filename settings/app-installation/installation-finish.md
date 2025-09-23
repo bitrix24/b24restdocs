@@ -56,9 +56,9 @@ At this stage, the application is considered not installed. Automatic installati
 
 Until the application sends a signal indicating the completion of installation via `installFinish`, the application will be considered not configured. Functionality will be blocked.
 
-- Widgets will not appear in the interface, even if [placement.bind](../widgets/placement-bind.md) was successful.
+- Widgets will not appear in the interface, even if [placement.bind](../../api-reference/widgets/placement-bind.md) was successful.
 
-- Events will not be sent to the handler, even after a successful [event.bind](../events/event-bind.md).
+- Events will not be sent to the handler, even after a successful [event.bind](../../api-reference/events/event-bind.md).
 
 - The application interface will not load:
     - regular users will see the message *“The application is not fully installed yet. Please contact your Bitrix24 administrator to complete the installation.”*
@@ -66,7 +66,7 @@ Until the application sends a signal indicating the completion of installation v
 
 ## How to Check Installation Status
 
-Use the [app.info](../common/system/app-info.md) method to check the installation of the application.
+Use the [app.info](../../api-reference/common/system/app-info.md) method to check the installation of the application.
 
 {% list tabs %}
 

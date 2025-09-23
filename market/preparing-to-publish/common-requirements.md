@@ -98,7 +98,7 @@ Be sure to familiarize yourself with the [document flow rules](../agreements.md)
   3. Enable the **"Add widgets"** option only if your application adds widgets to available embedding locations. More about embedding can be found in the [REST API guide](../../api-reference/widgets/index.md).
   4. Enable the **"Can be installed by user without administrative rights"** option if the logic of your application does not require administrator privileges for the corresponding REST API calls and will work fully with the tokens of a regular Bitrix24 user.
   5. The **"Application URL"** field must contain the URL of the server-type application, or you must upload an archive with a static HTML/JS application using the corresponding button below.
-  6. The **"Application installer URL"** field must contain the URL that will be called when the user installs the solution on their Bitrix24. Details about installation can be found [here](../../api-reference/app-installation/mass-market-apps/installation-master.md).
+  6. The **"Application installer URL"** field must contain the URL that will be called when the user installs the solution on their Bitrix24. Details about installation can be found [here](../../settings/app-installation/mass-market-apps/installation-master.md).
 - **What's New in the Application** – must contain a list of differences of the current version from previous ones. If the solution description was made in several languages, then the version changes need to be in all these languages.
 
 {% note info "" %}
@@ -131,7 +131,7 @@ For the first version of the application, this field does not need to be filled;
 
 - The solution must expand the user functionality of Bitrix24, using the built-in tools of the platform or integrating Bitrix24 with external systems.
 - Integration implies automatic data exchange between Bitrix24 and an external system. A simple call to the interface of an external system from the Bitrix24 interface within an iframe is not considered integration – such solutions may be published in exceptional cases at the discretion of Bitrix24.
-- The solution is not allowed to request the user's login and password for authorization in Bitrix24. For explicit authorization, the OAuth 2.0 protocol must be used, the implementation of which is described in the corresponding [section](../../api-reference/oauth/index.md).
+- The solution is not allowed to request the user's login and password for authorization in Bitrix24. For explicit authorization, the OAuth 2.0 protocol must be used, the implementation of which is described in the corresponding [section](../../settings/oauth/index.md).
 - A modern and aesthetically appealing design, close to the Bitrix24 interface, is expected. Applications with a simple HTML-based interface will not be published.
 - All demo data of the solution must not be real. Real phone numbers, email addresses, links to social networks, etc., are not allowed.
 - If the solution implements the collection of personal data from clients:
@@ -146,7 +146,7 @@ For the first version of the application, this field does not need to be filled;
   1. Always pre-validate requests on the application side and do not allow requests with inherently incorrect data;
   2. Control and handle errors in API interactions and do not resend incorrectly formed requests;
   3. If possible, cache data on the application side and do not make repeated requests whose results cannot change during the user's session with the application;
-  4. If multiple requests need to be made in succession, use the [batch request mechanism](../../api-reference/how-to-call-rest-api/batch.md) whenever possible.
+  4. If multiple requests need to be made in succession, use the [batch request mechanism](../../settings/how-to-call-rest-api/batch.md) whenever possible.
 - Solutions making requests to the Bitrix24 REST API from the server must keep logs of API requests and responses for at least the last 3 days.
 - The solution will not be published in the Bitrix24 Market catalog if:
   1. Upon installation, the solution generates an empty page within the frame or a page with content without automatic redirection to the solution interface after installation is complete;

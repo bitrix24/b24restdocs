@@ -14,7 +14,7 @@ The method returns a list of deal categories based on the filter. It is an imple
 
 ## Method Parameters
 
-See the description of [list methods](../../../how-to-call-rest-api/list-methods-pecularities.md)
+See the description of [list methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md)
 
 ## Code Examples
 

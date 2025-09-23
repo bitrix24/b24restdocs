@@ -23,7 +23,7 @@ The resulting file can be used as a template in the desired Bitrix24.
 
 ## Application Context
 
-The system ties the new template to an [application](../../app-installation/index.md). Templates created by the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) can only be updated or deleted in the context of the application they were created with.
+The system ties the new template to an [application](../../../settings/app-installation/index.md). Templates created by the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) can only be updated or deleted in the context of the application they were created with.
 
 ## Template Connection to Document
 

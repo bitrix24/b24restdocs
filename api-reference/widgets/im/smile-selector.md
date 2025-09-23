@@ -68,11 +68,11 @@ Data is transmitted as a POST request {.b24-info}
 || **APP_SID** 
 [`string`](../../data-types.md) | String identifier of the application that registered the widget handler ||
 || **AUTH_ID** 
-[`string`](../../data-types.md) | Authorization token [OAuth 2](../../oauth/simple-way.md) issued for the user who called the widget. Can be used for REST API calls on behalf of this user ||
+[`string`](../../data-types.md) | Authorization token [OAuth 2](../../../settings/oauth/simple-way.md) issued for the user who called the widget. Can be used for REST API calls on behalf of this user ||
 || **AUTH_EXPIRES** 
 [`integer`](../../data-types.md) | Time in seconds after which the authorization token will become invalid ||
 || **REFRESH_ID** 
-[`string`](../../data-types.md) | Refresh token [OAuth 2](../../oauth/simple-way.md) issued for the user who called the widget. Can be used to refresh the authorization token on behalf of this user ||
+[`string`](../../data-types.md) | Refresh token [OAuth 2](../../../settings/oauth/simple-way.md) issued for the user who called the widget. Can be used to refresh the authorization token on behalf of this user ||
 || **member_id*** 
 [`string`](../../data-types.md) | Unique string identifier of Bitrix24 where the widget handler was called. ||
 || **status** 
@@ -92,6 +92,6 @@ Data is transmitted as a POST request {.b24-info}
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../ui-interaction/crm-card.md)
-- [{#T}](../../interactivity/index.md)
+- [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../open-application.md)
 - [{#T}](../open-path.md)

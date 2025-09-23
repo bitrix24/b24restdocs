@@ -13,7 +13,7 @@ You may postpone filling out the application card until the submission stage for
 
 ## Testing Functionality
 
-In the solution card, click the "Test" button. Here you will find [authorization keys](../../api-reference/oauth/index.md) (`client_id` and `secret_id`) and can specify the address of the Bitrix24 account for testing. A new tab will open with your account displaying the solution card in the Market and a "Install" button.
+In the solution card, click the "Test" button. Here you will find [authorization keys](../../settings/oauth/index.md) (`client_id` and `secret_id`) and can specify the address of the Bitrix24 account for testing. A new tab will open with your account displaying the solution card in the Market and a "Install" button.
 
 You must independently test the main user scenarios, including installation, uninstallation, and reinstallation of the solution.
 

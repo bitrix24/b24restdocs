@@ -10,7 +10,7 @@ In cloud Bitrix24, the REST API is always available in the "latest version." How
 
 Moreover, in the case of a specific on-premise installation, there is no guarantee that the owner has installed the latest available updates and has generally installed the necessary Bitrix24 modules for the application (for example, nothing prevents the telephony module from being completely disabled in on-premise Bitrix24). This means that when installing the application, there is no certainty about the availability of specific REST methods.
 
-Therefore, **recommendation number 1** — in your solution's installation script, check the list of available methods and events by referring to the [methods](../common/system/methods.md) and [events](../events/events.md), and inform the user that they need to install updates for Bitrix24.
+Therefore, **recommendation number 1** — in your solution's installation script, check the list of available methods and events by referring to the [methods](../../api-reference/common/system/methods.md) and [events](../../api-reference/events/events.md), and inform the user that they need to install updates for Bitrix24.
 
 ## Bitrix24 Authorization Server
 

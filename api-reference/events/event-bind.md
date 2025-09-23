@@ -4,7 +4,7 @@
 
 The method `event.bind` registers a new event handler.
 
-The method works only in the context of [application](../app-installation/index.md) authorization. It can operate both under a user with portal administration rights and under a regular user. The method for a user without administrator rights is available with limitations:
+The method works only in the context of [application](../../settings/app-installation/index.md) authorization. It can operate both under a user with portal administration rights and under a regular user. The method for a user without administrator rights is available with limitations:
 
 1. Offline events are not available; attempting to set them will raise an exception.
 2. Events are set on behalf of the current user (see the description of the `auth_type` parameter). Explicitly specifying an `auth_type` different from the `ID` of the current user will also raise an exception.

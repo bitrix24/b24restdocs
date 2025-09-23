@@ -12,9 +12,9 @@ You can subscribe to the event [OnExternalCallBackStart](on-external-call-back-s
 
 - [outgoing webhook](../../../local-integrations/local-webhooks.md)
 
-- [application](../../app-installation/index.md) and the method [event.bind](../../events/event-bind.md)
+- [application](../../../settings/app-installation/index.md) and the method [event.bind](../../events/event-bind.md)
 
-You can subscribe to the event [OnExternalCallStart](on-external-call-start.md) only through the [application](../../app-installation/index.md) and the method [event.bind](../../events/event-bind.md).
+You can subscribe to the event [OnExternalCallStart](on-external-call-start.md) only through the [application](../../../settings/app-installation/index.md) and the method [event.bind](../../events/event-bind.md).
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Bitrix24 Event Processing](../../events/test-handler.md).
 

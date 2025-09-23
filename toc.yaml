@@ -3,7 +3,7 @@ href: index.yaml
 items: 
   - name: What the Bitrix24 REST API Allows
     href: developing-with-rest-api.md
-  - name: First steps 
+  - name: First Steps 
     include:
       path: first-steps/b24-toc.yaml
       mode: link   
@@ -11,7 +11,7 @@ items:
     include:
       path: tutorials/b24-toc.yaml
       mode: link
-  - name: Local solutions 
+  - name: Local Solutions 
     include:
       path: local-integrations/b24-toc.yaml
       mode: link
@@ -19,6 +19,10 @@ items:
     include:
       path: sdk/b24-toc.yaml
       mode: link  
+  - name: Setting Up and Using REST
+    include:
+      path: settings/b24-toc.yaml
+      mode: link         
   - name: Bitrix24 Market
     include:
       path: market/b24-toc.yaml

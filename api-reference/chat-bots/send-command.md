@@ -44,7 +44,7 @@ The `restCommand` function sends a REST request to Bitrix24:
 
 {% note info %}
 
-This function is used as an example. You can use your own function based on the [interaction protocol](../how-to-call-rest-api/general-principles.md), or the JavaScript method [BX24.callMethod](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-method.md), or the partner-developed [bitrix24-php-sdk](https://github.com/mesilov/bitrix24-php-sdk).
+This function is used as an example. You can use your own function based on the [interaction protocol](../../settings/how-to-call-rest-api/general-principles.md), or the JavaScript method [BX24.callMethod](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-method.md), or the partner-developed [bitrix24-php-sdk](https://github.com/mesilov/bitrix24-php-sdk).
 
 {% endnote %}
 

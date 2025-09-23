@@ -1,6 +1,6 @@
 # User Scope Versions
 
-To ensure the security of employee data, different versions of the `User` scope are available for applications and webhooks with the [module version](../../api-reference/cloud-and-on-premise/on-premise/versions.md) **Rest 21.600.0**.
+To ensure the security of employee data, different versions of the `User` scope are available for applications and webhooks with the [module version](../../settings/cloud-and-on-premise/on-premise/versions.md) **Rest 21.600.0**.
 
 - `user_brief` provides access to user information without contact details. This is sufficient for scenarios where displaying the user's full name in a third-party application's interface is required.
 - `user_basic` opens basic information and contact details of users. This is necessary for scenarios related to making calls or sending e-mails.

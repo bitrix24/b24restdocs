@@ -32,12 +32,12 @@ The method `disk.storage.getlist` returns a list of available storages.
 || **Parameter** | **Description** ||
 || **filter**
 [`unknown`](../../data-types.md) | Optional parameter. Supports filtering by fields specified in [disk.storage.getfields](./disk-storage-get-fields.md) as `USE_IN_FILTER: true`. ||
-|| **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
+|| **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 {% note info %}
 
-See also the description of [list methods](../../how-to-call-rest-api/list-methods-pecularities.md).
+See also the description of [list methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 {% endnote %}
 

@@ -215,7 +215,7 @@ Not editable when inventory management is enabled
 
 Default value is set to `0`.
 
-Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
+Used only in [on-premise](../../../settings/cloud-and-on-premise/index.md) for content sales
  ||
 || **recurSchemeType**
 [`string`](../../data-types.md)| Unit of time for the payment period:
@@ -229,12 +229,12 @@ Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
 
 Default value is set to `D`.
 
-Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
+Used only in [on-premise](../../../settings/cloud-and-on-premise/index.md) for content sales
  ||
 || **trialPriceId**
 [`integer`](../../data-types.md)| Product for trial payment.
 
-Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
+Used only in [on-premise](../../../settings/cloud-and-on-premise/index.md) for content sales
  ||
 || **withoutOrder**
 [`string`](../../data-types.md)| Extension without placing an order. Values:
@@ -243,7 +243,7 @@ Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
 
 Default value is set to `N`.
 
-Used only in [on-premise](../../cloud-and-on-premise/index.md) for content sales
+Used only in [on-premise](../../../settings/cloud-and-on-premise/index.md) for content sales
  ||
 || **propertyN**
 [`any`](../../data-types.md)| Value of the product property, where `N` — property identifier. There can be multiple properties.

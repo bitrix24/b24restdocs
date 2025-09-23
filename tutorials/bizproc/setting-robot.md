@@ -1,6 +1,6 @@
 # How to Embed Your UI in Robot Parameters
 
-In *Bitrix24*, you can configure a robot and workflow action using the application interface. This is implemented through the standard [widget embedding mechanism](../../api-reference/widgets/index.md). It is available in the on-premise version starting from [20.0.600](../../api-reference/cloud-and-on-premise/on-premise/versions.md) of the `Business Processes` module.
+In *Bitrix24*, you can configure a robot and workflow action using the application interface. This is implemented through the standard [widget embedding mechanism](../../api-reference/widgets/index.md). It is available in the on-premise version starting from [20.0.600](../../settings/cloud-and-on-premise/on-premise/versions.md) of the `Business Processes` module.
 
 ## Implementation Using an Application Example
 
@@ -92,7 +92,7 @@ Next, you need to write the embedding handler, which will render the parameters 
 - `current_values` — the current values of the properties
 - `document_type` — the type of document for which the configuration is being made
 - `document_fields` — a list of document fields
-- `template` — a list of available template fields. In the on-premise version of *Bitrix24*, it is available starting from version [24.200.0](../../api-reference/cloud-and-on-premise/on-premise/versions.md)
+- `template` — a list of available template fields. In the on-premise version of *Bitrix24*, it is available starting from version [24.200.0](../../settings/cloud-and-on-premise/on-premise/versions.md)
 
     For the `template` parameter, the following elements are available:
 

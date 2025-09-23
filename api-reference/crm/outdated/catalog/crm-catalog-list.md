@@ -6,7 +6,7 @@
 
 The method returns a list of product catalogs. It is an implementation of the list method for product catalogs.
 
-See the description of [list methods](../../../../api-reference/how-to-call-rest-api/list-methods-pecularities.md).
+See the description of [list methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 ## Code examples
 

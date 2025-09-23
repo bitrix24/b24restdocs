@@ -6,7 +6,7 @@
 
 - Updated the main page of the [Chats](./api-reference/imopenlines/openlines/chats/index.md) section in Open Lines. Added introductory information as well as an overview of methods and connections.
 - Updated the main page of events in the [Currencies](./api-reference/crm/currency/events/index.md) section. Added introductory information and an overview of events.
-- Added the article [Completing Application Installation](./api-reference/app-installation/installation-finish.md).
+- Added the article [Completing Application Installation](./settings/app-installation/installation-finish.md).
 - Updated the documentation for the methods [tasks.task.favorite.add](./api-reference/tasks/tasks-task-favorite-add.md), [tasks.task.favorite.remove](./api-reference/tasks/tasks-task-favorite-remove.md), [tasks.task.getaccess](./api-reference/tasks/tasks-task-get-access.md), [tasks.task.delete](./api-reference/tasks/tasks-task-delete.md), [tasks.task.delegate](./api-reference/tasks/tasks-task-delegate.md), [tasks.task.approve](./api-reference/tasks/tasks-task-approve.md), [tasks.task.disapprove](./api-reference/tasks/tasks-task-disapprove.md) in Tasks.
 - Updated the documentation for the methods [catalog.storeproduct.*](./api-reference/catalog/store-product/index.md) in the Trade Catalog.
 
@@ -336,7 +336,7 @@
 - Added a new method [imconnector.connector.data.set](./api-reference/imopenlines/imconnector/imconnector-connector-data-set.md).
 - Added information about methods [telephony.externalcall.finish](./api-reference/telephony/telephony-external-call-finish.md), [voximplant.sip.add](./api-reference/telephony/voximplant/sip/voximplant-sip-add.md), and [voximplant.sip.status](./api-reference/telephony/voximplant/sip/voximplant-sip-status.md).
 - Updated the main page of the [Shopping cart](./api-reference/sale/basket-item/index.md) section. Added introductory information, as well as an overview of methods and relationships.
-- Added a new article [Features of REST calls when changing the Bitrix24 address](./api-reference/how-to-call-rest-api/change-domen.md).
+- Added a new article [Features of REST calls when changing the Bitrix24 address](./settings/how-to-call-rest-api/change-domen.md).
 - Added a new tutorial [How to create a connector for open channels for online chat on your site](./tutorials/openlines/example-connector.md).
 - Added a new article [How to test your handler for processing Bitrix24 events](./api-reference/events/test-handler.md).
 
@@ -408,11 +408,11 @@
 ### October 9, 2024
 
 - Updated general methods with [user information](./api-reference/common/users/index.md)
-- Added information on [performance](./api-reference/performance/index.md) 
+- Added information on [performance](./settings/performance/index.md) 
 
 ### October 1, 2024
 
-- Added [OAuth server error codes](./api-reference/oauth/error-codes.md)
+- Added [OAuth server error codes](./settings/oauth/error-codes.md)
 - Added documentation for [Widgets for Vibes](./api-reference/vibe/index.md)
 
 ### September 26, 2024
@@ -448,7 +448,7 @@
 
 ### August 29, 2024
 
-- Thanks to [Andrey Nikolaev](https://github.com/gromdron)! Updated article [How to Make a Request](./api-reference/how-to-call-rest-api/general-principles.md), added important nuances and illustrative examples regarding the use of the [batch](./api-reference/how-to-call-rest-api/batch.md) method.
+- Thanks to [Andrey Nikolaev](https://github.com/gromdron)! Updated article [How to Make a Request](./settings/how-to-call-rest-api/general-principles.md), added important nuances and illustrative examples regarding the use of the [batch](./settings/how-to-call-rest-api/batch.md) method.
   
 - Updated articles in the [contact events section](./api-reference/crm/contacts/events/index.md)
 - Updated articles in the [universal CRM events section](./api-reference/crm/universal/events/index.md)

@@ -28,7 +28,7 @@ Deletes the specified news feed message.
 
 #|
 || **Parameter** | **Description** ||
-|| **USER_ID** | ID of the user who is deleting the message. Only a user with administrative rights can specify a value that is not the current user, and only in the case of the on-premise version of Bitrix24. In the cloud version, this parameter can only accept the identifier of the [current user](../how-to-call-rest-api/authorization.md#concept-of-current-user).  ||
+|| **USER_ID** | ID of the user who is deleting the message. Only a user with administrative rights can specify a value that is not the current user, and only in the case of the on-premise version of Bitrix24. In the cloud version, this parameter can only accept the identifier of the [current user](../../settings/how-to-call-rest-api/authorization.md).  ||
 || **POST_ID** | Numeric ID of the message. ||
 |#
 

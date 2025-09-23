@@ -1,3 +1,3 @@
-The event handler server must be accessible from the outside. To configure the accessibility of the event handler server and application, refer to the article [Required network access](/api-reference/cloud-and-on-premise/network-access.html).
+The event handler server must be accessible from the outside. To configure the accessibility of the event handler server and application, refer to the article [Required network access](/settings/cloud-and-on-premise/network-access.html).
 
-For cloud Bitrix24, no additional configuration is required. For on-premise Bitrix24, configure accessibility on the server or hosting according to the article [Required network access](/api-reference/cloud-and-on-premise/network-access.html).
+For cloud Bitrix24, no additional configuration is required. For on-premise Bitrix24, configure accessibility on the server or hosting according to the article [Required network access](/settings/cloud-and-on-premise/network-access.html).

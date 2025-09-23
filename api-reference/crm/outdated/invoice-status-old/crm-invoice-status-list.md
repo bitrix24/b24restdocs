@@ -14,4 +14,4 @@ The method `crm.invoice.status.list` returns a list of invoice statuses based on
 
 ## Method Parameters
 
-See the description of [list methods](../../../how-to-call-rest-api/list-methods-pecularities.md)
+See the description of [list methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md)

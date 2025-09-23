@@ -37,7 +37,7 @@ The method `disk.storage.getchildren` returns a list of files and folders that a
 
 {% note info %}
 
-See also the description of [list methods](../../how-to-call-rest-api/list-methods-pecularities.md).
+See also the description of [list methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 {% endnote %}
 

@@ -6,7 +6,7 @@
 
 This method deletes a business process template.
 
-It allows you to remove templates that were created using the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md). These templates are tied to the application and can only be deleted in the context of the same [application](../../app-installation/index.md) in which they were created.
+It allows you to remove templates that were created using the method [bizproc.workflow.template.add](./bizproc-workflow-template-add.md). These templates are tied to the application and can only be deleted in the context of the same [application](../../../settings/app-installation/index.md) in which they were created.
 
 ## Method Parameters
 

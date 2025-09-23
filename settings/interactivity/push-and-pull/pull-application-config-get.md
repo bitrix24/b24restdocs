@@ -18,7 +18,7 @@ Some data may be missing — we will complete it shortly.
 
 {% endif %}
 
-> Scope: [`pull`](../../scopes/permissions.md)
+> Scope: [`pull`](../../../api-reference/scopes/permissions.md)
 >
 > Who can execute the method: administrator
 

@@ -123,7 +123,7 @@ As a result, we will receive `true`, indicating that the process was successfull
 
 ## Code Example
 
-In the example, all found processes are deleted in a loop. When deleting a large volume of data, there may be limitations on request execution. To optimize the code for your workload, use the recommendations in the [Performance](../../api-reference/performance/index.md) section.
+In the example, all found processes are deleted in a loop. When deleting a large volume of data, there may be limitations on request execution. To optimize the code for your workload, use the recommendations in the [Performance](../../settings/performance/index.md) section.
 
 {% list tabs %}
 

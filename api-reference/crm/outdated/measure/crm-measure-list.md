@@ -6,7 +6,7 @@
 
 The method returns a list of measurement units.
 
-See the description of [list methods](../../../how-to-call-rest-api/list-methods-pecularities.md).
+See the description of [list methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 ## Code examples
 

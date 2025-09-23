@@ -16,7 +16,7 @@ When querying, use the mask "*" to select all fields (excluding custom and multi
 
 ## Method Parameters
 
-See the description of [list methods](../../../how-to-call-rest-api/list-methods-pecularities.md).
+See the description of [list methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 ## Code Examples
 

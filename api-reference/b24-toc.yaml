@@ -1,26 +1,10 @@
 title: REST API Reference
 href: index.md
 items: 
-  - name: Key Provisions
-    href: index.md 
   - name: Tools and Scenarios
-    href: tools.md 
-  - name: How to Call REST Methods
-    include:
-      path: how-to-call-rest-api/b24-toc.yaml
-      mode: link
+    href: index.md 
   - name: Data Types and Parameter Formats
     href: data-types.md 
-  - name: OAuth in Bitrix24
-    include:
-      path: oauth/b24-toc.yaml
-      mode: link
-  - name: Application Installation
-    include:
-      path: app-installation/b24-toc.yaml
-      mode: link
-  - name: Application Uninstallation
-    href: app-uninstallation.md 
   - name: Method Scopes
     include:
       path: scopes/b24-toc.yaml
@@ -32,18 +16,6 @@ items:
   - name: Events
     include:
       path: events/b24-toc.yaml
-      mode: link
-  - name: Interactivity
-    include:
-      path: interactivity/b24-toc.yaml
-      mode: link
-  - name: Performance
-    include:
-      path: performance/b24-toc.yaml
-      mode: link
-  - name: Cloud and On-Premise Bitrix24
-    include:
-      path: cloud-and-on-premise/b24-toc.yaml
       mode: link
   - name: Common Methods and Events
     include:

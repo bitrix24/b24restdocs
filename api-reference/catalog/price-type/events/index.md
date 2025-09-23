@@ -8,7 +8,7 @@ Detailed information on working with events is described in the article [Concept
 
 ## How to Receive Events
 
-You can subscribe to price type events through the [application](./../../../app-installation/index.md) and the [event.bind](./../../../events/event-bind.md) method.
+You can subscribe to price type events through the [application](./../../../../settings/app-installation/index.md) and the [event.bind](./../../../events/event-bind.md) method.
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Handling Bitrix24 Events](../../../events/test-handler.md).
 

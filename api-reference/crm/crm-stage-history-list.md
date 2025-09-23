@@ -53,7 +53,7 @@ The method `crm.stagehistory.list` returns records of stage movement history for
 || **select**
 [`object`][1]| List of fields to retrieve ||
 || **start**
-[`integer`][1] | Offset for pagination. The pagination logic is standard for [list methods](../how-to-call-rest-api/list-methods-pecularities.md) ||
+[`integer`][1] | Offset for pagination. The pagination logic is standard for [list methods](../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Code Examples

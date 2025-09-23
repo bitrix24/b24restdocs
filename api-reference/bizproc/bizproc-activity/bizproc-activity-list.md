@@ -6,7 +6,7 @@
 
 This method retrieves the list of actions defined by the application.
 
-It only works in the context of the [application](../../app-installation/index.md).
+It only works in the context of the [application](../../../settings/app-installation/index.md).
 
 No parameters are required.
 

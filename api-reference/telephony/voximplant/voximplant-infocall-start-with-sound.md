@@ -24,7 +24,7 @@ Some data may be missing here — we will fill it in shortly.
 
 The method `voximplant.infocall.startwithsound` makes a call to the specified number while playing an mp3 file from the URL. This method is available to the holder of the [access permission](https://helpdesk.bitrix24.com/open/18216960/) `Outgoing call - Execution - any`.
 
-To access the method, the application must request the access permission `Making calls (call)`. The permission is specified during [application registration](../../app-installation/index.md).
+To access the method, the application must request the access permission `Making calls (call)`. The permission is specified during [application registration](../../../settings/app-installation/index.md).
 
 #|
 || **Parameter** | **Description** ||

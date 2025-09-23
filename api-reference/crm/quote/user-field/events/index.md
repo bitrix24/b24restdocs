@@ -11,7 +11,7 @@ Detailed work with events is described in the article [Concept and Benefits of E
 You can subscribe to events for custom fields in estimates through:
 
 - [outgoing webhook](../../../../../local-integrations/local-webhooks.md)
-- [application](../../../../app-installation/index.md) and the method [event.bind](../../../../events/event-bind.md)
+- [application](../../../../../settings/app-installation/index.md) and the method [event.bind](../../../../events/event-bind.md)
 
 An example of a handler for the event is described in the article [How to Test Your Handler for Handling Bitrix24 Events](../../../../events/test-handler.md).
 

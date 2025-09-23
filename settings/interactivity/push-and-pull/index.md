@@ -2,7 +2,7 @@
 
 {% note info "Access permissions" %}
 
-**Scope**: [`pull`](../../scopes/permissions.md) | **Who can execute the method**: `administrator`
+**Scope**: [`pull`](../../../api-reference/scopes/permissions.md) | **Who can execute the method**: `administrator`
 
 {% endnote %}
 

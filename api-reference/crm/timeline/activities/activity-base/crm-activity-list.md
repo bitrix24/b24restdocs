@@ -67,7 +67,7 @@ The formula for calculating the value of the `start` parameter:
 `start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
-See the description of [list methods](../../../../how-to-call-rest-api/list-methods-pecularities.md).
+See the description of [list methods](../../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 {% note info "" %}
 

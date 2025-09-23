@@ -305,7 +305,7 @@ As a result, we will receive `true`, indicating that the process deletion was su
 
 ## Code Example
 
-In the example, all found processes are deleted in a loop. If you need to delete a large volume of data, you may encounter limits on request execution. To optimize the code for your workload, use the recommendations in the [Performance](../../api-reference/performance/index.md) section.
+In the example, all found processes are deleted in a loop. If you need to delete a large volume of data, you may encounter limits on request execution. To optimize the code for your workload, use the recommendations in the [Performance](../../settings/performance/index.md) section.
 
 {% list tabs %}
 

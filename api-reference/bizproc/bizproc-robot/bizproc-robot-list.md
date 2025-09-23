@@ -6,7 +6,7 @@
 
 The method returns a list of robots registered by the application.
 
-It works only in the context of the [application](../../app-installation/index.md).
+It works only in the context of the [application](../../../settings/app-installation/index.md).
 
 No parameters.
 

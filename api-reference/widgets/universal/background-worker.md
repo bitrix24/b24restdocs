@@ -4,7 +4,7 @@
 
 You can add an "invisible" widget that will be displayed on all Bitrix24 pages. This widget allows you to implement a scenario with an external [WebRTC client](../ui-interaction/page-background-worker/index.md) in telephony integrations, but this is not the only possible use case.
 
-For instance, using the [interactive interaction](../../interactivity/index.md) mechanism between backend and frontend applications, you can send a "signal" to the `PAGE_BACKGROUND_WORKER` widget, and upon receiving the "signal," open the application slider using the [openApplication](../open-application.md) method.
+For instance, using the [interactive interaction](../../../settings/interactivity/index.md) mechanism between backend and frontend applications, you can send a "signal" to the `PAGE_BACKGROUND_WORKER` widget, and upon receiving the "signal," open the application slider using the [openApplication](../open-application.md) method.
 
 The widget embedding code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -201,6 +201,6 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../ui-interaction/crm-card.md)
-- [{#T}](../../interactivity/index.md)
+- [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../open-application.md)
 - [{#T}](../open-path.md)

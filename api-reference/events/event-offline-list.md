@@ -4,7 +4,7 @@
 
 The method `event.offline.list` is used to read the current queue without making changes to its state, unlike [event.offline.get](./event-offline-get.md). The availability of offline events can be checked through the [feature.get](../common/system/feature-get.md) method.
 
-The method works only in the context of application authorization [application](../app-installation/index.md).
+The method works only in the context of application authorization [application](../../settings/app-installation/index.md).
 
 ## Method Parameters
 

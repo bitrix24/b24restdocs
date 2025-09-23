@@ -4,7 +4,7 @@
 || **Name**
 `type` | **Description** ||
 || **access_token**
-[`string`](/api-reference/data-types.html) | Authorization token [OAuth 2.0](/api-reference/oauth/index.html) ||
+[`string`](/api-reference/data-types.html) | Authorization token [OAuth 2.0](/settings/oauth/index.html) ||
 || **expires_in**
 [`integer`](/api-reference/data-types.html) | Time in seconds until the token expires ||
 || **scope***
@@ -25,7 +25,7 @@
 || **member_id***
 [`string`](/api-reference/data-types.html) | Identifier of Bitrix24 where the event occurred ||
 || **refresh_token**
-[`string`](/api-reference/data-types.html) | Token for extending authorization [OAuth 2.0](/api-reference/oauth/index.html) ||
+[`string`](/api-reference/data-types.html) | Token for extending authorization [OAuth 2.0](/settings/oauth/index.html) ||
 || **application_token***
 [`string`](/api-reference/data-types.html) | Token for secure event handling ||
 |#

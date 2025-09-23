@@ -4,7 +4,7 @@
 
 The method `event.offline.clear` clears records in the offline event queue. The availability of offline events can be checked through the method [feature.get](../common/system/feature-get.md).
 
-The method works only in the context of application authorization [application](../app-installation/index.md).
+The method works only in the context of application authorization [application](../../settings/app-installation/index.md).
 
 ## Method parameters
 

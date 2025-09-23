@@ -4,7 +4,7 @@
 
 The `event.get` method allows you to retrieve a list of registered event handlers.
 
-The method works only in the context of authorizing the [application](../app-installation/index.md).
+The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
 
 No parameters.
 

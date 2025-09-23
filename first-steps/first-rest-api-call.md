@@ -32,6 +32,6 @@ When you execute the request, you will receive a response from Bitrix24 in JSON 
 
 {% note info %}
 
-Incoming webhooks are a very convenient tool for using the REST API to solve individual tasks. However, if you want to implement more complex scenarios in your Bitrix24 that involve [different users](../local-integrations/local-apps.md), or if you want to develop a [mass-market solution](../market/index.md) for placement in the Bitrix24 Marketplace, you will need to use [OAuth 2.0 authorization](../api-reference/oauth/index.md) with temporary secure authorization tokens for working with REST.
+Incoming webhooks are a very convenient tool for using the REST API to solve individual tasks. However, if you want to implement more complex scenarios in your Bitrix24 that involve [different users](../local-integrations/local-apps.md), or if you want to develop a [mass-market solution](../market/index.md) for placement in the Bitrix24 Marketplace, you will need to use [OAuth 2.0 authorization](../settings/oauth/index.md) with temporary secure authorization tokens for working with REST.
 
 {% endnote %}

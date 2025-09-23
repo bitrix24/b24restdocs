@@ -14,7 +14,7 @@ Online booking has three groups of methods: resources, waitlist, and booking. Th
 
 {% note info "" %}
 
-In the on-premise Bitrix24, methods can be used starting from the [module version](../cloud-and-on-premise/on-premise/versions.md) `booking 25.300.0`.
+In the on-premise Bitrix24, methods can be used starting from the [module version](../../settings/cloud-and-on-premise/on-premise/versions.md) `booking 25.300.0`.
 
 {% endnote %}
 

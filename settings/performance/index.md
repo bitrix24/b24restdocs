@@ -14,11 +14,11 @@ However, there are several general recommendations that, if followed, will reduc
 
 ## Event Handling and Outgoing Webhooks
 
-As you know, the [event mechanism](../events/index.md) in Bitrix24 operates using a special service - the event queue - which invokes your handlers.
+As you know, the [event mechanism](../../api-reference/events/index.md) in Bitrix24 operates using a special service - the event queue - which invokes your handlers.
 
 It is important to consider that you cannot control the intensity of events.
 
-Imagine that your application has registered a handler for [OnCRMDealUpdate](../crm/deals/events/on-crm-deal-update.md), and users on a specific Bitrix24 instance have massively (using a [workflow](../bizproc/index.md) or automation based on the REST API) updated 10K deals. The Bitrix24 event queue will immediately generate tasks to send 10K notifications to your handler.
+Imagine that your application has registered a handler for [OnCRMDealUpdate](../../api-reference/crm/deals/events/on-crm-deal-update.md), and users on a specific Bitrix24 instance have massively (using a [workflow](../../api-reference/bizproc/index.md) or automation based on the REST API) updated 10K deals. The Bitrix24 event queue will immediately generate tasks to send 10K notifications to your handler.
 
 Therefore, your handler must be prepared for potential peak loads. It should respond as quickly as possible - if the event queue does not receive a response from your handler when sending the next event, or if your handler responds slowly, subsequent calls will be executed with lower priority, resulting in longer delays.
 

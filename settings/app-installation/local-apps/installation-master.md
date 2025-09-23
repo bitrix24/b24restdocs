@@ -6,10 +6,10 @@ The user interface implemented at this URL serves as the application's "installa
 
 Additionally, this URL can be used to initialize and create the required objects in Bitrix24. For example, you can:
 
-- set up [event handlers](../../events/index.md);
-- register [widgets](../../widgets/index.md) in the necessary embedding locations;
-- add a [payment system provider](../../pay-system/index.md) or [cash register](../../sale/cashbox/index.md);
-- register an [SMS messaging provider](../../messageservice/index.md);
+- set up [event handlers](../../../api-reference/events/index.md);
+- register [widgets](../../../api-reference/widgets/index.md) in the necessary embedding locations;
+- add a [payment system provider](../../../api-reference/pay-system/index.md) or [cash register](../../../api-reference/sale/cashbox/index.md);
+- register an [SMS messaging provider](../../../api-reference/messageservice/index.md);
 - etc.
 
 In other words, the "installation wizard" URL can be used to perform one-time operations related to adding the application to the account, as after a successful addition, the URL specified in the "Path for initial installation" field will no longer be called.

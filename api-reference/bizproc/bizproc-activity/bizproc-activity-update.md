@@ -6,7 +6,7 @@
 
 This method updates a business process action added by the application.
 
-It works only in the context of the [application](../../app-installation/index.md).
+It works only in the context of the [application](../../../settings/app-installation/index.md).
 
 ## Method Parameters
 

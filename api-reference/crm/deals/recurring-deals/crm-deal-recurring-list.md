@@ -26,7 +26,7 @@ The method `crm.deal.recurring.list` returns a list of recurring deal template s
 
 When querying, use the mask "*" to select all fields (excluding custom and multiple fields).
 
-See the description of [list methods](../../../how-to-call-rest-api/list-methods-pecularities.md).
+See the description of [list methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 ## Example
 

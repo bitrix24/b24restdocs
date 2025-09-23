@@ -34,7 +34,7 @@ The method `crm.company.userfield.list` returns a list of custom company fields 
 [`array`](../../../data-types.md) | Sorting fields. ||
 || **filter**
 [`array`](../../../data-types.md) | Filtering fields. ||
-|| **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../../how-to-call-rest-api/list-methods-pecularities.md) ||
+|| **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Example

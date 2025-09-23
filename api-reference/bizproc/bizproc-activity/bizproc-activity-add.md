@@ -6,7 +6,7 @@
 
 Adds a new action for use in workflows.
 
-The method works only in the context of the [application](../../app-installation/index.md).
+The method works only in the context of the [application](../../../settings/app-installation/index.md).
 
 Each document generates its own set of field types. For example, in CRM there is a field of type Address `UF:address`. To use this field type in your actions, specify the CRM document type in `DOCUMENT_TYPE` and describe the properties of the type in `PROPERTIES`.
 

@@ -31,7 +31,7 @@ Updates a message in the News Feed.
 #|
 || **Parameter** | **Description** ||
 || **POST_ID** | Identifier of the News Feed message. ||
-|| **USER_ID** | Identifier of the message author. Only a user with administrative rights can specify a value other than the current user, and only in the on-premise version of Bitrix24. In the cloud version, this parameter can only be set to the identifier of the [current user](../how-to-call-rest-api/authorization.md#current-user-concept). ||
+|| **USER_ID** | Identifier of the message author. Only a user with administrative rights can specify a value other than the current user, and only in the on-premise version of Bitrix24. In the cloud version, this parameter can only be set to the identifier of the [current user](../../settings/how-to-call-rest-api/authorization.md). ||
 || **POST_MESSAGE** | Text of the message. ||
 || **POST_TITLE** | Title of the message. ||
 || **DEST** | List of recipients who will have the right to view the message. Possible values for the array elements:

@@ -30,7 +30,7 @@ The method `documentgenerator.template.list` returns a list of templates based o
 || **select** | Array of fields to output. By default, it outputs all template fields except *users* and *providers*. To include them, you need to add them additionally. For example, `['*', 'providers', 'users']`. ||
 || **order** | Array to specify the output order `{"id": "desc"}`. ||
 || **filter** | Array for filtering. ||
-|| **start** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
+|| **start** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Example

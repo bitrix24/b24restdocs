@@ -35,7 +35,7 @@ The user must have at least read access permission (**R**) to the storage.
 || **ENTITY^*^** | Required. String identifier of the storage. ||
 || **SORT** | Similar to the *arOrder* and *arFilter* parameters of the PHP method `CIBlockElement::GetList` (including filter operations and complex logic). ||
 || **FILTER** | Similar to the *arOrder* and *arFilter* parameters of the PHP method `CIBlockElement::GetList` (including filter operations and complex logic). ||
-|| **start** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
+|| **start** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 {% include [Parameter notes](../../../_includes/required.md) %}

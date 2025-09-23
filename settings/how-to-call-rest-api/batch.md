@@ -12,9 +12,9 @@ This method is used to send multiple requests in succession, as well as related 
 || **Name**
 `type` | **Description** ||
 || **halt**
-[`boolean`](../data-types.md) | Determines whether to halt the sequence of requests in case of an error. Defaults to `false` ||
+[`boolean`](../../api-reference/data-types.md) | Determines whether to halt the sequence of requests in case of an error. Defaults to `false` ||
 || **cmd**
-[`array`](../data-types.md) | An array of requests in standard format (remember to [URL-encode](./data-encoding.md) the request data; this means that the data for sub-requests must undergo double encoding) ||
+[`array`](../../api-reference/data-types.md) | An array of requests in standard format (remember to [URL-encode](./data-encoding.md) the request data; this means that the data for sub-requests must undergo double encoding) ||
 |#
 
 {% note info %}
@@ -265,9 +265,9 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | An object is returned with fields in the form of objects containing the results of the invoked methods ||
+[`object`](../../api-reference/data-types.md) | An object is returned with fields in the form of objects containing the results of the invoked methods ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../../api-reference/data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Using Results

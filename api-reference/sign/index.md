@@ -8,7 +8,7 @@ The service for signing documents in Bitrix24 e-Signature for HR allows signing 
 
 The methods work with documents in the e-Signature for HR section — Signing with employees.
 
-The methods are executed only in the context of authorization of the [application](../app-installation/index.md).
+The methods are executed only in the context of authorization of the [application](../../settings/app-installation/index.md).
 
 ## Overview of Methods {#all-methods} 
 

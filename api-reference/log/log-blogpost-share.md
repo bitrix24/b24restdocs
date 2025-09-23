@@ -30,7 +30,7 @@ Adds recipients to a News Feed message.
 
 #|
 || **Parameter** | **Description** ||
-|| **USER_ID** | The identifier of the user adding new recipients. Only a user with administrative rights can specify a value other than the current user, and only in the on-premise version of Bitrix24. In the cloud version, this parameter can only be set to the identifier of the [current user](../how-to-call-rest-api/authorization.md#current-user-concept). ||
+|| **USER_ID** | The identifier of the user adding new recipients. Only a user with administrative rights can specify a value other than the current user, and only in the on-premise version of Bitrix24. In the cloud version, this parameter can only be set to the identifier of the [current user](../../settings/how-to-call-rest-api/authorization.md). ||
 || **POST_ID** | ID of the **News Feed** message. ||
 || **DEST** | Access permissions for viewing the message. Possible values include: 
  - **`SG<X>`** - workgroup with ID=X;

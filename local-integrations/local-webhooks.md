@@ -151,7 +151,7 @@ In the opened form:
 
 {% note info  " " %}
 
-To ensure the outgoing webhook works, make sure that the necessary [network access](../api-reference/cloud-and-on-premise/network-access.md) is open on your server.
+To ensure the outgoing webhook works, make sure that the necessary [network access](../settings/cloud-and-on-premise/network-access.md) is open on your server.
 
 {% endnote %}
 

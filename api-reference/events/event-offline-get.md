@@ -4,7 +4,7 @@
 
 The method `event.offline.get` returns the first queued offline events to the application according to the filter settings. The availability of offline events can be checked via the [feature.get](../common/system/feature-get.md) method.
 
-This method works only in the context of [application](../app-installation/index.md) authorization.
+This method works only in the context of [application](../../settings/app-installation/index.md) authorization.
 
 ## Method Parameters
 

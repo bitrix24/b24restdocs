@@ -26,7 +26,7 @@ The method `documentgenerator.numerator.list` returns a list of numerators.
 
 #|
 || **Parameter** | **Description** ||
-|| **start** | The ordinal number of the list item from which to return the subsequent items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
+|| **start** | The ordinal number of the list item from which to return the subsequent items when calling the current method. Details in the article [{#T}](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Response in case of success

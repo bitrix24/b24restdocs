@@ -31,7 +31,7 @@ To solve this problem, you are encouraged to use a slider. A slider is a popup w
 
 You decide which parameters you want to pass to your application in order to generate the necessary content/interface for the slider on the application side. In the example above, we pass the parameter `action` with the value `display_setting` to the application. Upon receiving a POST request from Bitrix24 and processing this parameter, the application can create an interface with some user settings instead of showing the default application interface.
 
-The request will come to the same URL that you specified in your application settings in the `Path to your handler` field for a [local application](../app-installation/local-apps/index.md), or in the `Application link` field for a [mass-market](../app-installation/mass-market-apps/index.md) application.
+The request will come to the same URL that you specified in your application settings in the `Path to your handler` field for a [local application](../../settings/app-installation/local-apps/index.md), or in the `Application link` field for a [mass-market](../../settings/app-installation/mass-market-apps/index.md) application.
 
 In other words, your code that responds to this URL should act as a controller or manager, generating different HTML based on the parameters received in the request.
 

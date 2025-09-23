@@ -127,7 +127,7 @@ Some fields may be absent or have a value of `null` if the application does not 
 || **member_id***
 [`string`](../../data-types.md) | Identifier of Bitrix24 where the event occurred ||
 || **refresh_token***
-[`string`](../../data-types.md) | Token for refreshing authorization [OAuth 2.0](../../oauth/index.md) ||
+[`string`](../../data-types.md) | Token for refreshing authorization [OAuth 2.0](../../../settings/oauth/index.md) ||
 || **application_token***
 [`string`](../../data-types.md) | Token for secure event handling ||
 |#

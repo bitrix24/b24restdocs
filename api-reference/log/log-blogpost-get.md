@@ -22,7 +22,7 @@ Some data may be missing — we will fill it in shortly.
 >
 > Who can execute the method: any user
 
-Returns a list of news feed messages available to the [current user](../how-to-call-rest-api/authorization.md#current-user-concept).
+Returns a list of news feed messages available to the [current user](../../settings/how-to-call-rest-api/authorization.md).
 
 #|
 || **Parameter** | **Description** ||

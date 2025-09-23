@@ -34,7 +34,7 @@ There is no mask for selecting multiple fields. To select multiple fields, speci
 
 ## Parameters
 
-See the description of [list methods](../../how-to-call-rest-api/list-methods-pecularities.md).
+See the description of [list methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 ## Examples
 

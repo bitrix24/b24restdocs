@@ -6,7 +6,7 @@ This significantly simplifies development and speeds up the application creation
 
 We strongly recommend using this method in your application interfaces, as it enhances the user experience, making your solutions closely resemble the standard Bitrix24 interfaces.
 
-Keep in mind that the `openPath` method does not provide the ability to retrieve data from the standard Bitrix24 pages. It merely opens them in a slider and allows you to track the moment the slider closes, so you can refresh the data in your interface. However, in conjunction with [event handling](../events/index.md) and the [interactive interaction](../interactivity/index.md) mechanism between the back-end and front-end parts of the application, you can implement data updates in your interface after the standard sliders close.
+Keep in mind that the `openPath` method does not provide the ability to retrieve data from the standard Bitrix24 pages. It merely opens them in a slider and allows you to track the moment the slider closes, so you can refresh the data in your interface. However, in conjunction with [event handling](../events/index.md) and the [interactive interaction](../../settings/interactivity/index.md) mechanism between the back-end and front-end parts of the application, you can implement data updates in your interface after the standard sliders close.
 
 ## Example:
 

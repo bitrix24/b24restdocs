@@ -2,7 +2,7 @@
 
 {% note info "" %}
 
-Methods only work in the context of the [application](../app-installation/index.md)
+Methods only work in the context of the [application](../../settings/app-installation/index.md)
 
 {% endnote %}
 

@@ -29,7 +29,7 @@ There may be situations where the handler is called only a few seconds after the
 
 The Bitrix24 queue server also monitors how quickly your handlers respond. If they respond slowly, subsequent calls may be executed with lower priority, resulting in longer delays.
 
-Current [queue server addresses](../cloud-and-on-premise/network-access.md).
+Current [queue server addresses](../../settings/cloud-and-on-premise/network-access.md).
 
 ## How Events Work
 
@@ -43,7 +43,7 @@ Then, when a user performs the corresponding action (creates a task, modifies a 
 
 Depending on the specific event, Bitrix24 will send a different set of data in the `data` key to the handler. Most often, this includes the identifier of the object that was modified in Bitrix24.
 
-Additionally, the `auth` key usually contains authorization parameters, particularly [OAuth 2.0 tokens](../oauth/index.md):
+Additionally, the `auth` key usually contains authorization parameters, particularly [OAuth 2.0 tokens](../../settings/oauth/index.md):
 
 ```php
 array(
@@ -70,7 +70,7 @@ array(
 
 ### Authorization Tokens Are Not Always Available
 
-There may be situations where the event handler does not receive authorization tokens. This is because OAuth 2.0 tokens always "belong" to a [specific user](../oauth/index.md) in Bitrix24. If the data change that triggered the event occurred without an authorized user, Bitrix24 cannot "understand" whose tokens to send to the event handler.
+There may be situations where the event handler does not receive authorization tokens. This is because OAuth 2.0 tokens always "belong" to a [specific user](../../settings/oauth/index.md) in Bitrix24. If the data change that triggered the event occurred without an authorized user, Bitrix24 cannot "understand" whose tokens to send to the event handler.
 
 To ensure your application continues to function even in such cases, it is recommended to save the tokens of the user who installed your application during the installation process in Bitrix24 and use them.
 

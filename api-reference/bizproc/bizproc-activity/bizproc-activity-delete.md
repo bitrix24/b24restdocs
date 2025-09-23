@@ -6,7 +6,7 @@
 
 This method deletes an action for workflows that was added by the application.
 
-It only works in the context of the [application](../../app-installation/index.md).
+It only works in the context of the [application](../../../settings/app-installation/index.md).
 
 When the application is deleted or updated, the associated actions are removed from the list of actions in the workflow designer. If the action is used in a workflow, it is blocked and can only be removed from the scheme. Upon reinstalling the application, the action becomes available again.
 

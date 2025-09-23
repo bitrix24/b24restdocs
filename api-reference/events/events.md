@@ -4,7 +4,7 @@
 
 The `events` method returns a comprehensive list of available events.
 
-The method works only in the context of authorizing the [application](../app-installation/index.md).
+The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
 
 ## Method Parameters
 

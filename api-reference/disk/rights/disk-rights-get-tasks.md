@@ -36,7 +36,7 @@ The method `disk.rights.getTasks` allows you to retrieve a list of access levels
 [`unknown`](../../data-types.md) |  Symbolic code. ||
 || **TITLE**
 [`unknown`](../../data-types.md) |  Title. ||
-|| **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
+|| **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Example

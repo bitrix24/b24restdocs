@@ -6,7 +6,7 @@
 
 The method `sign.b2e.personal.tail` returns a list of signed documents for the user from the e-Signature for HR section.
 
-The method works only in the context of authorization of the [application](../app-installation/index.md).
+The method works only in the context of authorization of the [application](../../settings/app-installation/index.md).
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The parameter accepts a value from 1 to 50.
 
 By default, 20 records are displayed per page ||
 || **offset**
-[`integer`](../data-types.md) | This parameter is used for pagination control. It is similar to the standard parameter [start](../performance/huge-data.md).
+[`integer`](../data-types.md) | This parameter is used for pagination control. It is similar to the standard parameter [start](../../settings/performance/huge-data.md).
  
 The page size of results depends on the **limit** parameter
 ||

@@ -89,4 +89,4 @@ The described metrics are calculated within Bitrix24 and depend on a number of i
 
 The same request on different accounts can yield different `operating` values simply because, on one account, Bitrix24 has to process 10 records to get a result, while on another, it has to process 10,000 records. In other words, the resource consumption of your request is unpredictable on the application side.
 
-However, there are [a number of recommendations](api-reference/performance/index.md) that you can follow to reduce the risks of triggering resource consumption limits.
+However, there are [a number of recommendations](./settings/performance/index.md) that you can follow to reduce the risks of triggering resource consumption limits.

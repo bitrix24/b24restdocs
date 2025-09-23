@@ -6,11 +6,11 @@
 
 This method adds a handler for the widget placement.
 
-It can be called at any time during the application's operation; however, it is often more convenient to register your widgets during the [application installation](../app-installation/index.md).
+It can be called at any time during the application's operation; however, it is often more convenient to register your widgets during the [application installation](../../settings/app-installation/index.md).
 
 It is important to note that until the application installation is complete, the widgets you register will not be available to regular users in the Bitrix24 interface - they will only be visible to users with administrative rights.
 
-It is recommended to familiarize yourself with the principles of [application installation](../app-installation/index.md) in Bitrix24.
+It is recommended to familiarize yourself with the principles of [application installation](../../settings/app-installation/index.md) in Bitrix24.
 
 ## Method Parameters {#params}
 

@@ -21,7 +21,7 @@ The method does not return properties and line items of the invoice. To obtain p
 
 ## Method parameters
 
-See the description of [list methods](../../../how-to-call-rest-api/list-methods-pecularities.md).
+See the description of [list methods](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 

@@ -33,12 +33,12 @@ The method `disk.folder.getchildren` returns a list of files and folders that ar
 [`unknown`](../../data-types.md) | Folder identifier. ||
 || **filter**
 [`unknown`](../../data-types.md) |  Optional parameter. Supports filtering by fields specified in [disk.folder.getfields](./disk-folder-get-fields.md) as `USE_IN_FILTER: true`. ||
-|| **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../how-to-call-rest-api/list-methods-pecularities.md) ||
+|| **START** | The ordinal number of the list item from which to return the next items when calling the current method. Details in the article [{#T}](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 {% note info %}
 
-See also the description of [list methods](../../how-to-call-rest-api/list-methods-pecularities.md).
+See also the description of [list methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md).
 
 {% endnote %}
 

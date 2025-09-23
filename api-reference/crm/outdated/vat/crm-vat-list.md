@@ -11,7 +11,7 @@ The method `crm.vat.list` continues to function, but there is a more current equ
 {% endnote %}
 
 The method `crm.vat.list` returns a list of VAT rates based on a filter. 
-It is an implementation of the [list method](../../../../api-reference/how-to-call-rest-api/list-methods-pecularities.md) for VAT rates.
+It is an implementation of the [list method](../../../../settings/how-to-call-rest-api/list-methods-pecularities.md) for VAT rates.
 
 ## Method Parameters
 

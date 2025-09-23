@@ -10,7 +10,7 @@ Each connector contains settings for working with a specific source:
 
 {% note info "" %}
 
-Methods work only in the context of the [application](../../app-installation/index.md)
+Methods work only in the context of the [application](../../../settings/app-installation/index.md)
 
 {% endnote %}
 

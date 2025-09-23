@@ -516,4 +516,4 @@ To upload multiple files in the method [catalog.product.add](../catalog/product/
 
 - The limit on the execution time of a request is 60 seconds for cloud Bitrix24. The request will be interrupted due to a timeout if processing takes longer than 60 seconds. You can check the execution time of the request in the [time](../data-types.md#time) object of the response, parameter `duration`.
 
-- If you are transmitting a file encoded as a Base64 string, and the method is executed in the address bar as a GET request or the method is executed via curl — Base64 needs to be additionally [encoded in urlencode](../how-to-call-rest-api/data-encoding.md), otherwise, the file will not be read.
+- If you are transmitting a file encoded as a Base64 string, and the method is executed in the address bar as a GET request or the method is executed via curl — Base64 needs to be additionally [encoded in urlencode](../../settings/how-to-call-rest-api/data-encoding.md), otherwise, the file will not be read.

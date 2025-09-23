@@ -312,7 +312,7 @@ Next, we register our provider as the current authorization provider:
 );
 ```
 
-If you now make a request with this authorization token and call the method [`\Bitrix\Rest\AppInfo`](../../common/system/app-info.md), you will receive the application data in the current Bitrix24:
+If you now make a request with this authorization token and call the method [`\Bitrix\Rest\AppInfo`](../../../api-reference/common/system/app-info.md), you will receive the application data in the current Bitrix24:
 
 ![Image of application data](./_images/provider_2.png)
 
@@ -365,7 +365,7 @@ In the validator, it is sufficient to inherit from the original authorization va
 
 The last parameter is the sorting order. It is necessary to integrate before the original handler is triggered.
 
-If you now make a request with this authorization token and call the method [`\Bitrix\Rest\AppInfo`](../../common/system/app-info.md), you can retrieve the application data on this portal.
+If you now make a request with this authorization token and call the method [`\Bitrix\Rest\AppInfo`](../../../api-reference/common/system/app-info.md), you can retrieve the application data on this portal.
 
 We just need to enhance the event provider to pass authorization data to the application in the event handlers:
 
@@ -432,4 +432,4 @@ As a result, the handler will receive the complete structure of data it needs to
 This performance issue can be circumvented in two ways:
 
 - Building a queue. Instead of sending a *post* request, store the data in a table and use additional processes to retrieve data from it. Essentially, a custom queue implementation.
-- Utilize the [offline events mechanism](../../events/offline-events.md).
+- Utilize the [offline events mechanism](../../../api-reference/events/offline-events.md).

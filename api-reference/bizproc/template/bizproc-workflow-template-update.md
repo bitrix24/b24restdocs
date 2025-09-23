@@ -6,7 +6,7 @@
 
 This method updates a business process template.
 
-It allows you to update templates that were created using the [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) method. These templates are tied to the application and can only be updated in the context of the same [application](../../app-installation/index.md) that created them.
+It allows you to update templates that were created using the [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) method. These templates are tied to the application and can only be updated in the context of the same [application](../../../settings/app-installation/index.md) that created them.
 
 ## Method Parameters
 
