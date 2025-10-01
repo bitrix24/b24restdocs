@@ -64,7 +64,7 @@ navigation:
     leftItems:
       - text: 'Getting Started'
         type: 'link'
-        url: '/first-steps/.html'
+        url: '/first-steps/index.html'
       - text: 'API Reference'
         type: 'link'
         url: '/api-reference/index.html'        
