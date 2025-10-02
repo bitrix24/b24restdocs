@@ -1,8 +1,8 @@
-# Switch the dialog to an operator by Id imopenlines.bot.session.transfer
+# Transfer the dialog to an operator by Id imopenlines.bot.session.transfer
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will fill it in shortly.
 
 {% endnote %}
 
@@ -21,7 +21,7 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can execute the method: any user
 
-This method switches the conversation to a specific operator.
+This method transfers the conversation to a specific operator.
 
 ## Method Parameters
 
@@ -30,17 +30,17 @@ This method switches the conversation to a specific operator.
 #|
 || **Name**
 `Type` | **Example** | **Description** | **Revision** ||
-|| **CHAT_ID*** 
+|| **CHAT_ID***
 [`unknown`](../../../data-types.md) | `112` | Identifier of the chat | 1 ||
-|| **USER_ID*** 
-[`unknown`](../../../data-types.md) | `12` | Identifier of the user to whom the conversation is redirected | 1 ||
-|| **LEAVE*** 
+|| **USER_ID***
+[`unknown`](../../../data-types.md) | `12` | Identifier of the user to whom the conversation is being redirected | 1 ||
+|| **LEAVE***
 [`unknown`](../../../data-types.md) | `N` | Y/N. If N is specified — the chatbot will not leave this chat after redirection and will remain until the user confirms | 1 ||
 |#
 
 {% note info %}
 
-Instead of `USER_ID`, you can specify `QUEUE_ID` to switch to another open line.
+Instead of `USER_ID`, you can specify `QUEUE_ID` to switch to another open line. The `ID` of the open line can be obtained using the method [imopenlines.config.list.get](../imopenlines-config-list-get.md).
 
 {% endnote %}
 
@@ -50,18 +50,115 @@ Instead of `USER_ID`, you can specify `QUEUE_ID` to switch to another open line.
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CHAT_ID":112,"USER_ID":12,"LEAVE":"N"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.bot.session.transfer
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CHAT_ID":112,"USER_ID":12,"LEAVE":"N","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imopenlines.bot.session.transfer
+    ```
+
+- JS
+
+    ```js  
+    try
+    {
+        const response = await $b24.callMethod(
+            'imopenlines.bot.session.transfer',
+            {
+                CHAT_ID: 112,
+                USER_ID: 12,
+                LEAVE: 'N'
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Dialog successfully transferred:', result);
+        processResult(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
 - PHP
 
+    ```php  
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.bot.session.transfer',
+                [
+                    'CHAT_ID' => 112,
+                    'USER_ID' => 12,
+                    'LEAVE' => 'N'
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error transferring session: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'imopenlines.bot.session.transfer', 
+        {
+            CHAT_ID: 112,
+            USER_ID: 12, 
+            LEAVE: 'N'  
+        },
+        function(result) {
+            if (result.error()) {
+                console.error('Error:', result.error().ex);
+            } else {
+                console.log('Dialog successfully transferred:', result.data());
+            }
+        }
+    );
+    ```	
+
+- PHP CRest
+
     ```php
-    $result = restCommand(
+    require_once('crest.php');
+
+    $result = CRest::call(
         'imopenlines.bot.session.transfer',
-        Array(
+        [
             'CHAT_ID' => 112,
             'USER_ID' => 12,
             'LEAVE' => 'N'
-        ),
-        $_REQUEST["auth"]
+        ]
     );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
@@ -95,7 +192,7 @@ Instead of `USER_ID`, you can specify `QUEUE_ID` to switch to another open line.
 #|
 || **Code** | **Description** ||
 || **CHAT_ID_EMPTY** | Chat identifier not provided ||
-|| **USER_ID_EMPTY** | User identifier to whom the conversation needs to be redirected is not provided ||
-|| **WRONG_CHAT** | Incorrect user identifier specified or this user is a chatbot or extranet user ||
+|| **USER_ID_EMPTY** | User identifier to whom the conversation needs to be redirected not provided ||
+|| **WRONG_CHAT** | Incorrect user identifier specified or this user is a chatbot or an extranet user ||
 || **BOT_ID_ERROR** | Incorrect chatbot identifier ||
 |#

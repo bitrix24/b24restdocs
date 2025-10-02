@@ -1,4 +1,4 @@
-# Get chat for CRM object imopenlines.crm.chat.get
+# Get Chat for CRM Object imopenlines.crm.chat.get
 
 {% note warning "We are still updating this page" %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will fill it in shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- no response in case of an error
+- no response in case of error
 
 {% endnote %}
 
@@ -22,7 +22,7 @@ Some data may be missing — we will fill it in shortly.
 
 This method retrieves chats for a CRM object.
 
-## Method parameters
+## Method Parameters
 
 {% include [Note on parameters](../../../../_includes/required.md) %}
 
@@ -48,7 +48,7 @@ Possible values:
 Default — `Y` ||
 |#
 
-## Code examples
+## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -172,7 +172,7 @@ Default — `Y` ||
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
 HTTP status: **200**
 
@@ -182,19 +182,19 @@ HTTP status: **200**
         {
             "CHAT_ID": "9852",
             "CONNECTOR_ID": "livechat",
-            "CONNECTOR_TITLE": "Live chat"
+            "CONNECTOR_TITLE": "Live Chat"
         }
     ]
 }
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
-`type` | **Description** ||
+`Type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Array of objects. Each object contains a chat description ||
+[`object`](../../data-types.md) | Array of objects. Each object contains chat description ||
 || **CHAT_ID**
 [`string`](../../data-types.md) | Identifier of the chat ||
 || **CONNECTOR_ID**
@@ -203,9 +203,9 @@ HTTP status: **200**
 [`string`](../../data-types.md) | Title of the connector ||
 |#
 
-## Error handling
+## Error Handling
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** ||

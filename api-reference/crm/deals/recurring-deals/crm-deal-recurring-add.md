@@ -11,7 +11,7 @@ Some data may be missing — we will fill it in shortly.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - parameter types are not specified
-- examples are missing (in other languages)
+- examples (in other languages) are missing
 - success response is missing
 - error response is missing
 
@@ -39,9 +39,12 @@ To find out the required format of the fields, execute the method [crm.deal.recu
 
 ## Example
 
+{% include [Examples note](../../../../_includes/examples.md) %}
+
 {% list tabs %}
 
 - JS
+
 
     ```js
     try
@@ -95,6 +98,7 @@ To find out the required format of the fields, execute the method [crm.deal.recu
     ```
 
 - PHP
+
 
     ```php
     try {
@@ -202,4 +206,6 @@ To find out the required format of the fields, execute the method [crm.deal.recu
 
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+
+
+{% include [system errors](../../../../_includes/system-errors.md) %}

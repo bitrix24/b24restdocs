@@ -1,10 +1,17 @@
-# Add a deal binding with a CRM entity crm.activity.binding.add
+# Add a deal binding to a CRM entity crm.activity.binding.add
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: user with editing access permission for CRM entities
 
-The method `crm.activity.binding.add` establishes a binding between a deal and a CRM entity. A deal can only be bound to an entity that the current user has edit access to.
+The method `crm.activity.binding.add` adds a binding of a deal to a CRM entity.
+
+{% note info "Limit" %}
+
+The maximum number of bindings for a single deal is 100 CRM entities.
+
+{% endnote %}
+
 
 ## Method Parameters
 
@@ -13,12 +20,12 @@ The method `crm.activity.binding.add` establishes a binding between a deal and a
 #|
 || **Name**
 `type` | **Description** ||
-|| **activityId*** 
+|| **activityId***
 [`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
-|| **entityTypeId*** 
+|| **entityTypeId***
 [`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the deal should be bound, for example `2` for a deal ||
-|| **entityId*** 
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the deal should be bound, for example `1` ||
+|| **entityId***
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the deal should be bound, for example `1`  ||
 |#
 
 ## Code Examples
@@ -90,7 +97,7 @@ The method `crm.activity.binding.add` establishes a binding between a deal and a
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {
@@ -191,7 +198,7 @@ HTTP status: **400**
 || `100` | Required fields not provided ||
 || `NOT_FOUND` | Entity not found ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
+|| `ACCESS_DENIED` | Insufficient rights to perform the operation ||
 || `ACTIVITY_IS_ALREADY_BOUND` | The deal is already bound to this entity ||
 |#
 

@@ -1,7 +1,9 @@
 title: Events
 href: index.md
 items:
-  - name: On connecting the chatbot to the chat
+  - name: Overview of Events
+    href: index.md
+  - name: When the bot joins the chat
     href: on-imbot-join-chat.md
-  - name: On deleting the chatbot
+  - name: When the chat bot is deleted
     href: on-imbot-delete.md

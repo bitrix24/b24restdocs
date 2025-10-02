@@ -3,17 +3,15 @@ href: index.md
 items:  
   - name: Overview of Methods  
     href: index.md  
-  - name: Invite Participant  
+  - name: Invite a Participant  
     href: sonet-group-user-invite.md  
-  - name: Send Participation Request from Current User  
+  - name: Send a Participation Request from the Current User  
     href: sonet-group-user-request.md  
-  - name: Add Participant Without Invitation  
+  - name: Add a Participant Without an Invitation  
     href: sonet-group-user-add.md  
-  - name: Change Participants' Roles  
+  - name: Change Participant Roles  
     href: sonet-group-user-update.md  
-  - name: Get List of Participants  
+  - name: Get the List of Participants  
     href: sonet-group-user-get.md  
-  - name: Get Extended List of Participants  
-    href: sonet-group-user-get-expanded.md  
-  - name: Remove Users from Group  
+  - name: Remove Users from the Group  
     href: sonet-group-user-delete.md  

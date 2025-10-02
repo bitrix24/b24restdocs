@@ -2,6 +2,13 @@
 
 ## 2025
 
+### October 2, 2025
+
+- Updated the main event pages in the [Chats](./api-reference/chat-bots/chats/events/index.md) and [Messages](./api-reference/chat-bots/messages/events/index.md) sections of Chatbots. Introductory information and an overview of events have been added.
+- Updated the main page of the [Inventory balances](./api-reference/catalog/store-product/index.md) section in the Trade Catalog. Introductory information and an overview of methods and relationships have been added.
+- Updated the main page of the [Object binding to booking](./api-reference/booking/booking/external-data/index.md) section in Online Booking. Introductory information and an overview of methods and relationships have been added.
+- Updated documentation for the methods [tasks.task.getFields](./api-reference/tasks/tasks-task-get-fields.md), [tasks.task.files.attach](./api-reference/tasks/tasks-task-files-attach.md), [tasks.task.counters.get](./api-reference/tasks/tasks-task-counters-get.md), [tasks.task.history.list](./api-reference/tasks/tasks-task-history-list.md) in Tasks.
+
 ### September 19, 2025
 
 - Updated the main page of the [Chats](./api-reference/imopenlines/openlines/chats/index.md) section in Open Lines. Added introductory information as well as an overview of methods and connections.

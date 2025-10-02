@@ -1,11 +1,11 @@
-title: Price Type
+title: Inventory balances
 href: index.md
 items: 
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Get Inventory Balances Parameters
+  - name: Get inventory balance parameters
     href: catalog-store-product-get.md
-  - name: Get Inventory Balances Fields
+  - name: Get inventory balance fields
     href: catalog-store-product-get-fields.md
-  - name: Get List of Inventory Balances
+  - name: Get list of inventory balances
     href: catalog-store-product-list.md

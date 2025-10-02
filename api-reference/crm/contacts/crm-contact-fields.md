@@ -4,13 +4,13 @@
 >
 > Who can execute the method: any user
 
-The method returns the description of contact fields, including custom ones.
+The method returns a description of contact fields, including custom fields.
 
-No parameters.
+No parameters required.
 
 ## Code Examples
 
-{% include [Examples Note](../../../_includes/examples.md) %}
+{% include [Example notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -212,7 +212,7 @@ HTTP status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Additional Source Information"
+        "title": "Additional Source Info"
         },
         "POST": {
         "type": "string",
@@ -275,7 +275,7 @@ HTTP status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Province"
+        "title": "State"
         },
         "ADDRESS_COUNTRY": {
         "type": "string",
@@ -320,7 +320,7 @@ HTTP status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Available to Everyone"
+        "title": "Available to all"
         },
         "EXPORT": {
         "type": "char",
@@ -329,7 +329,7 @@ HTTP status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Participates in Contact Export"
+        "title": "Participates in contact export"
         },
         "HAS_PHONE": {
         "type": "char",
@@ -338,7 +338,7 @@ HTTP status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Phone Set"
+        "title": "Phone set"
         },
         "HAS_EMAIL": {
         "type": "char",
@@ -347,7 +347,7 @@ HTTP status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "E-mail Set"
+        "title": "E-mail set"
         },
         "HAS_IMOL": {
         "type": "char",
@@ -356,7 +356,7 @@ HTTP status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Open Channel Set"
+        "title": "Open channel set"
         },
         "ASSIGNED_BY_ID": {
         "type": "user",
@@ -374,7 +374,7 @@ HTTP status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Created By"
+        "title": "Created by"
         },
         "MODIFY_BY_ID": {
         "type": "user",
@@ -383,7 +383,7 @@ HTTP status: **200**
         "isImmutable": false,
         "isMultiple": false,
         "isDynamic": false,
-        "title": "Modified By"
+        "title": "Modified by"
         },
         "DATE_CREATE": {
         "type": "datetime",
@@ -460,15 +460,6 @@ HTTP status: **200**
         "isMultiple": false,
         "isDynamic": false,
         "title": "Original Version"
-        },
-        "FACE_ID": {
-        "type": "integer",
-        "isRequired": false,
-        "isReadOnly": false,
-        "isImmutable": false,
-        "isMultiple": false,
-        "isDynamic": false,
-        "title": "Link to Faces from the FaceID Module"
         },
         "UTM_SOURCE": {
         "type": "string",
@@ -584,8 +575,8 @@ HTTP status: **200**
         "finish": 1715004756.118899,
         "duration": 0.3361940383911133,
         "processing": 0.10344505310058594,
-        "date_start": "2024-05-06T17:12:35+02:00",
-        "date_finish": "2024-05-06T17:12:36+02:00",
+        "date_start": "2024-05-06T17:12:35+03:00",
+        "date_finish": "2024-05-06T17:12:36+03:00",
         "operating": 0
     }
 }
@@ -597,11 +588,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 ||**ID**
-[`integer`](../../data-types.md) | Identifier of the contact. Read-only ||
+[`integer`](../../data-types.md) | Contact identifier. Read-only ||
 ||**HONORIFIC**
 [`crm_status`](../data-types.md) | Salutation.
 
-You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=HONORIFIC` ||
+You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter by `ENTITY_ID=HONORIFIC` ||
 ||**NAME**
 [`string`](../../data-types.md) | First Name ||
 ||**SECOND_NAME**
@@ -615,23 +606,23 @@ You can get the values of the directory using the method [crm.status.list](../st
 ||**TYPE_ID**
 [`crm_status`](../data-types.md)| Contact Type.
 
-You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=CONTACT_TYPE` ||
+You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter by `ENTITY_ID=CONTACT_TYPE` ||
 ||**SOURCE_ID**
 [`crm_status`](../data-types.md) | Source.
 
-You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=SOURCE`||
+You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with a filter by `ENTITY_ID=SOURCE`||
 ||**SOURCE_DESCRIPTION**
-[`string`](../../data-types.md) | Additional Source Information ||
+[`string`](../../data-types.md) | Additional Source Info ||
 ||**POST**
 [`string`](../../data-types.md) | Position ||
 ||**COMMENTS**
 [`string`](../../data-types.md) | Comment. Supports BB codes ||
 ||**OPENED**
-[`char`](../../data-types.md) | Available to everyone. Possible values:
+[`char`](../../data-types.md) | Available to all. Possible values:
 - `Y` — yes
 - `N` — no 
 
-Considered in the operation of access permissions for roles with "All Open" access level ||
+Considered in the access permission work for roles with "All Open" access level ||
 ||**EXPORT**
 [`char`](../../data-types.md) | Participates in contact export. Possible values:
 - `Y` — yes
@@ -657,9 +648,9 @@ Read-only ||
 ||**ASSIGNED_BY_ID**
 [`user`](../../data-types.md) | Responsible ||
 ||**CREATED_BY_ID**
-[`user`](../../data-types.md) | Created By. Read-only ||
+[`user`](../../data-types.md) | Created by. Read-only ||
 ||**MODIFY_BY_ID**
-[`user`](../../data-types.md) | Modified By. Read-only ||
+[`user`](../../data-types.md) | Modified by. Read-only ||
 ||**DATE_CREATE**
 [`datetime`](../../data-types.md) | Creation Date. Read-only ||
 ||**DATE_MODIFY**
@@ -667,15 +658,13 @@ Read-only ||
 ||**COMPANY_ID**
 [`crm_company`](../data-types.md) | Main company of the contact ||
 ||**COMPANY_IDS**
-[`crm_company`](../data-types.md) | Link of the contact to companies. Multiple. 
+[`crm_company`](../data-types.md) | Contact association with companies. Multiple. 
 
 In the methods [`crm.contact.update`](./crm-contact-update.md) and [`crm.contact.add`](./crm-contact-add.md) it is used to submit an array of companies. 
 
 In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get`](./crm-contact-get.md) this field is not present and you need to use [`crm.contact.company.items.get`](./company/crm-contact-company-items-get.md) to get the list of companies  ||
 ||**LEAD_ID**
 [`crm_lead`](../data-types.md) | Identifier of the lead associated with the contact. Read-only ||
-||**FACE_ID**
-[`integer`](../../data-types.md) | Link to faces from the FaceID module. Read-only ||
 ||**UTM_SOURCE**
 [`string`](../../data-types.md) | Advertising system (Google Ads, etc.) ||
 ||**UTM_MEDIUM**
@@ -701,10 +690,10 @@ In the methods [`crm.contact.list`](./crm-contact-list.md) and [`crm.contact.get
 ||**IM**
 [`crm_multifield`](../data-types.md) | Messengers. Multiple ||
 ||**LINK**
-[`crm_multifield`](../data-types.md) | Links. Multiple. System field. ||
+[`crm_multifield`](../data-types.md) | Links. Multiple. Service field. ||
 ||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`. 
 
-Depending on the account settings, contacts may have a set of custom fields of specific types. 
+Depending on the account settings, contacts may have a set of custom fields of defined types. 
 
 You can add a custom field to a contact using the method [crm.contact.userfield.add](./userfield/crm-contact-userfield-add.md)  ||
 ||**PARENT_ID_...** | Relationship fields. 
@@ -716,7 +705,7 @@ For example, the field `PARENT_ID_153` — relationship with the smart process `
 
 **Fields for External Data Sources**
 
-If the contact is created by an external system, then:
+If the contact was created by an external system, then:
 - the field `ORIGINATOR_ID` stores the string identifier of that system
 - the field `ORIGIN_ID` stores the string identifier of the contact in that external system
 - the field `ORIGIN_VERSION` stores the version of the contact data in that external system
@@ -733,12 +722,12 @@ If the contact is created by an external system, then:
 
 Used to protect data from accidental overwriting by the external system. 
 
-If the data was imported and not changed in the external system, such data can be edited in the CRM without fear that the next export will lead to data overwriting ||
+If the data was imported and not changed in the external system, then such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 |#
 
 **Deprecated Fields**
 
-Address fields in the contact are deprecated and are used only in compatibility mode. To work with the address, use [requisites](../requisites/index.md).
+Address fields in the contact are deprecated and are only used for compatibility mode. To work with the address, use [requisites](../requisites/index.md).
 
 #|
 || **Name**
@@ -746,7 +735,7 @@ Address fields in the contact are deprecated and are used only in compatibility 
 ||**ADDRESS**
 [`string`](../../data-types.md) | Address ||
 ||**ADDRESS_2**
-[`string`](../../data-types.md) | Second line of the address ||
+[`string`](../../data-types.md) | Second line of address ||
 ||**ADDRESS_CITY**
 [`string`](../../data-types.md) | City ||
 ||**ADDRESS_POSTAL_CODE**
@@ -754,7 +743,7 @@ Address fields in the contact are deprecated and are used only in compatibility 
 ||**ADDRESS_REGION**
 [`string`](../../data-types.md) | Region ||
 ||**ADDRESS_PROVINCE**
-[`string`](../../data-types.md) | Province ||
+[`string`](../../data-types.md) | State ||
 ||**ADDRESS_COUNTRY**
 [`string`](../../data-types.md) | Country ||
 ||**ADDRESS_COUNTRY_CODE**
