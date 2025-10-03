@@ -29,7 +29,7 @@ It only works in the context of the [application](../../../settings/app-installa
 || **HANDLER***
 [`string`](../../data-types.md) | URL to which the robot will send data via the Bitrix24 queue server.
 
-The link must have the same domain where the application is installed ||
+The link must have the same domain as the one where the application is installed ||
 || **AUTH_USER_ID**
 [`integer`](../../data-types.md) | Identifier of the user whose token will be passed to the application ||
 || **USE_SUBSCRIPTION**
@@ -44,7 +44,7 @@ Can be a string or an associative array of localized strings like:
 
 ```js
 'NAME': {
-    'de': 'Robotername',
+    'de': 'Robotname',
     'en': 'robot name',
     ...
 },
@@ -58,20 +58,20 @@ Can be a string or an associative array of localized strings like:
 
 ```js
 'DESCRIPTION': {
-    'de': 'Roboterbeschreibung',
+    'de': 'Beschreibung des Roboters',
     'en': 'robot description',
     ...
 },
 ```
  ||
 || **PROPERTIES**
-[`object`](../../data-types.md) | Object with the robot's parameters. Contains objects, each describing a [robot parameter](#property).
+[`object`](../../data-types.md) | Object with robot parameters. Contains objects, each describing a [robot parameter](#property).
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_` ||
 || **RETURN_PROPERTIES**
 [`object`](../../data-types.md) | Object with additional results from the robot. Contains objects, each describing a [robot parameter](#property).
 
-This parameter controls the robot's ability to wait for a response from the application and work with the data that will [come in the response](./bizproc-event-send.md).
+This parameter controls the robot's ability to wait for a response from the application and work with the data that [comes in the response](./bizproc-event-send.md).
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_`
 ||
@@ -122,9 +122,11 @@ Examples:
     ```
 ||
 || **USE_PLACEMENT**
-[`boolean`](../../data-types.md) | Allows opening additional settings for the robot in the application slider. Possible values:
+[`boolean`](../../data-types.md) | Allows opening additional robot settings in the application slider. Possible values:
 - `Y` — yes
 - `N` — no  ||
+|| **PLACEMENT_HANDLER***
+[`string`](../../data-types.md) | URL of the placement handler on the application side. Required if `USE_PLACEMENT = 'Y'` ||
 |#
 
 ### PROPERTY Object {#property}
@@ -148,7 +150,7 @@ Examples:
   - `text` — text
   - `user` — user  ||
 || **Options**
-[`array`](../../data-types.md) | Array of values for the parameter of type list `'TYPE': select'` like:
+[`array`](../../data-types.md) | Array of parameter values of type list `'TYPE': select'` like:
 
 ```js
 [
@@ -239,7 +241,6 @@ Examples:
     ```
 
 - JS
-
 
     ```js
     try
@@ -381,7 +382,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Returns `true` if the robot was successfully updated ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -402,7 +403,7 @@ HTTP status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `ACCESS_DENIED` | Application context required | Application context is required ||
-|| `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
+|| `ACCESS_DENIED` | Access denied! | Method executed by a non-administrator ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Robot code not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid robot code ||
 || `ERROR_ACTIVITY_NOT_FOUND` | Activity or Robot not found! | Robot not found ||

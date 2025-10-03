@@ -1,17 +1,17 @@
-# Get a list of all bindings for the activity crm.activity.binding.list
+# Get a list of all bindings for the deal crm.activity.binding.list
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: user with read access permission for CRM entities
 
-The method `crm.activity.binding.list` retrieves a list of all bindings for the activity.
+The method `crm.activity.binding.list` retrieves a list of all bindings for the deal.
 
 The method will return an array, where each element will be an array containing:
 
-- `entityTypeId` — an integer identifier of the [CRM object type](../../../data-types.md#object_type)
-- `entityId` — an integer identifier of the CRM entity
+- `entityTypeId` — integer identifier of the [CRM object type](../../../data-types.md#object_type)
+- `entityId` — integer identifier of the CRM entity
 
-The result will only include elements that the current user has read access to.
+The result will only include entities that the current user has read access to.
 
 ## Method Parameters
 
@@ -21,7 +21,7 @@ The result will only include elements that the current user has read access to.
 || **Name**
 `type` | **Description** ||
 || **activityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
 |#
 
 ## Code Examples
@@ -68,7 +68,7 @@ The result will only include elements that the current user has read access to.
       console.error('Request failed', error)
     }
     
-    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in chunks and efficiently using memory.
     
     try {
       const generator = $b24.fetchListMethod('crm.activity.binding.list', { activityId: 999 }, 'ID')
@@ -121,7 +121,7 @@ The result will only include elements that the current user has read access to.
     BX24.callMethod(
         'crm.activity.binding.list',
         {
-            activityId: 999 // Activity ID
+            activityId: 999 // Deal ID
         },
         function(result) {
             if (result.error()) {
@@ -141,7 +141,7 @@ The result will only include elements that the current user has read access to.
     $result = CRest::call(
         'crm.activity.binding.list',
         [
-            'activityId' => 999 // Activity ID
+            'activityId' => 999 // Deal ID
         ]
     );
 
@@ -191,13 +191,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | The result of the operation. Returns an array, where each element will be an array containing:
+[`array`](../../../../data-types.md) | Result of the operation. Returns an array, where each element will be an array containing:
 
-- `entityTypeId` — an integer identifier of the [CRM object type](../../../data-types.md#object_type)
-- `entityId` — an integer identifier of the CRM entity
+- `entityTypeId` — integer identifier of the [CRM object type](../../../data-types.md#object_type)
+- `entityId` — integer identifier of the CRM entity
 ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

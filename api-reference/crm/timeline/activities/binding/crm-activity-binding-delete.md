@@ -2,11 +2,9 @@
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: user with permission to edit CRM entities
 
-The method `crm.activity.binding.delete` removes the connection of the activity with the CRM entity. The deletion of the activity binding is only possible for entities that the current user has edit access to.
-
-If the activity is linked to only one entity, this binding cannot be removed.
+The method `crm.activity.binding.delete` removes the connection of the activity with the CRM entity. If the activity is linked to only one entity, this connection cannot be deleted.
 
 ## Method Parameters
 
@@ -18,9 +16,9 @@ If the activity is linked to only one entity, this binding cannot be removed.
 || **activityId***
 [`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
 || **entityTypeId***
-[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is being unbound, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Integer identifier of the CRM entity type](../../../data-types.md#object_type) to which the activity is being unlinked, for example `2` for a deal ||
 || **entityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the activity is being unbound, for example `1`  ||
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM entity to which the activity is being unlinked, for example `1`  ||
 |#
 
 ## Code Examples
@@ -58,7 +56,7 @@ If the activity is linked to only one entity, this binding cannot be removed.
     		'crm.activity.binding.delete',
     		{
     			activityId: 999, // Activity ID
-    			entityTypeId: 2, // CRM object type ID
+    			entityTypeId: 2, // CRM entity type ID
     			entityId: 1 // CRM entity ID
     		}
     	);
@@ -82,7 +80,7 @@ If the activity is linked to only one entity, this binding cannot be removed.
                 'crm.activity.binding.delete',
                 [
                     'activityId'   => 999, // Activity ID
-                    'entityTypeId' => 2, // CRM object type ID
+                    'entityTypeId' => 2, // CRM entity type ID
                     'entityId'     => 1 // CRM entity ID
                 ]
             );
@@ -106,7 +104,7 @@ If the activity is linked to only one entity, this binding cannot be removed.
         'crm.activity.binding.delete',
         {
             activityId: 999, // Activity ID
-            entityTypeId: 2, // CRM object type ID
+            entityTypeId: 2, // CRM entity type ID
             entityId: 1 // CRM entity ID
         },
         function(result) {
@@ -128,7 +126,7 @@ If the activity is linked to only one entity, this binding cannot be removed.
         'crm.activity.binding.delete',
         [
             'activityId' => 999, // Activity ID
-            'entityTypeId' => 2, // CRM object type ID
+            'entityTypeId' => 2, // CRM entity type ID
             'entityId' => 1 // CRM entity ID
         ]
     );
@@ -142,7 +140,7 @@ If the activity is linked to only one entity, this binding cannot be removed.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -166,14 +164,14 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the binding was successfully removed, otherwise `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the connection was successfully deleted, otherwise `false` ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -192,7 +190,7 @@ HTTP status: **400**
 || `NOT_FOUND` | Entity not found ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `BINDING_NOT_FOUND` | Activity is not bound to this entity ||
+|| `BINDING_NOT_FOUND` | Activity not linked to this entity ||
 || `LAST_BINDING_CANNOT_BE_DELETED` | Cannot delete the only binding of the activity to the entity ||
 |#
 

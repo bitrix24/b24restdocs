@@ -1,4 +1,4 @@
-# Add New Action bizproc.activity.add
+# Add a New Action bizproc.activity.add
 
 > Scope: [`bizproc`](../../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ Adds a new action for use in workflows.
 
 The method works only in the context of the [application](../../../settings/app-installation/index.md).
 
-Each document generates its own set of field types. For example, in CRM there is a field of type Address `UF:address`. To use this field type in your actions, specify the CRM document type in `DOCUMENT_TYPE` and describe the properties of the type in `PROPERTIES`.
+Each document generates its own set of field types. For example, in CRM, there is a field of type Address `UF:address`. To use this field type in your actions, specify the CRM document type in `DOCUMENT_TYPE` and describe the field properties in `PROPERTIES`.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ Each document generates its own set of field types. For example, in CRM there is
 || **Name**
 `type` | **Description**||
 || **CODE***
-[`string`](../../data-types.md) | Internal identifier of the action. It is unique within the application.
+[`string`](../../data-types.md) | Internal identifier of the action. It must be unique within the application.
 
 Allowed characters are `a-z`, `A-Z`, `0-9`, dot, hyphen, and underscore `_` ||
 || **HANDLER***
@@ -28,7 +28,7 @@ The link must have the same domain where the application is installed  ||
 || **AUTH_USER_ID**
 [`integer`](../../data-types.md) | Identifier of the user whose token will be passed to the application ||
 || **USE_SUBSCRIPTION**
-[`boolean`](../../data-types.md) | Should the action wait for a response from the application. Possible values:
+[`boolean`](../../data-types.md) | Should the action wait for a response from the application? Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -36,11 +36,11 @@ The link must have the same domain where the application is installed  ||
 || **NAME***
 [`string` \| `object`](../../data-types.md) | Name of the action.
 
-Can be a string or an associative array of localized strings like:
+It can be a string or an associative array of localized strings like:
 
 ```js
 'NAME': {
-    'de': 'Aktion Name',
+    'de': 'Aktionsname',
     'en': 'action name',
     ...
 },
@@ -50,7 +50,7 @@ Can be a string or an associative array of localized strings like:
 || **DESCRIPTION**
 [`string` \| `object`](../../data-types.md) | Description of the action.
 
-Can be a string or an associative array of localized strings like:
+It can be a string or an associative array of localized strings like:
 
 ```js
 'DESCRIPTION': {
@@ -61,13 +61,13 @@ Can be a string or an associative array of localized strings like:
 ```
  ||
 || **PROPERTIES**
-[`object`](../../data-types.md) | Object with action parameters. Contains objects, each of which describes a [parameter of the action](#property).
+[`object`](../../data-types.md) | An object with action parameters. Contains objects, each describing a [parameter of the action](#property).
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_` ||
 || **RETURN_PROPERTIES**
-[`object`](../../data-types.md) | Object with additional results of the action. Contains objects, each of which describes a [parameter of the action](#property).
+[`object`](../../data-types.md) | An object with additional results of the action. Contains objects, each describing a [parameter of the action](#property).
 
-The parameter controls the ability of the action to wait for a response from the application and work with the data that will [come in the response](../bizproc-robot/bizproc-event-send.md).
+This parameter controls whether the action can wait for a response from the application and work with the data that will [come in the response](../bizproc-robot/bizproc-event-send.md).
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_`
 ||
@@ -97,11 +97,11 @@ Possible value options:
 
 ||
 || **FILTER**
-[`object`](../../data-types.md) | Object with rules for limiting the action by document type and edition.
+[`object`](../../data-types.md) | An object with rules to limit the action by document type and edition.
 
-May contain keys:
-- `INCLUDE` — array of rules where the action will be displayed
-- `EXCLUDE` — array of rules where the action will be hidden
+It can contain keys:
+- `INCLUDE` — an array of rules where the action will be displayed
+- `EXCLUDE` — an array of rules where the action will be hidden
 
 Each rule in the array can be a string or an array of document types in full or partial form.
 
@@ -110,13 +110,13 @@ To limit the action by Bitrix24 edition, specify:
 - `box` — for on-premise
 
 Examples:
-1. Exclude action for on-premise Bitrix24
+1. Exclude the action for on-premise Bitrix24
     ```js
     FILTER: {
         EXCLUDE: [ 'box' ]
     }
     ```
-2. Display action only for the Lists module
+2. Display the action only for the Lists module
     ```js
     FILTER: {
         INCLUDE: [
@@ -124,7 +124,7 @@ Examples:
         ]
     }
     ```
-3. Display action only for the Lists module and deals from CRM
+3. Display the action only for the Lists module and deals from CRM
     ```js
     FILTER: {
         INCLUDE: [
@@ -138,6 +138,8 @@ Examples:
 [`boolean`](../../data-types.md) | Allows opening additional settings for the action in the application slider. Possible values:
 - `Y` — yes
 - `N` — no  ||
+|| **PLACEMENT_HANDLER***
+[`string`](../../data-types.md) | URL of the placement handler on the application side. Required if `USE_PLACEMENT = 'Y'` ||
 |#
 
 ### PROPERTY Object {#property}
@@ -173,11 +175,11 @@ Examples:
 ```
 ||
 || **Required**
-[`boolean`](../../data-types.md) | Requirement of the parameter. Possible values:
+[`boolean`](../../data-types.md) | Whether the parameter is required. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **Multiple**
-[`boolean`](../../data-types.md) | Multiplicity of the parameter. Possible values:
+[`boolean`](../../data-types.md) | Whether the parameter can have multiple values. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **Default**
@@ -512,7 +514,7 @@ Examples:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -543,7 +545,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -560,20 +562,20 @@ HTTP Status: **400**
 || **Code** | **Error Message** | **Description** ||
 || `ACCESS_DENIED` | Application context required | Application context is required ||
 || `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty data! | Required fields are not specified ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty data! | Required fields are missing ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Action code is not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid action code ||
 || `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | Invalid handler protocol http, https ||
 || `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | Invalid handler URL ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity NAME! | Action name is not specified ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | Incorrectly filled parameters `PROPERTIES` or `RETURN_PROPERTIES` ||
+|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | Incorrectly filled `PROPERTIES` or `RETURN_PROPERTIES` parameters ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong property key <key>! | Invalid property identifier ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty property NAME <key>! | Property name is not specified ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity FILTER! | Invalid filter ||
 || `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity DOCUMENT_TYPE! | Invalid `DOCUMENT_TYPE` ||
-|| `ERROR_ACTIVITY_ALREADY_INSTALLED` | Activity or Robot already installed! | Action with this code is already installed ||
-|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity or Robot already added! | Action has already been added ||
-|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity save error! | Failed to save action, system error ||
+|| `ERROR_ACTIVITY_ALREADY_INSTALLED` | Activity or Robot already installed! | An action with this code is already installed ||
+|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity or Robot already added! | The action has already been added ||
+|| `ERROR_ACTIVITY_ADD_FAILURE` | Activity save error! | Failed to save the action, system error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

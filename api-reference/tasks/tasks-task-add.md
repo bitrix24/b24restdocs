@@ -4,7 +4,7 @@
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- An additional example is needed with an explanation on linking the task to CRM
+- Additional example needed with explanation on linking the task to CRM
 - Parameter types are not specified
 - Parameter requirements are not indicated
 - Examples are missing (there should be three examples - curl, js, php)
@@ -35,6 +35,8 @@ The method `tasks.task.add` creates a task.
 
 ## Examples
 
+{% include [Note on examples](../../_includes/examples.md) %}
+
 {% list tabs %}
 
 - cURL (Webhook)
@@ -62,36 +64,36 @@ The method `tasks.task.add` creates a task.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"tasks.task.add",
-    		{
-    			fields: {               
-    				TITLE: "Task Title", // Task Title
-    				DEADLINE: "2023-12-31T23:59:59", // Deadline
-    				CREATED_BY: 456, // Creator ID
-    				RESPONSIBLE_ID: 123, // Assignee ID
-    				// Example of passing multiple values in the UF_CRM_TASK field
-    				UF_CRM_TASK: [
-    					"L_4", // Link to lead
-    					"C_7", // Link to contact
-    					"CO_5", // Link to company
-    					"D_10" // Link to deal
-    				],
-    				// Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
-    				UF_TASK_WEBDAV_FILES: [
-    					"n12345", // Identifier of the first Drive file
-    					"n67890" // Identifier of the second Drive file
-    				]
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info("Task successfully created with ID " + result.task.id);
+        const response = await $b24.callMethod(
+            "tasks.task.add",
+            {
+                fields: {               
+                    TITLE: "Task Title", // Task Title
+                    DEADLINE: "2023-12-31T23:59:59", // Deadline
+                    CREATED_BY: 456, // Creator ID
+                    RESPONSIBLE_ID: 123, // Assignee ID
+                    // Example of passing multiple values in the UF_CRM_TASK field
+                    UF_CRM_TASK: [
+                        "L_4", // Link to lead
+                        "C_7", // Link to contact
+                        "CO_5", // Link to company
+                        "D_10" // Link to deal
+                    ],
+                    // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
+                    UF_TASK_WEBDAV_FILES: [
+                        "n12345", // Identifier of the first disk file
+                        "n67890" // Identifier of the second disk file
+                    ]
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.info("Task successfully created with ID " + result.task.id);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -155,8 +157,8 @@ The method `tasks.task.add` creates a task.
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 UF_TASK_WEBDAV_FILES: [
-                    "n12345", // Identifier of the first Drive file
-                    "n67890" // Identifier of the second Drive file
+                    "n12345", // Identifier of the first disk file
+                    "n67890" // Identifier of the second disk file
                 ]
             }
         },
@@ -192,8 +194,8 @@ The method `tasks.task.add` creates a task.
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 'UF_TASK_WEBDAV_FILES' => [
-                    'n12345', // Identifier of the first Drive file
-                    'n67890' // Identifier of the second Drive file
+                    'n12345', // Identifier of the first disk file
+                    'n67890' // Identifier of the second disk file
                 ]
             ]
         ]
@@ -228,7 +230,7 @@ The method `tasks.task.add` creates a task.
 
 {% endlist %}
 
-To attach a file to the task, the file identifier must be prefixed with the character `n`
+To attach a file to the task, the file identifier must be preceded by the character `n`
 
 {% list tabs %}
 
@@ -237,26 +239,26 @@ To attach a file to the task, the file identifier must be prefixed with the char
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'task.item.update',
-    		{
-    			taskId: '76',
-    			fields: {
-    				UF_TASK_WEBDAV_FILES: [
-    					'n96'
-    				]
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log('Updated task with ID:', result);
-    	// Your required data processing logic
-    	processResult(result);
+        const response = await $b24.callMethod(
+            'task.item.update',
+            {
+                taskId: '76',
+                fields: {
+                    UF_TASK_WEBDAV_FILES: [
+                        'n96'
+                    ]
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Updated task with ID:', result);
+        // Your required data processing logic
+        processResult(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -307,7 +309,7 @@ To attach a file to the task, the file identifier must be prefixed with the char
 
 {% endlist %}
 
-**Starting from version 22.1300.0** you can pass the `SE_PARAMETER` parameter to the method — a list of objects with additional task parameters.
+**Starting from version 22.1300.0**, you can pass the `SE_PARAMETER` parameter to the method — a list of objects with additional task parameters.
 
 {% list tabs %}
 
@@ -316,34 +318,34 @@ To attach a file to the task, the file identifier must be prefixed with the char
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'tasks.task.add',
-    		{
-    			data: {
-    				fields: {
-    					"TITLE": 'REST',
-    					"RESPONSIBLE_ID": 1,
-    					"SE_PARAMETER": [
-    						{
-    							'VALUE': 'Y',
-    							'CODE': 3
-    						},
-    						{
-    							'VALUE': 'Y',
-    							'CODE': 2
-    						},
-    					]
-    				}
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'tasks.task.add',
+            {
+                data: {
+                    fields: {
+                        "TITLE": 'REST',
+                        "RESPONSIBLE_ID": 1,
+                        "SE_PARAMETER": [
+                            {
+                                'VALUE': 'Y',
+                                'CODE': 3
+                            },
+                            {
+                                'VALUE': 'Y',
+                                'CODE': 2
+                            },
+                        ]
+                    }
+                }
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error('Error:', error);
+        console.error('Error:', error);
     }
     ```
 
@@ -420,7 +422,145 @@ Code values:
 2. automatically complete the task when subtasks are completed (and vice versa)
 3. mandatory report upon task completion
 
-{% include [Examples Note](../../_includes/examples.md) %}
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": {
+        "task": {
+            "id": "3711",
+            "parentId": null,
+            "title": "task for test",
+            "description": "",
+            "mark": null,
+            "priority": "1",
+            "multitask": "N",
+            "notViewed": "N",
+            "replicate": "N",
+            "stageId": "0",
+            "createdBy": "1",
+            "createdDate": "2024-11-02T10:06:08+02:00",
+            "responsibleId": "1",
+            "changedBy": "1",
+            "changedDate": "2024-11-02T10:06:08+02:00",
+            "statusChangedBy": null,
+            "closedBy": null,
+            "closedDate": null,
+            "activityDate": "2024-11-02T10:06:08+02:00",
+            "dateStart": null,
+            "deadline": null,
+            "startDatePlan": null,
+            "endDatePlan": null,
+            "guid": "{c2794da9-c7fe-404d-a709-ddab4578717a}",
+            "xmlId": null,
+            "commentsCount": null,
+            "serviceCommentsCount": null,
+            "allowChangeDeadline": "N",
+            "allowTimeTracking": "N",
+            "taskControl": "N",
+            "addInReport": "N",
+            "forkedByTemplateId": null,
+            "timeEstimate": "0",
+            "timeSpentInLogs": null,
+            "matchWorkTime": "N",
+            "forumTopicId": null,
+            "forumId": null,
+            "siteId": "s1",
+            "subordinate": "Y",
+            "exchangeModified": null,
+            "exchangeId": null,
+            "outlookVersion": "1",
+            "viewedDate": null,
+            "sorting": null,
+            "durationFact": null,
+            "isMuted": "N",
+            "isPinned": "N",
+            "isPinnedInGroup": "N",
+            "flowId": null,
+            "descriptionInBbcode": "Y",
+            "status": "2",
+            "statusChangedDate": "2024-11-02T10:06:08+02:00",
+            "durationPlan": null,
+            "durationType": "days",
+            "favorite": "N",
+            "groupId": "0",
+            "auditors": [],
+            "accomplices": [],
+            "checklist": [],
+            "group": [],
+            "creator": {
+                "id": "1",
+                "name": "Viola",
+                "link": "/company/personal/user/1/",
+                "icon": "https://your-domain.bitrix24.com/b13743910/resize_cache/2267/c0120a8d7c10d63c83e32398d1ec4d9e/main/c7b/c7bd44b1babaa5448125dd97d038ce1b/d5fb56b94dc2c3cd8c006a2c595a4895.jpg",
+                "workPosition": ""
+            },
+            "responsible": {
+                "id": "1",
+                "name": "Viola",
+                "link": "/company/personal/user/1/",
+                "icon": "https://your-domain.bitrix24.com/b13743910/resize_cache/2267/c0120a8d7c10d63c83e32398d1ec4d9e/main/c7b/c7bd44b1babaa5448125dd97d038ce1b/d5fb56b94dc2c3cd8c006a2c595a4895.jpg",
+                "workPosition": ""
+            },
+            "accomplicesData": [],
+            "auditorsData": [],
+            "newCommentsCount": 0,
+            "action": {
+                "accept": false,
+                "decline": false,
+                "complete": true,
+                "approve": false,
+                "disapprove": false,
+                "start": true,
+                "pause": false,
+                "delegate": true,
+                "remove": true,
+                "edit": true,
+                "defer": true,
+                "renew": false,
+                "create": true,
+                "changeDeadline": true,
+                "checklistAddItems": true,
+                "addFavorite": true,
+                "deleteFavorite": false,
+                "rate": true,
+                "edit.originator": false,
+                "checklist.reorder": true,
+                "elapsedtime.add": true,
+                "dayplan.timer.toggle": false,
+                "edit.plan": true,
+                "checklist.add": true,
+                "favorite.add": true,
+                "favorite.delete": false
+            },
+            "checkListTree": {
+                "nodeId": 0,
+                "fields": {
+                    "id": null,
+                    "copiedId": null,
+                    "entityId": null,
+                    "userId": 1,
+                    "createdBy": null,
+                    "parentId": null,
+                    "title": "",
+                    "sortIndex": null,
+                    "displaySortIndex": "",
+                    "isComplete": false,
+                    "isImportant": false,
+                    "completedCount": 0,
+                    "members": [],
+                    "attachments": []
+                },
+                "action": [],
+                "descendants": []
+            },
+            "checkListCanAdd": true
+        }
+    }
+}
+```
 
 ## Continue Learning
 

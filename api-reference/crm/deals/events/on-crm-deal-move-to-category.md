@@ -1,14 +1,16 @@
-# Event on deal funnel change onCrmDealMoveToCategory
+# Event on changing the deal's Sales Funnel onCrmDealMoveToCategory
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALMOVETOCATEGORY` will trigger when the deal funnel changes.
+The event `ONCRMDEALMOVETOCATEGORY` will trigger when the deal's Sales Funnel changes.
+
+Currently, this event can only be subscribed to from the [application](../../../../settings/app-installation/index.md).
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -57,7 +59,7 @@ The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -70,9 +72,9 @@ The structure is described [below](#auth) ||
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the modified deal ||
 || **CATEGORY_ID**
-[`integer`](../../../data-types.md) | Identifier of the new deal funnel ||
+[`integer`](../../../data-types.md) | Identifier of the new Sales Funnel ||
 || **STAGE_ID**
-[`string`](../../../data-types.md) | Identifier of the new deal stage ||
+[`string`](../../../data-types.md) | Identifier of the new stage of the deal ||
 |#
 
 ### Parameter auth {#auth}

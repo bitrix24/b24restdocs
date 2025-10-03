@@ -65,13 +65,13 @@ Can be a string or an associative array of localized strings like:
 ```
  ||
 || **PROPERTIES**
-[`object`](../../data-types.md) | Object with parameters of the action. Contains objects, each describing a [parameter of the action](#property).
+[`object`](../../data-types.md) | Object with action parameters. Contains objects, each describing a [parameter of the action](#property).
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_` ||
 || **RETURN_PROPERTIES**
 [`object`](../../data-types.md) | Object with additional results of the action. Contains objects, each describing a [parameter of the action](#property).
 
-This parameter controls the ability of the action to wait for a response from the application and work with the data that will [come in the response](../bizproc-robot/bizproc-event-send.md).
+This parameter controls whether the action can wait for a response from the application and work with the data that will [come in the response](../bizproc-robot/bizproc-event-send.md).
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_`
 ||
@@ -101,7 +101,7 @@ Possible value options:
 
 ||
 || **FILTER**
-[`object`](../../data-types.md) | Object with rules to restrict the action by document type and edition.
+[`object`](../../data-types.md) | Object with rules to limit the action by document type and edition.
 
 May contain keys:
 - `INCLUDE` — array of rules where the action will be displayed
@@ -109,7 +109,7 @@ May contain keys:
 
 Each rule in the array can be a string or an array of document types in full or partial form.
 
-To restrict the action by Bitrix24 edition, specify:
+To limit the action by Bitrix24 edition, specify:
 - `b24` — for cloud
 - `box` — for on-premise
 
@@ -142,6 +142,8 @@ Examples:
 [`boolean`](../../data-types.md) | Allows opening additional settings of the action in the application slider. Possible values:
 - `Y` — yes
 - `N` — no  ||
+|| **PLACEMENT_HANDLER***
+[`string`](../../data-types.md) | URL of the placement handler on the application side. Required if `USE_PLACEMENT = 'Y'` ||
 |#
 
 ### Object PROPERTY {#property}
@@ -257,6 +259,7 @@ Examples:
 
 - JS
 
+
     ```js
     try
     {
@@ -278,7 +281,7 @@ Examples:
     	);
     	
     	const result = response.getData().result;
-    	alert("Successfully: " + result);
+    	alert("Success: " + result);
     }
     catch( error )
     {
@@ -340,7 +343,7 @@ Examples:
             if(result.error())
                 alert("Error: " + result.error());
             else
-                alert("Successfully: " + result.data());
+                alert("Success: " + result.data());
         }
     );
     ```

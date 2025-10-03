@@ -1,4 +1,4 @@
-title: Mass-market Applications
+title: Mass-market applications
 href: index.md
 items: 
   - name: Overview 
@@ -7,5 +7,3 @@ items:
     href: installation-master.md
   - name: Installation Callback
     href: installation-callback.md
-  - name: Configuration Wizard
-    href: settings-master.md

@@ -1,4 +1,4 @@
-# Get Links to Files Attached to the Task task.item.getfiles
+# Get Links to Files Attached to a Task task.item.getfiles
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -6,9 +6,9 @@
 
 The method returns an array containing links to files attached to the task.
 
-{% note warning %}
+{% note warning "Method development has been halted" %}
 
-The method is deprecated and not supported. It is recommended to use the methods [tasks.task.*](../../index.md).
+The method `task.item.getfiles` continues to function, but there is a more relevant alternative [tasks.task.get](../../tasks-task-get.md).
 
 {% endnote %}
 
