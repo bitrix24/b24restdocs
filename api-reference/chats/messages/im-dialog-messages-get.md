@@ -20,9 +20,11 @@ Some data may be missing — we will fill it in shortly.
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: participant of the chat
 
-The method `im.dialog.messages.get` retrieves the list of recent messages in the chat.
+The method `im.dialog.messages.get` retrieves the list of recent messages in the chat. 
+
+To get messages from an open line session, use the method [imopenlines.session.history.get](../../imopenlines/openlines/sessions/imopenlines-session-history-get.md). This method allows you to get messages without being a chat participant.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
