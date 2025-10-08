@@ -4,7 +4,13 @@
 >
 > Who can subscribe: any user
 
-The `OnShipmentDeleted` event occurs when a shipment is deleted from the database.
+The `OnShipmentDeleted` event occurs when a shipment is directly deleted from the database.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
@@ -73,7 +79,7 @@ Data is transmitted as a POST request
 || **Name**
 `type` | **Description** ||
 || **ID***  
-[`sale_order_shipment.id`](../data-types.md) | Identifier of the shipment. To retrieve all fields of the shipment by its identifier, use the method [sale.shipment.get](../shipment/sale-shipment-get.md) ||
+[`sale_order_shipment.id`](../data-types.md) | Identifier of the shipment. To retrieve all fields of the shipment by identifier, use the method [sale.shipment.get](../shipment/sale-shipment-get.md) ||
 |#
 
 ### Auth Parameter

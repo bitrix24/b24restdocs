@@ -6,9 +6,15 @@
 
 The event `onCrmRequisiteUpdate` is triggered when a requisite is updated.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 ```php
 [
@@ -40,9 +46,9 @@ Data is transmitted as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic code of the event. In this case, it is `onCrmRequisiteUpdate`||
+[`string`](../../../data-types.md) | Symbolic event code. In this case, it is `onCrmRequisiteUpdate`||
 || **data***
-[`array`](../../../data-types.md) | Array containing the data of the updated requisite ||
+[`array`](../../../data-types.md) | Array with the updated requisite data ||
 || **ts***
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth***
@@ -57,7 +63,7 @@ Data is transmitted as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **FIELDS***
-[`array`](../../../data-types.md) | Array containing the fields of the updated requisite ||
+[`array`](../../../data-types.md) | Array with the fields of the updated requisite ||
 |#
 
 ### Parameter FIELDS[]
@@ -68,16 +74,16 @@ Data is transmitted as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../../data-types.md) | Identifier of the requisite. It can be obtained using the [crm.requisite.list](../universal/crm-requisite-list.md) method. 
+[`integer`](../../../data-types.md) | Identifier of the requisite. It can be obtained using the method [crm.requisite.list](../universal/crm-requisite-list.md). 
 
-It is created automatically and is unique within the account ||
+Automatically created and unique within the account ||
 |#
 
 ### Parameter auth[]
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](./on-crm-address-register.md)
 - [{#T}](./on-crm-address-unregister.md)

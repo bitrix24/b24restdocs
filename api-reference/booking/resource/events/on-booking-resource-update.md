@@ -1,4 +1,4 @@
-# Event onResourceUpdate
+# Event onUpdating Resource onBookingResourceUpdate
 
 > Scope: [`booking`](../../../scopes/permissions.md)
 >
@@ -6,9 +6,15 @@
 
 The event `ONBOOKINGRESOURCEUPDATE` will trigger when a resource is updated manually or via the [booking.v1.resource.update](../booking-v1-resource-update.md) method.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted in the form of a POST request {.b24-info}
 
 ```json
 {

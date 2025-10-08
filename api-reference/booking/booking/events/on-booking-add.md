@@ -4,11 +4,17 @@
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGADD` will trigger when a new booking is created either manually or through the methods [booking.v1.booking.add](../booking-v1-booking-add.md), [booking.v1.booking.createfromwaitlist](../booking-v1-booking-createfromwaitlist.md).
+The `ONBOOKINGADD` event will trigger when a new booking is created manually or through the methods [booking.v1.booking.add](../booking-v1-booking-add.md), [booking.v1.booking.createfromwaitlist](../booking-v1-booking-createfromwaitlist.md).
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -49,7 +55,7 @@ Contains the key `ID` ||
 || **data.ID**
 [`integer`](../../../data-types.md) | Identifier of the created booking ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 

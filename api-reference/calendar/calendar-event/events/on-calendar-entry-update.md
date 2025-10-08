@@ -1,16 +1,22 @@
-# OnCalendarEntryUpdate Event
+# When the OnCalendarEntryUpdate Event Changes
 
 > Scope: [`calendar`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-This event is triggered when a calendar event is modified.
+The event is triggered when a calendar event is modified.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
-Example: event for updating a calendar event object with `id = 1414`.
+Example: an event for modifying a calendar event object with `id = 1414`.
 
 ```json
 {
@@ -53,12 +59,12 @@ Contains a single key — `id` ||
 || **ts**
 [`timestamp`][1] | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
+[`object`][1] | Object containing authorization parameters and data about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### auth Parameter {#auth}
+### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 

@@ -2,11 +2,17 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your dropdown menu item to the top button of CRM object cards: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
+You can add your dropdown menu item to the top button of CRM object cards: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
 
 ![Widget as a dropdown menu item of the top button in the deal card](./_images/CRM_DEAL_DETAIL_TOOLBAR.png "Widget as a dropdown menu item of the top button in the deal card")
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Where the Widget is Embedded
 
@@ -176,7 +182,7 @@ Data is transmitted as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [description of standard data](../_includes/widget_data.md) %}
 
@@ -184,16 +190,16 @@ Data is transmitted as a POST request {.b24-info}
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
-|| **ID*** or **ENTITY_ID*** 
+|| **ID*** or **ENTITY_ID***
 [`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
 
 It can be used to retrieve additional information using the corresponding methods:
 
-- any object type [crm.item.get](../../crm/universal/crm-item-get.md) with entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
+- any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
 - deal [crm.deal.get](../../crm/deals/crm-deal-get.md)
 - contact [crm.contact.get](../../crm/contacts/crm-contact-get.md)
@@ -205,7 +211,7 @@ In the case of embedding the widget in a custom object, the type identifier can 
 ||
 |#
 
-## Continue Exploring
+## Continue Learning
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

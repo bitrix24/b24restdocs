@@ -6,6 +6,13 @@
 
 The event occurs when the price rounding rule is updated.
 
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
 Data is transmitted as a POST request {.b24-info}
@@ -42,17 +49,17 @@ Data is transmitted as a POST request {.b24-info}
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***  
+|| **event***
 [`string`](../../data-types.md) | Symbolic event code ||
-|| **event_handler_id***  
-[`integer`](../../data-types.md) | Identifier of the event handler ||
-|| **data***  
-[`object`](../../data-types.md) | Object containing event data.
+|| **event_handler_id***
+[`integer`](../../data-types.md) | Event handler identifier ||
+|| **data***
+[`object`](../../data-types.md) | Object with event data.
 
 The structure is described [below](#data) ||
-|| **ts***  
+|| **ts***
 [`integer`](../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth***  
+|| **auth***
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -63,7 +70,7 @@ The structure is described [below](#data) ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **FIELDS***  
+|| **FIELDS***
 [`object`](../../data-types.md) | Object with properties of the price rounding rule.
 
 The structure is described [below](#fields) ||
@@ -76,8 +83,8 @@ The structure is described [below](#fields) ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **ID***  
-[`catalog_rounding_rule.id`](../../data-types.md#catalog_rounding_rule) | Identifier of the price rounding rule. You can retrieve all fields of the rounding rule by its identifier using the method [catalog.roundingRule.get](../catalog-rounding-rule-get.md) ||
+|| **ID***
+[`catalog_rounding_rule.id`](../../data-types.md#catalog_rounding_rule) | Identifier of the price rounding rule. You can get all fields of the price rounding rule by its identifier using the method [catalog.roundingRule.get](../catalog-rounding-rule-get.md) ||
 |#
 
 ### Parameter auth {#auth}

@@ -4,11 +4,17 @@
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGWAITLISTITEMUPDATE` will trigger when a record in the waitlist is updated either manually or via the method [booking.v1.waitlist.update](../booking-v1-waitlist-update.md).
+The event `ONBOOKINGWAITLISTITEMUPDATE` will trigger when a record in the waitlist is updated manually or via the [booking.v1.waitlist.update](../booking-v1-waitlist-update.md) method.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -49,7 +55,7 @@ Contains the key `ID` ||
 || **data.ID**
 [`integer`](../../../data-types.md) | Identifier of the updated record in the waitlist ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 

@@ -1,6 +1,6 @@
 # Delivery Service Handlers in Online Stores: Overview of Methods
 
-Delivery service handlers are templates for connecting delivery services to Bitrix24, such as CDEK or Russian Post. Handlers automatically calculate delivery costs, create orders, and track statuses.
+Delivery service handlers are templates for connecting delivery services to Bitrix24. Handlers automatically calculate delivery costs, create orders, and track statuses.
 
 > Quick navigation: [all methods](#all-methods)
 

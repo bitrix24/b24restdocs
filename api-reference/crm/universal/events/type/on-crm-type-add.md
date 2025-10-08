@@ -4,11 +4,18 @@
 >
 > Who can subscribe: `any user`
 
-This event is triggered when a [custom CRM type](../../user-defined-object-types/index.md) is added.
+The event triggers when a [custom CRM type](../../user-defined-object-types/index.md) is added.
+
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -39,7 +46,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic code of the event.
+[`string`][1] | Symbolic event code.
 
 In this case — `ONCRMTYPEADD`||
 || **event_handler_id**
@@ -53,7 +60,7 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`][1] | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`][1] | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -71,9 +78,9 @@ The structure is described [below](#auth) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with Keys in the auth Array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

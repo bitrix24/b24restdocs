@@ -11,7 +11,7 @@ Some data may be missing — we will complete it soon.
 {% note alert "TO-DO _not exported to prod_" %}
 
 - check the link to CHAT_API
-- types and requiredness of parameters are not specified
+- types and required parameters are not specified
 - 
 {% endnote %}
 
@@ -21,15 +21,21 @@ Some data may be missing — we will complete it soon.
 >
 > Who can subscribe: any user
 
-This event marks a new message from Open Lines. The event is triggered for full-fledged connectors, such as Telegram. It does not work with the [widget or online chat](*widget_key), which are more like js-applications.
+This event marks a new message from Open Lines. The event is triggered for full-fledged connectors, such as Telegram. It does not work with [widget or online chat](*widget_key), which are more like js-applications.
 
 It is essential to call the method [**imconnector.send.status.delivery**](../imconnector-send-status-delivery.md) in response; otherwise, the message will be marked as undelivered in the messenger.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Parameters
 
 #|
 || **Parameter** | **Description** | **Version** ||
-|| **CONNECTOR** | Connector ID (this is used to check if the event belongs to the verifier). | ||
+|| **CONNECTOR** | Connector ID (this is used to verify if the event belongs to the verifier). | ||
 || **LINE** | Open line ID. | ||
 || **MESSAGES** | An array of messages, where each message is described by an array of the following format:
 
@@ -51,6 +57,6 @@ It is essential to call the method [**imconnector.send.status.delivery**](../imc
 | ||
 |#
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 [*widget_key]: See the documentation for CHAT API. [Learn more...](../../../chats/index.md)

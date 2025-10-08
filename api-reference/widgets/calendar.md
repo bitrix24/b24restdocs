@@ -4,12 +4,18 @@
 
 You can add your item to the list of calendar view types.
 
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](./placement-bind.md) method.
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](./placement-bind.md) method.
+
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Where the widget is embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Widget code** | **Location** ||
 || `CALENDAR_GRIDVIEW` | Item in the list of calendar view types ||
 |#
 
@@ -51,18 +57,18 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 || **viewRangeFrom*** 
 [`date`](../data-types.md) | The start of the date range currently displayed in the calendar.
 
-This can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method.
+Can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event/calendar-event-get.md) method.
 
 ||
 || **viewRangeTo*** 
 [`date`](../data-types.md) | The end of the date range currently displayed in the calendar.
 
-This can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event//calendar-event-get.md) method.
+Can be used to retrieve a list of events to display in the widget using the [calendar.event.get](../calendar/calendar-event//calendar-event-get.md) method.
 
 ||
 |#
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](../calendar/calendar-grid-veiw.md)
 - [{#T}](./placement-bind.md)

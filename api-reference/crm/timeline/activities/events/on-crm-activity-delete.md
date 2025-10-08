@@ -4,7 +4,13 @@
 >
 > Who can subscribe: `any user`
 
-The event `onCrmActivityDelete` is triggered when an activity is deleted in the CRM timeline.
+The `onCrmActivityDelete` event is triggered when a deal is deleted in the CRM timeline.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
@@ -40,7 +46,7 @@ Data is transmitted as a POST request {.b24-info}
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityDelete`||
 || **data**
-`array` | An object containing information about the deleted activity.
+`array` | An object containing information about the deleted deal.
 
 Contains a single key `FIELDS` ||
 || **ts**
@@ -57,14 +63,14 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | `ID` with the value of the deleted activity identifier ||
+[`integer`](../../../data-types.md) | `ID` with the value of the deleted deal's identifier ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your exploration 
+## Continue exploring 
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

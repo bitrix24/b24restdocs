@@ -8,7 +8,13 @@ This event is triggered when a calendar section or resource is added.
 
 {% note info " " %}
 
-Technically, a resource is a calendar section. Each resource is placed in a special type of calendars, and a separate section is created for it. Events `OnCalendarSection*` are triggered when resources are added, updated, or deleted.
+Technically, a resource is a calendar section. Each resource is placed in a special type of calendar, and a separate section is created for it. Events `OnCalendarSection*` are triggered when resources are added, updated, or deleted.
+
+{% endnote %}
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
@@ -49,7 +55,7 @@ Example: event for creating a calendar section object with `id = 202`.
 
 In this case — `ONCALENDARSECTIONADD`||
 || **event_handler_id**
-[`integer`][1] | Identifier of the event handler ||
+[`integer`][1] | Event handler identifier ||
 || **data**
 [`object`][1] | Object containing information about the added calendar section object.
 
@@ -68,7 +74,7 @@ The structure is described [below](#auth) ||
 
 {% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning 
+## Continue Exploring 
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)

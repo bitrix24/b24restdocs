@@ -1,4 +1,4 @@
-# Event on Application Uninstall onAppUninstall
+# Event on Application Uninstallation onAppUninstall
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
@@ -6,9 +6,15 @@
 
 The `onAppUninstall` event is triggered when an application is uninstalled.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```
 {
@@ -72,11 +78,11 @@ The structure is described [below](#auth) ||
 || **domain***
 [`string`](../../data-types.md) | Bitrix24 account address ||
 || **server_endpoint***
-[`string`](../../data-types.md) | Authorization server address for token renewal ||
+[`string`](../../data-types.md) | Authorization server address for token refresh ||
 || **client_endpoint***
-[`string`](../../data-types.md) | General path for API method calls ||
+[`string`](../../data-types.md) | General path for API method calls for the account ||
 || **member_id***
-[`string`](../../data-types.md) | Unique account identifier ||
+[`string`](../../data-types.md) | Unique identifier of the account ||
 || **application_token***
 [`string`](../../data-types.md) | Token for secure event processing ||
 |#

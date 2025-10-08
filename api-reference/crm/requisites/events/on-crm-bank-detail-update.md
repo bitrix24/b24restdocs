@@ -6,9 +6,15 @@
 
 The event `onCrmBankDetailUpdate` is triggered when a bank detail is updated.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 [
@@ -42,7 +48,7 @@ Data is sent as a POST request {.b24-info}
 || **event***
 [`string`](../../../data-types.md) | Symbolic code of the event. In this case, it is `onCrmBankDetailUpdate`||
 || **data***
-[`array`](../../../data-types.md) | Array containing the updated bank detail data ||
+[`array`](../../../data-types.md) | Array with the updated bank detail data ||
 || **ts***
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth***
@@ -57,7 +63,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **FIELDS***
-[`array`](../../../data-types.md) | Array containing the fields of the updated bank detail ||
+[`array`](../../../data-types.md) | Array with the fields of the updated bank detail ||
 |#
 
 ### Parameter FIELDS[]
@@ -75,7 +81,7 @@ Data is sent as a POST request {.b24-info}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your study
+## Continue exploring
 
 - [{#T}](./on-crm-address-register.md)
 - [{#T}](./on-crm-address-unregister.md)

@@ -6,9 +6,15 @@
 
 The event `ONCRMDEALRECURRINGDELETE` will trigger when a recurring deal template is deleted.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -39,7 +45,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../../data-types.md) | Symbolic event code.
+[`string`](../../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONCRMDEALRECURRINGDELETE`||
 || **event_handler_id**
@@ -73,7 +79,7 @@ The structure is described [below](#auth) ||
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

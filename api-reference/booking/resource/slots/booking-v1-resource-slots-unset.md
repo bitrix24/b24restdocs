@@ -13,8 +13,8 @@ The method `booking.v1.resource.slots.unset` removes the time slot settings for 
 #|
 || **Name**
 `type` | **Description** ||
-|| **resourceID***
-[`integer`](../../../data-types.md) | Identifier of the resource.
+|| **resourceId***
+[`integer`](../../../data-types.md) | Resource identifier.
 Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resource-add.md) and [booking.v1.resource.list](../booking-v1-resource-list.md) ||
 |#
 
@@ -30,7 +30,7 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"resourceID":14}' \
+    -d '{"resourceId":14}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/booking.v1.resource.slots.unset
     ```
 
@@ -40,7 +40,7 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"resourceID":14,"auth":"**put_access_token_here**"}' \
+    -d '{"resourceId":14,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/booking.v1.resource.slots.unset
     ```
 
@@ -52,7 +52,7 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
     	const response = await $b24.callMethod(
     		'booking.v1.resource.slots.unset',
     		{
-    			resourceID: 14,
+    			resourceId: 14,
     		}
     	);
     	
@@ -81,7 +81,7 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
             ->call(
                 'booking.v1.resource.slots.unset',
                 [
-                    'resourceID' => 14,
+                    'resourceId' => 14,
                 ]
             );
     
@@ -107,7 +107,7 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
     BX24.callMethod(
         "booking.v1.resource.slots.unset",
         {
-            resourceID: 14,
+            resourceId: 14,
         },
         result => {
             if (result.error())
@@ -126,7 +126,7 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
     $result = CRest::call(
         'booking.v1.resource.slots.unset',
         [
-            'resourceID' => 14
+            'resourceId' => 14
         ]
     );
 

@@ -6,6 +6,13 @@
 
 The event occurs when a price is deleted.
 
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
 Data is transmitted as a POST request {.b24-info}
@@ -47,7 +54,7 @@ Data is transmitted as a POST request {.b24-info}
 || **event_handler_id***
 [`integer`](../../data-types.md) | Event handler identifier ||
 || **data***
-[`object`](../../data-types.md) | Object containing event data.
+[`object`](../../data-types.md) | Object with event data.
 
 The structure is described [below](#data) ||
 || **ts***
@@ -77,14 +84,14 @@ The structure is described [below](#fields) ||
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`catalog_price.id`](../../data-types.md#catalog_price) | Price identifier. All fields of the price can be retrieved by its identifier using the [catalog.price.get](../catalog-price-get.md) method ||
+[`catalog_price.id`](../../data-types.md#catalog_price) | Price identifier. You can retrieve all fields of the price by its identifier using the [catalog.price.get](../catalog-price-get.md) method ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your study
+## Continue your exploration
 
 - [{#T}](./catalog-price-on-add.md)
 - [{#T}](./catalog-price-on-update.md)

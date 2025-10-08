@@ -1,4 +1,4 @@
-# Transfer the dialog to an operator by Id imopenlines.bot.session.transfer
+# Transfer the conversation to an operator by Id imopenlines.bot.session.transfer
 
 {% note warning "We are still updating this page" %}
 
@@ -35,7 +35,7 @@ This method transfers the conversation to a specific operator.
 || **USER_ID***
 [`unknown`](../../../data-types.md) | `12` | Identifier of the user to whom the conversation is being redirected | 1 ||
 || **LEAVE***
-[`unknown`](../../../data-types.md) | `N` | Y/N. If N is specified — the chatbot will not leave this chat after redirection and will remain until the user confirms | 1 ||
+[`unknown`](../../../data-types.md) | `N` | Y/N. If N is specified, the chatbot will not leave this chat after redirection and will remain until the user confirms | 1 ||
 |#
 
 {% note info %}
@@ -46,7 +46,7 @@ Instead of `USER_ID`, you can specify `QUEUE_ID` to switch to another open line.
 
 ## Examples
 
-{% include [Explanation about restCommand](../../../chat-bots/_includes/rest-command.md) %}
+{% include [Explanation of restCommand](../../../chat-bots/_includes/rest-command.md) %}
 
 {% list tabs %}
 
@@ -85,7 +85,7 @@ Instead of `USER_ID`, you can specify `QUEUE_ID` to switch to another open line.
         );
         
         const result = response.getData().result;
-        console.log('Dialog successfully transferred:', result);
+        console.log('Conversation successfully transferred:', result);
         processResult(result);
     }
     catch( error )
@@ -136,7 +136,7 @@ Instead of `USER_ID`, you can specify `QUEUE_ID` to switch to another open line.
             if (result.error()) {
                 console.error('Error:', result.error().ex);
             } else {
-                console.log('Dialog successfully transferred:', result.data());
+                console.log('Conversation successfully transferred:', result.data());
             }
         }
     );
@@ -193,6 +193,6 @@ Instead of `USER_ID`, you can specify `QUEUE_ID` to switch to another open line.
 || **Code** | **Description** ||
 || **CHAT_ID_EMPTY** | Chat identifier not provided ||
 || **USER_ID_EMPTY** | User identifier to whom the conversation needs to be redirected not provided ||
-|| **WRONG_CHAT** | Incorrect user identifier specified or this user is a chatbot or an extranet user ||
+|| **WRONG_CHAT** | Incorrect user identifier specified or this user is a chatbot or extranet user ||
 || **BOT_ID_ERROR** | Incorrect chatbot identifier ||
 |#

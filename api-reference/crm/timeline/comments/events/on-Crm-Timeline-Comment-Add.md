@@ -1,14 +1,20 @@
-# Event for Creating a New CRM Activity of Type "Comment" onCrmTimelineCommentAdd
+# Event for Creating a New Deal Type "Comment" onCrmTimelineCommentAdd
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: `any user`
 
-This event triggers when a new CRM activity of type "Comment" is added to the CRM timeline.
+The event triggers when a new deal of type "Comment" is added to the CRM timeline.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 array(
@@ -40,9 +46,9 @@ array(
 || **event***
 [`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmTimelineCommentAdd`||
 || **data***
-`array` | Array containing the data of the added element ||
+`array` | Array with data of the added element ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth***
 [`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
 |#

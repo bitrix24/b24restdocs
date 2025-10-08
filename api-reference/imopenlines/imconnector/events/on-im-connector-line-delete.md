@@ -1,8 +1,8 @@
-# Deleting Open Channel OnImConnectorLineDelete
+# Deleting an Open Line OnImConnectorLineDelete
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it shortly.
+Some data may be missing here — we will complete it soon.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Types and required parameters are not specified.
+- types and requiredness of parameters are not specified
   
 {% endnote %}
 
@@ -20,11 +20,17 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can subscribe: any user
 
-Deleting an open channel. You need to remove your connected connectors.
+Deleting an open line. You need to remove your connected connectors.
 
-#| 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+#|
 || **Parameter** | **Description** | **Available since** ||
-|| **LINE_ID** | ID of the open channel to be deleted. | ||
+|| **LINE_ID** | ID of the open line to be deleted. | ||
 |#
 
 {% include [Parameter Notes](../../../../_includes/required.md) %}

@@ -8,6 +8,12 @@ You can add your own dropdown menu item to the top button in CRM Analytics.
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## Where the Widget is Embedded
 
 #|
@@ -37,9 +43,9 @@ Array
 
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [description of standard data](../_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 

@@ -1,12 +1,18 @@
-# Event on Changing the Set of Values for a Custom List Field onCrmRequisiteUserFieldSetEnumValues
+# Event on changing the set of values for a custom list-type field onCrmRequisiteUserFieldSetEnumValues
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can subscribe: `any user`
 
-The event `onCrmRequisiteUserFieldSetEnumValues` is triggered when the set of values for a custom list field is changed.
+The event `onCrmRequisiteUserFieldSetEnumValues` is triggered when the set of values for a custom list-type field is changed.
 
-## What the Handler Receives
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## What the handler receives
 
 Data is transmitted as a POST request {.b24-info}
 
@@ -36,7 +42,7 @@ Data is transmitted as a POST request {.b24-info}
 ]
 ```
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Parameter**
@@ -44,27 +50,27 @@ Data is transmitted as a POST request {.b24-info}
 || **event***
 [`string`](../../../data-types.md) | Symbolic code of the event. In this case, it is `onCrmRequisiteUserFieldSetEnumValues`||
 || **data***
-[`array`](../../../data-types.md) | Array containing data of the custom field of the requisite for which the set of values was changed ||
+[`array`](../../../data-types.md) | Array with data of the custom field of the requisite for which the set of values was changed ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
 [`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
 |#
 
 ### Parameter data[]
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **FIELDS***
-[`array`](../../../data-types.md) | Array containing the fields of the custom field of the requisite for which the set of values was changed ||
+[`array`](../../../data-types.md) | Array with fields of the custom field of the requisite for which the set of values was changed ||
 |#
 
 ### Parameter FIELDS[]
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Parameter**
@@ -79,9 +85,9 @@ Data is transmitted as a POST request {.b24-info}
 
 ### Parameter auth[]
 
-{% include notitle [Table of Keys in the auth Array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](./on-crm-address-register.md)
 - [{#T}](./on-crm-address-unregister.md)

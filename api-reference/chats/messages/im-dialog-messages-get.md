@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -20,11 +20,11 @@ Some data may be missing — we will fill it in shortly.
 
 > Scope: [`im`](../../scopes/permissions.md)
 >
-> Who can execute the method: participant of the chat
+> Who can execute the method: chat participant
 
-The method `im.dialog.messages.get` retrieves the list of recent messages in the chat. 
+The method `im.dialog.messages.get` retrieves the list of recent messages in a chat.
 
-To get messages from an open line session, use the method [imopenlines.session.history.get](../../imopenlines/openlines/sessions/imopenlines-session-history-get.md). This method allows you to get messages without being a chat participant.
+To get messages from an open line chat, use the method [imopenlines.session.history.get](../../imopenlines/openlines/sessions/imopenlines-session-history-get.md). This method allows you to retrieve messages without being a participant in the chat.
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -39,7 +39,7 @@ or
 || **FIRST_ID**
 [`unknown`](../../data-types.md) | `454322` | Identifier of the first loaded message | 19 ||
 || **LIMIT**
-[`unknown`](../../data-types.md) | `20` | Limit on the selection of messages in the dialog | 19 ||
+[`unknown`](../../data-types.md) | `20` | Limit on the number of messages retrieved in the dialog | 19 ||
 |#
 
 {% include [Parameter notes](../../../_includes/required.md) %}
@@ -64,19 +64,19 @@ Due to the potentially large volume of data, this method does not support standa
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'im.dialog.messages.get',
-    		{
-    			DIALOG_ID: 'chat29'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'im.dialog.messages.get',
+            {
+                DIALOG_ID: 'chat29'
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error.ex);
+        console.error(error.ex);
     }
     ```
 
@@ -178,9 +178,9 @@ Due to the potentially large volume of data, this method does not support standa
                     {
                      "RICH_LINK": [
                         {
-                         "NAME": "My website",
+                         "NAME": "My site",
                          "LINK": "https://my-domain.com",
-                         "DESC": "My personal website",
+                         "DESC": "My personal site",
                          "PREVIEW": "https://my-domain.com/logo/i/share-logo.png"
                         }
                      ]
@@ -208,7 +208,7 @@ Due to the potentially large volume of data, this method does not support standa
             "chat_id": 29,
             "author_id": 1,
             "date": "2018-01-29T16:43:12+02:00",
-            "text": "It's working yes :) :)",
+            "text": "It works yes :) :)",
             "params": {
              "IS_EDITED": "Y"
             }
@@ -318,7 +318,7 @@ Due to the potentially large volume of data, this method does not support standa
     - `author_id` – message author (0 - if the message is system)
     - `date` – message date in ATOM format
     - `text` – message text
-    - `params` – message parameters, object of parameters, if parameters are not provided `null` (the main types will be described below)
+    - `params` – message parameters, an object of parameters, if parameters are not provided `null` (the main types will be described below)
 
 - `users` – objects describing user data:
 
@@ -331,10 +331,10 @@ Due to the potentially large volume of data, this method does not support standa
     - `avatar` – link to avatar (if empty, it means the avatar is not set)
     - `gender` – user's gender
     - `birthday` – user's birthday in DD-MM format, if empty – not set
-    - `extranet` – indicator of external extranet user (`true/false`)
-    - `network` – indicator of Bitrix24.Network user (`true/false`)
-    - `bot` – indicator of bot (`true/false`)
-    - `connector` – indicator of open channel user (`true/false`)
+    - `extranet` – external extranet user flag (`true/false`)
+    - `network` – Bitrix24.Network user flag (`true/false`)
+    - `bot` – bot flag (`true/false`)
+    - `connector` – open lines user flag (`true/false`)
     - `external_auth_id` – external authorization code
     - `status` – selected user status
     - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
@@ -368,7 +368,7 @@ Due to the potentially large volume of data, this method does not support standa
 - `ATTACH` – object containing rich formatting
 - `KEYBOARD` – object containing keyboard description
 - `IS_DELETED` – flag indicating that the message is deleted
-- `IS_EDITED` – flag indicating that the message is edited
+- `IS_EDITED` – flag indicating that the message has been edited
 - `FILE_ID` – array of file identifiers
 - `LIKE` – array of user identifiers who voted for the message
 

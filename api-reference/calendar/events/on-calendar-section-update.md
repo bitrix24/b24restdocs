@@ -8,13 +8,19 @@ The event is triggered when a section or resource is modified.
 
 {% note info " " %}
 
-Technically, a resource is a calendar section. Each resource is placed in a special type of calendars, and a separate section is created for it. Events `OnCalendarSection*` are triggered when resources are added, updated, or deleted.
+Technically, a resource is a calendar section. Each resource is placed in a special type of calendar, and a separate section is created for it. Events `OnCalendarSection*` are triggered when resources are added, updated, or deleted.
+
+{% endnote %}
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## What the Handler Receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 Example: event for deleting a calendar section object with `id = 202`.
 
@@ -45,7 +51,7 @@ Example: event for deleting a calendar section object with `id = 202`.
 || **Name**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic event code.
+[`string`][1] | Symbolic code of the event.
 
 In this case — `ONCALENDARSECTIONUPDATE`||
 || **event_handler_id**

@@ -1,4 +1,4 @@
-# Menu Item in Sales Funnels CRM_FUNNELS_TOOLBAR
+# Menu Item in CRM Sales Funnels Toolbar
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
@@ -6,20 +6,27 @@ You can add your item to the sales funnels toolbar.
 
 ![Widget as an item in the sales funnels toolbar](./_images/CRM_FUNNELS_TOOLBAR.png "Widget as an item in the sales funnels toolbar")
 
-The specific widget embedding code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-## Where the widget is embedded
+{% note info "" %}
 
-#| 
-|| **Widget code** | **Location** ||
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## Where the Widget is Embedded
+
+#|
+|| **Widget Code** | **Location** ||
 || `CRM_FUNNELS_TOOLBAR` | Item in the sales funnels toolbar ||
 |#
 
-## What the handler receives
+## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
+
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -33,17 +40,18 @@ Array
     [status] => L
     [PLACEMENT] => CRM_FUNNELS_TOOLBAR
 )
+
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [description of standard data](../_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 In the current widget, the `PLACEMENT_OPTIONS` parameter is not passed.
 
-## Continue your exploration
+## Continue Your Exploration
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

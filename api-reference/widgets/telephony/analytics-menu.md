@@ -4,7 +4,13 @@
 
 You can add your own menu item in call analytics.
 
-The code for the specific widget placement is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Where the Widget is Embedded
 
@@ -15,7 +21,7 @@ The code for the specific widget placement is specified in the `PLACEMENT` param
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 

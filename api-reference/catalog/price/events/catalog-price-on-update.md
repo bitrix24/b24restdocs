@@ -6,6 +6,13 @@
 
 The event occurs when the price is updated.
 
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
 Data is transmitted as a POST request {.b24-info}
@@ -42,17 +49,17 @@ Data is transmitted as a POST request {.b24-info}
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***
+|| **event***  
 [`string`](../../data-types.md) | Symbolic event code ||
-|| **event_handler_id***
+|| **event_handler_id***  
 [`integer`](../../data-types.md) | Event handler identifier ||
-|| **data***
+|| **data***  
 [`object`](../../data-types.md) | Object with event data.
 
 The structure is described [below](#data) ||
-|| **ts***
+|| **ts***  
 [`integer`](../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth***
+|| **auth***  
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -63,7 +70,7 @@ The structure is described [below](#data) ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **FIELDS***
+|| **FIELDS***  
 [`object`](../../data-types.md) | Object with price properties.
 
 The structure is described [below](#fields) ||
@@ -76,15 +83,15 @@ The structure is described [below](#fields) ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **ID***
-[`catalog_price.id`](../../data-types.md#catalog_price) | Price identifier. You can retrieve all fields of the price by its identifier using the method [catalog.price.get](../catalog-price-get.md) ||
+|| **ID***  
+[`catalog_price.id`](../../data-types.md#catalog_price) | Price identifier. All fields of the price can be retrieved by its identifier using the method [catalog.price.get](../catalog-price-get.md) ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your study
+## Continue your exploration
 
 - [{#T}](./catalog-price-on-add.md)
 - [{#T}](./catalog-price-on-delete.md)

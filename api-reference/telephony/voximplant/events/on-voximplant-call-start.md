@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -20,11 +20,17 @@ Some data may be missing here — we will complete it soon.
 
 {% include notitle [Scope of telephony events](../../_includes/scope-telephony-events.md) %}
 
-The `OnVoximplantCallStart` event is triggered when a call begins (when the operator answers an incoming call and when the subscriber answers an outgoing call).
+The `OnVoximplantCallStart` event is triggered at the beginning of a call (when the operator answers an incoming call and when the subscriber answers an outgoing call).
 
 {% note warning %}
 
 Please note that the event will be triggered without authorization data.
+
+{% endnote %}
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 

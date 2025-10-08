@@ -4,7 +4,13 @@
 >
 > Who can subscribe: any user
 
-The event `OnLiveFeedPostUpdate` is triggered after a message is modified in the News Feed. This allows a third-party application to perform necessary actions when messages are changed. For example, it can send notifications to discussion participants.
+The `OnLiveFeedPostUpdate` event is triggered after a message in the News Feed is modified. This allows a third-party application to perform necessary actions when messages are changed, such as sending notifications to discussion participants.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -54,12 +60,12 @@ The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../data-types.md) | Date and time the event was sent from the [event queue](../../events/index.md) ||
 || **auth**
-[`object`](../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
+[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### Parameter FIELDS {% #fields %}
+### FIELDS Parameter {% #fields %}
 
 #|
 || **Parameter**
@@ -68,7 +74,7 @@ The structure is described [below](#auth) ||
 [`integer`](../../data-types.md) | Identifier of the modified message in the News Feed ||
 |#
 
-### Parameter auth
+### auth Parameter
 
 {% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
 

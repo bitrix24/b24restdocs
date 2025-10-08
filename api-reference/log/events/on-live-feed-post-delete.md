@@ -4,7 +4,13 @@
 >
 > Who can subscribe: any user
 
-The event `OnLiveFeedPostDelete` is triggered after a post is deleted from the News Feed. This allows a third-party application to perform necessary actions upon message deletion—such as logging the deleted content.
+The `OnLiveFeedPostDelete` event is triggered after a post is deleted from the News Feed. This allows a third-party application to perform necessary actions upon message deletion—such as logging the deleted content.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 

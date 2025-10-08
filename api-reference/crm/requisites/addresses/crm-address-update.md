@@ -85,7 +85,7 @@ If at least one string field is specified, only the specified fields will be sav
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":3,"ENTITY_ID":1,"ADDRESS_1":"Moscow Avenue, 261","CITY":"Kaliningrad"}}' \
+    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":3,"ENTITY_ID":1,"ADDRESS_1":"Street, 261","CITY":"Los Angeles"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.address.update
     ```
 
@@ -95,7 +95,7 @@ If at least one string field is specified, only the specified fields will be sav
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":3,"ENTITY_ID":1,"ADDRESS_1":"Moscow Avenue, 261","CITY":"Kaliningrad"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TYPE_ID":1,"ENTITY_TYPE_ID":3,"ENTITY_ID":1,"ADDRESS_1":"Street, 261","CITY":"Los Angeles"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.address.update
     ```
 
@@ -112,8 +112,8 @@ If at least one string field is specified, only the specified fields will be sav
     				"TYPE_ID": 1,           //
     				"ENTITY_TYPE_ID": 3,    // - Identifying fields.
     				"ENTITY_ID": 1,         //
-    				"ADDRESS_1": "Moscow Avenue, 261", // - Fields whose values are changing.
-    				"CITY": "Kaliningrad"                    //
+    				"ADDRESS_1": "Street, 261", // - Fields whose values are changing.
+    				"CITY": "Los Angeles"                    //
     			}
     		}
     	);
@@ -143,8 +143,8 @@ If at least one string field is specified, only the specified fields will be sav
                         'TYPE_ID'        => 1,
                         'ENTITY_TYPE_ID' => 3,
                         'ENTITY_ID'      => 1,
-                        'ADDRESS_1'      => 'Moscow Avenue, 261',
-                        'CITY'           => 'Kaliningrad',
+                        'ADDRESS_1'      => 'Street, 261',
+                        'CITY'           => 'Los Angeles',
                     ],
                 ]
             );
@@ -170,8 +170,8 @@ If at least one string field is specified, only the specified fields will be sav
                 "TYPE_ID": 1,           //
                 "ENTITY_TYPE_ID": 3,    // - Identifying fields.
                 "ENTITY_ID": 1,         //
-                "ADDRESS_1": "Moscow Avenue, 261", // - Fields whose values are changing.
-                "CITY": "Kaliningrad"                    //
+                "ADDRESS_1": "Street, 261", // - Fields whose values are changing.
+                "CITY": "Los Angeles"                    //
             }
         },
         function(result)
@@ -194,8 +194,8 @@ If at least one string field is specified, only the specified fields will be sav
                 'TYPE_ID' => 1,
                 'ENTITY_TYPE_ID' => 3,
                 'ENTITY_ID' => 1,
-                'ADDRESS_1' => 'Moscow Avenue, 261',
-                'CITY' => 'Kaliningrad'
+                'ADDRESS_1' => 'Street, 261',
+                'CITY' => 'Los Angeles'
             ]
         ]
     );

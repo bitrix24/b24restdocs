@@ -1,23 +1,30 @@
-# Main Dropdown Menu Item Near Robot Settings TASK_ROBOT_DESIGNER_TOOLBAR
+# Main dropdown menu item near the Automation rule settings TASK_ROBOT_DESIGNER_TOOLBAR
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
-You can add your own main dropdown menu item near the robot settings in workgroups.
+You can add your main dropdown menu item near the Automation rule settings in workgroups.
 
 The code for the specific widget placement is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-## Where the Widget is Embedded
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## Where the widget is embedded
 
 #|
-|| **Widget Code** | **Location** ||
-|| `TASK_ROBOT_DESIGNER_TOOLBAR` | Main dropdown menu item near robot settings ||
+|| **Widget code** | **Location** ||
+|| `TASK_ROBOT_DESIGNER_TOOLBAR` | Main dropdown menu item near the Automation rule settings ||
 |#
 
-## What the Handler Receives
+## What the handler receives
 
 Data is transmitted as a POST request {.b24-info}
 
 ```php
+
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -32,29 +39,30 @@ Array
     [PLACEMENT] => TASK_ROBOT_DESIGNER_TOOLBAR
     [PLACEMENT_OPTIONS] => {"GROUP_ID":"10"}
 )
+
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
-|| **GROUP_ID*** 
-[`string`](../../data-types.md) | Identifier of the workgroup/project where the widget was opened.
+|| **GROUP_ID***
+[`string`](../../data-types.md) | Identifier of the workgroup/project in which the widget was opened.
 
 Can be used to obtain additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.
 
 ||
 |#
 
-## Continue Exploring
+## Continue exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

@@ -4,21 +4,26 @@
 
 You can add your item in the call card tab.
 
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Where the widget is embedded
 
-#|
-|| **Widget Code** | **Location** ||
-|| `CALL_CARD` | Item in the call card tab ||
+#| 
+|| **Placement Code** | **Location** || 
+|| `CALL_CARD` | Item in the call card tab || 
 |#
 
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -33,7 +38,6 @@ Array
     [PLACEMENT] => CALL_CARD
     [PLACEMENT_OPTIONS] => {"CALL_ID":"externalCall.c3ee67f1a63f6e6117c230ab59cc49ea.1723556778","PHONE_NUMBER":"555555","LINE_NUMBER":"","LINE_NAME":"","CRM_ENTITY_TYPE":"","CRM_ENTITY_ID":"0","CRM_ACTIVITY_ID":"undefined","CALL_DIRECTION":"incoming","CALL_STATE":"connected","CALL_LIST_MODE":"false"}
 )
-
 ```
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -46,34 +50,34 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
-|| **Parameter** | **Description** ||
+#| 
+|| **Parameter** | **Description** || 
 || **CALL_ID*** 
-[`string`](../../data-types.md) | Identifier of the call during which the widget was opened.
+[`string`](../../data-types.md) | The identifier of the call during which the widget was opened. 
 
-||
+|| 
 || **PHONE_NUMBER*** 
-[`string`](../../data-types.md) | The phone number of the client with whom the conversation is taking place.
+[`string`](../../data-types.md) | The phone number of the client with whom the conversation is taking place. 
 
-||
+|| 
 || **LINE_NUMBER** 
-[`string`](../../data-types.md) | The company's phone number used for the conversation with the client.
+[`string`](../../data-types.md) | The company phone number used to talk to the client. 
 
-||
+|| 
 || **LINE_NAME** 
-[`string`](../../data-types.md) | The name of the company's phone line used for the conversation with the client.
+[`string`](../../data-types.md) | The name of the company phone line used to talk to the client. 
 
 Lines are added by applications for integrating telephony using the [telephony.externalLine.add](../../telephony/telephony-external-line-add.md) method and are used for user convenience in Sales Intelligence.
 
-||
+|| 
 || **CRM_ENTITY_TYPE** 
-[`integer`](../../data-types.md) | [Type of the CRM entity](../../crm/data-types.md#object_type) to which the current call is linked.
+[`integer`](../../data-types.md) | [Type of the CRM entity](../../crm/data-types.md#object_type) to which the current call is linked. 
 
 Knowing the type and identifier of the CRM entity (specified in the `CRM_ENTITY_ID` parameter), you can retrieve information about the entity.
 
-||
+|| 
 || **CRM_ENTITY_ID** 
-[`string`](../../data-types.md) | Identifier of the CRM entity to which the current call is linked.
+[`string`](../../data-types.md) | The identifier of the CRM entity to which the current call is linked. 
 
 Knowing the type (specified in the `CRM_ENTITY_TYPE` parameter) and the identifier of the CRM entity (specified in the `CRM_ENTITY_ID` parameter), you can retrieve information about the entity using the corresponding methods:
 
@@ -84,20 +88,20 @@ Knowing the type (specified in the `CRM_ENTITY_TYPE` parameter) and the identifi
 - company [crm.company.get](../../crm/companies/crm-company-get.md)
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
 
-||
+|| 
 || **CRM_ACTIVITY_ID** 
-[`string`](../../data-types.md) | Identifier of the [CRM activity](../../crm/timeline/activities/index.md) related to the current call.
+[`string`](../../data-types.md) | The identifier of the [CRM activity](../../crm/timeline/activities/index.md) associated with the current call. 
 
 Can be used to obtain additional information using the [user.get](../../user/user-get.md) method.
 
-||
+|| 
 || **CALL_DIRECTION*** 
 [`string`](../../data-types.md) | Defines the type of call. Can take the following values:
 
 - 'incoming', incoming call;
-- 'outcoming', outgoing call.
+- 'outcoming', outgoing call
 
-||
+|| 
 || **CALL_STATE** 
 [`string`](../../data-types.md) | Defines the state of the call. Can take the following values:
 
@@ -105,16 +109,16 @@ Can be used to obtain additional information using the [user.get](../../user/use
 
 Other possible values will be published later.
 
-||
+|| 
 || **CALL_LIST_MODE** 
-[`string`](../../data-types.md) | Indicates whether the call is part of a [call campaign](https://helpdesk.bitrix24.com/open/17520342/) or not.
+[`string`](../../data-types.md) | Indicates whether the call is part of a [call campaign](https://helpdesk.bitrix24.com/open/21815426/) or not. 
 
 Can take the following values:
 
 - `False`, the call is not part of a call campaign;
-- `True`, the call is made as part of a call campaign.
+- `True`, the call is made as part of a call campaign
 
-||
+|| 
 |#
 
 ## Continue exploring

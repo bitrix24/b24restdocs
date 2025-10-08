@@ -6,9 +6,15 @@
 
 The `OnOpenLineMessageUpdate` event is triggered when a message in the open line chat is modified.
 
-[Subscribe](../../../events/event-bind.md) to the event can only be done through the application. Only those events intended for the [connector](../../imconnector/index.md) added by the application can be received in the handler.
+You can [subscribe](../../../events/event-bind.md) to the event only through the application. The handler can only receive those events that are intended for the [connector](../../imconnector/index.md) added by the application.
 
-## What the handler receives
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## What the Handler Receives
 
 Data is transmitted in the form of a POST request
 

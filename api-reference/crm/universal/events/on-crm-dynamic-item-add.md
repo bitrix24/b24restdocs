@@ -4,13 +4,19 @@
 >
 > Who can subscribe: `any user`
 
-The event will trigger when an element of any [custom object type](../user-defined-object-types/index.md) is added to the CRM.
+The event will trigger when an item of any [custom object type](../user-defined-object-types/index.md) is added to CRM.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
 
-Event for creating an SPA element with `entityTypeId = 1220`:
+Event for creating a smart process item with `entityTypeId = 1220`:
 
 ```json
 {
@@ -42,7 +48,7 @@ Event for creating an SPA element with `entityTypeId = 1220`:
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic code of the event.
+[`string`][1] | Symbolic event code.
 
 In this case — `ONCRMDYNAMICITEMADD`||
 || **event_handler_id**
@@ -54,16 +60,16 @@ Contains a single key `FIELDS` ||
 || **data.FIELDS**
 [`object`][1] | Object containing information about the fields of the created custom type CRM object.
 
-The structure is described [below](#fields) ||
+Structure is described [below](#fields) ||
 || **ts**
 [`timestamp`][1] | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
 
-The structure is described [below](#auth) ||
+Structure is described [below](#auth) ||
 |#
 
-### Parameter FIELDS {#fields}
+### FIELDS Parameter {#fields}
 
 #|
 || **Parameter**
@@ -74,13 +80,13 @@ The structure is described [below](#auth) ||
 [`integer`][1] | Identifier of the custom CRM type ||
 |#
 
-### Parameter auth {#auth}
+### auth Parameter {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-{% note warning "Events for System Object Types" %}
+{% note warning "System Object Type Events" %}
 
-Although [universal CRM methods](../index.md) allow adding and modifying objects of standard types such as deals, leads, contacts, companies, and estimates, the event `onCrmDynamicItemAdd` will not trigger when adding the listed objects.
+Although [universal CRM methods](../index.md) allow adding and modifying objects of standard types such as deals, leads, contacts, companies, and estimates, the `onCrmDynamicItemAdd` event will not trigger when adding the listed objects.
 
 To track new deals, leads, and so on, you can use specific events:
 
@@ -90,7 +96,7 @@ To track new deals, leads, and so on, you can use specific events:
 - [{#T}](../../companies/events/on-crm-company-add.md)
 - [{#T}](../../quote/events/on-crm-quote-add.md)
 
-When adding new invoices, the event `onCrmDynamicItemAdd` will trigger.
+The `onCrmDynamicItemAdd` event will trigger when new invoices are added.
 
 {% endnote %}
 

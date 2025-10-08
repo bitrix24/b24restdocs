@@ -6,16 +6,22 @@ You can add your item to the context menu in the profile.
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## Where the widget is embedded
 
 #|
-|| **Widget code** | **Location** ||
+|| **Placement Code** | **Location** ||
 || `USER_PROFILE_MENU` | Context menu item in the profile ||
 |#
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 
@@ -51,7 +57,7 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 || **USER_ID***
 [`string`](../../data-types.md) | The identifier of the user whose profile the widget was opened in.
 
-It can be used to retrieve additional information using the [user.get](../../user/user-get.md) method.
+This can be used to retrieve additional information using the [user.get](../../user/user-get.md) method.
 
 ||
 |#

@@ -1,4 +1,4 @@
-# Get User Counters tasks.task.counters.get
+# Get User Task Counters tasks.task.counters.get
 
 > Scope: [`task`](../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ The method `tasks.task.counters.get` retrieves task counter values for the speci
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -38,7 +38,7 @@ By default, the role `view_all` is used. ||
 
 ## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -154,7 +154,7 @@ By default, the role `view_all` is used. ||
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -207,14 +207,14 @@ Returns an empty array `"result":[]` if the user does not exist or does not have
 || **Name**
 `type` | **Description** ||
 || **counter**
-[`integer`](../data-types.md) | Count. ||
+[`integer`](../data-types.md) | The count. ||
 || **code**
 [`integer`](../data-types.md) | Internal counter code. ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -229,7 +229,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Argument #1 ($userId) must be of type int, string given, called in \/var\/www\/html\/bitrix\/modules\/tasks\/lib\/internals\/counter.php on line 78 (internal error) | The value in the `userId` parameter is of an incorrect type. ||
+|| `0` | Argument #1 ($userId) must be of type int, string given, called in \/var\/www\/html\/bitrix\/modules\/tasks\/lib\/internals\/counter.php on line 78 (internal error) | The `userId` parameter has an invalid type. ||
 || `0` | Group not found or access denied. (internal error) | The group does not exist or access is denied. ||
 |#
 

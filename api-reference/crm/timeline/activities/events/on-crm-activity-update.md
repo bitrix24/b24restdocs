@@ -6,6 +6,12 @@
 
 The `onCrmActivityUpdate` event is triggered when an activity is updated in the CRM timeline.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
 Data is sent as a POST request {.b24-info}
@@ -38,7 +44,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityUpdate` ||
+[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityUpdate`||
 || **data**
 `array` | An object containing information about the updated activity.
 
@@ -46,7 +52,7 @@ Contains a single key `FIELDS` ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`array`](../../../data-types.md) | Authorization parameters and data about the account where the event occurred. 
+[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred. 
 
 The structure is described [below](#auth) ||
 |#

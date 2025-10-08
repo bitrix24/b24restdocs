@@ -4,12 +4,18 @@
 
 You can add your item to the main dropdown menu in user and group tasks.
 
-The code for the specific widget placement is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Where the widget is embedded
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Widget code** | **Location** ||
 || `TASK_USER_LIST_TOOLBAR` | Item in the main dropdown menu in user tasks ||
 || `TASK_GROUP_LIST_TOOLBAR` | Item in the main dropdown menu in group tasks ||
 |#
@@ -64,7 +70,7 @@ Data is transmitted as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Footnote about required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [description of standard data](../_includes/widget_data.md) %}
 
@@ -72,17 +78,17 @@ Data is transmitted as a POST request {.b24-info}
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Footnote about required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
-|| **USER_ID***
+|| **USER_ID*** 
 [`string`](../../data-types.md) | The identifier of the user whose task list the widget was opened over.
 
 Can be used to retrieve additional information using the [user.get](../../user/user-get.md) method.
 
 ||
-|| **GROUP_ID***
+|| **GROUP_ID*** 
 [`string`](../../data-types.md) | The identifier of the workgroup/project whose task list the widget was opened over.
 
 Can be used to retrieve additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.
@@ -90,7 +96,7 @@ Can be used to retrieve additional information using the [sonet.group.get](../..
 ||
 |#
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

@@ -10,7 +10,7 @@ Some data may be missing — we will complete it soon.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Types and required parameters are not specified.
+- types and requiredness of parameters are not specified.
 
 {% endnote %}
 
@@ -20,13 +20,19 @@ Some data may be missing — we will complete it soon.
 >
 > Who can subscribe: any user
 
-Event for message deletion from Open Channels.
+This event is triggered when a message is deleted from the open line.
 
-#| 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+#|
 || **Parameter** | **Description** | **Available since** ||
-|| **CONNECTOR** | Connector ID (used to check if this event belongs to the verifier). | ||
-|| **LINE** | Open Channel ID. | ||
-|| **DATA** | Array of messages, where each message is described by an array of the following format:
+|| **CONNECTOR**| Connector ID (used to verify if this event belongs to the verifier). | ||
+|| **LINE** | Open line ID. | ||
+|| **DATA** | An array of messages, where each message is described by an array of the following format:
 
 
 ```json
@@ -39,7 +45,7 @@ Event for message deletion from Open Channels.
     "id": [
      "99"
     ],
-    "text": "Sergey \"Pokoiev\":\n Test message 55"
+    "text": "Sergey \"Pokoev\":\n Test message 55"
 },
 "chat": {
     "id": "2"

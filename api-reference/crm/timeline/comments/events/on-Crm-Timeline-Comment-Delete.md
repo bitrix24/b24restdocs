@@ -1,12 +1,18 @@
-# Event for Deleting a "Comment" CRM Activity onCrmTimelineCommentDelete
+# Event for Deleting a "Comment" Activity onCrmTimelineCommentDelete
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: `any user`
 
-This event triggers when a "Comment" CRM activity is deleted from the CRM timeline.
+This event triggers when a "Comment" activity is deleted from the CRM timeline.
 
-## What the handler receives
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## What the Handler Receives
 
 Data is sent as a POST request {.b24-info}
 
@@ -37,13 +43,13 @@ array(
 #|
 || **Parameter**
 `type` | **Description** ||
-|| **event***
-[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmTimelineCommentDelete`||
-|| **data***
-`array` | Array containing data of the deleted element ||
-|| **ts***
+|| **event*** 
+[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmTimelineCommentDelete` ||
+|| **data*** 
+`array` | Array with data of the deleted element ||
+|| **ts*** 
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
-|| **auth***
+|| **auth*** 
 [`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -54,7 +60,7 @@ array(
 #|
 || **Parameter**
 `type` | **Description** ||
-|| **ID***
+|| **ID*** 
 [`integer`](../../../data-types.md) | `ID` with the value of the deleted comment's identifier ||
 |#
 
@@ -62,7 +68,7 @@ array(
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your study 
+## Continue Exploring
 
 - [{#T}](./index.md)
 - [{#T}](./on-Crm-Timeline-Comment-Add.md)

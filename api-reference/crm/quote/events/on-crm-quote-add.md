@@ -6,9 +6,15 @@
 
 The event `ONCRMQUOTEADD` will trigger when an estimate is added.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -53,7 +59,7 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of sending the event from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
 

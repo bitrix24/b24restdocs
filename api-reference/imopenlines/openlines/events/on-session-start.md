@@ -6,11 +6,17 @@
 
 The `OnSessionStart` event is triggered when a chat is created.
 
-[Subscribe](../../../events/event-bind.md) to the event only through the application. The handler can only receive those events that are intended for the [connector](../../imconnector/index.md) added by the application.
+You can only [subscribe](../../../events/event-bind.md) to the event through the application. Only those events intended for the [connector](../../imconnector/index.md) added by the application can be received in the handler.
 
-## What the handler receives
+{% note info "" %}
 
-Data is transmitted in the form of a POST request
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## What the Handler Receives
+
+Data is transmitted as a POST request
 
 ```php
 [
@@ -58,15 +64,15 @@ Data is transmitted in the form of a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***  
+|| **event*** 
 [`string`](../../../data-types.md) | Symbolic event code ||
-|| **eventId***  
+|| **eventId*** 
 [`integer`](../../../data-types.md) | Event identifier ||
-|| **data***  
+|| **data*** 
 [`object`](../../../data-types.md) | Object with [event data](#data) ||
-|| **ts***  
+|| **ts*** 
 [`integer`](../../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth***  
+|| **auth*** 
 [`object`](../../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -77,7 +83,7 @@ Data is transmitted in the form of a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **DATA***  
+|| **DATA*** 
 [`object`](../../../data-types.md) | Object with [chat data](#chat-params) ||
 |#
 
@@ -88,17 +94,17 @@ Data is transmitted in the form of a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **connector***  
+|| **connector*** 
 [`object`](../../../data-types.md) | Object with information about the connector:
 - `connector_id` — connector identifier
 - `line_id` — open line identifier
 - `chat_id` — chat identifier
 - `user_id` — user identifier in the external system
 ||
-|| **chat***  
+|| **chat*** 
 [`object`](../../../data-types.md) | Object with information about the chat:
 - `id` — chat identifier ||
-|| **line***  
+|| **line*** 
 [`object`](../../../data-types.md) | Object with information about the open line:
 - `id` — open line identifier
 - `name` — name of the open line ||

@@ -1,10 +1,16 @@
-# Event on Lead Deletion onCrmLeadDelete
+# Event onLeadDelete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMLEADDELETE` will trigger upon the deletion of a lead.
+The event `ONLEADDELETE` will trigger when a lead is deleted.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
@@ -12,7 +18,7 @@ Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
-    "event": "ONCRMLEADDELETE",
+    "event": "ONLEADDELETE",
     "event_handler_id": "711",
     "data": {
         "FIELDS": {
@@ -39,9 +45,9 @@ Data is transmitted as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../data-types.md) | Symbolic event code.
 
-In this case — `ONCRMLEADDELETE` ||
+In this case — `ONLEADDELETE` ||
 || **event_handler_id**
 [`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
@@ -53,7 +59,7 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 

@@ -4,11 +4,17 @@
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGRESOURCEDELETE` will trigger when a resource is deleted either manually or via the [booking.v1.resource.delete](../booking-v1-resource-delete.md) method.
+The event `ONBOOKINGRESOURCEDELETE` will trigger when a resource is deleted manually or via the [booking.v1.resource.delete](../booking-v1-resource-delete.md) method.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -37,11 +43,11 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../data-types.md) | Symbolic event code.
 
 In this case — `ONBOOKINGRESOURCEDELETE` ||
 || **event_handler_id**
-[`integer`](../../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../../data-types.md) | Event handler identifier ||
 || **data**
 [`object`](../../../data-types.md) | Object containing information about the deleted resource.
 

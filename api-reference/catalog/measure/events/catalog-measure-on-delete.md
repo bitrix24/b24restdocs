@@ -1,14 +1,21 @@
-# Event on Deleting a Unit of Measurement CATALOG.MEASURE.ON.DELETE
+# Event on Deleting Measurement Unit CATALOG.MEASURE.ON.DELETE
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event occurs when a unit of measurement is deleted.
+The event occurs when a measurement unit is deleted.
+
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is transmitted in the form of a POST request {.b24-info}
 
 ```
 [
@@ -37,7 +44,7 @@ Data is transmitted as a POST request {.b24-info}
 
 ## Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -45,9 +52,9 @@ Data is transmitted as a POST request {.b24-info}
 || **event***
 [`string`](../../data-types.md) | Symbolic event code ||
 || **event_handler_id***
-[`integer`](../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../data-types.md) | Event handler identifier ||
 || **data***
-[`object`](../../data-types.md) | Object containing event data.
+[`object`](../../data-types.md) | Object with event data.
 
 The structure is described [below](#data) ||
 || **ts***
@@ -58,33 +65,33 @@ The structure is described [below](#data) ||
 
 ### Parameter data {#data}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **FIELDS***
-[`object`](../../data-types.md) | Object with properties of the unit of measurement.
+[`object`](../../data-types.md) | Object with properties of the measurement unit.
 
 The structure is described [below](#fields) ||
 |#
 
 ### Parameter FIELDS {#fields}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`catalog_measure.id`](../../data-types.md#catalog_measure) | Identifier of the unit of measurement. You can retrieve all fields of the unit of measurement by its identifier using the method [catalog.measure.get](../catalog-measure-get.md) ||
+[`catalog_measure.id`](../../data-types.md#catalog_measure) | Identifier of the measurement unit. You can get all fields of the measurement unit by its identifier using the method [catalog.measure.get](../catalog-measure-get.md) ||
 |#
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with Keys in the auth Array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](./catalog-measure-on-add.md)
 - [{#T}](./catalog-measure-on-update.md)

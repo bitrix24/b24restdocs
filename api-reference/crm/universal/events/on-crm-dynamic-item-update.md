@@ -1,16 +1,22 @@
-# Event for Updating a Custom Type CRM Object onCrmDynamicItemUpdate
+# Event for updating a custom type CRM object onCrmDynamicItemUpdate
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can subscribe: `any user`
 
-The event is triggered when an element of any [custom object type](../user-defined-object-types/index.md) in CRM is modified.
+The event triggers when an element of any [custom object type](../user-defined-object-types/index.md) in CRM is modified.
 
-## What the Handler Receives
+{% note info "" %}
 
-Data is sent as a POST request {.b24-info}
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
 
-Event for changing an element with `id = 24`, belonging to a SPA with `entityTypeId = 1220`:
+{% endnote %}
+
+## What the handler receives
+
+Data is transmitted as a POST request {.b24-info}
+
+Event for changing an element with `id = 24`, belonging to a smart process with `entityTypeId = 1220`:
 
 ```json
 {
@@ -42,9 +48,9 @@ Event for changing an element with `id = 24`, belonging to a SPA with `entityTyp
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic code of the event.
+[`string`][1] | Symbolic event code.
 
-In this case, `ONCRMDYNAMICITEMUPDATE`||
+In this case, `ONCRMDYNAMICITEMUPDATE` ||
 || **event_handler_id**
 [`integer`][1] | Identifier of the event handler ||
 || **data**
@@ -63,7 +69,7 @@ The structure is described [below](#fields) ||
 The structure is described [below](#auth) ||
 |#
 
-### FIELDS Parameter {#fields}
+### Parameter FIELDS {#fields}
 
 #|
 || **Parameter**
@@ -71,18 +77,18 @@ The structure is described [below](#auth) ||
 || **ID**
 [`integer`][1] | Identifier of the modified custom type CRM object ||
 || **ENTITY_TYPE_ID**
-[`integer`][1] | Identifier of the custom type CRM ||
+[`integer`][1] | Identifier of the custom CRM type ||
 |#
 
-### auth Parameter {#auth}
+### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-{% note warning "System Object Type Events" %}
+{% note warning "Events of system object types" %}
 
 Although [universal CRM methods](../index.md) allow adding and modifying objects of standard types such as deals, leads, contacts, companies, and estimates, the event `onCrmDynamicItemUpdate` will not trigger when modifying the listed objects.
 
-To track changes in deals, leads, etc., you can use specific events:
+To track changes to deals, leads, etc., you can use specific events:
 
 - [{#T}](../../deals/events/on-crm-deal-update.md)
 - [{#T}](../../leads/events/on-crm-lead-update.md)
@@ -94,7 +100,7 @@ When new invoices are modified, the event `onCrmDynamicItemUpdate` will trigger.
 
 {% endnote %}
 
-## Continue Learning
+## Continue exploring
 
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)

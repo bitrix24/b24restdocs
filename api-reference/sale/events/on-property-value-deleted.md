@@ -4,7 +4,13 @@
 >
 > Who can subscribe: any user
 
-The event `OnPropertyValueDeleted` is triggered when an order property value is directly deleted.
+The `OnPropertyValueDeleted` event is triggered when an order property value is deleted.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -54,7 +60,7 @@ Data is transmitted in the form of a POST request
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
-### Data Parameter
+### Parameter data
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -65,7 +71,7 @@ Data is transmitted in the form of a POST request
 [`object`](../../data-types.md) | Object with the property `ID`, containing the identifier of the order property value ||
 |#
 
-#### FIELDS Parameter
+#### Parameter FIELDS
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -76,6 +82,6 @@ Data is transmitted in the form of a POST request
 [`sale_order_property_value.id`](../data-types.md) | Identifier of the order property value. To retrieve all fields of the order property value by identifier, use the method [sale.propertyvalue.get](../property-value/sale-property-value-get.md) ||
 |#
 
-### Auth Parameter
+### Parameter auth
 
-{% include notitle [Auth Parameter](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Parameter auth](../../../_includes/auth-params-in-events.md) %}

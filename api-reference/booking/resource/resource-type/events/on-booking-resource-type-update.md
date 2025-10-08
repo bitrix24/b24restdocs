@@ -1,14 +1,20 @@
-# Event onUpdating Resource Type onBookingResourceTypeUpdate
+# Event on updating resource type onBookingResourceTypeUpdate
 
 > Scope: [`booking`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGRESOURCETYPEUPDATE` will trigger when the resource type is updated using the method [booking.v1.resourcetype.update](../booking-v1-resourcetype-update.md).
+The event `ONBOOKINGRESOURCETYPEUPDATE` will trigger when the resource type is updated using the [booking.v1.resourcetype.update](../booking-v1-resourcetype-update.md) method.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -37,7 +43,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../../data-types.md) | Symbolic event code.
+[`string`](../../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONBOOKINGRESOURCETYPEUPDATE` ||
 || **event_handler_id**

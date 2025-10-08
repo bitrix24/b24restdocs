@@ -4,7 +4,13 @@
 >
 > Who can subscribe: any user
 
-The event `OnPropertyValueEntitySaved` occurs immediately after the order property value is saved.
+The event `OnPropertyValueEntitySaved` occurs immediately after the value of the order property is saved.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -42,15 +48,15 @@ Data is transmitted in the form of a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***
+|| **event***  
 [`string`](../../data-types.md) | Symbolic code of the event ||
-|| **event_handler_id***
+|| **event_handler_id***  
 [`integer`](../../data-types.md) | Identifier of the event handler ||
-|| **data***
-[`object`](../../data-types.md) | Object with event data ||
-|| **ts***
+|| **data***  
+[`object`](../../data-types.md) | Object containing event data ||
+|| **ts***  
 [`integer`](../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth***
+|| **auth***  
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -61,7 +67,7 @@ Data is transmitted in the form of a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **FIELDS***
+|| **FIELDS***  
 [`object`](../../data-types.md) | Object with the property `ID`, containing the identifier of the order property value ||
 |#
 
@@ -72,7 +78,7 @@ Data is transmitted in the form of a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **ID***
+|| **ID***  
 [`sale_order_property_value.id`](../data-types.md) | Identifier of the order property value. To retrieve all fields of the order property value by identifier, use the method [sale.propertyvalue.get](../property-value/sale-property-value-get.md) ||
 |#
 

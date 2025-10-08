@@ -134,7 +134,7 @@ When working with event dates and times, you can use two approaches:
     - `2025-08-05T10:00:00`
 
     Specify the timezone in the `timezone_from` and `timezone_to` parameters:
-    - `Europe/Moscow`
+    - `Europe/Riga`
     - `America/New_York`
     - `Asia/Tokyo`
 

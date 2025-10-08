@@ -6,9 +6,15 @@
 
 The event `ONBOOKINGRESOURCETYPEADD` will trigger when a new resource type is created either manually or via the [booking.v1.resourcetype.add](../booking-v1-resourcetype-add.md) method.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -37,7 +43,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../../data-types.md) | Symbolic event code.
 
 In this case — `ONBOOKINGRESOURCETYPEADD` ||
 || **event_handler_id**

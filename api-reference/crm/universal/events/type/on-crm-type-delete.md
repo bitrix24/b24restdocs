@@ -1,4 +1,4 @@
-# Event for Deleting Custom CRM Type onCrmTypeDelete
+# Event on Deleting Custom CRM Type onCrmTypeDelete
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -6,9 +6,16 @@
 
 The event is triggered when a [custom CRM type](../../user-defined-object-types/index.md) is deleted.
 
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -39,7 +46,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic code of the event.
+[`string`][1] | Symbolic event code.
 
 In this case — `ONCRMTYPEDELETE`||
 || **event_handler_id**
@@ -60,16 +67,17 @@ The structure is described [below](#fields) ||
 The structure is described [below](#auth) ||
 |#
 
-### FIELDS Parameter {#fields}
+
+### Parameter FIELDS {#fields}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`][1] | Identifier of the deleted custom CRM type (primary key, not the type identifier) ||
+[`integer`][1] | Identifier of the deleted custom CRM type (primary key, not type identifier) ||
 |#
 
-### auth Parameter {#auth}
+### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 

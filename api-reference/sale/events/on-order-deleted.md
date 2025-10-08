@@ -6,9 +6,15 @@
 
 The `OnOrderDeleted` event is triggered when an order is directly deleted from the database.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the Handler Receives
 
-Data is sent as a POST request
+Data is transmitted in the form of a POST request
 
 ```
 [	
@@ -43,9 +49,9 @@ Data is sent as a POST request
 || **Name**
 `type` | **Description** ||
 || **event***  
-[`string`](../../data-types.md) | Symbolic code of the event ||
+[`string`](../../data-types.md) | Symbolic event code ||
 || **event_handler_id***  
-[`integer`](../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../data-types.md) | Event handler identifier ||
 || **data***  
 [`object`](../../data-types.md) | Object containing event data ||
 || **ts***  
@@ -73,7 +79,7 @@ Data is sent as a POST request
 || **Name**
 `type` | **Description** ||
 || **ID***  
-[`sale_order.id`](../data-types.md) | Identifier of the order. To retrieve all fields of the order by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
+[`sale_order.id`](../data-types.md) | Order identifier. To retrieve all fields of the order by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
 |#
 
 ### Auth Parameter

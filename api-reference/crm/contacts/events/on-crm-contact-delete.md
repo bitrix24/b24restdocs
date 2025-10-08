@@ -4,11 +4,18 @@
 > 
 > Who can subscribe: any user
 
-The event `onCrmContactDelete` will trigger when a contact is deleted.
+The `onCrmContactDelete` event will trigger when a contact is deleted.
+
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 ```json
 {
@@ -55,7 +62,7 @@ The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#

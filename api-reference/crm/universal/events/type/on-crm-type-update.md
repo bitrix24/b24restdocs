@@ -1,14 +1,21 @@
-# Event for Updating Custom CRM Type onCrmTypeUpdate
+# Event for updating custom CRM type onCrmTypeUpdate
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: `any user`
 
-This event is triggered when a [custom CRM type](../../user-defined-object-types/index.md) is updated.
+The event triggers when a [custom CRM type](../../user-defined-object-types/index.md) is updated.
 
-## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## What the handler receives
+
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -39,7 +46,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic code of the event.
+[`string`][1] | Symbolic event code.
 
 In this case — `ONCRMTYPEUPDATE`||
 || **event_handler_id**
@@ -60,20 +67,22 @@ The structure is described [below](#fields) ||
 The structure is described [below](#auth) ||
 |#
 
-### FIELDS Parameter {#fields}
+
+### Parameter FIELDS {#fields}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`][1] | Identifier of the modified custom CRM type (primary key, not type identifier) ||
+[`integer`][1] | Identifier of the modified custom CRM type (primary key, not the type identifier) ||
 |#
 
-### auth Parameter {#auth}
 
-{% include notitle [Table with Keys in the auth Array](../../../../../_includes/auth-params-in-events.md) %}
+### Parameter auth {#auth}
 
-## Continue Exploring
+{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
+
+## Continue exploring
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

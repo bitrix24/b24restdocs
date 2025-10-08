@@ -6,9 +6,15 @@
 
 The `onUserAdd` event is triggered when a user is added to Bitrix24. The event occurs not after the invitation, but after the user logs into the account and completes the registration.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted in the form of a POST request {.b24-info}
 
 ```
 {
@@ -38,7 +44,7 @@ Data is sent as a POST request {.b24-info}
 
 ## Request parameters
 
-{% include [Note about required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -59,7 +65,7 @@ The structure is described [below](#auth) ||
 
 ### Parameter data {#data}
 
-{% include [Note about required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -100,7 +106,7 @@ Some fields may be absent or have a value of `null` if the application does not 
 
 ### Parameter auth {#auth}
 
-{% include [Note about required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -110,7 +116,7 @@ Some fields may be absent or have a value of `null` if the application does not 
 || **expires_in***
 [`integer`](../../data-types.md) | Time in seconds until the token expires ||
 || **scope***
-[`string`](../../data-types.md) | [Scope](../../scopes/permissions.md) under which the event occurred ||
+[`string`](../../data-types.md) | [Scope](../../scopes/permissions.md) within which the event occurred ||
 || **domain***
 [`string`](../../data-types.md) | Address of Bitrix24 where the event occurred ||
 || **server_endpoint***
@@ -123,7 +129,7 @@ Some fields may be absent or have a value of `null` if the application does not 
 
 ||
 || **client_endpoint***
-[`string`](../../data-types.md) | General path for API method calls for Bitrix24 where the event occurred ||
+[`string`](../../data-types.md) | Common path for API method calls for Bitrix24 where the event occurred ||
 || **member_id***
 [`string`](../../data-types.md) | Identifier of Bitrix24 where the event occurred ||
 || **refresh_token***

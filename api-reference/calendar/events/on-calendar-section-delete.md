@@ -12,6 +12,12 @@ Technically, a resource is a calendar section. Each resource is placed in a spec
 
 {% endnote %}
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the Handler Receives
 
 Data is transmitted as a POST request {.b24-info}
@@ -45,7 +51,7 @@ Example: event for deleting a calendar section object with `id = 202`.
 || **Name**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic event code.
+[`string`][1] | Symbolic code of the event.
 
 In this case — `ONCALENDARSECTIONDELETE`||
 || **event_handler_id**

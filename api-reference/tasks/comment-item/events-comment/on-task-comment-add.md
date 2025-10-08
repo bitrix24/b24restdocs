@@ -1,10 +1,16 @@
-# Event on adding a comment OnTaskCommentAdd
+# Event on Comment Addition OnTaskCommentAdd
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event triggers after a new comment is added to a task. The following data is passed to the handler:
+The event triggers after a new comment is added to a task.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
@@ -41,7 +47,7 @@ array(
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic code of the event, in this case `OnTaskAdd`||
+[`string`](../../../data-types.md) | Symbolic event code, in this case `OnTaskAdd`||
 || **data***
 [`array`](../../../data-types.md) | Array with data of the new task comment ||
 || **ts***
@@ -62,9 +68,9 @@ array(
 || **FIELDS_AFTER***
 [`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` ||
 || **IS_ACCESSIBLE_BEFORE***
-[`string`](../../../data-types.md) | Was the task readable before the event (detailed description provided [below](#is_accessible_before)) ||
+[`string`](../../../data-types.md) | Whether the task was readable before the event (detailed description provided [below](#is_accessible_before)) ||
 || **IS_ACCESSIBLE_AFTER***
-[`string`](../../../data-types.md) | Is the task readable after the event (detailed description provided [below](#is_accessible_after)) ||
+[`string`](../../../data-types.md) | Whether the task became readable after the event (detailed description provided [below](#is_accessible_after)) ||
 |#
 
 ### Field FIELDS_BEFORE {#fields_before}
@@ -121,7 +127,7 @@ array(
 - `undefined` — not defined or check was not performed ||
   |#
 
-## Code examples
+## Code Examples
 
 {% include [Footnote on examples](../../../../_includes/examples.md) %}
 
@@ -218,7 +224,7 @@ array(
 
 {% endlist %}
 
-## Continue learning
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./on-task-comment-update.md)

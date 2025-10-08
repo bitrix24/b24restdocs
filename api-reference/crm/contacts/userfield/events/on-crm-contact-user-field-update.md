@@ -1,10 +1,16 @@
-# Event on User Field Change onCrmContactUserFieldUpdate
+# Event onCrmContactUserFieldUpdate
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 > 
 > Who can subscribe: any user
 
-The event `onCrmContactUserFieldUpdate` is triggered when a user field is changed for contacts.
+The event `onCrmContactUserFieldUpdate` is triggered when a custom field is changed for contacts.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
@@ -47,15 +53,15 @@ In this case — `ONCRMCONTACTUSERFIELDUPDATE`||
 || **event_handler_id**
 [`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | Object containing information about the changed user field
+[`object`](../../../../data-types.md) | Object containing information about the changed custom field
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | Object containing information about the fields of the changed user field
+[`object`](../../../../data-types.md) | Object containing information about the fields of the changed custom field
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -68,20 +74,20 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the changed user field ||
+[`integer`](../../../../data-types.md) | Identifier of the changed custom field ||
 || **ENTITY_ID**
-[`userFieldEntityId`](../../../data-types.md#object_type) | Type of CRM object to which the user field is attached.
+[`userFieldEntityId`](../../../data-types.md#object_type) | Type of CRM object to which the custom field is attached.
 
 In this case — `CRM_CONTACT` ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Code of the changed user field ||
+[`string`](../../../../data-types.md) | Code of the changed custom field ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](./index.md)
 - [{#T}](./on-crm-contact-user-field-add.md)

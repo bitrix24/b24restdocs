@@ -356,7 +356,7 @@ HTTP Status: **200**
 
 Returns an empty array `"list":[]` if the task does not exist ||
 || **time**
-[`time`](../data-types.md#time) | Information about the time taken for the request ||
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Objects lists {#lists}
@@ -371,53 +371,53 @@ Returns an empty array `"list":[]` if the task does not exist ||
 || **field**
 [`string`](../data-types.md) | Type of history event. Possible values for `field`:
 
-- `TITLE` — change of task title
-- `DESCRIPTION` — change of task description
-- `REAL_STATUS` — change of actual status
-- `STATUS` — change of task status
-- `PRIORITY` — change of priority
-- `MARK` — change of task rating
-- `COMMENT` — addition of a comment
-- `DELETE` — deletion of a task
-- `NEW` — creation of a new task
-- `RENEW` — restoration of a task
-- `MOVE_TO_BACKLOG` — moving a task to the backlog
-- `MOVE_TO_SPRINT` — moving a task to a sprint
+- `TITLE` — task title change
+- `DESCRIPTION` — task description change
+- `REAL_STATUS` — actual status change
+- `STATUS` — task status change
+- `PRIORITY` — priority change
+- `MARK` — task rating change
+- `COMMENT` — comment addition
+- `DELETE` — task deletion
+- `NEW` — new task creation
+- `RENEW` — task restoration
+- `MOVE_TO_BACKLOG` — move task to backlog
+- `MOVE_TO_SPRINT` — move task to sprint
 - `PARENT_ID` — change of parent task
 - `GROUP_ID` — change of workgroup/project
-- `STAGE_ID` — change of stage
+- `STAGE_ID` — stage change
 - `CREATED_BY` — change of task author
-- `RESPONSIBLE_ID` — change of responsible person
+- `RESPONSIBLE_ID` — change of assignee
 - `ACCOMPLICES` — change of participants
-- `AUDITORS` — change of observers
-- `DEADLINE` — change of deadline
-- `START_DATE_PLAN` — change of planned start date
-- `END_DATE_PLAN` — change of planned end date
-- `DURATION_PLAN` — change of planned duration
-- `DURATION_PLAN_SECONDS` — change of planned duration in seconds
-- `DURATION_FACT` — change of actual duration
-- `TIME_ESTIMATE` — change of time estimate
-- `TIME_SPENT_IN_LOGS` — change of actual time spent in logs
-- `TAGS` — change of task tags
+- `AUDITORS` — change of auditors
+- `DEADLINE` — deadline change
+- `START_DATE_PLAN` — planned start date change
+- `END_DATE_PLAN` — planned end date change
+- `DURATION_PLAN` — planned duration change
+- `DURATION_PLAN_SECONDS` — planned duration change in seconds
+- `DURATION_FACT` — actual duration change
+- `TIME_ESTIMATE` — time estimate change
+- `TIME_SPENT_IN_LOGS` — actual time spent change in logs
+- `TAGS` — task tags change
 - `DEPENDS_ON` — change of task dependencies
 - `FILES` — change of file list
 - `UF_TASK_WEBDAV_FILES` — change of user field with files
-- `CHECKLIST_ITEM_CREATE` — creation of a checklist item
-- `CHECKLIST_ITEM_RENAME` — renaming of a checklist item
-- `CHECKLIST_ITEM_REMOVE` — removal of a checklist item
-- `CHECKLIST_ITEM_CHECK` — marking a checklist item as completed
-- `CHECKLIST_ITEM_UNCHECK` — unchecking a checklist item
-- `ADD_IN_REPORT` — change of the "add to report" flag
+- `CHECKLIST_ITEM_CREATE` — checklist item creation
+- `CHECKLIST_ITEM_RENAME` — checklist item renaming
+- `CHECKLIST_ITEM_REMOVE` — checklist item removal
+- `CHECKLIST_ITEM_CHECK` — checklist item marked as completed
+- `CHECKLIST_ITEM_UNCHECK` — checklist item unmarked as completed
+- `ADD_IN_REPORT` — change of "add to report" flag
 - `TASK_CONTROL` — change of result control
-- `ALLOW_TIME_TRACKING` — enabling or disabling time tracking
-- `ALLOW_CHANGE_DEADLINE` — allowing or prohibiting deadline changes
+- `ALLOW_TIME_TRACKING` — enable or disable time tracking
+- `ALLOW_CHANGE_DEADLINE` — allow or disallow deadline changes
 - `FLOW_ID` — change of flow ||
 || **value**
 [`object`](../data-types.md) | The object describes what change occurred:
 - `from` — value before the change
 - `to` — value after the change
 
-The type of value depends on the event: for a new comment — `ID` of the comment, for a checklist item change — text of the item, for adding an observer — user identifier, and so on ||
+The type of value depends on the event: for a new comment — `ID` of the comment, for checklist item change — text of the item, for adding an auditor — user identifier, and so on ||
 || **user**
 [`object`](../data-types.md) | An object with [user description](#user) who performed the action ||
 |#
@@ -457,7 +457,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | Required parameter `taskId` is missing ||
-|| `0` | wrong task id (internal error) | The `taskId` parameter has an invalid type ||
+|| `0` | wrong task id (internal error) | The value of `taskId` is of incorrect type ||
 || `0` | Access denied. (internal error) | The user does not have access to the task ||
 |#
 

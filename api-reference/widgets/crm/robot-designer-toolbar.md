@@ -4,9 +4,15 @@
 
 You can add your dropdown menu item to the top button of the robot designer in CRM entities: [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [new invoices](../../crm/universal/invoice.md), [custom entity types](../../crm/universal/index.md).
 
-![Widget as a dropdown menu item of the top button in the robot designer](./_images/CRM_ROBOT_DESIGNER_TOOLBAR.png "Widget as a dropdown menu item of the top button in the robot designer")
+![Widget as a Dropdown Menu Item of the Top Button in the Robot Designer](./_images/CRM_ROBOT_DESIGNER_TOOLBAR.png "Widget as a Dropdown Menu Item of the Top Button in the Robot Designer")
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Where the Widget is Embedded
 
@@ -15,12 +21,12 @@ The specific widget placement code is specified in the `PLACEMENT` parameter of 
 || `CRM_LEAD_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in the [lead](../../crm/leads/index.md) ||
 || `CRM_DEAL_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in the [deal](../../crm/deals/index.md) ||
 || `CRM_SMART_INVOICE_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in the [new invoices](../../crm/universal/invoice.md) ||
-|| `CRM_DYNAMIC_XXX_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in custom CRM entity types. Instead of XXX, specify the numeric identifier of the specific [custom entity type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` ||
+|| `CRM_DYNAMIC_XXX_ROBOT_DESIGNER_TOOLBAR` | Dropdown menu item of the top button in custom CRM entity types. Replace XXX with the numeric identifier of the specific [custom entity type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` ||
 |#
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 {% list tabs %}
 
@@ -106,9 +112,9 @@ Data is sent as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Footnote about required parameters](../../../_includes/required.md) %}
+{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [description of standard data](../_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 

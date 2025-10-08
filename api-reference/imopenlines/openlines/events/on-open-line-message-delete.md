@@ -1,12 +1,18 @@
-# OnOpenLineMessageDelete Chat Message Deletion
+# OnOpenLineMessageDelete Chat Message Deletion Event
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md) 
 >
 > Who can subscribe: any user
 
-The `OnOpenLineMessageDelete` event is triggered when a message is deleted in the open line chat.
+The `OnOpenLineMessageDelete` event triggers when a message is deleted in the open line chat.
 
 [Subscribe](../../../events/event-bind.md) to the event can only be done through the application. The handler can only receive those events that are intended for the [connector](../../imconnector/index.md) added by the application.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
@@ -69,7 +75,7 @@ Data is transmitted in the form of a POST request
 [`object`](../../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
-### Parameter data {#data}
+### Data Parameter {#data}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -84,7 +90,7 @@ Data is transmitted in the form of a POST request
 [`object`](../../../data-types.md) | Object with [chat data](#chat-params) ||
 |#
 
-#### Parameter DATA {#chat-params}
+#### DATA Parameter {#chat-params}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -105,6 +111,6 @@ Data is transmitted in the form of a POST request
 - `id` — chat identifier ||
 |#
 
-### Parameter auth
+### Auth Parameter
 
-{% include notitle [Parameter auth](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth Parameter](../../../../_includes/auth-params-in-events.md) %}

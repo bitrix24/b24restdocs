@@ -6,6 +6,12 @@
 
 The `ONCRMLEADUPDATE` event will trigger when a lead is updated.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
 Data is sent as a POST request {.b24-info}
@@ -39,11 +45,11 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic event code.
+[`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONCRMLEADUPDATE` ||
 || **event_handler_id**
-[`integer`](../../../data-types.md) | Event handler identifier ||
+[`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
 [`object`](../../../data-types.md) | Object containing information about the updated lead.
 

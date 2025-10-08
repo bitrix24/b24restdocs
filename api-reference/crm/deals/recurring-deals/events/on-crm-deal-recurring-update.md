@@ -4,11 +4,17 @@
 >
 > Who can subscribe: any user
 
-The event `ONCRMDEALRECURRINGUPDATE` will trigger when a regular deal template is updated.
+The event `ONCRMDEALRECURRINGUPDATE` will trigger when the template of a recurring deal is updated.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -52,13 +58,13 @@ Contains a single key `FIELDS` ||
 || **data.FIELDS**
 [`object`](../../../../data-types.md) | Object containing information about the fields of the modified template.
 
-The structure is described [below](#fields) ||
+Structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
-The structure is described [below](#auth) ||
+Structure is described [below](#auth) ||
 |#
 
 ### Parameter FIELDS {#fields}
@@ -67,9 +73,9 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the record in the regular deal settings table ||
+[`integer`](../../../../data-types.md) | Identifier of the record in the settings table for recurring deals ||
 || **RECURRING_DEAL_ID**
-[`integer`](../../../../data-types.md) | Identifier of the regular deal template ||
+[`integer`](../../../../data-types.md) | Identifier of the recurring deal template ||
 |#
 
 ### Parameter auth {#auth}

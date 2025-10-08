@@ -1,14 +1,20 @@
-# Event on Comment Change OnTaskCommentUpdate
+# Event on Comment Update OnTaskCommentUpdate
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event triggers after a comment is changed in a task. The following data is passed to the handler:
+The event triggers after a comment is modified in a task.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 array(
@@ -45,9 +51,9 @@ array(
 || **data***
 [`array`](../../../data-types.md) | Array with task comment data ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time of event sending from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`array`](../../../data-types.md) | Authorization parameters and data about the account where the event occurred ||
+[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
 |#
 
 ### Parameter data[]
@@ -58,9 +64,9 @@ array(
 || **Name**
 `type` | **Description** ||
 || **FIELDS_BEFORE***
-[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task before the event (detailed description provided [below](#fields_before)). If there are no available task fields, this field will contain the value `undefined` ||
+[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task before the event (detailed description provided [below](#fields_before)). If no task fields are available, this field will contain the value `undefined` ||
 || **FIELDS_AFTER***
-[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` ||
+[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If no task fields are available, this field will contain the value `undefined` ||
 || **IS_ACCESSIBLE_BEFORE***
 [`string`](../../../data-types.md) | Was the task readable before the event (detailed description provided [below](#is_accessible_before)) ||
 || **IS_ACCESSIBLE_AFTER***
@@ -106,7 +112,7 @@ array(
 [`string`](../../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
-- `undefined` — not defined or check was not performed ||
+- `undefined` — not defined or check not performed ||
   |#
 
 ### Field IS_ACCESSIBLE_AFTER {#is_accessible_after}
@@ -120,7 +126,7 @@ array(
 [`string`](../../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
-- `undefined` — not defined or check was not performed ||
+- `undefined` — not defined or check not performed ||
   |#
 
 ## Code Examples
@@ -172,7 +178,7 @@ array(
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {

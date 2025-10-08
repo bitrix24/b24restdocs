@@ -1,10 +1,17 @@
-# Event on Unit of Measurement Change CATALOG.MEASURE.ON.UPDATE
+# Event on Measurement Unit Change CATALOG.MEASURE.ON.UPDATE
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event occurs when a unit of measurement is updated.
+The event occurs when a measurement unit is updated.
+
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
@@ -64,7 +71,7 @@ The structure is described [below](#data) ||
 || **Name**
 `type` | **Description** ||
 || **FIELDS***
-[`object`](../../data-types.md) | Object with properties of the unit of measurement.
+[`object`](../../data-types.md) | Object with properties of the measurement unit.
 
 The structure is described [below](#fields) ||
 |#
@@ -77,14 +84,14 @@ The structure is described [below](#fields) ||
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`catalog_measure.id`](../../data-types.md#catalog_measure) | Identifier of the unit of measurement. You can retrieve all fields of the unit of measurement by its identifier using the [catalog.measure.get](../catalog-measure-get.md) method ||
+[`catalog_measure.id`](../../data-types.md#catalog_measure) | Identifier of the measurement unit. You can retrieve all fields of the measurement unit by its identifier using the [catalog.measure.get](../catalog-measure-get.md) method ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](./catalog-measure-on-add.md)
 - [{#T}](./catalog-measure-on-delete.md)

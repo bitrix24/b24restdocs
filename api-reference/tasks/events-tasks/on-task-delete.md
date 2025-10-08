@@ -4,11 +4,17 @@
 >
 > Who can subscribe: any user
 
-The event is triggered after a task is deleted. The following data is passed to the handler:
+The event is triggered after a task is deleted.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 array(
@@ -35,7 +41,7 @@ array(
 )
 ```
 
-{% include notitle [Note on parameters](../../../_includes/required.md) %}
+{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter**
@@ -45,14 +51,14 @@ array(
 || **data***
 [`array`](../../data-types.md) | Array with data of the deleted task ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time the event was sent from the [event queue](../../events/index.md) ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth***
 [`array`](../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
 |#
 
 ### Parameter data[]
 
-{% include notitle [Note on parameters](../../../_includes/required.md) %}
+{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -62,14 +68,14 @@ array(
 || **FIELDS_AFTER***
 [`undefined`\|`object`](../../data-types.md) | Fields of the task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` ||
 || **IS_ACCESSIBLE_BEFORE***
-[`string`](../../data-types.md) | Whether the task was accessible for reading before the event (detailed description provided [below](#is_accessible_before)) ||
+[`string`](../../data-types.md) | Whether the task was readable before the event (detailed description provided [below](#is_accessible_before)) ||
 || **IS_ACCESSIBLE_AFTER***
-[`string`](../../data-types.md) | Whether the task became accessible for reading after the event (detailed description provided [below](#is_accessible_after)) ||
+[`string`](../../data-types.md) | Whether the task became readable after the event (detailed description provided [below](#is_accessible_after)) ||
 |#
 
 ### Field FIELDS_BEFORE {#fields_before}
 
-{% include notitle [Note on parameters](../../../_includes/required.md) %}
+{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -78,11 +84,11 @@ array(
 [`integer`](../../data-types.md) | Identifier of the deleted task ||
 |#
 
-{% include notitle [Note on parameters](../../../_includes/required.md) %}
+{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
 ### Field FIELDS_AFTER {#fields_after}
 
-{% include notitle [Note on parameters](../../../_includes/required.md) %}
+{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -93,7 +99,7 @@ array(
 
 ### Field IS_ACCESSIBLE_BEFORE {#is_accessible_before}
 
-{% include notitle [Note on parameters](../../../_includes/required.md) %}
+{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -107,7 +113,7 @@ array(
 
 ### Field IS_ACCESSIBLE_AFTER {#is_accessible_after}
 
-{% include notitle [Note on parameters](../../../_includes/required.md) %}
+{% include notitle [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -122,7 +128,7 @@ array(
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -169,7 +175,7 @@ array(
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {

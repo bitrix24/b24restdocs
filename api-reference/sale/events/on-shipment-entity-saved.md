@@ -6,7 +6,13 @@
 >
 > Who can subscribe: any user
 
-The event `OnShipmentEntitySaved` occurs immediately after the shipment is saved.
+The `OnShipmentEntitySaved` event occurs immediately after the shipment is saved.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -45,9 +51,9 @@ Data is transmitted as a POST request
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic code of the event ||
+[`string`](../../data-types.md) | Symbolic event code ||
 || **event_handler_id***
-[`integer`](../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../data-types.md) | Event handler identifier ||
 || **data***
 [`object`](../../data-types.md) | Object containing event data ||
 || **ts***
@@ -75,7 +81,7 @@ Data is transmitted as a POST request
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order_shipment.id`](../data-types.md) | Identifier of the shipment. To retrieve all fields of the shipment by its identifier, use the method [sale.shipment.get](../shipment/sale-shipment-get.md) ||
+[`sale_order_shipment.id`](../data-types.md) | Shipment identifier. To retrieve all fields of the shipment by identifier, use the method [sale.shipment.get](../shipment/sale-shipment-get.md) ||
 |#
 
 ### Parameter auth

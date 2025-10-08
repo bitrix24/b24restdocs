@@ -9,7 +9,7 @@ items:
     href: sonet-group-user-request.md  
   - name: Add a Participant Without an Invitation  
     href: sonet-group-user-add.md  
-  - name: Change Participant Roles  
+  - name: Change Participants' Roles  
     href: sonet-group-user-update.md  
   - name: Get the List of Participants  
     href: sonet-group-user-get.md  

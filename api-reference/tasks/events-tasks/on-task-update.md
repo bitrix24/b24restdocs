@@ -4,7 +4,13 @@
 >
 > Who can subscribe: any user
 
-The event is triggered after a task is updated. The following data is passed to the handler:
+The event is triggered after a task is updated.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
@@ -43,11 +49,11 @@ array(
 || **event***
 [`string`](../../data-types.md) | Symbolic event code, in this case `OnTaskUpdate`||
 || **data***
-[`array`](../../data-types.md) | Array with data of the updated task ||
+[`array`](../../data-types.md) | Array with the updated task data ||
 || **ts***
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth***
-[`array`](../../data-types.md) | Authorization parameters and data about the account where the event occurred ||
+[`array`](../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
 |#
 
 ### Parameter data[]
@@ -58,13 +64,13 @@ array(
 || **Name**
 `type` | **Description** ||
 || **FIELDS_BEFORE***
-[`undefined`\|`object`](../../data-types.md) | Fields of the task before the event (detailed description provided [below](#fields_before)). If there are no available task fields, this field will contain the value `undefined` ||
+[`undefined`\|`object`](../../data-types.md) | Task fields before the event (detailed description provided [below](#fields_before)). If no task fields are available, this field will contain the value `undefined` ||
 || **FIELDS_AFTER***
-[`undefined`\|`object`](../../data-types.md) | Fields of the task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` ||
+[`undefined`\|`object`](../../data-types.md) | Task fields after the event (detailed description provided [below](#fields_after)). If no task fields are available, this field will contain the value `undefined` ||
 || **IS_ACCESSIBLE_BEFORE***
-[`string`](../../data-types.md) | Whether the task was accessible for reading before the event (detailed description provided [below](#is_accessible_before)) ||
+[`string`](../../data-types.md) | Whether the task was readable before the event (detailed description provided [below](#is_accessible_before)) ||
 || **IS_ACCESSIBLE_AFTER***
-[`string`](../../data-types.md) | Whether the task became accessible for reading after the event (detailed description provided [below](#is_accessible_after)) ||
+[`string`](../../data-types.md) | Whether the task became readable after the event (detailed description provided [below](#is_accessible_after)) ||
 |#
 
 ### Field FIELDS_BEFORE {#fields_before}

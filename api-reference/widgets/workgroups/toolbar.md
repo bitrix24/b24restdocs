@@ -2,23 +2,28 @@
 
 > Scope: [`intranet`](../../scopes/permissions.md)
 
-You can add your own dropdown menu item above the project task list.
+You can add your dropdown menu item above the project task list.
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-## Where the Widget is Embedded
+{% note info "" %}
 
-#|
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## Where the widget is embedded
+
+#| 
 || **Widget Code** | **Location** ||
 || `TASK_GROUP_LIST_TOOLBAR` | Dropdown menu item above the task list ||
 |#
 
-## What the Handler Receives
+## What the handler receives
 
 Data is transmitted as a POST request {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -30,33 +35,32 @@ Array
     [REFRESH_ID] => 4dd5e16600705a0700005a4b00000001f0f107a934a327935855b75f8c3686204e3bd5
     [member_id] => da45a03b265edd8787f8a258d793cc5d
     [status] => L
-    [PLACEMENT] => TASK_AUTOMATION_RULE_DESIGNER_TOOLBAR
+    [PLACEMENT] => TASK_ROBOT_DESIGNER_TOOLBAR
     [PLACEMENT_OPTIONS] => {"GROUP_ID":"10"}
 )
-
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|
+#| 
 || **Parameter** | **Description** ||
-|| **GROUP_ID***
+|| **GROUP_ID*** 
 [`string`](../../data-types.md) | Identifier of the workgroup/project in which the widget was opened.
 
-Can be used to obtain additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.
+It can be used to retrieve additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.
 
-||
+|| 
 |#
 
-## Continue Your Exploration
+## Continue Exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

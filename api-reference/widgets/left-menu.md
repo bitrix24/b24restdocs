@@ -1,9 +1,6 @@
-# Widgets in the Main Menu
+# Widgets in the LEFT_MENU Main Menu
 
-> Widget codes: **LEFT_MENU**
->
 > Scope: [`basic`](../scopes/permissions.md)
->
 
 You can add your item to the main menu of the account.
 
@@ -11,16 +8,22 @@ You can add your item to the main menu of the account.
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](./placement-bind.md) method.
 
-## Where the Widget is Embedded
+{% note info "" %}
 
-#|
-|| **Widget Code** | **Location** ||
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## Where the widget is embedded
+
+#| 
+|| **Placement Code** | **Location** ||
 || `LEFT_MENU` | Item in the main menu of the account ||
 |#
 
-## What the Handler Receives
+## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 
@@ -51,11 +54,11 @@ In the current widget, the `PLACEMENT_OPTIONS` parameter is not passed.
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [Application with its own page in the left menu](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&LESSON_ID=26022&LESSON_PATH=25400.25996.26000.26022)
+- [Application with its own page in the left menu](https://dev.quickbooks.com/learning/course/index.php?COURSE_ID=266&LESSON_ID=25538&LESSON_PATH=25398.25506.25530.25538)
 
 {% endnote %}
 
-## Continue Your Learning
+## Continue your study
 
 - [{#T}](./placement-bind.md)
 - [{#T}](./ui-interaction/index.md)

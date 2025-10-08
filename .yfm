@@ -11,8 +11,8 @@ resources:
 
 search: true
 
-extensions:
-  - './extensions/feedback-control'
+#extensions:
+#  - './extensions/feedback-control'
 
-feedbackControl:
-  endpoint: https://util.bitrixsoft.com/rest-doc/feedback-control.php
+#feedbackControl:
+#  endpoint: https://util.bitrixsoft.com/rest-doc/feedback-control.php

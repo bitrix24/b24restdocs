@@ -139,7 +139,7 @@
 
   By default — `null` ||
   || **utmSource**
-  [`string`][1] | Advertising system. For example: Yandex-Direct, Google-Adwords, etc.
+  [`string`][1] | Advertising system. For example: Google-Adwords
 
   By default — `null` ||
   || **utmMedium**
@@ -324,7 +324,7 @@
 
   By default — `null` ||
   || **utmSource**
-  [`string`][1] | Advertising system. Yandex-Direct, Google-Adwords, etc.
+  [`string`][1] | Advertising system. For example: Google-Adwords
 
   By default — `null` ||
   || **utmMedium**
@@ -467,7 +467,7 @@
 
   By default — `null` ||
   || **utmSource**
-  [`string`][1] | Advertising system. Yandex-Direct, Google-Adwords, etc.
+  [`string`][1] | Advertising system. For example: Google-Adwords
 
   By default — `null` ||
   || **utmMedium**
@@ -606,7 +606,7 @@
 
   By default — `null` ||
   || **utmSource**
-  [`string`][1] | Advertising system. Yandex-Direct, Google-Adwords, etc.
+  [`string`][1] | Advertising system. For example: Google-Adwords
 
   By default — `null` ||
   || **utmMedium**
@@ -773,7 +773,7 @@
 
   By default — identifier of the first available "my" company ||
   || **utmSource**
-  [`string`][1] | Advertising system. Yandex-Direct, Google-Adwords, etc.
+  [`string`][1] | Advertising system. For example: Google-Adwords
 
   By default — `null` ||
   || **utmMedium**

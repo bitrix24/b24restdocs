@@ -2,13 +2,13 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM entity items
+> Who can execute the method: any user with "read" access permission for CRM object elements
 
-The method returns information about an item based on the item identifier and the CRM object type identifier.
+The method returns information about an item by its identifier and the identifier of the CRM object type.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -18,7 +18,7 @@ The method returns information about an item based on the item identifier and th
 || **id***
 [`integer`][1] | Identifier of the item whose information we want to obtain.
 
-Can be retrieved using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
+It can be retrieved using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md) ||
 || **useOriginalUfNames**
 [`boolean`][1] | This parameter is used to control the format of custom field names in the response.   
 Possible values:
@@ -31,7 +31,7 @@ Default is `N` ||
 
 ## Code Examples
 
-{% include [Footnote about examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 Get information about a lead with `id = 250`
 
@@ -214,7 +214,7 @@ HTTP Status: **200**
             "companyTitle": "Administrative Company",
             "post": "Admin",
             "address": null,
-            "comments": "[B]Comment about the admin[/B]",
+            "comments": "[B]Comment about admin[/B]",
             "webformId": 0,
             "originatorId": null,
             "originId": null,
@@ -226,7 +226,7 @@ HTTP Status: **200**
             "hasImol": "N",
             "login": null,
             "isReturnCustomer": "N",
-            "searchContent": "250 Lead #250 Adminov Admin Adminovich Administrative Company 999.90 US Dollar 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In Progress Exhibition Exhibition about Admins City Admin [O]Comment about the admin[/O] 321",
+            "searchContent": "250 Lead #250 Adminov Admin Adminovich Administrative Company 999.90 US Dollar 6111111111 111111111 11111111 1111111 111111 11111 1111 111 nqzva rknzcyr pbz In Process Exhibition Exhibition about Admin City Admin [O]Comment about admin[/O] 321",
             "isManualOpportunity": "Y",
             "movedBy": 1,
             "movedTime": "2024-07-22T17:00:08+02:00",
@@ -284,7 +284,7 @@ HTTP Status: **200**
 || **result**
 [`object`][1] | Root element of the response. Contains a single key `item` ||
 || **item**
-[`item`](./object-fields.md) | Information about the item, [field descriptions](./object-fields.md) ||
+[`item`](./object-fields.md) | Information about the item, [field description](./object-fields.md) ||
 || **time**
 [`time`][1] | Object containing information about the request execution time ||
 |#
@@ -313,10 +313,10 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code**                          | **Description**                                     | **Value**                                                    ||
-|| `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users | User is not an intranet user                 ||
-|| `400`      | `NOT_FOUND`                      | Smart process not found                          | Occurs when an invalid `entityTypeId` is passed              ||
-|| `400`      | `NOT_FOUND`                      | Item not found                                | Item with the provided `id` of type `entityTypeId` does not exist     ||
-|| `400`      | `ACCESS_DENIED`                  | You do not have permission to view this item        | User does not have read access permission for items of type `entityTypeId` ||
+|| `403`      | `allowed_only_intranet_user`     | Action allowed only for intranet users            | User is not an intranet user                                 ||
+|| `400`      | `NOT_FOUND`                      | SPA not found                                      | Occurs when an invalid `entityTypeId` is passed             ||
+|| `400`      | `NOT_FOUND`                      | Item not found                                    | Item with the given `id` of type `entityTypeId` does not exist ||
+|| `400`      | `ACCESS_DENIED`                  | You do not have permission to view this item      | User does not have read access permission for items of type `entityTypeId` ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
@@ -330,4 +330,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./crm-item-fields.md)
 - [{#T}](./object-fields.md)
 
-[1]: ../data-types.md
+[1]: ../../data-types.md

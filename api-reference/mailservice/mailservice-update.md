@@ -61,11 +61,11 @@ The method `mailservice.update` updates the parameters of the mail service.
     		{
     			'ID': 5,
     			'ACTIVE': 'N',
-    			'NAME': 'Mail service Yandex',
-    			'SERVER': 'imap.yandex.com',
+    			'NAME': 'Mail service',
+    			'SERVER': 'imap.mailservice.com',
     			'PORT': '993',
     			'ENCRYPTION': 'Y',
-    			'LINK': 'https://mail.yandex.com/',
+    			'LINK': 'https://mail.mailservice.com/',
     			'SORT': '666'
     		}
     	);
@@ -91,11 +91,11 @@ The method `mailservice.update` updates the parameters of the mail service.
                 [
                     'ID'        => 5,
                     'ACTIVE'    => 'N',
-                    'NAME'      => 'Mail service Yandex',
-                    'SERVER'    => 'imap.yandex.com',
+                    'NAME'      => 'Mail service',
+                    'SERVER'    => 'imap.mailservice.com',
                     'PORT'      => '993',
                     'ENCRYPTION' => 'Y',
-                    'LINK'      => 'https://mail.yandex.com/',
+                    'LINK'      => 'https://mail.mailservice.com/',
                     'SORT'      => '666',
                 ]
             );
@@ -122,11 +122,11 @@ The method `mailservice.update` updates the parameters of the mail service.
         {
             'ID': 5,
             'ACTIVE': 'N',
-            'NAME': 'Mail service Yandex',
-            'SERVER': 'imap.yandex.com',
+            'NAME': 'Mail service',
+            'SERVER': 'imap.mailservice.com',
             'PORT': '993',
             'ENCRYPTION': 'Y',
-            'LINK': 'https://mail.yandex.com/',
+            'LINK': 'https://mail.mailservice.com/',
             'SORT': '666'
         },
         function(result)

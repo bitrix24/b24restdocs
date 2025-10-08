@@ -1,4 +1,4 @@
-# Event on Deleting Price Rounding Rule CATALOG.ROUNDING.ON.DELETE
+# Event on Deletion of Price Rounding Rule CATALOG.ROUNDING.ON.DELETE
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
@@ -6,9 +6,16 @@
 
 The event occurs when a price rounding rule is deleted.
 
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```
 [
@@ -37,33 +44,33 @@ Data is sent as a POST request {.b24-info}
 
 ## Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***  
+|| **event***
 [`string`](../../data-types.md) | Symbolic event code ||
-|| **event_handler_id***  
-[`integer`](../../data-types.md) | Identifier of the event handler ||
-|| **data***  
-[`object`](../../data-types.md) | Object containing event data.
+|| **event_handler_id***
+[`integer`](../../data-types.md) | Event handler identifier ||
+|| **data***
+[`object`](../../data-types.md) | Object with event data.
 
 The structure is described [below](#data) ||
-|| **ts***  
+|| **ts***
 [`integer`](../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth***  
+|| **auth***
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
 ### Parameter data {#data}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **FIELDS***  
+|| **FIELDS***
 [`object`](../../data-types.md) | Object with properties of the price rounding rule.
 
 The structure is described [below](#fields) ||
@@ -71,20 +78,20 @@ The structure is described [below](#fields) ||
 
 ### Parameter FIELDS {#fields}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **ID***  
-[`catalog_rounding_rule.id`](../../data-types.md#catalog_rounding_rule) | Identifier of the price rounding rule. You can retrieve all fields of the rounding rule by its identifier using the method [catalog.roundingRule.get](../catalog-rounding-rule-get.md) ||
+|| **ID***
+[`catalog_rounding_rule.id`](../../data-types.md#catalog_rounding_rule) | Identifier of the price rounding rule. You can retrieve all fields of the rounding rule by its identifier using the [catalog.roundingRule.get](../catalog-rounding-rule-get.md) method ||
 |#
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with Keys in the auth Array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Your Exploration
+## Continue Learning
 
 - [{#T}](./catalog-rounding-on-add.md)
 - [{#T}](./catalog-rounding-on-update.md)

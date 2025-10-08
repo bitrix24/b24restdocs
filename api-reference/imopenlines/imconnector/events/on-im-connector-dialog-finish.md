@@ -4,7 +4,13 @@
 >
 > Who can subscribe: any user
 
-This event is triggered when the dialog is closed.
+The event is triggered when the dialog is closed.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
@@ -46,9 +52,9 @@ Data is sent as a POST request
         'expires_in' => 3600,
         'scope' => 'imconnector',
         'domain' => 'some-domain.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
+        'server_endpoint' => 'https://oauth.bitrix.info/rest/&#39;',
         'status' => 'F',
-        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
+        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/&#39;',
         'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
         'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
         'application_token' => '51856fefc120afa4b628cc82d3935cce',
@@ -75,7 +81,7 @@ Data is sent as a POST request
 [`object`](../../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
-### Parameter data {#data}
+### Data Parameter {#data}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -85,12 +91,12 @@ Data is sent as a POST request
 || **CONNECTOR*** 
 [`string`](../../../data-types.md) | Connector identifier ||
 || **LINE*** 
-[`integer`](../../../data-types.md) | Identifier of the open line ||
+[`integer`](../../../data-types.md) | Open line identifier ||
 || **DATA*** 
 [`object`](../../../data-types.md) | Object with [dialog data](#dialog-params) ||
 |#
 
-#### Parameter DATA {#dialog-params}
+#### DATA Parameter {#dialog-params}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -100,7 +106,7 @@ Data is sent as a POST request
 || **connector*** 
 [`object`](../../../data-types.md) | Object with information about additional settings:
 - `connector_id` — connector identifier
-- `line_id` — identifier of the open line
+- `line_id` — open line identifier
 - `chat_id` — chat identifier
 - `user_id` — user identifier in the external system
 ||
@@ -118,6 +124,6 @@ Data is sent as a POST request
 - `id` — user identifier in the external system ||
 |#
 
-### Parameter auth
+### Auth Parameter
 
-{% include notitle [Parameter auth](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Auth parameter](../../../../_includes/auth-params-in-events.md) %}

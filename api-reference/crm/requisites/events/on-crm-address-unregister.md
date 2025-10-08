@@ -6,6 +6,13 @@
 
 The event `onCrmAddressUnregister` is triggered when an address is deleted.
 
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
 Data is sent as a POST request {.b24-info}
@@ -44,9 +51,9 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic code of the event. In this case, it is `onCrmAddressUnregister`||
+[`string`](../../../data-types.md) | Symbolic event code. In this case, it is `onCrmAddressUnregister`||
 || **data***
-[`array`](../../../data-types.md) | Array containing the data of the deleted address ||
+[`array`](../../../data-types.md) | Array with the data of the deleted address ||
 || **ts***
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth***
@@ -61,7 +68,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **FIELDS***
-[`array`](../../../data-types.md) | Array containing the fields of the deleted address ||
+[`array`](../../../data-types.md) | Array with the fields of the deleted address ||
 |#
 
 ### Parameter FIELDS[]
@@ -72,16 +79,16 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **TYPE_ID***
-[`integer`](../../../data-types.md) | Identifier of the address type. Enumeration item "Address Type".
+[`integer`](../../../data-types.md) | Identifier of the address type. Enumeration element "Address Type".
 
-The enumeration items for "Address Type" are returned by the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md)
+The enumeration elements "Address Type" are returned by the method [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md)
 ||
 || **ENTITY_TYPE_ID***
 [`integer`](../../../data-types.md) | Identifier of the parent object's type.
 
-The type identifiers are returned by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
+Object type identifiers are returned by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-Addresses can only be linked to Requisites (and requisites are linked to companies or contacts) or Leads. For backward compatibility, it is still possible to link Addresses to Contacts or Companies. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by support 
+Addresses can only be linked to Requisites (which are linked to companies or contacts) or Leads. For backward compatibility, the ability to link Addresses to Contacts or Companies is retained. However, this linkage is only possible on some older accounts where the old address handling mode was specifically enabled by technical support.
 ||
 || **ENTITY_ID***
 [`integer`](../../../data-types.md) | Identifier of the parent object ||
@@ -90,16 +97,16 @@ Addresses can only be linked to Requisites (and requisites are linked to compani
 
 This field is for internal use. The value is automatically filled when the address is added.
 
-This field contains the identifier of the parent object of the requisite (company or contact) if the address is linked to a requisite. If the address is linked to a lead, then this value will be the lead's identifier
+This field contains the identifier of the parent object of the requisite (company or contact) if the address is linked to a requisite. If the address is linked to a lead, this value will be the lead identifier.
 ||
 || **ANCHOR_TYPE_ID***
-[`integer`](../../../data-types.md) | Identifier of the main parent object's type.
+[`integer`](../../../data-types.md) | Identifier of the type of the main parent object.
 
 This field is for internal use. The value is automatically filled when the address is added.
 
-The type identifiers are returned by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
+Object type identifiers are returned by the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md).
 
-This field contains the identifier of the parent object's type of the requisite (company or contact) if the address is linked to a requisite. If the address is linked to a lead, then this value will be the lead type identifier
+This field contains the identifier of the type of the parent object of the requisite (company or contact) if the address is linked to a requisite. If the address is linked to a lead, this value will be the lead type identifier.
 ||
 |#
 
@@ -107,7 +114,7 @@ This field contains the identifier of the parent object's type of the requisite 
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your study
+## Continue exploring
 
 - [{#T}](./on-crm-address-register.md)
 - [{#T}](./on-crm-requisite-add.md)

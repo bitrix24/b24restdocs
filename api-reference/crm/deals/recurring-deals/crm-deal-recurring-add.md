@@ -1,4 +1,4 @@
-# Create a new recurring deal crm.deal.recurring.add
+# Create a New Recurring Deal crm.deal.recurring.add
 
 {% note warning "We are still updating this page" %}
 
@@ -39,12 +39,11 @@ To find out the required format of the fields, execute the method [crm.deal.recu
 
 ## Example
 
-{% include [Examples note](../../../../_includes/examples.md) %}
+{% include [Example notes](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
-
 
     ```js
     try
@@ -57,7 +56,7 @@ To find out the required format of the fields, execute the method [crm.deal.recu
     
     	const date2str = function(d)
     	{
-    		return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+02:00';
+    		return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+03:00';
     	};
     
     	const paddatepart = function(part)
@@ -98,7 +97,6 @@ To find out the required format of the fields, execute the method [crm.deal.recu
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -167,7 +165,7 @@ To find out the required format of the fields, execute the method [crm.deal.recu
     nextYear.setYear(current.getFullYear() + 1);
     var date2str = function(d)
     {
-        return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+02:00';
+        return d.getFullYear() + '-' + paddatepart(1 + d.getMonth()) + '-' + paddatepart(d.getDate()) + 'T' + paddatepart(d.getHours()) + ':' + paddatepart(d.getMinutes()) + ':' + paddatepart(d.getSeconds()) + '+03:00';
     };
     var paddatepart = function(part)
     {
@@ -205,7 +203,5 @@ To find out the required format of the fields, execute the method [crm.deal.recu
     ```
 
 {% endlist %}
-
-
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

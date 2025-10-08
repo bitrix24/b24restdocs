@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will complete it soon.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -28,6 +28,12 @@ Please note that the event will be triggered without authorization data.
 
 {% endnote %}
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 The event receives an array with the following data:
 
 #|
@@ -35,13 +41,13 @@ The event receives an array with the following data:
 || **CALL_ID** | Call identifier. ||
 || **CALL_TYPE** | Type of call, see description of call types. ||
 || **PHONE_NUMBER** | The number from which the subscriber is calling (if call type is 2 - Incoming) or the number to which the operator is calling (if call type is 1 - Outgoing). ||
-|| **ACCOUNT_NUMBER** | The number that received the call (if call type is 2 - Incoming) or the number from which the call was made (if call type is 1 - Outgoing). ||
-|| **ACCOUNT_USER_ID** | Identifier of the operator who answered (if call type is 2 - Incoming) or identifier of the calling operator (if call type is 1 - Outgoing). ||
+|| **PORTAL_NUMBER** | The number that received the call (if call type is 2 - Incoming) or the number from which the call was made (if call type is 1 - Outgoing). ||
+|| **PORTAL_USER_ID** | Identifier of the operator who answered (if call type is 2 - Incoming) or identifier of the operator who called (if call type is 1 - Outgoing). ||
 || **CALL_DURATION** | Duration of the call. ||
 || **CALL_START_DATE** | Date in ISO format. ||
 || **COST** | Cost of the call. ||
 || **COST_CURRENCY** | Currency of the call (USD, EUR). ||
 || **CALL_FAILED_CODE** | Call code, see the table of call codes. ||
-|| **CALL_FAILED_REASON** | Text description of the call code (in Latin script). ||
+|| **CALL_FAILED_REASON** | Text description of the call code (in Latin). ||
 || **CRM_ACTIVITY_ID** | ID of the CRM activity associated with the call. ||
 |#

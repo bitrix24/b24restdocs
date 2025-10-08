@@ -6,9 +6,15 @@
 
 The `onSonetGroupUpdate` event is triggered when a workgroup/project is modified. This allows a third-party application to respond to changes in groups and perform necessary actions—such as data synchronization or sending notifications.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
-Data is transmitted in the form of a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -50,13 +56,13 @@ Contains a single key `FIELDS` ||
 || **data.FIELDS**
 [`object`](../../data-types.md) | Object containing information about the fields of the modified workgroup.
 
-The structure is described [below](#fields) ||
+Structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../data-types.md) | Date and time the event was sent from the [event queue](../../events/index.md) ||
 || **auth**
 [`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
-The structure is described [below](#auth) ||
+Structure is described [below](#auth) ||
 |#
 
 ### Parameter FIELDS {% #fields %}

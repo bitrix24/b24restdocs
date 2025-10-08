@@ -1,14 +1,20 @@
-# Event on Document Creation onCrmDocumentGeneratorDocumentAdd
+# Event when creating a document onCrmDocumentGeneratorDocumentAdd
 
 > Scope: [`documentgenerator, crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDOCUMENTGENERATORDOCUMENTADD` will trigger upon the creation of a new document.
+The event `ONCRMDOCUMENTGENERATORDOCUMENTADD` will trigger when a new document is created.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is transmitted as a POST request {.b24-info}
+Data is sent as a POST request {.b24-info}
 
 ```json
 {
@@ -55,7 +61,7 @@ Contains the key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
@@ -72,7 +78,7 @@ The structure is described [below](#auth) ||
 || **ENTITY_TYPE_ID**
 [`integer`](../../../../data-types.md) | Identifier of the [object type](../../../../crm/data-types.md#object_type) to which the document belongs, for example `1` — lead ||
 || **ENTITY_ID**
-[`integer`](../../../../data-types.md) | Identifier of the element to which the document is linked ||
+[`integer`](../../../../data-types.md) | Identifier of the entity to which the document is linked ||
 |#
 
 ### Parameter auth {#auth}

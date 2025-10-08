@@ -6,7 +6,7 @@
 
 The event `ONCRMDEALMOVETOCATEGORY` will trigger when the deal's Sales Funnel changes.
 
-Currently, this event can only be subscribed to from the [application](../../../../settings/app-installation/index.md).
+Currently, you can only subscribe to the event from the [application](../../../../settings/app-installation/index.md).
 
 ## What the handler receives
 
@@ -43,7 +43,7 @@ Data is transmitted as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../data-types.md) | Symbolic event code.
 
 In this case — `ONCRMDEALMOVETOCATEGORY`||
 || **event_handler_id**
@@ -57,7 +57,7 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
 [`object`](../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
 
@@ -74,7 +74,7 @@ The structure is described [below](#auth) ||
 || **CATEGORY_ID**
 [`integer`](../../../data-types.md) | Identifier of the new Sales Funnel ||
 || **STAGE_ID**
-[`string`](../../../data-types.md) | Identifier of the new stage of the deal ||
+[`string`](../../../data-types.md) | Identifier of the new deal stage ||
 |#
 
 ### Parameter auth {#auth}

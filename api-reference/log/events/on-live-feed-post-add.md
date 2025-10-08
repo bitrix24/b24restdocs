@@ -4,7 +4,13 @@
 > 
 > Who can subscribe: any user
 
-The event `OnLiveFeedPostAdd` is triggered after a new message is added to the News Feed. This allows a third-party application to perform necessary actions when messages are added, such as checking spelling or adding tags.
+The `OnLiveFeedPostAdd` event is triggered after a new message is added to the News Feed. This allows a third-party application to perform necessary actions when messages are added, such as checking spelling or adding tags.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -53,14 +59,14 @@ Contains a single key `FIELDS` ||
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
+[`timestamp`](../../data-types.md) | Date and time the event was sent from the [event queue](../../events/index.md) ||
 || **auth**
 [`object`](../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### Parameter FIELDS {% #fields %}
+### FIELDS Parameter {% #fields %}
 
 #|
 || **Parameter**
@@ -69,7 +75,7 @@ The structure is described [below](#auth) ||
 [`integer`](../../data-types.md) | Identifier of the message added to the News Feed ||
 |#
 
-### Parameter auth
+### auth Parameter
 
 {% include notitle [Table with keys in the auth array](../../../_includes/auth-params-in-events.md) %}
 

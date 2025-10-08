@@ -4,11 +4,17 @@
 >
 > Who can subscribe: any user
 
-The `onAppMethodConfirm` event is triggered upon receiving the [administrator's decision](../../scopes/confirmation.md) of the account to use the methods.
+The `onAppMethodConfirm` event is triggered upon receiving the [administrator's decision](../../scopes/confirmation.md) from the account to use the methods.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is transmitted in the form of a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```
 {
@@ -76,13 +82,13 @@ The structure is described [below](#auth) ||
 || **Name**
 `type` | **Description** ||
 || **domain***
-[`string`](../../data-types.md) | Address of the Bitrix24 account ||
+[`string`](../../data-types.md) | Bitrix24 account address ||
 || **server_endpoint***
-[`string`](../../data-types.md) | Authorization server address for token renewal ||
+[`string`](../../data-types.md) | Authorization server address for token refresh ||
 || **client_endpoint***
-[`string`](../../data-types.md) | General path for API method calls of the account ||
+[`string`](../../data-types.md) | Common path for API method calls of the account ||
 || **member_id***
-[`string`](../../data-types.md) | Unique identifier of the account ||
+[`string`](../../data-types.md) | Unique account identifier ||
 || **application_token***
 [`string`](../../data-types.md) | Token for secure event processing ||
 |#

@@ -4,7 +4,13 @@
 >
 > Who can subscribe: any user
 
-The event is triggered when a dialog is created.
+The event triggers when a dialog is created.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -63,15 +69,15 @@ Data is sent as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***  
+|| **event*** 
 [`string`](../../../data-types.md) | Symbolic event code ||
-|| **eventId***  
+|| **eventId*** 
 [`integer`](../../../data-types.md) | Event identifier ||
-|| **data***  
+|| **data*** 
 [`object`](../../../data-types.md) | Object with [event data](#data) ||
-|| **ts***  
+|| **ts*** 
 [`integer`](../../../data-types.md) | Timestamp of the event sent from the event queue ||
-|| **auth***  
+|| **auth*** 
 [`object`](../../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
@@ -82,11 +88,11 @@ Data is sent as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **CONNECTOR***  
+|| **CONNECTOR*** 
 [`string`](../../../data-types.md) | Connector identifier ||
-|| **LINE***  
+|| **LINE*** 
 [`integer`](../../../data-types.md) | Open line identifier ||
-|| **DATA***  
+|| **DATA*** 
 [`object`](../../../data-types.md) | Object with [dialog data](#dialog-params) ||
 |#
 
@@ -97,23 +103,23 @@ Data is sent as a POST request
 #|
 || **Name**
 `type` | **Description** ||
-|| **connector***  
+|| **connector*** 
 [`object`](../../../data-types.md) | Object with information about additional settings:
 - `connector_id` — connector identifier
 - `line_id` — open line identifier
 - `chat_id` — chat identifier
 - `user_id` — user identifier in the external system
 ||
-|| **session***  
+|| **session*** 
 [`object`](../../../data-types.md) | Object with information about the session:
 - `id` — session identifier
 - `closed` — mark indicating if the dialog is closed. `N` — dialog is open
 - `parent_id` — identifier of the previous session
 - `close_term` — number of minutes until the session closes ||
-|| **chat***  
+|| **chat*** 
 [`object`](../../../data-types.md) | Object with information about the chat:
 - `id` — chat identifier ||
-|| **user***  
+|| **user*** 
 [`object`](../../../data-types.md) | Object with information about the user:
 - `id` — user identifier in the external system ||
 |#

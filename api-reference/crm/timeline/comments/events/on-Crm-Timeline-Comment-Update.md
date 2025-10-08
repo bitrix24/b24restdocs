@@ -1,14 +1,20 @@
-# Event for Updating a Deal of Type "Comment" onCrmTimelineCommentUpdate
+# Event on deal update of type "Comment" onCrmTimelineCommentUpdate
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: `any user`
 
-This event triggers when a deal of type "Comment" is updated in the CRM timeline.
+The event triggers on the update of a deal of type "Comment" in the CRM timeline.
 
-## What the Handler Receives
+{% note info "" %}
 
-Data is sent as a POST request {.b24-info}
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## What the handler receives
+
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 array(
@@ -32,7 +38,7 @@ array(
 )
 ```
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Parameter**
@@ -40,29 +46,29 @@ array(
 || **event***
 [`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmTimelineCommentUpdate`||
 || **data***
-`array` | Array containing the data of the updated element ||
+`array` | Array with data of the updated element ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth***
 [`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
 |#
 
 ### Parameter data[]
 
-{% include notitle [Note on Parameters](../../../../../_includes/required.md) %}
+{% include notitle [Note on parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../../data-types.md) | `ID` with the value of the updated comment's identifier ||
+[`integer`](../../../data-types.md) | `ID` with the value of the updated comment identifier ||
 |#
 
 ### Parameter auth[]
 
-{% include notitle [Table with Keys in the auth Array](../../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Your Exploration 
+## Continue exploring 
 
 - [{#T}](./index.md)
 - [{#T}](./on-Crm-Timeline-Comment-Add.md)

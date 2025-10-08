@@ -6,19 +6,25 @@ You can add your item to the timeline menu of CRM objects: [leads](../../crm/lea
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-Extended capabilities of the button above the timeline are described in the article [Additional integration capabilities in CRM_XXX_DETAIL_ACTIVITY](./detail-activity-area.md)
+Extended capabilities of the button above the timeline are described in the article [Additional capabilities of CRM_XXX_DETAIL_ACTIVITY integration](./detail-activity-area.md)
+
+{% note info "" %}
+
+The integration will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Where the widget is integrated
 
 #|
-|| **Widget Code** | **Location** ||
+|| **Widget code** | **Location** ||
 || `CRM_LEAD_DETAIL_ACTIVITY` | Timeline menu item for [lead](../../crm/leads/index.md) ||
 || `CRM_CONTACT_DETAIL_ACTIVITY` | Timeline menu item for [contact](../../crm/contacts/index.md) ||
 || `CRM_COMPANY_DETAIL_ACTIVITY` | Timeline menu item for [company](../../crm/companies/index.md) ||
 || `CRM_DEAL_DETAIL_ACTIVITY` | Timeline menu item for [deal](../../crm/deals/index.md) ||
 || `CRM_QUOTE_DETAIL_ACTIVITY` | Timeline menu item for [estimate](../../crm/quote/index.md) ||
 || `CRM_SMART_INVOICE_DETAIL_ACTIVITY` | Timeline menu item for [invoices](../../crm/universal/invoice.md) ||
-|| `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY` | Timeline menu item for custom CRM object type. Instead of XXX, you need to specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
+|| `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY` | Timeline menu item for custom CRM object type. Instead of XXX, specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_DETAIL_ACTIVITY` ||
 |#
 
 ## What the handler receives
@@ -176,7 +182,7 @@ Data is transmitted as a POST request {.b24-info}
 
 {% endlist %}
 
-{% include [Footnote about required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [description of standard data](../_includes/widget_data.md) %}
 
@@ -184,7 +190,7 @@ Data is transmitted as a POST request {.b24-info}
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Footnote about required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||

@@ -1,16 +1,22 @@
-# Event for Deleting a Custom Type CRM Object onCrmDynamicItemDelete
+# Event for Deleting a Custom CRM Object onCrmDynamicItemDelete
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can subscribe: `any user`
 
-The event will trigger upon the deletion of an item of any [custom object type](../user-defined-object-types/index.md) in CRM.
+The event will trigger upon the deletion of any [custom object type](../user-defined-object-types/index.md) item in CRM.
 
-## What the handler receives
+{% note info "" %}
 
-Data is sent as a POST request {.b24-info}
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
 
-The event for deleting an item with the identifier `23`, belonging to the SPA with `entityTypeId = 1220`:
+{% endnote %}
+
+## What the Handler Receives
+
+Data is transmitted as a POST request {.b24-info}
+
+The event for deleting an item with the identifier `23`, belonging to a smart process with `entityTypeId = 1220`:
 
 ```json
 {
@@ -42,17 +48,17 @@ The event for deleting an item with the identifier `23`, belonging to the SPA wi
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic code of the event.
+[`string`][1] | Symbolic event code.
 
 In this case — `ONCRMDYNAMICITEMDELETE`||
 || **event_handler_id**
 [`integer`][1] | Identifier of the event handler ||
 || **data**
-[`object`][1] | Object containing information about the deleted custom type CRM object.
+[`object`][1] | Object containing information about the deleted custom CRM object.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`][1] | Object containing information about the fields of the deleted custom type CRM object.
+[`object`][1] | Object containing information about the fields of the deleted custom CRM object.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -63,26 +69,26 @@ The structure is described [below](#fields) ||
 The structure is described [below](#auth) ||
 |#
 
-### FIELDS Parameter {#fields}
+### Parameter FIELDS {#fields}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`][1] | Identifier of the deleted custom type CRM object ||
+[`integer`][1] | Identifier of the deleted custom CRM object ||
 || **ENTITY_TYPE_ID**
-[`integer`][1] | Identifier of the custom type CRM ||
+[`integer`][1] | Identifier of the custom CRM type ||
 |#
 
-### auth Parameter {#auth}
+### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-{% note warning "System Object Type Events" %}
+{% note warning "Events for System Object Types" %}
 
-Although [universal CRM methods](../index.md) allow adding and modifying objects of standard types such as deals, leads, contacts, companies, and estimates, the event `onCrmDynamicItemDelete` will not trigger when deleting the aforementioned objects.
+Although [universal CRM methods](../index.md) allow adding and modifying objects of standard types such as deals, leads, contacts, companies, and estimates, the event `onCrmDynamicItemDelete` will not trigger when deleting the listed objects.
 
-To track deleted deals, leads, etc., you can use specific events:
+To track deleted deals, leads, etc., you can use special events:
 
 - [{#T}](../../deals/events/on-crm-deal-delete.md)
 - [{#T}](../../leads/events/on-crm-lead-delete.md)

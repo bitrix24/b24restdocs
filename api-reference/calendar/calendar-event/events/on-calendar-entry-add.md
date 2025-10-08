@@ -1,16 +1,22 @@
-# When Adding the OnCalendarEntryAdd Event
+# When Adding an Event OnCalendarEntryAdd
 
 > Scope: [`calendar`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-This event is triggered when a calendar event is added.
+The event is triggered when a calendar event is added.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
-Example: an event for creating a calendar event object with `id = 1414`.
+Example: event for creating a calendar event object with `id = 1414`.
 
 ```json
 {
@@ -39,7 +45,7 @@ Example: an event for creating a calendar event object with `id = 1414`.
 || **Name**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic event code.
+[`string`][1] | Symbolic code of the event.
 
 In this case — `ONCALENDARENTRYADD`||
 || **event_handler_id**
@@ -58,7 +64,7 @@ Contains a single key — `id` ||
 The structure is described [below](#auth) ||
 |#
 
-### auth Parameter {#auth}
+### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 

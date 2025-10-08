@@ -1,14 +1,14 @@
-# Get CRM Item Fields
+# Get Fields of CRM Item `crm.item.fields`
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: any user with "read" access permission for CRM object items
+> Who can execute the method: any user with "read" access permission for CRM object elements
 
-This method retrieves a list of fields and their configuration for items of type `entityTypeId`.
+This method retrieves a list of fields and their configuration for elements of type `entityTypeId`.
 
 {% note warning %}
 
-Items belonging to different types of CRM objects will have different sets of fields.
+Elements belonging to different types of CRM objects will have different sets of fields.
 
 {% endnote %}
 
@@ -35,7 +35,7 @@ Default is `N` ||
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
-Get the list of fields for items in the SPA with `entityTypeId = 1268`
+Get the list of fields for elements of the SPA with `entityTypeId = 1268`
 
 {% list tabs %}
 
@@ -249,7 +249,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Available to Everyone",
+                "title": "Available to All",
                 "upperName": "OPENED"
             },
             "webformId": {
@@ -406,7 +406,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isMultiple": false,
                 "isDynamic": false,
-                "title": "Additional Info about Source",
+                "title": "Additional Information about the Source",
                 "upperName": "SOURCE_DESCRIPTION"
             },
             "currencyId": {
@@ -556,7 +556,7 @@ HTTP Status: **200**
 ```
 
 where: 
-- `field_n` — field of the item
+- `field_n` — field of the element
 - `value_n` — information about the field in the format [`crm_rest_field_description`](../data-types.md#crm_rest_field_description)
 
 ||
@@ -591,7 +591,7 @@ HTTP Status: **400**, **403**
 || **Status** | **Code** | **Description** | **Value** ||
 || `403`      | `allowed_only_intranet_user` | Action allowed only for intranet users | User is not an intranet user                 ||
 || `400`      | `NOT_FOUND` | SPA not found                          | Occurs when an invalid `entityTypeId` is passed              ||
-|| `400`      | `ACCESS_DENIED` | You do not have permission to view this item        | User does not have read access permission for items of type `entityTypeId` ||
+|| `400`      | `ACCESS_DENIED` | You do not have permission to view this element        | User does not have read access permission for elements of type `entityTypeId` ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
@@ -605,4 +605,4 @@ HTTP Status: **400**, **403**
 - [{#T}](crm-item-delete.md)
 - [{#T}](./object-fields.md)
 
-[1]: ../data-types.md
+[1]: ../../data-types.md

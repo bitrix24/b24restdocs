@@ -4,11 +4,17 @@
 >
 > Who can subscribe: any user
 
-The event triggers after a comment is deleted in a task. The following data is passed to the handler:
+The event triggers after a comment is deleted in a task.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 array(
@@ -45,7 +51,7 @@ array(
 || **data***
 [`array`](../../../data-types.md) | Array with task comment data ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth***
 [`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
 |#
@@ -58,13 +64,13 @@ array(
 || **Name**
 `type` | **Description** ||
 || **FIELDS_BEFORE***
-[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task before the event (detailed description provided [below](#fields_before)). If there are no available task fields, this field will contain the value `undefined` ||
+[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task before the event (detailed description provided [below](#fields_before)). If no task fields are available, this field will contain the value `undefined` ||
 || **FIELDS_AFTER***
-[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` ||
+[`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If no task fields are available, this field will contain the value `undefined` ||
 || **IS_ACCESSIBLE_BEFORE***
-[`string`](../../../data-types.md) | Whether the task was readable before the event (detailed description provided [below](#is_accessible_before)) ||
+[`string`](../../../data-types.md) | Was the task readable before the event (detailed description provided [below](#is_accessible_before)) ||
 || **IS_ACCESSIBLE_AFTER***
-[`string`](../../../data-types.md) | Whether the task became readable after the event (detailed description provided [below](#is_accessible_after)) ||
+[`string`](../../../data-types.md) | Is the task readable after the event (detailed description provided [below](#is_accessible_after)) ||
 |#
 
 ### Field FIELDS_BEFORE {#fields_before}
@@ -92,7 +98,7 @@ array(
 || **TASK_ID***
 [`integer`](../../../data-types.md) | Identifier of the task to which the comment belonged ||
 || **ACTION***
-[`string`](../../../data-types.md) | Action, which will always be `DEL` in this case ||
+[`string`](../../../data-types.md) | Action, in this case will always be `DEL` ||
 |#
 
 ### Field IS_ACCESSIBLE_BEFORE {#is_accessible_before}
@@ -106,7 +112,7 @@ array(
 [`string`](../../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
-- `undefined` — not defined or check was not performed ||
+- `undefined` — not defined or check not performed ||
   |#
 
 ### Field IS_ACCESSIBLE_AFTER {#is_accessible_after}
@@ -120,7 +126,7 @@ array(
 [`string`](../../../data-types.md) | Possible values:
 - `Y` (Yes) — yes
 - `N` (No) — no
-- `undefined` — not defined or check was not performed ||
+- `undefined` — not defined or check not performed ||
   |#
 
 ## Code Examples
@@ -172,7 +178,7 @@ array(
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your required data processing logic
         processData($result);
     
     } catch (Throwable $e) {

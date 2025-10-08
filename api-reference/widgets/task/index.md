@@ -1,23 +1,30 @@
-# Task List Context Menu Item
+# Context Menu Item of TASK_LIST_CONTEXT_MENU
 
 > Scope: [`task`](../../scopes/permissions.md)
 
-You can add your own item to the context menu of the task list.
+You can add your own context menu item to the list.
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-## Where the Widget is Embedded
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## Where the widget is embedded
 
 #|
 || **Widget Code** | **Location** ||
-|| `TASK_LIST_CONTEXT_MENU` | Context menu item of the task list ||
+|| `TASK_LIST_CONTEXT_MENU` | Context menu item of the list ||
 |#
 
-## What the Handler Receives
+## What the handler receives
 
 Data is sent as a POST request {.b24-info}
 
 ```php
+
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -32,17 +39,18 @@ Array
     [PLACEMENT] => TASK_LIST_CONTEXT_MENU
     [PLACEMENT_OPTIONS] => {"ID":"286"}
 )
+
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
@@ -54,7 +62,7 @@ It can be used to retrieve additional information using the [tasks.task.get](../
 ||
 |#
 
-## Continue Your Exploration
+## Continue exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

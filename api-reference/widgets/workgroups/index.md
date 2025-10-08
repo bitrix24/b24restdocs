@@ -1,4 +1,4 @@
-# Main Dropdown Menu Item for the SONET_GROUP_DETAIL_TAB Project
+# Main Dropdown Menu Item of the Project SONET_GROUP_DETAIL_TAB
 
 > Scope: [`workgroups`](../../scopes/permissions.md)
 
@@ -6,16 +6,22 @@ You can add your own item to the main dropdown menu of the project.
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## Where the Widget is Embedded
 
 #|
 || **Widget Code** | **Location** ||
-|| `SONET_GROUP_DETAIL_TAB` | Main Dropdown Menu Item for the Project ||
+|| `SONET_GROUP_DETAIL_TAB` | Main Dropdown Menu Item of the Project ||
 |#
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 
@@ -49,14 +55,14 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 #|
 || **Parameter** | **Description** ||
 || **GROUP_ID***
-[`string`](../../data-types.md) | Identifier of the workgroup/project where the widget was opened.
+[`string`](../../data-types.md) | Identifier of the workgroup/project in which the widget was opened.
 
-Can be used to retrieve additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.
+It can be used to retrieve additional information using the [sonet.group.get](../../sonet-group/sonet-group-get.md) method.
 
 ||
 |#
 
-## Continue Your Exploration
+## Continue Exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

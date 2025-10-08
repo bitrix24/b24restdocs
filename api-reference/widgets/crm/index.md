@@ -2,16 +2,22 @@
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your item to the context menu of CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [old invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
+You can add your item to the context menu of CRM objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [old invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom entity types](../../crm/universal/index.md).
 
 ![Widget as a context menu item in Deal](./_images/CRM_DEAL_LIST_MENU.png "Widget as a context menu item in Deal")
 
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Where the Widget is Embedded
 
 #|
-|| **Placement Code** | **Location** ||
+|| **Widget Code** | **Location** ||
 || `CRM_LEAD_LIST_MENU` | Context menu item for [lead](../../crm/leads/index.md) ||
 || `CRM_CONTACT_LIST_MENU` | Context menu item for [contact](../../crm/contacts/index.md) ||
 || `CRM_COMPANY_LIST_MENU` | Context menu item for [company](../../crm/companies/index.md) ||
@@ -20,7 +26,7 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 || `CRM_SMART_INVOICE_LIST_MENU` | Context menu item for [new invoice](../../crm/universal/invoice.md) ||
 || `CRM_QUOTE_LIST_MENU` | Context menu item for [estimate](../../crm/quote/index.md) ||
 || `CRM_ACTIVITY_LIST_MENU` | Context menu item for [activity](../../crm/timeline/activities/index.md) ||
-|| `CRM_DYNAMIC_XXX_LIST_MENU` | Context menu item for custom CRM object type. Instead of XXX, specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` || 
+|| `CRM_DYNAMIC_XXX_LIST_MENU` | Context menu item for custom CRM entity type. Instead of XXX, specify the numeric identifier of the specific [custom entity type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_MENU` || 
 |#
 
 ## What the Handler Receives
@@ -234,7 +240,7 @@ The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or 
 || **ID*** 
 [`string`](../../data-types.md) | Identifier of the CRM object for which the widget was opened.
 
-It can be used to retrieve additional information using the corresponding methods:
+Can be used to retrieve additional information using the corresponding methods:
 
 - any object type [crm.item.get](../../crm/universal/crm-item-get.md) specifying entityTypeId = '1' for leads, '2' for deals, and [etc.](../../crm/data-types.md#object_type)
 - lead [crm.lead.get](../../crm/leads/crm-lead-get.md)
@@ -244,12 +250,12 @@ It can be used to retrieve additional information using the corresponding method
 - estimate [crm.quote.get](../../crm/quote/crm-quote-get.md)
 - activity [crm.activity.get](../../crm/timeline/activities/activity-base/crm-activity-get.md)
 
-In the case of embedding the widget in a custom object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
+In the case of embedding the widget in a custom type object, the type identifier can be obtained from the value of the `PLACEMENT` parameter. In the example above — `183`
 
 ||
 |#
 
-## Continue Learning
+## Continue Exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

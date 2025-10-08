@@ -4,11 +4,17 @@
 > 
 > Who can subscribe: any user
 
-The `onSonetGroupDelete` event is triggered when a workgroup/project is deleted. This allows third-party applications to respond to group deletions and perform necessary actions, such as data synchronization or sending notifications.
+The `onSonetGroupDelete` event is triggered when a workgroup/project is deleted. This allows a third-party application to respond to the deletion of groups and perform necessary actions, such as data synchronization or sending notifications.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -42,7 +48,7 @@ Data is sent as a POST request {.b24-info}
 
 In this case — `ONSONETGROUPDELETE`||
 || **event_handler_id**
-[`integer`](../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../data-types.md) | Event handler identifier ||
 || **data**
 [`object`](../../data-types.md) | Object containing information about the deleted workgroup.
 

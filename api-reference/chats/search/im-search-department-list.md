@@ -27,7 +27,7 @@ The method `im.search.department.list` performs a search for departments.
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
 || **FIND^*^**
-[`unknown`](../../data-types.md) | `Moscow` | Search phrase | 19 ||
+[`unknown`](../../data-types.md) | `Los Angeles` | Search phrase | 19 ||
 || **USER_DATA**
 [`unknown`](../../data-types.md) | `N` | Load user data | 19 ||
 || **OFFSET**
@@ -55,7 +55,7 @@ The method `im.search.department.list` performs a search for departments.
       const response = await $b24.callListMethod(
         'im.search.department.list',
         {
-          FIND: 'Moscow'
+          FIND: 'Los Angeles'
         },
         (progress) => { console.log('Progress:', progress) }
       )
@@ -68,7 +68,7 @@ The method `im.search.department.list` performs a search for departments.
     // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
     
     try {
-      const generator = $b24.fetchListMethod('im.search.department.list', { FIND: 'Moscow' }, 'ID')
+      const generator = $b24.fetchListMethod('im.search.department.list', { FIND: 'Los Angeles' }, 'ID')
       for await (const page of generator) {
         for (const entity of page) { console.log('Entity:', entity) }
       }
@@ -79,7 +79,7 @@ The method `im.search.department.list` performs a search for departments.
     // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
     
     try {
-      const response = await $b24.callMethod('im.search.department.list', { FIND: 'Moscow' }, 0)
+      const response = await $b24.callMethod('im.search.department.list', { FIND: 'Los Angeles' }, 0)
       const result = response.getData().result || []
       for (const entity of result) { console.log('Entity:', entity) }
     } catch (error) {
@@ -96,7 +96,7 @@ The method `im.search.department.list` performs a search for departments.
             ->call(
                 'im.search.department.list',
                 [
-                    'FIND' => 'Moscow'
+                    'FIND' => 'Los Angeles'
                 ]
             );
     
@@ -119,7 +119,7 @@ The method `im.search.department.list` performs a search for departments.
     BX24.callMethod(
         'im.search.department.list',
         {
-            FIND: 'Moscow'
+            FIND: 'Los Angeles'
         },
         function(result){
             if(result.error())
@@ -141,7 +141,7 @@ The method `im.search.department.list` performs a search for departments.
     $result = restCommand(
         'im.search.department.list',
         Array(
-            'FIND' => 'Moscow'
+            'FIND' => 'Los Angeles'
         ),
         $_REQUEST[
             "auth"
@@ -164,8 +164,8 @@ The method `im.search.department.list` performs a search for departments.
     "result": [
         {
             "id": 51,
-            "name": "Moscow Branch",
-            "full_name": "Moscow Branch / Bitrix",
+            "name": "Los Angeles Branch",
+            "full_name": "Los Angeles Branch / Bitrix",
             "manager_user_id": 11
         }
     ],

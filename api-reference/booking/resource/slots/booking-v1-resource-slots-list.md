@@ -13,7 +13,7 @@ The method `booking.v1.resource.slots.list` returns the configuration of time sl
 #|
 || **Name**
 `type` | **Description** ||
-|| **resourceID***
+|| **resourceId***
 [`integer`](../../../data-types.md) | Resource identifier.
 Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resource-add.md) and [booking.v1.resource.list](../booking-v1-resource-list.md) ||
 |#
@@ -61,7 +61,7 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
       console.error('Request failed', error)
     }
     
-    // fetchListMethod is preferable when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
+    // fetchListMethod is preferable when working with large datasets. The method implements iterative fetching using a generator, allowing data to be processed in parts and efficiently using memory.
     
     try {
       const generator = $b24.fetchListMethod('booking.v1.resource.slots.list', { resourceId: 257 }, 'ID')
@@ -72,7 +72,7 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
       console.error('Request failed', error)
     }
     
-    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod with large volumes of data.
     
     try {
       const response = await $b24.callMethod('booking.v1.resource.slots.list', { resourceId: 257 }, 0)
@@ -150,7 +150,7 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -202,9 +202,9 @@ Contains an array of objects with information about the slots. The structure is 
 || **id**
 [`integer`](../../../data-types.md) | Identifier of the slot settings ||
 || **from**
-[`integer`](../../../data-types.md) | Time from which slots are available for booking during the day. Value in the range from 0 to 1440. For example, `540` means slots are available for booking from 9:00 ||
+[`integer`](../../../data-types.md) | Time from which slots are available for booking during the day. Value in the range from 0 to 1440. For example, `540` means booking is available from 9:00 ||
 || **to**
-[`integer`](../../../data-types.md) | End time of the slot in minutes. Value in the range from 0 to 1440, greater than or equal to the value of `from`. For example, `1080` means slots are available for booking until 18:00 ||
+[`integer`](../../../data-types.md) | End time of the slot in minutes. Value in the range from 0 to 1440, greater than or equal to the value of `from`. For example, `1080` means booking is available until 18:00 ||
 || **timezone**
 [`string`](../../../data-types.md) | Timezone relative to which the slot time is set ||
 || **weekDays**
@@ -222,7 +222,7 @@ Contains an array of objects with information about the slots. The structure is 
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {

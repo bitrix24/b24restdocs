@@ -4,9 +4,15 @@
 
 You can add your item to the list of applications in CRM Analytics.
 
-![Widget as an item in the CRM Analytics application list](./_images/CRM_ANALYTICS_MENU.png "Widget as an item in the CRM Analytics application list")
+![Widget as an application list item in CRM Analytics](./_images/CRM_ANALYTICS_MENU.png "Widget as an application list item in CRM Analytics")
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Where the widget is embedded
 

@@ -1,4 +1,4 @@
-# Event on deleting resource type onBookingResourceTypeDelete
+# Event onDeleting Resource Type onBookingResourceTypeDelete
 
 > Scope: [`booking`](../../../../scopes/permissions.md)
 >
@@ -6,9 +6,15 @@
 
 The event `ONBOOKINGRESOURCETYPEDELETE` will trigger when a resource type is deleted using the method [booking.v1.resourcetype.delete](../booking-v1-resourcetype-delete.md).
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {

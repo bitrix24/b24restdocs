@@ -20,11 +20,11 @@ Max batch length exceeded | The maximum length of parameters passed to the [batc
 || `401` | `NO_AUTH_FOUND`
 Wrong authorization data | Invalid [access token](/settings/oauth/index.html) or [webhook code](/local-integrations/local-webhooks.html) ||
 || `400` | `INVALID_REQUEST`
-Https required. | The methods must be called using the HTTPS protocol ||
+Https required. | The HTTPS protocol is required for method calls ||
 || `503` | `OVERLOAD_LIMIT`
-REST API is blocked due to overload | The REST API is blocked due to overload. This is a manual individual block, to lift it, please contact [Bitrix24 technical support](/bitrix-support.html) ||
+REST API is blocked due to overload | The REST API is blocked due to overload. This is a manual individual block, to remove it you need to contact [Bitrix24 technical support](/bitrix-support.html) ||
 || `403` | `ACCESS_DENIED`
-REST API is available only on commercial plans | The REST API is only available on commercial plans. ||
+REST API is available only on commercial plans | The REST API is available only on commercial plans. ||
 || `403` | `INVALID_CREDENTIALS`
 Invalid request credentials | The user whose [access token](/settings/oauth/index.html) or [webhook](/local-integrations/local-webhooks.html) was used to call the method lacks permissions ||
 || `404` | `ERROR_MANIFEST_IS_NOT_AVAILABLE`

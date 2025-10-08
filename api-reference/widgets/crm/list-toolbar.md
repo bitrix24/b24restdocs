@@ -1,12 +1,18 @@
-# Dropdown Menu Item Above the List of CRM Elements CRM_XXX_LIST_TOOLBAR, CRM_DYNAMIC_XXX_LIST_TOOLBAR
+# Dropdown Menu Item Above the CRM Entity List CRM_XXX_LIST_TOOLBAR, CRM_DYNAMIC_XXX_LIST_TOOLBAR
 
 > Scope: [`crm`](../../scopes/permissions.md)
 
-You can add your dropdown menu item above the list of CRM object elements: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [old invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom object types](../../crm/universal/index.md).
+You can add your dropdown menu item above the list of CRM entity objects: [leads](../../crm/leads/index.md), [contacts](../../crm/contacts/index.md), [companies](../../crm/companies/index.md), [deals](../../crm/deals/index.md), [old invoices](../../crm/outdated/invoice/index.md), [estimates](../../crm/quote/index.md), [new invoices](../../crm/universal/invoice.md), [custom entity types](../../crm/universal/index.md).
 
 ![Widget as a Context Menu Item in Deal](./_images/CRM__LIST_TOOLBAR.png "Widget as a Context Menu Item in Deal")
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Where the Widget is Embedded
 
@@ -19,7 +25,7 @@ The specific widget placement code is specified in the `PLACEMENT` parameter of 
 || `CRM_INVOICE_LIST_TOOLBAR` | Dropdown menu item above the list of [old invoices](../../crm/outdated/invoice/index.md) ||
 || `CRM_SMART_INVOICE_LIST_TOOLBAR` | Dropdown menu item above the list of [new invoices](../../crm/universal/invoice.md) ||
 || `CRM_QUOTE_LIST_TOOLBAR` | Dropdown menu item above the list of [estimates](../../crm/quote/index.md) ||
-|| `CRM_DYNAMIC_XXX_LIST_TOOLBAR` | Dropdown menu item above the list of custom CRM object type elements. Instead of XXX, you need to specify the numeric identifier of the specific [custom object type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_TOOLBAR` ||
+|| `CRM_DYNAMIC_XXX_LIST_TOOLBAR` | Dropdown menu item above the list of custom CRM entity type items. Instead of XXX, you need to specify the numeric identifier of the specific [custom entity type](../../crm/universal/index.md). For example, `CRM_DYNAMIC_183_LIST_TOOLBAR` ||
 |#
 
 ## What the Handler Receives

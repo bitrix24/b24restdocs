@@ -6,9 +6,15 @@
 
 The event `onCrmBankDetailAdd` is triggered when a bank detail is added.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 [
@@ -40,11 +46,11 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic code of the event. In this case, it is `onCrmBankDetailAdd`||
+[`string`](../../../data-types.md) | Symbolic event code. In this case, it is `onCrmBankDetailAdd`||
 || **data***
-[`array`](../../../data-types.md) | Array containing the data of the added bank detail ||
+[`array`](../../../data-types.md) | Array with the data of the added bank detail ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
 [`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
 |#
@@ -57,7 +63,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **FIELDS***
-[`array`](../../../data-types.md) | Array containing the fields of the added bank detail ||
+[`array`](../../../data-types.md) | Array with the fields of the added bank detail ||
 |#
 
 ### Parameter FIELDS[]

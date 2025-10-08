@@ -4,7 +4,13 @@
 >
 > Who can subscribe: any user
 
-This event is triggered when a calendar event is deleted.
+The event is triggered when a calendar event is deleted.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
@@ -39,7 +45,7 @@ Example: event for deleting a calendar event object with `id = 1412`.
 || **Name**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic event code.
+[`string`][1] | Symbolic code of the event.
 
 In this case — `ONCALENDARENTRYDELETE`||
 || **event_handler_id**
@@ -53,12 +59,12 @@ Contains a single key — `id` ||
 || **ts**
 [`timestamp`][1] | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
+[`object`][1] | Object containing authorization parameters and data about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
 
-### auth Parameter {#auth}
+### auth parameter {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
@@ -69,5 +75,6 @@ The structure is described [below](#auth) ||
 - [{#T}](./index.md)
 - [{#T}](./on-calendar-entry-add.md)
 - [{#T}](./on-calendar-entry-update.md)
+
 
 [1]: ../../../data-types.md

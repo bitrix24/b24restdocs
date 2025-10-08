@@ -6,6 +6,12 @@
 
 The `OnAppInstall` event is triggered immediately after the application is successfully installed on Bitrix24. The `application_token` is passed to the handler, which is important to save. For more details, refer to the article [{#T}](../../events/safe-event-handlers.md).
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
 Data is sent as a POST request {.b24-info}
@@ -17,12 +23,12 @@ array(
         'VERSION' => '1.0.0',
         'ACTIVE' => 'Y',
         'INSTALLED' => 'Y',
-        'LANGUAGE_ID' => 'de'
+        'LANGUAGE_ID' => 'en'
     ),
     'ts' => '1696527000',
     'auth' => array(
         'domain' => 'some-domain.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/',    
+        'server_endpoint' => 'https://oauth.bitrix.info/rest/',   
         'status' => 'F',
         'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',   
         'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
@@ -45,7 +51,7 @@ array(
 
 The structure is described [below](#data) ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
+[`timestamp`](../../data-types.md) | Date and time of sending the event from the queue ||
 || **auth***
 [`object`](../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
 
@@ -60,7 +66,7 @@ The structure is described [below](#auth) ||
 || **Name**
 `type` | **Description** ||
 || **LANGUAGE_ID***
-[`string`](../../data-types.md) | Installed language: `de`, `en`, and others ||
+[`string`](../../data-types.md) | Installed language: `en`, `de` and others ||
 || **VERSION***
 [`integer`](../../data-types.md) | Version of the installed application ||
 || **ACTIVE***
@@ -70,7 +76,7 @@ Possible values:
 `Y` — active
 `N` — inactive ||
 || **INSTALLED***
-[`string`](../../data-types.md) | Whether the application is ready for use. 
+[`string`](../../data-types.md) | Is the application ready for use. 
 
 Possible values: 
 `Y` — ready
@@ -93,7 +99,6 @@ Possible values:
 
 - `L` — local application
 - `F` — free mass-market application
-- `S` — subscription mass-market application
 ||
 || **client_endpoint***
 [`string`](../../data-types.md) | General path for API method calls of the account ||

@@ -4,7 +4,13 @@
 >
 > Who can subscribe: any user
 
-The event `OnSaleOrderSaved` occurs at the end of saving an order, when the order and all related entities have already been saved.
+The `OnSaleOrderSaved` event occurs at the end of the order saving process, when the order and all related entities have already been saved.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -45,7 +51,7 @@ Data is transmitted in the form of a POST request
 || **Name**
 `type` | **Description** ||
 || **event***  
-[`string`](../../data-types.md) | Symbolic event code ||
+[`string`](../../data-types.md) | Event symbolic code ||
 || **event_handler_id***  
 [`integer`](../../data-types.md) | Event handler identifier ||
 || **data***  
@@ -75,7 +81,7 @@ Data is transmitted in the form of a POST request
 || **Name**
 `type` | **Description** ||
 || **ID***  
-[`sale_order.id`](../data-types.md) | Order identifier. To retrieve all order fields by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
+[`sale_order.id`](../data-types.md) | Order identifier. To retrieve all order fields by identifier, use the [sale.order.get](../order/sale-order-get.md) method ||
 || **XML_ID***  
 [`string`](../data-types.md) | External order identifier ||
 || **ACTION***  

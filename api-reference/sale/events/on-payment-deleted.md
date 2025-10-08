@@ -6,6 +6,12 @@
 
 The `OnPaymentDeleted` event occurs when a payment is directly deleted from the database.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
 Data is sent as a POST request
@@ -54,7 +60,7 @@ Data is sent as a POST request
 [`object`](../../data-types.md) | Object with authorization parameters and information about the account where the event occurred ||
 |#
 
-### Data Parameter
+### Parameter data
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -65,7 +71,7 @@ Data is sent as a POST request
 [`object`](../../data-types.md) | Object with the property `ID`, containing the payment identifier ||
 |#
 
-#### FIELDS Parameter
+#### Parameter FIELDS
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -76,6 +82,6 @@ Data is sent as a POST request
 [`sale_order_payment.id`](../data-types.md) | Identifier of the payment. To retrieve all payment fields by identifier, use the method [sale.payment.get](../payment/sale-payment-get.md) ||
 |#
 
-### Auth Parameter
+### Parameter auth
 
-{% include notitle [Auth Parameter](../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Parameter auth](../../../_includes/auth-params-in-events.md) %}

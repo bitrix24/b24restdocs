@@ -4,7 +4,13 @@
 >
 > Who can subscribe: any user
 
-The event `OnOrderEntitySaved` occurs immediately after the order is saved.
+The `OnOrderEntitySaved` event occurs immediately after the order is saved.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 

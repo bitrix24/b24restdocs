@@ -96,7 +96,7 @@ This method adds a new open channel.
 || **WORKTIME_TO**
 [`unknown`](../../data-types.md) | Working hours "to" (string format '00:00') ||
 || **WORKTIME_TIMEZONE**
-[`unknown`](../../data-types.md) | Time zone (format type 'Europe/Kaliningrad') ||
+[`unknown`](../../data-types.md) | Time zone (format type 'Europe/Riga') ||
 || **WORKTIME_HOLIDAYS**
 [`unknown`](../../data-types.md) | List of holidays (string, Example: 1.01,2.01,7.01,23.02,8.03,1.05,9.05,12.06,4.11,12.12) ||
 || **WORKTIME_DAYOFF**

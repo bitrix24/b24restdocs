@@ -6,9 +6,15 @@
 
 The `onAppPayment` event is triggered when an application is paid for.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```
 {
@@ -19,12 +25,12 @@ Data is sent as a POST request {.b24-info}
         "STATUS": "S",
         "PAYMENT_EXPIRED": "N",
         "DAYS": 28,
-        "LANGUAGE_ID": "en",
+        "LANGUAGE_ID": "de",
     },
     "ts": "1466439714",
     "auth": {
         "domain": "some-domain.bitrix24.com",
-        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "server_endpoint": "https://oauth.bitrix.info/rest/", 
         "client_endpoint": "https://some-domain.bitrix24.com/rest/", 
     }
 }
@@ -37,15 +43,15 @@ Data is sent as a POST request {.b24-info}
 #|
 || **Name**
 `type` | **Description** ||
-|| **event***
+|| **event*** 
 [`string`](../../data-types.md) | Symbolic event code — `ONAPPPAYMENT` ||
-|| **data***
+|| **data*** 
 [`array`](../../data-types.md) | Payment data.
 
 The structure is described [below](#data) ||
-|| **ts***
+|| **ts*** 
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
-|| **auth***
+|| **auth*** 
 [`array`](../../data-types.md) | Authorization and account data.
 
 The structure is described [below](#auth) ||
@@ -58,22 +64,22 @@ The structure is described [below](#auth) ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **CODE***
+|| **CODE*** 
 [`string`](../../data-types.md) | Application code ||
-|| **VERSION***
+|| **VERSION*** 
 [`integer`](../../data-types.md) | Installed application version ||
-|| **STATUS***
+|| **STATUS*** 
 [`string`](../../data-types.md) | Application status. Possible values:
 - `F` (Free) — free
 - `D` (Demo) — demo version
 - `T` (Trial) — time-limited trial version
 - `P` (Paid) — paid application ||
-|| **PAYMENT_EXPIRED***
+|| **PAYMENT_EXPIRED*** 
 [`string`](../../data-types.md) | [Y\|N] Flag indicating whether the paid period or trial period has expired ||
-|| **DAYS***
+|| **DAYS*** 
 [`integer`](../../data-types.md) | Number of days remaining until the end of the paid period or trial period ||
-|| **LANGUAGE_ID***
-[`string`](../../data-types.md) | Installed language: `en`, `de`, and others ||
+|| **LANGUAGE_ID*** 
+[`string`](../../data-types.md) | Installed language: `de`, `en`, and others ||
 |#
 
 ### Parameter auth {#auth}
@@ -83,13 +89,13 @@ The structure is described [below](#auth) ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **domain***
+|| **domain*** 
 [`string`](../../data-types.md) | Bitrix24 account address ||
-|| **server_endpoint***
+|| **server_endpoint*** 
 [`string`](../../data-types.md) | Authorization server address for token renewal ||
-|| **client_endpoint***
-[`string`](../../data-types.md) | Common path for API method calls ||
-|| **member_id***
+|| **client_endpoint*** 
+[`string`](../../data-types.md) | Common path for API method calls to the account ||
+|| **member_id*** 
 [`string`](../../data-types.md) | Unique account identifier ||
 |#
 

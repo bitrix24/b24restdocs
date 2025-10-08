@@ -1,10 +1,17 @@
-# Event When Adding Price Type CATALOG.PRICE.TYPE.ON.ADD
+# Event on Adding Price Type CATALOG.PRICE.TYPE.ON.ADD
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
 The event occurs when a price type is added.
+
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -37,7 +44,7 @@ Data is transmitted as a POST request {.b24-info}
 
 ## Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -58,7 +65,7 @@ The structure is described [below](#data) ||
 
 ### Parameter data {#data}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -71,7 +78,7 @@ The structure is described [below](#fields) ||
 
 ### Parameter FIELDS {#fields}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -82,9 +89,9 @@ The structure is described [below](#fields) ||
 
 ### Parameter auth {#auth}
 
-{% include notitle [Table with Keys in the auth Array](../../../../_includes/auth-params-in-events.md) %}
+{% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Your Exploration
+## Continue Exploring
 
 - [{#T}](./catalog-price-type-on-update.md)
 - [{#T}](./catalog-price-type-on-delete.md)

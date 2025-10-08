@@ -6,6 +6,12 @@
 
 The event `ONCRMDOCUMENTGENERATORDOCUMENTUPDATE` will trigger when an existing document is updated.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
 Data is sent as a POST request {.b24-info}
@@ -72,7 +78,7 @@ The structure is described [below](#auth) ||
 || **ENTITY_TYPE_ID**
 [`integer`](../../../../data-types.md) | Identifier of the [object type](../../../../crm/data-types.md#object_type) to which the document belongs, for example `1` — lead ||
 || **ENTITY_ID**
-[`integer`](../../../../data-types.md) | Identifier of the element to which the document is linked ||
+[`integer`](../../../../data-types.md) | Identifier of the entity to which the document is linked ||
 |#
 
 ### Parameter auth {#auth}

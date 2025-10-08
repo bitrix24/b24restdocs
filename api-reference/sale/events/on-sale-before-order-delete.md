@@ -6,9 +6,15 @@
 
 The event `OnSaleBeforeOrderDelete` is triggered before an order is deleted.
 
-## What the handler receives
+{% note info "" %}
 
-Data is sent as a POST request
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## What the Handler Receives
+
+Data is transmitted as a POST request
 
 ```
 [
@@ -75,7 +81,7 @@ Data is sent as a POST request
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order.id`](../data-types.md) | Order identifier. To retrieve all fields of the order by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
+[`sale_order.id`](../data-types.md) | Order identifier. To retrieve all order fields by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
 || **XML_ID***
 [`string`](../data-types.md) | External order identifier ||
 || **ACTION***

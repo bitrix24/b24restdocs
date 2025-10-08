@@ -6,6 +6,12 @@
 
 The event occurs when the price type is updated.
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
 Data is transmitted as a POST request {.b24-info}
@@ -43,9 +49,9 @@ Data is transmitted as a POST request {.b24-info}
 || **Name**
 `type` | **Description** ||
 || **event***  
-[`string`](../../data-types.md) | Symbolic code of the event ||
+[`string`](../../data-types.md) | Symbolic event code ||
 || **event_handler_id***  
-[`integer`](../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../data-types.md) | Event handler identifier ||
 || **data***  
 [`object`](../../data-types.md) | Object containing event data.
 

@@ -4,9 +4,15 @@
 >
 > Who can subscribe: any user
 
-The event `OnOpenLineMessageAdd` is triggered when a message is added to the open line chat.
+The `OnOpenLineMessageAdd` event is triggered when a message is added to the open line chat.
 
-[Subscribe](../../../events/event-bind.md) to the event only through the application. You can only receive events intended for the [connector](../../imconnector/index.md) added by the application.
+[Subscribe](../../../events/event-bind.md) to the event can only be done through the application. Only those events intended for the [connector](../../imconnector/index.md) added by the application can be received in the handler.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -116,7 +122,7 @@ Data is transmitted in the form of a POST request
 - `text` — message text
 - `files` — files
 - `attach` — attached files
-- `system` — flag indicating if the message is system. Has value `Y` if it is system 
+- `system` — flag indicating whether the message is system. It has the value `Y` if it is system 
 - `user_id` — user identifier
 ||
 || **ref***

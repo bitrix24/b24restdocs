@@ -2,7 +2,7 @@
 
 > Scope: [`task`](../scopes/permissions.md)
 >
-> Who can execute the method: task Creator or a user with access permission to edit the task
+> Who can execute the method: task Creator or a user with edit access to the task
 
 The method `tasks.task.files.attach` adds a file from Drive to a task. The user must have read access to the file or higher.
 
@@ -16,7 +16,7 @@ The method `tasks.task.files.attach` adds a file from Drive to a task. The user 
 || **taskId***
 [`integer`](../data-types.md) | The identifier of the task to which the file needs to be attached.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md).
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list](./tasks-task-list.md) method.
 ||
 || **fileId***
 [`integer`](../data-types.md) | The identifier of the file on Drive.
@@ -27,7 +27,7 @@ Use one of the file upload methods:
   - [disk.storage.uploadfile](../disk/storage/disk-storage-upload-file.md)
   - [disk.folder.uploadfile](../disk/folder/disk-folder-upload-file.md)
 
-Use one of the file list retrieval methods:
+Use one of the methods to get the list of files:
   - [disk.storage.getchildren](../disk/storage/disk-storage-get-children.md)
   - [disk.folder.getchildren ](../disk/folder/disk-folder-get-children.md) ||
 |#
@@ -147,7 +147,7 @@ Use one of the file list retrieval methods:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -175,14 +175,16 @@ HTTP Status: **200**
 || **result**
 [`object`](../data-types.md) | The root element of the response. Contains an object with the description of the attached file ||
 || **attachmentId**
-[`integer`](../data-types.md) | The identifier of the attached file in the task ||
+[`integer`](../data-types.md) | The identifier of the file attachment to the task.
+
+You can get file data by attachment identifier using the [disk.attachedObject.get](../disk/attached-object/disk-attached-object-get.md) method  ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -197,9 +199,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | The required parameter `taskId` is missing ||
+|| `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | Required parameter `taskId` is missing ||
 || `0` | wrong task id (internal error) | The value of the `taskId` parameter is of an incorrect type ||
-|| `100` | Could not find value for parameter \{fileId\} (internal error) | The required parameter `fileId` is missing ||
+|| `100` | Could not find value for parameter \{fileId\} (internal error) | Required parameter `fileId` is missing ||
 || `100` | Invalid value {value} to match with parameter \{fileId\}. Should be value of type int. (internal error) | The value of the `fileId` parameter is of an incorrect type ||
 || `ERROR_CORE` | Insufficient permissions.\\u003Cbr\\u003E | No access to the specified file ||
 || `0` | Access denied (internal error) | Insufficient permissions to modify the task ||

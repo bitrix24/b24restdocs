@@ -1,4 +1,4 @@
-# On disconnecting the open channel OnImConnectorStatusDelete
+# OnImConnectorStatusDelete for Disabling Open Channel
 
 {% note warning "We are still updating this page" %}
 
@@ -20,12 +20,18 @@ Some data may be missing here — we will complete it shortly.
 >
 > Who can subscribe: any user
 
-Triggers when a client disconnects a connected channel on a specific line. The data has already been removed from the account, and necessary actions must be taken on your end to disconnect.
+This event triggers when a client disconnects a connected channel on a specific line. The data has already been removed from the account, and necessary actions must be taken on your end to complete the disconnection.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 #|
 || **Parameter** | **Description** | **Available since** ||
 || **CONNECTOR** | ID of the disconnected connector. | ||
-|| **LINE** | ID of the removed open channel. | ||
+|| **LINE** | ID of the removed open line. | ||
 |#
 
-{% include [Parameter notes](../../../../_includes/required.md) %}
+{% include [Parameter Notes](../../../../_includes/required.md) %}

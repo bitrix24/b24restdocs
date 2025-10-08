@@ -6,6 +6,12 @@ You can add your item to the right sidebar of the task card.
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## Where the Widget is Embedded
 
 #|
@@ -18,6 +24,7 @@ The specific widget placement code is specified in the `PLACEMENT` parameter of 
 Data is sent as a POST request {.b24-info}
 
 ```php
+
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -32,9 +39,10 @@ Array
     [PLACEMENT] => TASK_VIEW_SIDEBAR
     [PLACEMENT_OPTIONS] => {"taskId":"286"}
 )
+
 ```
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [description of standard data](../_includes/widget_data.md) %}
 
@@ -42,11 +50,11 @@ Array
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
-|| **taskId***
+|| **taskId*** 
 [`string`](../../data-types.md) | The identifier of the task for which the widget was opened.
 
 It can be used to retrieve additional information using the [tasks.task.get](../../tasks/tasks-task-get.md) method.
@@ -54,7 +62,7 @@ It can be used to retrieve additional information using the [tasks.task.get](../
 ||
 |#
 
-## Continue Your Exploration
+## Continue Exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

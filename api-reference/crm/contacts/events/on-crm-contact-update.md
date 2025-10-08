@@ -4,11 +4,18 @@
 > 
 > Who can subscribe: any user
 
-The event `onCrmContactUpdate` will trigger when a contact is updated.
+The `onCrmContactUpdate` event will trigger when a contact is updated.
+
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -39,7 +46,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../data-types.md) | Symbolic event code.
 
 In this case — `ONCRMCONTACTUPDATE`||
 || **event_handler_id**
@@ -55,7 +62,7 @@ The structure is described [below](#fields) ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and data about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#

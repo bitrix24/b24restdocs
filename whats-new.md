@@ -2,6 +2,10 @@
 
 ## 2025
 
+### October 8, 2025
+
+- Added the article [MCP server for working with Bitrix24 REST API](./mcp.md)
+
 ### October 2, 2025
 
 - Updated the main event pages in the [Chats](./api-reference/chat-bots/chats/events/index.md) and [Messages](./api-reference/chat-bots/messages/events/index.md) sections of Chatbots. Introductory information and an overview of events have been added.

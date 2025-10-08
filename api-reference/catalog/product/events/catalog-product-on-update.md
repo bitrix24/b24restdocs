@@ -6,6 +6,13 @@
 
 The event occurs when a product is updated.
 
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## What the handler receives
 
 Data is sent as a POST request {.b24-info}
@@ -44,11 +51,11 @@ Data is sent as a POST request {.b24-info}
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic code of the event ||
+[`string`](../../data-types.md) | Symbolic event code ||
 || **event_handler_id***
-[`integer`](../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../data-types.md) | Event handler identifier ||
 || **data***
-[`object`](../../data-types.md) | Object containing event data.
+[`object`](../../data-types.md) | Object with event data.
 
 The structure is described [below](#data) ||
 || **ts***
@@ -81,14 +88,14 @@ The structure is described [below](#fields) ||
 [`catalog_product.id`](../../data-types.md#catalog_product)\|
 [`catalog_product_sku.id`](../../data-types.md#catalog_product_sku)\|
 [`catalog_product_offer.id`](../../data-types.md#catalog_product_offer)\|
-[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Identifier of the product. You can retrieve all fields of the product by its identifier using the methods:
-- [catalog.product.get](../../product/catalog-product-get.md) — for simple products
-- [catalog.product.sku.get](../../product/sku/catalog-product-sku-get.md) — for parent products
-- [catalog.product.offer.get](../../product/offer/catalog-product-offer-get.md) — for variations
-- [catalog.product.service.get](../../product/service/catalog-product-service-get.md) — for services
+[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Product identifier. You can retrieve all product fields by its identifier using the methods:
+- [catalog.product.get](../catalog-product-get.md) — for simple products
+- [catalog.product.sku.get](../sku/catalog-product-sku-get.md) — for parent products
+- [catalog.product.offer.get](../offer/catalog-product-offer-get.md) — for variations
+- [catalog.product.service.get](../service/catalog-product-service-get.md) — for services
 ||
 || **TYPE***
-[`integer`](../../data-types.md) | Type of product:
+[`integer`](../../data-types.md) | Product type:
 - `1` — simple product
 - `3` — parent product with variations
 - `4` — variation

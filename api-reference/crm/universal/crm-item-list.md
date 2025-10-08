@@ -8,7 +8,7 @@ This method retrieves a list of elements of a specific type of CRM entity.
 
 CRM entity elements will not be included in the final selection if the user does not have "read" access permission for these elements.  
 
-## Method parameters
+## Method Parameters
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
@@ -36,13 +36,13 @@ Object format:
 }
 ```
 where
-- `field_n` — the name of the field by which the selection of elements will be filtered
+- `field_n` — name of the field by which the selection of elements will be filtered
 - `value_n` — filter value
 
 The filter can have unlimited nesting and number of conditions.
-By default, all conditions are combined using `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
+By default, all conditions are combined with `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
 
-You can add a prefix to the `field_n` keys to clarify the filter operation.
+You can add a prefix to the `field_n` keys to clarify the filter's operation.
 Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
@@ -50,14 +50,14 @@ Possible prefix values:
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` symbol must be included in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` symbol must be included in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -80,15 +80,15 @@ Object format:
 }
 ```
 where
-- `field_n` — the name of the field by which the selection of elements will be sorted
-- `value_n` — a `string` value equal to:
+- `field_n` — name of the field by which the selection of elements will be sorted
+- `value_n` — value of type `string` equal to:
   - `ASC` — ascending sort
   - `DESC` — descending sort
 
 A list of all available fields for sorting can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method. A list of standard fields is available in the article [CRM Object Fields](./object-fields.md)
 ||
 || **start**
-[`integer`][1] | This parameter is used to manage pagination.
+[`integer`][1] | This parameter is used to control pagination.
 
 The page size of results is always static — 50 records.
 
@@ -99,29 +99,29 @@ The formula for calculating the `start` parameter value:
 `start = (N-1) * 50`, where `N` — the desired page number
 ||
 || **useOriginalUfNames**
-[`boolean`][1] | Parameter to control the format of user field names in the request and response.   
+[`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
-- `Y` — original user field names, e.g., `UF_CRM_2_1639669411830`
-- `N` — user field names in camelCase, e.g., `ufCrm2_1639669411830`
+- `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
+- `N` — names of custom fields in camelCase, e.g., `ufCrm2_1639669411830`
 
-Default — `N` ||
+Default is `N` ||
 |#
 
-## Code examples
+## Code Examples
 
 **Get a list of leads where:**
 1. First name or last name is not empty
 2. They are in the status "In Progress" or "Unprocessed".
 3. They came from sources "Advertising" or "Website".
 4. They are assigned to managers with IDs 1 or 6.
-5. They have a deal amount from 5000 to 20000.
+5. They have a deal amount between 5000 and 20000.
 6. The calculation mode for the amount is manual.
 
 **Set the following sort order for this selection:**
 * First name and last name in ascending order
 
-**For clarity, let's select only the fields we need:**
+**For clarity, we will select only the fields we need:**
 * Identifier `id`
 * Title `title`
 * First name `name`
@@ -250,7 +250,7 @@ Default — `N` ||
       console.error('Request failed', error);
     }
     
-    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
+    // callMethod provides manual control over the pagination process through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
     
     try {
       const response = await $b24.callMethod('crm.item.list', {
@@ -427,7 +427,7 @@ Default — `N` ||
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
 HTTP status: **200**
 
@@ -494,7 +494,7 @@ HTTP status: **200**
 }
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
@@ -504,11 +504,11 @@ HTTP status: **200**
 || **items**
 [`item[]`](./object-fields.md) | Array with information about found elements.
 
-Returned fields depend on the `select` parameter, [field descriptions](./object-fields.md) ||
+Returned fields depend on the `select` parameter, [field description](./object-fields.md) ||
 || **total**
 [`integer`][1] | Total number of found elements ||
 || **next**
-[`integer`][1] | Contains the value that needs to be passed in the next request in the `start` parameter to get the next batch of data.
+[`integer`][1] | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
 
 The `next` parameter appears in the response if the number of elements matching your request exceeds `50`. ||
 || **time**
@@ -517,12 +517,12 @@ The `next` parameter appears in the response if the number of elements matching 
 
 {% note info " " %}
 
-By default, user field names are passed and returned in camelCase, e.g., `ufCrm2_1639669411830`.
-When passing the `useOriginalUfNames` parameter with the value `Y`, user fields will be returned with their original names, e.g., `UF_CRM_2_1639669411830`.
+By default, custom field names are passed and returned in camelCase, for example `ufCrm2_1639669411830`.
+When passing the `useOriginalUfNames` parameter with the value `Y`, custom fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
 
 {% endnote %}
 
-## Error handling
+## Error Handling
 
 HTTP status: **400**, **403**
 
@@ -535,12 +535,12 @@ HTTP status: **400**, **403**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Status** | **Code**                          | **Description**                                             | **Value**                                          ||
-|| `403`      | `allowed_only_intranet_user`     | Action is allowed only for intranet users                 | User is not an intranet user                      ||
-|| `400`      | `NOT_FOUND`                      | Smart process not found                                    | Occurs when an invalid `entityTypeId` is passed   ||
+|| `403`      | `allowed_only_intranet_user`     | Action is allowed only for intranet users                 | User is not an intranet user                       ||
+|| `400`      | `NOT_FOUND`                      | Smart process not found                                    | Occurs when an invalid `entityTypeId` is passed    ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' is not allowed in filter | The field `field` passed in `filter` is not available for filtering ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid filter: field '`field`' has invalid value        | The value passed for the field `field` in `filter` is incorrect ||
 || `400`      | `INVALID_ARG_VALUE`              | Invalid order: field '`field`' is not allowed in order   | The field `field` passed in `order` is not available for sorting ||
@@ -549,7 +549,7 @@ HTTP status: **400**, **403**
 
 {% include [system errors](./../../../_includes/system-errors.md) %}
 
-## Continue learning
+## Continue Learning
 
 - [{#T}](crm-item-add.md)
 - [{#T}](crm-item-update.md)
@@ -561,4 +561,4 @@ HTTP status: **400**, **403**
 - [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)
 
-[1]: ../data-types.md
+[1]: ../../data-types.md

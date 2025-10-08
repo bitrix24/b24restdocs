@@ -1,4 +1,4 @@
-# Get Links to Files Attached to a Task task.item.getfiles
+# Get links to files attached to the task task.item.getfiles
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
@@ -12,7 +12,7 @@ The method `task.item.getfiles` continues to function, but there is a more relev
 
 {% endnote %}
 
-## Method Parameters
+## Method parameters
 
 #|
 || **Name** | **Description** ||

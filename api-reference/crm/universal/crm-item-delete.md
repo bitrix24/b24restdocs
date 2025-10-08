@@ -146,7 +146,7 @@ Deleting an item with `id = 1`, belonging to a smart process with `entityTypeId 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -178,7 +178,7 @@ Returns an empty array `[]` in case of success ||
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -211,4 +211,4 @@ HTTP Status: **400**, **403**
 - [{#T}](crm-item-fields.md)
 - [{#T}](./object-fields.md)
 
-[1]: ./../data-types.md
+[1]: ../../data-types.md

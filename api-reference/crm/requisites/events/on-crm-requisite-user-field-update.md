@@ -1,14 +1,20 @@
-# Event on User Field Update of Requisite onCrmRequisiteUserFieldUpdate
+# Event on changing user field of the requisite onCrmRequisiteUserFieldUpdate
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can subscribe: `any user`
 
-The event `onCrmRequisiteUserFieldUpdate` is triggered when a user field of a requisite is modified.
+The event `onCrmRequisiteUserFieldUpdate` is triggered when a user field of the requisite is changed.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 [
@@ -42,13 +48,13 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic code of the event. In this case, it is `onCrmRequisiteUserFieldUpdate`||
+[`string`](../../../data-types.md) | Symbolic event code. In this case, it is `onCrmRequisiteUserFieldUpdate`||
 || **data***
-[`array`](../../../data-types.md) | Array containing the data of the modified user field of the requisite ||
+[`array`](../../../data-types.md) | Array with data of the changed user field of the requisite ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
+[`array`](../../../data-types.md) | Authorization parameters and data about the account where the event occurred ||
 |#
 
 ### Parameter data[]
@@ -59,7 +65,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **FIELDS***
-[`array`](../../../data-types.md) | Array containing the fields of the modified user field of the requisite ||
+[`array`](../../../data-types.md) | Array with fields of the changed user field of the requisite ||
 |#
 
 ### Parameter FIELDS[]
@@ -70,18 +76,18 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../../data-types.md) | Identifier of the modified user field of the requisite ||
+[`integer`](../../../data-types.md) | Identifier of the changed user field of the requisite ||
 || **ENTITY_ID***
-[`string`](../../../data-types.md) | Symbolic identifier of the object for which the field was modified ||
+[`string`](../../../data-types.md) | Symbolic identifier of the object for which the field was changed ||
 || **FIELD_NAME***
-[`string`](../../../data-types.md) | Symbolic code of the modified user field ||
+[`string`](../../../data-types.md) | Symbolic code of the changed user field ||
 |#
 
 ### Parameter auth[]
 
 {% include notitle [Table with keys in the auth array](../../../../_includes/auth-params-in-events.md) %}
 
-## Continue your exploration
+## Continue exploring
 
 - [{#T}](./on-crm-address-register.md)
 - [{#T}](./on-crm-address-unregister.md)

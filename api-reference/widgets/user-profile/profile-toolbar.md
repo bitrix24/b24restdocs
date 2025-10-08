@@ -4,7 +4,13 @@
 
 You can add your item to the context menu of the top profile button.
 
-The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+The code for the specific widget placement is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## Where the Widget is Embedded
 
@@ -18,6 +24,7 @@ The specific placement code for the widget is specified in the `PLACEMENT` param
 Data is transmitted as a POST request {.b24-info}
 
 ```php
+
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -32,21 +39,22 @@ Array
     [PLACEMENT] => USER_PROFILE_TOOLBAR
     [PLACEMENT_OPTIONS] => {"USER_ID":"1"}
 )
+
 ```
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
-{% include notitle [description of standard data](../_includes/widget_data.md) %}
+{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
-|| **USER_ID*** 
+|| **USER_ID***
 [`string`](../../data-types.md) | The identifier of the user whose profile the widget was opened in.
 
 It can be used to retrieve additional information using the [user.get](../../user/user-get.md) method.
@@ -54,7 +62,7 @@ It can be used to retrieve additional information using the [user.get](../../use
 ||
 |#
 
-## Continue Your Exploration
+## Continue Exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

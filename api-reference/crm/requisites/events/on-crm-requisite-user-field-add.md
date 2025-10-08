@@ -1,14 +1,20 @@
-# Event when adding a custom field for the requisite onCrmRequisiteUserFieldAdd
+# Event when adding a custom field of a requisite onCrmRequisiteUserFieldAdd
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can subscribe: `any user`
 
-The event `onCrmRequisiteUserFieldAdd` is triggered when a custom field for the requisite is added.
+The event `onCrmRequisiteUserFieldAdd` is triggered when a custom field of a requisite is added.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```php
 [
@@ -44,11 +50,11 @@ Data is sent as a POST request {.b24-info}
 || **event***
 [`string`](../../../data-types.md) | Symbolic code of the event. In this case, it is `onCrmRequisiteUserFieldAdd`||
 || **data***
-[`array`](../../../data-types.md) | Array containing the data of the added custom requisite field ||
+[`array`](../../../data-types.md) | Array with the data of the added custom field of the requisite ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred ||
+[`array`](../../../data-types.md) | Authorization parameters and data about the account where the event occurred ||
 |#
 
 ### Parameter data[]
@@ -59,7 +65,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **FIELDS***
-[`array`](../../../data-types.md) | Array containing the fields of the added custom requisite field ||
+[`array`](../../../data-types.md) | Array with the fields of the added custom field of the requisite ||
 |#
 
 ### Parameter FIELDS[]
@@ -70,7 +76,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../../data-types.md) | Identifier of the added custom requisite field ||
+[`integer`](../../../data-types.md) | Identifier of the added custom field of the requisite ||
 || **ENTITY_ID***
 [`string`](../../../data-types.md) | Symbolic identifier of the entity for which the field was added ||
 || **FIELD_NAME***

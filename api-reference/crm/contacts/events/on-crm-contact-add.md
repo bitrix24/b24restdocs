@@ -4,7 +4,13 @@
 > 
 > Who can subscribe: any user
 
-The `onCrmContactAdd` event will trigger when a contact is created.
+The event `onCrmContactAdd` will trigger when a contact is created.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 
@@ -39,7 +45,7 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic event code.
+[`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONCRMCONTACTADD`||
 || **event_handler_id**

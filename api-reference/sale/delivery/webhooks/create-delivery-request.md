@@ -52,14 +52,14 @@ Example JSON request:
                         "LONGITUDE":37.61187,
                         "FIELDS":{
                             "COUNTRY":"USA",
-                            "ADM_LEVEL_1":"Moscow",
-                            "ADM_LEVEL_2":"Moscow",
-                            "ADM_LEVEL_3":"Yakimanka",
-                            "LOCALITY":"Moscow",
-                            "SUB_LOCALITY_LEVEL_1":"Central Administrative Okrug",
-                            "STREET":"Shabolovka Street",
+                            "ADM_LEVEL_1":"Los Angeles",
+                            "ADM_LEVEL_2":"Los Angeles",
+                            "ADM_LEVEL_3":"South",
+                            "LOCALITY":"Los Angeles",
+                            "SUB_LOCALITY_LEVEL_1":"Central",
+                            "STREET":"Flowers Street",
                             "BUILDING":"9",
-                            "ADDRESS_LINE_1":"Shabolovka Street, 9"
+                            "ADDRESS_LINE_1":"Flowers Street, 9"
                         }
                     }
                 },
@@ -72,12 +72,12 @@ Example JSON request:
                         "FIELDS":{
                             "POSTAL_CODE":"115162",
                             "COUNTRY":"USA",
-                            "ADM_LEVEL_1":"Moscow",
-                            "ADM_LEVEL_2":"Yakimanka District",
-                            "LOCALITY":"Moscow",
-                            "STREET":"Shabolovka Street",
+                            "ADM_LEVEL_1":"Los Angeles",
+                            "ADM_LEVEL_2":"South",
+                            "LOCALITY":"Los Angeles",
+                            "STREET":"Flowers Street",
                             "BUILDING":"13 b10",
-                            "ADDRESS_LINE_1":"Shabolovka Street, 13 b10"
+                            "ADDRESS_LINE_1":"Flowers Street, 13 b10"
                         }
                     }
                 }

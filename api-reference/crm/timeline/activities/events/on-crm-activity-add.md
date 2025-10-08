@@ -1,14 +1,20 @@
-# Event for Creating a New CRM Activity onCrmActivityAdd
+# Event for Creating a New Deal onCrmActivityAdd
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: `any user`
 
-The event `onCrmActivityAdd` is triggered when a new activity is added to the CRM timeline.
+The `onCrmActivityAdd` event is triggered when a new deal is added to the CRM timeline.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the Handler Receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -38,13 +44,13 @@ Data is sent as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityAdd` ||
+[`string`](../../../data-types.md) | Symbolic code of the event. In our case, it is `onCrmActivityAdd`||
 || **data**
-`array` | An object containing information about the created activity.
+`array` | An object containing information about the created deal.
 
 Contains a single key `FIELDS` ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time the event was sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
 [`array`](../../../data-types.md) | Authorization parameters and information about the account where the event occurred.
 
@@ -57,14 +63,14 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | `ID` with the value of the added activity identifier ||
+[`integer`](../../../data-types.md) | `ID` with the value of the added deal's identifier ||
 |#
 
 ### Parameter auth {#auth}
 
 {% include notitle [Table with keys in the auth array](../../../../../_includes/auth-params-in-events.md) %}
 
-## Continue Your Exploration 
+## Continue Exploring 
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)

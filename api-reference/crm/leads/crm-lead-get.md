@@ -134,7 +134,7 @@ The identifier can be obtained using the methods [crm.lead.list](./crm-lead-list
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -241,7 +241,7 @@ HTTP Status: **200**
 || **TITLE**
 [`string`](../../data-types.md) | Title of the lead ||
 || **HONORIFIC**
-[`crm_status`](../../data-types.md) | Type of address. Status from the directory. A list of possible identifiers can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=HONORIFIC` ||
+[`crm_status`](../data-types.md) | Type of address. Status from the directory. A list of possible identifiers can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=HONORIFIC` ||
 || **NAME**
 [`string`](../../data-types.md) | Contact's first name ||
 || **SECOND_NAME**
@@ -249,21 +249,21 @@ HTTP Status: **200**
 || **LAST_NAME**
 [`string`](../../data-types.md) | Contact's last name ||
 || **COMPANY_ID**
-[`crm_company`](../../data-types.md) | Link of the lead to the company ||
+[`crm_company`](../data-types.md) | Link of the lead to the company ||
 || **COMPANY_TITLE**
 [`string`](../../data-types.md) | Company name ||
 || **CONTACT_ID**
-[`crm_contact`](../../data-types.md) | Link of the lead to the contact ||
+[`crm_contact`](../data-types.md) | Link of the lead to the contact ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Indicates if the lead is a repeat. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of a returning lead. Allowed values Y or N ||
 || **BIRTHDATE**
 [`date`](../../data-types.md) | Date of birth ||
 || **SOURCE_ID**
-[`crm_status`](../../data-types.md) | Identifier of the source. Status from the directory. A list of possible identifiers can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=SOURCE` ||
+[`crm_status`](../data-types.md) | Identifier of the source. Status from the directory. A list of possible identifiers can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=SOURCE` ||
 || **SOURCE_DESCRIPTION**
 [`string`](../../data-types.md) | Description of the source ||
 || **STATUS_ID**
-[`crm_status`](../../data-types.md) | Identifier of the lead stage. Status from the directory. A list of possible identifiers can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=STATUS` ||
+[`crm_status`](../data-types.md) | Identifier of the lead stage. Status from the directory. A list of possible identifiers can be obtained using the method [crm.status.list](../status/crm-status-list.md) with the filter `filter[ENTITY_ID]=STATUS` ||
 || **STATUS_DESCRIPTION**
 [`string`](../../data-types.md) | Additional information about the stage ||
 || **POST**
@@ -271,17 +271,17 @@ HTTP Status: **200**
 || **COMMENTS**
 [`string`](../../data-types.md) | Comments ||
 || **CURRENCY_ID**
-[`crm_currency`](../../data-types.md) | Currency identifier ||
+[`crm_currency`](../data-types.md) | Currency identifier ||
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Estimated amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Indicates if the amount is manually calculated. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of manual calculation of the amount. Allowed values Y or N ||
 || **HAS_PHONE**
-[`char`](../../data-types.md) | Indicates if the phone field is filled. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of phone field completion. Allowed values Y or N ||
 || **HAS_EMAIL**
-[`char`](../../data-types.md) | Indicates if the email field is filled. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of email field completion. Allowed values Y or N ||
 || **HAS_IMOL**
-[`char`](../../data-types.md) | Indicates if there is an attached open line. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of the presence of an attached open line. Allowed values Y or N ||
 || **ASSIGNED_BY_ID**
 [`user`](../../data-types.md) | Identifier of the user responsible for the lead ||
 || **CREATED_BY_ID**
@@ -302,7 +302,7 @@ HTTP Status: **200**
 - S (success) – processed successfully
 - P (processing) – lead is being processed ||
 || **OPENED**
-[`char`](../../data-types.md) | Indicates if the lead is available to everyone. Allowed values are Y or N ||
+[`char`](../../data-types.md) | Indicator of the lead's availability to everyone. Allowed values Y or N ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
 || **ORIGIN_ID**
@@ -347,9 +347,9 @@ Depending on the account settings, leads may have a set of custom fields of spec
 
 To create, modify, or delete custom fields in leads, use the methods [crm.lead.userfield.*](./userfield/index.md) ||
 || **PHONE**
-[`crm_multifield`](../../data-types.md) | Array of phone numbers ||
+[`crm_multifield`](../data-types.md) | Array of phone numbers ||
 || **IM**
- [`crm_multifield`](../../data-types.md) | Array of messengers ||
+ [`crm_multifield`](../data-types.md) | Array of messengers ||
 |#
 
 ## Error Handling
@@ -370,7 +370,7 @@ To create, modify, or delete custom fields in leads, use the methods [crm.lead.u
 #|  
 || **Error Text** | **Description** ||
 || `ID is not defined or invalid` |  The `id` parameter is either not provided or is not a positive integer ||
-|| `Not found`  | Lead with the specified `id` was not found ||
+|| `Not found`  | A lead with the specified `id` was not found ||
 || `Access denied` | The user does not have permission to read the lead ||
 |#
 

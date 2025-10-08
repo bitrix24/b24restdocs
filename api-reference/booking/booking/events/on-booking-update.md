@@ -1,10 +1,16 @@
-# Event on Booking Update onBookingUpdate
+# Event on Booking Update
 
 > Scope: [`booking`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGUPDATE` will trigger when a booking is updated manually or via the method [booking.v1.booking.update](../booking-v1-booking-update.md).
+The `ONBOOKINGUPDATE` event will trigger when a booking is updated manually or via the [booking.v1.booking.update](../booking-v1-booking-update.md) method.
+
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
 
 ## What the handler receives
 

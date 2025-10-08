@@ -1,19 +1,25 @@
-# Link at the Top of the TASK Card TASK_VIEW_TOP_PANEL
+# Link in the top section of the task card TASK_VIEW_TOP_PANEL
 
 > Scope: [`task`](../../scopes/permissions.md)
 
-You can add your item at the top of the task card.
+You can add your item to the top section of the task card.
 
 The specific widget placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
-## Where the Widget is Embedded
+{% note info "" %}
+
+The widget will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## Where the widget is embedded
 
 #|
-|| **Widget Code** | **Location** ||
-|| `TASK_VIEW_TOP_PANEL` | Item at the Top of the Task Card ||
+|| **Widget code** | **Location** ||
+|| `TASK_VIEW_TOP_PANEL` | Item in the top section of the task card ||
 |#
 
-## What the Handler Receives
+## What the handler receives
 
 Data is sent as a POST request {.b24-info}
 
@@ -36,15 +42,15 @@ Array
 
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
+{% include notitle [description of standard data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
 The value of `PLACEMENT_OPTIONS` is a JSON string containing an array of one or more keys.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
@@ -56,7 +62,7 @@ It can be used to retrieve additional information using the [tasks.task.get](../
 ||
 |#
 
-## Continue Your Exploration
+## Continue exploring
 
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)

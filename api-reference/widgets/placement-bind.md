@@ -8,9 +8,8 @@ This method adds a handler for the widget placement.
 
 It can be called at any time during the application's operation; however, it is often more convenient to register your widgets during the [application installation](../../settings/app-installation/index.md).
 
-It is important to note that until the application installation is complete, the widgets you register will not be available to regular users in the Bitrix24 interface - they will only be visible to users with administrative rights.
-
-It is recommended to familiarize yourself with the principles of [application installation](../../settings/app-installation/index.md) in Bitrix24.
+It is important to note that until the application installation is complete, the widgets you register will not be available to regular users in the Bitrix24 interface - they can only be seen by users with administrative rights. 
+[Check the application installation](../../settings/app-installation/installation-finish.md).
 
 ## Method Parameters {#params}
 
@@ -20,7 +19,7 @@ It is recommended to familiarize yourself with the principles of [application in
 || **Name**
 `type` | **Description** ||
 || **PLACEMENT***
-[`string`](../data-types.md) | Identifier for the required widget placement location ||
+[`string`](../data-types.md) | Identifier of the required widget placement location ||
 || **HANDLER***
 [`string`](../data-types.md) | URL of the widget placement handler ||
 || **TITLE**
@@ -28,7 +27,7 @@ It is recommended to familiarize yourself with the principles of [application in
 || **DESCRIPTION**
 [`string`](../data-types.md) | Description of the widget in the interface. Not used in practice ||
 || **GROUP_NAME**
-[`string`](../data-types.md) | Allows grouping UI elements for multiple handlers of the same type of widget. For example, several items in a dropdown menu in the [top button of the CRM card](./crm/detail-toolbar.md). Supported only by some types of widgets ||
+[`string`](../data-types.md) | Allows grouping UI elements for multiple handlers of the same type of widget into a group. For example, several dropdown menu items in the [top button of the CRM card](./crm/detail-toolbar.md). Supported only by certain types of widgets ||
 || **LANG_ALL**
 [`object`](../data-types.md) | Array of parameters `TITLE`, `DESCRIPTION`, and `GROUP_NAME` for specified languages. Users who have selected one of these languages in the Bitrix24 interface will see localized versions of `TITLE`, `DESCRIPTION`, and `GROUP_NAME`: 
 
@@ -316,25 +315,25 @@ HTTP status: **400**, **403**, **200**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ERROR_PLACEMENT_MAX_COUNT` | An attempt was made to re-register the handler for the widget `PAGE_BACKGROUND_WORKER` | 200 ||
-|| `ERROR_ARGUMENT` | A required field value is missing. The code of the required field is returned in `argument`| 200 ||
+|| `ERROR_PLACEMENT_MAX_COUNT` | Attempted to re-register the handler for the `PAGE_BACKGROUND_WORKER` widget | 200 ||
+|| `ERROR_ARGUMENT` | Required field value is not specified. The code of the required field is returned in `argument`| 200 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
 ## Widget Handler
 
-Thus, a successful call to the method `placement.bind` allowed you to register the widget handler. It is important that the HANDLER_URL parameter you specify points to a real and accessible URL.
+Thus, a successful call to the `placement.bind` method allowed you to register the widget handler. It is important that the HANDLER_URL parameter you specified points to a real and accessible URL.
 
 {% note warning "Important" %}
 
-The handler URL must be **accessible** from the external network. Links to localhost, local domains, and similar ways of accessing a local web server are not acceptable. Check the availability of the URL you specified using special services that monitor website accessibility!
+It is required that the handler URL is **definitely** accessible from the external network. Links to localhost, local domains, and similar ways of accessing a local web server are not acceptable. Check the availability of the URL you specified using special services that monitor website availability!
 
 {% endnote %}
 
-When calling your handler, Bitrix24 will send a POST message containing information about the widget context, such as the deal identifier if the widget is embedded in the deal card in CRM, etc.
+When accessing your handler, Bitrix24 will send a POST message containing information about the widget context, such as the deal identifier if the widget is embedded in the deal card in CRM, etc.
 
-You can find examples of such data in the descriptions of [specific widget placement locations](./placements.md).
+Examples of such data can be found in the descriptions of [specific widget placement locations](./placements.md).
 
 ## Continue Learning
 
