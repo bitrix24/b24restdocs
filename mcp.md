@@ -37,6 +37,10 @@ The server is accessible without authorization.
 
 4. When composing a request, explicitly instruct the assistant: "Use `b24-dev-mcp`."
 
+Or use:
+
+<a href="https://cursor.com/en-US/install-mcp?name=b24-dev-mcp&config=eyJ1cmwiOiJodHRwczovL21jcC1kZXYuYml0cml4MjQuY29tL21jcCIsInRpbWVvdXQiOjMwMDAwfQ%3D%3D"><img src="https://cursor.com/deeplink/mcp-install-dark.svg" alt="Add b24-dev-mcp MCP server to Cursor" height="32" /></a>
+
 ### GitHub Copilot Chat, VS Code
 
 1. For setup, use the instructions from [GitHub](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp/extend-copilot-chat-with-mcp#configuring-mcp-servers-manually).
