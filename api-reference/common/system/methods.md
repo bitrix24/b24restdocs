@@ -1,4 +1,4 @@
-# Get a List of Available Methods methods
+# Get a List of Available Methods
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
@@ -6,15 +6,15 @@
 
 The `methods` method retrieves a list of available methods.
 
-{% note alert %}
+{% note warning "Method Development Halted" %}
 
-This method is deprecated; it is strongly recommended to use [method.get](./method-get.md) instead.
+The `methods` method continues to function, but it lacks information on some methods. A more current alternative is the [method.get](./method-get.md).
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+{% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,14 +22,14 @@ This method is deprecated; it is strongly recommended to use [method.get](./meth
 || **full**
 [`boolean`](../../data-types.md) | If the parameter is set to `true`, the method will return a list of all methods ||
 || **scope**
-[`string`](../../data-types.md) | Shows methods included in the specified permission. If the parameter is provided without a value (`methods?scope=&auth=xxxxx`), all common methods will be displayed. ||
+[`string`](../../data-types.md) | Display of methods included in the specified permission. If the parameter is provided without a value (`methods?scope=&auth=xxxxx`), all common methods will be displayed. ||
 |#
 
 > If the method is called without parameters, it will return a list of all methods available to the current application.
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on Examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -63,19 +63,19 @@ This method is deprecated; it is strongly recommended to use [method.get](./meth
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		"methods",
-    		{
-    			"scope": "user"
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            "methods",
+            {
+                "scope": "user"
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log(result);
     }
     catch( error )
     {
-    	console.error(error);
+        console.error(error);
     }
     ```
 
@@ -189,7 +189,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-{% include [system errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

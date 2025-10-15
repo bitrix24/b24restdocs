@@ -1,8 +1,8 @@
-# Content Block of Configurable Activity
+# Content Block of Configurable Deal
 
 Content blocks `ContentBlockDto` are the foundation of the content area of the timeline record. By combining these blocks, various interfaces can be flexibly assembled.
 
-This structure is used when creating [configurable activities](../../layout-blocks/index.md) and when enriching timeline records with [content blocks](../../../layout-blocks/index.md).
+This structure is used when creating [configurable deals](../../layout-blocks/index.md) and when enriching timeline records with [content blocks](../../../layout-blocks/index.md).
 
 ## General Structure of the Block:
 
@@ -28,9 +28,9 @@ The simplest block `type = text`, which displays some formatted text.
 #|
 || **Field** | **Description** ||
 || **value^*^**
-[`textWithTranslation`](./field-types.md) | The text to be displayed ||
+[`textWithTranslation`](./field-types.md) | Text to be displayed ||
 || **multiline**
-[`boolean`](../../../../data-types.md) | Line break handling. If true, the characters `\n` will be replaced with `<br>`. Default is `false` ||
+[`boolean`](../../../../data-types.md) | Line break handling. If true, `\n` characters will be replaced with `<br>`. Default is `false` ||
 || **title**
 [`textWithTranslation`](./field-types.md#textwithtranslation) | Title attribute ||
 || **bold**
@@ -38,7 +38,7 @@ The simplest block `type = text`, which displays some formatted text.
 || **size**
 [`string`](../../../../data-types.md) | Text size. Can take values `xs`, `sm`, `md` (default is `md`) ||
 || **color**
-[`string`](../../../../data-types.md) | Text color. Can take values `base_50`, `base_60`, `base_70`, `base_90`, `green`, `purple` ||
+[`string`](../../../../data-types.md) | Text color. Can take values `base_50`, `base_60`, `base_70`, `base_90` ||
 || **scope**
 [`string`](../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
@@ -73,7 +73,7 @@ The simplest block `type = text`, which displays some formatted text.
 
 ### Long Multiline Text
 
-The block `type = largeText` allows displaying long multiline texts, which will automatically be collapsed to a preview.
+The block `type = largeText` allows displaying long multiline texts that will automatically collapse to a preview.
 
 #### Parameters
 
@@ -82,14 +82,14 @@ The block `type = largeText` allows displaying long multiline texts, which will 
 #|
 || **Field** | **Description** ||
 || **value^*^**
-[`textWithTranslation`](./field-types.md#textwithtranslation) | The text to be displayed ||
+[`textWithTranslation`](./field-types.md#textwithtranslation) | Text to be displayed ||
 || **scope**
 [`string`](../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
 
 #### Example
 
-Long text collapsed under "Show More".
+Long text collapsed under "Show more".
 
 ```json
 {
@@ -128,7 +128,7 @@ The block `type = link` displays a link.
 #|
 || **Field** | **Description** ||
 || **text^*^**
-[`textWithTranslation`](./field-types.md#textwithtranslation) | The text to be displayed. HTML tags are not supported ||
+[`textWithTranslation`](./field-types.md#textwithtranslation) | Text to be displayed. HTML tags are not supported ||
 || **action^*^**
 [`ActionDto`](./action.md) | Action upon clicking the link ||
 || **bold**
@@ -155,7 +155,7 @@ The block `type = link` displays a link.
 
 ### Block with Title
 
-The block `type = withTitle` displays a pair of title-value. Another content block can be used as the value.
+The block `type = withTitle` displays a title-value pair. Another content block can be used as the value.
 
 #### Parameters
 
@@ -266,7 +266,7 @@ The block `type = lineOfBlocks` displays several content blocks of type text or 
 
 ### Deadline Selection
 
-The block `type = deadline` displays the current deadline value with the ability to quickly change it. The block will not be shown if added to an incoming activity or an activity without a deadline.
+The block `type = deadline` displays the current deadline value with the ability to quickly change it. The block will not be shown if added to an incoming deal or a deal without a deadline.
 
 #### Parameters
 
@@ -275,7 +275,7 @@ The block `type = deadline` displays the current deadline value with the ability
 #|
 || **Field** | **Description** ||
 || **readonly**
-[`boolean`](../../../../data-types.md) | Permission to change the deadline. Default is `false`. If the user does not have access to modify the entity to which the activity relates, or if the activity is completed, then `readonly = true` regardless of the settings provided ||
+[`boolean`](../../../../data-types.md) | Permission to change the deadline. Default is `false`. If the user does not have access to modify the entity to which the deal relates, or if the deal is completed, then `readonly = true` regardless of the settings provided ||
 || **scope**
 [`string`](../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#

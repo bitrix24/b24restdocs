@@ -36,11 +36,11 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
 ||
 || **fieldName***
 [`string`](../../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored. Possible values:
-- `DETAIL_PICTURE` — detailed picture
-- `PREVIEW_PICTURE` — preview picture
-- `PROPERTY_N` — property, where `N` is the property identifier or property code
+- `DETAIL_PICTURE` — detailed image, field available in the old product card
+- `PREVIEW_PICTURE` — preview image, field available in the old product card
+- `PROPERTY_N` — property, where `N` is the property identifier or code
 
-To obtain existing identifiers or property codes for services, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
+To obtain existing identifiers or codes of service properties, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
 ||
 |#
 
@@ -117,7 +117,7 @@ To obtain existing identifiers or property codes for services, you need to use [
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
+        // Your required data processing logic
         processData($result);
     
     } catch (Throwable $e) {
@@ -175,7 +175,7 @@ To obtain existing identifiers or property codes for services, you need to use [
 
 HTTP status: **200**
 
-The response returns a file based on the provided parameters.
+A file is returned based on the provided parameters.
 
 ### Returned Data
 

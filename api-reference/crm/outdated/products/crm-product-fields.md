@@ -10,13 +10,13 @@ The method `crm.product.fields` continues to function, but there are more releva
 
 {% endnote %}
 
-The method `crm.product.fields` returns a description of the product fields.
+The method `crm.product.fields` returns the description of product fields.
 
 Without parameters.
 
 ## Code Examples
 
-{% include [Note about examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -123,7 +123,7 @@ Without parameters.
 
 ### Returned Data
 
-{% include [Note about required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -143,7 +143,7 @@ Without parameters.
 || **DESCRIPTION_TYPE**
 [`string`](../../../data-types.md) | Description type  ||
 || **DETAIL_PICTURE**
-[`product_file`](../../../data-types.md) | Detailed picture  ||
+[`product_file`](../../../data-types.md) | Detailed picture, field available in the old product card  ||
 || **ID**
 [`integer`](../../../data-types.md) | Product identifier  ||
 || **MEASURE**
@@ -153,13 +153,13 @@ Without parameters.
 || **NAME***
 [`string`](../../../data-types.md) | Name  ||
 || **PREVIEW_PICTURE**
-[`product_file`](../../../data-types.md) | Preview picture  ||
+[`product_file`](../../../data-types.md) | Preview picture, field available in the old product card  ||
 || **PRICE**
 [`double`](../../../data-types.md) | Price  ||
 || **SECTION_ID**
 [`integer`](../../../data-types.md) | Section identifier  ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort order  ||
+[`integer`](../../../data-types.md) | Sorting  ||
 || **TIMESTAMP_X**
 [`datetime`](../../../data-types.md) | Product modification date  ||
 || **VAT_ID**

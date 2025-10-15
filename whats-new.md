@@ -2,9 +2,14 @@
 
 ## 2025
 
+### October 15, 2025
+
+- Added an article [SDK for Bitrix24 development](./sdk/index.md)
+- Updated the main page of the section [Linking objects to a request in the waitlist](./api-reference/booking/waitlist/external-data/index.md) in Online Booking. Added introductory information, as well as an overview of methods and relationships.
+
 ### October 8, 2025
 
-- Added the article [MCP server for working with Bitrix24 REST API](./mcp.md)
+- Added the article [MCP server for working with Bitrix24 REST API](./sdk/mcp.md)
 
 ### October 2, 2025
 

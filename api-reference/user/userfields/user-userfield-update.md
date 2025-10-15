@@ -19,7 +19,7 @@ The method `user.userfield.update` updates a user field.
 To obtain the identifiers of user fields, use the method [user.userfield.list](./user-userfield-list.md)
  ||
 || **fields**
-[`object`](../../data-types.md)| Field values for updating the user field ||
+[`object`](../../data-types.md)| Values of the fields to update the user field ||
 |#
 
 ### Parameter fields
@@ -32,7 +32,7 @@ To obtain the identifiers of user fields, use the method [user.userfield.list](.
 || **SORT**
 [`integer`](../../data-types.md)| Sort order ||
 || **MANDATORY**
-[`boolean`](../../data-types.md)| Indicates whether the user field is mandatory. Possible values:
+[`boolean`](../../data-types.md)| Whether the user field is mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
@@ -54,15 +54,19 @@ To obtain the identifiers of user fields, use the method [user.userfield.list](.
 || **SETTINGS**
 [`object`](../../data-types.md)| An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}` for passing additional settings for user fields. Settings are described [below](#settings) ||
 || **EDIT_FORM_LABEL**
-[`string`](../../data-types.md)| Label in the edit form ||
+[`string`](../../data-types.md)| Label in the edit form. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
 || **LIST_COLUMN_LABEL**
-[`string`](../../data-types.md)| Column header in the list ||
+[`string`](../../data-types.md)| Column header in the list. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
 || **LIST_FILTER_LABEL**
-[`string`](../../data-types.md)| Filter header in the list ||
+[`string`](../../data-types.md)| Filter header in the list. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
 || **ERROR_MESSAGE**
-[`string`](../../data-types.md)| Error message for invalid input ||
+[`string`](../../data-types.md)| Error message for invalid input. You can pass a string or an object with texts by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
 || **HELP_MESSAGE**
-[`string`](../../data-types.md)| Help text for the field ||
+[`string`](../../data-types.md)| Help text for the field. You can pass a string or an object with texts by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
+|| **LABEL**
+[`string`](../../data-types.md)| Default name of the user field. 
+
+The value will be set in the fields `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided ||
 |#
 
 ### Parameter SETTINGS {#settings}
@@ -149,7 +153,7 @@ Each type of user field has its own set of additional settings.
 
     where:
     - `VALUE` — default value of type `datetime` or `date`
-    - `TYPE` — type of the default value:
+    - `TYPE` — type of default value:
       - `NONE` — do not set a default value
       - `NOW` — use the current time/date
       - `FIXED` — use the time/date from `VALUE`
@@ -215,7 +219,7 @@ Each type of user field has its own set of additional settings.
 
     Default is `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../data-types.md) | Whether to show items with the active flag. Possible values:
+    [`boolean`](../../data-types.md) | Whether to show elements with the active flag. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -314,6 +318,64 @@ Each type of user field has its own set of additional settings.
 
 - JS
 
+    ```javascript
+    try
+    {
+        const response = await $b24.callMethod(
+            'user.userfield.update',
+            {
+                id: 42,
+                fields: {
+                    SORT: 150,
+                    LIST_FILTER_LABEL: 'New Title',
+                    LIST_COLUMN_LABEL: 'New List Title',
+                }
+            }
+        );
+
+        const result = response.getData().result;
+        console.log('Updated element with ID:', result);
+        processResult(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.userfield.update',
+                [
+                    'id' => 42,
+                    'fields' => [
+                        'SORT' => 150,
+                        'LIST_FILTER_LABEL' => 'New Title',
+                        'LIST_COLUMN_LABEL' => 'New List Title',
+                    ]
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error updating user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'user.userfield.update', 
@@ -334,7 +396,7 @@ Each type of user field has its own set of additional settings.
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -383,7 +445,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Contains `true` in case of successful update of the user field ||
+[`boolean`](../../data-types.md) | Contains `true` in case of successful update of the user field||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -405,8 +467,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | The field with such `id` does not exist or access is denied ||
-|| Empty string | ID is not defined or invalid | The `id` is not set or is invalid ||
+|| Empty string | Access denied. | Field with such `id` does not exist or access is denied ||
+|| Empty string | ID is not defined or invalid | `id` is not set or entered incorrectly ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

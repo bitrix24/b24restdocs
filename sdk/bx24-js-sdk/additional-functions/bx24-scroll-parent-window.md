@@ -1,4 +1,4 @@
-# Scroll Parent Window BX24.scrollParentWindow
+# Scroll the Parent Window BX24.scrollParentWindow
 
 {% note warning "We are still updating this page" %}
 
@@ -24,4 +24,6 @@ Some data may be missing here — we will fill it in shortly.
 BX24.scrollParentWindow(Scroll, Callback)
 ```
 
-The method `BX24.scrollParentWindow` scrolls the parent window. The first parameter should specify the vertical scrollbar position (0 - scroll to the very top). The second parameter is a callback function that will be called after the scrollbar position changes.
+The method `BX24.scrollParentWindow` scrolls the parent window. The first parameter should specify the vertical scrollbar position (0 - scroll to the very top). The second parameter is a callback function that will be invoked after the scrollbar position changes.
+
+Starting from [module version](../../../settings/cloud-and-on-premise/on-premise/versions.md) rest 25.800.0, this method can be used in [embedding locations](../../../api-reference/widgets/index.md) of the application.

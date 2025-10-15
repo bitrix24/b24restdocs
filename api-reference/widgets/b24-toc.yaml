@@ -1,71 +1,71 @@
 title: Widgets
 href: index.md
 items: 
-  - name: Widget Embedding Mechanism 
+  - name: Widget embedding mechanism 
     href: index.md
   - name: UI Kit 
     include:
       path: ui-kit/b24-toc.yaml
-      mode: link    
-  - name: Typical Use-Cases 
+      mode: link
+  - name: Typical use-cases 
     href: tutorials.md
-  - name: Widget Embedding Locations 
+  - name: Places for widget embedding 
     href: placements.md
-  - name: Widgets in the Main Menu
+  - name: Widgets in the main menu
     href: left-menu.md
   - name: Widgets in CRM
     include:
       path: crm/b24-toc.yaml
       mode: link
-  - name: Widgets in Tasks
+  - name: Widgets in tasks
     include:
       path: task/b24-toc.yaml
       mode: link
-  - name: Widgets in Workgroups/Projects
+  - name: Widgets in workgroups/projects
     include:
       path: workgroups/b24-toc.yaml
       mode: link
-  - name: Widgets in User Profile
+  - name: Widgets in user profile
     include:
       path: user-profile/b24-toc.yaml
       mode: link
-  - name: Widget in Calendar
+  - name: Widget in calendar
     href: calendar.md
-  - name: Widgets in Telephony
+  - name: Widgets in telephony
     include:
       path: telephony/b24-toc.yaml
       mode: link
-  - name: Widgets in Messenger
+  - name: Widgets in messenger
     include:
       path: im/b24-toc.yaml
       mode: link
-  - name: Widget in Contact Center
+  - name: Widget in contact center
     href: contact-center.md
-  - name: Universal Widgets
+  - name: Universal widgets
     include:
       path: universal/b24-toc.yaml
       mode: link
-  - name: Embedding in the Bitrix24 Mobile App
+  - name: Embedding in the Bitrix24 mobile application
     href: mobile-app.md
-  - name: Register Widget
+  - name: Register a widget
     href: placement-bind.md
-  - name: Get Widget Information by Id
+  - name: Get a list of registered widgets
     href: placement-get.md
-  - name: Get List of Widgets
+  - name: Get a list of widgets
     href: placement-list.md
-  - name: Unregister Widget
+  - name: Unregister a widget
     href: placement-unbind.md
-  - name: Call Standard Sliders
+  - name: Call standard sliders
     href: open-path.md
-  - name: Open Custom Slider
+  - name: Open custom slider
     href: open-application.md
-  - name: Close Custom Slider
+  - name: Close custom slider
     href: close-application.md
-  - name: UI Interaction from Widgets
+  - name: Interaction with UI from widgets
     include:
       path: ui-interaction/b24-toc.yaml
       mode: link
-  - name: Embedding as Custom Field Types
+  - name: Embedding as custom field types
     include:
       path: user-field/b24-toc.yaml
       mode: link

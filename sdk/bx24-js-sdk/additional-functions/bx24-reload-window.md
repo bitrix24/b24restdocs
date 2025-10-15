@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing here — we will fill it in shortly.
+Some data may be missing here — we will complete it shortly.
 
 {% endnote %}
 
@@ -22,4 +22,4 @@ Some data may be missing here — we will fill it in shortly.
 void BX24.reloadWindow()
 ```
 
-The method `BX24.reloadWindow` reloads the page with the application and works only when the application is opened in a separate window. The method does not work when the application is opened in a slider or as a widget.
+The method `BX24.reloadWindow` reloads the page with the application. Starting from [module version](../../../settings/cloud-and-on-premise/on-premise/versions.md) rest 25.800.0, the method can be used in [embedding locations](../../../api-reference/widgets/index.md) of the application.

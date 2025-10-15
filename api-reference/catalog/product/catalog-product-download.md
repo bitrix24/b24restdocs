@@ -37,8 +37,8 @@ To obtain product identifiers, use [catalog.product.list](./catalog-product-list
 || **fieldName*** 
 [`string`](../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored.
 
-- `DETAIL_PICTURE` — detailed picture
-- `PREVIEW_PICTURE` — preview picture
+- `DETAIL_PICTURE` — detailed image, field available in the old product card
+- `PREVIEW_PICTURE` — preview image, field available in the old product card
 - `PROPERTY_N` — property, where `N` is the property identifier or property code
 
 To obtain existing identifiers or property codes for products, use [catalog.productProperty.list](../product-property/catalog-product-property-list.md)
@@ -178,7 +178,7 @@ To obtain existing identifiers or property codes for products, use [catalog.prod
 
 HTTP status: **200**
 
-The response returns a file based on the provided parameters.
+A file is returned based on the provided parameters.
 
 ### Returned Data
 
@@ -205,7 +205,7 @@ HTTP status: **400**
 || `0` | The product with the specified identifier does not exist ||
 || `0` | The specified property does not exist or is not a file ||
 || `0` | The file with the specified identifier does not exist ||
-|| `0` | Required fields are not provided ||
+|| `0` | Required fields were not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

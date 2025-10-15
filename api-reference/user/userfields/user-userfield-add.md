@@ -59,15 +59,15 @@ The method `user.userfield.add` adds a custom field.
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
-[`boolean`](../../data-types.md)| Should the field be shown in the list filter. Possible values:
+[`boolean`](../../data-types.md)| Show the field in the list filter. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_IN_LIST**
-[`boolean`](../../data-types.md)| Should the field be shown in the list. Possible values:
+[`boolean`](../../data-types.md)| Show the field in the list. Possible values:
 - `Y` — yes
 - `N` — no ||
 - || **EDIT_IN_LIST**
-[`boolean`](../../data-types.md)| Can the field be edited in the list. Possible values:
+[`boolean`](../../data-types.md)| Edit the field in the list. Possible values:
 - `Y` — yes
 - `N` — no ||
 - || **IS_SEARCHABLE**
@@ -77,24 +77,24 @@ The method `user.userfield.add` adds a custom field.
 || **SETTINGS**
 [`object`](../../data-types.md)| Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}` for passing additional settings for custom fields. Settings are described [below](#settings) ||
 || **EDIT_FORM_LABEL**
-[`string`](../../data-types.md)| Label in the edit form ||
+[`string`](../../data-types.md)| Label in the edit form. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
 || **LIST_COLUMN_LABEL**
-[`string`](../../data-types.md)| Column header in the list ||
+[`string`](../../data-types.md)| Column header in the list. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
 || **LIST_FILTER_LABEL**
-[`string`](../../data-types.md)| Filter header in the list ||
+[`string`](../../data-types.md)| Filter header in the list. You can pass a string or an object with labels by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
 || **ERROR_MESSAGE**
-[`string`](../../data-types.md)| Error message for invalid input ||
+[`string`](../../data-types.md)| Error message for invalid input. You can pass a string or an object with texts by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
 || **HELP_MESSAGE**
-[`string`](../../data-types.md)| Help text for the field ||
+[`string`](../../data-types.md)| Help text for the field. You can pass a string or an object with texts by languages in the format `{"de": "...", "en": "..."}`. When passing a string, the value will be set for all languages ||
 || **LABEL**
-[`string`](../../data-types.md)| Default name of the custom field.
+[`string`](../../data-types.md)| Default name of the custom field. 
 
-The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided in them ||
+The value will be set in the fields `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided ||
 |#
 
 ### Parameter SETTINGS {#settings}
 
-Each type of custom fields has its own set of additional settings.
+Each type of custom field has its own set of additional settings.
 
 {% list tabs %}
 
@@ -242,7 +242,7 @@ Each type of custom fields has its own set of additional settings.
 
     Default is `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../data-types.md) | Show elements with the active flag. Possible values:
+    [`boolean`](../../data-types.md) | Show elements with the active flag enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -299,7 +299,7 @@ Each type of custom fields has its own set of additional settings.
 
 {% note info "" %}
 
-If you need to create a custom field with an added custom type via the API, you must specify `rest_<app_number>_<USER_TYPE_ID of added type>` in the `USER_TYPE_ID` field. For example, `rest_436278_test_type`.
+If you need to create a custom field with an added custom type via the API, you must specify `rest_<app_number>_<USER_TYPE_ID of the added type>` in the `USER_TYPE_ID` field. For example, `rest_436278_test_type`.
 
 {% endnote %}
 
@@ -328,8 +328,9 @@ If you need to create a custom field with an added custom type via the API, you 
             "SETTINGS": {
                 "DEAL": "Y"
             },
+            "LABEL": "Binding to CRM deals",
             "EDIT_FORM_LABEL": {
-                "en": "Binding to CRM Deals"
+                "de": "Binding to CRM deals"
             }
         }
     }' \
@@ -355,16 +356,99 @@ If you need to create a custom field with an added custom type via the API, you 
             "SETTINGS": {
                 "DEAL": "Y"
             },
+            "LABEL": "Binding to CRM deals",
             "EDIT_FORM_LABEL": {
-                "en": "Binding to CRM Deals"
+                "de": "Binding to CRM deals"
             }
         },
         "auth": "**put_access_token_here**"
     }' \
     https://**put_your_bitrix24_address**/rest/user.userfield.add
     ```
-
+    
 - JS
+
+    ```javascript
+    try
+    {
+        const response = await $b24.callMethod(
+            'user.userfield.add',
+            {
+                fields: {
+                    FIELD_NAME: 'UF_USER_DEALS',
+                    USER_TYPE_ID: 'crm',
+                    XML_ID: 'UF_CRM_DEALS',
+                    SORT: 100,
+                    MULTIPLE: 'Y',
+                    MANDATORY: 'N',
+                    SHOW_FILTER: 'N',
+                    SHOW_IN_LIST: 'Y',
+                    EDIT_IN_LIST: 'Y',
+                    SETTINGS: {
+                        DEAL: 'Y',
+                    },
+                    LABEL: 'Binding to CRM deals',
+                    EDIT_FORM_LABEL: {
+                        de: 'Binding to CRM deals'
+                    },
+                }
+            }
+        );
+
+        const result = response.getData().result;
+        console.log('Created element with ID:', result);
+        processResult(result);
+    }
+    catch( error )
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'user.userfield.add',
+                [
+                    'fields' => [
+                        'FIELD_NAME' => 'UF_USER_DEALS',
+                        'USER_TYPE_ID' => 'crm',
+                        'XML_ID' => 'UF_CRM_DEALS',
+                        'SORT' => 100,
+                        'MULTIPLE' => 'Y',
+                        'MANDATORY' => 'N',
+                        'SHOW_FILTER' => 'N',
+                        'SHOW_IN_LIST' => 'Y',
+                        'EDIT_IN_LIST' => 'Y',
+                        'SETTINGS' => [
+                            'DEAL' => 'Y',
+                        ],
+                        'LABEL' => 'Binding to CRM deals',
+                        'EDIT_FORM_LABEL' => [
+                            'de' => 'Binding to CRM deals'
+                        ],
+                    ]
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding user field: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
 
     ```js
     BX24.callMethod(
@@ -383,8 +467,9 @@ If you need to create a custom field with an added custom type via the API, you 
                 SETTINGS: {
                     DEAL: "Y",
                 },
+                LABEL: "Binding to CRM deals",
                 EDIT_FORM_LABEL: {
-                    en: "Binding to CRM Deals"
+                    de: "Binding to CRM deals"
                 },
             },
         },
@@ -398,7 +483,7 @@ If you need to create a custom field with an added custom type via the API, you 
     );
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -419,8 +504,9 @@ If you need to create a custom field with an added custom type via the API, you 
                 'SETTINGS' => [
                     'DEAL' => 'Y',
                 ],
+                'LABEL' => 'Binding to CRM deals',
                 'EDIT_FORM_LABEL' => [
-                    'en' => 'Binding to CRM Deals'
+                    'de' => 'Binding to CRM deals'
                 ],
             ]
         ]
@@ -480,9 +566,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| ERROR_ARGUMENT | Argument 'USER_TYPE_ID' is null or empty | 'USER_TYPE_ID' is not set ||
-|| ERROR_ARGUMENT | Argument 'HANDLER' is null or empty | 'HANDLER' is not set ||
-|| ERROR_CORE | Field \*** for USER object already exists | Field \*** for `USER` object already exists ||
+|| ERROR_ARGUMENT | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not set ||
+|| ERROR_ARGUMENT | Argument 'HANDLER' is null or empty | `HANDLER` is not set ||
+|| ERROR_CORE | Field \*** for the USER object already exists | Field \*** for the `USER` object already exists ||
 || ERROR_CORE | Fail to create new user field | Error creating field ||
 || Empty string | The \u0027FIELD_NAME\u0027 field is not found. | Mandatory field `FIELD_NAME` is not set ||
 || Empty string | The \u0027USER_TYPE_ID\u0027 field is not found. | Mandatory field `USER_TYPE_ID` is not set ||

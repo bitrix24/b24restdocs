@@ -27,20 +27,20 @@ This method downloads product variation files based on the provided parameters.
 || **fileId***
 [`integer`](../../../data-types.md) | Identifier of the registered file.
 
-To obtain file identifiers for product variations, use [catalog.product.offer.get](./catalog-product-offer-get.md) or [catalog.product.offer.list](./catalog-product-offer-list.md)
+To obtain the identifiers of product variation files, you need to use [catalog.product.offer.get](./catalog-product-offer-get.md) or [catalog.product.offer.list](./catalog-product-offer-list.md)
 ||
 || **productId***
 [`catalog_product_offer.id`](../../data-types.md#catalog_product_offer) | Identifier of the product variation.
 
-To obtain identifiers for product variations, use [catalog.product.offer.list](./catalog-product-offer-list.md)
+To obtain the identifiers of product variations, you need to use [catalog.product.offer.list](./catalog-product-offer-list.md)
 ||
 || **fieldName***
-[`string`](../../../data-types.md) | The name of the field (property or field of the information block element) where the file is stored. Possible values:
-- `DETAIL_PICTURE` — detailed image
-- `PREVIEW_PICTURE` — preview image
-- `PROPERTY_N` — property, where `N` is the property identifier or code
+[`string`](../../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored. Possible values:
+- `DETAIL_PICTURE` — detailed image, field available in the old product card
+- `PREVIEW_PICTURE` — preview image, field available in the old product card
+- `PROPERTY_N` — property, where `N` is the property identifier or property code
 
-To obtain existing identifiers or codes of properties for product variations, use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
+To obtain existing identifiers or property codes of product variations, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
 ||
 |#
 
@@ -198,13 +198,13 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the product catalog
+|| `200040300010` | Insufficient rights to read the trade catalog
 || 
-|| `0` | The product variation with the specified identifier does not exist
+|| `0` | Product variation with the specified identifier does not exist
 || 
 || `0` | The specified property does not exist or is not a file
 || 
-|| `0` | The file with the specified identifier does not exist
+|| `0` | File with the specified identifier does not exist
 || 
 || `0` | Required fields are not provided
 || 

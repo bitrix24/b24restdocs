@@ -1,10 +1,10 @@
-# Download the main product files catalog.product.sku.download
+# Download Main Product Files catalog.product.sku.download
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method downloads the main product files based on the provided parameters.
+This method downloads main product files based on the provided parameters.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ This method downloads the main product files based on the provided parameters.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values for downloading the main product files ||
+[`object`](../../../data-types.md) | Field values for downloading main product files ||
 |#
 
 ### Parameter fields
@@ -27,20 +27,20 @@ This method downloads the main product files based on the provided parameters.
 || **fileId***
 [`integer`](../../../data-types.md) | Identifier of the registered file.
 
-To obtain the identifiers of the main product files, you need to use [catalog.product.sku.get](./catalog-product-sku-get.md) or [catalog.product.sku.list](./catalog-product-sku-list.md)
+To obtain the identifiers of main product files, you need to use [catalog.product.sku.get](./catalog-product-sku-get.md) or [catalog.product.sku.list](./catalog-product-sku-list.md)
 ||
 || **productId***
 [`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the main product.
 
-To obtain the identifiers of the main products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md)
+To obtain the identifiers of main products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md)
 ||
 || **fieldName***
 [`string`](../../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored. Possible values:
-- `DETAIL_PICTURE` — detailed picture
-- `PREVIEW_PICTURE` — preview picture
-- `PROPERTY_N` — property where `N` is the property identifier or property code
+- `DETAIL_PICTURE` — detailed image, field available in the old product card
+- `PREVIEW_PICTURE` — preview image, field available in the old product card
+- `PROPERTY_N` — property, where `N` is the property identifier or property code
 
-To obtain existing identifiers or property codes of the main products, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
+To obtain existing identifiers or property codes of main products, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
 ||
 |#
 
@@ -117,7 +117,7 @@ To obtain existing identifiers or property codes of the main products, you need 
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
+        // Your logic for processing data
         processData($result);
     
     } catch (Throwable $e) {
@@ -198,7 +198,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the trade catalog
+|| `200040300010` | Insufficient permissions to read the trade catalog
 || 
 || `0` | The main product with the specified identifier does not exist
 || 

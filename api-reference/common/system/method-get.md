@@ -17,8 +17,6 @@ The `method.get` method returns two parameters `isExisting` and `isAvailable`, w
 [`string`](../../data-types.md) | The name of the method to check in lowercase, for example `user.get` ||
 |#
 
-> If the method is called without parameters, it will return a list of all methods available to the current application.
-
 ## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
@@ -167,8 +165,8 @@ HTTP status: **200**
 || **result**
 [`array`](../../data-types.md) | Two parameters are returned:
 
-- `isExisting => true/false` — indicates whether the method exists on this account
-- `isAvailable => true/false` — indicates the availability of the method for invocation with the current access permissions ([scope](./scope.md)) of the application ||
+- `isExisting => true/false` — determines whether the method exists on this account
+- `isAvailable => true/false` — determines the availability of the method for invocation with the current access permissions ([scope](./scope.md)) of the application ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
