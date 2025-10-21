@@ -61,9 +61,9 @@ The server is accessible without authorization.
 
 ### Claude Desktop, Anthropic
 
-1. Go to *Settings > Integrations*.
+1. Go to *Settings > Connectors*.
 
-2. Click `Add integration`.
+2. Click `Add custom connector`.
 
 3. Fill in the fields:
 
