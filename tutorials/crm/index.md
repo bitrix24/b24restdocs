@@ -32,12 +32,11 @@ In this section, you will find ready-made examples for solving typical tasks rel
 
 - [{#T}](how-to-get-lists/search-by-phone-and-email.md)
 - [{#T}](how-to-get-lists/get-activity-list-by-deals.md)
-- [{#T}](how-to-get-lists/lead-statuses-with-semantics.md)
-- [{#T}](how-to-get-lists/quote-statuses-with-semantics.md)
+- [{#T}](how-to-get-lists/how-to-get-stages-with-semantics.md)
 - [{#T}](how-to-get-lists/how-to-get-deal-funnels.md)
 - [{#T}](how-to-get-lists/how-to-get-address.md)
 
-## How to use Bitrix24 Sales Intelligence tools
+## How to use Bitrix24's Sales Intelligence tools
 
 - [{#T}](how-to-use-analitycs/info-to-analitics.md)
 - [{#T}](how-to-use-analitycs/use-analitics-for-add-lead.md)

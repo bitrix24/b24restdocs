@@ -1,67 +1,150 @@
-# Add Product to Inventory Management Document catalog.document.element.add
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- required parameters are not specified
-- no response in case of error
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
+# Add Product to Inventory Document catalog.document.element.add
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can subscribe: any user
+> Who can execute the method: 
+> - a user with "Create and edit" access permission for the document type in the request,
+> - and "View and select warehouse" for the stock receipt or write-off warehouse.
 
-## Description
+The method `catalog.document.element.add` adds a product item to the inventory document.
 
-```http
-catalog.document.element.add(fields)
-```
+## Method Parameters
 
-This method adds a product to the inventory management document. If the operation is successful, it returns the `id` of the added product.
-
-## Parameters
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **fields**
-[`array`](../../../data-types.md)| Parameters of the product being added. The fields correspond to the available list of fields [`fields`](catalog-document-element-get-fields.md) ||
+|| **Name**
+`type` | **Description** ||
+|| **fields***
+[`object`](../../../data-types.md) | Fields of the added product ([detailed description](#fields)) ||
 |#
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+### Parameter fields {#fields}
 
-## Examples
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **docId***
+[`integer`](../../../data-types.md) | Identifier of the inventory document, can be obtained using the [catalog.document.list](../catalog-document-list.md) method. The document must have a status of `N` — not processed ||
+|| **elementId***
+[`integer`](../../../data-types.md) | Identifier of the catalog product. The value can be obtained using the [catalog.product.*](../../product/index.md) methods ||
+|| **storeFrom**
+[`integer`](../../../data-types.md) | Identifier of the source warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Used for write-off documents ||
+|| **storeTo**
+[`integer`](../../../data-types.md) | Identifier of the receiving warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Used for receipt and transfer documents ||
+|| **amount**
+[`double`](../../../data-types.md) | Quantity of the product. The value is specified in the units of the document ||
+|| **purchasingPrice**
+[`double`](../../../data-types.md) | Purchase price in the document currency ||
+|#
+
+## Code Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- js
-  
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"docId":64,"elementId":312,"storeTo":2,"amount":15,"purchasingPrice":1250.5}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.element.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"docId":64,"elementId":312,"storeTo":2,"amount":15,"purchasingPrice":1250.5},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.document.element.add
+    ```
+
+- JS
+
+    ```js
+    try
+    {
+    	const response = await $b24.callMethod(
+    		'catalog.document.element.add',
+    		{
+    			fields: {
+    				docId: 64,
+    				elementId: 312,
+    				storeTo: 2,
+    				amount: 15,
+    				purchasingPrice: 1250.5
+    			}
+    		}
+    	);
+
+    	const result = response.getData().result;
+    	console.log(result);
+    }
+    catch (error)
+    {
+    	console.error(error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.element.add',
+                [
+                    'fields' => [
+                        'docId' => 64,
+                        'elementId' => 312,
+                        'storeTo' => 2,
+                        'amount' => 15,
+                        'purchasingPrice' => 1250.5,
+                    ],
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding document element: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
     BX24.callMethod(
         'catalog.document.element.add',
         {
-            'fields': {
-                'docId': 1,
-                'storeFrom': 0,
-                'storeTo': 1,
-                'elementId': 42,
-                'amount': 10,
-                'purchasingPrice': 25,
+            fields: {
+                docId: 64,
+                elementId: 312,
+                storeTo: 2,
+                amount: 15,
+                purchasingPrice: 1250.5
             }
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
                 console.error(result.error());
             else
                 console.log(result.data());
@@ -69,28 +152,100 @@ This method adds a product to the inventory management document. If the operatio
     );
     ```
 
-- php
-  
+- PHP CRest
+
     ```php
+    require_once('crest.php');
+
     $result = CRest::call(
         'catalog.document.element.add',
         [
             'fields' => [
-                'docId' => 1,
-                'storeFrom' => 0,
-                'storeTo' => 1,
-                'elementId' => 42,
-                'amount' => 10,
-                'purchasingPrice' => 25,
+                'docId' => 64,
+                'elementId' => 312,
+                'storeTo' => 2,
+                'amount' => 15,
+                'purchasingPrice' => 1250.5,
             ],
         ]
     );
 
-    echo '<pre>';
+    echo '<PRE>';
     print_r($result);
-    echo '</pre>';
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP code: **200**
+
+```json
+{
+    "result": {
+        "documentElement": {
+            "amount": 15,
+            "docId": 64,
+            "elementId": 312,
+            "id": 148,
+            "purchasingPrice": 1250.5,
+            "storeFrom": null,
+            "storeTo": 2
+        }
+    },
+    "time": {
+        "start": 1759482001.102334,
+        "finish": 1759482001.215487,
+        "duration": 0.11315321922302246,
+        "processing": 0.018451929092407227,
+        "date_start": "2025-11-02T12:20:01+01:00",
+        "date_finish": "2025-11-02T12:20:01+01:00",
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Root element of the response ||
+|| **documentElement**
+[`object`](../../data-types.md#catalog_document_element) | Object with information about the added product ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP code: **400**
+
+```json
+{
+    "error": "ERROR_DOCUMENT_STATUS",
+    "error_description": "Conducted document"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights for the document or one of the specified warehouses ||
+|| `ERROR_DOCUMENT_STATUS` | Document not found / Conducted document | Document not found, unavailable, or already processed ||
+|| `0` | Error of adding new document element | Internal error while saving the item ||
+|#
+
+{% include [System errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./catalog-document-element-update.md)
+- [{#T}](./catalog-document-element-delete.md)
+- [{#T}](./catalog-document-element-list.md)
+- [{#T}](./catalog-document-element-get-fields.md)

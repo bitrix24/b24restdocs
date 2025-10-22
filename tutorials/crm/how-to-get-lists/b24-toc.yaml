@@ -7,11 +7,9 @@ items:
     href: search-by-phone-and-email.md
   - name: How to Get a List of Activities from Deals
     href: get-activity-list-by-deals.md
-  - name: How to Get a List of Lead Statuses with Semantics
-    href: lead-statuses-with-semantics.md
-  - name: How to Get a List of Estimate Statuses
-    href: quote-statuses-with-semantics.md
-  - name: How to Get a Funnel for a Given Direction
+  - name: How to Get a List of Stages with Semantics for CRM Entities
+    href: how-to-get-stages-with-semantics.md
+  - name: How to Get a Sales Funnel for a Given Direction
     href: how-to-get-deal-funnels.md
   - name: How to Get a Client's Address from CRM
     href: how-to-get-address.md

@@ -154,7 +154,7 @@ By default, the role `view_all` is used. ||
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -214,7 +214,7 @@ Returns an empty array `"result":[]` if the user does not exist or does not have
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -229,7 +229,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Argument #1 ($userId) must be of type int, string given, called in \/var\/www\/html\/bitrix\/modules\/tasks\/lib\/internals\/counter.php on line 78 (internal error) | The `userId` parameter has an invalid type. ||
+|| `0` | Invalid value {value} to match with parameter {userId}. Should be a value of type int. | The value of incorrect type is specified in the `userId` parameter. ||
 || `0` | Group not found or access denied. (internal error) | The group does not exist or access is denied. ||
 |#
 

@@ -1,22 +1,20 @@
 # MCP Server for Working with Bitrix24 REST API
 
-When a developer asks an AI assistant in an IDE, such as Cursor or VS Code, to write code for integration with Bitrix24, the neural network may suggest non-existent methods or pass unnecessary parameters. MCP provides the assistant with direct access to up-to-date documentation, making the responses more accurate.
+When a developer asks an AI assistant in the development environment to write code for integration with Bitrix24, the neural network may suggest non-existent methods or pass unnecessary parameters. MCP provides the assistant with direct access to up-to-date documentation, making the responses more accurate.
 
 ## What is MCP
 
-Model Context Provider is a server that transmits structured data to the AI assistant: method descriptions, parameter lists, acceptable values, and usage hints.
+MCP (Model Context Provider) is a server that transmits structured data to the AI assistant: method descriptions, parameter lists, acceptable values, and usage hints.
 
-MCP allows you to:
+MCP allows:
 
-- obtain relevant API methods and fields for a specific task,
-
-- work with structured data instead of free text,
-
-- reduce the number of errors and code corrections.
+- obtaining relevant API methods and fields for specific tasks,
+- working with structured data instead of free text,
+- reducing the number of errors and code corrections.
 
 ## How to Connect to the MCP Server
 
-Server address: <https://mcp-dev.bitrix24.com/mcp>
+Specify the server address <https://mcp-dev.bitrix24.com/mcp> in the development environment settings.
 
 The server is accessible without authorization.
 
@@ -33,9 +31,9 @@ The server is accessible without authorization.
   }
   ```
 
-3. Save the settings. A green indicator and a list of available tools will appear next to the server.
+3. Save the settings. A green indicator will appear next to the server along with a list of available tools.
 
-4. When composing a request, explicitly instruct the assistant: "Use `b24-dev-mcp`."
+4. When composing a request, explicitly instruct the assistant: use `b24-dev-mcp`.
 
 ### GitHub Copilot Chat, VS Code
 
@@ -73,9 +71,19 @@ The server is accessible without authorization.
 
 4. Save the settings. Claude will automatically determine when to use MCP.
 
-## Example Requests
+### Gemini Code Assist CLI
 
-The MCP server automatically provides the assistant with up-to-date Bitrix24 REST API data, but the ways to interact between the IDE and MCP vary.
+1. Add the MCP server with the command:
+
+  ```bash
+  gemini mcp add --transport http b24-dev-mcp https://mcp-dev.bitrix24.com/mcp
+  ```
+
+2. Check that the server appears in the list with the command `gemini mcp list`. Gemini will automatically determine when to use MCP.
+
+## Request Examples
+
+The MCP server automatically provides the assistant with up-to-date Bitrix24 REST API data, but the ways to interact between the development environment and MCP vary.
 
 ### Cursor
 
@@ -113,6 +121,14 @@ The MCP server automatically provides the assistant with up-to-date Bitrix24 RES
 
 4. The assistant will generate code based on the MCP response.
 
-## Conclusion
+### Gemini Code Assist CLI
 
-The MCP server helps AI assistants work with the current methods of the Bitrix24 REST API. This reduces the number of errors when generating code. Connect the MCP server to speed up the development of integrations.
+**Feature**: automatic determination of the need to use MCP.
+
+1. Execute the command `gemini chat` and send a request — "Build a `curl` request to create a lead with fields name, phone, and source 'site'."
+
+2. Gemini will determine that data from the connected MCP is needed and will send the request.
+
+3. MCP will return a description of the appropriate method and its parameters from the documentation.
+
+4. Gemini will generate code based on the MCP response.

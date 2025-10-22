@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will fill it in shortly.
+Some data may be missing — we will complete it shortly.
 
 {% endnote %}
 
@@ -24,24 +24,25 @@ In this article, we will discuss the data types and object structure specific to
 
 #|
 || **Type** | **Descriptions and Values** ||
-|| [`catalog_catalog.id`](#catalog_catalog) | Integer identifier of the trade catalog (for example, `1`). You can obtain the identifiers of trade catalogs using the method [catalog.catalog.list](./catalog/catalog-catalog-list.md) ||
-|| [`catalog_product.id`](#catalog_product) | Integer identifier of the product (for example, `1`). You can obtain the identifiers of products using the method [catalog.product.list](./product/catalog-product-list.md) ||
-|| [`catalog_product_sku.id`](#catalog_product_sku) | Integer identifier of the parent product (for example, `1`). You can obtain the identifiers of parent products using the method [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md) ||
-|| [`catalog_product_offer.id`](#catalog_product_offer) | Integer identifier of the product variation (for example, `1`). You can obtain the identifiers of product variations using the method [catalog.product.offer.list](./product/offer/catalog-product-offer-list.md) ||
-|| [`catalog_product_service.id`](#catalog_product_service) | Integer identifier of the service (for example, `1`). You can obtain the identifiers of services using the method [catalog.product.service.list](./product/service/catalog-product-service-list.md) ||
-|| [`catalog_product_image.id`](#catalog_product_image) | Integer identifier of the product image (for example, `1`). You can obtain the identifiers of product images using the method [catalog.productImage.list](./product-image/catalog-product-image-list.md) ||
-|| [`catalog_store.id`](#catalog_store) | Integer identifier of the warehouse (for example, `1`). You can obtain the identifiers of warehouses using the method [catalog.store.list](./store/catalog-store-list.md) ||
-|| [`catalog_measure.id`](#catalog_measure) | Integer identifier of the unit of measurement (for example, `1`). You can obtain the identifiers of units of measurement using the method [catalog.measure.list](./measure/catalog-measure-list.md) ||
-|| [`catalog_ratio.id`](#catalog_ratio) | Integer identifier of the unit of measurement ratio (for example, `1`). You can obtain the identifiers of unit ratios using the method [catalog.ratio.list](./ratio/catalog-ratio-list.md) ||
-|| [`catalog_price.id`](#catalog_price) | Integer identifier of the price, for example `1`. You can obtain the identifiers of prices using the method [catalog.price.list](./price/catalog-price-list.md) ||
-|| [`catalog_price_type.id`](#catalog_price_type) | Integer identifier of the price type (for example, `1`). You can obtain the identifiers of price types using the method [catalog.priceType.list](./price-type/catalog-price-type-list.md) ||
-|| [`catalog_price_type_lang.id`](#catalog_price_type_lang) | Integer identifier of the translation of price type names (for example, `1`). You can obtain the identifiers of translations using the method [catalog.priceTypeLang.list](./price-type/price-type-lang/catalog-price-type-lang-list.md) ||
-|| [`catalog_language.lid`](#catalog_language) | String identifier of the language, consisting of two characters (for example, `de`). You can obtain the identifiers of languages using the method [catalog.priceTypeLang.getLanguages](./price-type/price-type-lang/catalog-price-type-lang-get-languages.md) ||
-|| [`catalog_rounding_rule.id`](#catalog_rounding_rule) | Integer identifier of the price rounding rule (for example, `1`). You can obtain the identifiers of price rounding rules using the method [catalog.roundingRule.list](./rounding-rule/catalog-rounding-rule-list.md) ||
-|| [`catalog_extra.id`](#catalog_extra) | Integer identifier of the markup (for example, `1`). You can obtain the identifiers of markups using the method [catalog.extra.list](./extra/catalog-extra-list.md) ||
-|| [`catalog_section.id`](#catalog_section) | Integer identifier of the catalog section (for example, `1`). You can obtain the identifiers of catalog sections using the method [catalog.section.list](./section/catalog-section-list.md) ||
-|| [`catalog_storeproduct.id`](#catalog_storeproduct) | Integer identifier of the record of product stock in the warehouse, for example `1`. You can obtain the identifiers using the method [catalog.storeproduct.list](./store-product/catalog-store-product-list.md) ||
-|| [`catalog_vat.id`](#catalog_vat) | Integer identifier of the VAT rate (for example, `1`). You can obtain the identifiers of VAT rates using the method [catalog.vat.list](./vat/catalog-vat-list.md) ||
+|| [`catalog_catalog.id`](#catalog_catalog) | Integer identifier of the trade catalog (for example, `1`). You can obtain trade catalog identifiers using the method [catalog.catalog.list](./catalog/catalog-catalog-list.md) ||
+|| [`catalog_document_element.id`](#catalog_document_element) | Integer identifier of the product in the inventory accounting document, for example `1`. You can obtain product identifiers in documents using the method [catalog.document.element.list](./document/document-element/catalog-document-element-list.md) ||
+|| [`catalog_product.id`](#catalog_product) | Integer identifier of the product (for example, `1`). You can obtain product identifiers using the method [catalog.product.list](./product/catalog-product-list.md) ||
+|| [`catalog_product_sku.id`](#catalog_product_sku) | Integer identifier of the parent product (for example, `1`). You can obtain identifiers of parent products using the method [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md) ||
+|| [`catalog_product_offer.id`](#catalog_product_offer) | Integer identifier of the product variation (for example, `1`). You can obtain identifiers of product variations using the method [catalog.product.offer.list](./product/offer/catalog-product-offer-list.md) ||
+|| [`catalog_product_service.id`](#catalog_product_service) | Integer identifier of the service (for example, `1`). You can obtain identifiers of services using the method [catalog.product.service.list](./product/service/catalog-product-service-list.md) ||
+|| [`catalog_product_image.id`](#catalog_product_image) | Integer identifier of the product image (for example, `1`). You can obtain identifiers of product images using the method [catalog.productImage.list](./product-image/catalog-product-image-list.md) ||
+|| [`catalog_store.id`](#catalog_store) | Integer identifier of the warehouse (for example, `1`). You can obtain identifiers of warehouses using the method [catalog.store.list](./store/catalog-store-list.md) ||
+|| [`catalog_measure.id`](#catalog_measure) | Integer identifier of the unit of measurement (for example, `1`). You can obtain identifiers of units of measurement using the method [catalog.measure.list](./measure/catalog-measure-list.md) ||
+|| [`catalog_ratio.id`](#catalog_ratio) | Integer identifier of the unit of measurement ratio (for example, `1`). You can obtain identifiers of unit ratios using the method [catalog.ratio.list](./ratio/catalog-ratio-list.md) ||
+|| [`catalog_price.id`](#catalog_price) | Integer identifier of the price, for example `1`. You can obtain identifiers of prices using the method [catalog.price.list](./price/catalog-price-list.md) ||
+|| [`catalog_price_type.id`](#catalog_price_type) | Integer identifier of the price type (for example, `1`). You can obtain identifiers of price types using the method [catalog.priceType.list](./price-type/catalog-price-type-list.md) ||
+|| [`catalog_price_type_lang.id`](#catalog_price_type_lang) | Integer identifier of the translation of price type names (for example, `1`). You can obtain identifiers of translations using the method [catalog.priceTypeLang.list](./price-type/price-type-lang/catalog-price-type-lang-list.md) ||
+|| [`catalog_language.lid`](#catalog_language) | String identifier of the language, consisting of two characters (for example, `de`). You can obtain identifiers of languages using the method [catalog.priceTypeLang.getLanguages](./price-type/price-type-lang/catalog-price-type-lang-get-languages.md) ||
+|| [`catalog_rounding_rule.id`](#catalog_rounding_rule) | Integer identifier of the price rounding rule (for example, `1`). You can obtain identifiers of price rounding rules using the method [catalog.roundingRule.list](./rounding-rule/catalog-rounding-rule-list.md) ||
+|| [`catalog_extra.id`](#catalog_extra) | Integer identifier of the markup (for example, `1`). You can obtain identifiers of markups using the method [catalog.extra.list](./extra/catalog-extra-list.md) ||
+|| [`catalog_section.id`](#catalog_section) | Integer identifier of the catalog section (for example, `1`). You can obtain identifiers of catalog sections using the method [catalog.section.list](./section/catalog-section-list.md) ||
+|| [`catalog_storeproduct.id`](#catalog_storeproduct) | Integer identifier of the record of product stock in the warehouse, for example `1`. You can obtain identifiers using the method [catalog.storeproduct.list](./store-product/catalog-store-product-list.md) ||
+|| [`catalog_vat.id`](#catalog_vat) | Integer identifier of the VAT rate (for example, `1`). You can obtain identifiers of VAT rates using the method [catalog.vat.list](./vat/catalog-vat-list.md) ||
 |#
 
 ## Object Structure
@@ -83,6 +84,27 @@ This parameter is used only in the on-premise version
 
 To obtain existing identifiers of VAT, you need to use [catalog.vat.list](./vat/catalog-vat-list.md)
 ||
+|#
+
+### catalog_document_element
+
+#|
+|| **Value**
+`type` | **Description** ||
+|| **id**
+[`integer`](../data-types.md) | Identifier of the product in the inventory accounting document ||
+|| **docId**
+[`catalog_document.id`](#catalog_document) | Identifier of the inventory accounting document ||
+|| **elementId**
+[`catalog_product.id`](#catalog_product) | Identifier of the catalog product ||
+|| **storeFrom**
+[`catalog_store.id`](#catalog_store) | Identifier of the source warehouse. Used for documents that require write-off ||
+|| **storeTo**
+[`catalog_store.id`](#catalog_store) | Identifier of the receiving warehouse. Used for receipt and transfer documents ||
+|| **amount**
+[`double`](../data-types.md) | Quantity of the product ||
+|| **purchasingPrice**
+[`double`](../data-types.md) | Purchasing price ||
 |#
 
 ### catalog_product
@@ -133,9 +155,9 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Date of activity start ||
+[`datetime`](../data-types.md) | Date of activation ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | Date of activity end ||
+[`datetime`](../data-types.md) | Date of deactivation ||
 || **dateCreate**
 [`datetime`](../data-types.md) | Date of creation ||
 || **timestampX**
@@ -149,13 +171,13 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Image for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Detailed image. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
 [`string`](../data-types.md) | Type of description for the announcement. Possible values:
 - `text` — text
@@ -169,7 +191,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **sort**
 [`integer`](../data-types.md) | Sorting ||
 || **subscribe**
-[`string`](../data-types.md) | Permission to subscribe to the product. Possible values:
+[`string`](../data-types.md) | Subscription permission for the product. Possible values:
 - `Y` — yes
 - `N` — no
 - `D` — default
@@ -226,7 +248,7 @@ Not editable when inventory management is enabled
 
 Used only in the on-premise version for content sales ||
 || **recurSchemeType**
-[`string`](../data-types.md) | Unit of time for the payment period. Possible values:
+[`string`](../data-types.md) | Time unit of the payment period. Possible values:
 - `H` — hour
 - `D` — day
 - `W` — week
@@ -304,9 +326,9 @@ For parent products, the ability to edit this field is available only in the on-
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Date of activity start ||
+[`datetime`](../data-types.md) | Date of activation ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | Date of activity end ||
+[`datetime`](../data-types.md) | Date of deactivation ||
 || **dateCreate**
 [`datetime`](../data-types.md) | Date of creation ||
 || **timestampX**
@@ -322,13 +344,13 @@ For parent products, the ability to edit this field is available only in the on-
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Image for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Detailed image. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
 [`string`](../data-types.md) | Type of description for the announcement. Possible values:
 - `text` — text
@@ -342,7 +364,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **sort**
 [`integer`](../data-types.md) | Sorting ||
 || **subscribe**
-[`string`](../data-types.md) | Permission to subscribe to the parent product. Possible values:
+[`string`](../data-types.md) | Subscription permission for the parent product. Possible values:
 - `Y` — yes
 - `N` — no
 - `D` — default
@@ -463,9 +485,9 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Date of activity start ||
+[`datetime`](../data-types.md) | Date of activation ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | Date of activity end ||
+[`datetime`](../data-types.md) | Date of deactivation ||
 || **dateCreate**
 [`datetime`](../data-types.md) | Date of creation ||
 || **timestampX**
@@ -479,13 +501,13 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Image for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Detailed image. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
 [`string`](../data-types.md) | Type of description for the announcement. Possible values:
 - `text` — text
@@ -499,7 +521,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **sort**
 [`integer`](../data-types.md) | Sorting ||
 || **subscribe**
-[`string`](../data-types.md) | Permission to subscribe to the product variation. Possible values:
+[`string`](../data-types.md) | Subscription permission for the product variation. Possible values:
 - `Y` — yes
 - `N` — no
 - `D` — default
@@ -512,13 +534,13 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 - `N` — no
 ||
 || **height**
-[`float`](../data-types.md) | Height of the product ||
+[`float`](../data-types.md) | Height of the product variation ||
 || **length**
-[`float`](../data-types.md) | Length of the product ||
+[`float`](../data-types.md) | Length of the product variation ||
 || **weight**
-[`float`](../data-types.md) | Weight of the product ||
+[`float`](../data-types.md) | Weight of the product variation ||
 || **width**
-[`float`](../data-types.md) | Width of the product ||
+[`float`](../data-types.md) | Width of the product variation ||
 || **quantityTrace**
 [`string`](../data-types.md) | Quantity accounting mode. Possible values:
 - `Y` — enabled
@@ -557,7 +579,7 @@ Not editable when inventory management is enabled
 
 Used only in the on-premise version for content sales ||
 || **recurSchemeType**
-[`string`](../data-types.md) | Unit of time for the payment period. Possible values:
+[`string`](../data-types.md) | Time unit of the payment period. Possible values:
 - `H` — hour
 - `D` — day
 - `W` — week
@@ -628,9 +650,9 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **modifiedBy**
 [`user.id`](../data-types.md) | Modified by ||
 || **dateActiveFrom**
-[`datetime`](../data-types.md) | Date of activity start ||
+[`datetime`](../data-types.md) | Date of activation ||
 || **dateActiveTo**
-[`datetime`](../data-types.md) | Date of activity end ||
+[`datetime`](../data-types.md) | Date of deactivation ||
 || **dateCreate**
 [`datetime`](../data-types.md) | Date of creation ||
 || **timestampX**
@@ -644,13 +666,13 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Image for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Detailed image. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
 [`string`](../data-types.md) | Type of description for the announcement. Possible values:
 - `text` — text
@@ -698,9 +720,9 @@ If `valueId` is not specified, the existing value will be removed from the datab
 [`integer`](../data-types.md) | Identifier of the product ||
 || **type**
 [`string`](../data-types.md) | Type of image:
-- `DETAIL_PICTURE` — detailed picture, field available in the old product card
-- `PREVIEW_PICTURE` — picture for the announcement, field available in the old product card
-- `MORE_PHOTO` — picture
+- `DETAIL_PICTURE` — detailed image, field available in the old product card
+- `PREVIEW_PICTURE` — image for the announcement, field available in the old product card
+- `MORE_PHOTO` — image
 ||
 || **createTime**
 [`datetime`](../data-types.md) | Date of image creation ||
@@ -733,10 +755,10 @@ If `valueId` is not specified, the existing value will be removed from the datab
 [`double`](../data-types.md) | GPS longitude ||
 || **imageId**
 [`object`](../data-types.md) | Image. Object in the format `{fileData: [value1, value2]}`, where:
-- `value1` – name of the picture file with extension
-- `value2` – picture in base64 format
+- `value1` – name of the image file with extension
+- `value2` – image in base64 format
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the image, use the object in the format `{remove: ‘Y’}` ||
 || **dateModify**
 [`datetime`](../data-types.md) | Date of modification ||
 || **dateCreate**
@@ -801,7 +823,7 @@ Only one unit of measurement from the entire directory can take the value `Y`
 || **productId**
 [`integer`](../data-types.md) | Identifier of the product ||
 || **ratio**
-[`double`](../data-types.md) | Unit of measurement ratio ||
+[`double`](../data-types.md) | Ratio of the unit of measurement ||
 || **isDefault**
 [`string`](../data-types.md) | Is this unit of measurement ratio the default ratio? Possible values:
 - `Y` — yes
@@ -821,15 +843,15 @@ Only one unit of measurement from the entire directory can take the value `Y`
 || **catalogGroupId**
 [`catalog_price_type.id`](#catalog_price_type) | Identifier of the price type ||
 || **price**
-[`double`](../data-types.md) | Price value ||
+[`double`](../data-types.md) | Value of the price ||
 || **priceScale**
-[`double`](../data-types.md) | Base price value ||
+[`double`](../data-types.md) | Value of the base price ||
 || **currency**
 [`string`](../data-types.md) | Currency of the price ||
 || **quantityFrom**
-[`double`](../data-types.md) | Minimum quantity for price application. Deprecated parameter ||
+[`double`](../data-types.md) | Minimum quantity for applying the price. Deprecated parameter ||
 || **quantityTo**
-[`double`](../data-types.md) | Maximum quantity for price application. Deprecated parameter  ||
+[`double`](../data-types.md) | Maximum quantity for applying the price. Deprecated parameter  ||
 || **extraId**
 [`catalog_extra.id`](#catalog_extra) | Identifier of the markup. Deprecated parameter  ||
 || **timestampX**

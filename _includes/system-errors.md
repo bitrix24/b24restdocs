@@ -1,6 +1,6 @@
 ### Statuses and System Error Codes
 
-HTTP status: **20x**, **40x**, **50x**
+HTTP Status: **20x**, **40x**, **50x**
 
 The errors described below may occur when calling any method.
 
@@ -20,19 +20,19 @@ Max batch length exceeded | The maximum length of parameters passed to the [batc
 || `401` | `NO_AUTH_FOUND`
 Wrong authorization data | Invalid [access token](/settings/oauth/index.html) or [webhook code](/local-integrations/local-webhooks.html) ||
 || `400` | `INVALID_REQUEST`
-Https required. | The HTTPS protocol is required for method calls ||
+Https required | The methods must be called using the HTTPS protocol ||
 || `503` | `OVERLOAD_LIMIT`
 REST API is blocked due to overload | The REST API is blocked due to overload. This is a manual individual block, to remove it you need to contact [Bitrix24 technical support](/bitrix-support.html) ||
 || `403` | `ACCESS_DENIED`
-REST API is available only on commercial plans | The REST API is available only on commercial plans. ||
+REST API is available only on commercial plans | The REST API is available only on commercial plans ||
 || `403` | `INVALID_CREDENTIALS`
 Invalid request credentials | The user whose [access token](/settings/oauth/index.html) or [webhook](/local-integrations/local-webhooks.html) was used to call the method lacks permissions ||
 || `404` | `ERROR_MANIFEST_IS_NOT_AVAILABLE`
-Manifest is not available. | The manifest is not available. ||
+Manifest is not available | The manifest is not available ||
 || `403` | `insufficient_scope`
-The request requires higher privileges than provided by the webhook token | The request requires higher privileges than those provided by the [webhook token](/local-integrations/local-webhooks.html) ||
+The request requires higher privileges than provided by the webhook token | The request requires higher privileges than those provided by the [webhook](/local-integrations/local-webhooks.html) token ||
 || `401` | `expired_token`
 The access token provided has expired | The provided [access token](/settings/oauth/index.html) has expired ||
 || `403` | `user_access_error`
-The user does not have access to the application | The user does not have access to the application. This means that the application is installed, but the account administrator has granted access to this application only to specific users ||
+The user does not have access to the application | The user does not have access to the application. This means that the application is installed, but the account administrator has allowed access to this application only for specific users ||
 |#

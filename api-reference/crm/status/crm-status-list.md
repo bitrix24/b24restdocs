@@ -108,7 +108,7 @@ The list of fields for filtering can be found using the method [crm.status.field
       console.error('Request failed', error)
     }
     
-    // callMethod provides manual control over the pagination process through the start parameter. It is suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
+    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, it may be less efficient compared to fetchListMethod when dealing with large volumes of data.
     
     try {
       const response = await $b24.callMethod('crm.status.list', {
@@ -314,7 +314,7 @@ HTTP Status: **200**
             "ID": "115",
             "ENTITY_ID": "DEAL_STAGE",
             "STATUS_ID": "APOLOGY",
-            "NAME": "Analysis of Failure Reason",
+            "NAME": "Reason for Failure Analysis",
             "NAME_INIT": "",
             "SORT": "80",
             "SYSTEM": "N",
@@ -347,9 +347,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array of objects containing information about directory items ||
+[`array`](../../data-types.md) | An array of objects with information about directory items ||
 || **total**
-[`integer`](../../data-types.md) | The total number of items found ||
+[`integer`](../../data-types.md) | The total number of found items ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -385,4 +385,5 @@ HTTP Status: **400**
 - [{#T}](./crm-status-update.md)
 - [{#T}](./crm-status-delete.md) 
 - [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
+- [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-stages-with-semantics.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)

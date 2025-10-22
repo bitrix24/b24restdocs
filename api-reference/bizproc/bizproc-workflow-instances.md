@@ -1,4 +1,4 @@
-# Get a List of Running Workflows bizproc.workflow.instances
+# Get a list of running workflows bizproc.workflow.instances
 
 > Scope: [`bizproc`](../scopes/permissions.md)
 >
@@ -8,7 +8,7 @@ This method retrieves a list of running workflows.
 
 {% note info "bizproc.workflow.instance.list" %}
 
-There is an older method `bizproc.workflow.instance.list` — an alias for the method `bizproc.workflow.instances`. It accepts the same parameters and returns the same results.
+There is an old method `bizproc.workflow.instance.list` — an alias for the method `bizproc.workflow.instances`. It accepts the same parameters and returns the same results.
 
 Support for `bizproc.workflow.instance.list` is not guaranteed in the future, so we recommend using `bizproc.workflow.instances`.
 
@@ -64,14 +64,14 @@ The page size of results is always static — 50 records.
 
 To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
 
-The formula for calculating the `start` parameter value:
+The formula for calculating the value of the `start` parameter:
 
-`start = (N - 1) * 50`, where `N` — the desired page number ||
+`start = (N - 1) * 50`, where `N` — the number of the desired page ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -248,7 +248,7 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -267,7 +267,7 @@ HTTP Status: **200**
             "DOCUMENT_ID":"DEAL_1633",
             "ENTITY":"CCrmDocumentDeal",
             "ID":"658c4d3d6a2906.51542462",
-            "STARTED":"2023-12-27T19:13:49+03:00",
+            "STARTED":"2023-12-27T19:13:49+02:00",
             "MODULE_ID":"crm",
             "OWNED_UNTIL":null,
             "TEMPLATE_ID":"212",
@@ -296,16 +296,17 @@ HTTP Status: **200**
 || **result**
 [`object`](../data-types.md) | The root element of the response. 
 
-Contains an array of objects with information about the running workflows ||
+Contains an array of objects with information about running workflows ||
 || **total**
 [`integer`](../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
+ 
 ## Error Handling
 
-HTTP Status: **403**
+HTTP status: **403**
 
 ```json
 {
@@ -320,7 +321,7 @@ HTTP Status: **403**
 
 #|
 || **Status** |**Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! | Method was not executed by an administrator ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

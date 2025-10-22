@@ -1,41 +1,46 @@
 # Add Task tasks.task.add
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- Additional example needed with explanation on linking the task to CRM
-- Parameter types are not specified
-- Parameter requirements are not indicated
-- Examples are missing (there should be three examples - curl, js, php)
-- Response in case of error is missing
-- Response in case of success is missing
- 
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly
-
-{% endnote %}
-
 > Scope: [`task`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.task.add` creates a task. 
+The method `tasks.task.add` adds a new task.
+
+## Method Parameters
+
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
-|| **Parameter** / **Type** | **Description** ||
-|| **fields**
-[`unknown`](../data-types.md) | Fields corresponding to the available list of fields [tasks.task.getfields](./tasks-task-get-fields.md). ||
+|| **Name**
+`type` | **Description** ||
+|| **fields***
+[`object`](../data-types.md) | Values of [task fields](./fields.md).
+
+You can pass the parameter `SE_PARAMETER` to the method — a list of objects with additional task parameters. Possible values for `CODE`:
+- `1` — deadlines are determined by the deadlines of subtasks
+- `2` — automatically complete the task when subtasks are completed (and vice versa)
+- `3` — do not complete the task without a result
+
+```js
+SE_PARAMETER: [
+    {
+        VALUE: 'Y',
+        CODE: 3
+    },
+    {
+        VALUE: 'Y',
+        CODE: 2
+    }
+]
+```
+||
 |#
 
-## Examples
+## Code Examples
 
 {% include [Note on examples](../../_includes/examples.md) %}
+
+Let's add a task with files and CRM object bindings. To attach a file to the task, you need to add the symbol `n` before the file ID.
 
 {% list tabs %}
 
@@ -45,7 +50,7 @@ The method `tasks.task.add` creates a task.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"Task Title","DEADLINE":"2023-12-31T23:59:59","CREATED_BY":456,"RESPONSIBLE_ID":123,"UF_CRM_TASK":["L_4","C_7","CO_5","D_10"],"UF_TASK_WEBDAV_FILES":["n12345","n67890"]}}' \
+    -d '{"fields":{"TITLE":"Task Title","DEADLINE":"2025-12-31T23:59:59","CREATED_BY":456,"RESPONSIBLE_ID":123,"UF_CRM_TASK":["L_4","C_7","CO_5","D_10"],"UF_TASK_WEBDAV_FILES":["n12345","n67890"]}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/tasks.task.add
     ```
 
@@ -55,7 +60,7 @@ The method `tasks.task.add` creates a task.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TITLE":"Task Title","DEADLINE":"2023-12-31T23:59:59","CREATED_BY":456,"RESPONSIBLE_ID":123,"UF_CRM_TASK":["L_4","C_7","CO_5","D_10"],"UF_TASK_WEBDAV_FILES":["n12345","n67890"]},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TITLE":"Task Title","DEADLINE":"2025-12-31T23:59:59","CREATED_BY":456,"RESPONSIBLE_ID":123,"UF_CRM_TASK":["L_4","C_7","CO_5","D_10"],"UF_TASK_WEBDAV_FILES":["n12345","n67890"]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/tasks.task.add
     ```
 
@@ -69,7 +74,7 @@ The method `tasks.task.add` creates a task.
             {
                 fields: {               
                     TITLE: "Task Title", // Task Title
-                    DEADLINE: "2023-12-31T23:59:59", // Deadline
+                    DEADLINE: "2025-12-31T23:59:59", // Deadline
                     CREATED_BY: 456, // Creator ID
                     RESPONSIBLE_ID: 123, // Assignee ID
                     // Example of passing multiple values in the UF_CRM_TASK field
@@ -81,8 +86,8 @@ The method `tasks.task.add` creates a task.
                     ],
                     // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                     UF_TASK_WEBDAV_FILES: [
-                        "n12345", // Identifier of the first disk file
-                        "n67890" // Identifier of the second disk file
+                        "n12345", // ID of the first Drive file
+                        "n67890" // ID of the second Drive file
                     ]
                 }
             }
@@ -108,7 +113,7 @@ The method `tasks.task.add` creates a task.
                 [
                     'fields' => [
                         'TITLE'         => 'Task Title',
-                        'DEADLINE'      => '2023-12-31T23:59:59',
+                        'DEADLINE'      => '2025-12-31T23:59:59',
                         'CREATED_BY'    => 456,
                         'RESPONSIBLE_ID' => 123,
                         'UF_CRM_TASK'   => [
@@ -145,7 +150,7 @@ The method `tasks.task.add` creates a task.
         {
             fields: {               
                 TITLE: "Task Title", // Task Title
-                DEADLINE: "2023-12-31T23:59:59", // Deadline
+                DEADLINE: "2025-12-31T23:59:59", // Deadline
                 CREATED_BY: 456, // Creator ID
                 RESPONSIBLE_ID: 123, // Assignee ID
                 // Example of passing multiple values in the UF_CRM_TASK field
@@ -157,8 +162,8 @@ The method `tasks.task.add` creates a task.
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 UF_TASK_WEBDAV_FILES: [
-                    "n12345", // Identifier of the first disk file
-                    "n67890" // Identifier of the second disk file
+                    "n12345", // ID of the first Drive file
+                    "n67890" // ID of the second Drive file
                 ]
             }
         },
@@ -182,7 +187,7 @@ The method `tasks.task.add` creates a task.
         [
             'fields' => [
                 'TITLE' => 'Task Title', // Task Title
-                'DEADLINE' => '2023-12-31T23:59:59', // Deadline
+                'DEADLINE' => '2025-12-31T23:59:59', // Deadline
                 'CREATED_BY' => 456, // Creator ID
                 'RESPONSIBLE_ID' => 123, // Assignee ID
                 // Example of passing multiple values in the UF_CRM_TASK field
@@ -194,8 +199,8 @@ The method `tasks.task.add` creates a task.
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 'UF_TASK_WEBDAV_FILES' => [
-                    'n12345', // Identifier of the first disk file
-                    'n67890' // Identifier of the second disk file
+                    'n12345', // ID of the first Drive file
+                    'n67890' // ID of the second Drive file
                 ]
             ]
         ]
@@ -208,219 +213,7 @@ The method `tasks.task.add` creates a task.
     }
     ```
 
-- HTTP
-
-    ```bash
-    POST /rest/tasks.task.add.json
-    Host: your_bitrix24_domain
-    Authorization: Bearer your_access_token
-    Content-Type: application/x-www-form-urlencoded
-
-    fields[TITLE]=Task Title&
-    fields[DEADLINE]=2023-12-31T23:59:59&
-    fields[CREATED_BY]=456&
-    fields[RESPONSIBLE_ID]=123&
-    fields[UF_CRM_TASK][0]=L_4&
-    fields[UF_CRM_TASK][1]=C_7&
-    fields[UF_CRM_TASK][2]=CO_5&
-    fields[UF_CRM_TASK][3]=D_10&
-    fields[UF_TASK_WEBDAV_FILES][0]=n12345&
-    fields[UF_TASK_WEBDAV_FILES][1]=n67890
-    ```
-
 {% endlist %}
-
-To attach a file to the task, the file identifier must be preceded by the character `n`
-
-{% list tabs %}
-
-- JS
-
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'task.item.update',
-            {
-                taskId: '76',
-                fields: {
-                    UF_TASK_WEBDAV_FILES: [
-                        'n96'
-                    ]
-                }
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log('Updated task with ID:', result);
-        // Your required data processing logic
-        processResult(result);
-    }
-    catch( error )
-    {
-        console.error('Error:', error);
-    }
-    ```
-
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'tasks.task.update',
-                [
-                    'taskId' => '76',
-                    'fields' => [
-                        'UF_TASK_WEBDAV_FILES' => [
-                            'n96'
-                        ]
-                    ]
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error updating task: ' . $e->getMessage();
-    }
-    ```
-
-- BX24.js
-
-    ```js
-    {
-        "taskId":"76",
-        "fields": {
-            "UF_TASK_WEBDAV_FILES": [
-                "n96"
-            ]
-        }
-    }
-    ```
-
-{% endlist %}
-
-**Starting from version 22.1300.0**, you can pass the `SE_PARAMETER` parameter to the method — a list of objects with additional task parameters.
-
-{% list tabs %}
-
-- JS
-
-    ```js
-    try
-    {
-        const response = await $b24.callMethod(
-            'tasks.task.add',
-            {
-                data: {
-                    fields: {
-                        "TITLE": 'REST',
-                        "RESPONSIBLE_ID": 1,
-                        "SE_PARAMETER": [
-                            {
-                                'VALUE': 'Y',
-                                'CODE': 3
-                            },
-                            {
-                                'VALUE': 'Y',
-                                'CODE': 2
-                            },
-                        ]
-                    }
-                }
-            }
-        );
-        
-        const result = response.getData().result;
-        console.log(result);
-    }
-    catch( error )
-    {
-        console.error('Error:', error);
-    }
-    ```
-
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'tasks.task.add',
-                [
-                    'data' => [
-                        'fields' => [
-                            'TITLE'          => 'REST',
-                            'RESPONSIBLE_ID' => 1,
-                            'SE_PARAMETER'   => [
-                                [
-                                    'VALUE' => 'Y',
-                                    'CODE'  => 3
-                                ],
-                                [
-                                    'VALUE' => 'Y',
-                                    'CODE'  => 2
-                                },
-                            ]
-                        ]
-                    ]
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding task: ' . $e->getMessage();
-    }
-    ```
-
-- BX24.js
-
-    ```js
-    BX.ajax.runAction("tasks.task.add", {
-        data: {
-            fields: {
-                "TITLE": 'REST',
-                "RESPONSIBLE_ID": 1,
-                "SE_PARAMETER": [
-                    {
-                        'VALUE': 'Y',
-                        'CODE': 3
-                    },
-                    {
-                        'VALUE': 'Y',
-                        'CODE': 2
-                    },
-                ]
-            }
-        }
-    }).then(function (response) { console.log(response);});
-    ```
-
-{% endlist %}
-
-Code values:
-
-1. deadlines are determined by the deadlines of subtasks
-2. automatically complete the task when subtasks are completed (and vice versa)
-3. mandatory report upon task completion
 
 ## Response Handling
 
@@ -558,12 +351,69 @@ HTTP status: **200**
             },
             "checkListCanAdd": true
         }
+    },
+    "time": {
+        "start": 1758188171.142611,
+        "finish": 1758188172.101309,
+        "duration": 0.958698034286499,
+        "processing": 0.9341180324554443,
+        "date_start": "2025-09-18T12:36:11+03:00",
+        "date_finish": "2025-09-18T12:36:12+03:00",
+        "operating_reset_at": 1758188771,
+        "operating": 0.9340989589691162
     }
 }
 ```
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../data-types.md) | Object with response data ||
+|| **task**
+[`object`](../data-types.md) | Object with [task description](./fields.md) after the operation is performed ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "ERROR_CORE",
+    "error_description": "Task title not specified\u003Cbr\u003E"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `100` | Could not find value for parameter {fields} (internal error) | Parameter `fields` not provided or is empty ||
+|| `ERROR_CORE` | User specified in the "Assignee" field not found\u003Cbr\u003E | Non-existent user ID specified in the `RESPONSIBLE_ID` field ||
+|| `ERROR_CORE` | Assignee not specified\u003Cbr\u003E | `RESPONSIBLE_ID` field is not filled ||
+|| `ERROR_CORE` | Task title not specified\u003Cbr\u003E | `TITLE` field is not filled ||
+|| `ERROR_CORE` | Invalid status\u003Cbr\u003E | Incorrect value specified in the `STATUS` field ||
+|| `ERROR_CORE` | Task specified in the "Parent Task" field not found\u003Cbr\u003E | Non-existent task ID specified in the `PARENT_ID` field ||
+|| `ERROR_CORE` | End date specified earlier than start date in scheduling\u003Cbr\u003E | Date and time in the `END_DATE_PLAN` field is earlier than in `START_DATE_PLAN` ||
+|| `ERROR_CORE` | Task duration specified is too long in scheduling\u003Cbr\u003E | The value in the `END_DATE_PLAN` field is a date that is too far in the future ||
+|#
+
+{% include [system errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./tasks-task-update.md)
+- [{#T}](./tasks-task-get.md)
+- [{#T}](./tasks-task-list.md)
+- [{#T}](./tasks-task-delete.md)
+- [{#T}](./tasks-task-get-fields.md)
 - [{#T}](../../tutorials/tasks/how-to-create-task-with-file.md)
 - [{#T}](../../tutorials/tasks/how-to-connect-task-to-spa.md)
 - [{#T}](../../tutorials/tasks/how-to-create-comment-with-file.md)

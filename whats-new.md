@@ -2,6 +2,14 @@
 
 ## 2025
 
+### October 22, 2025
+
+- Updated documentation for the methods [catalog.document.element.add](./api-reference/catalog/document/document-element/catalog-document-element-add.md), [catalog.document.element.update](./api-reference/catalog/document/document-element/catalog-document-element-update.md), [catalog.document.element.list](./api-reference/catalog/document/document-element/catalog-document-element-list.md), [catalog.document.element.delete](./api-reference/catalog/document/document-element/catalog-document-element-delete.md), [catalog.document.element.getFields](./api-reference/catalog/document/document-element/catalog-document-element-get-fields.md) in the Trade Catalog
+- Added a new tutorial [How to get a list of stages with semantics for CRM entities](./tutorials/crm/how-to-get-lists/how-to-get-stages-with-semantics.md)
+- Updated the main page of the [User Agreements](./api-reference/user-consent/index.md) section. Added introductory information as well as an overview of methods and relationships.
+- Updated documentation for the methods [userconsent.agreement.list](./api-reference/user-consent/user-consent-agreement-list.md), [userconsent.agreement.text](./api-reference/user-consent/user-consent-agreement-text.md), [userconsent.consent.add](./api-reference/user-consent/user-consent-consent-add.md) in User Agreements
+- Updated documentation for the methods [tasks.task.add](./api-reference/tasks/tasks-task-add.md), [tasks.task.update](./api-reference/tasks/tasks-task-update.md), [tasks.task.get](./api-reference/tasks/tasks-task-get.md), [tasks.task.list](./api-reference/tasks/tasks-task-list.md) in Tasks
+
 ### October 15, 2025
 
 - Added an article [SDK for Bitrix24 development](./sdk/index.md)

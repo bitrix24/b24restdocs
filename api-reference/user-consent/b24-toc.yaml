@@ -1,11 +1,11 @@
-title: Working with Agreements
+title: User Agreements
 href: index.md
 items: 
-  - name: Working with Agreements
+  - name: Overview of Methods
     href: index.md 
   - name: Get List of Agreements
     href: user-consent-agreement-list.md 
   - name: Get Agreement Text
     href: user-consent-agreement-text.md 
-  - name: Save User Consent Received
+  - name: Save User Consent Obtained
     href: user-consent-consent-add.md 

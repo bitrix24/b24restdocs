@@ -1,42 +1,40 @@
-# Get a list of product fields for the inventory management document catalog.document.element.getFields
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- no response in case of error
-- no response in case of success
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
+# Get the list of product fields for the inventory management document catalog.document.element.getFields
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can subscribe: any user
+> Who can execute the method: users with the "View product catalog" access permission
 
-## Description
+The method `catalog.document.element.getFields` returns the description of product fields from the inventory management document.
 
-```js
-catalog.document.element.getFields()
-```
-
-The method returns a list of product fields for the inventory management document.
-
-## Parameters
+## Method Parameters
 
 No parameters.
 
-## Examples
+## Code Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.document.element.getFields
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.document.element.getFields
+    ```
 
 - JS
 
@@ -47,11 +45,11 @@ No parameters.
     		'catalog.document.element.getFields',
     		{}
     	);
-    	
+
     	const result = response.getData().result;
     	console.log(result);
     }
-    catch( error )
+    catch (error)
     {
     	console.error(error);
     }
@@ -67,20 +65,20 @@ No parameters.
                 'catalog.document.element.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error getting document fields: ' . $e->getMessage();
+        echo 'Error getting document element fields: ' . $e->getMessage();
     }
     ```
 
@@ -92,7 +90,7 @@ No parameters.
         {},
         function(result)
         {
-            if(result.error())
+            if (result.error())
                 console.error(result.error());
             else
                 console.log(result.data());
@@ -100,28 +98,126 @@ No parameters.
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.document.element.getFields',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote about examples](../../../../_includes/examples.md) %}
+## Response Handling
 
-## Returned fields
+HTTP status: **200**
+
+```json
+{
+    "result": {
+        "documentElement": {
+            "amount": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "double"
+            },
+            "docId": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
+            },
+            "elementId": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
+            },
+            "id": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "purchasingPrice": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "double"
+            },
+            "storeFrom": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "storeTo": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "integer"
+            }
+        }
+    },
+    "time": {
+        "start": 1759482101.114239,
+        "finish": 1759482101.178452,
+        "duration": 0.06421303749084473,
+        "processing": 0.008214950561523438,
+        "date_start": "2025-11-02T12:21:41+01:00",
+        "date_finish": "2025-11-02T12:21:41+01:00",
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
 
 #|
-|| **Field** | **Description** | **Note** ||
-|| **amount** 
-[`double`](../../../data-types.md) | Quantity. | ||
-|| **docId** 
-[`integer`](../../../data-types.md) | Document identifier. | Immutable field. ||
-|| **elementId** 
-[`integer`](../../../data-types.md) | Product identifier [catalog.product.list](../../../catalog/product/catalog-product-list.md). | Immutable field. ||
-|| **id** 
-[`integer`](../../../data-types.md) | Document product identifier. | Read-only. ||
-|| **purchasingPrice** 
-[`double`](../../../data-types.md) | Purchase price. | ||
-|| **storeFrom** 
-[`integer`](../../../data-types.md) | Sender warehouse. | ||
-|| **storeTo** 
-[`integer`](../../../data-types.md) | Recipient warehouse. | ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Root element of the response ||
+|| **documentElement**
+[`object`](../../data-types.md#catalog_document_element) | Object with information about the product fields of the document ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "ERROR_DOCUMENT_RIGHTS",
+    "error_description": "Access denied"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights to read inventory management documents ||
+|| `0` |  | Other processing errors ||
+|#
+
+{% include [System errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./catalog-document-element-add.md)
+- [{#T}](./catalog-document-element-update.md)
+- [{#T}](./catalog-document-element-delete.md)
+- [{#T}](./catalog-document-element-list.md)

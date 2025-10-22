@@ -1,288 +1,274 @@
 # Get the list of tasks tasks.task.list
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- edits needed for standard writing
-- parameter types are not specified
-- parameter requirements are not specified
-- curl examples are missing
-- response in case of error is absent
-
-{% endnote %}
-
-{% endif %}
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly
-
-{% endnote %}
-
 > Scope: [`task`](../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `tasks.task.list` returns an array of tasks, each containing an array of fields. Unlike [task.item.list](./deprecated/task-item/task-item-list.md), parameters in the request for `tasks.task.list` can be specified in any order, and unnecessary parameters can be omitted.
+The method `tasks.task.list` retrieves a list of tasks with pagination.
 
-To retrieve data for all tasks, the user must have admin rights. A department head will only have access to tasks in their branch of the hierarchy.
+Access to the data depends on permissions:
+- administrators see all tasks,
+- managers see their employees' tasks,
+- others see only the tasks available to them.
 
-Tasks marked as "Favorite" can also be retrieved by setting the filter parameter `$filter[::SUBFILTER-PARAMS][FAVORITE]=Y`.
-
-{% note warning %}
-
-It is necessary to specify fields in `select`, as default fields may change in the future.
-
-{% endnote %}
+## Method Parameters
 
 #|
-|| **Parameter** / **Type** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **order**
-[`unknown`](../data-types.md) | An array for sorting the result. The array format is `{"sorting_field": 'sorting_direction' [, ...]}`.
-The sorting field can take the following values: 
-- **ID** — Task identifier.
-- **TITLE** — Task title.
-- **TIME_SPENT_IN_LOGS** — Time spent recorded in the change history.
-- **DATE_START** — Task start date.
-- **CREATED_DATE** — Task creation date.
-- **CHANGED_DATE** — Date of the last task modification.
-- **CLOSED_DATE** — Task completion date.
-- **START_DATE_PLAN** — Planned start date for task execution.
-- **END_DATE_PLAN** — Planned completion date for task execution.
-- **DEADLINE** — Task deadline.
-- **REAL_STATUS** — Task status. Constants reflecting task statuses: 
-    - STATE_NEW = 1;
-    - STATE_PENDING = 2;
-    - STATE_IN_PROGRESS = 3;
-    - STATE_SUPPOSEDLY_COMPLETED = 4;
-    - STATE_COMPLETED = 5;
-    - STATE_DEFERRED = 6;
-    - STATE_DECLINED = 7;
-- **STATUS_COMPLETE** — Task completion flag.
-- **PRIORITY** — Task priority.
-- **MARK** — Rating for task completion.
-- **CREATED_BY_LAST_NAME** — Last name of the task creator.
-- **RESPONSIBLE_LAST_NAME** — Last name of the task assignee.
-- **GROUP_ID** — Workgroup identifier.
-- **TIME_ESTIMATE** — Time allocated for the task.
-- **ALLOW_CHANGE_DEADLINE** — Flag allowing the assignee to change the deadline.
-- **ALLOW_TIME_TRACKING** — Flag enabling time tracking for the task.
-- **MATCH_WORK_TIME** — Flag indicating the need to skip weekends.
-- **FAVORITE** — Flag indicating that the task has been added to favorites.
-- **SORTING** — Sorting index.
-- **MESSAGE_ID** — Search index identifier.
-
-{% note info %}
-
-In the on-premise version, the list of fields for sorting can be obtained using the method `CTasks::getAvailableOrderFields()`.
-
-{% endnote %}
+[`object`](../data-types.md) | An object for sorting the list of tasks in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 The sorting direction can take the following values: 
 
-- **asc** — ascending;
-- **desc** — descending;
+- `asc` — ascending
+- `desc` — descending
 
-Optional. By default, it is sorted in descending order by task identifier. 
- ||
+By default — descending by `ID`.
+
+The field for sorting can take the following values: 
+- `ID` — task identifier  
+- `TITLE` — task title  
+- `TIME_SPENT_IN_LOGS` — time spent recorded in the change history  
+- `DATE_START` — task start date  
+- `CREATED_DATE` — task creation date  
+- `CHANGED_DATE` — date of the last change to the task  
+- `CLOSED_DATE` — task completion date  
+- `ACTIVITY_DATE` — date of the last activity  
+- `START_DATE_PLAN` — planned start date for task execution  
+- `END_DATE_PLAN` — planned completion date for task execution  
+- `DEADLINE` — task deadline  
+- `REAL_STATUS` — task status  
+- `STATUS_COMPLETE` — task completion flag  
+- `PRIORITY` — task priority  
+- `MARK` — rating for task completion  
+- `CREATED_BY_LAST_NAME` — last name of the task creator  
+- `RESPONSIBLE_LAST_NAME` — last name of the task assignee  
+- `GROUP_ID` — workgroup identifier  
+- `TIME_ESTIMATE` — time allocated for the task  
+- `ALLOW_CHANGE_DEADLINE` — flag allowing the assignee to change the deadline  
+- `ALLOW_TIME_TRACKING` — flag enabling time tracking for the task  
+- `MATCH_WORK_TIME` — flag indicating the need to skip weekends  
+- `FAVORITE` — flag indicating that the task has been added to favorites  
+- `SORTING` — sorting index  
+- `IS_PINNED` — pinned status  
+- `IS_PINNED_IN_GROUP` — pinned in group status
+
+||
 || **filter**
-[`unknown`](../data-types.md) | An array in the format `{"filter_field": "filter_value" [, ...]}`. The filter field can take the following values:
-- **ID** - task identifier;
-- **PARENT_ID** - parent task identifier;
-- **GROUP_ID** - workgroup identifier;
-- **CREATED_BY** - creator;
-- **STATUS_CHANGED_BY** - user who last changed the task status;
-- **PRIORITY** - priority;
-- **FORUM_TOPIC_ID** - forum topic identifier;
-- **RESPONSIBLE_ID** - assignee;
-- **TITLE** - task title (can be searched using the pattern [\%_]);
-- **REAL_STATUS** - task status. Corresponds to the `status` field in the response. Constants reflecting task statuses:
-    - STATE_NEW = 1;
-    - STATE_PENDING = 2;
-    - STATE_IN_PROGRESS = 3;
-    - STATE_SUPPOSEDLY_COMPLETED = 4;
-    - STATE_COMPLETED = 5;
-    - STATE_DEFERRED = 6;
-    - STATE_DECLINED = 7;
-- **STATUS** - status for sorting. Corresponds to the `subStatus` field in the response. Similar to **REAL_STATUS**, but has three additional meta-statuses:
-    - **-3** - task is almost overdue;
-    - **-2** - unviewed task;
-    - **-1** - overdue task.
-- **MARK** - rating;
-- **SITE_ID** - site identifier;
-- **ADD_IN_REPORT** - task in report (Y\|N);
-- **DATE_START** - start date;
-- **DEADLINE** - deadline;
-- **CREATED_DATE** - creation date;
-- **CLOSED_DATE** - completion date;
-- **CHANGED_DATE** - last modification date;
-- **ACCOMPLICE** - co-assignee identifier;
-- **AUDITOR** - auditor identifier;
-- **DEPENDS_ON** - identifier of the previous task;
-- **ONLY_ROOT_TASKS** - only tasks that are not subtasks (root tasks), as well as subtasks of the parent task to which the current user does not have access (Y\|N).
-- **STAGE_ID** - stage;
-- **UF_CRM_TASK** - CRM entities;
+[`object`](../data-types.md) | An object for filtering the list of tasks in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. The filterable field can take the following values:
 
-Before the filter field name, the type of filtering can be specified:
-- "!" - not equal
-- "<" - less than
-- "<=" - less than or equal to
-- ">" - greater than
-- ">=" - greater than or equal to 
+- `ID` — task identifier  
+- `PARENT_ID` — parent task identifier  
+- `GROUP_ID` — workgroup identifier  
+- `CREATED_BY` — creator  
+- `STATUS_CHANGED_BY` — user who last changed the task status  
+- `PRIORITY` — priority  
+- `FORUM_TOPIC_ID` — forum topic identifier  
+- `RESPONSIBLE_ID` — assignee  
+- `TITLE` — task title (can search by pattern [\%_])  
+- `TAG` — task tag  
+- `REAL_STATUS` — task status. Corresponds to the `status` field in the response.
+    - `2` — waiting for execution
+    - `3` — in progress
+    - `4` — awaiting control
+    - `5` — completed
+    - `6` — postponed  
+- `STATUS` — status for sorting. Corresponds to the `subStatus` field in the response. Similar to `REAL_STATUS`, but has three additional meta-statuses:
+    - `-3` — task is almost overdue
+    - `-2` — unviewed task
+    - `-1` — overdue task
+- `MARK` — rating  
+- `SITE_ID` — site identifier  
+- `ADD_IN_REPORT` — task in report  
+- `DATE_START` — start date for execution  
+- `DEADLINE` — deadline  
+- `CREATED_DATE` — creation date  
+- `CLOSED_DATE` — completion date  
+- `CHANGED_DATE` — date of the last change  
+- `ACCOMPLICE` — co-assignee identifier  
+- `AUDITOR` — auditor identifier  
+- `DEPENDS_ON` — identifier of the previous task  
+- `ONLY_ROOT_TASKS` — only root tasks and subtasks without access to the parent  
+- `STAGE_ID` — stage  
+- `UF_CRM_TASK` — binding to CRM entities
 
-*"filter values"* - a single value or an array.
+To get tasks from Favorites, add the filter parameter `$filter[::SUBFILTER-PARAMS][FAVORITE]=Y`.
 
-Optional. By default, records are not filtered. ||
+Before the name of the filterable field, you can specify the type of filtering:
+- `!` — not equal
+- `<` — less than
+- `<=` — less than or equal to
+- `>` — greater than
+- `>=` — greater than or equal to
+
+By default, records are not filtered ||
 || **select**
-[`unknown`](../data-types.md) | An array of record fields that will be returned by the method. Only the necessary fields can be specified.
+[`array`](../data-types.md) | An array containing a [list of fields](./fields.md) to be selected. 
 
-Available fields: 
-- **ID** - task identifier;
-- **PARENT_ID** - parent task identifier;
-- **TITLE** - task title;
-- **DESCRIPTION** - description;
-- **MARK** - rating;
-- **PRIORITY** - priority:
-    - **0** - low;
-    - **1** - medium;
-    - **2** - high.
-- **STATUS** - status. Returns the regular status `status` and meta-status `subStatus`;
-- **MULTITASK** - multiple task;
-- **NOT_VIEWED** - unviewed task;
-- **REPLICATE** - recurring task;
-- **GROUP_ID** - workgroup;
-- **STAGE_ID** - stage;
-- **CREATED_BY** - creator;
-- **CREATED_DATE** - creation date;
-- **RESPONSIBLE_ID** - assignee;
-- **ACCOMPLICES** - co-assignee identifier;
-- **AUDITORS** - auditor identifier;
-- **CHANGED_BY** - who modified the task;
-- **CHANGED_DATE** - modification date;
-- **STATUS_CHANGED_DATE** - status change date;
-- **CLOSED_BY** - who closed the task;
-- **CLOSED_DATE** - task closure date;
-- **DATE_START** - start date;
-- **DEADLINE** - deadline;
-- **START_DATE_PLAN** - planned start;
-- **END_DATE_PLAN** - planned completion;
-- **GUID** - GUID (statistically unique 128-bit identifier);
-- **XML_ID** - external code;
-- **COMMENTS_COUNT** - number of comments;
-- **NEW_COMMENTS_COUNT** - number of new comments;
-- **TASK_CONTROL** - accept for work;
-- **ADD_IN_REPORT** - add to report;
-- **FORKED_BY_TEMPLATE_ID** - created from a template;
-- **TIME_ESTIMATE** - time allocated for the task;
-- **TIME_SPENT_IN_LOGS** - time spent from the change history;
-- **MATCH_WORK_TIME** - skip weekends;
-- **FORUM_TOPIC_ID** - forum topic identifier;
-- **FORUM_ID** - forum identifier;
-- **SITE_ID** - site identifier;
-- **SUBORDINATE** - subordinate task;
-- **FAVORITE** - Favorite;
-- **VIEWED_DATE** - last viewed date;
-- **SORTING** - sorting index;
-- **DURATION_PLAN** - time spent (planned);
-- **DURATION_FACT** - time spent (actual);
-- **DURATION_TYPE** - unit type in planned duration: days, hours, or minutes.
+By default, the system returns only those fields stored in the record — without additional data calculated on the fly.
 
-By default, all **non-computed** fields of the main query table will be returned.
+{% note warning %}
 
-The list of fields can be specified by sending a request to [tasks.task.getFields](tasks-task-get-fields.md). ||
-|| **limit**
-[`unknown`](../data-types.md) | Number of records. This parameter is specified if you need to retrieve more records than the default value (50). It is not possible to return all records in one request; this is a limitation of all REST API methods. You can retrieve all leads in several requests of 50 records each. To do this, simply pass the parameter start with a value that is a multiple of 50. Example: 
-```js
-start=0
-start=50
-start=100
-```
+Always specify fields in `select`. The default set of fields may change.
+
+{% endnote %}
+||
+|| **params**
+[`object`](../data-types.md) | Additional information that can be retrieved about the task:
+- `WITH_RESULT_INFO` — information about the result in the task
+- `WITH_TIMER_INFO` — data on time spent
+- `WITH_PARSED_DESCRIPTION` — description with HTML markup
 ||
 || **start**
-[`unknown`](../data-types.md) | How many initial records to skip in the result. Due to technical limitations, the value of this parameter must always be a multiple of 50. For example, with a value of 50, the 51st record and subsequent ones will be displayed in the result, while the first 50 records will be skipped.
+[`integer`](../data-types.md) | This parameter is used to control pagination.
 
-With a value of `-1`, the count will be disabled. 
+The page size of results is always static — 50 records.
 
-Works for https requests. Example:
-```js
-BX24.callMethod('tasks.task.list',{start: 1150})
-```
-||
+To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
+
+The formula for calculating the value of the `start` parameter:
+
+`start = (N - 1) * 50`, where `N` — the number of the desired page ||
 |#
 
-## Example 1
+## Code Examples
 
-Output all unique tasks added to "Favorites" with a status greater than 2:
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"order":{"DEADLINE":"asc","PRIORITY":"desc"},"filter":{"!STATUS":6,">=DEADLINE":"'"$(date +%Y-%m-%d)"'","RESPONSIBLE_ID":547,"::SUBFILTER-PARAMS":{"FAVORITE":"Y"}},"select":["ID","TITLE","DESCRIPTION","STATUS","subStatus","DEADLINE","CREATED_DATE","RESPONSIBLE_ID","ACCOMPLICES","AUDITORS","TAGS","COUNTERS","PRIORITY","MARK"],"params":{"WITH_TIMER_INFO":true,"WITH_RESULT_INFO":true,"WITH_PARSED_DESCRIPTION":true}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/tasks.task.list
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"order":{"DEADLINE":"asc","PRIORITY":"desc"},"filter":{"!STATUS":6,">=DEADLINE":"'"$(date +%Y-%m-%d)"'","RESPONSIBLE_ID":547,"::SUBFILTER-PARAMS":{"FAVORITE":"Y"}},"select":["ID","TITLE","DESCRIPTION","STATUS","subStatus","DEADLINE","CREATED_DATE","RESPONSIBLE_ID","ACCOMPLICES","AUDITORS","TAGS","COUNTERS","PRIORITY","MARK"],"params":{"WITH_TIMER_INFO":true,"WITH_RESULT_INFO":true,"WITH_PARSED_DESCRIPTION":true},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/tasks.task.list
+    ```
+
 - JS
 
+    ```javascript
+    // callListMethod: Retrieves all data at once.
+    // Use only for small selections (< 1000 items) due to high
+    // memory load.
 
-    ```js
-    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
-    
     try {
-      const response = await $b24.callListMethod(
+    const response = await $b24.callListMethod(
         'tasks.task.list',
         {
-          filter: {
-            '>STATUS': 2,
-            'REPLICATE': 'N',
-            '::SUBFILTER-PARAMS': {
-              FAVORITE: 'Y'
-            }
-          }
+        order: {
+            'DEADLINE': 'asc',
+            'PRIORITY': 'desc'
+        },
+        filter: {
+            '!STATUS': 6,
+            '>=DEADLINE': new Date().toISOString().split('T')[0],
+            'RESPONSIBLE_ID': 547,
+            '::SUBFILTER-PARAMS': { 'FAVORITE': 'Y' }
+        },
+        select: [
+            'ID', 'TITLE', 'DESCRIPTION', 'STATUS', 'subStatus',
+            'DEADLINE', 'CREATED_DATE', 'RESPONSIBLE_ID',
+            'ACCOMPLICES', 'AUDITORS', 'TAGS', 'COUNTERS',
+            'PRIORITY', 'MARK'
+        ],
+        params: {
+            'WITH_TIMER_INFO': true,
+            'WITH_RESULT_INFO': true,
+            'WITH_PARSED_DESCRIPTION': true,
+        },
         },
         (progress) => { console.log('Progress:', progress) }
-      );
-      const items = response.getData().result || [];
-      for (const entity of items) { console.log('Entity:', entity); }
+    );
+    const items = response.getData() || [];
+    for (const entity of items) { console.log('Entity:', entity) }
     } catch (error) {
-      console.error('Request failed', error);
+    console.error('Request failed', error)
     }
-    
-    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
-    
+
+    // fetchListMethod: Retrieves data in parts using an iterator.
+    // Use for large volumes of data for efficient memory consumption.
+
     try {
-      const generator = $b24.fetchListMethod('tasks.task.list', {
+    const generator = $b24.fetchListMethod('tasks.task.list', {
+        order: {
+        'DEADLINE': 'asc',
+        'PRIORITY': 'desc'
+        },
         filter: {
-          '>STATUS': 2,
-          'REPLICATE': 'N',
-          '::SUBFILTER-PARAMS': {
-            FAVORITE: 'Y'
-          }
-        }
-      }, 'ID');
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity); }
-      }
-    } catch (error) {
-      console.error('Request failed', error);
+        '!STATUS': 6,
+        '>=DEADLINE': new Date().toISOString().split('T')[0],
+        'RESPONSIBLE_ID': 547,
+        '::SUBFILTER-PARAMS': { 'FAVORITE': 'Y' }
+        },
+        select: [
+        'ID', 'TITLE', 'DESCRIPTION', 'STATUS', 'subStatus',
+        'DEADLINE', 'CREATED_DATE', 'RESPONSIBLE_ID',
+        'ACCOMPLICES', 'AUDITORS', 'TAGS', 'COUNTERS',
+        'PRIORITY', 'MARK'
+        ],
+        params: {
+        'WITH_TIMER_INFO': true,
+        'WITH_RESULT_INFO': true,
+        'WITH_PARSED_DESCRIPTION': true,
+        },
+    }, 'ID');
+    for await (const page of generator) {
+        for (const entity of page) { console.log('Entity:', entity) }
     }
-    
-    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('tasks.task.list', {
-        filter: {
-          '>STATUS': 2,
-          'REPLICATE': 'N',
-          '::SUBFILTER-PARAMS': {
-            FAVORITE: 'Y'
-          }
-        }
-      }, 0);
-      const result = response.getData().result || [];
-      for (const entity of result) { console.log('Entity:', entity); }
     } catch (error) {
-      console.error('Request failed', error);
+    console.error('Request failed', error)
+    }
+
+    // callMethod: Manual control of pagination through the start parameter.
+    // Use for precise control over request batches.
+    // Less efficient for large data than fetchListMethod.
+
+    try {
+    const response = await $b24.callMethod('tasks.task.list', {
+        order: {
+        'DEADLINE': 'asc',
+        'PRIORITY': 'desc'
+        },
+        filter: {
+        '!STATUS': 6,
+        '>=DEADLINE': new Date().toISOString().split('T')[0],
+        'RESPONSIBLE_ID': 547,
+        '::SUBFILTER-PARAMS': { 'FAVORITE': 'Y' }
+        },
+        select: [
+        'ID', 'TITLE', 'DESCRIPTION', 'STATUS', 'subStatus',
+        'DEADLINE', 'CREATED_DATE', 'RESPONSIBLE_ID',
+        'ACCOMPLICES', 'AUDITORS', 'TAGS', 'COUNTERS',
+        'PRIORITY', 'MARK'
+        ],
+        params: {
+        'WITH_TIMER_INFO': true,
+        'WITH_RESULT_INFO': true,
+        'WITH_PARSED_DESCRIPTION': true,
+        },
+    }, 0);
+    const result = response.getData().result || [];
+    for (const entity of result) { console.log('Entity:', entity) }
+    } catch (error) {
+    console.error('Request failed', error)
     }
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -291,27 +277,40 @@ Output all unique tasks added to "Favorites" with a status greater than 2:
             ->call(
                 'tasks.task.list',
                 [
+                    'order' => [
+                        'DEADLINE' => 'asc',
+                        'PRIORITY' => 'desc'
+                    ],
                     'filter' => [
-                        '>STATUS'           => 2,
-                        'REPLICATE'         => 'N',
-                        '::SUBFILTER-PARAMS' => [
-                            'FAVORITE' => 'Y',
-                        ],
+                        '!STATUS' => 6,
+                        '>=DEADLINE' => date('Y-m-d'),
+                        'RESPONSIBLE_ID' => 547,
+                        '::SUBFILTER-PARAMS' => ['FAVORITE' => 'Y']
+                    ],
+                    'select' => [
+                        'ID', 'TITLE', 'DESCRIPTION', 'STATUS', 'subStatus',
+                        'DEADLINE', 'CREATED_DATE', 'RESPONSIBLE_ID',
+                        'ACCOMPLICES', 'AUDITORS', 'TAGS', 'COUNTERS',
+                        'PRIORITY', 'MARK'
+                    ],
+                    'params' => [
+                        'WITH_TIMER_INFO' => true,
+                        'WITH_RESULT_INFO' => true,
+                        'WITH_PARSED_DESCRIPTION' => true,
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error fetching task list: ' . $e->getMessage();
+        echo 'Error fetching tasks: ' . $e->getMessage();
     }
     ```
 
@@ -321,296 +320,227 @@ Output all unique tasks added to "Favorites" with a status greater than 2:
     BX24.callMethod(
         'tasks.task.list',
         {
-            filter:{
-                '>STATUS':2,
-                'REPLICATE':'N',
-                '::SUBFILTER-PARAMS':{
-                    FAVORITE:'Y'
-                }
-            }
+            // Sorting
+            order: {
+                'DEADLINE': 'asc',
+                'PRIORITY': 'desc'
+            },
+            // Filtering
+            filter: {
+                '!STATUS': 6, // Exclude postponed
+                '>=DEADLINE': new Date().toISOString().split('T')[0], // Not overdue
+                'RESPONSIBLE_ID': 547, // Tasks of a specific assignee
+                '::SUBFILTER-PARAMS': { 'FAVORITE': 'Y' } // Favorite tasks
+            },
+            // Fields to select
+            select: [
+                'ID',
+                'TITLE',
+                'DESCRIPTION',
+                'STATUS',
+                'subStatus',
+                'DEADLINE',
+                'CREATED_DATE',
+                'RESPONSIBLE_ID',
+                'ACCOMPLICES',
+                'AUDITORS',
+                'TAGS',
+                'COUNTERS',
+                'PRIORITY',
+                'MARK'
+            ],
+            // Additional parameters
+            params: {
+                'WITH_TIMER_INFO': true,
+                'WITH_RESULT_INFO': true,
+                'WITH_PARSED_DESCRIPTION': true,
+            },
         },
-        function(res){console.log(res.answer.result);}
+        function(result){
+            console.info(result.data());
+            console.log(result);
+        }
     );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'tasks.task.list',
+        [
+            'order' => [
+                'DEADLINE' => 'asc',
+                'PRIORITY' => 'desc'
+            ],
+            'filter' => [
+                '!STATUS' => 6,
+                '>=DEADLINE' => date('Y-m-d'),
+                'RESPONSIBLE_ID' => 547,
+                '::SUBFILTER-PARAMS' => ['FAVORITE' => 'Y']
+            ],
+            'select' => [
+                'ID', 'TITLE', 'DESCRIPTION', 'STATUS', 'subStatus',
+                'DEADLINE', 'CREATED_DATE', 'RESPONSIBLE_ID',
+                'ACCOMPLICES', 'AUDITORS', 'TAGS', 'COUNTERS',
+                'PRIORITY', 'MARK'
+            ],
+            'params' => [
+                'WITH_TIMER_INFO' => true,
+                'WITH_RESULT_INFO' => true,
+                'WITH_PARSED_DESCRIPTION' => true,
+            ],
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-## Response in case of success
+## Response Handling
 
-> 200 OK
+HTTP status: **200**
 
-```js
+```json
 {
     "result": {
         "tasks": [
             {
-                "id": "434",
-                "parentId": "0",
-                "title": "test task 1",
-                "description": "",
-                "mark": null,
-                "priority": "1",
-                "multitask": "N",
-                "notViewed": "N",
-                "replicate": "N",
-                "stageId": "0",
-                "createdBy": "1",
-                "createdDate": "2024-11-22T13:58:17+02:00",
-                "responsibleId": "1",
-                "changedBy": "1",
-                "changedDate": "2024-11-26T13:43:28+02:00",
-                "statusChangedBy": "1",
-                "closedBy": "0",
-                "closedDate": null,
-                "activityDate": "2024-11-22T13:58:17+02:00",
-                "dateStart": "2024-11-26T13:43:28+02:00",
-                "deadline": null,
-                "startDatePlan": null,
-                "endDatePlan": null,
-                "guid": "{8a261464-64eb-4d04-827b-37ded5433e85}",
-                "xmlId": null,
-                "commentsCount": null,
-                "serviceCommentsCount": null,
-                "allowChangeDeadline": "Y",
-                "allowTimeTracking": "N",
-                "taskControl": "Y",
-                "addInReport": "N",
-                "forkedByTemplateId": null,
-                "timeEstimate": "0",
-                "timeSpentInLogs": null,
-                "matchWorkTime": "N",
-                "forumTopicId": null,
-                "forumId": null,
-                "siteId": "s1",
-                "subordinate": "N",
-                "exchangeModified": null,
-                "exchangeId": null,
-                "outlookVersion": "2",
-                "viewedDate": "2024-11-26T13:40:45+02:00",
-                "sorting": null,
-                "durationFact": null,
-                "isMuted": "N",
-                "isPinned": "N",
-                "isPinnedInGroup": "N",
-                "flowId": null,
+                "id": "8017",
+                "title": "Task example",
+                "description": "Task description with [B]formatting[/B]",
+                "deadline": "2025-10-24T19:00:00+02:00",
+                "createdDate": "2025-06-04T16:15:55+02:00",
+                "responsibleId": "547",
+                "priority": "2",
+                "mark": "",
                 "descriptionInBbcode": "Y",
-                "status": "3",
-                "statusChangedDate": "2024-11-26T13:43:28+02:00",
-                "durationPlan": null,
-                "durationType": "days",
-                "favorite": "N",
-                "groupId": "0",
-                "auditors": [],
+                "lengthDeadline": "1",
+                "status": "2",
+                "auditors": [
+                    "13",
+                    "103"
+                ],
                 "accomplices": [],
-                "newCommentsCount": 0,
                 "group": [],
-                "creator": {
-                    "id": "1",
-                    "name": "Admin Adminov",
-                    "link": "/company/personal/user/1/",
-                    "icon": "/bitrix/images/tasks/default_avatar.png",
-                    "workPosition": "Chief"
-                },
                 "responsible": {
-                    "id": "1",
-                    "name": "Admin Adminov",
-                    "link": "/company/personal/user/1/",
+                    "id": "547",
+                    "name": "Maria",
+                    "link": "/company/personal/user/547/",
                     "icon": "/bitrix/images/tasks/default_avatar.png",
-                    "workPosition": "Chief"
+                    "workPosition": "Tester"
                 },
                 "accomplicesData": [],
-                "auditorsData": [],
-                "subStatus": "3"
+                "auditorsData": {
+                    "13": {
+                        "id": "13",
+                        "name": "John Smith",
+                        "link": "/company/personal/user/13/",
+                        "icon": "https://mysite.com/b17053/resize_cache/209/c0120a8d7c10d63c83e32398d1ec4d9e/main/c8dd225a1c6ea0a25722d01644b90fe4/8b.jpg",
+                        "workPosition": "System Administrator"
+                    },
+                    "103": {
+                        "id": "103",
+                        "name": "Svetlana Ivanova",
+                        "link": "/company/personal/user/103/",
+                        "icon": "https://mysite.com/b17053/resize_cache/8644/c0120a8d7c10d63c83e32398d1ec4d9e/main/45f/45fff10d17d398a5583184c8350cd197/buh.jpg",
+                        "workPosition": "Accountant"
+                    }
+                },
+                "taskRequireResult": "Y",
+                "taskHasOpenResult": "N",
+                "taskHasResult": "Y",
+                "timeElapsed": null,
+                "timerIsRunningForCurrentUser": "N",
+                "parsedDescription": "Task description with [B]formatting[/B]",
+                "counter": {
+                    "counters": {
+                        "expired": 0,
+                        "newComments": 0,
+                        "projectExpired": 0,
+                        "projectNewComments": 0,
+                        "mutedExpired": 0,
+                        "mutedNewComments": 0
+                    },
+                    "color": "gray",
+                    "value": 0
+                },
+                "tags": {
+                    "35": {
+                        "id": 35,
+                        "title": "arpar"
+                    }
+                },
+                "subStatus": "2"
             }
         ]
     },
+    "total": 1,
     "time": {
-        "start": 1552382093.81029,
-        "finish": 1552382093.927268,
-        "duration": 0.11697793006896973,
-        "processing": 0.018744230270385742,
-        "date_start": "2019-03-12T11:14:53+02:00",
-        "date_finish": "2019-03-12T11:14:53+02:00"
+        "start": 1761054322,
+        "finish": 1761054322.348041,
+        "duration": 0.3480410575866699,
+        "processing": 0,
+        "date_start": "2025-10-21T16:45:22+02:00",
+        "date_finish": "2025-10-21T16:45:22+02:00",
+        "operating_reset_at": 1761054922,
+        "operating": 0
     }
 }
 ```
 
-## Example 2
+### Returned Data
 
-Output all tasks with the title "task for test", filtering by fields `ID`, `TITLE`, `STATUS`, sorting by the field `ID` (ascending order):
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../data-types.md) | An object with response data ||
+|| **tasks**
+[`object`](../data-types.md) | An array of objects, where each object contains [task description](./fields.md).
 
-{% list tabs %}
+The set of fields depends on the `select` parameter ||
+|| **total**
+[`integer`](../data-types.md) | Total number of records found ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the time taken to execute the request ||
+|#
 
-- JS
+## Error Handling
 
+HTTP status: **400**
 
-    ```js
-    // callListMethod is recommended when you need to retrieve the entire set of list data and the volume of records is relatively small (up to about 1000 items). The method loads all data at once, which can lead to high memory load when working with large volumes.
-    
-    try {
-      const response = await $b24.callListMethod(
-        'tasks.task.list',
-        {filter:{TITLE:'task for test'}, select: ['ID','TITLE','STATUS'], order:{ID:'asc'}},
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // fetchListMethod is preferred when working with large datasets. The method implements iterative selection using a generator, allowing data to be processed in parts and efficiently using memory.
-    
-    try {
-      const generator = $b24.fetchListMethod('tasks.task.list', {filter:{TITLE:'task for test'}, select: ['ID','TITLE','STATUS'], order:{ID:'asc'}}, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
-      }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // callMethod provides manual control over the process of paginated data retrieval through the start parameter. Suitable for scenarios where precise control over request batches is required. However, with large volumes of data, it may be less efficient compared to fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('tasks.task.list', {filter:{TITLE:'task for test'}, select: ['ID','TITLE','STATUS'], order:{ID:'asc'}}, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    ```
+```json
+{
+    "error": "0",
+    "error_description": "Invalid sorting key (internal error)"
+}
+```
 
-- PHP
+{% include notitle [error handling](../../_includes/error-info.md) %}
 
+### Possible Error Codes
 
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'tasks.task.list',
-                [
-                    'filter' => ['TITLE' => 'task for test'],
-                    'select' => ['ID', 'TITLE', 'STATUS'],
-                    'order'  => ['ID' => 'asc'],
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error fetching task list: ' . $e->getMessage();
-    }
-    ```
+#|
+|| **Code** | **Description** | **Value** ||
+|| `0` | Invalid sorting key (internal error) | The `order` parameter specifies a task field that cannot be sorted or a non-existent field ||
+|#
 
-- BX24.js
+{% include [system errors](../../_includes/system-errors.md) %}
 
-    ```js
-    BX24.callMethod(
-        'tasks.task.list',
-        {filter:{TITLE:'task for test'}, select: ['ID','TITLE','STATUS'], order:{ID:'asc'}},
-        function(res){console.log(res.answer.result);}
-    );
-    ```
+## Continue Learning
 
-{% endlist %}
-
-
-## Example 3
-
-Example of disabling pagination:
-
-{% list tabs %}
-
-- PHP CRest
-
-    ```php
-    $result = CRest::call(
-        'tasks.task.list',
-        [
-            'filter' => [
-                '>ID' => 50
-            ],
-            'start' => -1,
-        ]
-    );
-    ```
-
-{% endlist %}
-
-## Example 4
-
-### How to get a filtered list of tasks via an HTTP request?
-
-Task filters by ID, date, status. For the filter `'=ID' => 3`, it is recommended to use [tasks.task.get](.) as it does not have pagination.
-
-{% list tabs %}
-
-- PHP CRest
-
-    ```php
-    $filter = [];
-    //by id
-    $filter = [
-        '>ID' => 3
-    ];
-    $filter = [
-        '=ID' => 3//recommend: CRest::call('tasks.task.get');
-    ];
-    //by date
-    $filter = [
-        '<CREATED_DATE' => date(DATE_ATOM, mktime(12, 22, 37, 7, 25, 2019))
-    ];
-    //by status
-    $filter = [
-        '>STATUS' => 2 // 2 is enum value. for current client: CRest::call( 'tasks.task.getFields');
-    ];
-    $result = CRest::call(
-        'tasks.task.list',
-        [
-            'filter' => $filter,
-            'select' => [
-                'ID',
-                'TITLE',
-                'CREATED_DATE'
-            ]
-        ]
-    );
-    //all fields
-    $fields = CRest::call( 'tasks.task.getFields');
-    echo '<pre>';
-    print_r([$filter, $result, $fields]);
-    echo '</pre>';
-    $result = CRest::call(
-        'tasks.task.get',
-        [
-            'taskId' => 3,
-            'select' => [
-                'ID',
-                'TITLE',
-                'CREATED_DATE'
-            ]
-        ]
-    );
-    echo '<pre>';
-    print_r($result);
-    echo '</pre>';
-    ```
-
-{% endlist %}
-
-{% include [Note on examples](../../_includes/examples.md) %}
-
-## Continue your study
-
+- [{#T}](./index.md)
+- [{#T}](./tasks-task-add.md)
+- [{#T}](./tasks-task-update.md)
+- [{#T}](./tasks-task-get.md)
+- [{#T}](./tasks-task-delete.md)
+- [{#T}](./tasks-task-get-fields.md)
 - [{#T}](../../tutorials/tasks/how-to-create-comment-with-file.md)
 - [{#T}](../../tutorials/tasks/how-to-upload-file-to-task.md)
 - [{#T}](../../tutorials/tasks/how-to-create-task-with-file.md)
