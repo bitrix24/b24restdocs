@@ -82,6 +82,6 @@ navigation:
         url: '/sdk/mcp.html'         
       - text: 'GitHub'
         type: 'link'
-        url: 'https://github.com/bitrix-tools/bitrix24-dev-hub'
+        url: 'https://github.com/bitrix24/bitrix24-dev-hub'
     rightItems:    
       - type: controls
