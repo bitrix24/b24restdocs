@@ -10,7 +10,7 @@ With the REST API, you can:
 
 Agreements should be created and modified through the Bitrix24 interface.
 
-> Quick navigation: [all methods](#all-methods)
+> Quick navigation: [all methods](#all-methods) 
 
 ## Types of Agreements
 
@@ -20,9 +20,9 @@ There are two types of agreements in Bitrix24: standard and custom.
 
 - Custom agreements are created manually. They contain arbitrary HTML text and do not support variable substitution.
 
-{% note info %}
+{% note info "" %} 
 
-To collect consents for the processing of personal data, use the standard agreement. Add your company details and an email for feedback. For other scenarios, create custom agreements.
+To collect consents for processing personal data, use the standard agreement. Add your company details and an email for feedback. For other scenarios, create custom agreements.
 
 {% endnote %}
 

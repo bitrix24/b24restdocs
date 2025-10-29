@@ -1,6 +1,6 @@
 # MCP Server for Working with Bitrix24 REST API
 
-When a developer asks an AI assistant in the development environment to write code for integration with Bitrix24, the neural network may suggest non-existent methods or pass unnecessary parameters. MCP provides the assistant with direct access to up-to-date documentation, making the responses more accurate.
+When a developer asks the AI assistant in the development environment to write code for integration with Bitrix24, the neural network may suggest non-existent methods or pass unnecessary parameters. MCP provides the assistant with direct access to up-to-date documentation, making the responses more accurate.
 
 ## What is MCP
 
@@ -8,11 +8,13 @@ MCP (Model Context Provider) is a server that transmits structured data to the A
 
 MCP allows:
 
-- obtaining relevant API methods and fields for specific tasks,
+- obtaining relevant API methods and fields for a specific task,
+
 - working with structured data instead of free text,
+
 - reducing the number of errors and code corrections.
 
-## How to Connect to the MCP Server
+## How to Connect the MCP Server
 
 Specify the server address <https://mcp-dev.bitrix24.com/mcp> in the development environment settings.
 
@@ -34,6 +36,12 @@ The server is accessible without authorization.
 3. Save the settings. A green indicator will appear next to the server along with a list of available tools.
 
 4. When composing a request, explicitly instruct the assistant: use `b24-dev-mcp`.
+
+Alternative way to add MCP:
+
+```html
+<a href="https://cursor.com/en-US/install-mcp?name=b24-dev-mcp&config=eyJ1cmwiOiJodHRwczovL21jcC1kZXYuYml0cml4MjQuY29tL21jcCIsInRpbWVvdXQiOjMwMDAwfQ%3D%3D"><img src="https://cursor.com/deeplink/mcp-install-dark.svg" alt="Add b24-dev-mcp MCP server to Cursor" height="32" /></a>
+```
 
 ### GitHub Copilot Chat, VS Code
 
@@ -125,7 +133,7 @@ The MCP server automatically provides the assistant with up-to-date Bitrix24 RES
 
 **Feature**: automatic determination of the need to use MCP.
 
-1. Execute the command `gemini chat` and send a request — "Build a `curl` request to create a lead with fields name, phone, and source 'site'."
+1. Execute the command `gemini chat` and send a request — "Build a `curl` request to create a lead with fields name, phone, and source 'website'."
 
 2. Gemini will determine that data from the connected MCP is needed and will send the request.
 

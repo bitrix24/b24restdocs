@@ -25,9 +25,9 @@ The identifier can be obtained using the method [userconsent.agreement.list](./u
   
 The list of available fields is described [below](#fields)
 
-{% note info %}
+{% note info "" %}
 
-Substitution is performed only for standard agreements created based on templates. For custom agreements with arbitrary HTML text, the parameter is ignored.
+Substitution is performed only for standard agreements created based on templates. For custom agreements with arbitrary HTML text, the parameter is ignored 
 
 {% endnote %} ||
 |#
@@ -61,7 +61,7 @@ Substitution is performed only for standard agreements created based on template
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":19,"replace":{"button_caption":"I agree","fields":{"COMPANY_NAME":"Example Ltd.","COMPANY_ADDRESS":"New York, 1st Example St.","PURPOSES":"Processing personal data to improve service","THIRD_PARTIES":"Company partners for analytics","EMAIL":"info@example.com"}}}' \
+    -d '{"id":19,"replace":{"button_caption":"I agree","fields":{"COMPANY_NAME":"Example Ltd.","COMPANY_ADDRESS":"New York, Example St., 1","PURPOSES":"Processing personal data to improve service","THIRD_PARTIES":"Company partners for analytics","EMAIL":"info@example.com"}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/userconsent.agreement.text
     ```
 
@@ -71,7 +71,7 @@ Substitution is performed only for standard agreements created based on template
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":19,"replace":{"button_caption":"I agree","fields":{"COMPANY_NAME":"Example Ltd.","COMPANY_ADDRESS":"New York, 1st Example St.","PURPOSES":"Processing personal data to improve service","THIRD_PARTIES":"Company partners for analytics","EMAIL":"info@example.com"}},"auth":"**put_access_token_here**"}' \
+    -d '{"id":19,"replace":{"button_caption":"I agree","fields":{"COMPANY_NAME":"Example Ltd.","COMPANY_ADDRESS":"New York, Example St., 1","PURPOSES":"Processing personal data to improve service","THIRD_PARTIES":"Company partners for analytics","EMAIL":"info@example.com"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/userconsent.agreement.text
     ```
 
@@ -87,7 +87,7 @@ Substitution is performed only for standard agreements created based on template
                     button_caption: 'I agree',
                     fields: {
                         COMPANY_NAME: 'Example Ltd.',
-                        COMPANY_ADDRESS: 'New York, 1st Example St.',
+                        COMPANY_ADDRESS: 'New York, Example St., 1',
                         PURPOSES: 'Processing personal data to improve service',
                         THIRD_PARTIES: 'Company partners for analytics',
                         EMAIL: 'info@example.com'
@@ -118,7 +118,7 @@ Substitution is performed only for standard agreements created based on template
                         'button_caption' => 'I agree',
                         'fields' => [
                             'COMPANY_NAME' => 'Example Ltd.',
-                            'COMPANY_ADDRESS' => 'New York, 1st Example St.',
+                            'COMPANY_ADDRESS' => 'New York, Example St., 1',
                             'PURPOSES' => 'Processing personal data to improve service',
                             'THIRD_PARTIES' => 'Company partners for analytics',
                             'EMAIL' => 'info@example.com'
@@ -151,7 +151,7 @@ Substitution is performed only for standard agreements created based on template
                 button_caption: "I agree",
                 fields: {
                     COMPANY_NAME: "Example Ltd.",
-                    COMPANY_ADDRESS: "New York, 1st Example St.",
+                    COMPANY_ADDRESS: "New York, Example St., 1",
                     PURPOSES: "Processing personal data to improve service",
                     THIRD_PARTIES: "Company partners for analytics",
                     EMAIL: "info@example.com"
@@ -181,7 +181,7 @@ Substitution is performed only for standard agreements created based on template
                 'button_caption' => 'I agree',
                 'fields' => [
                     'COMPANY_NAME' => 'Example Ltd.',
-                    'COMPANY_ADDRESS' => 'New York, 1st Example St.',
+                    'COMPANY_ADDRESS' => 'New York, Example St., 1',
                     'PURPOSES' => 'Processing personal data to improve service',
                     'THIRD_PARTIES' => 'Company partners for analytics',
                     'EMAIL' => 'info@example.com'
@@ -199,13 +199,13 @@ Substitution is performed only for standard agreements created based on template
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
 "result": {
-    "LABEL": "By clicking the 'I agree' button, I consent to the processing of my personal data in accordance with Federal Law No. 152-FZ of July 27, 2006 'On Personal Data', under the terms and for the purposes defined in the Consent to the processing of personal data.",
-    "TEXT": "Consent to the processing of personal data\n\nHereby, in accordance with Federal Law No. 152-FZ 'On Personal Data' of July 27, 2006, I freely, of my own will and in my interest express my unconditional consent to the processing of my personal data, registered in accordance with the legislation of the USA at the address: \n (hereinafter referred to as the Operator).\n1. Consent is given for the processing of one, several, or all categories of personal data that are not special or biometric, provided by me, which may include:\n\n- Example Ltd.;\n- New York, 1st Example St.;\n- Processing personal data to improve service;\n- Company partners for analytics;\n- info@example.com.\n\n2. The Operator may perform the following actions: collection; recording; systematization; accumulation; storage; clarification (updating, modification); extraction; use; blocking; deletion; destruction. \n\n3. Methods of processing: both using automation tools and without their use.\n\n4. Purpose of processing: to provide me with services/work, including sending notifications regarding the services/work provided, preparing and sending responses to my requests, sending me information about events/products/services/work of the Operator.\n\n5. Since the Operator may process my personal data using the software 'QuickBooks and other similar platforms', I give my consent to the Operator to carry out the corresponding assignment to Example Ltd., (OGRN 5077746476209), registered at the address: 109544, New York, Enthusiasts Blvd, 2, floor 13, room 8-19.\n\n6. This consent is valid until revoked by sending a corresponding notification to the email address kalashnikova@example.com or by sending it to the address.\n\n7. In case I revoke my consent to the processing of personal data, the Operator has the right to continue processing personal data without my consent if there are grounds provided for by Federal Law No. 152-FZ 'On Personal Data' of July 27, 2006."
+    "LABEL": "By clicking the 'I agree' button, I consent to the processing of my personal data in accordance with Federal Law No. 152-FZ of July 27, 2006 'On Personal Data', under the conditions and for the purposes defined in the Consent to the processing of personal data",
+    "TEXT": "Consent to the processing of personal data\n\nHereby, in accordance with Federal Law No. 152-FZ 'On Personal Data' of July 27, 2006, I freely, of my own will and in my interest express my unconditional consent to the processing of my personal data, registered in accordance with the legislation of the USA at the address: \n (hereinafter referred to as the Operator).\n1. Consent is given for the processing of one, several, or all categories of personal data, which are not special or biometric, provided by me, which may include:\n\n- Example Ltd.;\n- New York, Example St., 1;\n- Processing personal data to improve service;\n- Company partners for analytics;\n- info@example.com.\n\n2. The Operator may perform the following actions: collection; recording; systematization; accumulation; storage; clarification (updating, modification); extraction; use; blocking; deletion; destruction. \n\n3. Methods of processing: both using automation tools and without their use.\n\n4. Purpose of processing: providing me with services/work, including sending notifications regarding the services/work provided, preparing and sending responses to my requests, sending me information about events/products/services/work of the Operator.\n\n5. Since the Operator may process my personal data using the software 'QuickBooks and other similar platforms', I give my consent to the Operator to carry out the corresponding assignment to Example Ltd., (OGRN 5077746476209), registered at the address: 109544, New York, Enthusiast Blvd., 2, floor 13, room 8-19.\n\n6. This consent is valid until revoked by sending a corresponding notification to the email address kalashnikova@example.com or by sending it to the address.\n\n7. In case I revoke my consent to the processing of personal data, the Operator has the right to continue processing personal data without my consent if there are grounds provided by Federal Law No. 152-FZ 'On Personal Data' of July 27, 2006."
 },
 "time": {
     "start": 1760611223,
@@ -237,7 +237,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

@@ -20,7 +20,7 @@ You can obtain the identifiers of delivery services using the [sale.delivery.get
 ||
 || **TYPE***
 [`string`](../../../data-types.md) | Type of service. Possible values:
-- `enum` — list (option selection from a pre-defined list)
+- `enum` — list (selecting an option from a pre-defined list)
 - `checkbox` — single service (e.g., door delivery)
 - `quantity` — quantitative service (e.g., required number of movers)
 ||
@@ -70,7 +70,7 @@ This field is relevant only for services of type `list (enum)`.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-Adding a service with type `Quantitative Service`:
+Adding a service with the type `Quantitative Service`:
 
 {% list tabs %}
 
@@ -205,7 +205,7 @@ Adding a service with type `Quantitative Service`:
 
 {% endlist %}
 
-Adding a service with type `List`:
+Adding a service with the type `List`:
 
 {% list tabs %}
 
@@ -382,7 +382,7 @@ Adding a service with type `List`:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -411,7 +411,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -439,3 +439,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./sale-delivery-extra-service-update.md)
 - [{#T}](./sale-delivery-extra-service-get.md)
 - [{#T}](./sale-delivery-extra-service-delete.md)
+- [{#T}](../../../../tutorials/sale/delivery-in-crm.md)

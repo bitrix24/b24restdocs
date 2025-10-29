@@ -25,9 +25,9 @@ The method `sale.propertyRelation.add` adds a property binding.
 || **Parameter**
 `type` | **Description** ||
 || **entityId***
-[`integer`](../../data-types.md) | Entity identifier ||
+[`integer`](../../data-types.md) | Object identifier ||
 || **entityType***
-[`string`](../../data-types.md) | Entity type:
+[`string`](../../data-types.md) | Object type:
 - `P` — payment system
 - `D` — delivery
 - `L` — landing
@@ -222,9 +222,9 @@ HTTP status: **400**
 || `201650000001` | Binding with the specified values `entityId`, `entityType`, `propertyId` already exists
  ||
 || `201650000002` | Property does not exist. Invalid value for the provided parameter `propertyId` || 
-|| `200040300020` | Insufficient permissions to create the property binding || 
-|| `100` | Parameter `fields` is missing or empty || 
-|| `0` | Required fields not provided ||
+|| `200040300020` | Insufficient permissions to create property binding || 
+|| `100` | Parameter `fields` is not specified or is empty || 
+|| `0` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
@@ -235,3 +235,4 @@ HTTP status: **400**
 - [{#T}](./sale-property-relation-list.md)
 - [{#T}](./sale-property-relation-delete-by-filter.md)
 - [{#T}](./sale-property-relation-get-fields.md)
+- [{#T}](../../../tutorials/sale/delivery-in-crm.md)

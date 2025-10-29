@@ -45,19 +45,19 @@ The request and response format is detailed in the documentation for the webhook
 || **CREATE_DELIVERY_REQUEST_URL**
 [`string`](../../../data-types.md) | URL for creating a delivery order.
 
-Data about the shipment (what to deliver, where, and how) is sent to this URL, for which a delivery order needs to be placed with the delivery service.
+Data about the shipment (what to deliver, where, and how) is sent to this URL, for which an order needs to be placed with the delivery service.
 
 The request and response format is detailed in the documentation for the webhook **Create Delivery Order** ||
 || **CANCEL_DELIVERY_REQUEST_URL**
 [`string`](../../../data-types.md) | URL for canceling a delivery order.
 
-Data about the shipment (what to deliver, where, and how) is sent to this URL, for which the delivery order needs to be canceled with the delivery service.
+Data about the shipment (what to deliver, where, and how) is sent to this URL, for which the order needs to be canceled with the delivery service.
 
 The request and response format is detailed in the documentation for the webhook **Cancel Delivery Order** ||
 || **HAS_CALLBACK_TRACKING_SUPPORT**
 [`string`](../../../data-types.md) | Indicator of whether the delivery service will send notifications about the status of the delivery order (see method [`sale.delivery.request.sendmessage`](../delivery-request/sale-delivery-request-send-message.md)). 
 
-If event support is specified, a delivery activity will be created in the manager's interface when ordering delivery, into which changes related to the current delivery status can be transmitted.
+If event support is indicated, a delivery activity will be created in the manager's interface when ordering delivery, into which changes related to the current delivery status can be transmitted.
 
 Possible values:
 - `Y` — support available
@@ -147,7 +147,6 @@ This parameter is relevant only for settings of type `ENUM`
 
 - JS
 
-
     ```js
     try
     {
@@ -225,7 +224,6 @@ This parameter is relevant only for settings of type `ENUM`
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -448,8 +446,8 @@ HTTP status: **200**
       "finish":1713872092.691408,
       "duration":0.31304192543029785,
       "processing":0.015096187591552734,
-      "date_start":"2024-04-23T14:34:52+03:00",
-      "date_finish":"2024-04-23T14:34:52+03:00"
+      "date_start":"2024-04-23T14:34:52+02:00",
+      "date_finish":"2024-04-23T14:34:52+02:00"
    }
 }
 ```
@@ -462,7 +460,7 @@ HTTP status: **200**
 || **result**
 [`sale_delivery_handler.ID`](../../../data-types.md) | Identifier of the delivery service handler ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -484,7 +482,7 @@ HTTP status: **400**, **403**
 || **Code** | **Description** | **Status** ||
 || `ERROR_CHECK_FAILURE` | Validation error of incoming parameters (details in the error description) | 400 ||
 || `ERROR_HANDLER_ADD` | Error when trying to add a delivery service handler | 400 ||
-|| `ERROR_HANDLER_ALREADY_EXIST` | Delivery service handler with the specified code `CODE` already exists | 400 ||
+|| `ERROR_HANDLER_ALREADY_EXIST` | A delivery service handler with the specified code `CODE` already exists | 400 ||
 || `ACCESS_DENIED` | Insufficient rights to add a delivery service handler | 403 ||
 |#
 
@@ -495,3 +493,4 @@ HTTP status: **400**, **403**
 - [{#T}](./sale-delivery-handler-update.md)
 - [{#T}](./sale-delivery-handler-delete.md)
 - [{#T}](./sale-delivery-handler-list.md)
+- [{#T}](../../../../tutorials/sale/delivery-in-crm.md)

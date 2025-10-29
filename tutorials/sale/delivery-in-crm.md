@@ -1,8 +1,50 @@
-# Set Up Delivery for Use in CRM
+# Set Up Delivery Service for CRM
 
-## Creating a Delivery Service Handler
+> Scope: [`sale`](../../api-reference/scopes/permissions.md)
+>
+> Who can perform methods: administrator
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+You can connect external delivery services to Bitrix24. This allows the manager to work with the delivery service in CRM cards: calculating costs and tracking status.
+
+To set up the delivery service, we will sequentially execute the following methods:
+
+1. [sale.delivery.handler.add](../../api-reference/sale/delivery/handler/sale-delivery-handler-add.md) — register the delivery handler,
+
+2. [sale.delivery.add](../../api-reference/sale/delivery/delivery/sale-delivery-add.md) — create the parent service and profiles linked to the handler,
+
+3. [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md) — add shipment properties for addresses,
+
+4. [sale.propertyrelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md) — link properties to delivery profiles.
+
+5. [sale.delivery.extra.service.add](../../api-reference/sale/delivery/extra-service/sale-delivery-extra-service-add.md) — connect additional services.
+
+## 1\. Create Delivery Handler
+
+We will register the handler using [sale.delivery.handler.add](../../api-reference/sale/delivery/handler/sale-delivery-handler-add.md). We will pass four parameters to the method.
+
+- `CODE` — symbolic code of the delivery handler. For example, we will specify `uber`.
+
+- `NAME` — name of the delivery handler. We will pass `Uber`.
+
+- `SETTINGS` — object with information about the handler's settings.
+
+    - `CALCULATE_URL` — URL for calculating delivery costs, for example `https://gateway.bx/calculate.php`.
+
+    - `CREATE_DELIVERY_REQUEST_URL` — URL for creating a delivery request. We will specify `https://gateway.bx/create_delivery_request.php`.
+
+    - `CANCEL_DELIVERY_REQUEST_URL` — URL for canceling a delivery, for example `https://gateway.bx/cancel_delivery_request.php`.
+
+    - `HAS_CALLBACK_TRACKING_SUPPORT` — indicator of whether the service will send notifications. We will set it to `Y`. Notifications can be created using [sale.delivery.request.sendmessage](../../api-reference/sale/delivery/delivery-request/sale-delivery-request-send-message.md).
+
+    - `CONFIG` — list of settings. We will specify `MY_FIRST_SETTING` and `MY_SECOND_SETTING` with the type `STRING`.
+
+- `PROFILES` — array of delivery profiles. The handler must have at least one profile. We will set `Taxi` and `Cargo`.
+
+The delivery service at the specified URLs must accept the request, process it, and return a response in the format expected by the CRM.
+
+For more details on the request and response formats, refer to the section [Webhooks for Delivery Operations](../../api-reference/sale/delivery/webhooks/index.md).
+
+{% include [Example Notes](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -59,7 +101,7 @@
 
     ```php
     require_once('crest.php');
-
+    
     $result = CRest::call(
         'sale.delivery.handler.add',
         [
@@ -82,22 +124,22 @@
                         'NAME' => 'My second setting',
                     ],
                 ],
-            ],
+            },
             'PROFILES' => [
                 [
                     'NAME' => 'Taxi',
                     'CODE' => 'TAXI',
                     'DESCRIPTION' => 'Taxi Delivery',
-                ],
+                },
                 [
                     'NAME' => 'Cargo',
                     'CODE' => 'CARGO',
                     'DESCRIPTION' => 'Cargo Delivery',
-                ],
+                },
             ],
         ]
     );
-
+    
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
@@ -105,7 +147,7 @@
 
 {% endlist %}
 
-Example response:
+If the handler is successfully added, the method will return its identifier. If you receive an `error`, refer to the documentation for possible errors in the method [sale.delivery.handler.add](../../api-reference/sale/delivery/handler/sale-delivery-handler-add.md).
 
 ```json
 {
@@ -121,13 +163,19 @@ Example response:
 }
 ```
 
-We created a delivery service handler with the identifier `23`. The delivery service handler is a template that we will use to create specific delivery services later.
+## 2\. Create Delivery Service {#second}
 
-More about the method [sale.delivery.handler.add](../../api-reference/sale/delivery/handler/sale-delivery-handler-add.md).
+We will create the delivery service using the method [sale.delivery.add](../../api-reference/sale/delivery/delivery/sale-delivery-add.md). We will pass the following parameters to the method:
 
-## Creating a Delivery Service
+- `REST_CODE` — symbolic code of the delivery handler. We will specify `uber`, which we set in the first step.
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+- `NAME` — name of the delivery service, for example, `Uber Taxi`.
+
+- `CURRENCY` — symbolic code of the currency. We will pass `USD`. You can get a list of currencies using the method [crm.currency.list](../../api-reference/crm/currency/crm-currency-list.md).
+
+- `ACTIVE` — flag indicating whether the delivery service is active. We will set it to `Y`.
+
+- `CONFIG` — values of the handler's settings. We will pass values for `MY_FIRST_SETTING` and `MY_SECOND_SETTING`, which we set in the first step.
 
 {% list tabs %}
 
@@ -166,29 +214,27 @@ More about the method [sale.delivery.handler.add](../../api-reference/sale/deliv
 
     ```php
     require_once('crest.php');
-
+    
     $result = CRest::call(
         'sale.delivery.add',
         [
-            'FIELDS' => [
-                'REST_CODE' => 'uber',
-                'NAME' => 'Uber Taxi',
-                'CURRENCY' => 'USD',
-                'ACTIVE' => 'Y',
-                'CONFIG' => [
-                    [
-                        'CODE' => 'MY_FIRST_SETTING',
-                        'VALUE' => 'My first setting value',
-                    ],
-                    [
-                        'CODE' => 'MY_SECOND_SETTING',
-                        'VALUE' => 'My second setting value',
-                    ],
-                ]
+            'REST_CODE' => 'uber',
+            'NAME' => 'Uber Taxi',
+            'CURRENCY' => 'USD',
+            'ACTIVE' => 'Y',
+            'CONFIG' => [
+                [
+                    'CODE' => 'MY_FIRST_SETTING',
+                    'VALUE' => 'My first setting value',
+                },
+                [
+                    'CODE' => 'MY_SECOND_SETTING',
+                    'VALUE' => 'My second setting value',
+                },
             ]
         ]
     );
-
+    
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
@@ -196,66 +242,78 @@ More about the method [sale.delivery.handler.add](../../api-reference/sale/deliv
 
 {% endlist %}
 
-Example response:
+If the delivery service is successfully created, the method will return the parent service object and an array of profiles. If you receive an `error`, refer to the documentation for possible errors in the method [sale.delivery.add](../../api-reference/sale/delivery/delivery/sale-delivery-add.md).
 
-```js
+```json
 {
-"result":{
-    "parent":{
-        "NAME":"Uber Taxi",
-        "ACTIVE":"Y",
-        "DESCRIPTION":"",
-        "CURRENCY":"USD",
-        "ID":226,
-        "PARENT_ID":null,
-        "SORT":100,
-        "LOGOTYPE":null
+"result": {
+    "parent": {
+        "NAME": "Uber Taxi",
+        "ACTIVE": "Y",
+        "DESCRIPTION": "",
+        "CURRENCY": "USD",
+        "ID": 226,
+        "PARENT_ID": null,
+        "SORT": 100,
+        "LOGOTYPE": null
     },
-    "profiles":[
+    "profiles": [
         {
-            "NAME":"Taxi",
-            "ACTIVE":"Y",
-            "DESCRIPTION":"Taxi Delivery",
-            "CURRENCY":"USD",
-            "ID":227,
-            "PARENT_ID":226,
-            "SORT":100,
-            "LOGOTYPE":null
+            "NAME": "Taxi",
+            "ACTIVE": "Y",
+            "DESCRIPTION": "Taxi Delivery",
+            "CURRENCY": "USD",
+            "ID": 227,
+            "PARENT_ID": 226,
+            "SORT": 100,
+            "LOGOTYPE": null
         },
         {
-            "NAME":"Cargo",
-            "ACTIVE":"Y",
-            "DESCRIPTION":"Cargo Delivery",
-            "CURRENCY":"USD",
-            "ID":228,
-            "PARENT_ID":226,
-            "SORT":100,
-            "LOGOTYPE":null
+            "NAME": "Cargo",
+            "ACTIVE": "Y",
+            "DESCRIPTION": "Cargo Delivery",
+            "CURRENCY": "USD",
+            "ID": 228,
+            "PARENT_ID": 226,
+            "SORT": 100,
+            "LOGOTYPE": null
         }
     ]
 },
-"time":{
-    "start":1714737122.600765,
-    "finish":1714737122.894801,
-    "duration":0.2940359115600586,
-    "processing":0.0942530632019043,
-    "date_start":"2024-05-03T14:52:02+02:00",
-    "date_finish":"2024-05-03T14:52:02+02:00"
+"time": {
+    "start": 1714737122.600765,
+    "finish": 1714737122.894801,
+    "duration": 0.2940359115600586,
+    "processing": 0.0942530632019043,
+    "date_start": "2024-05-03T14:52:02+02:00",
+    "date_finish": "2024-05-03T14:52:02+02:00"
 }
 }
 ```
 
-We created a delivery service with the identifier `226`. This delivery service has two child delivery services, delivery profiles, with identifiers `227` and `228`.
+## 3\. Create Shipment Properties {#third}
 
-More about the method [sale.delivery.add](../../api-reference/sale/delivery/delivery/sale-delivery-add.md).
+In the shipment, the manager specifies the shipping address and delivery address. We will sequentially create two properties `Address From` and `Address To` using the method [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md).
 
-## Creating Shipment Properties
+### Property Address From
 
-To allow the manager to select "From" and "To" addresses when choosing a delivery service in the interface, we need to create the corresponding shipment properties. If such properties have been created before, you can proceed directly to the next step of linking shipment properties to the delivery service.
+We will pass an object `fields` with the values of the `Address From` property fields to the method.
 
-Let's create the property `Address From`. 
+- `personTypeId` — identifier of the payer type. We will pass `3`. You can get a list of types using the method [sale.persontype.list](../../api-reference/sale/person-type/sale-person-type-list.md).
 
-{% include [Note on Examples](../../_includes/examples.md) %}
+- `propsGroupId` — identifier of the property group. We will specify `6`. You can get a list of groups using the method [sale.propertygroup.list](../../api-reference/sale/property-group/sale-property-group-list.md).
+
+- `name` — name of the shipment property. We will specify `Address From`.
+
+- `active` — flag indicating whether it is active. We will pass `Y`.
+
+- `sort` — sorting.
+
+- `type` — type of the shipment property. We will pass `ADDRESS`. For a list of possible values, see the documentation for the method [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md).
+
+- `required` — flag indicating whether the property is required. We will specify `Y`.
+
+- `isAddressFrom` — flag indicating whether the shipment property is used as the sender's address. We will pass `Y`.
 
 {% list tabs %}
 
@@ -289,7 +347,7 @@ Let's create the property `Address From`.
 
     ```php
     require_once('crest.php');
-
+    
     $result = CRest::call(
         'sale.shipmentproperty.add',
         [
@@ -305,7 +363,7 @@ Let's create the property `Address From`.
             ]
         ]
     );
-
+    
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
@@ -313,56 +371,44 @@ Let's create the property `Address From`.
 
 {% endlist %}
 
-Response:
+If the property is successfully added, the method will return a `property` object with the property identifier. If you receive an `error`, refer to the documentation for possible errors in the method [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md).
 
 ```json
 {
-"result":{
-    "property":{
-        "active":"Y",
-        "code":"",
-        "defaultValue":"",
-        "description":"",
-        "id":102,
-        "inputFieldLocation":"0",
-        "isAddress":"N",
-        "isAddressFrom":"Y",
-        "isAddressTo":"N",
-        "isEmail":"N",
-        "isFiltered":"N",
-        "isLocation":"N",
-        "isLocation4tax":"N",
-        "isPayer":"N",
-        "isPhone":"N",
-        "isProfileName":"N",
-        "isZip":"N",
-        "multiple":"N",
-        "name":"Address From",
-        "personTypeId":3,
-        "propsGroupId":6,
-        "required":"Y",
-        "settings":[
-            
-        ],
-        "sort":100,
-        "type":"ADDRESS",
-        "userProps":"N",
-        "util":"N",
-        "xmlId":"bx_6634d350b3f83"
+"result": {
+    "property": {
+        "active": "Y",
+        "code": "",
+        "defaultValue": "",
+        "description": "",
+        "id": 102,
+        "isAddressFrom": "Y",
+        "isAddressTo": "N",
+        "maxLength": "",
+        "name": "Address From",
+        "personTypeId": 3,
+        "propsGroupId": 6,
+        "required": "Y",
+        "settings": [],
+        "sort": 100,
+        "type": "ADDRESS",
+        "xmlId": ""
     }
 },
-"time":{
-    "start":1714737999.671308,
-    "finish":1714738000.799885,
-    "duration":1.1285769939422607,
-    "processing":0.8807950019836426,
-    "date_start":"2024-05-03T15:06:39+02:00",
-    "date_finish":"2024-05-03T15:06:40+02:00"
+"time": {
+    "start": 1714741422.531968,
+    "finish": 1714741422.644666,
+    "duration": 0.11269783973693848,
+    "processing": 0.06191205978393555,
+    "date_start": "2024-05-03T15:43:42+02:00",
+    "date_finish": "2024-05-03T15:43:42+02:00"
 }
 }
 ```
 
-Now let's create the property `Address To`. 
+### Property Address To
+
+In the `fields` object for the `Address To` property, we will pass the name `Address To`. The other parameters will be similar to `Address From`.
 
 {% list tabs %}
 
@@ -396,7 +442,7 @@ Now let's create the property `Address To`.
 
     ```php
     require_once('crest.php');
-
+    
     $result = CRest::call(
         'sale.shipmentproperty.add',
         [
@@ -412,7 +458,7 @@ Now let's create the property `Address To`.
             ]
         ]
     );
-
+    
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
@@ -420,68 +466,50 @@ Now let's create the property `Address To`.
 
 {% endlist %}
 
-Response:
+If the property is successfully added, the method will return a `property` object with the property identifier. If you receive an `error`, refer to the documentation for possible errors in the method [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md).
 
 ```json
 {
-"result":{
-    "property":{
-        "active":"Y",
-        "code":"",
-        "defaultValue":"",
-        "description":"",
-        "id":103,
-        "inputFieldLocation":"0",
-        "isAddress":"N",
-        "isAddressFrom":"N",
-        "isAddressTo":"Y",
-        "isEmail":"N",
-        "isFiltered":"N",
-        "isLocation":"N",
-        "isLocation4tax":"N",
-        "isPayer":"N",
-        "isPhone":"N",
-        "isProfileName":"N",
-        "isZip":"N",
-        "multiple":"N",
-        "name":"Address To",
-        "personTypeId":3,
-        "propsGroupId":6,
-        "required":"Y",
-        "settings":[
-            
-        ],
-        "sort":100,
-        "type":"ADDRESS",
-        "userProps":"N",
-        "util":"N",
-        "xmlId":"bx_6634d380a68e5"
+"result": {
+    "property": {
+        "active": "Y",
+        "code": "",
+        "defaultValue": "",
+        "description": "",
+        "id": 103,
+        "isAddressFrom": "N",
+        "isAddressTo": "Y",
+        "maxLength": "",
+        "name": "Address To",
+        "personTypeId": 3,
+        "propsGroupId": 6,
+        "required": "Y",
+        "settings": [],
+        "sort": 100,
+        "type": "ADDRESS",
+        "xmlId": ""
     }
 },
-"time":{
-    "start":1714738048.347586,
-    "finish":1714738048.713083,
-    "duration":0.3654971122741699,
-    "processing":0.18678808212280273,
-    "date_start":"2024-05-03T15:07:28+02:00",
-    "date_finish":"2024-05-03T15:07:28+02:00"
+"time": {
+    "start": 1714741719.195657,
+    "finish": 1714741719.368018,
+    "duration": 0.17236113548278809,
+    "processing": 0.0712430477142334,
+    "date_start": "2024-05-03T15:48:39+02:00",
+    "date_finish": "2024-05-03T15:48:39+02:00"
 }
 }
 ```
 
-We created two shipment properties: `Address From` with the identifier `102` and `Address To` with the identifier `103`.
+## 4\. Link Shipment Properties to Delivery Service
 
-Similarly, you can create properties of other types for specific needs. For example, if you want the manager to be able to write a comment for the transport company, you can create a shipment property with the type `STRING` and name it accordingly "Comment for Transport Company". In this case, the property will be displayed to the manager in the user interface, and he will be able to fill it out.
+To link the properties `Address From` and `Address To` to the profiles `Taxi` and `Cargo`, we will call the method [sale.propertyrelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md) four times. We will pass an object `fields` with the values for linking properties.
 
-More about the method [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md).
+- `entityId` — identifier of the delivery profile. For the `Taxi` profile, we will pass `227`, and for `Cargo`, we will pass `228`, which were obtained [in the second step](#second).
 
-## Linking Shipment Properties to the Delivery Service
+- `entityType` — type of the object. Possible values: `P` — payment system, `D` — delivery, `L` — landing, `T` — trading platform. We will specify the value `D`.
 
-After creating the properties, you need to link them to the previously created delivery services. By now, we have two delivery services with identifiers `227` and `228` and two properties with identifiers `102` and `103`. There is no need to link properties to the parent delivery service.
-
-Let's link the properties to the delivery service with the identifier `227`. 
-
-{% include [Note on Examples](../../_includes/examples.md) %}
+- `propertyId` — identifier of the property. For `Address From`, we will specify `102`, and for `Address To`, we will specify `103`, which were obtained [in the third step](#third).
 
 {% list tabs %}
 
@@ -505,30 +533,13 @@ Let's link the properties to the delivery service with the identifier `227`.
             }
         }
     );
-
-    BX24.callMethod(
-        'sale.propertyrelation.add', {
-            fields: {
-                entityId: 227,
-                entityType: 'D',
-                propertyId: 103
-            }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
-        }
-    );
     ```
 
 - PHP
 
     ```php
     require_once('crest.php');
-
+    
     $result = CRest::call(
         'sale.propertyrelation.add',
         [
@@ -539,116 +550,63 @@ Let's link the properties to the delivery service with the identifier `227`.
             ]
         ]
     );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-
-        $result = CRest::call(
-        'sale.propertyrelation.add',
-        [
-            'fields' => [
-                'entityId' => 227,
-                'entityType' => 'D',
-                'propertyId' => 103
-            ]
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
     ```
 
 {% endlist %}
 
-Now let's link the properties to the delivery service with the identifier `228`. 
+We will call the method [sale.propertyrelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md) in sequence.
 
-{% list tabs %}
+1. Service `Taxi`, property `Address From` — pass `entityId: 227, propertyId: 102`.
 
-- JS
+2. Service `Taxi`, property `Address To` — pass `entityId: 227, propertyId: 103`.
 
-    ```js
-    BX24.callMethod(
-        'sale.propertyrelation.add', {
-            fields: {
-                entityId: 228,
-                entityType: 'D',
-                propertyId: 102
-            }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
+3. Service `Cargo`, property `Address From` — pass `entityId: 228, propertyId: 102`.
+
+4. Service `Cargo`, property `Address To` — pass `entityId: 228, propertyId: 103`.
+
+If the links are successfully added, the method will return objects with information about them. If you receive an `error`, refer to the documentation for possible errors in the method [sale.propertyrelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md).
+
+```json
+{
+    "result": {
+        "propertyRelation": {
+            "entityId": 227,
+            "entityType": "D",
+            "propertyId": 102
         }
-    );
+    },
+    "time": {
+        "start": 1712244475.495277,
+        "finish": 1712244476.402808,
+        "duration": 0.9075310230255127,
+        "processing": 0.08538603782653809,
+        "date_start": "2024-05-03T18:27:55+02:00",
+        "date_finish": "2024-05-03T18:27:56+02:00"
+    }
+}
+```
 
-    BX24.callMethod(
-        'sale.propertyrelation.add', {
-            fields: {
-                entityId: 228,
-                entityType: 'D',
-                propertyId: 103
-            }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
-        }
-    );
-    ```
+## 5\. Add Services to Delivery Services
 
-- PHP
+To add an additional service to the delivery service, we will call the method [sale.delivery.extra.service.add](../../api-reference/sale/delivery/extra-service/sale-delivery-extra-service-add.md). We will pass the following parameters:
 
-    ```php
-    require_once('crest.php');
+- `DELIVERY_ID` — identifier of the delivery service to which the service will be linked. For the `Taxi` profile, we will specify the identifier `227`, which was obtained [in the second step](#second). For other profiles, substitute your own identifier. You can get a list of delivery service identifiers using the method [sale.delivery.getlist](../../api-reference/sale/delivery/delivery/sale-delivery-get-list.md).
 
-    $result = CRest::call(
-        'sale.propertyrelation.add',
-        [
-            'fields' => [
-                'entityId' => 228,
-                'entityType' => 'D',
-                'propertyId' => 102
-            ]
-        ]
-    );
+- `ACTIVE` — flag indicating whether the service is active. Possible values: `Y` — yes, `N` — no. We will pass `Y`.
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
+- `CODE` — symbolic code of the service. We will specify `door_delivery`.
 
-        $result = CRest::call(
-        'sale.propertyrelation.add',
-        [
-            'fields' => [
-                'entityId' => 228,
-                'entityType' => 'D',
-                'propertyId' => 103
-            ]
-        ]
-    );
+- `NAME` — name of the service, for example, `Door Delivery`.
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
+- `TYPE` — type of service. Possible values: `enum` — list, `checkbox` — single service, `quantity` — quantitative service. We will specify `checkbox`.
 
-{% endlist %}
+- `PRICE` — cost of the service type in the currency of the delivery service. We will specify `1000`.
 
-More about the method [sale.propertyrelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md).
+    {% note info "" %}
 
-## Adding Services to Delivery Services
+    For services of type `enum`, the cost is specified using the `ITEMS` parameter. For more details, refer to the documentation for the method [sale.delivery.extra.service.add](../../api-reference/sale/delivery/extra-service/sale-delivery-extra-service-add.md).
 
-In some cases, it is necessary to give the manager the ability to choose certain services that may be available for the delivery service. For example, the cost of delivery may differ if door delivery is required. In this case, you can create a service that the manager can specify when calculating or placing an order for delivery.
-
-{% include [Note on Examples](../../_includes/examples.md) %}
+    {% endnote %}
 
 {% list tabs %}
 
@@ -662,6 +620,7 @@ In some cases, it is necessary to give the manager the ability to choose certain
             CODE: "door_delivery",
             NAME: "Door Delivery",
             TYPE: "checkbox",
+            PRICE: 1000
         },
         function(result) {
             if (result.error()) {
@@ -677,7 +636,7 @@ In some cases, it is necessary to give the manager the ability to choose certain
 
     ```php
     require_once('crest.php');
-
+    
     $result = CRest::call(
         'sale.delivery.extra.service.add',
         [
@@ -686,9 +645,10 @@ In some cases, it is necessary to give the manager the ability to choose certain
             'CODE' => 'door_delivery',
             'NAME' => 'Door Delivery',
             'TYPE' => 'checkbox',
+            'PRICE' => 1000,
         ]
     );
-
+    
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
@@ -696,9 +656,9 @@ In some cases, it is necessary to give the manager the ability to choose certain
 
 {% endlist %}
 
-Response:
+If the service is added, the method will return the identifier in the `result` parameter. If you receive an `error`, refer to the documentation for possible errors in the method [sale.delivery.extra.service.add](../../api-reference/sale/delivery/extra-service/sale-delivery-extra-service-add.md).
 
-```js
+```json
 {
     "result": 140,
     "time": {
@@ -712,34 +672,13 @@ Response:
 }
 ```
 
-In this example, we created a delivery service to the door with the symbolic code `door_delivery` and identifier `140`.
+## Notifications about Delivery Statuses
 
-More about the method [sale.delivery.extra.service.add](../../api-reference/sale/delivery/extra-service/sale-delivery-extra-service-add.md).
-
-## Handling Requests Coming to Webhooks
-
-By this point, we have made all the necessary settings on the *Bitrix24* side, and the manager can fully utilize the delivery service we created. He can perform a preliminary cost calculation, place an order for delivery, and also have the option to cancel the delivery. When creating the handler, we specified specific URLs for this in the parameters.
+To send notifications about the progress of delivery, you can use the methods from the group [sale.delivery.request.*](../../api-reference/sale/delivery/delivery-request/index.md).
 
 #|
-|| **Purpose** | **Parameter** | **URL** ||
-|| Preliminary calculation of delivery cost | `CALCULATE_URL` | https://gateway.bx/calculate.php ||
-|| Request to place a real delivery order | `CREATE_DELIVERY_REQUEST_URL` | https://gateway.bx/create_delivery_request.php ||
-|| Request to cancel a previously formed delivery order | `CANCEL_DELIVERY_REQUEST_URL` | https://gateway.bx/cancel_delivery_request.php ||
-|#
-
-When requests come to these URLs, the external system must process the request and return a response in the required format.
-
-More about webhooks in the section [Webhooks for Delivery Operations](../../api-reference/sale/delivery/webhooks/index.md).
-
-## Notifications During Delivery Order Execution
-
-During the execution of a delivery order, the external system may need to inform the manager or recipient about some information regarding the order status. For this, there are methods in the [sale.delivery.request.*](../../api-reference/sale/delivery/delivery-request/index.md) family.
-
-#|
-|| **Method** | **Purpose** ||
-|| [sale.delivery.request.update](../../api-reference/sale/delivery/delivery-request/sale-delivery-request-update.md) | Updates the delivery order entity: status and set of its properties ||
-
-|| [sale.delivery.request.delete](../../api-reference/sale/delivery/delivery-request/sale-delivery-request-delete.md) | Notifies about the cancellation of the delivery order on the external system side and attempts to cancel the delivery order on the Bitrix24 side ||
-
+|| **Method** | **Description** ||
+|| [sale.delivery.request.update](../../api-reference/sale/delivery/delivery-request/sale-delivery-request-update.md) | Updates the delivery order object: status and set of its properties ||
 || [sale.delivery.request.sendmessage](../../api-reference/sale/delivery/delivery-request/sale-delivery-request-send-message.md) | Sends a message to the manager or recipient about the current status of the delivery order ||
+|| [sale.delivery.request.delete](../../api-reference/sale/delivery/delivery-request/sale-delivery-request-delete.md) | Notifies about the cancellation of the delivery order on the external system side and attempts to cancel the delivery order on the Bitrix24 side ||
 |#

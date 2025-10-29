@@ -179,7 +179,7 @@ The method `catalog.document.element.add` adds a product item to the inventory d
 
 ## Response Handling
 
-HTTP code: **200**
+HTTP Code: **200**
 
 ```json
 {
@@ -199,8 +199,8 @@ HTTP code: **200**
         "finish": 1759482001.215487,
         "duration": 0.11315321922302246,
         "processing": 0.018451929092407227,
-        "date_start": "2025-11-02T12:20:01+01:00",
-        "date_finish": "2025-11-02T12:20:01+01:00",
+        "date_start": "2025-11-02T12:20:01+02:00",
+        "date_finish": "2025-11-02T12:20:01+02:00",
         "operating": 0
     }
 }
@@ -221,7 +221,7 @@ HTTP code: **200**
 
 ## Error Handling
 
-HTTP code: **400**
+HTTP Code: **400**
 
 ```json
 {

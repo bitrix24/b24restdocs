@@ -2,6 +2,12 @@
 
 ## 2025
 
+### October 29, 2025
+
+- Updated documentation for the methods [lists.section.add](./api-reference/lists/sections/lists-section-add.md), [lists.section.update](./api-reference/lists/sections/lists-section-update.md), [lists.section.get](./api-reference/lists/sections/lists-section-get.md), [lists.section.delete](./api-reference/lists/sections/lists-section-delete.md) in Working with Sections
+- Updated the main page of the section [Working with Sections](./api-reference/lists/sections/index.md). Added introductory information as well as an overview of methods and relationships.
+- Updated the tutorial [Set Up Delivery Service for CRM](./tutorials/sale/delivery-in-crm.md)
+
 ### October 22, 2025
 
 - Updated documentation for the methods [catalog.document.element.add](./api-reference/catalog/document/document-element/catalog-document-element-add.md), [catalog.document.element.update](./api-reference/catalog/document/document-element/catalog-document-element-update.md), [catalog.document.element.list](./api-reference/catalog/document/document-element/catalog-document-element-list.md), [catalog.document.element.delete](./api-reference/catalog/document/document-element/catalog-document-element-delete.md), [catalog.document.element.getFields](./api-reference/catalog/document/document-element/catalog-document-element-get-fields.md) in the Trade Catalog

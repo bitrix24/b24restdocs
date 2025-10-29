@@ -1,74 +1,69 @@
-# Key Provisions
+# Setting Up and Using the REST API
 
-The Bitrix24 API reference contains descriptions of all methods and events of the REST API, as well as a number of additional topics important for a deep understanding and effective use of the API in development.
+This section contains answers to practical questions that arise during integration development:
+- how to securely access the REST,
+- configure different types of applications,
+- optimize load.
 
-## Reading Sequence of Materials
+To make your first request, check out the [Getting Started](../first-steps/index.md) section.
 
-Key sections of the API that provide an overview of the most important capabilities:
+To find a specific REST API method, use the [Method Reference](../api-reference/index.md).
 
-```mermaid
-%%{init: { "theme": "forest" } }%%
-flowchart LR
-    id1[Authorization, OAuth 2.0]
-    id2[Installing and Uninstalling Applications]
-    id3[Embedding Widgets]
-    id4[Event Handling]
-    id5[Differences Between Cloud and On-Premise]
-    id1 --> id2
-    id2 --> id3
-    id3 --> id4
-    id4 --> id5
-```
+## Configure REST Calls {#start}
 
-To facilitate the process of studying and using the Bitrix24 REST API, the following reading sequence of materials is suggested:
+Review materials that explain how to form requests, encode data, and handle sequential queries.
 
-1. [{#T}](how-to-call-rest-api/authorization.md): This section will help you quickly check how the REST API works and familiarize you with the basic principles of making requests.
-2. [{#T}](../api-reference/data-types.md): Understanding the data types used in the REST API is critically important for correctly working with methods and events.
-3. [{#T}](oauth/index.md): This section describes the authorization mechanisms based on the OAuth 2.0 standard, obtaining and renewing tokens in applications.
-4. [{#T}](app-installation/index.md) and [{#T}](app-uninstallation.md): This section discusses the processes of installing and uninstalling applications in Bitrix24 accounts, which is especially important for developers of mass-market applications.
-5. [{#T}](../api-reference/scopes/permissions.md): It explains the specifics of application and webhook access to various REST API methods, allowing you to configure the necessary level of access.
-6. [{#T}](../api-reference/widgets/index.md): This section describes ways to integrate custom widgets into the Bitrix24 interface to extend its functionality.
-7. [{#T}](../api-reference/events/index.md): This section is dedicated to the REST API event mechanism, which allows tracking changes in data and responding to them with special server handlers.
-8. [{#T}](interactivity/index.md): It discusses ways to create interactive applications that utilize the REST API capabilities for interaction between back-end applications and their front-end.
-9. [{#T}](performance/limits.md): Important aspects related to application performance and limitations imposed on the use of the REST API.
-10. [{#T}](../sdk/bx24-js-sdk/index.md): A section dedicated to the JavaScript SDK, which simplifies working with the REST API on the client side.
-11. [{#T}](../sdk/crest-php-sdk/index.md): An overview of the PHP SDK for working with the REST API, providing convenient tools for server-side development.
-12. [{#T}](cloud-and-on-premise/index.md): It clarifies the key differences between cloud and on-premise versions of the platform in terms of using the REST API.
-13. [{#T}](../api-reference/common/index.md): A description of common methods available in the REST API that can be used in various applications.
+- What a basic request looks like and how response formats differ — [How to Make a Request](how-to-call-rest-api/general-principles.md).
+- How to perform sequential method calls and pass results between requests — [How to Execute a Batch of Requests](how-to-call-rest-api/batch.md).
+- What to do if parameters contain special characters — [Data Encoding](how-to-call-rest-api/data-encoding.md).
+- How to properly retrieve lists and work with the `start` parameter — [Features of List Methods](how-to-call-rest-api/list-methods-pecularities.md).
+- Why a request stopped working after changing the domain and how to handle redirects — [Features of REST Calls When Changing the Bitrix24 Address](how-to-call-rest-api/change-domen.md).
 
-{.large-list}
+## Perform Authorization {#auth}
 
-## Bitrix24 Tool
+Choose an authorization method — from simple webhooks to a full OAuth 2.0 cycle, set up automatic token renewal and error handling.
 
-Bitrix24 is a comprehensive product that combines many different tools integrated with each other. This integration allows developers to offer users complete business scenarios using multiple tools.
+- How webhooks and the OAuth protocol differ — [Authorization in REST](how-to-call-rest-api/authorization.md).
+- How OAuth authorization works step by step — [Complete OAuth 2.0 Authorization Protocol](oauth/index.md).
+- How to perform authorization directly in the application interface or through the installation event — [Simplified Token Acquisition](oauth/simple-way.md).
+- How to avoid losing access overnight and when to refresh the `refresh_token` — [Automatic Renewal of OAuth 2.0 Tokens](oauth/auto-renewal.md).
+- How to deal with errors like `invalid_client`, `insufficient_scope`, and others — [Error Codes](oauth/error-codes.md).
 
-The API reference contains descriptions of available methods, events, and widgets of the corresponding Bitrix24 tools.
+## Install and Configure the Application {#app}
 
-1. [{#T}](../api-reference/common/index.md)
-2. [{#T}](../api-reference/biconnector/index.md)
-3. [{#T}](../api-reference/crm/index.md)
-4. [{#T}](../api-reference/ai/index.md)
-5. [News Feed](../api-reference/log/index.md)
-6. [{#T}](../api-reference/sale/index.md)
-7. [Users](../api-reference/user/index.md)
-8. [Workflows](../api-reference/bizproc/index.md)
-9. [Tasks](../api-reference/tasks/index.md)
-10. [Document Generator](../api-reference/document-generator/index.md)
-11. [{#T}](../api-reference/calendar/index.md)
-12. [Payment Systems](../api-reference/pay-system/index.md)
-13. [{#T}](../api-reference/departments/index.md)
-14. [{#T}](../api-reference/user-consent/index.md)
-15. [Workgroups and Projects](../api-reference/sonet-group/sonet-group-create.md)
-16. [Open Channels](../api-reference/imopenlines/index.md)
-17. [Online Booking](../api-reference/booking/index.md)
-18. [Chatbots](../api-reference/chat-bots/index.md)
-19. [Chats](../api-reference/chats/index.md)
-20. [Sites and Stores](../api-reference/landing/index.md)
-21. [Message Providers, SMS Providers](../api-reference/messageservice/index.md)
-22. [Universal Lists](../api-reference/lists/index.md)
-23. [Time Tracking](../api-reference/timeman/index.md)
-24. [Data Storage](../api-reference/entity/index.md)
-25. [Product Catalog](../api-reference/catalog/index.md)
-26. [Telephony](../api-reference/telephony/index.md)
-27. [Drive](../api-reference/disk/index.md)
-28. [Mail Services](../api-reference/mailservice/index.md)
+Choose the appropriate scenario and follow the instructions for local, mass-market, or configuration solutions.
+
+- Select the suitable application option — [Application Installation Options in Bitrix24](app-installation/index.md).
+- How to add a local application — [Overview of Installing Local Applications](app-installation/local-apps/index.md).
+- How to create and install a mass-market solution — [Overview of Installing Mass-Market Applications](app-installation/mass-market-apps/index.md).
+- When to call `installFinish` and what to check before launching — [Completing Application Installation](app-installation/installation-finish.md).
+- How to publish ready-made sites, industry CRMs, and smart scenarios — [Installing Site Templates](app-installation/site-templates-installation.md), [Installing Industry CRMs](app-installation/vertical-crm-installation.md), [Installing Solutions with Smart Scenarios](app-installation/smart-scripts-installation.md).
+- What data is deleted when an application is removed and how to handle the deletion event — [Uninstalling Applications](app-uninstallation.md).
+
+## Configure Application Operation in the Cloud and On-Premise {#box}
+
+Compare the requirements of the cloud and on-premise versions, configure the network, and expand the API if necessary.
+
+- What is important to consider for the application to work in the on-premise version — [Differences in Using the REST API](cloud-and-on-premise/index.md).
+- Why a method may be unavailable — [Versioning of Modules in On-Premise Bitrix24](cloud-and-on-premise/on-premise/versions.md).
+- Which domains to open and where to get the list of IPs for event queues — [Required Network Access](cloud-and-on-premise/network-access.md).
+- What to do if the corporate network is isolated and you need to replace the authorization server — [Application Authorization in Isolated On-Premise Bitrix24](cloud-and-on-premise/on-premise/custom-auth-provider.md).
+- How to add your own methods and new scopes — [Adding Custom Methods to the On-Premise Bitrix24 REST API](cloud-and-on-premise/on-premise/custom-methods.md).
+- What security requirements to consider during development — [Security Recommendations for Applications Using the REST API](cloud-and-on-premise/security-recommendations.md).
+
+## Implement an Interactive Interface and Instant Events {#push}
+
+Use Push & Pull to instantly respond to user actions in the interface.
+
+- What interactive options are available — [Interactive Applications](interactivity/index.md).
+- How to create and configure your own Push & Pull client — [Custom Push & Pull Client](interactivity/custom-push-and-pull-client.md).
+- Which methods to use to get connection parameters and send push events — [Push & Pull](interactivity/push-and-pull/index.md).
+
+## Optimize Performance Under Load {#limits}
+
+Apply recommendations for optimizing requests, working with queues, and controlling limits.
+
+- How to reduce the number of requests and speed up responses — [General Recommendations](performance/index.md).
+- How to export thousands of items and avoid counting the total — [Retrieve Large Volumes of Data](performance/huge-data.md).
+- How to build an incoming queue and protect handlers from spikes — [Incoming Event Queue](performance/queue.md).
+- What limitations apply to the REST API — [Limits](performance/limits.md).
