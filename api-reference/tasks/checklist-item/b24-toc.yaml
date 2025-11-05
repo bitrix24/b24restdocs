@@ -1,25 +1,25 @@
 title: Checklists
 href: index.md
 items:
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Add Checklist Item
+  - name: Add checklist item
     href: task-checklist-item-add.md
-  - name: Update Checklist Item
+  - name: Update checklist item
     href: task-checklist-item-update.md
-  - name: Move Checklist Item
-    href: task-checklist-item-move-after-item.md
-  - name: Get Checklist Item by ID
+  - name: Get checklist item by ID
     href: task-checklist-item-get.md
-  - name: Get List of Checklist Items
+  - name: Get list of checklist items
     href: task-checklist-item-get-list.md
-  - name: Mark Item as "Completed"
-    href: task-checklist-item-complete.md
-  - name: Mark Item as "Incomplete"
-    href: task-checklist-item-renew.md
-  - name: Delete Checklist Item
+  - name: Delete checklist item
     href: task-checklist-item-delete.md
-  - name: Check Action Permission
+  - name: Move checklist item
+    href: task-checklist-item-move-after-item.md  
+  - name: Mark item as completed
+    href: task-checklist-item-complete.md
+  - name: Mark item as not completed
+    href: task-checklist-item-renew.md
+  - name: Check action permission
     href: task-checklist-item-is-action-allowed.md
-  - name: Get List of Methods and Their Descriptions
+  - name: Get list of methods and their descriptions
     href: task-checklist-item-get-manifest.md

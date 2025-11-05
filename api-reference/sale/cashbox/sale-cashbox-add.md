@@ -27,7 +27,7 @@ This method adds a cash register.
 - `bx_taxcomofd` — Taxcom OFD 
 - `bx_ofdruofd` — OFD.RU 
 - `bx_tenzorofd` — Tensor OFD 
-- `bx_conturofd` — Contour OFD 
+- `bx_conturofd` — Kontur OFD 
 
 By default, without OFD
 ||
@@ -41,7 +41,7 @@ By default, an empty array
 
 By default, empty ||
 || **ACTIVE**
-[`string`](../../data-types.md) | Activity of the cash register. Possible values:
+[`string`](../../data-types.md) | Activity status of the cash register. Possible values:
 - `Y` — yes
 - `N` — no
   
@@ -56,7 +56,7 @@ Default value: `N` ||
 Default value: `N`
 ||
 || **SETTINGS**
-[`array`](../../data-types.md) | Cash register settings according to the structure of settings passed in the `CONFIG` key of the `SETTINGS` field of the method [sale.cashbox.handler.add](./sale-cashbox-handler-add.md).
+[`array`](../../data-types.md) | Cash register settings according to the settings structure passed in the `CONFIG` key of the `SETTINGS` field of the method [sale.cashbox.handler.add](./sale-cashbox-handler-add.md).
 
 By default, empty ||
 |#
@@ -73,7 +73,7 @@ By default, empty ||
 - `N` — working mode ||
 || **Additional settings for OFD.RU** |  ||
 || **SELLER_INFO**
-[`object`](../../data-types.md) | Settings for the "Seller Information" section. The required parameter `INN` ([`string`](../../data-types.md)) — seller's INN
+[`object`](../../data-types.md) | Settings for the "Seller Information" section. The required parameter `INN` ([`string`](../../data-types.md)) — seller's INN is passed
 ||
 || **Additional settings for YARUS OFD** |  ||
 || **AUTH**
@@ -361,3 +361,4 @@ HTTP status: **400**, **403**
 - [{#T}](./sale-cashbox-list.md)
 - [{#T}](./sale-cashbox-delete.md)
 - [{#T}](./sale-cashbox-check-apply.md)
+- [{#T}](../../../tutorials/sale/cashbox-add-example.md)

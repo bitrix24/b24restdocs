@@ -33,19 +33,19 @@ The method `entity.item.add` adds a storage element. The user must have at least
 || **NAME**^*^
 [`string`](../../data-types.md) | Required. Name of the element. ||
 || **ACTIVE**
-[`unknown`](../../data-types.md) | Flag indicating the element's activity (Y\|N). ||
+[`unknown`](../../data-types.md) | Element active flag (Y\|N). ||
 || **DATE_ACTIVE_FROM**
-[`unknown`](../../data-types.md) | Date when the element becomes active. ||
+[`unknown`](../../data-types.md) | Start date of the element's activity. ||
 || **DATE_ACTIVE_TO**
-[`unknown`](../../data-types.md) | Date when the element is no longer active. ||
+[`unknown`](../../data-types.md) | End date of the element's activity. ||
 || **SORT**
 [`unknown`](../../data-types.md) | Sorting weight of the element. ||
 || **PREVIEW_PICTURE**
-[`unknown`](../../data-types.md) | Preview image of the element. ||
+[`unknown`](../../data-types.md) | Preview image of the element. How to upload a file in the field is described in the article [How to upload files](../../files/how-to-upload-files.md). ||
 || **PREVIEW_TEXT**
 [`unknown`](../../data-types.md) | Preview text of the element. ||
 || **DETAIL_PICTURE**
-[`unknown`](../../data-types.md) | Detailed image of the element. ||
+[`unknown`](../../data-types.md) | Detailed image of the element. How to upload a file in the field is described in the article [How to upload files](../../files/how-to-upload-files.md). ||
 || **DETAIL_TEXT**
 [`unknown`](../../data-types.md) | Detailed text of the element. ||
 || **CODE**
@@ -53,10 +53,10 @@ The method `entity.item.add` adds a storage element. The user must have at least
 || **SECTION**
 [`unknown`](../../data-types.md) | Identifier of the storage section. ||
 || **PROPERTY_VALUES**
-[`unknown`](../../data-types.md) | Associative list of property values for the element. Storage properties are created using [entity.item.property.add](./properties/entity-item-property-add.md). ||
+[`unknown`](../../data-types.md) | Associative list of property values of the element. Storage properties are created using [entity.item.property.add](./properties/entity-item-property-add.md). ||
 |#
 
-{% include [Parameter note](../../../_includes/required.md) %}
+{% include [Parameter Note](../../../_includes/required.md) %}
 
 ## Example
 
@@ -157,7 +157,7 @@ The method `entity.item.add` adds a storage element. The user must have at least
 
 {% endlist %}
 
-{% include [Example note](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 ## Response on Success
 

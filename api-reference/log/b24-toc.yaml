@@ -1,22 +1,24 @@
 title: News Feed
 href: index.md
 items:
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Add Message
+  - name: Add message
     href: log-blogpost-add.md
-  - name: Get List of Messages
+  - name: Get list of messages
     href: log-blogpost-get.md
-  - name: Update Message
+  - name: Edit message
     href: log-blogpost-update.md 
-  - name: Add Recipients to Message
+  - name: Add recipients to message
     href: log-blogpost-share.md 
-  - name: Delete Message
+  - name: Delete message
     href: log-blogpost-delete.md  
-  - name: View Users Who Read Important Message
+  - name: View users who read an important message
     href: log-blogpost-getusers-important.md
-  - name: Add Comment
-    href: log-blogcomment-add.md
+  - name: Comments
+    include:
+      path: blogcomment/b24-toc.yaml
+      mode: link
   - name: Events
     include:
       path: events/b24-toc.yaml

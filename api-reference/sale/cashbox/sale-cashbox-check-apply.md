@@ -116,7 +116,7 @@ The method saves the result of printing a receipt that was printed on a REST cas
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
-            // Your data processing logic
+            // Your required data processing logic
             processData($result->data());
         }
     
@@ -243,3 +243,4 @@ HTTP status: **400**, **403**
 - [{#T}](./sale-cashbox-update.md)
 - [{#T}](./sale-cashbox-list.md)
 - [{#T}](./sale-cashbox-delete.md)
+- [{#T}](../../../tutorials/sale/cashbox-add-example.md)

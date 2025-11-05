@@ -2,6 +2,14 @@
 
 ## 2025
 
+### November 5, 2025
+
+- Updated documentation for methods [log.blogcomment.add](./api-reference/log/blogcomment/log-blogcomment-add.md), [log.blogcomment.user.get](./api-reference/log/blogcomment/log-blogcomment-user-get.md), [log.blogcomment.delete](./api-reference/log/blogcomment/log-blogcomment-delete.md) in the Feed.
+- Updated the main page of the [Comments](./api-reference/log/blogcomment/index.md) section in the Feed. Added introductory information, as well as an overview of methods and relationships.
+- Updated the main page of the [Products in Inventory Document](./api-reference/catalog/document/document-element/index.md) section. Added introductory information, as well as an overview of methods and relationships.
+- Updated documentation for methods [catalog.document.add](./api-reference/catalog/document/catalog-document-add.md), [catalog.document.update](./api-reference/catalog/document/catalog-document-update.md), [catalog.document.getFields](./api-reference/catalog/document/catalog-document-get-fields.md), [catalog.document.mode.status](./api-reference/catalog/document/catalog-document-mode-status.md), [catalog.document.list](./api-reference/catalog/document/catalog-document-list.md), [catalog.document.delete](./api-reference/catalog/document/catalog-document-delete.md), [catalog.document.deleteList](./api-reference/catalog/document/catalog-document-delete-list.md) in Inventory Management of the Trade Catalog.
+- Updated the main page of the [Checklists](./api-reference/tasks/checklist-item/index.md) section in Tasks. Added introductory information, as well as an overview of methods and relationships.
+
 ### October 29, 2025
 
 - Updated documentation for the methods [lists.section.add](./api-reference/lists/sections/lists-section-add.md), [lists.section.update](./api-reference/lists/sections/lists-section-update.md), [lists.section.get](./api-reference/lists/sections/lists-section-get.md), [lists.section.delete](./api-reference/lists/sections/lists-section-delete.md) in Working with Sections
@@ -284,7 +292,6 @@
 - Added descriptions for application embedding methods: [BX24.placement.info](./api-reference/widgets/ui-interaction/bx24-placement-info.md), [BX24.placement.getInterface](./api-reference/widgets/ui-interaction/bx24-placement-get-interface.md), [BX24.placement.call](./api-reference/widgets/ui-interaction/bx24-placement-call.md), and [BX24.placement.bindEvent](./api-reference/widgets/ui-interaction/bx24-placement-bind-event.md)
 - Updated the main page of the [Status Localization](./api-reference/sale/status-lang/index.md) section. Added introductory information as well as an overview of methods and relationships
 - Updated the main page of the [Calendar](./api-reference/calendar/index.md) section. Added introductory information as well as an overview of methods and relationships
-- Updated the main page of the [Cash Registers](./api-reference/sale/cashbox/index.md) section. Added introductory information as well as an overview of methods and relationships
 - Added a new tutorial [How to Attach a Task to a SPA](./tutorials/tasks/how-to-connect-task-to-spa.md)
 - Added descriptions for methods in the [Company Structure](./api-reference/departments/index.md) section
 - Updated documentation for [Business Process Templates](./api-reference/bizproc/template/index.md) in the Business Processes section

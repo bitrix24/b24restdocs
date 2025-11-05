@@ -8,7 +8,6 @@
 || **booking** | [Online Booking](../booking/index.md) | Online Booking ||
 || **calendar** | [Calendar](../calendar/index.md) | Calendar ||
 || **call** | Telephony (making calls). The scope includes methods: [voximplant.infocall.startwithsound](../telephony/voximplant/voximplant-infocall-start-with-sound.md), [voximplant.infocall.startwithtext](../telephony/voximplant/voximplant-infocall-start-with-text.md)| Telephony ||
-|| **cashbox** | [Cash Registers](../sale/cashbox/index.md) | Cash Registers ||
 || **catalog** | [Trade Catalog](../catalog/index.md) | Trade Catalog, inventory management ||
 || **crm** | [CRM](../crm/index.md) | CRM ||
 || **documentgenerator, crm.documentgenerator** | [Document Generator](../document-generator/index.md), [CRM Document Generator](../crm/document-generator/index.md) | Document Generator ||
