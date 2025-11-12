@@ -2,6 +2,13 @@
 
 ## 2025
 
+### November 12, 2025
+
+- Updated documentation for methods [task.checklistitem.get](./api-reference/tasks/checklist-item/task-checklist-item-get.md), [task.checklistitem.getlist](./api-reference/tasks/checklist-item/task-checklist-item-get-list.md) in Task Checklists
+- Updated documentation for methods [imopenlines.crm.message.add](./api-reference/imopenlines/openlines/messages/imopenlines-crm-message-add.md), [imopenlines.message.quick.save](./api-reference/imopenlines/openlines/messages/imopenlines-message-quick-save.md) in Open Lines Messages
+- Updated documentation for methods [task.checklistitem.add](./api-reference/tasks/checklist-item/task-checklist-item-add.md), [task.checklistitem.update](./api-reference/tasks/checklist-item/task-checklist-item-update.md) in Task Checklists
+- Updated documentation for methods [catalog.document.conductList](./api-reference/catalog/document/catalog-document-conduct-list.md), [catalog.document.conduct](./api-reference/catalog/document/catalog-document-conduct.md), [catalog.document.cancel](./api-reference/catalog/document/catalog-document-cancel.md), [catalog.document.cancelList](./api-reference/catalog/document/catalog-document-cancel-list.md) in Inventory Management of the Trade Catalog
+
 ### November 5, 2025
 
 - Updated documentation for methods [log.blogcomment.add](./api-reference/log/blogcomment/log-blogcomment-add.md), [log.blogcomment.user.get](./api-reference/log/blogcomment/log-blogcomment-user-get.md), [log.blogcomment.delete](./api-reference/log/blogcomment/log-blogcomment-delete.md) in the Feed.

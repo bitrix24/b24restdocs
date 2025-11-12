@@ -17,7 +17,7 @@ The method `booking.v1.booking.externalData.set` establishes connections for the
 [`integer`](../../../data-types.md) | Booking identifier.
 Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking-add.md) and [booking.v1.booking.list](../booking-v1-booking-list.md) ||
 || **externalData***
-[`array`](../../../data-types.md) | An array of objects containing objects for binding [(detailed description)](#externalData) ||
+[`array`](../../../data-types.md) | Array of objects containing items for binding [(detailed description)](#externalData) ||
 |#
 
 ### Parameter externalData {#externalData}
@@ -26,11 +26,11 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
 || **Name**
 `type` | **Description** ||
 || **moduleId***
-[`string`](../../../data-types.md) | Module identifier, e.g., `crm` ||
+[`string`](../../../data-types.md) | Module identifier, for example `crm` ||
 || **entityTypeId***
-[`string`](../../../data-types.md) | Object type ID, e.g., `DEAL` ||
+[`string`](../../../data-types.md) | Object type ID, for example `DEAL` ||
 || **value***
-[`string`](../../../data-types.md) | Element ID, e.g., `1` ||
+[`string`](../../../data-types.md) | Item ID, for example `1` ||
 |#
 
 ## Code Examples
@@ -45,7 +45,7 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"bookingId":14,"externalData":{"moduleId":"crm","entityTypeId":"DEAL","value":"1"},"auth":"**put_access_token_here**"}' \
+    -d '{"bookingId":14,"externalData":[{"moduleId":"crm","entityTypeId":"DEAL","value":"1"}],"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/booking.v1.booking.externalData.set
     ```
 
@@ -55,7 +55,7 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"bookingId":14,"externalData":{"moduleId":"crm","entityTypeId":"DEAL","value":"1"}}' \
+    -d '{"bookingId":14,"externalData":[{"moduleId":"crm","entityTypeId":"DEAL","value":"1"}]}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.externalData.set
     ```
 
@@ -68,11 +68,13 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     		"booking.v1.booking.externalData.set",
     		{
     			bookingId: 14,
-    			externalData: {
-    				moduleId: "crm",
-    				entityTypeId: "DEAL",
-    				value: "1"
-    			}
+    			externalData: [
+    				{
+    					moduleId: "crm",
+    					entityTypeId: "DEAL",
+    					value: "1"
+    				}
+    			]
     		}
     	);
     	
@@ -99,9 +101,11 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
                 [
                     'bookingId'    => 14,
                     'externalData' => [
-                        'moduleId'     => 'crm',
-                        'entityTypeId' => 'DEAL',
-                        'value'        => '1',
+                        [
+                            'moduleId'     => 'crm',
+                            'entityTypeId' => 'DEAL',
+                            'value'        => '1',
+                        ],
                     ],
                 ]
             );
@@ -129,11 +133,13 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
         "booking.v1.booking.externalData.set",
         {
             bookingId: 14,
-            externalData: {
-                moduleId: "crm",
-                entityTypeId: "DEAL",
-                value: "1"
-            }
+            externalData: [
+                {
+                    moduleId: "crm",
+                    entityTypeId: "DEAL",
+                    value: "1"
+                }
+            ]
         },
         result => {
             if (result.error())
@@ -154,9 +160,11 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
         [
             'bookingId' => 14,
             'externalData' => [
-                'moduleId' => 'crm',
-                'entityTypeId' => 'DEAL',
-                'value' => '1'
+                [
+                    'moduleId' => 'crm',
+                    'entityTypeId' => 'DEAL',
+                    'value' => '1'
+                ]
             ]
         ]
     );
@@ -170,7 +178,7 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -200,7 +208,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

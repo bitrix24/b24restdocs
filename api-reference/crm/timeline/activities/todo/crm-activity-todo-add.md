@@ -2,7 +2,7 @@
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with edit access permission for the CRM entity to which the activity is being added.
+> Who can execute the method: a user with permission to edit the CRM entity to which the activity is being added.
 
 The method `crm.activity.todo.add` adds a universal activity to the timeline.
 
@@ -26,11 +26,14 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
 || **responsibleId**
 [`integer`](../../../../data-types.md) | Identifier of the user responsible for the activity, for example `1` ||
 || **parentActivityId**
-[`integer`](../../../../data-types.md) | Identifier of the activity in the timeline that can be linked to the created activity, for example `888` ||
+[`integer`](../../../../data-types.md) | Identifier of the activity in the timeline with which the created activity can be linked, for example `888` ||
 || **pingOffsets**
 [`array`](../../../../data-types.md) | An array containing integer values in minutes that allow you to set reminder times for the activity. For example, `[0, 15]` means that 2 reminders will be created, one 15 minutes before the deadline and one at the moment the deadline occurs. Default is an empty array, with no reminders ||
 || **colorId**
-[`integer`](../../../../data-types.md) | Identifier of the activity color in the timeline, for example `1`. There are 8 colors available, values from 1 to 7 and a default color if none is specified
+[`string`](../../../../data-types.md) | Identifier of the activity color in the timeline, for example `1`. There are 8 colors available, values from 1 to 7 and a default color if none is specified:
+
+![Available colors](./_images/colors.png)
+
 ||
 |#
 
@@ -46,7 +49,7 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ownerTypeId":2,"ownerId":1,"deadline":"'"$(date -Iseconds)"'","title":"Activity Title","description":"Activity Description","responsibleId":5,"pingOffsets":[0,15],"colorId":2}' \
+    -d '{"ownerTypeId":2,"ownerId":1,"deadline":"'"$(date -Iseconds)"'","title":"Activity Title","description":"Activity Description","responsibleId":5,"pingOffsets":[0,15],"colorId":"2"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.todo.add
     ```
 
@@ -56,7 +59,7 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ownerTypeId":2,"ownerId":1,"deadline":"'"$(date -Iseconds)"'","title":"Activity Title","description":"Activity Description","responsibleId":5,"pingOffsets":[0,15],"colorId":2,"auth":"**put_access_token_here**"}' \
+    -d '{"ownerTypeId":2,"ownerId":1,"deadline":"'"$(date -Iseconds)"'","title":"Activity Title","description":"Activity Description","responsibleId":5,"pingOffsets":[0,15],"colorId":"2","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.todo.add
     ```
 
@@ -75,7 +78,7 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
     			description: 'Activity Description',
     			responsibleId: 5,
     			pingOffsets: [0, 15],
-    			colorId: 2
+    			colorId: '2'
     		}
     	);
     	
@@ -111,7 +114,7 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
                     'description'   => 'Activity Description',
                     'responsibleId' => 5,
                     'pingOffsets'   => [0, 15],
-                    'colorId'       => 2
+                    'colorId'       => '2'
                 ]
             );
     
@@ -142,7 +145,7 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
             description: 'Activity Description',
             responsibleId: 5,
             pingOffsets: [0, 15],
-            colorId: 2
+            colorId: '2'
         }, 
         result => {
             if (result.error())
@@ -168,7 +171,7 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
             'description' => 'Activity Description',
             'responsibleId' => 5,
             'pingOffsets' => [0, 15],
-            'colorId' => 2
+            'colorId' => '2'
         ]
     );
 
@@ -228,7 +231,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are missing ||
 || `NOT_FOUND` | CRM entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||

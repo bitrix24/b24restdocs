@@ -1,98 +1,198 @@
-# Save Message as Quick Reply imopenlines.message.quick.save
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
+# Save Message as Quick Answer imopenlines.message.quick.save
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator or open line operator
 
-This method saves a message as a quick reply.
+The method `imopenlines.message.quick.save` saves a message from the open line chat to the list of quick answers.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
-`Type` | **Example** | **Description** ||
-|| **CHAT_ID***  
-[`unknown`](../../../data-types.md) | `2014` | Identifier of the chat ||
-|| **MESSAGE_ID***  
-[`unknown`](../../../data-types.md) | `18715` | Identifier of the message ||
+`Type` | **Description** ||
+|| **CHAT_ID***
+[`integer`](../../../data-types.md) | Identifier of the open line chat from which the message needs to be saved.
+
+The chat identifier can be obtained using the [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) or [imopenlines.session.open](../sessions/imopenlines-session-open.md) methods. ||
+|| **MESSAGE_ID***
+[`integer`](../../../data-types.md) | Identifier of the message to be added to quick answers.
+
+The message identifier can be obtained using the [imopenlines.session.history.get](../sessions/imopenlines-session-history-get.md) method. ||
 |#
 
-## Examples
+## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
-    // example for cURL (Webhook)
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CHAT_ID":1331,"MESSAGE_ID":83507}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.message.quick.save
+    ```
 
 - cURL (OAuth)
 
-    // example for cURL (OAuth)
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CHAT_ID":1331,"MESSAGE_ID":83507,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imopenlines.message.quick.save
+    ```
 
 - JS
 
     ```js
-    BX.callMethod(
+    try {
+      const response = await $b24.callMethod(
         'imopenlines.message.quick.save',
         {
-            CHAT_ID: 2014,
-            MESSAGE_ID: 18715
-        },
-        function(result)
+          CHAT_ID: 1331,
+          MESSAGE_ID: 83507,
+        }
+      );
+
+      const { result } = response.getData();
+      console.log('Saved to quick answers:', result);
+    } catch (error) {
+      console.error('Error saving quick answer:', error);
+    }
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'imopenlines.message.quick.save',
+                [
+                    'CHAT_ID'    => 1331,
+                    'MESSAGE_ID' => 83507,
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Saved to quick answers: ' . var_export($result->data(), true);
+        }
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error saving quick answer: ' . $exception->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'imopenlines.message.quick.save',
         {
-            if(result.error())
-            {
+            CHAT_ID: 1331,
+            MESSAGE_ID: 83507,
+        },
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
     );
     ```
 
-- PHP
+- PHP CRest
 
-    // example for PHP
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imopenlines.message.quick.save',
+        [
+            'CHAT_ID'    => 1331,
+            'MESSAGE_ID' => 83507,
+        ]
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Saved to quick answers: ' . var_export($result['result'], true);
+    }
+    ```
 
 {% endlist %}
 
-## Success Response
+## Response Handling
+
+HTTP Code: **200**
 
 ```json
-true
+{
+    "result": true,
+    "time": {
+        "start": 1728626400.456,
+        "finish": 1728626400.539,
+        "duration": 0.083,
+        "processing": 0.031,
+        "date_start": "2024-10-11T10:00:00+02:00",
+        "date_finish": "2024-10-11T10:00:00+02:00",
+        "operating": 0
+    }
+}
 ```
 
-## Error Response
+## Returned Data
 
-### Possible Error Codes
+#|
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Contains `true` when successfully saved to quick answers. ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time. ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "CANT_SAVE_QUICK_ANSWER",
+    "error_description": "Error saving quick answer"
+}
+```
+
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+
+### Possible Errors
 
 #|
 || **Code** | **Description** ||
-|| **ACCESS_DENIED** | The current user does not have access to the specified method ||
-|| **CANT_SAVE_QUICK_ANSWER** | Error saving quick reply ||
+|| `CHAT_ID` | Invalid chat identifier provided. ||
+|| `CHAT_TYPE` | The specified chat is not an open line. ||
+|| `CANT_SAVE_QUICK_ANSWER` | Error saving quick answer. ||
+|| `ACCESS_DENIED` | Insufficient rights to open the specified chat. ||
 |#
+
+{% include [System Errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imopenlines-crm-message-add.md)

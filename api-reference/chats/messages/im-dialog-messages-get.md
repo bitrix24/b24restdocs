@@ -24,7 +24,7 @@ Some data may be missing — we will complete it shortly.
 
 The method `im.dialog.messages.get` retrieves the list of recent messages in a chat.
 
-To get messages from an open line chat, use the method [imopenlines.session.history.get](../../imopenlines/openlines/sessions/imopenlines-session-history-get.md). This method allows you to retrieve messages without being a participant in the chat.
+{% include [Notes on parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Example** | **Description** | **Revision** ||
@@ -42,7 +42,11 @@ or
 [`unknown`](../../data-types.md) | `20` | Limit on the number of messages retrieved in the dialog | 19 ||
 |#
 
-{% include [Parameter notes](../../../_includes/required.md) %}
+{% note info "" %}
+
+You can retrieve messages without being a participant in the chat only for open line chats. For this, use the method [imopenlines.session.history.get](../../imopenlines/openlines/sessions/imopenlines-session-history-get.md).
+
+{% endnote %}
 
 - If the keys `LAST_ID` and `FIRST_ID` are not provided, the last 20 messages of the chat will be loaded.
 - To load the previous 20 messages, you need to pass `LAST_ID` with the identifier of the minimum message ID obtained from the last selection.
@@ -152,7 +156,7 @@ Due to the potentially large volume of data, this method does not support standa
 
 {% endlist %}
 
-{% include [Examples notes](../../../_includes/examples.md) %}
+{% include [Notes on examples](../../../_includes/examples.md) %}
 
 ## Successful response
 
@@ -208,7 +212,7 @@ Due to the potentially large volume of data, this method does not support standa
             "chat_id": 29,
             "author_id": 1,
             "date": "2018-01-29T16:43:12+02:00",
-            "text": "It works yes :) :)",
+            "text": "It's working yes :) :)",
             "params": {
              "IS_EDITED": "Y"
             }
@@ -276,8 +280,8 @@ Due to the potentially large volume of data, this method does not support standa
             ],
             "absent": false,
             "phones": {
-             "work_phone": "1 (495) 222-33-55",
-             "personal_mobile": "1 (495) 123-55-65",
+             "work_phone": "+1 (495) 222-33-55",
+             "personal_mobile": "+1 (495) 123-55-65",
              "personal_phone": ""
             }
          }
@@ -328,13 +332,13 @@ Due to the potentially large volume of data, this method does not support standa
     - `last_name` – user's last name
     - `work_position` – position
     - `color` – user's color in hex format
-    - `avatar` – link to avatar (if empty, it means the avatar is not set)
+    - `avatar` – link to the avatar (if empty, the avatar is not set)
     - `gender` – user's gender
     - `birthday` – user's birthday in DD-MM format, if empty – not set
-    - `extranet` – external extranet user flag (`true/false`)
-    - `network` – Bitrix24.Network user flag (`true/false`)
-    - `bot` – bot flag (`true/false`)
-    - `connector` – open lines user flag (`true/false`)
+    - `extranet` – indicator of external extranet user (`true/false`)
+    - `network` – indicator of Bitrix24.Network user (`true/false`)
+    - `bot` – indicator of bot (`true/false`)
+    - `connector` – indicator of open lines user (`true/false`)
     - `external_auth_id` – external authorization code
     - `status` – selected user status
     - `idle` – date when the user stepped away from the computer, in ATOM format (if not set, `false`)
@@ -356,8 +360,8 @@ Due to the potentially large volume of data, this method does not support standa
     - `status` – current status: `done` – uploaded, `upload` – uploading
     - `progress` – upload status in percentage: `100` – uploaded, `-1` – current status not available
     - `authorId` – identifier of the user who uploaded the object
-    - `authorName` – full name of the user who uploaded the object
-    - `urlPreview` – link to preview the image (available for pictures)
+    - `authorName` – user's full name who uploaded the object
+    - `urlPreview` – link to the image preview (available for images)
     - `urlShow` – link to view the object in "view" mode
     - `urlDownload` – link to start the download
 
@@ -368,7 +372,7 @@ Due to the potentially large volume of data, this method does not support standa
 - `ATTACH` – object containing rich formatting
 - `KEYBOARD` – object containing keyboard description
 - `IS_DELETED` – flag indicating that the message is deleted
-- `IS_EDITED` – flag indicating that the message has been edited
+- `IS_EDITED` – flag indicating that the message is edited
 - `FILE_ID` – array of file identifiers
 - `LIKE` – array of user identifiers who voted for the message
 

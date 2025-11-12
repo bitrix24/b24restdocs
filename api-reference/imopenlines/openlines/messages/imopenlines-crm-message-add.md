@@ -1,91 +1,88 @@
 # Send a message to the open channel imopenlines.crm.message.add
 
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- success response is missing
-- error response is missing
-- from Sergei's file: on behalf of the employee, specify features and recommended sequence of actions
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `imopenlines.crm.message.add` sends a message on behalf of the user in the chat of the CRM entity.
+The method `imopenlines.crm.message.add` sends a message on behalf of an employee or bot in a chat linked to a CRM entity.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `Type` | **Description** ||
-|| **CRM_ENTITY_TYPE*** 
-[`unknown`](../../../data-types.md) | Type of CRM object:
+|| **CRM_ENTITY_TYPE***
+[`string`](../../../data-types.md) | Type of the CRM object:
 - lead — lead
 - deal — deal
 - company — company
 - contact — contact
  ||
-|| **CRM_ENTITY*** 
-[`unknown`](../../../data-types.md) | Identifier of the CRM entity ||
-|| **USER_ID*** 
-[`unknown`](../../../data-types.md) | Identifier of the user or bot we want to add to the chat ||
-|| **CHAT_ID*** 
-[`unknown`](../../../data-types.md) | Identifier of the chat ||
-|| **MESSAGE*** 
-[`unknown`](../../../data-types.md) | Message text ||
+|| **CRM_ENTITY***
+[`integer`](../../../data-types.md) | Identifier of the CRM entity linked to the chat.
+
+A list of entities of a specific CRM object type can be obtained using the method [crm.item.list](../../../crm/universal/crm-item-list.md) ||
+|| **USER_ID***
+[`integer`](../../../data-types.md) | Identifier of the message sender — user or bot, who must be a participant in the chat.
+
+The user ID can be obtained using the method [user.get](../../../user/user-get.md) or [user.search](../../../user/user-search.md).
+
+A list of chat bots can be obtained using the method [imbot.bot.list](../../../chat-bots/imbot-bot-list.md) ||
+|| **CHAT_ID***
+[`integer`](../../../data-types.md) | Identifier of the open channel chat linked to the CRM entity. 
+
+The chat ID can be obtained using the method [imopenlines.crm.chat.get](../chats/imopenlines-crm-chat-get.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) ||
+|| **MESSAGE***
+[`string`](../../../data-types.md) | The text of the message that will be displayed in the chat ||
 |#
 
-## Examples
+## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
-    // example for cURL (Webhook)
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CRM_ENTITY_TYPE":"lead","CRM_ENTITY":1195,"USER_ID":27,"CHAT_ID":1341,"MESSAGE":"Message text"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imopenlines.crm.message.add
+    ```
 
 - cURL (OAuth)
 
-    // example for cURL (OAuth)
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"CRM_ENTITY_TYPE":"lead","CRM_ENTITY":1195,"USER_ID":27,"CHAT_ID":1341,"MESSAGE":"Message text","auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/imopenlines.crm.message.add
+    ```
 
 - JS
 
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'imopenlines.crm.message.add',
-    		{
-    			CRM_ENTITY_TYPE: 'deal',
-    			CRM_ENTITY: 288,
-    			USER_ID: 12,
-    			CHAT_ID: 8773,
-    			MESSAGE: 'Message text'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
-    }
-    catch( error )
-    {
-    	console.error(error.ex);
+    try {
+      const response = await $b24.callMethod(
+        'imopenlines.crm.message.add',
+        {
+          CRM_ENTITY_TYPE: 'lead',
+          CRM_ENTITY: 1195,
+          USER_ID: 27,
+          CHAT_ID: 1341,
+          MESSAGE: 'Message text',
+        }
+      );
+
+      const { result } = response.getData();
+      console.log('Created message:', result);
+    } catch (error) {
+      console.error('Error sending message:', error);
     }
     ```
 
@@ -98,23 +95,26 @@ The method `imopenlines.crm.message.add` sends a message on behalf of the user i
             ->call(
                 'imopenlines.crm.message.add',
                 [
-                    'CRM_ENTITY_TYPE' => 'deal',
-                    'CRM_ENTITY'      => 288,
-                    'USER_ID'         => 12,
-                    'CHAT_ID'         => 8773,
-                    'MESSAGE'         => 'Message text',
+                    'CRM_ENTITY_TYPE' => 'lead',
+                    'CRM_ENTITY' => 1195,
+                    'USER_ID' => 27,
+                    'CHAT_ID' => 1341,
+                    'MESSAGE' => 'Message text',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding CRM message: ' . $e->getMessage();
+
+        if ($result->error()) {
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Created message ID: ' . $result->data();
+        }
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error sending message: ' . $exception->getMessage();
     }
     ```
 
@@ -124,18 +124,16 @@ The method `imopenlines.crm.message.add` sends a message on behalf of the user i
     BX24.callMethod(
         'imopenlines.crm.message.add',
         {
-            CRM_ENTITY_TYPE: 'deal',
-            CRM_ENTITY: 288,
-            USER_ID: 12,
-            CHAT_ID: 8773,
-            MESSAGE: 'Message text'
-        }, function(result) {
-            if(result.error())
-            {
+            CRM_ENTITY_TYPE: 'lead',
+            CRM_ENTITY: 1195,
+            USER_ID: 27,
+            CHAT_ID: 1341,
+            MESSAGE: 'Message text',
+        },
+        function(result) {
+            if (result.error()) {
                 console.error(result.error().ex);
-            }
-            else
-            {
+            } else {
                 console.log(result.data());
             }
         }
@@ -144,26 +142,88 @@ The method `imopenlines.crm.message.add` sends a message on behalf of the user i
 
 - PHP CRest
 
-    // example for php
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'imopenlines.crm.message.add',
+        [
+            'CRM_ENTITY_TYPE' => 'lead',
+            'CRM_ENTITY' => 1195,
+            'USER_ID' => 27,
+            'CHAT_ID' => 1341,
+            'MESSAGE' => 'Message text',
+        ]
+    );
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'Created message ID: ' . $result['result'];
+    }
+    ```
 
 {% endlist %}
 
-## Success Response
+## Response Handling
 
-Returns the identifier of the sent message.
+HTTP Code: **200**
 
 ```json
-19880117
+{
+    "result": 19880117,
+    "time": {
+        "start": 1728626400.123,
+        "finish": 1728626400.234,
+        "duration": 0.111,
+        "processing": 0.045,
+        "date_start": "2024-10-11T10:00:00+02:00",
+        "date_finish": "2024-10-11T10:00:00+02:00",
+        "operating_reset_at":1762349466,
+        "operating": 0
+    }
+}
 ```
 
-## Error Response
-
-### Possible Error Codes
+## Returned Result
 
 #|
-|| **Code** | **Description** ||
-|| **ACCESS_DENIED** | The user does not have access ||
-|| **ERROR_ARGUMENT** | One of the arguments is missing or incorrect ||
-|| **CHAT_NOT_IN_CRM** | The chat does not belong to the CRM entity ||
-|| **MESSAGE_ADD_ERROR** | Error sending the message ||
+|| **Name**
+`Type` | **Description** ||
+|| **result**
+[`integer`](../../../data-types.md) | Identifier of the created message in the chat ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the execution time of the request  ||
 |#
+
+## Error Handling
+
+HTTP Code: **400**
+
+```json
+{
+    "error": "CHAT_NOT_IN_CRM",
+    "error_description": "Chat does not belong to the CRM entity being checked"
+}
+```
+
+{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+
+### Possible Errors
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `CHAT_NOT_IN_CRM`| Chat does not belong to the CRM entity being checked | Chat is not linked to the CRM ||
+|| `CANCELED`| You cannot send messages to the specified chat | User does not have access to the chat ||
+|| `ACCESS_DENIED`| Access denied! User doesn't have access to this entity | User does not have access to the CRM object ||
+|| `ERROR_ARGUMENT` | Argument `CRM_ENTITY_TYPE` is null or empty | Incorrect required parameter `CRM_ENTITY_TYPE` ||
+|| `ERROR_ARGUMENT` | Argument `CRM_ENTITY` is null or empty | Incorrect required parameter `CRM_ENTITY` ||
+|| `ERROR_ARGUMENT` | Argument `USER_ID` is null or empty | Incorrect required parameter `USER_ID` ||
+|| `ERROR_ARGUMENT` | Argument `MESSAGE` is null or empty | Incorrect required parameter `MESSAGE` ||
+|#
+
+{% include [System Errors](../../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./imopenlines-message-quick-save.md)

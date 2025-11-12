@@ -14,7 +14,7 @@ MCP allows:
 
 - reducing the number of errors and code corrections.
 
-## How to Connect the MCP Server
+## How to Connect to the MCP Server
 
 Specify the server address <https://mcp-dev.bitrix24.com/mcp> in the development environment settings.
 
@@ -22,20 +22,24 @@ The server is accessible without authorization.
 
 ### Cursor
 
-1. Open *Settings > Tools > New MCP server*.
+1. Open *File > Preferences > Cursor Settings > Tools & MCP > New MCP server*. Cursor will open the system file `mcp.json`.
 
-2. Add the configuration:
+2. Add the configuration by creating a new array element `mcpServers` in the `mcp.json` file:
 
   ```json
-  "b24-dev-mcp": {
-    "url": "https://mcp-dev.bitrix24.com/mcp",
-    "timeout": 30000
+  {
+  "mcpServers": {
+      "b24-dev-mcp": {
+      "url": "https://mcp-dev.bitrix24.com/mcp",
+      "timeout": 30000
+      }
+  }
   }
   ```
 
-3. Save the settings. A green indicator will appear next to the server along with a list of available tools.
+3. Save the file. On the *File > Preferences > Cursor Settings > Tools & MCP* page, a green indicator will appear next to the server along with a list of available tools.
 
-4. When composing a request, explicitly instruct the assistant: use `b24-dev-mcp`.
+4. When composing a request, add the `mcp.json` file to the context.
 
 Alternative way to add MCP:
 
@@ -95,19 +99,21 @@ The MCP server automatically provides the assistant with up-to-date Bitrix24 RES
 
 ### Cursor
 
-**Feature**: requires explicit instruction to use the MCP server.
+**Feature**: It is necessary to connect the MCP configuration in the chat context.
 
-1. Send a request in the chat with the AI assistant — "Write a `curl` request to create a lead in Bitrix24. Use `b24-dev-mcp`."
+1. Add the `mcp.json` file to the chat context.
 
-2. The assistant will refer to the MCP server.
+2. Send a request in the chat with the AI assistant — "Write a `curl` request to create a lead in Bitrix24."
 
-3. MCP will return information about the method and its parameters from the documentation.
+3. The assistant will refer to the MCP server.
 
-4. The assistant will generate code based on the MCP response.
+4. MCP will return information about the method and its parameters from the documentation.
+
+5. The assistant will generate code based on the MCP response.
 
 ### GitHub Copilot Chat, VS Code
 
-**Feature**: it is necessary to select MCP as the agent to execute the request.
+**Feature**: It is necessary to select MCP as the agent to execute the request.
 
 1. Select the MCP agent and send a request in the chat with the AI assistant — "Create a lead in Bitrix24 with contact information and source 'website'. Show an example in JavaScript."
 
@@ -119,9 +125,9 @@ The MCP server automatically provides the assistant with up-to-date Bitrix24 RES
 
 ### Claude Desktop, Anthropic
 
-**Feature**: automatic determination of the need to use MCP.
+**Feature**: Automatic determination of the need to use MCP.
 
-1. Send a request in the chat with the AI assistant — "Write a request to create a new lead in Bitrix24. The lead will include the following data: name, company, and phone."
+1. Send a request in the chat with the AI assistant — "Write a request to create a new lead in Bitrix24. The lead will include the data: name, company, and phone."
 
 2. Claude will determine that data from the connected MCP is needed and will send the request.
 
@@ -131,9 +137,9 @@ The MCP server automatically provides the assistant with up-to-date Bitrix24 RES
 
 ### Gemini Code Assist CLI
 
-**Feature**: automatic determination of the need to use MCP.
+**Feature**: Automatic determination of the need to use MCP.
 
-1. Execute the command `gemini chat` and send a request — "Build a `curl` request to create a lead with fields name, phone, and source 'website'."
+1. Execute the command `gemini chat` and send a request — "Gather a `curl` request to create a lead with fields name, phone, and source 'site'."
 
 2. Gemini will determine that data from the connected MCP is needed and will send the request.
 
