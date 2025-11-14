@@ -276,7 +276,27 @@ Default `No` ||
     				SOURCE_ID: "WEB",
     				SOURCE_DESCRIPTION: "*Additional information about the source*",
     				POST: "Administrator",
-    				COMMENTS: comment,
+    				COMMENTS: `
+                        Example comment inside the contact
+
+                        [B]Bold text[/B]
+                        [I]Italic[/I]
+                        [U]Underlined[/U]
+                        [S]Strikethrough[/S]
+                        [B][I][U][S]Mix[/S][/U][/I][/B]
+
+                        [LIST]
+                        [*]List item #1
+                        [*]List item #2
+                        [*]List item #3
+                        [/LIST]
+
+                        [LIST=1]
+                        [*]Numbered list item #1
+                        [*]Numbered list item #2
+                        [*]Numbered list item #3
+                        [/LIST]
+                    `,
     				OPENED: "Y",
     				EXPORT: "N",
     				ASSIGNED_BY_ID: 6,
@@ -329,55 +349,97 @@ Default `No` ||
 
     ```php        
     try {
-        $fields = [
-            'NAME' => 'John',
-            'LAST_NAME' => 'Doe',
-            'BIRTHDATE' => (new DateTime('1990-01-01'))->format(DateTime::ATOM),
-            'PHONE' => '+1234567890',
-            'EMAIL' => 'john.doe@example.com',
-            'ADDRESS' => '123 Main St',
-            'ADDRESS_CITY' => 'Anytown',
-            'ADDRESS_COUNTRY' => 'USA',
-            'ASSIGNED_BY_ID' => '1',
-            'COMPANY_ID' => '2',
-        ];
-        $params = [
-            'REGISTER_SONET_EVENT' => 'N',
-        ];
-        $result = $serviceBuilder->getCRMScope()
-            ->contact()
-            ->add($fields, $params);
-        print($result->getId());
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.contact.add',
+                [
+                    'fields' => [
+                        'HONORIFIC' => 'HNR_RU_1',
+                        'NAME' => 'John',
+                        'SECOND_NAME' => 'Ivanovich',
+                        'LAST_NAME' => 'Ivanov',
+                        'PHOTO' => [
+                            'fileData' => document.getElementById('photo'),
+                        ],
+                        'BIRTHDATE' => '11.11.2001',
+                        'TYPE_ID' => 'PARTNER',
+                        'SOURCE_ID' => 'WEB',
+                        'SOURCE_DESCRIPTION' => '*Additional information about the source*',
+                        'POST' => 'Administrator',
+                        'COMMENTS' => `
+                            Example comment inside the contact
+
+                            [B]Bold text[/B]
+                            [I]Italic[/I]
+                            [U]Underlined[/U]
+                            [S]Strikethrough[/S]
+                            [B][I][U][S]Mix[/S][/U][/I][/B]
+
+                            [LIST]
+                            [*]List item #1
+                            [*]List item #2
+                            [*]List item #3
+                            [/LIST]
+
+                            [LIST=1]
+                            [*]Numbered list item #1
+                            [*]Numbered list item #2
+                            [*]Numbered list item #3
+                            [/LIST]
+                        `,
+                        'OPENED' => 'Y',
+                        'EXPORT' => 'N',
+                        'ASSIGNED_BY_ID' => 6,
+                        'COMPANY_ID' => 12,
+                        'COMPANY_IDS' => [12, 13, 15],
+                        'UTM_SOURCE' => 'google',
+                        'UTM_MEDIUM' => 'CPC',
+                        'UTM_CAMPAIGN' => 'summer_sale',
+                        'UTM_CONTENT' => 'header_banner',
+                        'UTM_TERM' => 'discount',
+                        'PHONE' => [
+                            [
+                                'VALUE' => '+12333333555',
+                                'VALUE_TYPE' => 'WORK',
+                            ],
+                            [
+                                'VALUE' => '+15599888666',
+                                'VALUE_TYPE' => 'HOME',
+                            ]
+                        ],
+                        'EMAIL' => [
+                            [
+                                'VALUE' => 'ivanov@example.mailing',
+                                'VALUE_TYPE' => 'MAILING',
+                            ],
+                            [
+                                'VALUE' => 'ivanov@example.work',
+                                'VALUE_TYPE' => 'WORK',
+                            ]
+                        ],
+                        'UF_CRM_1720697698689' => 'Example value of a custom field with type "String"',
+                        'PARENT_ID_1224' => 12,
+                    ]
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
     } catch (Throwable $e) {
-        print('Error: ' . $e->getMessage());
+        error_log($e->getMessage());
+        echo 'Error adding contact: ' . $e->getMessage();
     }
     ```
 
 - BX24.js
 
     ```js
-    const comment = `
-    Example comment inside the contact
-
-    [B]Bold text[/B]
-    [I]Italic[/I]
-    [U]Underlined[/U]
-    [S]Strikethrough[/S]
-    [B][I][U][S]Mix[/S][/U][/I][/B]
-
-    [LIST]
-    [*]List item #1
-    [*]List item #2
-    [*]List item #3
-    [/LIST]
-
-    [LIST=1]
-    [*]Numbered list item #1
-    [*]Numbered list item #2
-    [*]Numbered list item #3
-    [/LIST]
-    `;
-
     BX24.callMethod(
         'crm.contact.add',
         {
@@ -394,7 +456,27 @@ Default `No` ||
                 SOURCE_ID: "WEB",
                 SOURCE_DESCRIPTION: "*Additional information about the source*",
                 POST: "Administrator",
-                COMMENTS: comment,
+                COMMENTS: `
+                    Example comment inside the contact
+
+                    [B]Bold text[/B]
+                    [I]Italic[/I]
+                    [U]Underlined[/U]
+                    [S]Strikethrough[/S]
+                    [B][I][U][S]Mix[/S][/U][/I][/B]
+
+                    [LIST]
+                    [*]List item #1
+                    [*]List item #2
+                    [*]List item #3
+                    [/LIST]
+
+                    [LIST=1]
+                    [*]Numbered list item #1
+                    [*]Numbered list item #2
+                    [*]Numbered list item #3
+                    [/LIST]
+                `,
                 OPENED: "Y",
                 EXPORT: "N",
                 ASSIGNED_BY_ID: 6,
@@ -459,7 +541,27 @@ Default `No` ||
                 'SOURCE_ID' => 'WEB',
                 'SOURCE_DESCRIPTION' => '*Additional information about the source*',
                 'POST' => 'Administrator',
-                'COMMENTS' => $comment,
+                'COMMENTS' => `
+                    Example comment inside the contact
+
+                    [B]Bold text[/B]
+                    [I]Italic[/I]
+                    [U]Underlined[/U]
+                    [S]Strikethrough[/S]
+                    [B][I][U][S]Mix[/S][/U][/I][/B]
+
+                    [LIST]
+                    [*]List item #1
+                    [*]List item #2
+                    [*]List item #3
+                    [/LIST]
+
+                    [LIST=1]
+                    [*]Numbered list item #1
+                    [*]Numbered list item #2
+                    [*]Numbered list item #3
+                    [/LIST]
+                `,
                 'OPENED' => 'Y',
                 'EXPORT' => 'N',
                 'ASSIGNED_BY_ID' => 6,
