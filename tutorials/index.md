@@ -6,7 +6,7 @@ Tutorials are a practical guide for developers on the Bitrix24 REST API. They he
 
 - As educational material for making your first requests. Suitable for developers who are starting to work with the Bitrix24 REST API. Tutorials will help you understand how to form requests and process responses. For example, the tutorial [How to Attach a Task to a SPA](./tasks/how-to-connect-task-to-spa.md).
 
-- As templates for real scenarios. Tutorials can be used as a basis for your own solutions: adapt the examples to your needs, add error handling logic, logging. For example, the tutorial [How to Implement a Simple Cash Register Using REST API](./sale/cashbox-add-example.md).
+- As templates for real scenarios. Tutorials can be used as a basis for your own solutions: adapt the examples to your needs, add error handling logic, logging. For example, the tutorial [How to Create an Open Channel Connector for Chat on the Site](./openlines/example-connector.md).
 
 - For quickly solving specific tasks. Tutorials will help you find a ready-made code example that you can use immediately. For example, the tutorial [How to Set Up Rounding for a Custom Number Field](./crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md).
 

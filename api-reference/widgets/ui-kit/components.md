@@ -4,7 +4,7 @@ The Bitrix24 UI Kit is a library of **design-consistent components** that can be
 
 ## Categories of Components
 
-The UI Kit components are grouped into meaningful categories:
+UI Kit components are grouped into meaningful categories:
 
 - **Actions** — buttons, dropdowns, modals, sliders
 - **Notifications** — alerts, toasts, tooltips, progress bars
@@ -12,7 +12,7 @@ The UI Kit components are grouped into meaningful categories:
 - **Data Input** — inputs, selectors, checkboxes, radio buttons
 - **Navigation** — menus, tabs, links
 
-You can find the complete list of available components in the [detailed documentation](https://bitrix24.github.io/b24ui/components/app.html).
+For a complete list of available components, see the [detailed documentation](https://bitrix24.github.io/b24ui/docs/components/).
 
 ### Component Approach
 
@@ -27,10 +27,10 @@ You can assemble interfaces from ready-made parts without the need to manually d
 
 ## Default Behavior
 
-The UI Kit implements the behavior that Bitrix24 users are accustomed to:
+The UI Kit implements behavior that Bitrix24 users are accustomed to:
 
 - margins, alignment, grids — as in the main platform,
-- logic for opening/closing modals, dropdowns, and pop-ups — identical to the platform's,
-- keyboard interaction and focus — according to accessibility standards.
+- logic for opening/closing modals, dropdowns, and popups — identical to platform behavior,
+- keyboard interaction and focus management — according to accessibility standards.
 
 This eliminates the need to "guess" how a component should behave — everything is already aligned with Bitrix24's UX patterns.

@@ -16,7 +16,6 @@ When a local application is deleted from Bitrix24, the following are automatical
 - Application [settings](../api-reference/common/settings/index.md) created by the application;
 - Open line [connectors](../api-reference/imopenlines/imconnector/index.md) registered by the application;
 - Payment [systems](../api-reference/pay-system/index.md) registered by the application;
-- Cash [registers](../api-reference/sale/cashbox/index.md) registered by the application.
 
 It is not possible to cancel the deletion of a local application. Adding a local application, even with the same URLs, will effectively create a new application with a new pair of client_id/client_secret for [OAuth authorization](./oauth/index.md).
 
@@ -34,7 +33,6 @@ When an application is deleted from Bitrix24, the following are automatically re
 - Handlers registered by the application [widgets](../api-reference/widgets/index.md), including custom field types;
 - Open line [connectors](../api-reference/imopenlines/imconnector/index.md) registered by the application;
 - Payment [systems](../api-reference/pay-system/index.md) registered by the application;
-- Cash [registers](../api-reference/sale/cashbox/index.md) registered by the application.
 
 Before deleting the application, Bitrix24 requests confirmation and offers the option "Delete application settings and data." If this option is not enabled, despite the deletion of the application, the following will remain in Bitrix24:
 

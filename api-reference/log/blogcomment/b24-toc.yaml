@@ -1,0 +1,11 @@
+title: Comments
+href: index.md
+items:
+  - name: Overview of methods
+    href: index.md
+  - name: Add comment
+    href: log-blogcomment-add.md
+  - name: Get user comments
+    href: log-blogcomment-user-get.md
+  - name: Delete comment
+    href: log-blogcomment-delete.md

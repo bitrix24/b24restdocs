@@ -1,47 +1,43 @@
 title: Deals
 href: index.md
 items:
-  - name: Overview of Methods
+  - name: Overview of methods
     href: index.md
-  - name: Create a New Deal
+  - name: Create a new deal
     href: crm-deal-add.md
-  - name: Update a Deal
+  - name: Update a deal
     href: crm-deal-update.md
-  - name: Get a Deal by Id
+  - name: Get a deal by Id
     href: crm-deal-get.md
-  - name: Get a List of Deals
+  - name: Get a list of deals
     href: crm-deal-list.md
-  - name: Delete a Deal
+  - name: Delete a deal
     href: crm-deal-delete.md
-  - name: Get Deal Fields
+  - name: Get deal fields
     href: crm-deal-fields.md
-  - name: Set Products in a Deal
+  - name: Set products in a deal
     href: crm-deal-productrows-set.md
-  - name: Get Deal Products
+  - name: Get deal products
     href: crm-deal-productrows-get.md
   - name: Events
     include:
       path: events/b24-toc.yaml
       mode: link
-  - name: Recurring Deals
+  - name: Recurring deals
     include:
       path: recurring-deals/b24-toc.yaml
       mode: link
-  - name: Custom Fields
+  - name: Custom fields
     include:
       path: user-defined-fields/b24-toc.yaml
       mode: link
-  - name: Link a Deal with Contacts
+  - name: Link a deal with contacts
     include:
       path: contacts/b24-toc.yaml
       mode: link
-  - name: Deal Movement History
-    href: deal-stage-history.md
-  - name: Widgets
-    href: widgets.md
-  - name: Sales Funnels in Deals
-    href: deal-categories.md
-  - name: Manage Deal Cards
+  - name: Manage deal cards
     include:
       path: custom-form/b24-toc.yaml
       mode: link
+  - name: Widgets
+    href: widgets.md

@@ -4,7 +4,7 @@
 >
 > Who can execute the method: a user with edit access permission for the CRM entity to which the activity is linked
 
-The method `crm.activity.todo.updateColor` updates the color of the universal activity.
+The method `crm.activity.todo.updateColor` updates the color of the universal deal.
 
 ## Method Parameters
 
@@ -14,13 +14,15 @@ The method `crm.activity.todo.updateColor` updates the color of the universal ac
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the activity being updated, for example `999` ||
+[`integer`](../../../../data-types.md) | Identifier of the deal being updated, for example `999` ||
 || **ownerTypeId***
-[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is linked, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal is linked, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the activity is linked, for example, `1` ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity to which the deal is linked, for example, `1` ||
 || **colorId***
-[`integer`](../../../../data-types.md) | Identifier of the activity color in the timeline, for example `1`. There are 8 colors available, values from 1 to 7 and the default color if none is specified
+[`string`](../../../../data-types.md) | Identifier of the deal's color in the timeline, for example `1`. There are 8 available colors, values from 1 to 7 and the default color if none is specified:
+
+![Available colors](./_images/colors.png)
 
 ||
 |#
@@ -37,7 +39,7 @@ The method `crm.activity.todo.updateColor` updates the color of the universal ac
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"ownerTypeId":2,"ownerId":1,"colorId":3}' \
+    -d '{"id":999,"ownerTypeId":2,"ownerId":1,"colorId":"3"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.todo.updateColor
     ```
 
@@ -47,7 +49,7 @@ The method `crm.activity.todo.updateColor` updates the color of the universal ac
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"ownerTypeId":2,"ownerId":1,"colorId":3,"auth":"**put_access_token_here**"}' \
+    -d '{"id":999,"ownerTypeId":2,"ownerId":1,"colorId":"3","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.todo.updateColor
     ```
 
@@ -62,7 +64,7 @@ The method `crm.activity.todo.updateColor` updates the color of the universal ac
     			id: 999,
     			ownerTypeId: 2,
     			ownerId: 1,
-    			colorId: 3
+    			colorId: '3'
     		}
     	);
     	
@@ -94,7 +96,7 @@ The method `crm.activity.todo.updateColor` updates the color of the universal ac
                     'id'          => 999,
                     'ownerTypeId' => 2,
                     'ownerId'     => 1,
-                    'colorId'     => 3,
+                    'colorId'     => '3',
                 ]
             );
     
@@ -123,7 +125,7 @@ The method `crm.activity.todo.updateColor` updates the color of the universal ac
             id: 999,
             ownerTypeId: 2,
             ownerId: 1,
-            colorId: 3
+            colorId: '3'
         }, 
         result => {
             if (result.error())
@@ -145,7 +147,7 @@ The method `crm.activity.todo.updateColor` updates the color of the universal ac
             'id' => 999,
             'ownerTypeId' => 2,
             'ownerId' => 1,
-            'colorId' => 3
+            'colorId' => '3'
         ]
     );
 
@@ -183,9 +185,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | On success, returns an object containing the identifier of the updated activity `id`, on error = `null` ||
+[`object`](../../../../data-types.md) | On success, returns an object containing the identifier of the updated deal `id`, on error = `null` ||
 || **time**
-[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -205,11 +207,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `100` | Required fields not provided ||
+|| `100` | Required fields are missing ||
 || `NOT_FOUND` | CRM entity not found ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `OWNER_NOT_FOUND` | Owner of the entity not found ||
-|| `CAN_NOT_UPDATE_COLOR_COMPLETED_TODO` | Cannot change color in a completed activity ||
+|| `CAN_NOT_UPDATE_COLOR_COMPLETED_TODO` | Cannot change color in a closed deal ||
 || `CAN_NOT_UPDATE_WRONG_COLOR_TODO` | Invalid color value ||
 |#
 

@@ -46,8 +46,6 @@ Identifiers of delivery service handlers can be obtained using the method [sale.
 || [`sale_delivery_extra_service`](#sale_delivery_extra_service) | Object of the additional delivery service. Delivery service identifiers can be obtained using the method [sale.delivery.extra.service.get](./delivery/extra-service/sale-delivery-extra-service-get.md) ||
 || [`sale_paysystem_handler`](#sale_paysystem_handler) | Object of the payment system handler. Payment system handler identifiers can be obtained using the method [sale.paysystem.handler.list](../pay-system/sale-pay-system-handler-list.md) ||
 || [`sale_paysystem`](#sale_paysystem) | Object of the payment system. Payment system identifiers can be obtained using the method [sale.paysystem.list](../pay-system/sale-pay-system-list.md) ||
-|| [`sale_cashbox_handler`](#sale_cashbox_handler) | Object of the cash register handler. Cash register handler identifiers can be obtained using the method [sale.cashbox.handler.list](./cashbox/sale-cashbox-handler-list.md) ||
-|| [`sale_cashbox`](#sale_cashbox) | Object of the cash register. Cash register identifiers can be obtained using the method [sale.cashbox.list](./cashbox/sale-cashbox-list.md) ||
 |#
 
 ## Object Structure
@@ -1390,61 +1388,6 @@ Not used for REST handlers ||
 [`string`](../data-types.md) | Sorting ||
 || **TARIFF**
 [`string`](../data-types.md) | Not used ||
-|#
-
-### sale_cashbox_handler
-
-#|
-|| **Value**
-`type` | **Description** ||
-|| **ID**
-[`string`](../data-types.md) | Identifier of the cash register handler ||
-|| **NAME**
-[`string`](../data-types.md) | Name of the handler ||
-|| **CODE**
-[`string`](../data-types.md) | Code of the handler ||
-|| **SORT**
-[`string`](../data-types.md) | Sorting ||
-|| **SETTINGS**
-[`object`](../data-types.md) | Settings of the handler. The structure corresponds to that specified when adding the handler through [sale.cashbox.handler.add](./cashbox/sale-cashbox-handler-add.md) in the `SETTINGS` parameter ||
-|#
-
-### sale_cashbox
-
-#|
-|| **Value**
-`type` | **Description** ||
-|| **ID**
-[`string`](../data-types.md) | Identifier of the cash register ||
-|| **NAME**
-[`string`](../data-types.md) | Name of the cash register ||
-|| **ENABLED**
-[`string`](../data-types.md) | Availability of the cash register. Possible values: 
-- `Y` — yes
-- `N` — no ||
-|| **ACTIVE**
-[`string`](../data-types.md) | Activity of the cash register. Possible values: 
-- `Y` — yes
-- `N` — no ||
-|| **OFD**
-[`string`](../data-types.md) | Code of the OFD handler. Available OFD handlers: 
-- `bx_firstofd` — First OFD 
-- `bx_platformaofd` — Platform OFD 
-- `bx_yarusofd` — OFD YARUS
-- `bx_taxcomofd` — Taxcom OFD 
-- `bx_ofdruofd` — OFD.RU 
-- `bx_tenzorofd` — Tensor OFD 
-- `bx_conturofd` — Contour OFD ||
-|| **EMAIL**
-[`string`](../data-types.md) | Email address to which notifications will be sent in case of errors when printing checks ||
-|| **KKM_ID**
-[`string`](../data-types.md) | Brand of the KKM ||
-|| **SORT**
-[`string`](../data-types.md) | Sorting ||
-|| **USE_OFFLINE**
-[`string`](../data-types.md) | Is the cash register used offline. Possible values:
-- `Y` — yes
-- `N` — no ||
 |#
 
 ## Objects Used in Responses

@@ -1,43 +1,40 @@
-# Get Warehouse Accounting Document Fields catalog.document.getFields
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it soon.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- required parameter specifications are missing
-- no response in case of error
-- no response in case of success
-- no examples in other languages
-  
-{% endnote %}
-
-{% endif %}
+# Get Description of Fields for Inventory Management Document catalog.document.getFields
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can subscribe: any user
+> Who can execute the method: a user with the "View product catalog" access permission
 
-## Description
+The method `catalog.document.getFields` returns the description of fields for the inventory management document.
 
-```http
-catalog.document.getFields()
-```
-
-This method returns a list of fields for warehouse accounting documents.
-
-## Parameters
+## Method Parameters
 
 No parameters.
 
-## Examples
+## Code Examples
+
+{% include [Example notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.document.getFields
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.document.getFields
+    ```
 
 - JS
 
@@ -48,11 +45,11 @@ No parameters.
     		'catalog.document.getFields',
     		{}
     	);
-    	
+
     	const result = response.getData().result;
     	console.log(result);
     }
-    catch( error )
+    catch (error)
     {
     	console.error(error);
     }
@@ -68,17 +65,16 @@ No parameters.
                 'catalog.document.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting document fields: ' . $e->getMessage();
@@ -93,7 +89,7 @@ No parameters.
         {},
         function(result)
         {
-            if(result.error())
+            if (result.error())
                 console.error(result.error());
             else
                 console.log(result.data());
@@ -101,51 +97,185 @@ No parameters.
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.document.getFields',
+        []
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Footnote on examples](../../../_includes/examples.md) %}
+## Response Handling
 
-## Returned Fields
+HTTP Code: **200**
+
+```json
+{
+    "result": {
+        "document": {
+            "commentary": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "char"
+            },
+            "createdBy": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "currency": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "char"
+            },
+            "dateCreate": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "datetime"
+            },
+            "dateDocument": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "datetime"
+            },
+            "dateModify": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "datetime"
+            },
+            "dateStatus": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "datetime"
+            },
+            "docNumber": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            "docType": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "char"
+            },
+            "id": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "modifiedBy": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "responsibleId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
+            },
+            "siteId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "char"
+            },
+            "status": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "char"
+            },
+            "statusBy": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "title": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            "total": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "double"
+            }
+        }
+    },
+    "time": {
+        "start": 1761727898,
+        "finish": 1761727898.554004,
+        "duration": 0.5540039539337158,
+        "processing": 0,
+        "date_start": "2025-10-29T11:51:38+02:00",
+        "date_finish": "2025-10-29T11:51:38+02:00",
+        "operating_reset_at": 1761728498,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
 
 #|
-|| **Field** | **Description** | **Note** ||
-|| **commentary** 
-[`char`](../../data-types.md) | Comment. |  ||
-|| **createdBy** 
-[`integer`](../../data-types.md) | Created by. | Immutable field. ||
-|| **currency^*^** 
-[`char`](../../data-types.md) | Currency. | Immutable field. ||
-|| **dateCreate** 
-[`datetime`](../../data-types.md) | Creation date. | Immutable field. ||
-|| **dateDocument** 
-[`datetime`](../../data-types.md) | Document date. |  ||
-|| **dateModify** 
-[`datetime`](../../data-types.md) | Modification date. |  ||
-|| **dateStatus** 
-[`datetime`](../../data-types.md) | Status set date. | Read-only. ||
-|| **docNumber** 
-[`string`](../../data-types.md) | Document number. |  ||
-|| **docType^*^**
-[`char`](../../data-types.md) | Document type:
-- `A` – Stock receipt; 
-- `S` – Stock adjustment; 
-- `M` – Transfers between warehouses; 
-- `R` – Product return; 
-- `D` – Write-offs. | Immutable field. ||
-|| **id** 
-[`integer`](../../data-types.md) | Document identifier. | Read-only. ||
-|| **modifiedBy** 
-[`integer`](../../data-types.md) | Modified by. |  ||
-|| **responsibleId^*^** 
-[`integer`](../../data-types.md) | Responsible person. |  ||
-|| **status** 
-[`char`](../../data-types.md) | Status. | Read-only. ||
-|| **statusBy** 
-[`integer`](../../data-types.md) | Status set by. |  ||
-|| **title** 
-[`string`](../../data-types.md) | Document title. |  ||
-|| **total** 
-[`double`](../../data-types.md) | Total amount of products. |  ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../data-types.md#catalog_document) | Root element of the response ||
+|| **document**
+[`object`](../data-types.md#catalog_document) | Object with the description of fields for the inventory management document ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+## Error Handling
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+HTTP Code: **400**
+
+```json
+{
+    "error": "0",
+    "error_description": "Insufficient permissions to save the document"
+}
+```
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `0` | Insufficient permissions to save the document | The user does not have permission to view ||
+|#
+
+{% include [System errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./catalog-document-list.md)
+- [{#T}](./catalog-document-add.md)
+- [{#T}](./catalog-document-update.md)

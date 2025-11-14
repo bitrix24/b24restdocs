@@ -8,7 +8,7 @@ Additionally, this URL can be used to initialize and create the required objects
 
 - set up [event handlers](../../../api-reference/events/index.md);
 - register [widgets](../../../api-reference/widgets/index.md) in the necessary embedding locations;
-- add a [payment system provider](../../../api-reference/pay-system/index.md) or [cash register](../../../api-reference/sale/cashbox/index.md);
+- add a [payment system provider](../../../api-reference/pay-system/index.md);
 - register an [SMS messaging provider](../../../api-reference/messageservice/index.md);
 - and so on.
 

@@ -93,6 +93,7 @@ items:
     include:
       path: cashbox/b24-toc.yaml
       mode: link
+    hidden: true         
   - name: Delivery Services
     include:
       path: delivery/b24-toc.yaml

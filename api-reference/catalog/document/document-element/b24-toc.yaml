@@ -1,15 +1,15 @@
-title: Products of the inventory management document
-href: index.md
-items: 
-  - name: Overview of methods
-    href: index.md
-  - name: Add product to document
-    href: catalog-document-element-add.md
-  - name: Modify product in document
-    href: catalog-document-element-update.md
-  - name: Retrieve list of products in documents       
-    href: catalog-document-element-list.md     
-  - name: Remove product from document
-    href: catalog-document-element-delete.md
-  - name: Get fields of the document product
-    href: catalog-document-element-get-fields.md
+title: Products in the inventory management document  
+href: index.md  
+items:  
+  - name: Overview of methods  
+    href: index.md  
+  - name: Add product to document  
+    href: catalog-document-element-add.md  
+  - name: Modify product in document  
+    href: catalog-document-element-update.md  
+  - name: Retrieve list of products in documents  
+    href: catalog-document-element-list.md  
+  - name: Remove product from document  
+    href: catalog-document-element-delete.md  
+  - name: Get product fields of document  
+    href: catalog-document-element-get-fields.md  

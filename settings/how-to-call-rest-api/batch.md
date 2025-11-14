@@ -14,7 +14,7 @@ This method is used to send multiple requests in succession, as well as related 
 || **halt**
 [`boolean`](../../api-reference/data-types.md) | Determines whether to halt the sequence of requests in case of an error. Defaults to `false` ||
 || **cmd**
-[`array`](../../api-reference/data-types.md) | An array of requests in standard format (remember to [URL-encode](./data-encoding.md) the request data; this means that the data for sub-requests must undergo double encoding) ||
+[`array`](../../api-reference/data-types.md) | An array of requests in standard format (keep in mind the [URL encoding](./data-encoding.md) of request data; this means that the data for sub-requests must undergo double encoding) ||
 |#
 
 {% note info %}
@@ -101,7 +101,7 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
     });
     ```
 
-    More about the [callBatch method in the BX24.JS SDK article](/api-reference/bx24-js-sdk/how-to-call-rest-methods/bx24-call-batch.html).
+    More about the [callBatch method in the BX24.JS SDK article](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-batch.md).
 
 - PHP
 
@@ -144,7 +144,7 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
                     "ID": "1",
                     "ACTIVE": true,
                     "NAME": "John",
-                    "LAST_NAME": "Doe",
+                    "LAST_NAME": "Dou",
                     "EMAIL": "my@example.com",
                     "LAST_LOGIN": "2024-08-29T10:29:54+02:00",
                     "DATE_REGISTER": "2023-08-24T03:00:00+02:00",
@@ -265,7 +265,7 @@ Starting from version **rest 24.0.0**, nesting is prohibited for the `batch` met
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../api-reference/data-types.md) | An object is returned with fields in the form of objects containing the results of the invoked methods ||
+[`object`](../../api-reference/data-types.md) | An object is returned with fields in the form of objects containing the results of the called methods ||
 || **time**
 [`time`](../../api-reference/data-types.md) | Information about the execution time of the request ||
 |#
@@ -302,12 +302,12 @@ As a result:
 
 {% note info %}
 
-**Note** that in the `user_lead` request, we use nesting `[0][ID]`. Since the `user.search` method is list-based, it can return up to 50 results, and in this case, we will take the identifier of the first returned user.
+**Note** that in the `user_lead` request we use nesting `[0][ID]`. Since the `user.search` method is list-based, it can return up to 50 results, and in this case, we will take the identifier of the first returned user.
 
 {% endnote %}
 
 {% note warning %}
 
-When designing a chain of commands, do not neglect the `halt` key — when enabled, it will halt the execution of the chain if one request in the chain returns an error.
+When designing a chain of commands, do not neglect the `halt` key — when enabled, it will stop the execution of the chain if one request in the chain returns an error.
 
 {% endnote %}

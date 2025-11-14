@@ -50,6 +50,5 @@ Namespaces for methods related to the Online Store:
 || [Linking Payments to Shipments](./payment-item-shipment/index.md) | Methods for linking payments to shipments ||
 || [Linking Properties](./property-relation/index.md) | Methods for linking properties ||
 || [Property Values](./property-value/index.md) | Methods for working with property values ||
-|| [Cash Registers](./cashbox/index.md) | Methods for working with cash registers and receipts ||
 || [Delivery Services](./delivery/delivery/index.md) | Methods and webhooks for working with delivery services ||
 |#
