@@ -1,8 +1,8 @@
-# Delete Section of Universal List lists.section.delete
+# Delete the section of the universal list lists.section.delete
 
 > Scope: [`lists`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "Edit" access permission for the required list
+> Who can execute the method: a user with "Edit" access permission for the required list
 
 The method `lists.section.delete` removes a section from the list.
 
@@ -195,7 +195,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Returns `true` if the section was successfully deleted ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -214,11 +214,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ERROR_REQUIRED_PARAMETERS_MISSING` |  Required parameter was not provided ||
-|| `ACCESS_DENIED` | Insufficient permissions to delete the section ||
-|| `ERROR_SECTION_NOT_FOUND` |  Section with the specified `SECTION_ID` or `SECTION_CODE` not found ||
-|| `ERROR_DELETE_SECTION` |  Error while deleting the section ||
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter not provided ||
+|| `ERROR_SECTION_NOT_FOUND`| Section not found | Section with the specified `SECTION_ID` or `SECTION_CODE` not found ||
+|| `ERROR_DELETE_SECTION` | — | Error deleting the section ||
+|| `ACCESS_DENIED` | Access denied | Insufficient rights to delete the section ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

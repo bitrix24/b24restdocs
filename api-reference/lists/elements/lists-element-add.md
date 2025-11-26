@@ -1,278 +1,280 @@
-# Create List Element lists.element.add
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- success response is absent
-- error response is absent
-- links to pages that have not yet been created are not provided
-
-{% endnote %}
-
-{% endif %}
+# Create a universal list element lists.element.add
 
 > Scope: [`lists`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "Add" or "Edit" access permission for the required list
 
-The method `lists.element.add` creates a list element. If the element is created successfully, the response is `true`, otherwise *Exception*.
+## Method Parameters
 
-To upload files in a "File" type field, pass the content in [Base64](../../files/how-to-upload-files.md) format.
-
-To upload files in a "File (Drive)" type field, you need to:
-
-1. use the REST API of the disk module: disk.folder.uploadfile and disk.storage.uploadfile. In the response when uploading these files, you will receive `"FILE_ID": 290`.
-2. Get the list of uploaded file `IDs`.
-3. Then, using the REST API of the lists module, add files to the required field:
-
-## Parameters
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** ||
-|| **IBLOCK_TYPE_ID**^*^
-[`unknown`](../../data-types.md) | Identifier of the information block type (required):
-- **lists** - list information block type
-- **bitrix_processes** - processes information block type
-- **lists_socnet** - group lists information block type ||
-|| **IBLOCK_CODE/IBLOCK_ID**^*^
-[`unknown`](../../data-types.md) | Code or `id` of the information block (required) ||
-|| **ELEMENT_CODE**^*^
-[`unknown`](../../data-types.md) | Code of the information block element (required) ||
-|| **LIST_ELEMENT_URL**
-[`unknown`](../../data-types.md) | Template address to list elements ||
-|| **FIELDS**
-[`unknown`](../../data-types.md) | Array of fields and values. In the File type field `F`, you cannot pass the file ID from Drive ||
-|| **SOCNET_GROUP_ID**^*^
-[`unknown`](../../data-types.md) | `id` of the group (required if the list is created for a group); ||
+|| **Name**
+`type` | **Description** ||
+|| **IBLOCK_TYPE_ID*** 
+[`string`](../../data-types.md) | Identifier of the information block type. Possible values: 
+- `lists` — list information block type 
+- `bitrix_processes` — processes information block type 
+- `lists_socnet` — group lists information block type ||
+|| **IBLOCK_ID*** 
+[`integer`](../../data-types.md) | Identifier of the information block.
+
+The identifier can be obtained using the [lists.get](../lists/lists-get.md) method ||
+|| **IBLOCK_CODE*** 
+[`string`](../../data-types.md) | Symbolic code of the information block.
+
+The code can be obtained using the [lists.get](../lists/lists-get.md) method
+
+{% note info "" %}
+
+At least one of the parameters must be specified: `IBLOCK_ID` or `IBLOCK_CODE`
+
+{% endnote %} ||
+|| **ELEMENT_CODE*** 
+[`string`](../../data-types.md) | Symbolic code of the element ||
+|| **FIELDS*** 
+[`array`](../../data-types.md) | Array of fields.
+
+[Detailed description](#parametr-fields) ||
+|| **IBLOCK_SECTION_ID** 
+[`integer`](../../data-types.md) | Identifier of the section where the element is added.
+
+If the parameter is not provided, the element is created at the root of the list. The default value is `0`.
+
+The identifier can be obtained using the [lists.section.get](../sections/lists-section-get.md) method ||
+|| **LIST_ELEMENT_URL** 
+[`string`](../../data-types.md) | Template address for list elements.
+
+Supports replacements: `#list_id#`, `#section_id#`, `#element_id#`, `#group_id#` ||
 |#
 
-{% include [Parameter Notes](../../../_includes/required.md) %}
+### FIELDS Parameter {#parametr-fields}
 
-## Examples
+{% include [Note on parameters](../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **NAME*** 
+[`string`](../../data-types.md) | Name of the element ||
+|| **PROPERTY_PropertyId** | Custom properties.
+
+Any property of the element can be configured as multiple. For multiple properties, pass an array, even if there is only one value. 
+  
+To pass a value in a File type field, specify:
+- for File type — [base64](../../files/how-to-upload-files.md) or an array with the name and base64
+- for File type (Drive) — file identifier from Drive
+
+||
+|#
+
+{% note info "" %}
+
+You can get data about the list fields using the [lists.field.get](../fields/lists-field-get.md) method
+
+{% endnote %}
+
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"IBLOCK_TYPE_ID":"lists","IBLOCK_ID":47,"ELEMENT_CODE":"test_element","LIST_ELEMENT_URL":"#list_id#/element/#section_id#/#element_id#/","FIELDS":{"NAME":"Test Element","PROPERTY_951":["1269","1271"],"PROPERTY_1003":"2024-12-31 23:59:59"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/lists.element.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"IBLOCK_TYPE_ID":"lists","IBLOCK_ID":47,"ELEMENT_CODE":"test_element","LIST_ELEMENT_URL":"#list_id#/element/#section_id#/#element_id#/","FIELDS":{"NAME":"Test Element","PROPERTY_951":["1269","1271"],"PROPERTY_1003":"2024-12-31 23:59:59"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/lists.element.add
+    ```
+
 - JS
 
-
     ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'lists.element.add',
-    		{
-    			'IBLOCK_TYPE_ID': 'lists_socnet',
-    			'IBLOCK_CODE': 'rest_1',
-    			'ELEMENT_CODE': 'element_1',
-    			'LIST_ELEMENT_URL': '#list_id#/element/#section_id#/#element_id#/',
-    			'FIELDS': {
-    				'NAME': 'Test element',
-    				'PROPERTY_62': 'Text string',
-    				'PROPERTY_63': {
-    					'0': '7',
-    					'1': '9',
-    					'2': '10'
-    				}
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    		alert("Error: " + result.error());
-    	else
-    		alert("Success: " + result.data());
-    }
-    catch( error )
-    {
-    	console.error('Error:', error);
+    try {
+        const response = await $b24.callMethod(
+            'lists.element.add',
+            {
+                IBLOCK_TYPE_ID: 'lists',
+                IBLOCK_ID: 47,
+                ELEMENT_CODE: 'test_element',
+                LIST_ELEMENT_URL: '#list_id#/element/#section_id#/#element_id#/',
+                FIELDS: {
+                    NAME: 'Test Element',
+                    PROPERTY_951: ["1269", "1271"],
+                    PROPERTY_1003: "2024-12-31 23:59:59"
+                }
+            }
+        );
+
+        const result = response.getData().result;
+        console.log('Created element with ID:', result);
+        processResult(result);
+    } catch (error) {
+        console.error('Error:', error);
     }
     ```
 
 - PHP
 
-
     ```php
     try {
-        $params = [
-            'IBLOCK_TYPE_ID'   => 'lists_socnet',
-            'IBLOCK_CODE'      => 'rest_1',
-            'ELEMENT_CODE'     => 'element_1',
-            'LIST_ELEMENT_URL' => '#list_id#/element/#section_id#/#element_id#/',
-            'FIELDS'           => [
-                'NAME'       => 'Test element',
-                'PROPERTY_62' => 'Text string',
-                'PROPERTY_63' => [
-                    '0' => '7',
-                    '1' => '9',
-                    '2' => '10'
-                ]
-            ]
-        ];
-    
         $response = $b24Service
             ->core
             ->call(
                 'lists.element.add',
-                $params
+                [
+                    'IBLOCK_TYPE_ID' => 'lists',
+                    'IBLOCK_ID' => 47,
+                    'ELEMENT_CODE' => 'test_element',
+                    'LIST_ELEMENT_URL' => '#list_id#/element/#section_id#/#element_id#/',
+                    'FIELDS' => [
+                        'NAME' => 'Test Element',
+                        'PROPERTY_951' => ["1269", "1271"],
+                        'PROPERTY_1003' => "2024-12-31 23:59:59"
+                    ]
+                ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . $result->data();
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error adding list element: ' . $e->getMessage();
+        echo 'Error adding element: ' . $e->getMessage();
     }
     ```
 
 - BX24.js
 
     ```js
-    var params = {
-        'IBLOCK_TYPE_ID': 'lists_socnet',
-        'IBLOCK_CODE': 'rest_1',
-        'ELEMENT_CODE': 'element_1',
-        'LIST_ELEMENT_URL': '#list_id#/element/#section_id#/#element_id#/',
-        'FIELDS': {
-            'NAME': 'Test element',
-            'PROPERTY_62': 'Text string',
-            'PROPERTY_63': {
-                '0': '7',
-                '1': '9',
-                '2': '10'
+    BX24.callMethod(
+        'lists.element.add',
+        {
+            IBLOCK_TYPE_ID: 'lists',
+            IBLOCK_ID: 47,
+            ELEMENT_CODE: 'test_element',
+            LIST_ELEMENT_URL: '#list_id#/element/#section_id#/#element_id#/',
+            FIELDS: {
+                NAME: 'Test Element',
+                PROPERTY_951: ["1269", "1271"], // Custom property of type String (multiple)
+                PROPERTY_1003: "2024-12-31 23:59:59" // Custom property of type Date/Time
+            }
+        },
+        function(res) {
+            if (res.error()) {
+                console.error(res.error());
+            } else {
+                console.log(res.data());
             }
         }
-    };
-    BX24.callMethod(
-        'lists.element.add',
-        params,
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
-            else
-                alert("Success: " + result.data());
-        }
     );
     ```
 
-{% endlist %}
-
-Example of adding a file:
-
-{% list tabs %}
-
-- JS
-
-
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'lists.element.add',
-    		{
-    			'IBLOCK_TYPE_ID': 'lists',
-    			'IBLOCK_ID': '41',
-    			'ELEMENT_CODE': 'element1',
-    			'FIELDS': {
-    				'NAME': 'Test element 1',
-    				'PROPERTY_122': document.getElementById('fileInputId') // PROPERTY_122 - Custom property of type "File"
-    			}
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	if(result.error())
-    		alert("Error: " + result.error());
-    	else
-    		alert("Success: " + result);
-    }
-    catch( error )
-    {
-    	console.error('Error:', error);
-    }
-    ```
-
-- PHP
-
+- PHP CRest
 
     ```php
-    try {
-        $params = [
-            'IBLOCK_TYPE_ID' => 'lists',
-            'IBLOCK_ID'      => '41',
-            'ELEMENT_CODE'   => 'element1',
-            'FIELDS'         => [
-                'NAME'       => 'Test element 1',
-                'PROPERTY_122' => $_POST['fileInputId'] // PROPERTY_122 - Custom property of type "File"
-            ]
-        ];
-    
-        $response = $b24Service
-            ->core
-            ->call(
-                'lists.element.add',
-                $params
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . $result->data();
-        }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding list element: ' . $e->getMessage();
-    }
-    ```
+    require_once('crest.php');
 
-- BX24.js
-
-    ```js
-    var params = {
-        'IBLOCK_TYPE_ID': 'lists',
-        'IBLOCK_ID': '41',
-        'ELEMENT_CODE': 'element1',
-        'FIELDS': {
-            'NAME': 'Test element 1',
-            'PROPERTY_122': document.getElementById('fileInputId') // PROPERTY_122 - Custom property of type "File"
-        }
-    };
-    BX24.callMethod(
+    $result = CRest::call(
         'lists.element.add',
-        params,
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
-            else
-                alert("Success: " + result.data());
-        }
+        [
+            'IBLOCK_TYPE_ID' => 'lists',
+            'IBLOCK_ID' => 47,
+            'ELEMENT_CODE' => 'test_element',
+            'LIST_ELEMENT_URL' => '#list_id#/element/#section_id#/#element_id#/',
+            'FIELDS' => [
+                'NAME' => 'Test Element',
+                'PROPERTY_951' => ["1269", "1271"],
+                'PROPERTY_1003' => "2024-12-31 23:59:59"
+            ]
+        ]
     );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": 6999,
+    "time": {
+        "start": 1763654360,
+        "finish": 1763654360.814629,
+        "duration": 0.814629077911377,
+        "processing": 0,
+        "date_start": "2025-11-19T13:59:20+02:00",
+        "date_finish": "2025-11-19T13:59:20+02:00",
+        "operating_reset_at": 1763654960,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../../data-types.md) | Identifier of the created element ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error":"ERROR_ELEMENT_FIELD_VALUE",
+    "error_description":"Writing file values by ID is not supported"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter is missing ||
+|| `ERROR_IBLOCK_NOT_FOUND` | Iblock not found | Information block not found ||
+|| `ERROR_ELEMENT_ALREADY_EXISTS` | Element already exists | An element with this `CODE` already exists ||
+|| `ERROR_ADD_ELEMENT` | — | Error adding element ||
+|| `ERROR_ELEMENT_FIELD_VALUE` | Writing file values by ID is not supported | Field value validation error ||
+|| `ACCESS_DENIED` | Access denied | Insufficient permissions to add the element ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./lists-element-update.md)
+- [{#T}](./lists-element-get.md)
+- [{#T}](./lists-element-delete.md)
+- [{#T}](./lists-element-get-file-url.md)

@@ -1,4 +1,4 @@
-# Get Section Parameters or List of Sections lists.section.get
+# Get section parameters or list of sections using lists.section.get
 
 > Scope: [`lists`](../../scopes/permissions.md)
 >
@@ -21,15 +21,15 @@ The method `lists.section.get` returns a section or a list of sections.
 || **IBLOCK_ID***
 [`integer`](../../data-types.md) | Identifier of the information block.
 
-The identifier can be obtained using the [lists.get](../lists/lists-get.md) method ||
+The identifier can be obtained using the [lists.get](../lists/lists-get.md) method. ||
 || **IBLOCK_CODE*** 
 [`string`](../../data-types.md) | Symbolic code of the information block.
 
-The code can be obtained using the [lists.get](../lists/lists-get.md) method
+The code can be obtained using the [lists.get](../lists/lists-get.md) method.
 
 {% note info "" %}
 
-At least one of the parameters must be specified: `IBLOCK_ID` or `IBLOCK_CODE`
+At least one of the parameters: `IBLOCK_ID` or `IBLOCK_CODE` must be specified.
 
 {% endnote %} ||
 || **FILTER**
@@ -52,12 +52,12 @@ At least one of the parameters must be specified: `IBLOCK_ID` or `IBLOCK_CODE`
 - `RIGHT_MARGIN` — right boundary of the tree
 - `LEFT BORDER` — left boundary
 - `RIGHT BORDER` — right boundary
-- `TIMESTAMP_X` — time of last modification
+- `TIMESTAMP_X` — time of the last modification
 - `DATE_CREATE` — section creation date  
 - `CREATED_BY` — identifier of the user who created the section  
 - `MODIFIED_BY` — identifier of the user who modified the section  
 
-You can specify the type of filtering before the name of the filterable field:
+You can specify the type of filtering before the filterable field name:
 - `!` — not equal
 - `<` — less than
 - `<=` — less than or equal to
@@ -65,15 +65,15 @@ You can specify the type of filtering before the name of the filterable field:
 - `>=` — greater than or equal to
 - `%` — substring search
 
-By default, records are not filtered ||
+By default, records are not filtered. ||
 || **SELECT**
-[`array`](../../data-types.md) | Array with fields for selection. Available fields:
+[`array`](../../data-types.md) | Array with fields to select. Available fields:
 - `ID` — section identifier
 - `CODE` — symbolic code of the section
 - `XML_ID` — external identifier (XML ID)
 - `EXTERNAL_ID` — external section identifier
 - `IBLOCK_SECTION_ID` — identifier of the parent section
-- `TIMESTAMP_X` — time of last modification
+- `TIMESTAMP_X` — time of the last modification
 - `SORT` — sorting
 - `NAME` — section name
 - `ACTIVE` — activity status
@@ -91,7 +91,7 @@ By default, records are not filtered ||
 - `CREATED_BY` — identifier of the user who created the section
 - `DETAIL_PICTURE` — detailed picture (deprecated)
   
-If no fields are specified, all available fields are returned by default ||
+If no fields are specified, all available fields are returned by default. ||
 |#
 
 {% note info "" %}
@@ -323,7 +323,7 @@ To retrieve data for a single section, specify its identifier in FILTER. Without
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -368,16 +368,16 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Data of the section or an array of sections.
+[`array`](../../data-types.md) | Data of the section or an array of sections. The result depends on the SELECT parameter.
 
-The result depends on the SELECT parameter ||
+An empty array means that there are no sections in the list, or the sections do not match the filter. ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -391,10 +391,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ERROR_REQUIRED_PARAMETERS_MISSING` |  Required parameter not provided ||
-|| `ACCESS_DENIED` | Insufficient permissions to read the section ||
-|| Empty result |  Section with the specified `ID` not found ||
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter is not provided. ||
+|| `ACCESS_DENIED` | Access denied | Insufficient rights to read the section. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

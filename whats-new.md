@@ -2,6 +2,11 @@
 
 ## 2025
 
+### November 26, 2025
+
+- Updated documentation for the methods [lists.element.add](./api-reference/lists/elements/lists-element-add.md), [lists.element.update](./api-reference/lists/elements/lists-element-update.md), [lists.element.get](./api-reference/lists/elements/lists-element-get.md), [lists.element.delete](./api-reference/lists/elements/lists-element-delete.md), [lists.element.get.file.url](./api-reference/lists/elements/lists-element-get-file-url.md) in Working with Elements
+- Updated the main page of the section [Working with elements](./api-reference/lists/elements/index.md). Added introductory information and an overview of methods and relationships
+
 ### November 12, 2025
 
 - Updated documentation for methods [task.checklistitem.get](./api-reference/tasks/checklist-item/task-checklist-item-get.md), [task.checklistitem.getlist](./api-reference/tasks/checklist-item/task-checklist-item-get-list.md) in Task Checklists

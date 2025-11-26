@@ -52,7 +52,7 @@ At least one of the parameters must be specified: `SECTION_ID` or `SECTION_CODE`
 [Detailed description](#parametr-fields) ||
 |# 
 
-### Parameter fields {#parametr-fields}
+### FIELDS Parameter {#parametr-fields}
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
@@ -92,7 +92,7 @@ Defaults to `text` ||
 || **DETAIL_PICTURE**
 [`array`](../../data-types.md) | Deprecated.
 
-Detailed image. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
+Detail image. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the image file with extension, `value2` — image in base64 format. 
 
 To delete the image, use the object in the format `{remove: 'Y'}` ||
 || **SECTION_PROPERTY**
@@ -296,11 +296,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ERROR_REQUIRED_PARAMETERS_MISSING` |  Required parameter was not provided ||
-|| `ACCESS_DENIED` | Insufficient rights to edit the section ||
-|| `ERROR_SECTION_NOT_FOUND` |  Section with the specified `SECTION_ID` or `SECTION_CODE` not found ||
-|| `ERROR_UPDATE_SECTION` |  Error saving changes to the section ||
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter not provided ||
+|| `ERROR_SECTION_NOT_FOUND`| Section not found | Section with the specified `SECTION_ID` or `SECTION_CODE` not found ||
+|| `ERROR_UPDATE_SECTION` | — | Error updating the section ||
+|| `ACCESS_DENIED` | Access denied | Insufficient rights to update the section ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

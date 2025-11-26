@@ -3,13 +3,13 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
-  - name: Create Entity
+  - name: Create an Element
     href: lists-element-add.md
-  - name: Delete Entity
-    href: lists-element-delete.md
-  - name: Get Entity Parameters or List of Entities
+  - name: Update an Element
+    href: lists-element-update.md
+  - name: Retrieve Element Parameters or List of Elements
     href: lists-element-get.md
+  - name: Delete an Element
+    href: lists-element-delete.md
   - name: Get File URL
     href: lists-element-get-file-url.md
-  - name: Update Entity
-    href: lists-element-update.md

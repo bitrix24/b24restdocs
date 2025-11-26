@@ -4,7 +4,7 @@
 >
 > Who can execute the method: a user with "Edit" access permission for the required list
 
-The method `lists.section.add` creates a section of the list.
+The method `lists.section.add` creates a list section.
 
 ## Method Parameters
 
@@ -21,11 +21,11 @@ The method `lists.section.add` creates a section of the list.
 || **IBLOCK_ID***
 [`integer`](../../data-types.md) | Identifier of the information block.
 
-The identifier can be obtained using the [lists.get](../lists/lists-get.md) method. ||
+The identifier can be obtained using the [lists.get](../lists/lists-get.md) method ||
 || **IBLOCK_CODE*** 
 [`string`](../../data-types.md) | Symbolic code of the information block.
 
-The code can be obtained using the [lists.get](../lists/lists-get.md) method.
+The code can be obtained using the [lists.get](../lists/lists-get.md) method
 
 {% note info "" %}
 
@@ -37,16 +37,16 @@ At least one of the parameters must be specified: `IBLOCK_ID` or `IBLOCK_CODE`
 
 If the parameter is not provided, the section is created at the root of the list. The default value is `0`.
 
-The identifier can be obtained using the [lists.section.get](./lists-section-get.md) method. ||
+The identifier can be obtained using the [lists.section.get](./lists-section-get.md) method ||
 || **SECTION_CODE***
-[`string`](../../data-types.md) | Symbolic code of the section. ||
+[`string`](../../data-types.md) | Symbolic code of the section ||
 || **FIELDS***
 [`array`](../../data-types.md) | Array of fields.
 
 [Detailed description](#parametr-fields) ||
 |#
 
-### Parameter fields {#parametr-fields}
+### Parameter FIELDS {#parametr-fields}
 
 {% include [Note on parameters](../../../_includes/required.md) %}
 
@@ -54,13 +54,13 @@ The identifier can be obtained using the [lists.section.get](./lists-section-get
 || **Name**
 `type` | **Description** ||
 || **NAME***
-[`string`](../../data-types.md) | Name of the section. ||
+[`string`](../../data-types.md) | Name of the section ||
 || **EXTERNAL_ID**
-[`string`](../../data-types.md) | External identifier of the section. ||
+[`string`](../../data-types.md) | External identifier of the section ||
 || **XML_ID**
-[`string`](../../data-types.md) | External identifier (XML ID). ||
+[`string`](../../data-types.md) | External identifier (XML ID) ||
 || **SORT**
-[`integer`](../../data-types.md) | Sorting. ||
+[`integer`](../../data-types.md) | Sorting ||
 || **ACTIVE**
 [`string`](../../data-types.md) | Activity status. Possible values:
 - `Y` — yes
@@ -68,13 +68,13 @@ The identifier can be obtained using the [lists.section.get](./lists-section-get
 || **PICTURE**
 [`array`](../../data-types.md) | Deprecated.
 
-Image. Object in the format `{fileData: [value1, value2]}`, where `value1` is the name of the image file with extension, `value2` is the image in base64 format. 
+Image. An object in the format `{fileData: [value1, value2]}`, where `value1` is the name of the image file with the extension, and `value2` is the image in base64 format. 
 
-To delete the image, use the object in the format `{remove: 'Y'}`. ||
+To delete the image, use the object in the format `{remove: 'Y'}` ||
 || **DESCRIPTION**
 [`string`](../../data-types.md) | Deprecated.
 
-Description. ||
+Description ||
 || **DESCRIPTION_TYPE**
 [`string`](../../data-types.md) | Deprecated.
 
@@ -82,17 +82,17 @@ Description type. Possible values:
 - `text` — text
 - `html` — HTML
 
-Defaults to `text`. ||
+Defaults to `text` ||
 || **DETAIL_PICTURE**
 [`array`](../../data-types.md) | Deprecated.
 
-Detailed image. Object in the format `{fileData: [value1, value2]}`, where `value1` is the name of the image file with extension, `value2` is the image in base64 format. 
+Detailed image. An object in the format `{fileData: [value1, value2]}`, where `value1` is the name of the image file with the extension, and `value2` is the image in base64 format. 
 
-To delete the image, use the object in the format `{remove: 'Y'}`. ||
+To delete the image, use the object in the format `{remove: 'Y'}` ||
 || **SECTION_PROPERTY**
 [`array`](../../data-types.md) | Deprecated.
 
-User-defined properties. ||
+User properties ||
 |#
 
 ## Code Examples
@@ -273,9 +273,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | Identifier of the created section. ||
+[`integer`](../../data-types.md) | Identifier of the created section ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time. ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -294,10 +294,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ERROR_REQUIRED_PARAMETERS_MISSING` |  Required parameter not provided. ||
-|| `ACCESS_DENIED` | Insufficient permissions to add the section. ||
-|| `ERROR_ADD_SECTION` |  Error adding the section. ||
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter is missing ||
+|| `ERROR_ADD_SECTION` | — | Error adding section ||
+|| `ACCESS_DENIED` | Access denied | Insufficient rights to add section ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
