@@ -2,6 +2,11 @@
 
 ## 2025
 
+### November 27, 2025
+
+- Added the article [New task card: comments and events](./api-reference/tasks/tasks-new.md)
+- Added the method [tasks.task.chat.message.send](./api-reference/tasks/tasks-task-chat-message-send.md)
+
 ### November 26, 2025
 
 - Updated documentation for the methods [lists.element.add](./api-reference/lists/elements/lists-element-add.md), [lists.element.update](./api-reference/lists/elements/lists-element-update.md), [lists.element.get](./api-reference/lists/elements/lists-element-get.md), [lists.element.delete](./api-reference/lists/elements/lists-element-delete.md), [lists.element.get.file.url](./api-reference/lists/elements/lists-element-get-file-url.md) in Working with Elements

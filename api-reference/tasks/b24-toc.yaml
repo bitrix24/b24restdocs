@@ -1,63 +1,67 @@
 title: Tasks
 href: index.md
 items: 
-  - name: Overview of methods
+  - name: Overview of Methods
     href: index.md
-  - name: Task fields
+  - name: New Task Card
+    href: tasks-new.md    
+  - name: Task Fields
     href: fields.md
-  - name: Add task
+  - name: Add Task
     href: tasks-task-add.md
-  - name: Update task
+  - name: Update Task
     href: tasks-task-update.md
-  - name: Get task by ID
+  - name: Get Task by ID
     href: tasks-task-get.md
-  - name: Get list of tasks
+  - name: Get Task List
     href: tasks-task-list.md
-  - name: Delete task
+  - name: Delete Task
     href: tasks-task-delete.md
-  - name: Get list of fields
+  - name: Send Message in Task Chat
+    href: tasks-task-chat-message-send.md    
+  - name: Get Field List
     href: tasks-task-get-fields.md
-  - name: Check access to task
+  - name: Check Access to Task
     href: tasks-task-get-access.md
-  - name: Attach files to task
+  - name: Attach Files to Task
     href: tasks-task-files-attach.md
-  - name: Get user counters
+  - name: Get User Counters
     href: tasks-task-counters-get.md
-  - name: Delegate task
+  - name: Delegate Task
     href: tasks-task-delegate.md
-  - name: Accept task
+  - name: Accept Task
     href: tasks-task-approve.md
-  - name: Reject task
+  - name: Reject Task
     href: tasks-task-disapprove.md
-  - name: Add task to Favorites
+  - name: Add Task to Favorites
     href: tasks-task-favorite-add.md
-  - name: Remove task from Favorites
+  - name: Remove Task from Favorites
     href: tasks-task-favorite-remove.md
-  - name: Task history
+  - name: Task History
     href: tasks-task-history-list.md
-  - name: Start watching task
+  - name: Start Watching Task
     href: tasks-task-start-watch.md
-  - name: Stop watching task
+  - name: Stop Watching Task
     href: tasks-task-stop-watch.md
-  - name: Change task status to In Progress
+  - name: Change Task Status to In Progress
     href: tasks-task-start.md
-  - name: Change task status to Waiting for Execution
+  - name: Change Task Status to Waiting
     href: tasks-task-pause.md
-  - name: Change task status to Deferred
+  - name: Change Task Status to Deferred
     href: tasks-task-defer.md
-  - name: Change task status to Completed
+  - name: Change Task Status to Completed
     href: tasks-task-complete.md
-  - name: Renew task after completion
+  - name: Renew Task After Completion
     href: tasks-task-renew.md
-  - name: Enable Silent mode
+  - name: Enable Silent Mode
     href: tasks-task-mute.md
-  - name: Disable Silent mode
+  - name: Disable Silent Mode
     href: tasks-task-unmute.md
-  - name: Create dependency between tasks
+  - name: Create Dependency Between Tasks
     href: task-dependence-add.md
-  - name: Remove dependency between tasks
+  - name: Remove Dependency Between Tasks
     href: task-dependence-delete.md
-  - name: Task result
+  - name: Task Result
     include:
       path: result/b24-toc.yaml
       mode: link
@@ -73,15 +77,15 @@ items:
     include:
       path: comment-item/b24-toc.yaml
       mode: link
-  - name: Time spent
+  - name: Time Spent
     include:
       path: elapsed-item/b24-toc.yaml
       mode: link
-  - name: Custom fields
+  - name: Custom Fields
     include:
       path: user-field/b24-toc.yaml
       mode: link
-  - name: Kanban stages and Planner
+  - name: Kanban and Planner Stages
     include:
       path: stages/b24-toc.yaml
       mode: link
