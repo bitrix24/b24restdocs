@@ -64,4 +64,4 @@ Example response:
 
 ## Events
 
-- Task comment events are not available in the new card.
+- Task comment events are temporarily unavailable in the new card.
