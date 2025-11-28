@@ -11,30 +11,46 @@ Access to the data depends on permissions:
 - managers see their employees' tasks,
 - others see only the tasks available to them.
 
+{% note info "" %}
+
+Since version `tasks 25.700.0`, the method call is available in two API versions.
+
+Old version:
+
+`https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.get`
+
+New version:
+
+`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.get`
+
+Documentation in OpenApi format is available for the new version of the method call. To obtain OpenApi, call the method `documentation`:
+
+`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/documentation`
+
+{% endnote %}
+
 ## Method Parameters
 
 #|
 || **Name**
 `type` | **Description** ||
 || **taskId**
-[`integer`](../data-types.md) | Task ID.
+[`integer`](../data-types.md) | Task identifier.
 
-The task ID can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
 || **select**
-[`array`](../data-types.md) | An array of record fields that will be returned by the method. You can specify only the fields you need. If the array contains the value `"*"`, all available fields will be returned.
+[`array`](../data-types.md) | Array of record fields that will be returned by the method. You can specify only the fields that are necessary. If the array contains the value `"*"`, all available fields will be returned.
 
 By default, it returns all fields except for custom ones. It is recommended to specify specific fields in the selection, as default fields may change.
 
-To get system fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, `UF_MAIL_MESSAGE`, and custom fields, include them in `SELECT`. You can find the names of custom fields using the [tasks.task.getFields](./tasks-task-get-fields.md) method. 
+To obtain system `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, `UF_MAIL_MESSAGE`, and custom fields, specify them in `SELECT`. You can find the names of custom fields using the [tasks.task.getFields](./tasks-task-get-fields.md) method.
 
-Specify `CHAT_ID` in the `select`
-parameter to retrieve the chat identifier for the [new task card](tasks-new.md)
-||
+Specify `CHAT_ID` in select to get the chat ID for the [new task card](tasks-new.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Examples Note](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -182,7 +198,7 @@ parameter to retrieve the chat identifier for the [new task card](tasks-new.md)
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -275,7 +291,7 @@ Returns an empty array `"result":[],` if the task does not exist or the user doe
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -292,7 +308,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `0` | wrong task id | The value of the `taskId` parameter is of an incorrect type ||
 || `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | The required parameter `taskId` was not provided ||
-|| `100` | Invalid value {} to match with parameter {select}. Should be value of type array. (internal error) | The `select` parameter was provided empty or contains invalid values ||
+|| `100` | Invalid value {} to match with parameter {select}. Should be value of type array. (internal error) | The `select` parameter was passed empty or contains invalid values ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

@@ -6,6 +6,24 @@
 
 The method `tasks.task.add` adds a new task.
 
+{% note info "" %}
+
+Starting from version `tasks 25.700.0`, the method call is available in two API versions.
+
+Old version:
+
+`https://{installation_address}/rest/{user_id}/{rest_app_password}/tasks.task.add`
+
+New version:
+
+`https://{installation_address}/rest/api/{user_id}/{rest_app_password}/tasks.task.add`
+
+Documentation in OpenApi format is available for the new version of the method call. To obtain OpenApi, call the method `documentation`:
+
+`https://{installation_address}/rest/api/{user_id}/{rest_app_password}/documentation`
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
@@ -16,7 +34,7 @@ The method `tasks.task.add` adds a new task.
 || **fields***
 [`object`](../data-types.md) | Values of [task fields](./fields.md).
 
-You can pass the parameter `SE_PARAMETER` to the method — a list of objects with additional task parameters. Possible values for `CODE`:
+You can pass the parameter `SE_PARAMETER` to the method — a list of objects with additional task parameters. Possible values for the `CODE`:
 - `1` — deadlines are determined by the deadlines of subtasks
 - `2` — automatically complete the task when subtasks are completed (and vice versa)
 - `3` — do not complete the task without a result
@@ -40,7 +58,7 @@ SE_PARAMETER: [
 
 {% include [Note on examples](../../_includes/examples.md) %}
 
-Let's add a task with files and CRM object bindings. To attach a file to the task, you need to add the symbol `n` before the file ID.
+Let's add a task with files and links to CRM entities. To attach a file to the task, you need to add the symbol `n` before the file ID.
 
 {% list tabs %}
 
@@ -86,8 +104,8 @@ Let's add a task with files and CRM object bindings. To attach a file to the tas
                     ],
                     // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                     UF_TASK_WEBDAV_FILES: [
-                        "n12345", // ID of the first Drive file
-                        "n67890" // ID of the second Drive file
+                        "n12345", // ID of the first disk file
+                        "n67890" // ID of the second disk file
                     ]
                 }
             }
@@ -162,8 +180,8 @@ Let's add a task with files and CRM object bindings. To attach a file to the tas
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 UF_TASK_WEBDAV_FILES: [
-                    "n12345", // ID of the first Drive file
-                    "n67890" // ID of the second Drive file
+                    "n12345", // ID of the first disk file
+                    "n67890" // ID of the second disk file
                 ]
             }
         },
@@ -199,8 +217,8 @@ Let's add a task with files and CRM object bindings. To attach a file to the tas
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 'UF_TASK_WEBDAV_FILES' => [
-                    'n12345', // ID of the first Drive file
-                    'n67890' // ID of the second Drive file
+                    'n12345', // ID of the first disk file
+                    'n67890' // ID of the second disk file
                 ]
             ]
         ]
@@ -357,8 +375,8 @@ HTTP status: **200**
         "finish": 1758188172.101309,
         "duration": 0.958698034286499,
         "processing": 0.9341180324554443,
-        "date_start": "2025-09-18T12:36:11+03:00",
-        "date_finish": "2025-09-18T12:36:12+03:00",
+        "date_start": "2025-09-18T12:36:11+02:00",
+        "date_finish": "2025-09-18T12:36:12+02:00",
         "operating_reset_at": 1758188771,
         "operating": 0.9340989589691162
     }
@@ -394,14 +412,14 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | Could not find value for parameter {fields} (internal error) | Parameter `fields` not provided or is empty ||
+|| `100` | Could not find value for parameter {fields} (internal error) | Parameter `fields` not provided or empty ||
 || `ERROR_CORE` | User specified in the "Assignee" field not found\u003Cbr\u003E | Non-existent user ID specified in the `RESPONSIBLE_ID` field ||
-|| `ERROR_CORE` | Assignee not specified\u003Cbr\u003E | `RESPONSIBLE_ID` field is not filled ||
-|| `ERROR_CORE` | Task title not specified\u003Cbr\u003E | `TITLE` field is not filled ||
+|| `ERROR_CORE` | Assignee not specified\u003Cbr\u003E | `RESPONSIBLE_ID` field not filled ||
+|| `ERROR_CORE` | Task title not specified\u003Cbr\u003E | `TITLE` field not filled ||
 || `ERROR_CORE` | Invalid status\u003Cbr\u003E | Incorrect value specified in the `STATUS` field ||
 || `ERROR_CORE` | Task specified in the "Parent Task" field not found\u003Cbr\u003E | Non-existent task ID specified in the `PARENT_ID` field ||
 || `ERROR_CORE` | End date specified earlier than start date in scheduling\u003Cbr\u003E | Date and time in the `END_DATE_PLAN` field is earlier than in `START_DATE_PLAN` ||
-|| `ERROR_CORE` | Task duration specified is too long in scheduling\u003Cbr\u003E | The value in the `END_DATE_PLAN` field is a date that is too far in the future ||
+|| `ERROR_CORE` | Task duration specified is too long in scheduling\u003Cbr\u003E | The value in the `END_DATE_PLAN` field specifies a date that is too far in the future ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

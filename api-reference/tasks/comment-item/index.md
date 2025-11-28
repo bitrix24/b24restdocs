@@ -2,6 +2,12 @@
 
 In task comments, participants ask questions, discuss the task, and track progress. Important notes can be left here, and results can be recorded.
 
+{% note warning "Comments do not work with version of the module `tasks 25.700.0` " %}
+
+Instead of comments, a chat feature is available in the new task card. How to work with the task chat is described in the article [New Task Card: Comments and Events](../tasks-new.md).
+
+{% endnote %}
+
 > Quick navigation: [all methods and events](#all-methods) 
 > 
 > User documentation: [Working with tasks](https://helpdesk.bitrix24.com/open/16801398)

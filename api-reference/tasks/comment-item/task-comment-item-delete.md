@@ -6,6 +6,12 @@
 
 The method `task.commentitem.delete` removes a comment.
 
+{% note warning "Development of the method has been halted since version `tasks 25.700.0` " %}
+
+The method `task.commentitem.delete` does not work in the [new task card](../tasks-new.md), use the method [im.message.delete](../../chats/messages/im-message-delete.md) for working with task chat.
+
+{% endnote %}
+
 ## Method Parameters
 
 {% note warning "" %}
@@ -22,11 +28,11 @@ Pass parameters in the request according to the order in the table. If the order
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method to get the list of tasks](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Comment identifier.
 
-The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [method to get the list of comments](./task-comment-item-get-list.md) ||
+The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [get comment list method](./task-comment-item-get-list.md) ||
 |#
 
 ## Code Examples
@@ -144,7 +150,7 @@ The comment identifier can be obtained when [adding a new comment](./task-commen
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -175,7 +181,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -196,12 +202,12 @@ HTTP status: **400**
 - No access permission to the task
 - Cannot delete another user's comment unless you are an administrator
 - The specified task or comment does not exist ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect type of value specified for the parameter, for example, for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type specified for the parameter, for example, for `TASKID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./task-comment-item-add.md)

@@ -2,13 +2,19 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with read access permission for the task or higher
+> Who can execute the method: any user with read access permission to the task or higher
 
 The method `task.commentitem.add` adds a new comment to a task.
 
+{% note warning "The development of the method has been halted since version `tasks 25.700.0` " %}
+
+The method `task.commentitem.add` continues to work, but there is a more relevant alternative [tasks.task.chat.message.send](../tasks-task-chat-message-send.md).
+
+{% endnote %}
+
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -16,14 +22,14 @@ The method `task.commentitem.add` adds a new comment to a task.
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [getting the task list method](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method to get the list of tasks](../tasks-task-list.md) ||
 || **FIELDS***
 [`object`](../../data-types.md) | Object with [comment fields](#fields) ||
 |#
 
 ### FIELDS Parameter {#fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Footnote about parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,9 +37,9 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
 || **POST_MESSAGE***
 [`string`](../../data-types.md) | Message text ||
 || **AUTHOR_ID**
-[`integer`](../../data-types.md) | Identifier of the user on whose behalf the comment should be created.
+[`integer`](../../data-types.md) | Identifier of the user on behalf of whom the comment should be created.
 
-You can get the user identifier using the [user.get](../../user/user-get.md) method.
+The user identifier can be obtained using the [user.get](../../user/user-get.md) method.
 
 {% note alert "" %}
 
@@ -52,7 +58,7 @@ The author of the comment must have access to the attached files; otherwise, the
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -62,7 +68,7 @@ The author of the comment must have access to the attached files; otherwise, the
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":8017,"FIELDS":{"POST_MESSAGE":"Text of the new comment for the task","AUTHOR_ID":503,"POST_DATE":"2025-07-15T14:30:00+02:00","UF_FORUM_MESSAGE_DOC":["n4755","n4753"]}}' \
+    -d '{"TASKID":8017,"FIELDS":{"POST_MESSAGE":"Text of the new comment to the task","AUTHOR_ID":503,"POST_DATE":"2025-07-15T14:30:00+02:00","UF_FORUM_MESSAGE_DOC":["n4755","n4753"]}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.commentitem.add
     ```
 
@@ -72,7 +78,7 @@ The author of the comment must have access to the attached files; otherwise, the
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":8017,"FIELDS":{"POST_MESSAGE":"Text of the new comment for the task","AUTHOR_ID":503,"POST_DATE":"2025-07-15T14:30:00+02:00","UF_FORUM_MESSAGE_DOC":["n4755","n4753"]},"auth":"**put_access_token_here**"}' \
+    -d '{"TASKID":8017,"FIELDS":{"POST_MESSAGE":"Text of the new comment to the task","AUTHOR_ID":503,"POST_DATE":"2025-07-15T14:30:00+02:00","UF_FORUM_MESSAGE_DOC":["n4755","n4753"]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/task.commentitem.add
     ```
 
@@ -86,7 +92,7 @@ The author of the comment must have access to the attached files; otherwise, the
     		{
     			"TASKID": 8017,
     			"FIELDS": {
-    				"POST_MESSAGE": "Text of the new comment for the task",
+    				"POST_MESSAGE": "Text of the new comment to the task",
     				"AUTHOR_ID": 503,
     				"POST_DATE": "2025-07-15T14:30:00+02:00",
     				"UF_FORUM_MESSAGE_DOC": ["n4755", "n4753"]
@@ -115,7 +121,7 @@ The author of the comment must have access to the attached files; otherwise, the
                 [
                     'TASKID' => 8017,
                     'FIELDS' => [
-                        'POST_MESSAGE'         => 'Text of the new comment for the task',
+                        'POST_MESSAGE'         => 'Text of the new comment to the task',
                         'AUTHOR_ID'            => 503,
                         'POST_DATE'            => '2025-07-15T14:30:00+02:00',
                         'UF_FORUM_MESSAGE_DOC' => ['n4755', 'n4753'],
@@ -145,7 +151,7 @@ The author of the comment must have access to the attached files; otherwise, the
         {
             "TASKID": 8017,
             "FIELDS": {
-                "POST_MESSAGE": "Text of the new comment for the task",
+                "POST_MESSAGE": "Text of the new comment to the task",
                 "AUTHOR_ID": 503,
                 "POST_DATE": "2025-07-15T14:30:00+02:00",
                 "UF_FORUM_MESSAGE_DOC": ["n4755", "n4753"]
@@ -168,7 +174,7 @@ The author of the comment must have access to the attached files; otherwise, the
         [
             'TASKID' => 8017,
             'FIELDS' => [
-                'POST_MESSAGE' => 'Text of the new comment for the task',
+                'POST_MESSAGE' => 'Text of the new comment to the task',
                 'AUTHOR_ID' => 503,
                 'POST_DATE' => '2025-07-15T14:30:00+02:00',
                 'UF_FORUM_MESSAGE_DOC' => ['n4755', 'n4753']
@@ -185,7 +191,7 @@ The author of the comment must have access to the attached files; otherwise, the
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -214,9 +220,10 @@ HTTP status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
+
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -231,11 +238,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value**  ||
-|| `ERROR_CORE` | Comment text not specified | Required parameter `POST_MESSAGE` not provided or is empty ||
+|| `ERROR_CORE` | Comment text not specified | Required parameter `POST_MESSAGE` not provided or empty ||
 || `ERROR_CORE` | Insufficient permissions to add a comment | No access permission to the task ||
 || `ERROR_CORE` | File not found | File from the `UF_FORUM_MESSAGE_DOC` parameter not found or the author does not have access to it ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arFields) for method ctaskcommentitem::add() must not contain key `<FIELD_NAME>`.; 256/TE/WRONG_ARGUMENTS | Field `<FIELD_NAME>` cannot be used in the method ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type provided for the parameter, e.g., for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type provided for the parameter, for example, for `TASKID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

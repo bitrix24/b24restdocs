@@ -6,9 +6,27 @@
 
 The method `tasks.task.getaccess` checks the available actions for users on a task.
 
+{% note info "" %}
+
+Starting from version `tasks 25.700.0`, the method can be called in two API versions.
+
+Old version:
+
+`https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.getaccess`
+
+New version:
+
+`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.access.get`
+
+Documentation for the new version of the method call is available in OpenApi format. To obtain OpenApi, call the method `documentation`: 
+
+`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/documentation`
+
+{% endnote %}
+
 ## Method Parameters
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -16,18 +34,18 @@ The method `tasks.task.getaccess` checks the available actions for users on a ta
 || **taskId***
 [`integer`](../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list](./tasks-task-list.md) method. ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
 || **users**
 [`array`](../data-types.md) | Array of user identifiers for whom access needs to be checked.
 
 By default, the current user is used.
 
-User identifiers can be obtained using the [get user list](../user/user-get.md) method. ||
+The user identifier can be obtained using the [get user list method](../user/user-get.md) ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -140,7 +158,7 @@ User identifiers can be obtained using the [get user list](../user/user-get.md) 
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -207,7 +225,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../data-types.md) | Root element of the response.
 
-Contains an object with a description of available actions for each user. ||
+Contains an object with a description of available actions for each user ||
 || **allowedActions**
 [`object`](../data-types.md) | An object where the key is the `user ID`, and the value is an object with [description of available actions](./fields.md#action) on the task.
 
@@ -215,18 +233,18 @@ If the user executing the method does not have access to the task, an empty arra
 
 {% note info "" %}
 
-For non-existent users from the `users` parameter, the method will return a response with a value of `false` for all actions.
+For non-existent users from the `users` parameter, the method will return a response with `false` for all actions.
 
 {% endnote %}
 
  ||
 || **time**
-[`time`](../data-types.md#time) | Information about the request execution time. ||
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -241,9 +259,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | wrong task id | The value in the `taskId` parameter is of an incorrect type. ||
-|| `100` | Invalid value {} to match with parameter {users}. Should be value of type array. | An incorrect value is specified in the `users` parameter. ||
-|| `100` | CTaskItem All parameters in the constructor must have real class type | The required parameter `taskId` is not specified. ||
+|| `0` | wrong task id | The value in the `taskId` parameter is of an incorrect type ||
+|| `100` | Invalid value {} to match with parameter {users}. Should be value of type array. | An incorrect value was specified in the `users` parameter ||
+|| `100` | CTaskItem All parameters in the constructor must have real class type | The required parameter `taskId` was not specified ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

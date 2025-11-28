@@ -8,6 +8,24 @@ The method `tasks.task.delete` removes a task.
 
 You can check the permission to delete a task using the [check access to task](./tasks-task-get-access.md) method.
 
+{% note info "" %}
+
+Since version `tasks 25.700.0`, the method call is available in two API versions.
+
+Old version:
+
+`https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.delete`
+
+New version:
+
+`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.delete`
+
+Documentation in OpenApi format is available for the new version of the method call. To obtain OpenApi, call the `documentation` method:
+
+`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/documentation`
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on parameters](../../_includes/required.md) %}
@@ -16,9 +34,9 @@ You can check the permission to delete a task using the [check access to task](.
 || **Name**
 `type` | **Description** ||
 || **taskId***
-[`integer`](../data-types.md) | Task identifier.
+[`integer`](../data-types.md) | Identifier of the task.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [getting the list of tasks](./tasks-task-list.md) method ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or using the [getting the task list](./tasks-task-list.md) method ||
 |#
 
 ## Code Examples
@@ -182,7 +200,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | wrong task id | The `taskId` parameter has an invalid type ||
+|| `0` | wrong task id | The value of `taskId` is of an incorrect type ||
 || `1048582` | No access to delete the task | The user does not have access to the task or does not have permission to delete the task ||
 || `100` | CTaskItem All parameters in the constructor must have real class type | The required parameter `taskId` is missing ||
 |#

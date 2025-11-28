@@ -1,10 +1,16 @@
-# Update comment task.commentitem.update
+# Update Comment task.commentitem.update
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
 The method `task.commentitem.update` updates a comment.
+
+{% note warning "Method development has been halted since version `tasks 25.700.0` " %}
+
+The method `task.commentitem.update` does not work in the [new task card](../tasks-new.md), use the method [im.message.update](../../chats/messages/im-message-update.md) to work with task chat.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -14,7 +20,7 @@ Pass parameters in the request according to the order in the table. If the order
 
 {% endnote %}
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -22,18 +28,18 @@ Pass parameters in the request according to the order in the table. If the order
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [getting the list of tasks](../tasks-task-list.md) method ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method to get the list of tasks](../tasks-task-list.md) ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Comment identifier.
 
-The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [getting the list of comments](./task-comment-item-get-list.md) method ||
+The comment identifier can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [method to get the list of comments](./task-comment-item-get-list.md) ||
 || **FIELDS***
 [`object`](../../data-types.md) | Object with [comment fields](#fields) ||
 |#
 
 ### FIELDS Parameter {#fields}
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Footnote on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -43,7 +49,7 @@ The comment identifier can be obtained when [adding a new comment](./task-commen
 || **UF_FORUM_MESSAGE_DOC**
 [`array`](../../data-types.md) | Array with file identifiers from Drive. Prefix each identifier with `n`, for example, `['n123', 'n456', ... ]`.
 
-The comment author must have access to the attached files; otherwise, the method will return an error.
+The author of the comment must have access to the attached files; otherwise, the method will return an error.
 
 {% note info "" %}
 
@@ -127,7 +133,7 @@ The field is completely overwritten. To add a file to already uploaded ones, pas
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your data processing logic
+        // Your required data processing logic
         processData($result);
     
     } catch (Throwable $e) {
@@ -218,7 +224,7 @@ HTTP status: **400**
 ```json
 {
     "error":"ERROR_CODE",
-    "error_description":"Comment text is not specified.<br>"
+    "error_description":"Comment text not specified.<br>"
 }
 ```
 
@@ -228,15 +234,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | Comment text is not specified. | Required parameter `POST_MESSAGE` is not provided or is empty ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED | Error is returned in the following cases:
-- Incorrect parameter order in the method
+|| `ERROR_CORE` | Comment text not specified. | Required parameter `POST_MESSAGE` not provided or empty ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED | Error returned in the following cases:
+- Incorrect parameter order specified in the method
 - No access permission to the task
-- When trying to update another user's comment
+- Attempting to update another user's comment
 - If the specified task or comment does not exist ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Error is returned in the following cases:
-- Required parameter, such as `TASKID`, is not specified
-- Incorrect value type for the parameter, for example, for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Error returned in the following cases:
+- Required parameter not specified, for example, `TASKID`
+- Incorrect value type specified for the parameter, for example, for `TASKID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

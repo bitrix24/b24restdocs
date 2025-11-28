@@ -6,6 +6,12 @@
 
 The method `task.commentitem.get` retrieves a comment by its ID.
 
+{% note warning "Development of the method has been halted since version of the module `tasks 25.700.0` " %}
+
+The method `task.commentitem.get` does not work in the [new task card](../tasks-new.md), use the method [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) for working with task chat.
+
+{% endnote %}
+
 ## Method Parameters
 
 {% note warning "" %}
@@ -22,11 +28,11 @@ Pass parameters in the request according to the order in the table. If the order
 || **TASKID***
 [`integer`](../../data-types.md) | Task ID.
 
-The task ID can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method for retrieving the list of tasks](../tasks-task-list.md) ||
+The task ID can be obtained when [creating a new task](../tasks-task-add.md) or by using the [method to get the list of tasks](../tasks-task-list.md) ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Comment ID.
 
-The comment ID can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [method for retrieving the list of comments](./task-comment-item-get-list.md) ||
+The comment ID can be obtained when [adding a new comment](./task-comment-item-add.md) or by using the [method to get the list of comments](./task-comment-item-get-list.md) ||
 |#
 
 ## Code Examples
@@ -155,7 +161,7 @@ HTTP Status: **200**
         "AUTHOR_NAME": "John Smith",
         "AUTHOR_EMAIL": "",
         "POST_DATE": "2025-07-15T14:30:00+02:00",
-        "POST_MESSAGE": "Text of the new comment on the task",
+        "POST_MESSAGE": "Text of the new comment for the task",
         "ATTACHED_OBJECTS": {
             "973": {
                 "ATTACHMENT_ID": "973",
@@ -255,8 +261,8 @@ HTTP Status: **400**
 - Incorrect order of parameters in the method
 - Task or comment with the specified ID not found
 - No access permission to the task ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::get() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | An incorrect type of value was provided for the parameter, for example, for `TASKID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::get(), but not given.; 256/TE/WRONG_ARGUMENTS | A required parameter was not provided, for example, `ITEMID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskcommentitem::get() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type for the parameter, for example, for `TASKID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskcommentitem::get(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not specified, for example, `ITEMID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

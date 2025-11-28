@@ -8,6 +8,24 @@
 
 The method `tasks.task.update` updates a task.
 
+{% note info "" %}
+
+Since version `tasks 25.700.0`, the method call is available in two API versions. 
+
+Old version:
+
+`https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.update`
+
+New version:
+
+`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.update`
+
+Documentation in OpenApi format is available for the new version of the method call. To obtain OpenApi, call the method `documentation`: 
+
+`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/documentation`
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
@@ -20,7 +38,7 @@ The method `tasks.task.update` updates a task.
 
 The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
 || **fields***
-[`object`](../data-types.md) | Values of [task fields](./fields.md). At least one field must be provided in the parameter; otherwise, the method will return an error.
+[`object`](../data-types.md) | Values of [task fields](./fields.md). At least one field must be passed in the parameter; otherwise, the method will return an error.
 
 You can pass the `SE_PARAMETER` parameter to the method — a list of objects with additional task parameters. Possible values for the `CODE` codes:
 - `1` — deadlines are determined by the deadlines of subtasks
@@ -87,8 +105,8 @@ SE_PARAMETER: [
     				],
     				// Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
     				UF_TASK_WEBDAV_FILES: [
-    					"n12345", // Identifier of the first disk file
-    					"n67890" // Identifier of the second disk file
+    					"n12345", // Identifier of the first Drive file
+    					"n67890" // Identifier of the second Drive file
     				],
     				RESPONSIBLE_ID: 123 // Identifier of the new assignee
     			}
@@ -124,8 +142,8 @@ SE_PARAMETER: [
                         ],
                         // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                         'UF_TASK_WEBDAV_FILES' => [
-                            'n12345', // Identifier of the first disk file
-                            'n67890' // Identifier of the second disk file
+                            'n12345', // Identifier of the first Drive file
+                            'n67890' // Identifier of the second Drive file
                         ],
                         'RESPONSIBLE_ID' => 123 // Identifier of the new assignee
                     ]
@@ -161,8 +179,8 @@ SE_PARAMETER: [
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 UF_TASK_WEBDAV_FILES: [
-                    "n12345", // Identifier of the first disk file
-                    "n67890" // Identifier of the second disk file
+                    "n12345", // Identifier of the first Drive file
+                    "n67890" // Identifier of the second Drive file
                 ],
                 RESPONSIBLE_ID: 123 // Identifier of the new assignee
             }
@@ -196,8 +214,8 @@ SE_PARAMETER: [
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 'UF_TASK_WEBDAV_FILES' => [
-                    'n12345', // Identifier of the first disk file
-                    'n67890' // Identifier of the second disk file
+                    'n12345', // Identifier of the first Drive file
+                    'n67890' // Identifier of the second Drive file
                 ],
                 'RESPONSIBLE_ID' => 123 // Identifier of the new assignee
             ]
@@ -215,7 +233,7 @@ SE_PARAMETER: [
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -390,7 +408,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -405,7 +423,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | wrong task id | The value in the `taskId` parameter is of an incorrect type ||
+|| `0` | wrong task id | The value of `taskId` is of an incorrect type ||
 || `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | The required parameter `taskId` is not provided ||
 || `0` | Action on the task is not allowed (internal error) | The user does not have permission to update the task or does not have access to the task ||
 || `100` | Could not find value for parameter {fields} (internal error) | The `fields` parameter is not provided or is empty ||
@@ -414,8 +432,8 @@ HTTP Status: **400**
 || `ERROR_CORE` | The task specified in the "Parent task" field is not found\u003Cbr\u003E | The `PARENT_ID` field contains the identifier of a non-existent task ||
 || `ERROR_CORE` | Cannot bind the node to itself\u003Cbr\u003E | The `PARENT_ID` field contains the identifier of the same task as in the `taskId` parameter ||
 || `ERROR_CORE` | Creating cyclic links in tasks is prohibited\u003Cbr\u003E | The `PARENT_ID` field contains the identifier of the subtask `taskId`. A subtask cannot become a parent task ||
-|| `ERROR_CORE` | The end date specified in the scheduling is earlier than the start date\u003Cbr\u003E | The date and time in the `END_DATE_PLAN` field is earlier than in `START_DATE_PLAN` ||
-|| `ERROR_CORE` | The scheduling specifies a duration that is too long for the task\u003Cbr\u003E | The value in the `END_DATE_PLAN` field specifies a date that is too far in the future ||
+|| `ERROR_CORE` | In deadline planning, the end date is earlier than the start date\u003Cbr\u003E | The date and time in the `END_DATE_PLAN` field is earlier than in `START_DATE_PLAN` ||
+|| `ERROR_CORE` | In deadline planning, the task duration is too long\u003Cbr\u003E | The value in the `END_DATE_PLAN` field is a date that is too far in the future ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
