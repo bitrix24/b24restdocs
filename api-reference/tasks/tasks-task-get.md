@@ -25,7 +25,11 @@ The task ID can be obtained when [creating a new task](./tasks-task-add.md) or b
 
 By default, it returns all fields except for custom ones. It is recommended to specify specific fields in the selection, as default fields may change.
 
-To get system fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, `UF_MAIL_MESSAGE`, and custom fields, include them in `SELECT`. You can find the names of custom fields using the [tasks.task.getFields](./tasks-task-get-fields.md) method ||
+To get system fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, `UF_MAIL_MESSAGE`, and custom fields, include them in `SELECT`. You can find the names of custom fields using the [tasks.task.getFields](./tasks-task-get-fields.md) method. 
+
+Specify `CHAT_ID` in the `select`
+parameter to retrieve the chat identifier for the [new task card](tasks-new.md)
+||
 |#
 
 ## Code Examples

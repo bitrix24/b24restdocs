@@ -25,6 +25,8 @@ Has a value of `null` if there is no parent task ||
 [`string`](../data-types.md) | Task title ||
 || **description**
 [`string`](../data-types.md) | Task description ||
+|| **chatId**
+[`integer`](../data-types.md) |  The chat identifier for the [new task card](tasks-new.md) ||
 || **mark**
 [`string`](../data-types.md) | Task rating. Possible values:
 `N` — negative

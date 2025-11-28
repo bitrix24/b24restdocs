@@ -1,21 +1,51 @@
 # New Task Card: Comments and Events
 
-The new task card has moved comments to chat. The old task methods continue to work, except for operations with comments. Changes are available from version `tasks 25.700.0`.
+The new task card has moved comments to chat. The old task methods continue to work, except for operations involving comments. Changes are available from version `tasks 25.700.0`.
 
 ## What Remains Unchanged
 
 - The [task.*](index.md) methods for creating and updating tasks, files, and checklists work as before.
-- Adding a comment through [task.commentitem.add](./comment-item/task-comment-item-add.md) still works.
+- Adding a comment via [task.commentitem.add](./comment-item/task-comment-item-add.md) still functions.
 
 ## What Has Changed in Comments
 
-- Updating and deleting comments using the methods task.commentitem.update and task.commentitem.delete no longer work. Use the Chat methods:
+- Updating and deleting comments using the methods task.commentitem.update and task.commentitem.delete no longer works. Use the Chat methods instead:
   - [im.message.update](../chats/messages/im-message-update.md) to change the text,
   - [im.message.delete](../chats/messages/im-message-delete.md) to delete a message.
-- Retrieving the list of comments through task.commentitem.getlist is no longer functional. Get task chat messages through [im.dialog.messages.get](../chats/messages/im-dialog-messages-get.md).
+- Retrieving the list of comments via task.commentitem.getlist is no longer functional. Get task chat messages through [im.dialog.messages.get](../chats/messages/im-dialog-messages-get.md).
 - The chat associated with the task is returned in the response of [tasks.task.get](./tasks-task-get.md). Use its identifier for requests in chat methods.
 
-### How to Get Task Chat via tasks.task.get
+### How to Get the Task Chat ID via tasks.task.get
+
+#### Old API Version 
+
+```http
+POST https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.get
+{
+    "id": 51,
+    "select": ["CHAT_ID"]
+}
+```
+
+Example response: 
+
+```json
+{
+    "result": {
+        "task": {
+            "id": "3835",
+            "chatId": 2537,
+            "favorite": "N",
+            "group": [],
+            "action": {
+                ...
+            }
+        }
+    }
+}    
+```
+
+#### New API Version 
 
 Request the fields `chat.id`, `chat.entityId`, `chat.entityType` from the task:
 
@@ -26,19 +56,6 @@ POST https://{installation_address}/rest/api/{user_id}/{rest_application_passwor
     "select": ["id", "chat.id", "chat.entityId", "chat.entityType"]
 }
 ```
-{% note info "" %}
-
-The new API call differs by the addition of the /api/ parameter in the request.
-
-Old version:
-
-`https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.get`
-
-New version:
-
-`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.get`
-
-{% endnote %}
 
 Example response:
 
@@ -57,6 +74,26 @@ Example response:
 }
 ```
 
+{% note info "" %}
+
+Starting from version `tasks 25.700.0`, some methods can be called in the new format. 
+
+The new API call differs by the addition of the /api/ parameter in the request. 
+
+Old version:
+
+`https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.get`
+
+New version:
+
+`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.get`
+
+Documentation for the new version of the method call is available in OpenApi format. To obtain OpenApi, call the method `documentation`: 
+
+`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/documentation`
+
+{% endnote %}
+
 ## How to Send Messages to a Task
 
 - Old method [task.commentitem.add](./comment-item/task-comment-item-add.md).
@@ -64,4 +101,4 @@ Example response:
 
 ## Events
 
-- Task comment events are temporarily unavailable in the new card.
+- Events for task comments are temporarily unavailable in the new card.
