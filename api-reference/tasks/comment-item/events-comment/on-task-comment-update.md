@@ -4,7 +4,7 @@
 >
 > Who can subscribe: any user
 
-The event triggers after a comment is modified in a task.
+The event triggers after a comment is updated in a task.
 
 {% note info "" %}
 
@@ -16,12 +16,41 @@ Events will not be sent to the application until the installation is complete. [
 
 Data is transmitted as a POST request {.b24-info}
 
+When working with the old task card before module version `tasks 25.700.0`:
+
 ```json
 array(
     'event' => 'ONTASKCOMMENTUPDATE',
     'data' => array(
         'FIELDS_BEFORE' => array('ID' => 123, 'TASK_ID' => 555),
         'FIELDS_AFTER' => array('ID' => 123, 'TASK_ID' => 555, 'ACTION' => 'EDIT'),
+        'IS_ACCESSIBLE_BEFORE' => 'undefined',
+        'IS_ACCESSIBLE_AFTER' => 'undefined',
+    ),
+    'ts' => '1466439714',
+    'auth' => array(
+        'access_token' => 's6p6eclrvim6da22ft9ch94ekreb52lv',
+        'expires_in' => '3600',
+        'scope' => 'crm',
+        'domain' => 'some-domain.bitrix24.com',
+        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
+        'status' => 'F',
+        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
+        'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
+        'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
+        'application_token' => '51856fefc120afa4b628cc82d3935cce',
+        ),
+)
+```
+
+When working with the new task card with chat from module version `tasks 25.700.0`:
+
+```json
+array(
+    'event' => 'ONTASKCOMMENTUPDATE',
+    'data' => array(
+        'FIELDS_BEFORE' => array('ID' => 0, 'TASK_ID' => 555, 'MESSAGE_ID' => 1458),
+        'FIELDS_AFTER' => array('ID' => 0, 'TASK_ID' => 555, 'MESSAGE_ID' => 1458, 'ACTION' => 'EDIT'),
         'IS_ACCESSIBLE_BEFORE' => 'undefined',
         'IS_ACCESSIBLE_AFTER' => 'undefined',
     ),
@@ -81,9 +110,11 @@ array(
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../../data-types.md) | Identifier of the updated comment ||
+[`integer`](../../../data-types.md) | Identifier of the updated comment. `'ID' => 0` is returned when using the [new task card](../../tasks-new.md) with module version `tasks 25.700.0` ||
 || **TASK_ID***
 [`integer`](../../../data-types.md) | Identifier of the task to which the comment belongs ||
+|| **MESSAGE_ID**
+[`integer`](../../../data-types.md) | Identifier of the updated message in the task chat, returned when using the [new task card](../../tasks-new.md) with module version `tasks 25.700.0` ||
 |#
 
 ### Field FIELDS_AFTER {#fields_after}
@@ -94,11 +125,13 @@ array(
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../../data-types.md) | Identifier of the updated comment ||
+[`integer`](../../../data-types.md) | Identifier of the updated comment. `'ID' => 0` is returned when using the [new task card](../../tasks-new.md) with module version `tasks 25.700.0` ||
 || **TASK_ID***
 [`integer`](../../../data-types.md) | Identifier of the task to which the comment belongs ||
 || **ACTION***
 [`string`](../../../data-types.md) | Action, in this case will always be `EDIT` ||
+|| **MESSAGE_ID**
+[`integer`](../../../data-types.md) | Identifier of the updated message in the task chat, returned when using the [new task card](../../tasks-new.md) with module version `tasks 25.700.0` ||
 |#
 
 ### Field IS_ACCESSIBLE_BEFORE {#is_accessible_before}

@@ -2,6 +2,10 @@
 
 ## 2025
 
+### November 28, 2025
+
+- Updated the [OnTaskComment*](./api-reference/tasks/comment-item/events-comment/index.md) events with information on working with the new task card
+
 ### November 27, 2025
 
 - Added the article [New task card: comments and events](./api-reference/tasks/tasks-new.md)

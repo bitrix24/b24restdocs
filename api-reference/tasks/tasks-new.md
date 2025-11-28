@@ -9,7 +9,7 @@ The new task card has moved comments to chat. The old task methods continue to w
 
 ## What Has Changed in Comments
 
-- Updating and deleting comments using the methods task.commentitem.update and task.commentitem.delete no longer works. Use the Chat methods instead:
+- Updating and deleting comments using the methods task.commentitem.update and task.commentitem.delete no longer work. Use the Chat methods instead:
   - [im.message.update](../chats/messages/im-message-update.md) to change the text,
   - [im.message.delete](../chats/messages/im-message-delete.md) to delete a message.
 - Retrieving the list of comments via task.commentitem.getlist is no longer functional. Get task chat messages through [im.dialog.messages.get](../chats/messages/im-dialog-messages-get.md).
@@ -20,7 +20,7 @@ The new task card has moved comments to chat. The old task methods continue to w
 #### Old API Version 
 
 ```http
-POST https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.get
+POST https://{installation_address}/rest/{user_id}/{rest_app_password}/tasks.task.get
 {
     "id": 51,
     "select": ["CHAT_ID"]
@@ -50,7 +50,7 @@ Example response:
 Request the fields `chat.id`, `chat.entityId`, `chat.entityType` from the task:
 
 ```http
-POST https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.get
+POST https://{installation_address}/rest/api/{user_id}/{rest_app_password}/tasks.task.get
 {
     "id": 51,
     "select": ["id", "chat.id", "chat.entityId", "chat.entityType"]
@@ -76,21 +76,21 @@ Example response:
 
 {% note info "" %}
 
-Starting from version `tasks 25.700.0`, some methods can be called in the new format. 
+Starting from version `tasks 25.700.0`, some methods are available in the new format.
 
-The new API call differs by the addition of the /api/ parameter in the request. 
+The new API call differs by the addition of the /api/ parameter in the request.
 
 Old version:
 
-`https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.get`
+`https://{installation_address}/rest/{user_id}/{rest_app_password}/tasks.task.get`
 
 New version:
 
-`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.get`
+`https://{installation_address}/rest/api/{user_id}/{rest_app_password}/tasks.task.get`
 
 Documentation for the new version of the method call is available in OpenApi format. To obtain OpenApi, call the method `documentation`: 
 
-`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/documentation`
+`https://{installation_address}/rest/api/{user_id}/{rest_app_password}/documentation`
 
 {% endnote %}
 
@@ -101,4 +101,7 @@ Documentation for the new version of the method call is available in OpenApi for
 
 ## Events
 
-- Events for task comments are temporarily unavailable in the new card.
+- The [OnTaskComment*](./comment-item/events-comment/index.md) events for task comments are operational. When working with the new task card, the handler will receive parameters:
+    - `MESSAGE_ID` with the identifier of the message in the task chat,
+    - `TASK_ID` with the identifier of the task, 
+    - `'ID' => 0` the identifier of the comment will be zero.

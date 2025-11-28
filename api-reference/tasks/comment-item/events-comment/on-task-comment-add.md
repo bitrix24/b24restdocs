@@ -14,7 +14,9 @@ Events will not be sent to the application until the installation is complete. [
 
 ## What the handler receives
 
-Data is sent as a POST request {.b24-info}
+Data is transmitted as a POST request {.b24-info}
+
+When working with the old task card prior to module version `tasks 25.700.0`:
 
 ```json
 array(
@@ -41,7 +43,34 @@ array(
 )
 ```
 
-{% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
+When working with the new task card with chat from module version `tasks 25.700.0`:
+
+```json
+array(
+    'event' => 'ONTASKCOMMENTADD',
+    'data' => array(
+        'FIELDS_BEFORE' => 'undefined',
+        'FIELDS_AFTER' => array('ID' => 0, 'TASK_ID' => 555, 'MESSAGE_ID' => 1458),
+        'IS_ACCESSIBLE_BEFORE' => 'undefined',
+        'IS_ACCESSIBLE_AFTER' => 'undefined',
+    ),
+    'ts' => '1466439714',
+    'auth' => array(
+        'access_token' => 's6p6eclrvim6da22ft9ch94ekreb52lv',
+        'expires_in' => '3600',
+        'scope' => 'crm',
+        'domain' => 'some-domain.bitrix24.com',
+        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
+        'status' => 'F',
+        'client_endpoint' => 'https://some-domain.bitrix24.com/rest/',
+        'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
+        'refresh_token' => '4s386p3q0tr8dy89xvmt96234v3dljg8',
+        'application_token' => '51856fefc120afa4b628cc82d3935cce',
+        ),
+)
+```
+
+{% include notitle [Parameters note](../../../../_includes/required.md) %}
 
 #|
 || **Parameter**
@@ -58,7 +87,7 @@ array(
 
 ### Parameter data[]
 
-{% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
+{% include notitle [Parameters note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -68,27 +97,29 @@ array(
 || **FIELDS_AFTER***
 [`undefined`\|`object`](../../../data-types.md) | Fields of the comment and task after the event (detailed description provided [below](#fields_after)). If there are no available task fields, this field will contain the value `undefined` ||
 || **IS_ACCESSIBLE_BEFORE***
-[`string`](../../../data-types.md) | Whether the task was readable before the event (detailed description provided [below](#is_accessible_before)) ||
+[`string`](../../../data-types.md) | Was the task readable before the event (detailed description provided [below](#is_accessible_before)) ||
 || **IS_ACCESSIBLE_AFTER***
-[`string`](../../../data-types.md) | Whether the task became readable after the event (detailed description provided [below](#is_accessible_after)) ||
+[`string`](../../../data-types.md) | Is the task readable after the event (detailed description provided [below](#is_accessible_after)) ||
 |#
 
 ### Field FIELDS_BEFORE {#fields_before}
 
-{% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
+{% include notitle [Parameters note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../../data-types.md) | Identifier of the created comment ||
+[`integer`](../../../data-types.md) | Identifier of the created comment. `'ID' => 0` is returned when the [new task card](../../tasks-new.md) is active from module version `tasks 25.700.0` ||
 || **TASK_ID***
 [`integer`](../../../data-types.md) | Identifier of the task to which the comment was added ||
+|| **MESSAGE_ID**
+[`integer`](../../../data-types.md) | Identifier of the sent message in the task chat, returned when the [new task card](../../tasks-new.md) is active from module version `tasks 25.700.0` ||
 |#
 
 ### Field FIELDS_AFTER {#fields_after}
 
-{% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
+{% include notitle [Parameters note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -97,11 +128,13 @@ array(
 [`integer`](../../../data-types.md) | Identifier of the created comment ||
 || **TASK_ID***
 [`integer`](../../../data-types.md) | Identifier of the task to which the comment was added ||
+|| **MESSAGE_ID**
+[`integer`](../../../data-types.md) | Identifier of the sent message in the task chat, returned when the [new task card](../../tasks-new.md) is active from module version `tasks 25.700.0` ||
 |#
 
 ### Field IS_ACCESSIBLE_BEFORE {#is_accessible_before}
 
-{% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
+{% include notitle [Parameters note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -115,7 +148,7 @@ array(
 
 ### Field IS_ACCESSIBLE_AFTER {#is_accessible_after}
 
-{% include notitle [Footnote on parameters](../../../../_includes/required.md) %}
+{% include notitle [Parameters note](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -129,7 +162,7 @@ array(
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../_includes/examples.md) %}
+{% include [Examples note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
