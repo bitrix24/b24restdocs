@@ -101,7 +101,9 @@ Documentation for the new version of the method call is available in OpenApi for
 
 ## Events
 
-- The [OnTaskComment*](./comment-item/events-comment/index.md) events for task comments are operational. When working with the new task card, the handler will receive parameters:
+- The event [OnTaskCommentAdd](./comment-item/events-comment/on-task-comment-add.md) is functioning. When working with the new task detail form, the handler will receive the following parameters: 
     - `MESSAGE_ID` with the identifier of the message in the task chat,
     - `TASK_ID` with the identifier of the task, 
-    - `'ID' => 0` the identifier of the comment will be zero.
+    - `'ID' => 0` the identifier of the comment will be zero. 
+
+- The events [OnTaskCommentUpdate](./comment-item/events-comment/on-task-comment-update.md) and [OnTaskCommentDelete](./comment-item/events-comment/on-task-comment-delete.md) do not work in the new detail form.
