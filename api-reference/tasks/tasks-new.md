@@ -1,4 +1,4 @@
-# New Task Card: Comments and Events
+# New Task Card: Overview of Changes
 
 The new task card has moved comments to chat. The old task methods continue to work, except for operations involving comments. Changes are available from version `tasks 25.700.0`.
 
@@ -107,3 +107,11 @@ Documentation for the new version of the method call is available in OpenApi for
     - `'ID' => 0` the identifier of the comment will be zero. 
 
 - The events [OnTaskCommentUpdate](./comment-item/events-comment/on-task-comment-update.md) and [OnTaskCommentDelete](./comment-item/events-comment/on-task-comment-delete.md) do not work in the new detail form.
+
+## Widgets
+
+The placement of widgets [TASK_VIEW_SIDEBAR](../widgets/task/view-sidebar.md), [TASK_VIEW_TOP_PANEL](../widgets/task/view-top-panel.md), [TASK_VIEW_TAB](../widgets/task/view-tab.md) is no longer relevant in the new task detail form. In the new detail form, all widgets are displayed in a single Applications block.
+
+All previously registered widgets continue to function. New widgets can be registered, and they will also be displayed in the Applications block.
+
+![Embedded applications](_images/widget.png)

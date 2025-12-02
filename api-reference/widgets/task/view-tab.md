@@ -2,7 +2,13 @@
 
 > Scope: [`task`](../../scopes/permissions.md)
 
-You can add your own tab in the task card.
+You can add your item in the right panel of the old task detail form.
+
+Starting from version `tasks 25.700.0`, a [new task card](../../tasks/tasks-new.md) has been released. The location of the `TASK_VIEW_TAB` item is no longer present in the new card. All widgets within the card are displayed in a single Applications block.
+
+Previously registered `TASK_VIEW_TAB` items continue to function and are displayed in the Applications block.
+
+![Embedded applications](_images/widget.png)
 
 The specific placement code for the widget is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
