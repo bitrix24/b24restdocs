@@ -358,7 +358,7 @@ If `true` — tracking is allowed ||
 || **WORK_TIME_END**
 [`integer`](../../data-types.md) | End time of the workday in seconds from midnight ||
 || **WORK_DAYS**
-[`string`](../../data-types.md) | String with codes of workdays. For example, `01234` — from Monday to Friday ||
+[`string`](../../data-types.md) | String with codes of workdays. For example, `12345` — from Monday to Friday ||
 || **SCHEDULE_ID**
 [`integer`](../../data-types.md) | Identifier of the work schedule ||
 || **DELETED**
