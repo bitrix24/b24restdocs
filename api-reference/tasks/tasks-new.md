@@ -13,6 +13,7 @@ The new task card has moved comments to chat. The old task methods continue to w
   - [im.message.update](../chats/messages/im-message-update.md) to change the text,
   - [im.message.delete](../chats/messages/im-message-delete.md) to delete a message.
 - Retrieving the list of comments via task.commentitem.getlist is no longer functional. Get task chat messages through [im.dialog.messages.get](../chats/messages/im-dialog-messages-get.md).
+- Use the method [im.disk.file.commit](../chats/files/im-disk-file-commit.md) to send files in the task chat.
 - The chat associated with the task is returned in the response of [tasks.task.get](./tasks-task-get.md). Use its identifier for requests in chat methods.
 
 ### How to Get the Task Chat ID via tasks.task.get
@@ -97,7 +98,7 @@ Documentation for the new version of the method call is available in OpenApi for
 ## How to Send Messages to a Task
 
 - Old method [task.commentitem.add](./comment-item/task-comment-item-add.md).
-- New method [tasks.task.chat.message.send](./tasks-task-chat-message-send.md).
+- New method [tasks.task.chat.message.send](./tasks-task-chat-message-send.md). To send a file in the task chat, use the method [im.disk.file.commit](../chats/files/im-disk-file-commit.md).
 
 ## Events
 
