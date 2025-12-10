@@ -2,6 +2,8 @@
 
 ## 2025
 
+### December 10, 2025
+
 - Updated the documentation for the methods [task.checklistitem.renew](./api-reference/tasks/checklist-item/task-checklist-item-renew.md), [task.checklistitem.complete](./api-reference/tasks/checklist-item/task-checklist-item-complete.md), [task.checklistitem.delete](./api-reference/tasks/checklist-item/task-checklist-item-delete.md), [task.checklistitem.moveafteritem](./api-reference/tasks/checklist-item/task-checklist-item-move-after-item.md) in Task Checklists
 - Updated the main page of the [Messages](./api-reference/imopenlines/openlines/messages/index.md) section in Open Channels. Added introductory information as well as an overview of methods and connections
 - Updated the documentation for the methods [lists.add](./api-reference/lists/lists/lists-add.md), [lists.update](./api-reference/lists/lists/lists-update.md), [lists.get](./api-reference/lists/lists/lists-get.md), [lists.delete](./api-reference/lists/lists/lists-delete.md), [lists.get.iblock.type.id](./api-reference/lists/lists/lists-get-iblock-type-id.md) in Working with Lists
