@@ -1,60 +1,80 @@
-# Get the ID of the information block type lists.get.iblock.type.id
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing here — we will fill it in shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- parameter types are not specified
-- examples are missing
-- success response is absent
-- error response is absent
-
-{% endnote %}
-
-{% endif %}
+# Get the information block type ID lists.get.iblock.type.id
 
 > Scope: [`lists`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with "Read" access permission for lists
 
-The method `lists.get.iblock.type.id` returns the `id` of the information block type. On success, a string with the `id` of the information block type will be returned; otherwise, `null`.
+The method `lists.get.iblock.type.id` returns the information block type ID.
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter** | **Description** | **Available since** ||
-|| **IBLOCK_CODE/IBLOCK_ID**
-[`unknown`](../../data-types.md) | code or `id` of the information block | ||
+|| **Name**
+`type` | **Description** ||
+|| **IBLOCK_ID*** 
+[`integer`](../../data-types.md) | Information block ID.
+
+The ID can be obtained using the [lists.get](../lists/lists-get.md) method ||
+|| **IBLOCK_CODE*** 
+[`string`](../../data-types.md) | Symbolic code of the information block.
+
+The code can be obtained using the [lists.get](../lists/lists-get.md) method
+
+{% note info "" %}
+
+At least one of the parameters must be specified: `IBLOCK_ID` or `IBLOCK_CODE`
+
+{% endnote %} ||
 |#
 
-## Example:
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"IBLOCK_ID":87}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/lists.get.iblock.type.id
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"IBLOCK_ID":87,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/lists.get.iblock.type.id
+    ```
 
 - JS
 
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'lists.get.iblock.type.id',
-    		{
-    			'IBLOCK_ID': '41'
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+        const response = await $b24.callMethod(
+            'lists.get.iblock.type.id',
+            {
+                IBLOCK_ID: 87,
+            }
+        );
+        
+        const result = response.getData().result;
+        console.log('Data:', result);
+        
+        processResult(result);
     }
     catch( error )
     {
-    	alert("Error: " + error);
+        console.error('Error:', error);
     }
     ```
 
@@ -62,52 +82,105 @@ The method `lists.get.iblock.type.id` returns the `id` of the information block 
 
     ```php
     try {
-        $params = [
-            'IBLOCK_ID' => '41'
-        ];
-    
         $response = $b24Service
             ->core
             ->call(
                 'lists.get.iblock.type.id',
-                $params
+                [
+                    'IBLOCK_ID' => 87
+                ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
+        processData($result);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error calling lists.get.iblock.type.id: ' . $e->getMessage();
+        echo 'Error: ' . $e->getMessage();
     }
     ```
 
 - BX24.js
 
     ```js
-    var params = {
-        'IBLOCK_ID': '41'
-    };
     BX24.callMethod(
-        'lists.get.iblock.type.id',
-        params,
-        function(result)
-        {
-            if(result.error())
-                alert("Error: " + result.error());
-            else
-                console.log(result.data());
+     'lists.get.iblock.type.id',
+     {
+        IBLOCK_ID: 87
+     },
+        function(res) {
+            if (res.error()) {
+                console.error(res.error());
+            } else {
+                console.log(res.data());
+            }
         }
     );
     ```
 
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'lists.get.iblock.type.id',
+        [
+            'IBLOCK_ID' => 87
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
 {% endlist %}
 
-{% include [Examples note](../../../_includes/examples.md) %}
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": "lists",
+    "time": {
+        "start": 1764775444,
+        "finish": 1764775444.66342,
+        "duration": 0.6634199619293213,
+        "processing": 0,
+        "date_start": "2025-12-03T18:24:04+01:00",
+        "date_finish": "2025-12-03T18:24:04+01:00",
+        "operating_reset_at": 1764776044,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`string`](../../data-types.md) | Information block type ID.
+
+Returns `null` if the information block is not found or the parameters are incorrect ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning 
+
+- [{#T}](./lists-add.md)
+- [{#T}](./lists-update.md)
+- [{#T}](./lists-get.md)
+- [{#T}](./lists-delete.md)

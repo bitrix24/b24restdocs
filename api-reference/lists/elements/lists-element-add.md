@@ -1,8 +1,10 @@
-# Create a universal list element lists.element.add
+# Create a list element lists.element.add
 
 > Scope: [`lists`](../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "Add" or "Edit" access permission for the required list
+
+The method `lists.element.add` creates a list element.
 
 ## Method Parameters
 
@@ -11,12 +13,12 @@
 #|
 || **Name**
 `type` | **Description** ||
-|| **IBLOCK_TYPE_ID*** 
-[`string`](../../data-types.md) | Identifier of the information block type. Possible values: 
+|| **IBLOCK_TYPE_ID***
+[`string`](../../data-types.md) | Identifier of the information block. Possible values: 
 - `lists` — list information block type 
 - `bitrix_processes` — processes information block type 
 - `lists_socnet` — group lists information block type ||
-|| **IBLOCK_ID*** 
+|| **IBLOCK_ID***
 [`integer`](../../data-types.md) | Identifier of the information block.
 
 The identifier can be obtained using the [lists.get](../lists/lists-get.md) method ||
@@ -30,20 +32,20 @@ The code can be obtained using the [lists.get](../lists/lists-get.md) method
 At least one of the parameters must be specified: `IBLOCK_ID` or `IBLOCK_CODE`
 
 {% endnote %} ||
-|| **ELEMENT_CODE*** 
+|| **ELEMENT_CODE***
 [`string`](../../data-types.md) | Symbolic code of the element ||
-|| **FIELDS*** 
+|| **FIELDS***
 [`array`](../../data-types.md) | Array of fields.
 
 [Detailed description](#parametr-fields) ||
-|| **IBLOCK_SECTION_ID** 
-[`integer`](../../data-types.md) | Identifier of the section where the element is added.
+|| **IBLOCK_SECTION_ID**
+[`integer`](../../data-types.md) | Identifier of the section to which the element is added.
 
-If the parameter is not provided, the element is created at the root of the list. The default value is `0`.
+If the parameter is not passed, the element is created at the root of the list. The default value is `0`.
 
 The identifier can be obtained using the [lists.section.get](../sections/lists-section-get.md) method ||
-|| **LIST_ELEMENT_URL** 
-[`string`](../../data-types.md) | Template address for list elements.
+|| **LIST_ELEMENT_URL**
+[`string`](../../data-types.md) | Template address to the list elements.
 
 Supports replacements: `#list_id#`, `#section_id#`, `#element_id#`, `#group_id#` ||
 |#
@@ -55,12 +57,12 @@ Supports replacements: `#list_id#`, `#section_id#`, `#element_id#`, `#group_id#`
 #|
 || **Name**
 `type` | **Description** ||
-|| **NAME*** 
+|| **NAME***
 [`string`](../../data-types.md) | Name of the element ||
 || **PROPERTY_PropertyId** | Custom properties.
 
 Any property of the element can be configured as multiple. For multiple properties, pass an array, even if there is only one value. 
-  
+   
 To pass a value in a File type field, specify:
 - for File type — [base64](../../files/how-to-upload-files.md) or an array with the name and base64
 - for File type (Drive) — file identifier from Drive
@@ -262,12 +264,12 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter is missing ||
+|| `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter not provided ||
 || `ERROR_IBLOCK_NOT_FOUND` | Iblock not found | Information block not found ||
 || `ERROR_ELEMENT_ALREADY_EXISTS` | Element already exists | An element with this `CODE` already exists ||
 || `ERROR_ADD_ELEMENT` | — | Error adding element ||
 || `ERROR_ELEMENT_FIELD_VALUE` | Writing file values by ID is not supported | Field value validation error ||
-|| `ACCESS_DENIED` | Access denied | Insufficient permissions to add the element ||
+|| `ACCESS_DENIED` | Access denied | Insufficient permissions to add element ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

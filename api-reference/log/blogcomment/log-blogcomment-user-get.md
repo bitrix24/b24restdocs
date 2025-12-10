@@ -24,7 +24,7 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
 || **LAST_ID**
 [`integer`](../../data-types.md) | The method will return comments with identifiers less than the specified value. ||
 || **LIMIT**
-[`integer`](../../data-types.md) | The number of records in the response. The acceptable value is from `1` to `1000`. By default, `100` comments are returned. ||
+[`integer`](../../data-types.md) | The number of records in the response. The acceptable value is from `1` to `100`. By default, `100` comments are returned. ||
 |#
 
 ## Code Examples
@@ -211,11 +211,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **comments**
-[`object[]`](../../data-types.md) | An array of comments. Each element contains the fields:
+[`object[]`](../../data-types.md) | An array of comments. Each element contains fields:
 - `id`, `comment_id`, `log_id`, `date` — in ISO 8601 format
 - `text` and `attach` — an array of file identifiers from the `FILES` array. ||
 || **files**
-[`object`](../../data-types.md) | An associative array with file descriptions, where the key is the identifier of the Drive object. For each file, `id`, `date`, `type`, `name`, `size`, author information, and direct links `urlPreview`, `urlShow`, `urlDownload` are provided. ||
+[`object`](../../data-types.md) | An associative array describing the files, where the key is the identifier of the Drive object. For each file, `id`, `date`, `type`, `name`, `size`, author information, and direct links `urlPreview`, `urlShow`, `urlDownload` are provided. ||
 |#
 
 ## Error Handling

@@ -1,4 +1,4 @@
-# Update Checklist Item task.checklistitem.update
+# Update checklist item task.checklistitem.update
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
@@ -26,11 +26,11 @@ Pass parameters in the request according to the order in the table. If the order
 || **TASKID***
 [`integer`](../../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or using the method [getting the task list](../tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or using the [get task list](../tasks-task-list.md) method ||
 || **ITEMID***
 [`integer`](../../data-types.md) | Checklist item identifier.
 
-The item identifier can be obtained when [adding a new item](./task-checklist-item-add.md) or using the method [getting the checklist item list](./task-checklist-item-get-list.md) ||
+The item identifier can be obtained when [adding a new item](./task-checklist-item-add.md) or using the [get checklist item list](./task-checklist-item-get-list.md) method ||
 || **FIELDS***
 [`object`](../../data-types.md) | Object with [checklist item fields](#fields) ||
 |#
@@ -47,7 +47,7 @@ If `PARENT_ID` is passed with a value of `0`, then `TITLE` is the name of the ch
 || **SORT_INDEX**
 [`integer`](../../data-types.md) | Sort index. The lower the value, the higher the item in the list or sublist ||
 || **IS_COMPLETE**
-[`boolean`](../../data-types.md) | Status of the item's completion. Possible values:
+[`boolean`](../../data-types.md) | Status of the item. Possible values:
 - `Y` — completed
 - `N` — not completed
 
@@ -271,7 +271,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`null`](../../data-types.md) | Returns `null` if the checklist item was successfully updated ||
+`null` | Returns `null` if the checklist item was successfully updated ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -294,7 +294,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value**  ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; No access to edit the task; 4\/TE\/ACTION_NOT_ALLOWED\u003Cbr\u003E | No permission to edit the task to modify the checklist item ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Incorrect value [] specified for field [ENTITY_ID] in item [, Prepare report]; 8\/TE\/ACTION_FAILED_TO_BE_PROCESSED\u003Cbr\u003E | Parameter order violation ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Incorrect value [] specified for field [ENTITY_ID] in item [, Prepare report]; 8\/TE\/ACTION_FAILED_TO_BE_PROCESSED\u003Cbr\u003E | Parameter order violated ||
 || `ERROR_CORE` | "TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) for method ctaskchecklistitem::update() expected to be of type \u0022integer\u0022, but given something else.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Required parameter `TASKID` not passed or incorrect type for `TASKID` ||
 || `ERROR_CORE` | "TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::update(), but not given.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Required parameter `ITEMID` not passed or incorrect type for `ITEMID` ||
 || `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (arFields) expected by method ctaskchecklistitem::update(), but not given.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Required parameter `FIELDS` not passed or passed empty ||

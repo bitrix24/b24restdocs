@@ -1,7 +1,7 @@
 title: Messages
 href: index.md
 items: 
-  - name: Messages in open channels
+  - name: Overview of methods
     href: index.md
   - name: Send a message to an open channel
     href: imopenlines-crm-message-add.md

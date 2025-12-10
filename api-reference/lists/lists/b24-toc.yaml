@@ -5,11 +5,11 @@ items:
     href: index.md
   - name: Create List
     href: lists-add.md
-  - name: Delete List
-    href: lists-delete.md
-  - name: Retrieve Information Block Data
-    href: lists-get.md
-  - name: Get Information Block Type ID
-    href: lists-get-iblock-type-id.md
   - name: Update List
     href: lists-update.md
+  - name: Get List Data or Array of Lists
+    href: lists-get.md
+  - name: Delete List
+    href: lists-delete.md
+  - name: Get Information Block Type ID
+    href: lists-get-iblock-type-id.md

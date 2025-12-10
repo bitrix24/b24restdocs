@@ -42,8 +42,8 @@ The method `lists.field.add` creates a list field. If the field is created succe
 || **FIELDS**
 [`unknown`](../../data-types.md) | keys are the same as when creating a field from the Bitrix24 interface:
 - **NAME**^*^ - name (required)
-- **IS_REQUIRED** - required flag
-- **MULTIPLE** - multiple flag
+- **IS_REQUIRED** - required field marker
+- **MULTIPLE** - multiplicity marker
 - **TYPE**^*^ - type (required), including:
     - **S** - String
     - **N** - Number
