@@ -1,0 +1,19 @@
+title: Tasks
+href: index.md
+items:
+  - name: Task Fields
+    href: fields.md
+  - name: Add Task
+    href: tasks-task-add.md
+  - name: Update Task
+    href: tasks-task-update.md
+  - name: Send Message in Task Chat
+    href: tasks-task-chat-message-send.md        
+  - name: Attach Files to Task
+    href: tasks-task-file-attach.md    
+  - name: Get Task
+    href: tasks-task-get.md
+  - name: Delete Task
+    href: tasks-task-delete.md
+  - name: Check Access Permissions
+    href: tasks-task-access-get.md    

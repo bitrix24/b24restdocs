@@ -6,27 +6,9 @@
 
 The method `tasks.task.getaccess` checks the available actions for users on a task.
 
-{% note info "" %}
-
-Starting from version `tasks 25.700.0`, the method can be called in two API versions.
-
-Old version:
-
-`https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.getaccess`
-
-New version:
-
-`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.access.get`
-
-Documentation for the new version of the method call is available in OpenApi format. To obtain OpenApi, call the method `documentation`: 
-
-`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/documentation`
-
-{% endnote %}
-
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Footnote about parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -36,7 +18,7 @@ Documentation for the new version of the method call is available in OpenApi for
 
 The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
 || **users**
-[`array`](../data-types.md) | Array of user identifiers for whom access needs to be checked.
+[`array`](../data-types.md) | Array of user identifiers for which access needs to be checked.
 
 By default, the current user is used.
 
@@ -45,7 +27,7 @@ The user identifier can be obtained using the [get user list method](../user/use
 
 ## Code Examples
 
-{% include [Note on examples](../../_includes/examples.md) %}
+{% include [Footnote about examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -158,7 +140,7 @@ The user identifier can be obtained using the [get user list method](../user/use
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -233,18 +215,18 @@ If the user executing the method does not have access to the task, an empty arra
 
 {% note info "" %}
 
-For non-existent users from the `users` parameter, the method will return a response with `false` for all actions.
+For non-existent users from the `users` parameter, the method will return a response with a value of `false` for all actions.
 
 {% endnote %}
 
- ||
+||
 || **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {

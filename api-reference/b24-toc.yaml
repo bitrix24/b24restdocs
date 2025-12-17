@@ -13,6 +13,10 @@ items:
     include:
       path: widgets/b24-toc.yaml
       mode: link
+  - name: REST 3.0
+    include:
+      path: rest-v3/b24-toc.yaml
+      mode: link     
   - name: Events
     include:
       path: events/b24-toc.yaml
@@ -45,7 +49,7 @@ items:
     include:
       path: document-generator/b24-toc.yaml
       mode: link
-  - name: Drive
+  - name: Disk
     include:
       path: disk/b24-toc.yaml
       mode: link
@@ -69,11 +73,11 @@ items:
     include:
       path: booking/b24-toc.yaml
       mode: link
-  - name: Polls, Votes
+  - name: Surveys and Polls
     include:
       path: vote/b24-toc.yaml
       mode: link      
-  - name: Open Channels
+  - name: Open Lines
     include:
       path: imopenlines/b24-toc.yaml
       mode: link
@@ -105,7 +109,7 @@ items:
     include:
       path: sonet-group/b24-toc.yaml
       mode: link
-  - name: Sites and Stores
+  - name: Websites and Stores
     include:
       path: landing/b24-toc.yaml
       mode: link
@@ -117,7 +121,7 @@ items:
     include:
       path: telephony/b24-toc.yaml
       mode: link
-  - name: Product Catalog
+  - name: Trade Catalog
     include:
       path: catalog/b24-toc.yaml
       mode: link

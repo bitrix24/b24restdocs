@@ -2,6 +2,13 @@
 
 ## 2025
 
+### December 17, 2025
+
+- Added the section [REST 3.0](./api-reference/rest-v3/index.md)
+- Added new task methods for REST 3.0 [tasks.task.access.get](./api-reference/rest-v3/tasks/tasks-task-access-get.md), [tasks.task.add](./api-reference/rest-v3/tasks/tasks-task-add.md), [tasks.task.chat.message.send](./api-reference/rest-v3/tasks/tasks-task-chat-message-send.md), [tasks.task.delete](./api-reference/rest-v3/tasks/tasks-task-delete.md), [tasks.task.file.attach](./api-reference/rest-v3/tasks/tasks-task-file-attach.md), [tasks.task.get](./api-reference/rest-v3/tasks/tasks-task-get.md), [tasks.task.update](./api-reference/rest-v3/tasks/tasks-task-update.md)
+- Added the article describing task fields and related objects [Task fields in REST 3.0](./api-reference/rest-v3/tasks/fields.md)
+- Updated the documentation for the methods [lists.field.add](./api-reference/lists/fields/lists-field-add.md), [lists.field.update](./api-reference/lists/fields/lists-field-update.md), [lists.field.get](./api-reference/lists/fields/lists-field-get.md), [lists.field.delete](./api-reference/lists/fields/lists-field-delete.md), [lists.field.type.get](./api-reference/lists/fields/lists-field-type-get.md) in Working with Fields
+
 ### December 10, 2025
 
 - Updated the documentation for the methods [task.checklistitem.renew](./api-reference/tasks/checklist-item/task-checklist-item-renew.md), [task.checklistitem.complete](./api-reference/tasks/checklist-item/task-checklist-item-complete.md), [task.checklistitem.delete](./api-reference/tasks/checklist-item/task-checklist-item-delete.md), [task.checklistitem.moveafteritem](./api-reference/tasks/checklist-item/task-checklist-item-move-after-item.md) in Task Checklists
@@ -16,7 +23,7 @@
 ### November 27, 2025
 
 - Added the article [New task card: comments and events](./api-reference/tasks/tasks-new.md)
-- Added the method [tasks.task.chat.message.send](./api-reference/tasks/tasks-task-chat-message-send.md)
+- Added the method [tasks.task.chat.message.send](./api-reference/rest-v3/tasks/tasks-task-chat-message-send.md)
 
 ### November 26, 2025
 

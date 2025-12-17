@@ -6,24 +6,6 @@
 
 The method `tasks.task.add` adds a new task.
 
-{% note info "" %}
-
-Since version `tasks 25.700.0`, the method call is available in two API versions.
-
-Old version:
-
-`https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.add`
-
-New version:
-
-`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.add`
-
-Documentation in OpenApi format is available for the new version of the method call. To obtain OpenApi, call the method `documentation`:
-
-`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/documentation`
-
-{% endnote %}
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
@@ -38,7 +20,7 @@ Documentation in OpenApi format is available for the new version of the method c
 
 {% note warning "" %}
 
-Check which required custom fields are configured for tasks in your Bitrix24. All required fields must be passed to the method.
+Check which required custom fields are set for tasks in your Bitrix24. All required fields must be passed to the method.
 
 {% endnote %}
 
@@ -66,7 +48,7 @@ SE_PARAMETER: [
 
 {% include [Note on examples](../../_includes/examples.md) %}
 
-Let's add a task with files and CRM object bindings. To attach a file to the task, you need to add the character `n` before the file identifier.
+Let's add a task with files and CRM entity bindings. To attach a file to the task, you need to add the character `n` before the file identifier.
 
 {% list tabs %}
 
@@ -102,13 +84,13 @@ Let's add a task with files and CRM object bindings. To attach a file to the tas
                     TITLE: "Task Title", // Task title
                     DEADLINE: "2025-12-31T23:59:59", // Deadline
                     CREATED_BY: 456, // Creator's identifier
-                    RESPONSIBLE_ID: 123, // Assignee's identifier
+                    RESPONSIBLE_ID: 123, // Responsible person's identifier
                     // Example of passing multiple values in the UF_CRM_TASK field
                     UF_CRM_TASK: [
-                        "L_4", // Link to lead
-                        "C_7", // Link to contact
-                        "CO_5", // Link to company
-                        "D_10" // Link to deal
+                        "L_4", // Binding to lead
+                        "C_7", // Binding to contact
+                        "CO_5", // Binding to company
+                        "D_10" // Binding to deal
                     ],
                     // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                     UF_TASK_WEBDAV_FILES: [
@@ -178,13 +160,13 @@ Let's add a task with files and CRM object bindings. To attach a file to the tas
                 TITLE: "Task Title", // Task title
                 DEADLINE: "2025-12-31T23:59:59", // Deadline
                 CREATED_BY: 456, // Creator's identifier
-                RESPONSIBLE_ID: 123, // Assignee's identifier
+                RESPONSIBLE_ID: 123, // Responsible person's identifier
                 // Example of passing multiple values in the UF_CRM_TASK field
                 UF_CRM_TASK: [
-                    "L_4", // Link to lead
-                    "C_7", // Link to contact
-                    "CO_5", // Link to company
-                    "D_10" // Link to deal
+                    "L_4", // Binding to lead
+                    "C_7", // Binding to contact
+                    "CO_5", // Binding to company
+                    "D_10" // Binding to deal
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 UF_TASK_WEBDAV_FILES: [
@@ -215,13 +197,13 @@ Let's add a task with files and CRM object bindings. To attach a file to the tas
                 'TITLE' => 'Task Title', // Task title
                 'DEADLINE' => '2025-12-31T23:59:59', // Deadline
                 'CREATED_BY' => 456, // Creator's identifier
-                'RESPONSIBLE_ID' => 123, // Assignee's identifier
+                'RESPONSIBLE_ID' => 123, // Responsible person's identifier
                 // Example of passing multiple values in the UF_CRM_TASK field
                 'UF_CRM_TASK' => [
-                    'L_4', // Link to lead
-                    'C_7', // Link to contact
-                    'CO_5', // Link to company
-                    'D_10' // Link to deal
+                    'L_4', // Binding to lead
+                    'C_7', // Binding to contact
+                    'CO_5', // Binding to company
+                    'D_10' // Binding to deal
                 ],
                 // Example of passing multiple files in the UF_TASK_WEBDAV_FILES field
                 'UF_TASK_WEBDAV_FILES' => [
@@ -229,7 +211,7 @@ Let's add a task with files and CRM object bindings. To attach a file to the tas
                     'n67890' // Identifier of the second disk file
                 ]
             ]
-        ]
+        }
     );
 
     if (isset($result['error'])) {
@@ -243,7 +225,7 @@ Let's add a task with files and CRM object bindings. To attach a file to the tas
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -405,7 +387,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -420,15 +402,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | Could not find value for parameter {fields} (internal error) | Parameter `fields` not passed or empty ||
-|| `ERROR_CORE` | User specified in the "Assignee" field not found | The identifier in the `RESPONSIBLE_ID` field refers to a non-existent user ||
-|| `ERROR_CORE` | Assignee not specified | The `RESPONSIBLE_ID` field is not filled ||
+|| `100` | Could not find value for parameter {fields} (internal error) | Parameter `fields` not passed or passed empty ||
+|| `ERROR_CORE` | User specified in the "Responsible" field not found | An identifier of a non-existent user is specified in the `RESPONSIBLE_ID` field ||
+|| `ERROR_CORE` | Responsible person not specified | The `RESPONSIBLE_ID` field is not filled ||
 || `ERROR_CORE` | Task title not specified | The `TITLE` field is not filled ||
-|| `ERROR_CORE` | Required field {field_name} value not entered | Required custom field with the specified name is not filled ||
+|| `ERROR_CORE` | No value entered for required field {field_name} | Required custom field with the specified name is not filled ||
 || `ERROR_CORE` | Invalid status | An incorrect value is specified in the `STATUS` field ||
-|| `ERROR_CORE` | Task specified in the "Parent Task" field not found | The identifier in the `PARENT_ID` field refers to a non-existent task ||
-|| `ERROR_CORE` | In deadline planning, the end date is earlier than the start date | The date and time in the `END_DATE_PLAN` field is earlier than in `START_DATE_PLAN` ||
-|| `ERROR_CORE` | In deadline planning, the task duration is too long | The value in the `END_DATE_PLAN` field specifies a date that is too far in the future ||
+|| `ERROR_CORE` | Task specified in the "Parent Task" field not found | An identifier of a non-existent task is specified in the `PARENT_ID` field ||
+|| `ERROR_CORE` | In scheduling deadlines, the end date is earlier than the start date | The date and time in the `END_DATE_PLAN` field is earlier than in `START_DATE_PLAN` ||
+|| `ERROR_CORE` | In scheduling deadlines, the task duration is too long | The value in the `END_DATE_PLAN` field specifies a date that is too far in the future ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

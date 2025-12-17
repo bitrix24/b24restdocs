@@ -17,8 +17,6 @@ items:
     href: tasks-task-list.md
   - name: Delete Task
     href: tasks-task-delete.md
-  - name: Send Message in Task Chat
-    href: tasks-task-chat-message-send.md    
   - name: Get Field List
     href: tasks-task-get-fields.md
   - name: Check Access to Task
@@ -43,13 +41,13 @@ items:
     href: tasks-task-start-watch.md
   - name: Stop Watching Task
     href: tasks-task-stop-watch.md
-  - name: Change Task Status to In Progress
+  - name: Move Task to In Progress Status
     href: tasks-task-start.md
-  - name: Change Task Status to Waiting
+  - name: Move Task to Waiting for Execution Status
     href: tasks-task-pause.md
-  - name: Change Task Status to Deferred
+  - name: Move Task to Deferred Status
     href: tasks-task-defer.md
-  - name: Change Task Status to Completed
+  - name: Move Task to Completed Status
     href: tasks-task-complete.md
   - name: Renew Task After Completion
     href: tasks-task-renew.md
@@ -85,11 +83,11 @@ items:
     include:
       path: user-field/b24-toc.yaml
       mode: link
-  - name: Kanban and Planner Stages
+  - name: Kanban and My Plan Stages
     include:
       path: stages/b24-toc.yaml
       mode: link
-  - name: Tasks in Daily Planner
+  - name: Tasks in Daily Plan
     include:
       path: planner/b24-toc.yaml
       mode: link

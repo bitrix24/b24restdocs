@@ -81,10 +81,6 @@ Below are the field codes that must be specified in the array with the key ADDIT
 
 #|
 || **Field** | **Description** | **Read** | **Write** ||
-|| **YACOUNTER_USE**
-[`unknown`](../../data-types.md) | Use Yandex.Metrica: Y/N. | Yes | Yes ||
-|| **YACOUNTER_COUNTER**
-[`unknown`](../../data-types.md) | Yandex.Metrica counter code. | Yes | Yes ||
 || **GACOUNTER_USE**
 [`unknown`](../../data-types.md) | Use Google Analytics: Y/N. | Yes | Yes ||
 || **GACOUNTER_COUNTER**

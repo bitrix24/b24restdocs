@@ -1,28 +1,10 @@
-# Attach Files to a Task tasks.task.files.attach
+# Attach Files to Task tasks.task.files.attach
 
 > Scope: [`task`](../scopes/permissions.md)
 >
-> Who can execute the method: task Creator or a user with access permission to edit the task
+> Who can execute the method: task Creator or a user with edit access to the task
 
-The method `tasks.task.files.attach` adds a file from Drive to a task. The user must have read access to the file or higher.
-
-{% note info "" %}
-
-Since version `tasks 25.700.0`, the method call is available in two API versions.
-
-Old version:
-
-`https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.files.attach`
-
-New version:
-
-`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.file.attach`
-
-Documentation in OpenApi format is available for the new version of the method call. To obtain OpenApi, call the method `documentation`:
-
-`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/documentation`
-
-{% endnote %}
+The method `tasks.task.files.attach` adds a file from Disk to a task. The user must have read access or higher to the file.
 
 ## Method Parameters
 
@@ -34,10 +16,10 @@ Documentation in OpenApi format is available for the new version of the method c
 || **taskId***
 [`integer`](../data-types.md) | The identifier of the task to which the file needs to be attached.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md).
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [getting the list of tasks](./tasks-task-list.md) method.
 ||
 || **fileId***
-[`integer`](../data-types.md) | The identifier of the file on Drive.
+[`integer`](../data-types.md) | The identifier of the file on Disk.
 
 The file identifier can be obtained in two ways.
 
@@ -165,7 +147,7 @@ Use one of the methods to get the list of files:
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -195,14 +177,14 @@ HTTP status: **200**
 || **attachmentId**
 [`integer`](../data-types.md) | The identifier of the file attachment to the task.
 
-Data about the file can be obtained by the attachment identifier using the [disk.attachedObject.get](../disk/attached-object/disk-attached-object-get.md) method ||
+Data about the file can be obtained by the attachment identifier using the [disk.attachedObject.get](../disk/attached-object/disk-attached-object-get.md) method  ||
 || **time**
 [`time`](../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -217,10 +199,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | The required parameter `taskId` is missing ||
-|| `0` | wrong task id (internal error) | The `taskId` parameter has an invalid type ||
-|| `100` | Could not find value for parameter \{fileId\} (internal error) | The required parameter `fileId` is missing ||
-|| `100` | Invalid value {value} to match with parameter \{fileId\}. Should be value of type int. (internal error) | The `fileId` parameter has an invalid type ||
+|| `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | Required parameter `taskId` is missing ||
+|| `0` | wrong task id (internal error) | The value in the `taskId` parameter is of an incorrect type ||
+|| `100` | Could not find value for parameter \{fileId\} (internal error) | Required parameter `fileId` is missing ||
+|| `100` | Invalid value {value} to match with parameter \{fileId\}. Should be value of type int. (internal error) | The value in the `fileId` parameter is of an incorrect type ||
 || `ERROR_CORE` | Insufficient permissions.\\u003Cbr\\u003E | No access to the specified file ||
 || `0` | Access denied (internal error) | Insufficient permissions to modify the task ||
 |#

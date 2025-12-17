@@ -377,7 +377,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "Parameter 'entityTypeID' is not defined"
+    "error_description": "Parameter 'entityTypeId' is not defined"
 }
 ```
 
@@ -387,7 +387,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeID' is not defined | Required parameter `entityTypeId` is not provided ||
+|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` is not provided ||
 || Empty value | The entity type '`entityTypeName`' is not supported in the current context. | The method does not support this entity type || 
 || Empty value | Access denied. | The user does not have administrative rights ||
 |#

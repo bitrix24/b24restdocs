@@ -1,0 +1,9 @@
+title: REST 3.0
+href: index.md
+items:
+  - name: Overview of REST 3.0
+    href: index.md
+  - name: Tasks
+    include:
+      path: tasks/b24-toc.yaml
+      mode: link

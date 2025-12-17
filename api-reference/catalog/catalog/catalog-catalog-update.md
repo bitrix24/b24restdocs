@@ -24,11 +24,6 @@ This method updates the fields of the trade catalog.
 #|
 || **Name**
 `type` | **Description** ||
-|| **yandexExport**
-[`string`](../../data-types.md) | Deprecated parameter. Whether to export to *Yandex.Market*. Possible values:
-- `Y` — yes
-- `N` — no
-||
 || **subscription**
 [`string`](../../data-types.md) | Whether content is being sold. Possible values:
 - `Y` — yes

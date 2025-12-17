@@ -1,6 +1,6 @@
-# Send a message to the task chat tasks.task.chat.message.send
+# Send Message to Task Chat tasks.task.chat.message.send
 
-> Scope: [`task`](../scopes/permissions.md)
+> Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user with read access permission for the task or higher
 
@@ -8,45 +8,39 @@ The method `tasks.task.chat.message.send` sends a new message to the task chat.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../data-types.md) | Object with [message parameters](#fields) ||
+[`object`](../../data-types.md) | Object with [message parameters](#fields) ||
 |#
 
 ### Parameter fields {#fields}
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **taskId***
-[`integer`](../data-types.md) | Identifier of the task to which the message should be sent. 
+[`integer`](../../data-types.md) | Identifier of the task to which the message should be sent. 
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by the old method of [getting the task list](../../tasks/tasks-task-list.md) ||
 || **text***
-[`string`](../data-types.md) | Message text ||
+[`string`](../../data-types.md) | Message text ||
 |#
 
 ## Code Examples
 
-{% include [Footnote about examples](../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% note info "" %}
 
-The new API call differs by the addition of the /api/ parameter in the request. 
+The new API call differs by the addition of the `/api/` parameter in the request:
 
-Old version:
-
-`https://{installation_address}/rest/{user_id}/{rest_application_password}/tasks.task.get`
-
-New version:
-
-`https://{installation_address}/rest/api/{user_id}/{rest_application_password}/tasks.task.get`
+`https://{installation_address}/rest/api/{user_id}/{webhook_token}/tasks.task.chat.message.send`
 
 {% endnote %}
 
@@ -74,6 +68,8 @@ New version:
 
 - JS
 
+    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+
     ```javascript
     try
     {
@@ -99,6 +95,8 @@ New version:
     ```
 
 - PHP
+
+    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     try {
@@ -130,6 +128,8 @@ New version:
 
 - BX24.js
 
+    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
+
     ```js
     BX24.callMethod(
         'tasks.task.chat.message.send',
@@ -147,6 +147,8 @@ New version:
     ```
 
 - PHP CRest
+
+    The SDK does not yet support calls to the address /rest/api/. Use direct HTTP requests, for example, via curl or fetch.
 
     ```php
     require_once('crest.php');
@@ -183,8 +185,8 @@ HTTP status: **200**
         "finish": 1762257254.211513,
         "duration": 0.21151304244995117,
         "processing": 0,
-        "date_start": "2025-11-04T15:54:14+02:00",
-        "date_finish": "2025-11-04T15:54:14+02:00",
+        "date_start": "2025-11-04T15:54:14+01:00",
+        "date_finish": "2025-11-04T15:54:14+01:00",
         "operating": 0
     }
 }
@@ -196,11 +198,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response.
+[`object`](../../data-types.md) | Root element of the response.
 
 Contains an object with the key `result` and the value `true` if the message was sent successfully ||
 || **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -209,25 +211,48 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "Bad Request",
-    "error_description": "Error during object validation"
+    "error": {
+        "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION",
+        "message": "Error during object validation",
+        "validation": [
+            {
+                "message": "The required field \u0022taskId\u0022 is not filled",
+                "field": "taskId"
+            }
+        ]
+    }
 }
 ```
 
-{% include notitle [error handling](../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info-v3.md) %}
 
 ### Possible Error Codes
 
+#### Request Validation Errors  
+
+Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
+
 #|
-|| **Status** |**Code** | **Description** | **Value** ||
-|| `400` | Bad Request | Error during object validation | Required field not provided or it is empty ||
-|| `403` | No access to the task |  | User does not have access permission to the task ||
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `taskId`
+`fields`
+`text` | Required field `#FIELD#` is not specified | Add the specified field to the request body ||
+|| `#FIELD#` | Field `#FIELD#` requires data type `#TYPE#` for this request | Ensure that the passed value is of the correct type ||
 |#
 
-{% include [system errors](../../_includes/system-errors.md) %}
+#### Access Error
+
+Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `taskId` | Access denied | No access to the task ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./index.md)
 - [{#T}](./tasks-task-add.md)
 - [{#T}](./tasks-task-update.md)
+- [{#T}](../../tasks/tasks-new.md)
