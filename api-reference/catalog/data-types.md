@@ -2,7 +2,7 @@
 
 {% note warning "We are still updating this page" %}
 
-Some data may be missing — we will complete it shortly.
+Some data may be missing — we will complete it soon.
 
 {% endnote %}
 
@@ -10,7 +10,7 @@ Some data may be missing — we will complete it shortly.
 
 {% note alert "TO-DO _not exported to prod_" %}
 
-- Create a description for the object rest_field_description.
+- Create a description for the object rest_field_description
 
 {% endnote %}
 
@@ -24,26 +24,27 @@ In this article, we will discuss the data types and object structure specific to
 
 #|
 || **Type** | **Descriptions and Values** ||
-|| [`catalog_catalog.id`](#catalog_catalog) | Integer identifier of the trade catalog (for example, `1`). You can obtain trade catalog identifiers using the method [catalog.catalog.list](./catalog/catalog-catalog-list.md) ||
-|| [`catalog_document.id`](#catalog_document) | Integer identifier of the inventory accounting document, for example `1`. You can obtain document identifiers using the method [catalog.document.list](./document/catalog-document-list.md) ||
-|| [`catalog_document_element.id`](#catalog_document_element) | Integer identifier of the product in the inventory accounting document, for example `1`. You can obtain product identifiers in documents using the method [catalog.document.element.list](./document/document-element/catalog-document-element-list.md) ||
-|| [`catalog_product.id`](#catalog_product) | Integer identifier of the product (for example, `1`). You can obtain product identifiers using the method [catalog.product.list](./product/catalog-product-list.md) ||
-|| [`catalog_product_sku.id`](#catalog_product_sku) | Integer identifier of the parent product (for example, `1`). You can obtain parent product identifiers using the method [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md) ||
-|| [`catalog_product_offer.id`](#catalog_product_offer) | Integer identifier of the product variation (for example, `1`). You can obtain product variation identifiers using the method [catalog.product.offer.list](./product/offer/catalog-product-offer-list.md) ||
-|| [`catalog_product_service.id`](#catalog_product_service) | Integer identifier of the service (for example, `1`). You can obtain service identifiers using the method [catalog.product.service.list](./product/service/catalog-product-service-list.md) ||
-|| [`catalog_product_image.id`](#catalog_product_image) | Integer identifier of the product image (for example, `1`). You can obtain product image identifiers using the method [catalog.productImage.list](./product-image/catalog-product-image-list.md) ||
-|| [`catalog_store.id`](#catalog_store) | Integer identifier of the warehouse (for example, `1`). You can obtain warehouse identifiers using the method [catalog.store.list](./store/catalog-store-list.md) ||
-|| [`catalog_measure.id`](#catalog_measure) | Integer identifier of the unit of measurement (for example, `1`). You can obtain unit of measurement identifiers using the method [catalog.measure.list](./measure/catalog-measure-list.md) ||
-|| [`catalog_ratio.id`](#catalog_ratio) | Integer identifier of the unit of measurement ratio (for example, `1`). You can obtain unit of measurement ratio identifiers using the method [catalog.ratio.list](./ratio/catalog-ratio-list.md) ||
-|| [`catalog_price.id`](#catalog_price) | Integer identifier of the price, for example `1`. You can obtain price identifiers using the method [catalog.price.list](./price/catalog-price-list.md) ||
-|| [`catalog_price_type.id`](#catalog_price_type) | Integer identifier of the price type (for example, `1`). You can obtain price type identifiers using the method [catalog.priceType.list](./price-type/catalog-price-type-list.md) ||
-|| [`catalog_price_type_lang.id`](#catalog_price_type_lang) | Integer identifier of the translation of price type names (for example, `1`). You can obtain translations identifiers using the method [catalog.priceTypeLang.list](./price-type/price-type-lang/catalog-price-type-lang-list.md) ||
-|| [`catalog_language.lid`](#catalog_language) | String identifier of the language, consisting of two characters (for example, `de`). You can obtain language identifiers using the method [catalog.priceTypeLang.getLanguages](./price-type/price-type-lang/catalog-price-type-lang-get-languages.md) ||
-|| [`catalog_rounding_rule.id`](#catalog_rounding_rule) | Integer identifier of the price rounding rule (for example, `1`). You can obtain price rounding rule identifiers using the method [catalog.roundingRule.list](./rounding-rule/catalog-rounding-rule-list.md) ||
-|| [`catalog_extra.id`](#catalog_extra) | Integer identifier of the markup (for example, `1`). You can obtain markup identifiers using the method [catalog.extra.list](./extra/catalog-extra-list.md) ||
-|| [`catalog_section.id`](#catalog_section) | Integer identifier of the catalog section (for example, `1`). You can obtain catalog section identifiers using the method [catalog.section.list](./section/catalog-section-list.md) ||
-|| [`catalog_storeproduct.id`](#catalog_storeproduct) | Integer identifier of the record of product stock in the warehouse, for example `1`. You can obtain identifiers using the method [catalog.storeproduct.list](./store-product/catalog-store-product-list.md) ||
-|| [`catalog_vat.id`](#catalog_vat) | Integer identifier of the VAT rate (for example, `1`). You can obtain VAT rate identifiers using the method [catalog.vat.list](./vat/catalog-vat-list.md) ||
+|| [`catalog_catalog.id`](#catalog_catalog) | Integer identifier of the trade catalog (for example, `1`). You can obtain the identifiers of trade catalogs using the method [catalog.catalog.list](./catalog/catalog-catalog-list.md) ||
+|| [`catalog_document.id`](#catalog_document) | Integer identifier of the warehouse accounting document, for example `1`. You can obtain the identifiers of documents using the method [catalog.document.list](./document/catalog-document-list.md) ||
+|| [`catalog_document_element.id`](#catalog_document_element) | Integer identifier of the product in the warehouse accounting document, for example `1`. You can obtain the identifiers of products in documents using the method [catalog.document.element.list](./document/document-element/catalog-document-element-list.md) ||
+|| [`catalog_documentcontractor.id`](#catalog_documentcontractor) | Integer identifier of the supplier binding to the warehouse accounting document, for example `1`. You can obtain the identifiers of bindings using the method [catalog.documentcontractor.list](./documentcontractor/catalog-documentcontractor-list.md) ||
+|| [`catalog_product.id`](#catalog_product) | Integer identifier of the product (for example, `1`). You can obtain the identifiers of products using the method [catalog.product.list](./product/catalog-product-list.md) ||
+|| [`catalog_product_sku.id`](#catalog_product_sku) | Integer identifier of the parent product (for example, `1`). You can obtain the identifiers of parent products using the method [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md) ||
+|| [`catalog_product_offer.id`](#catalog_product_offer) | Integer identifier of the product variation (for example, `1`). You can obtain the identifiers of product variations using the method [catalog.product.offer.list](./product/offer/catalog-product-offer-list.md) ||
+|| [`catalog_product_service.id`](#catalog_product_service) | Integer identifier of the service (for example, `1`). You can obtain the identifiers of services using the method [catalog.product.service.list](./product/service/catalog-product-service-list.md) ||
+|| [`catalog_product_image.id`](#catalog_product_image) | Integer identifier of the product image (for example, `1`). You can obtain the identifiers of product images using the method [catalog.productImage.list](./product-image/catalog-product-image-list.md) ||
+|| [`catalog_store.id`](#catalog_store) | Integer identifier of the warehouse (for example, `1`). You can obtain the identifiers of warehouses using the method [catalog.store.list](./store/catalog-store-list.md) ||
+|| [`catalog_measure.id`](#catalog_measure) | Integer identifier of the unit of measurement (for example, `1`). You can obtain the identifiers of units of measurement using the method [catalog.measure.list](./measure/catalog-measure-list.md) ||
+|| [`catalog_ratio.id`](#catalog_ratio) | Integer identifier of the unit of measurement ratio (for example, `1`). You can obtain the identifiers of unit ratios using the method [catalog.ratio.list](./ratio/catalog-ratio-list.md) ||
+|| [`catalog_price.id`](#catalog_price) | Integer identifier of the price, for example `1`. You can obtain the identifiers of prices using the method [catalog.price.list](./price/catalog-price-list.md) ||
+|| [`catalog_price_type.id`](#catalog_price_type) | Integer identifier of the price type (for example, `1`). You can obtain the identifiers of price types using the method [catalog.priceType.list](./price-type/catalog-price-type-list.md) ||
+|| [`catalog_price_type_lang.id`](#catalog_price_type_lang) | Integer identifier of the translation of price type names (for example, `1`). You can obtain the identifiers of translations using the method [catalog.priceTypeLang.list](./price-type/price-type-lang/catalog-price-type-lang-list.md) ||
+|| [`catalog_language.lid`](#catalog_language) | String identifier of the language, consisting of two characters (for example, `de`). You can obtain the identifiers of languages using the method [catalog.priceTypeLang.getLanguages](./price-type/price-type-lang/catalog-price-type-lang-get-languages.md) ||
+|| [`catalog_rounding_rule.id`](#catalog_rounding_rule) | Integer identifier of the price rounding rule (for example, `1`). You can obtain the identifiers of price rounding rules using the method [catalog.roundingRule.list](./rounding-rule/catalog-rounding-rule-list.md) ||
+|| [`catalog_extra.id`](#catalog_extra) | Integer identifier of the markup (for example, `1`). You can obtain the identifiers of markups using the method [catalog.extra.list](./extra/catalog-extra-list.md) ||
+|| [`catalog_section.id`](#catalog_section) | Integer identifier of the catalog section (for example, `1`). You can obtain the identifiers of catalog sections using the method [catalog.section.list](./section/catalog-section-list.md) ||
+|| [`catalog_storeproduct.id`](#catalog_storeproduct) | Integer identifier of the record of product stock in the warehouse, for example `1`. You can obtain the identifiers using the method [catalog.storeproduct.list](./store-product/catalog-store-product-list.md) ||
+|| [`catalog_vat.id`](#catalog_vat) | Integer identifier of the VAT rate (for example, `1`). You can obtain the identifiers of VAT rates using the method [catalog.vat.list](./vat/catalog-vat-list.md) ||
 |#
 
 ## Object Structure
@@ -58,9 +59,9 @@ In this article, we will discuss the data types and object structure specific to
 || **iblockId**
 [`integer`](../data-types.md) | Identifier of the information block of the trade catalog ||
 || **iblockTypeId**
-[`string`](../data-types.md) | Type of the information block of the trade catalog. For CRM trade catalogs, it has a constant value of `CRM_PRODUCT_CATALOG` ||
+[`string`](../data-types.md) | Type of the information block of the trade catalog. For trade catalogs in CRM, it has a constant value of `CRM_PRODUCT_CATALOG` ||
 || **lid**
-[`string`](../data-types.md) | Identifier of the site. Has a constant value of `s1` ||
+[`string`](../data-types.md) | Site identifier. Has a constant value of `s1` ||
 || **name**
 [`string`](../data-types.md) | Name of the trade catalog ||
 || **productIblockId**
@@ -93,7 +94,7 @@ To obtain existing identifiers of VAT, you need to use [catalog.vat.list](./vat/
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../data-types.md) | Identifier of the inventory accounting document ||
+[`integer`](../data-types.md) | Identifier of the warehouse accounting document ||
 || **docType**
 [`string`](../data-types.md) | Type of document. Available types can be obtained using the method [catalog.enum.getStoreDocumentTypes](./enum/catalog-enum-get-store-document-types.md) ||
 || **docNumber**
@@ -101,7 +102,7 @@ To obtain existing identifiers of VAT, you need to use [catalog.vat.list](./vat/
 || **title**
 [`string`](../data-types.md) | Name of the document ||
 || **siteId**
-[`string`](../data-types.md) | Site code to which the document relates. By default — `s1` ||
+[`string`](../data-types.md) | Code of the site to which the document relates. By default — `s1` ||
 || **responsibleId**
 [`integer`](../data-types.md) | Identifier of the responsible person ||
 || **createdBy**
@@ -116,7 +117,7 @@ To obtain existing identifiers of VAT, you need to use [catalog.vat.list](./vat/
   
 The value is automatically changed when the document is approved or canceled ||
 || **statusBy**
-[`integer`](../data-types.md) | User who changed the document status ||
+[`integer`](../data-types.md) | User who changed the status of the document ||
 || **dateStatus**
 [`datetime`](../data-types.md) | Date of status change ||
 || **dateCreate**
@@ -130,7 +131,7 @@ The value is automatically changed when the document is approved or canceled ||
 || **total**
 [`double`](../data-types.md) | Total amount for the products in the document. The value is calculated automatically after approval but can be set manually ||
 || **commentary**
-[`string`](../data-types.md) | Commentary for the document ||
+[`string`](../data-types.md) | Commentary on the document ||
 |#
 
 ### catalog_document_element
@@ -139,19 +140,36 @@ The value is automatically changed when the document is approved or canceled ||
 || **Value**
 `type` | **Description** ||
 || **id**
-[`integer`](../data-types.md) | Identifier of the product in the inventory accounting document ||
+[`integer`](../data-types.md) | Identifier of the product in the warehouse accounting document ||
 || **docId**
-[`catalog_document.id`](#catalog_document) | Identifier of the inventory accounting document ||
+[`catalog_document.id`](#catalog_document) | Identifier of the warehouse accounting document ||
 || **elementId**
 [`catalog_product.id`](#catalog_product) | Identifier of the product in the catalog ||
 || **storeFrom**
 [`catalog_store.id`](#catalog_store) | Identifier of the source warehouse. Used for documents where write-off is required ||
 || **storeTo**
-[`catalog_store.id`](#catalog_store) | Identifier of the receiving warehouse. Used for receipt and transfer documents ||
+[`catalog_store.id`](#catalog_store) | Identifier of the receiving warehouse. Used for incoming and transfer documents ||
 || **amount**
 [`double`](../data-types.md) | Quantity of the product ||
 || **purchasingPrice**
 [`double`](../data-types.md) | Purchasing price ||
+|#
+
+### catalog_documentcontractor
+
+#|
+|| **Value**
+`type` | **Description** ||
+|| **id**
+[`integer`](../data-types.md) | Identifier of the supplier binding to the warehouse accounting document ||
+|| **documentId**
+[`catalog_document.id`](#catalog_document) | Identifier of the warehouse accounting document to which the supplier is bound ||
+|| **entityTypeId**
+[`integer`](../data-types.md) | Identifier of the CRM object type:
+`3` — contact 
+`4` — company  ||
+|| **entityId**
+[`integer`](../data-types.md) | Identifier of the supplier: contact or company ||
 |#
 
 ### catalog_product
@@ -169,7 +187,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **name**
 [`string`](../data-types.md) | Name of the product ||
 || **active**
-[`string`](../data-types.md) | Activity indicator. Possible values:
+[`string`](../data-types.md) | Activity status. Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -193,7 +211,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 - `N` — no 
 ||
 || **canBuyZero**
-[`string`](../data-types.md) | Is purchase allowed when the product is out of stock? Possible values:
+[`string`](../data-types.md) | Is purchase of the product allowed when it is out of stock? Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -210,7 +228,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **timestampX**
 [`datetime`](../data-types.md) | Date of modification. Read-only ||
 || **iblockSectionId**
-[`catalog_section.id`](#catalog_section) | Identifier of the section of the information block ||
+[`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
 || **measure**
 [`catalog_measure.id`](#catalog_measure) | Unit of measurement ||
 || **previewText**
@@ -273,22 +291,22 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 
 The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
-Not editable when inventory management is enabled
+Not editable when inventory accounting is enabled
 ||
 || **purchasingPrice**
 [`float`](../data-types.md) | Purchasing price.
 
-Not editable when inventory management is enabled
+Not editable when inventory accounting is enabled
 ||
 || **quantity**
 [`float`](../data-types.md) | Quantity.
 
-Not editable when inventory management is enabled
+Not editable when inventory accounting is enabled
 ||
 || **quantityReserved**
 [`float`](../data-types.md) | Reserved quantity.
 
-Not editable when inventory management is enabled
+Not editable when inventory accounting is enabled
 ||
 || **recurSchemeLength**
 [`integer`](../data-types.md) | Length of the payment period.
@@ -343,7 +361,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **name**
 [`string`](../data-types.md) | Name of the parent product ||
 || **active**
-[`string`](../data-types.md) | Activity indicator. Possible values:
+[`string`](../data-types.md) | Activity status. Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -362,7 +380,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 - `N` — no 
 ||
 || **canBuyZero**
-[`string`](../data-types.md) | Is purchase allowed when the parent product is out of stock? Possible values:
+[`string`](../data-types.md) | Is purchase of the parent product allowed when it is out of stock? Possible values:
 - `Y` — yes
 - `N` — no 
 
@@ -381,7 +399,7 @@ For parent products, the ability to edit this field is available only in the on-
 || **timestampX**
 [`datetime`](../data-types.md) | Date of modification. Read-only ||
 || **iblockSectionId**
-[`catalog_section.id`](#catalog_section) | Identifier of the section of the information block ||
+[`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
 || **measure**
 [`catalog_measure.id`](#catalog_measure) | Unit of measurement.
 
@@ -455,21 +473,21 @@ For parent products, the ability to edit this field is available only in the on-
 
 The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
-Not editable when inventory management is enabled.
+Not editable when inventory accounting is enabled.
 
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **purchasingPrice**
 [`float`](../data-types.md) | Purchasing price.
 
-Not editable when inventory management is enabled.
+Not editable when inventory accounting is enabled.
 
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **quantity**
 [`float`](../data-types.md) | Quantity.
 
-Not editable when inventory management is enabled.
+Not editable when inventory accounting is enabled.
 
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
@@ -499,7 +517,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **name**
 [`string`](../data-types.md) | Name of the product variation ||
 || **active**
-[`string`](../data-types.md) | Activity indicator. Possible values:
+[`string`](../data-types.md) | Activity status. Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -523,7 +541,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 - `N` — no 
 ||
 || **canBuyZero**
-[`string`](../data-types.md) | Is purchase allowed when the product variation is out of stock? Possible values:
+[`string`](../data-types.md) | Is purchase of the product variation allowed when it is out of stock? Possible values:
 - `Y` — yes
 - `N` — no 
 ||
@@ -540,7 +558,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **timestampX**
 [`datetime`](../data-types.md) | Date of modification. Read-only ||
 || **iblockSectionId**
-[`catalog_section.id`](#catalog_section) | Identifier of the section of the information block ||
+[`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
 || **measure**
 [`catalog_measure.id`](#catalog_measure) | Unit of measurement ||
 || **previewText**
@@ -604,22 +622,22 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 
 The list of currencies can be obtained using the method [crm.currency.list](../crm/currency/crm-currency-list.md).
 
-Not editable when inventory management is enabled
+Not editable when inventory accounting is enabled
 ||
 || **purchasingPrice**
 [`float`](../data-types.md) | Purchasing price.
 
-Not editable when inventory management is enabled
+Not editable when inventory accounting is enabled
 ||
 || **quantity**
 [`float`](../data-types.md) | Quantity.
 
-Not editable when inventory management is enabled
+Not editable when inventory accounting is enabled
 ||
 || **quantityReserved**
 [`float`](../data-types.md) | Reserved quantity.
 
-Not editable when inventory management is enabled
+Not editable when inventory accounting is enabled
 ||
 || **recurSchemeLength**
 [`integer`](../data-types.md) | Length of the payment period.
@@ -674,7 +692,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **name**
 [`string`](../data-types.md) | Name of the service ||
 || **active**
-[`string`](../data-types.md) | Activity indicator. Possible values:
+[`string`](../data-types.md) | Activity status. Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -705,7 +723,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **timestampX**
 [`datetime`](../data-types.md) | Date of modification. Read-only ||
 || **iblockSectionId**
-[`catalog_section.id`](#catalog_section) | Identifier of the section of the information block ||
+[`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
 || **measure**
 [`catalog_measure.id`](#catalog_measure) | Unit of measurement ||
 || **previewText**
@@ -791,7 +809,7 @@ If `valueId` is not specified, the existing value will be removed from the datab
 || **title**
 [`string`](../data-types.md) | Name of the warehouse ||
 || **active**
-[`string`](../data-types.md) | Activity. Possible values:
+[`string`](../data-types.md) | Activity status. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **description**
@@ -960,7 +978,7 @@ Can be used to synchronize the current price type with a similar position in an 
 || **name**
 [`string`](../data-types.md) | Name of the language ||
 || **active**
-[`string`](../data-types.md) | Activity indicator. Possible values:
+[`string`](../data-types.md) | Activity status. Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -1036,7 +1054,7 @@ Can be used to synchronize the current catalog section with a similar position i
 || **sort**
 [`integer`](../data-types.md) | Sorting ||
 || **active**
-[`string`](../data-types.md) | Activity indicator of the catalog section:
+[`string`](../data-types.md) | Indicator of the activity of the catalog section:
 - `Y` — active
 - `N` — inactive ||
 || **description**
@@ -1072,7 +1090,7 @@ Can be used to synchronize the current catalog section with a similar position i
 || **name**
 [`string`](../data-types.md) | Name of the VAT rate ||
 || **active**
-[`string`](../data-types.md) | Activity indicator of the VAT rate. Possible values:
+[`string`](../data-types.md) | Indicator of the activity of the VAT rate. Possible values:
 - `Y` — active
 - `N` — inactive
 ||
@@ -1081,5 +1099,5 @@ Can be used to synchronize the current catalog section with a similar position i
 || **sort**
 [`integer`](../data-types.md) | Sorting ||
 || **timestampX**
-[`datetime`](../data-types.md) | Time of last modification ||
+[`datetime`](../data-types.md) | Time of the last modification ||
 |#

@@ -1,12 +1,12 @@
-# Update product in inventory management document catalog.document.element.update
+# Update Product in Inventory Document catalog.document.element.update
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: 
-> - a user with "Create and edit" access permission for the document type in the request,
-> - and "View and select inventory" for the stock of receipt or write-off.
+> - a user with "Create and Edit" permission on the document type in the request,
+> - and "View and Select Warehouse" permission on the incoming or outgoing warehouse.
 
-The method `catalog.document.element.update` modifies an existing item in the inventory management document and returns the updated product data.
+The method `catalog.document.element.update` modifies an existing item in the inventory document and returns the updated product data.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ The method `catalog.document.element.update` modifies an existing item in the in
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the document product, can be obtained using the method [catalog.document.element.list](./catalog-document-element-list.md) ||
+[`catalog_document_element.id`](../../data-types.md#catalog_document_element) | Identifier of the document product, can be obtained using the [catalog.document.element.list](./catalog-document-element-list.md) method ||
 || **fields***
 [`object`](../../../data-types.md) | Fields to be modified (detailed description below) ||
 |#
@@ -29,9 +29,9 @@ The method `catalog.document.element.update` modifies an existing item in the in
 || **Name**
 `type` | **Description** ||
 || **storeFrom**
-[`integer`](../../../data-types.md) | Identifier of the source inventory, can be obtained using the method [catalog.store.list](../../store/catalog-store-list.md). Use for write-off documents. If the parameter is not provided, the current value will be retained ||
+[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the source warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Use for outgoing documents. If the parameter is not provided, the current value will be retained ||
 || **storeTo**
-[`integer`](../../../data-types.md) | Identifier of the destination inventory, can be obtained using the method [catalog.store.list](../../store/catalog-store-list.md). Suitable for receipt and transfer documents. If the parameter is not provided, the current value will be retained ||
+[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the destination warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Suitable for incoming and transfer documents. If the parameter is not provided, the current value will be retained ||
 || **amount**
 [`double`](../../../data-types.md) | Quantity of the product in the document's accounting units. If the parameter is not provided, the current value will be retained ||
 || **purchasingPrice**
@@ -51,7 +51,7 @@ The method `catalog.document.element.update` modifies an existing item in the in
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":148,"fields":{"amount":12,"purchasingPrice":1180,"storeTo":2}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.document.element.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.element.update
     ```
 
 - cURL (OAuth)
@@ -173,7 +173,7 @@ The method `catalog.document.element.update` modifies an existing item in the in
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -208,14 +208,14 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **documentElement**
-[`object`](../../data-types.md#catalog_document_element) | Updated product data of the document. ||
+[`catalog_document_element`](../../data-types.md#catalog_document_element) | Updated product data of the document. ||
 || **time**
 [`time`](../../../data-types.md#time) | Service information about the request processing time. ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -230,8 +230,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights to modify the document or view inventories ||
-|| `ERROR_DOCUMENT_STATUS` | Document not found / Conducted document | Item not found, document deleted, unavailable, or already conducted ||
+|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights to modify the document or view warehouses ||
+|| `ERROR_DOCUMENT_STATUS` | Document not found / Conducted document | Item not found, document deleted, unavailable, or already processed ||
 || `0` | Error of modifying new document | Internal error while saving ||
 |#
 

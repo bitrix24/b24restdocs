@@ -1,10 +1,10 @@
-# Create Inventory Management Document catalog.document.add
+# Create Inventory Document catalog.document.add
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Create and edit" access permission for the required document type
+> Who can execute the method: a user with "Create and edit" permission for the required document type
 
-The method `catalog.document.add` creates a new inventory management document.
+The method `catalog.document.add` creates a new inventory document.
 
 ## Method Parameters
 
@@ -27,18 +27,18 @@ The method `catalog.document.add` creates a new inventory management document.
 || **docType***
 [`char`](../../data-types.md) | Document type. Possible values:
 - `A` — receipt,
-- `S` — stock adjustment,
-- `M` — transfer between inventories,
+- `S` — write-off,
+- `M` — transfer between warehouses,
 - `R` — return,
-- `D` — write-off.
+- `D` — disposal.
 
-Current document types can be retrieved using the method [catalog.enum.getStoreDocumentTypes](../enum/catalog-enum-get-store-document-types.md) ||
+Current document types can be obtained using the method [catalog.enum.getStoreDocumentTypes](../enum/catalog-enum-get-store-document-types.md) ||
 || **currency***
-[`char`](../../data-types.md) | Document currency in ISO 4217 format, for example `USD`. The value cannot be changed after creation.
+[`crm_currency.CURRENCY`](../../crm/data-types.md#crm_currency) | Document currency in ISO 4217 format, for example `USD`. The value cannot be changed after creation.
 
 To get a list of currencies with codes, use the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
 || **responsibleId***
-[`integer`](../../data-types.md) | Identifier of the responsible person ||
+[`user.id`](../../data-types.md) | Identifier of the responsible person ||
 || **siteId**
 [`char`](../../data-types.md) | Site code to which the document relates. Default is `s1`.
 
@@ -50,11 +50,11 @@ This parameter is relevant for on-premise Bitrix, for cloud Bitrix the standard 
 || **commentary**
 [`char`](../../data-types.md) | Document commentary ||
 || **total**
-[`double`](../../data-types.md) | Total amount for the document products. The value is calculated automatically after processing but can be set manually ||
+[`double`](../../data-types.md) | Total amount for the document items. The value is calculated automatically after processing but can be set manually ||
 || **docNumber**
 [`string`](../../data-types.md) | Internal document number. If not provided, it is generated automatically ||
 || **createdBy**
-[`integer`](../../data-types.md) | Identifier of the user who created the document. An administrator can specify any value; by default, it is filled with the current user ||
+[`user.id`](../../data-types.md) | Identifier of the user who created the document. An administrator can specify any value; by default, it is filled with the current user ||
 |#
 
 {% note info "" %}
@@ -76,8 +76,8 @@ To fill in product data, use the method [catalog.document.element.add](./documen
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"docType":"A","currency":"USD","responsibleId":29,"docNumber":"IN-00042","title":"Receipt from Supplier-1","commentary":"Planned inventory replenishment"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.document.add
+    -d '{"fields":{"docType":"A","currency":"USD","responsibleId":29,"docNumber":"IN-00042","title":"Receipt from Supplier-1","commentary":"Planned warehouse replenishment"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.add
     ```
 
 - cURL (OAuth)
@@ -86,7 +86,7 @@ To fill in product data, use the method [catalog.document.element.add](./documen
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"docType":"A","currency":"USD","responsibleId":29,"docNumber":"IN-00042","title":"Receipt from Supplier-1","commentary":"Planned inventory replenishment"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"docType":"A","currency":"USD","responsibleId":29,"docNumber":"IN-00042","title":"Receipt from Supplier-1","commentary":"Planned warehouse replenishment"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.document.add
     ```
 
@@ -104,7 +104,7 @@ To fill in product data, use the method [catalog.document.element.add](./documen
                     responsibleId: 29,
                     docNumber: 'IN-00042',
                     title: 'Receipt from Supplier-1',
-                    commentary: 'Planned inventory replenishment',
+                    commentary: 'Planned warehouse replenishment',
                 }
             }
         );
@@ -135,7 +135,7 @@ To fill in product data, use the method [catalog.document.element.add](./documen
                     'responsibleId' => 29,
                     'docNumber' => 'IN-00042',
                     'title' => 'Receipt from Supplier-1',
-                    'commentary' => 'Planned inventory replenishment'
+                    'commentary' => 'Planned warehouse replenishment'
                 ]
             ]
         );
@@ -165,7 +165,7 @@ To fill in product data, use the method [catalog.document.element.add](./documen
                 responsibleId: 29,
                 docNumber: 'IN-00042',
                 title: 'Receipt from Supplier-1',
-                commentary: 'Planned inventory replenishment'
+                commentary: 'Planned warehouse replenishment'
             }
         },
         function(result)
@@ -192,7 +192,7 @@ To fill in product data, use the method [catalog.document.element.add](./documen
                 'responsibleId' => 29,
                 'docNumber' => 'IN-00042',
                 'title' => 'Receipt from Supplier-1',
-                'commentary' => 'Planned inventory replenishment'
+                'commentary' => 'Planned warehouse replenishment'
             ]
         ]
     );
@@ -212,7 +212,7 @@ HTTP code: **200**
 {
     "result": {
         "document": {
-            "commentary": "Planned inventory replenishment",
+            "commentary": "Planned warehouse replenishment",
             "createdBy": 29,
             "currency": "USD",
             "dateCreate": "2025-10-30T11:19:38+02:00",
@@ -246,7 +246,7 @@ HTTP code: **200**
 
 {% note info "" %}
 
-The document is created with the status `N` — draft. To process the document, use the method [catalog.document.conduct](./catalog-document-conduct.md) or [catalog.document.conductList](./catalog-document-conduct-list.md).
+The document is created with status `N` — draft. To process the document, use the method [catalog.document.conduct](./catalog-document-conduct.md) or [catalog.document.conductList](./catalog-document-conduct-list.md).
 
 {% endnote %}
 
@@ -258,7 +258,7 @@ The document is created with the status `N` — draft. To process the document, 
 || **result**
 [`object`](../data-types.md#catalog_document) | Root element of the response ||
 || **document**
-[`object`](../data-types.md#catalog_document) | Object with data of the created document ||
+[`catalog_document`](../data-types.md#catalog_document) | Object with data of the created document ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -280,8 +280,10 @@ HTTP code: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Insufficient rights to save the document | The user does not have permission to create the required document type ||
+|| `0` | Insufficient permissions to save the document | The user does not have permission to create the required document type ||
 || `0` | DOC_TYPE isn't available | An invalid document type was provided ||
+|| `0` | Inventory accounting is not available on your plan | Inventory accounting is not available on your plan ||
+|| `0` | -  | Other internal errors when adding the document ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

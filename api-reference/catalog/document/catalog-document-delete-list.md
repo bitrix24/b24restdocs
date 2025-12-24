@@ -1,12 +1,12 @@
-# Delete Multiple Inventory Management Documents catalog.document.deleteList
+# Delete Multiple Inventory Documents catalog.document.deleteList
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method:
 > - a user with the "Delete document" access permission for the document type in the request,
-> - and "View and select inventory" access permission for the stock of receipt or write-off.
+> - and "View and select warehouse" for the incoming or outgoing warehouse.
 
-The method `catalog.document.deleteList` deletes multiple inventory management documents. Access permissions are checked for each document in the request.
+The method `catalog.document.deleteList` removes multiple inventory documents. Access permissions are checked for each document in the request.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ The method `catalog.document.deleteList` deletes multiple inventory management d
 || **Name**
 `type` | **Description** ||
 || **documentIds***
-[`array`](../../data-types.md) | List of document identifiers, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id[]`](../data-types.md#catalog_document) | List of document identifiers, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
 |#
 
 ## Code Examples
@@ -151,9 +151,9 @@ HTTP Code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` if all documents are deleted ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` if all documents were deleted ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -165,7 +165,7 @@ HTTP Code: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Cannot delete document #143 because it is posted"
+    "error_description": "Cannot delete document #143 because it is processed"
 } 
 ```
 
@@ -173,9 +173,10 @@ HTTP Code: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to delete document "Name" | No permission to delete the document type or no access to the document's inventory ||
+|| `0` | Insufficient permissions to delete document "Name" | No permission to delete the document type or no access to the document's warehouses ||
 || `0` | An error occurred while deleting document "#ID": Document not found | A non-existent identifier is specified in the list ||
-|| `0` | You cannot delete document "Name" as it is posted | Cancel the posting of the document using the [catalog.document.cancelList](./catalog-document-cancel-list.md) method ||
+|| `0` | You cannot delete document "Name" as it is processed | Cancel the processing of the document using the [catalog.document.cancelList](./catalog-document-cancel-list.md) method ||
+|| `0` | Inventory management is not available on your plan | Inventory management is not available on your plan ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

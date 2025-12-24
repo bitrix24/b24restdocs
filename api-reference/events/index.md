@@ -1,49 +1,47 @@
-# Concept and Benefits of Event Processing
+# Event Handler
 
-> Quick navigation: [all methods and events](#all-methods)
+> Quick navigation: [all methods and events](#all-methods) 
 
-How can you be notified about data changes in Bitrix24? For instance, when a new deal is created? An obvious approach is to make a request that returns all deals created after a specified date.
+Events in Bitrix24 are notifications about data changes, such as the creation of a deal or the deletion of a product. When an application or webhook subscribes to an event, the system starts generating these notifications for it. To receive events, set up a handler.
 
-However, this method of data retrieval requires developing a mechanism on the application side that will poll Bitrix24 at a set interval. In the case of a mass-market solution that operates with multiple accounts, this task can become non-trivial and resource-intensive, particularly because it will create additional load on the polled Bitrix24 accounts.
+An event handler is an external URL to which Bitrix24 sends a POST request with data about the change. The handler allows you to:
 
-Fortunately, the Bitrix24 REST API offers an excellent alternative. Data changes such as adding a new deal, modifying a task, deleting a product, and many others trigger REST events. You can add your own **event handlers** to quickly learn about and respond to such changes in order to:
+- synchronize data with an external system,
+- trigger automation scenarios,
+- validate data according to business logic rules.
 
-- Synchronize external system data with changes in Bitrix24
-- Trigger automatic data processing in Bitrix24
-- Validate data in Bitrix24 according to your business logic
-- And much more!
+{% note warning "" %}
 
-An event handler is a URL that will be called after a user performs the requested action in Bitrix24.
-
-{% note alert "Check handler availability" %}
-
-Since requests will come from Bitrix servers, the handler URL must be accessible for GET/POST requests from the outside.
-
-Scripts hosted on localhost or servers accessible only within a specific local network cannot be used for event processing. Always check the availability of your handlers using public "website availability" services.
+The handler URL must be accessible from the external network. Do not use addresses on localhost or in a local network. Check the availability of your URL using public services.
 
 {% endnote %}
 
-It is important to note that Bitrix24 does not call your handlers in real-time; instead, it first forms a separate event queue on a special server and subsequently processes this queue.
-
-There may be situations where the handler is called only a few seconds after the actual event in Bitrix24.
-
-The Bitrix24 queue server also monitors how quickly your handlers respond. If they respond slowly, subsequent calls may be executed with lower priority, resulting in longer delays.
-
-Current [queue server addresses](../../settings/cloud-and-on-premise/network-access.md).
-
 ## How Events Work
 
-First, the application uses the [event.bind](event-bind.md) method to set up the handler for the desired event.
-
-Then, when a user performs the corresponding action (creates a task, modifies a task, etc.), Bitrix24 automatically notifies the application through the queue server:
+1. The application registers a handler for the desired event using the [event.bind](./event-bind.md) method.
+2. The user performs an action in Bitrix24, such as modifying a task.
+3. Bitrix24 sends a notification to the application via the queue server.
 
 ![How Events Work](./_images/how_events_work.png "How Events Work")
 
-## What Bitrix24 Sends to the Handler
+### Features of Operation
 
-Depending on the specific event, Bitrix24 will send a different set of data in the `data` key to the handler. Most often, this includes the identifier of the object that was modified in Bitrix24.
+Events are not processed directly. First, Bitrix24 places the event in a queue on a special server. From there, a POST request is sent to your handler. As a result, the request may arrive with a slight delay.
 
-Additionally, the `auth` key usually contains authorization parameters, particularly [OAuth 2.0 tokens](../../settings/oauth/index.md):
+The server checks the response speed of the handler. If the handler responds slowly, the server reduces the frequency of calls. The intervals between requests increase.
+
+Current [queue server addresses](../../settings/cloud-and-on-premise/network-access.md).
+
+## What Comes to the Handler
+
+The system sends a request in JSON format. The main keys are:
+
+-  `event` — the name of the event,
+-  `ts` — a timestamp in Unix timestamp format,
+-  `data` — event data, such as the identifier of the modified element,
+-  `auth` — authorization parameters, including [OAuth 2.0 tokens](../../settings/oauth/index.md).
+
+Example request:
 
 ```php
 array(
@@ -58,7 +56,7 @@ array(
         'expires_in' => '3600',
         'scope' => 'entity,im',
         'domain' => 'portal.bitrix24.com',
-        'server_endpoint' => 'https://oauth.bitrix.info/rest/',
+        'server_endpoint' => 'https://oauth.bitrix24.tech/rest/',
         'status' => 'F',
         'client_endpoint' => 'https://portal.bitrix24.com/rest/',
         'member_id' => 'a223c6b3710f85df22e9377d6c4f7553',
@@ -68,36 +66,50 @@ array(
 )
 ```
 
-### Authorization Tokens Are Not Always Available
+### Authorization Tokens
 
-There may be situations where the event handler does not receive authorization tokens. This is because OAuth 2.0 tokens always "belong" to a [specific user](../../settings/oauth/index.md) in Bitrix24. If the data change that triggered the event occurred without an authorized user, Bitrix24 cannot "understand" whose tokens to send to the event handler.
+OAuth 2.0 tokens in the request are tied to the user who performed the action. If the event is triggered automatically, for example, by an automation rule or workflow, the user ID will be `0`. In this case, tokens are not passed to the handler.
 
-To ensure your application continues to function even in such cases, it is recommended to save the tokens of the user who installed your application during the installation process in Bitrix24 and use them.
+To ensure that the application can always make callbacks to Bitrix24, save the tokens of the user who installed the application. Use these tokens for any subsequent requests on behalf of the application.
 
-## Outgoing Webhooks
+## How to Subscribe to an Event via Webhook
 
-In addition to setting up event handlers in applications using the `event.bind` method, there is a simpler way - [outgoing webhooks](../../local-integrations/local-webhooks.md). Essentially, this is the same event mechanism, but the handler can be set up through the interface in the Developer resources section.
+1. In Bitrix24, open the *Developer resources > Other > Outgoing Webhook* section.
+2. Specify the handler URL.
+3. Select one or more events from the list, such as `OnCrmDealAdd`.
+4. Save the webhook. The Application Token field will be generated automatically.
 
-## Offline Events
+Example request:
 
-Despite the clear advantages of the event mechanism, this approach has several drawbacks.
+```json
+{
+    "event": "ONCRMDEALADD",
+    "event_handler_id": "975",
+    "data": {
+        "FIELDS": {
+        "ID": "7405"
+        }
+    },
+    "ts": "1766047124",
+    "auth": {
+        "domain": "portal.bitrix24.com",
+        "client_endpoint": "https://portal.bitrix24.com/rest/",
+        "server_endpoint": "https://oauth.bitrix24.tech/rest/",
+        "member_id": "d897063e1ce7c5eb9f04b9751eef5915",
+        "application_token": "jvh9y1ulvt2m6k5or90v9mg8nn32ozas"
+    }
+}
+```
+Note that the request from the outgoing webhook does not include user OAuth 2.0 tokens.
 
-First, you cannot regulate the incoming load on your event handlers.
+## Event Limitations
 
-If you subscribe to deal changes and suddenly a thousand deals are modified on the account, you will receive a thousand hits to your handler from Bitrix24 in a fairly intensive manner.
+Events have two main limitations:
 
-Moreover, if the same deal is modified consecutively a thousand times for some reason, you will receive a thousand hits to your handler.
+1. **Load cannot be regulated**. During mass data changes, you will receive many consecutive calls. If a thousand deals are changed simultaneously in Bitrix24, the handler will receive a thousand calls.
+2. **No retries**. If your server did not respond or returned an error, the Bitrix24 queue server will log the failure but will not resend the event.
 
-You may not be able to handle the load.
-
-This leads to the second drawback – if your server crashes and fails to process all events, Bitrix24 will not resend anything. The queue server will log on its side that the application handler returned an error or did not respond, and that will be the end of it. No second chances.
-
-If it is vital for your business logic to process all events, [offline events](offline-events.md) come to the rescue.
-
-## Continue Learning
-
-- [Security](safe-event-handlers.md)
-- [Offline Events](offline-events.md)
+If it is important to process all events without loss, use [offline events](./offline-events.md). They allow you to retrieve events from the queue manually.
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -105,7 +117,7 @@ If it is vital for your business logic to process all events, [offline events](o
 
 - Methods
 
-    #|
+    #| 
     || **Method** | **Description** ||
     || [event.bind](./event-bind.md) | Registers a new event handler ||
     || [event.get](./event-get.md) | Retrieves a list of registered event handlers ||
@@ -119,9 +131,15 @@ If it is vital for your business logic to process all events, [offline events](o
 
 - Events
 
-    #|
+    #| 
     || **Event** | **Description** ||
-    || [onOfflineEvent](./on-offline-event.md) | When the queue changes ||
+    || [onOfflineEvent](./on-offline-event.md) | When the offline events queue changes ||
     |#
 
 {% endlist %}
+
+## Continue Learning
+
+- [Security in Handlers](./safe-event-handlers.md)
+- [Offline Events](./offline-events.md)
+- [Required Network Access](../../settings/cloud-and-on-premise/network-access.md)

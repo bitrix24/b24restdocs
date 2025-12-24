@@ -6,6 +6,7 @@ For Bitrix24, the following must be opened:
 
 - Outgoing requests to **oauth.bitrix.info** (for the application mechanism)
 - Access to **\*.bitrixsoft.com**. Without access to this resource, the "Developer resources" section for creating integrations and webhooks does not function
+- Outgoing requests to **https://www.bitrix24.*/util/** to display event names in the outgoing webhook creation interface
 - Incoming requests from application servers (the addresses depend on the specific applications)
 
 If the application is being developed on its own server, the following must be opened:

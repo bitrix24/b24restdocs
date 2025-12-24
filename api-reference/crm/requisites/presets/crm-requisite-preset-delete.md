@@ -1,4 +1,4 @@
-# Delete Requisite Template crm.requisite.preset.delete
+# Delete the CRM Requisite Template `crm.requisite.preset.delete`
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
@@ -141,7 +141,7 @@ Searching for templates by country binding:
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -174,7 +174,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **40x**, **50x**
+HTTP status: **40x**, **50x**
 
 ```json
 {
@@ -190,6 +190,7 @@ HTTP Status: **40x**, **50x**
 #|  
 || **Code** | **Description** ||
 || `The Preset with ID '347' is not found` | Template with the specified identifier not found ||
+|| `You cannot delete the template as requisites have already been created for it` | Cannot delete the template for which requisites have been created. To delete the template, first delete the requisites ||
 || `Access denied` | Insufficient access permissions to delete the template ||
 |#
 

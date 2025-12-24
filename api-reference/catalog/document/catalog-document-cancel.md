@@ -1,14 +1,14 @@
-# Cancel the inventory management document catalog.document.cancel
+# Cancel Document of Inventory Accounting catalog.document.cancel
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - a user with the "Cancel execution" access permission for the document type in the request,
-> - and "View and select inventory" access permission for the stock receipt or write-off.
+> - a user with the "Cancel Conduct" permission for the document type in the request,
+> - and "View and Select Warehouse" permission for the incoming or outgoing warehouse.
 
-The method `catalog.document.cancel` cancels the execution of the inventory management document:
+The method `catalog.document.cancel` cancels the conduct of the inventory accounting document:
 - the document status changes to `C` — canceled,
-- the inventory balances of products are updated according to the document items.
+- the inventory balances of goods are updated according to the document's positions.
 
 ## Method Parameters
 
@@ -18,7 +18,7 @@ The method `catalog.document.cancel` cancels the execution of the inventory mana
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Document identifier, can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id`](../data-types.md#catalog_document) | Identifier of the document, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
 |#
 
 ## Code Examples
@@ -34,7 +34,7 @@ The method `catalog.document.cancel` cancels the execution of the inventory mana
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":142}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.document.cancel
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.cancel
     ```
 
 - cURL (OAuth)
@@ -139,8 +139,8 @@ HTTP Code: **200**
         "finish": 1762411074.877169,
         "duration": 0.8771688938140869,
         "processing": 0,
-        "date_start": "2025-11-06T09:37:54+02:00",
-        "date_finish": "2025-11-06T09:37:54+02:00",
+        "date_start": "2025-11-06T09:37:54+01:00",
+        "date_finish": "2025-11-06T09:37:54+01:00",
         "operating_reset_at": 1762411674,
         "operating": 0.2729671001434326
     }
@@ -153,7 +153,7 @@ HTTP Code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` if the document execution is canceled  ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` if the document conduct was canceled  ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -167,7 +167,7 @@ HTTP Code: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Error canceling document execution: Document is not yet executed"
+    "error_description": "Error cancelling document conduct: Document has not been conducted yet"
 }
 ```
 
@@ -175,12 +175,13 @@ HTTP Code: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to save the document | No access permission to the product catalog, inventory management, no permission to cancel document execution, or a non-existent document identifier is specified ||
-|| `0` | Unable to complete the action as you do not have sufficient permissions to view and select inventories | No permissions to work with the product inventory from the document ||
-|| `0` | Error canceling document execution: Document is not yet executed | Cannot cancel document execution if it is not in the executed status ||
+|| `0` | Insufficient permissions to save the document | No permissions for the product catalog, inventory accounting, no permission to cancel document conduct, or a non-existent document identifier was specified ||
+|| `0` | Could not complete the action as you do not have sufficient permissions to view and select warehouses | No permissions to work with the product warehouse from the document ||
+|| `0` | Error cancelling document conduct: Document has not been conducted yet | Cannot cancel document conduct if it is not in the conducted status ||
+|| `0` | Inventory accounting is not available on your plan | Inventory accounting is not available on your plan ||
 |#
 
-{% include [System errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -1,12 +1,12 @@
-# Remove product from inventory management document catalog.document.element.delete
+# Delete Item from Inventory Document catalog.document.element.delete
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: 
-> - a user with "Create and edit" access permission for the document type in the request,
-> - and "View and select inventory" for the stock receipt or write-off.
+> - a user with "Create and edit" permission on the document type in the request,
+> - and "View and select warehouse" permission on the incoming or outgoing warehouse.
 
-The method `catalog.document.element.delete` removes an item from the inventory management document. The document must be accessible to the user and have a status of `N` — not processed.
+The method `catalog.document.element.delete` removes an item from the inventory document. The document must be accessible to the user and have a status of `N` — not processed.
 
 ## Method Parameters
 
@@ -16,7 +16,7 @@ The method `catalog.document.element.delete` removes an item from the inventory 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the product record in the document, can be obtained using the method [catalog.document.element.list](./catalog-document-element-list.md) ||
+[`catalog_document_element.id`](../../data-types.md#catalog_document_element) | Identifier of the item record in the document, can be obtained using the [catalog.document.element.list](./catalog-document-element-list.md) method ||
 |#
 
 ## Code Examples
@@ -155,7 +155,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -175,7 +175,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights to work with the document or inventories ||
+|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights to work with the document or warehouses ||
 || `ERROR_DOCUMENT_STATUS` | Document not found / Conducted document | Item not found, document deleted or already processed ||
 || `0` | Error of deleting document | Failed to delete the record ||
 |#

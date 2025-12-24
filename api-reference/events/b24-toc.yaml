@@ -1,7 +1,7 @@
 title: Events
 href: index.md
 items: 
-  - name: Concept and Benefits of Event Processing
+  - name: Event Handler
     href: index.md
   - name: Get a List of Available Events
     href: events.md

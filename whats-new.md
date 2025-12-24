@@ -2,6 +2,12 @@
 
 ## 2025
 
+### December 24, 2025
+
+- Updated the main page of the [Events](./api-reference/events/index.md) section
+- Added the article [Tasks in REST 3.0: Overview of Methods](./api-reference/rest-v3/tasks/index.md)
+- Updated the documentation for the methods [catalog.documentcontractor.add](./api-reference/catalog/documentcontractor/catalog-documentcontractor-add.md), [catalog.documentcontractor.delete](./api-reference/catalog/documentcontractor/catalog-documentcontractor-delete.md), [catalog.documentcontractor.getFields](./api-reference/catalog/documentcontractor/catalog-documentcontractor-get-fields.md), [catalog.documentcontractor.list](./api-reference/catalog/documentcontractor/catalog-documentcontractor-list.md)
+
 ### December 17, 2025
 
 - Added the section [REST 3.0](./api-reference/rest-v3/index.md)

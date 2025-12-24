@@ -1,10 +1,10 @@
-# Get Description of Fields for Inventory Management Document catalog.document.getFields
+# Get Description of Fields for Inventory Document catalog.document.getFields
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "View product catalog" access permission
+> Who can execute the method: user with the "View product catalog" access permission
 
-The method `catalog.document.getFields` returns the description of fields for the inventory management document.
+The method `catalog.document.getFields` returns the description of fields for the inventory document.
 
 ## Method Parameters
 
@@ -12,7 +12,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Example notes](../../../_includes/examples.md) %}
+{% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -23,7 +23,7 @@ No parameters.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.document.getFields
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.getFields
     ```
 
 - cURL (OAuth)
@@ -231,8 +231,8 @@ HTTP Code: **200**
         "finish": 1761727898.554004,
         "duration": 0.5540039539337158,
         "processing": 0,
-        "date_start": "2025-10-29T11:51:38+02:00",
-        "date_finish": "2025-10-29T11:51:38+02:00",
+        "date_start": "2025-10-29T11:51:38+01:00",
+        "date_finish": "2025-10-29T11:51:38+01:00",
         "operating_reset_at": 1761728498,
         "operating": 0
     }
@@ -247,9 +247,10 @@ HTTP Code: **200**
 || **result**
 [`object`](../data-types.md#catalog_document) | Root element of the response ||
 || **document**
-[`object`](../data-types.md#catalog_document) | Object with the description of fields for the inventory management document ||
+[`object`](../data-types.md#catalog_document) | Object with the description of fields for the inventory document 
+Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the field of the [`catalog_document`](../data-types.md#catalog_document) object, and `value` is an object of type [`rest_field_description`](../data-types.md). ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -269,7 +270,7 @@ HTTP Code: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to save the document | The user does not have permission to view ||
+|| `0` | Insufficient permissions to save the document | User does not have view permission ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

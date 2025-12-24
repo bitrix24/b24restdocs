@@ -1,10 +1,10 @@
-# Get the list of inventory management documents catalog.document.list
+# Get the list of warehouse accounting documents catalog.document.list
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with the "View product catalog" access permission
+> Who can execute the method: user with the "View product catalog" permission
 
-The method `catalog.document.list` returns a paginated list of inventory management documents. By default, filters are added to the request, limiting the selection to the available document types and the current user's permissions.
+The method `catalog.document.list` returns a paginated list of warehouse accounting documents. By default, filters are added to the request that limit the selection to the available document types and the current user's permissions.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ The method `catalog.document.list` returns a paginated list of inventory managem
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array with a list of fields [catalog_document](../data-types.md#catalog_document) to be selected.
+[`array`](../../data-types.md) | An array of fields from [catalog_document](../data-types.md#catalog_document) that need to be selected.
 
 If the array is not provided or an empty array is passed, all available document fields will be selected. ||
 || **filter**
@@ -31,13 +31,13 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `!=`, `!` — not equal
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `%` — LIKE, substring search. The `%` character should not be included in the filter value. The search looks for the substring in any position of the string
+- `=%` — LIKE, substring search. The `%` character should be included in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!%` — NOT LIKE, substring search. The `%` character should not be included in the filter value. The search goes from both sides
+- `!=%` — NOT LIKE, substring search. The `%` character should be included in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
@@ -61,7 +61,7 @@ By default, documents are sorted in ascending order by `id`. ||
 
 The page size is 50 records.
 
-To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
+To select the second page of results, pass the value `50`. To select the third page of results, pass the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
@@ -221,7 +221,7 @@ Or pass the value from the `next` key in the response. ||
 
             if (result.more())
             {
-                result.next(); // will substitute the value from the response into start and repeat the request
+                result.next(); // substitutes the value from the response into start and repeats the request
             }
         }
     );
@@ -265,20 +265,20 @@ HTTP Code: **200**
                 "docType": "S",
                 "id": 1,
                 "status": "Y",
-                "title": "Stock adjustment #2"
+                "title": "Receipt #2"
             },
             {
                 "docType": "A",
                 "id": 7,
                 "status": "N",
-                "title": "Test rest"
+                "title": "Test Rest"
             },
             // ...other documents
             {
                 "docType": "S",
                 "id": 105,
                 "status": "N",
-                "title": "stock adjustment 10"
+                "title": "receipt 10"
             }
         ]
     },
@@ -305,7 +305,7 @@ HTTP Code: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **documents**
-[`array`](../data-types.md#catalog_document) | List of documents, the response structure depends on the `select` parameter ||
+[`catalog_document[]`](../data-types.md#catalog_document) | List of documents, the response structure depends on the `select` parameter ||
 || **next**
 [`integer`](../../data-types.md) | Offset pointer for the next page. Pass the value to the `start` parameter to get the next 50 records ||
 || **total**

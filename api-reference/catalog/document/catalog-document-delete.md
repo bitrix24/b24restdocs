@@ -1,14 +1,14 @@
-# Delete inventory management document catalog.document.delete
+# Delete Inventory Document catalog.document.delete
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method: 
 > - a user with the "Delete document" access permission for the document type in the request,
-> - and "View and select inventory" for the stock receipt or write-off.
+> - and "View and select warehouse" access permission for the incoming or outgoing warehouse.
 
-The method `catalog.document.delete` removes an inventory management document. 
+The method `catalog.document.delete` removes an inventory document. 
 
-## Method parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -16,10 +16,10 @@ The method `catalog.document.delete` removes an inventory management document.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Document identifier, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id`](../data-types.md#catalog_document) | Identifier of the document, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
 |#
 
-## Code examples
+## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -125,9 +125,9 @@ The method `catalog.document.delete` removes an inventory management document.
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
-HTTP code: **200**
+HTTP Code: **200**
 
 ```json
 {
@@ -145,24 +145,24 @@ HTTP code: **200**
 }
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` if the document is deleted. 
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` if the document has been deleted. 
 
-If the response contains `null` — the document cannot be deleted because it is processed. First, cancel the processing of the document using the [catalog.document.cancel](./catalog-document-cancel.md) method ||
+If the response contains `null` — the document cannot be deleted because it has been processed. First, cancel the processing of the document using the [catalog.document.cancel](./catalog-document-cancel.md) method ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-## Error handling
+## Error Handling
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-HTTP code: **400**
+HTTP Code: **400**
 
 ```json
 {
@@ -171,17 +171,18 @@ HTTP code: **400**
 }
 ```
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to save the document | Insufficient permissions to work with the document or inventories ||
+|| `0` | Insufficient permissions to save the document | Insufficient permissions to work with the document or warehouses ||
 || `0` | Document not found | A non-existent document identifier was provided ||
+|| `0` | Inventory accounting is not available on your plan | Inventory accounting is not available on your plan ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](./catalog-document-delete-list.md)
 - [{#T}](./catalog-document-cancel.md)

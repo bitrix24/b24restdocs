@@ -1,4 +1,4 @@
-# Add Configurable Activity crm.activity.configurable.add
+# Add Configurable CRM Activity `crm.activity.configurable.add`
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
@@ -20,11 +20,11 @@ The method can only be called in the context of an [application](https://helpdes
 || **Name**
 `type` | **Description** ||
 || **ownerTypeId***
-[`integer`](../../../../data-types.md) | Integer identifier of the [CRM object type](../../../data-types.md#object_type) where the activity is created, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | Integer identifier of the [CRM entity type](../../../data-types.md#object_type) in which the activity is created, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM element where the activity is created, for example `1` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM element in which the activity is created, for example `1` ||
 || **fields***
-[`array`](../../../../data-types.md) | Associative array of values for [activity fields](#parametr-fields) in the following structure:
+[`array`](../../../../data-types.md) | Associative array of values for the [activity fields](#parametr-fields) in the following structure:
 ```json
 fields:
 {
@@ -52,13 +52,13 @@ fields:
 || **Name**
 `type` | **Description** ||
 || **typeId**
-[`string`](../../../../data-types.md) | Type of the configurable activity. If the value is not specified, it defaults to `CONFIGURABLE`. If specified, the value must correspond to one of the types created by the method [crm.activity.type.add](../types/crm-activity-type-add.md) with the field `IS_CONFIGURABLE_TYP0` equal to `Y` in the context of the same application ||
+[`string`](../../../../data-types.md) | Type of the configurable activity. If not specified, it defaults to `CONFIGURABLE`. If specified, the value must correspond to one of the types created by the method [crm.activity.type.add](../types/crm-activity-type-add.md) with the field `IS_CONFIGURABLE_TYPE` equal to `Y` in the context of the same application ||
 || **completed**
 [`boolean`](../../../../data-types.md) | Flag indicating whether the activity is closed. You can use `Y/N`, `1/0`, `true/false` to set the value ||
 || **deadline**
 [`datetime`](../../../../data-types.md) | Deadline for the activity ||
 || **pingOffsets**
-[`array`](../../../../data-types.md) | Array of offsets in seconds relative to the deadline, determining when to create ping records for this activity ||
+[`array`](../../../../data-types.md) | Array of offsets in minutes relative to the deadline, determining when to create ping records for this activity ||
 || **isIncomingChannel**
 [`boolean`](../../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel. You can use `Y/N`, `1/0`, `true/false` to set the value ||
 || **responsibleId**
@@ -83,7 +83,7 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ownerTypeId":1,"ownerId":999,"fields":{"typeId":"CONFIGURABLE","completed":true,"deadline":"**put_current_date_time_here**","pingOffsets":[60,300],"isIncomingChannel":"N","responsibleId":1,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Smith","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"ownerTypeId":1,"ownerId":999,"fields":{"typeId":"CONFIGURABLE","completed":true,"deadline":"**put_current_date_time_here**","pingOffsets":[60,300],"isIncomingChannel":"N","responsibleId":1,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming Call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"John Doe","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+1 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About Client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.configurable.add
     ```
 
@@ -127,7 +127,7 @@ fields:
     									"client": {
     										"type": "link",
     										"properties": {
-    											"text": "John Smith",
+    											"text": "John Doe",
     											"bold": true,
     											"action": {
     												"type": "redirect",
@@ -212,7 +212,7 @@ fields:
                                             'client' => [
                                                 'type' => 'link',
                                                 'properties' => [
-                                                    'text' => 'John Smith',
+                                                    'text' => 'John Doe',
                                                     'bold' => true,
                                                     'action' => [
                                                         'type' => 'redirect',
@@ -301,7 +301,7 @@ fields:
                                     "client": {
                                         "type": "link",
                                         "properties": {
-                                            "text": "John Smith",
+                                            "text": "John Doe",
                                             "bold": true,
                                             "action": {
                                                 "type": "redirect",
@@ -357,7 +357,7 @@ fields:
             'fields' => [
                 'typeId' => 'CONFIGURABLE',
                 'completed' => true,
-                'deadline' => date('c'), // Using the current date and time in ISO 8601 format
+                'deadline' => date('c'), // Use current date and time in ISO 8601 format
                 'pingOffsets' => [60, 300],
                 'isIncomingChannel' => 'N',
                 'responsibleId' => 1,
@@ -382,7 +382,7 @@ fields:
                                     'client' => [
                                         'type' => 'link',
                                         'properties' => [
-                                            'text' => 'John Smith',
+                                            'text' => 'John Doe',
                                             'bold' => true,
                                             'action' => [
                                                 'type' => 'redirect',
@@ -483,7 +483,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
 || `100` | Required fields are not filled ||
-|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of an application ||
+|| `ERROR_WRONG_CONTEXT` | Method call is only possible in the context of an application ||
 || `ERROR_WRONG_APPLICATION` | The activity can only be updated by the application that created it ||
 || `WRONG_FIELD_VALUE` | Incorrect field value ||
 || `INCOMING_ACTIVITY_CAN_NOT_BE_WITH_DEADLINE` | Incoming activity cannot have a deadline ||

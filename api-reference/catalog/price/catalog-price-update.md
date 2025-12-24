@@ -200,7 +200,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **price**
-[`catalog_price`](../data-types.md#catalog_price) | Object with information about the product price ||
+[`catalog_price`](../data-types.md#catalog_price) | Object containing information about the product price ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -222,12 +222,13 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `200040300030` | Access Denied | Insufficient permissions ||
-|| `100` | Could not find value for parameter {fields} | Parameter `fields` is missing or empty ||
-|| `100` | Could not find value for parameter {id} | Parameter `id` is missing || 
-|| `-` | Price does not exist | No product price exists with this identifier || 
+|| `200040300020` | Access Denied | Insufficient rights to edit the price ||
+|| `200040300030` | Access Denied | Insufficient rights to edit the product ||
+|| `100` | Could not find value for parameter {fields} | The `fields` parameter is not specified or is empty ||
+|| `100` | Could not find value for parameter {id} | The `id` parameter is not specified ||
+|| `-` | Price does not exist | No price exists for the product with this identifier ||
 || `0` | Required fields:  | Required fields not provided ||
-|| `0` | | Other errors || 
+|| `0` | | Other errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -1,14 +1,14 @@
-# Cancel the processing of multiple documents catalog.document.cancelList
+# Canceling Multiple Documents catalog.document.cancelList
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - a user with the "Cancel processing" access permission for the document type in the request,
-> - and "View and select warehouse" for the stock receipt or write-off warehouse.
+> - a user with the "Canceling" access permission on the document type in the request,
+> - and "View and select warehouse" on the incoming or outgoing warehouse.
 
 The method `catalog.document.cancelList` cancels the processing of a group of inventory documents:
 - the status of the documents is changed to `C` — canceled,
-- the inventory balances of products are updated according to the positions of the documents.
+- the inventory balances of the goods are updated according to the positions of the documents.
 
 Access permissions are checked for each document in the request.
 
@@ -20,7 +20,7 @@ Access permissions are checked for each document in the request.
 || **Name**
 `type` | **Description** ||
 || **documentIds***
-[`array`](../../data-types.md) | List of document identifiers, which can be obtained using the method [catalog.document.list](./catalog-document-list.md) ||
+[`catalog_document.id[]`](../data-types.md#catalog_document) | A list of document identifiers, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
 |#
 
 ## Code Examples
@@ -90,7 +90,7 @@ Access permissions are checked for each document in the request.
         }
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error cancelling documents: ' . $e->getMessage();
+        echo 'Error canceling documents: ' . $e->getMessage();
     }
     ```
 
@@ -131,7 +131,7 @@ Access permissions are checked for each document in the request.
 
 ## Response Handling
 
-HTTP code: **200**
+HTTP Code: **200**
 
 ```json
 {
@@ -141,8 +141,8 @@ HTTP code: **200**
         "finish": 1762411998.634683,
         "duration": 0.6346828937530518,
         "processing": 0,
-        "date_start": "2025-11-06T09:53:18+02:00",
-        "date_finish": "2025-11-06T09:53:18+02:00",
+        "date_start": "2025-11-06T09:53:18+01:00",
+        "date_finish": "2025-11-06T09:53:18+01:00",
         "operating_reset_at": 1762412598,
         "operating": 0.30604004859924316
     }
@@ -155,7 +155,7 @@ HTTP code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | The root element of the response, contains `true` if all documents were canceled without errors. If at least one document could not be canceled, the method will return an error in the response `error` / `error_description`. Documents that were successfully processed will remain in the "Canceled" status ||
+[`boolean`](../../data-types.md) | The root element of the response, contains `true` if all documents were canceled without errors. If at least one document could not be canceled, the method will return an error in the `error` / `error_description` response. Documents that were successfully processed will remain in the "Canceled" status ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -164,7 +164,7 @@ HTTP code: **200**
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-HTTP code: **400**
+HTTP Code: **400**
 
 ```json
 {
@@ -177,12 +177,13 @@ HTTP code: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | An error occurred while canceling the document "document name": Insufficient permissions to save the document | No access permission to the product catalog, inventory management, or no permission to process the document ||
-|| `0` | Error canceling the processing of the document: Document not found | A non-existent identifier was specified ||
+|| `0` | An error occurred while canceling the document "document name": Insufficient permissions to save the document | No access permission to the product catalog, inventory accounting, or no permission to process the document ||
+|| `0` | Error canceling the document: Document not found | A non-existent identifier was specified ||
 || `0` | An error occurred while canceling the document "document name": The document has not been processed yet | Cannot cancel the processing of a document if it is not in the processed status ||
+|| `0` | Inventory accounting is not available on your plan | Inventory accounting is not available on your plan ||
 |#
 
-{% include [System errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

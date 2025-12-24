@@ -1,10 +1,10 @@
-# Get a list of products in inventory management documents catalog.document.element.list
+# Get a list of products in inventory documents catalog.document.element.list
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: users with the "View product catalog" access permission
 
-The method `catalog.document.element.list` returns product items associated with inventory management documents. Records are automatically limited by the available document types and the user's permissions on inventories.
+The method `catalog.document.element.list` returns product positions associated with inventory documents. Records are automatically limited by available document types and the user's permissions on warehouses.
 
 ## Method Parameters
 
@@ -14,9 +14,9 @@ The method `catalog.document.element.list` returns product items associated with
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) |  An array with a list of fields from [catalog_document_element](../../data-types.md#catalog_document_element) to be selected ||
+[`array`](../../../data-types.md) | An array of fields from [catalog_document_element](../../data-types.md#catalog_document_element) that need to be selected ||
 || **filter**
-[`object`](../../../data-types.md) | An object for filtering the selected product records in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
+[`object`](../../../data-types.md) | An object for filtering selected product records in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_document_element](../../data-types.md#catalog_document_element) object.
 
@@ -32,7 +32,7 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
 - `!` — not equal
 ||
 || **order**
-[`object`](../../../data-types.md) | An object for sorting the selected product records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../../data-types.md) | An object for sorting selected product records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_document_element](../../data-types.md#catalog_document_element) object.
 
@@ -306,8 +306,8 @@ HTTP status: **200**
         "finish": 1759482402.642843,
         "duration": 0.13150620460510254,
         "processing": 0.02694106101989746,
-        "date_start": "2025-11-02T12:26:42+01:00",
-        "date_finish": "2025-11-02T12:26:42+01:00",
+        "date_start": "2025-11-02T12:26:42+02:00",
+        "date_finish": "2025-11-02T12:26:42+02:00",
         "operating": 0
     }
 }
@@ -319,11 +319,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response ||
+[`object`](../../../data-types.md) | Root element of the response ||
 || **documentElement**
-[`object`](../../data-types.md#catalog_document_element) | An object with information about the document's products, the response structure depends on the `select` parameter ||
+[`catalog_document_element[]`](../../data-types.md#catalog_document_element) | Object with information about the document products, the response structure depends on the `select` parameter ||
 || **total**
-[`integer`](../../../data-types.md) | The total number of records ||
+[`integer`](../../../data-types.md) | Total number of records ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -345,7 +345,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights for reading ||
+|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights to read ||
 || `0` |  | Other processing errors ||
 |#
 

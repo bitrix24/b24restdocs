@@ -1,18 +1,18 @@
-# Conduct several inventory management documents catalog.document.conductList
+# Conduct Multiple Warehouse Accounting Documents catalog.document.conductList
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method:
 > - a user with the "Conduct document" access permission for the document type in the request,
-> - and "View and select warehouse" for the stock receipt or write-off warehouse.
+> - and "View and select warehouse" for the incoming or outgoing warehouse.
 
-The method `catalog.document.conductList` conducts a group of inventory management documents:
-- the status of the documents is changed to `Y` — conducted,
-- the inventory balances of products are updated according to the document positions.
+The method `catalog.document.conductList` conducts a group of warehouse accounting documents:
+- the status of the documents changes to `Y` — conducted,
+- the warehouse stock of goods is updated according to the document positions.
 
 Access permissions are checked for each document in the request.
 
-## Method parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -20,10 +20,10 @@ Access permissions are checked for each document in the request.
 || **Name**
 `type` | **Description** ||
 || **documentIds***
-[`array`](../../data-types.md) | List of document identifiers, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id[]`](../data-types.md#catalog_document) | List of document identifiers, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
 |#
 
-## Code examples
+## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -131,9 +131,9 @@ Access permissions are checked for each document in the request.
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
-HTTP code: **200**
+HTTP Code: **200**
 
 ```json
 {
@@ -151,41 +151,43 @@ HTTP code: **200**
 }
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | The root element of the response, contains `true` if all documents were conducted without errors. If at least one document could not be conducted, the method will return an error in the response `error` / `error_description`. Documents that were successfully processed will remain in the "Conducted" status ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` if all documents were conducted without errors. If at least one document could not be conducted, the method will return an error in the response `error` / `error_description`. Documents that were successfully processed will remain in the "Conducted" status ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-## Error handling
+## Error Handling
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-HTTP code: **400**
+HTTP Code: **400**
 
 ```json
 {
     "error": "0",
-    "error_description": "An error occurred while conducting the document "Receipt 33": Incorrect quantity of product #6907 (Monster Energy) in the inventory management document"
+    "error_description": "An error occurred while conducting the document "Incoming 33": Incorrect quantity of goods #6907 (Monster Energy) in the warehouse accounting document"
 }
 ```
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `0` | An error occurred while conducting the document “#document name”: “error text” | The document contains incorrect data, for example “Supplier not specified” ||
-|| `0` | Document conducting error: Insufficient permissions to save the document | No access to the product catalog, inventory management, or no permission to conduct the document ||
+|| `0` | Document conducting error: Insufficient permissions to save the document | No permissions for the product catalog, warehouse accounting, or no permission to conduct the document ||
+|| `0` | Warehouse accounting is not available on your plan | Warehouse accounting is not available on your plan ||
+|| `0` | Warehouse accounting must be enabled to conduct the document | Warehouse accounting must be enabled to conduct the document ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](./catalog-document-conduct.md)
 - [{#T}](./catalog-document-cancel-list.md)

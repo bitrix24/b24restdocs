@@ -1,10 +1,10 @@
-# Update Inventory Document catalog.document.update
+# Update Warehouse Accounting Document catalog.document.update
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "Create and edit" access permission for the required document type
+> Who can execute the method: a user with "Create and Edit" access permission for the required document type
 
-The method `catalog.document.update` modifies the fields of an existing inventory document.
+The method `catalog.document.update` modifies the fields of an existing warehouse accounting document.
 
 ## Method Parameters
 
@@ -14,7 +14,7 @@ The method `catalog.document.update` modifies the fields of an existing inventor
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Document identifier, can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id`](../data-types.md#catalog_document) | Document identifier, can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
 || **fields***
 [`object`](#fields) | Document fields ([detailed description](#fields)) ||
 |#
@@ -27,13 +27,13 @@ The method `catalog.document.update` modifies the fields of an existing inventor
 || **Name**
 `type` | **Description** ||
 || **responsibleId**
-[`integer`](../../data-types.md) | Identifier of the responsible person ||
+[`user.id`](../../data-types.md) | Identifier of the responsible person ||
 || **dateModify**
-[`datetime`](../../data-types.md) | You can provide your own modification date. By default, it is the current date ||
+[`datetime`](../../data-types.md) | You can provide your own modification date. Defaults to the current date ||
 || **dateDocument**
 [`datetime`](../../data-types.md) | Document date ||
 || **total**
-[`double`](../../data-types.md) | Total amount for the document products. Automatically recalculated after changing product items ||
+[`double`](../../data-types.md) | Total amount for the document items. Automatically recalculated after modifying the items ||
 || **commentary**
 [`char`](../../data-types.md) | Commentary for the document ||
 || **title**
@@ -41,7 +41,7 @@ The method `catalog.document.update` modifies the fields of an existing inventor
 || **docNumber**
 [`string`](../../data-types.md) | Internal document number ||
 || **modifiedBy**
-[`integer`](../../data-types.md) | Identifier of the user who modified the document. An administrator can specify any value; by default, it is filled with the current user ||
+[`user.id`](../../data-types.md) | Identifier of the user who modified the document. An administrator can specify any value; defaults to the current user ||
 |#
 
 ## Code Examples
@@ -224,7 +224,7 @@ HTTP Code: **200**
 || **result**
 [`object`](../data-types.md#catalog_document) | Root element of the response ||
 || **document**
-[`object`](../data-types.md#catalog_document) | Object with updated document data ||
+[`catalog_document`](../data-types.md#catalog_document) | Object with updated document data ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -246,10 +246,11 @@ HTTP Code: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to save the document | The user does not have permission to edit the document of the required type or a document with such an identifier does not exist ||
+|| `0` | Insufficient permissions to save the document | The user does not have permission to edit the document of the required type or the document with that identifier does not exist ||
+|| `0` | Warehouse accounting is not available on your plan | Warehouse accounting is not available on your plan ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}
+{% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -2,7 +2,7 @@
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "Modify product sale price" access permission
+> Who can execute the method: user with the "Modify product sale price" permission
 
 The method `catalog.price.modify` updates the product price collection. It allows adding, updating, and deleting different product prices in a single request.
 
@@ -14,7 +14,7 @@ The method `catalog.price.modify` updates the product price collection. It allow
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md)| Object containing data to modify prices ([detailed description](#fields)) ||
+[`object`](../../data-types.md)| Object containing data for modifying prices ([detailed description](#fields)) ||
 |#
 
 ### Parameter fields {#fields}
@@ -323,7 +323,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **prices**
-[`catalog_price[]`](../data-types.md#catalog_price) | Array of objects with product price information ||
+[`catalog_price[]`](../data-types.md#catalog_price) | Array of objects containing product price information ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -345,10 +345,12 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `200040300030` | Access Denied | Insufficient permissions ||
+|| `200040300020` | Access Denied | Insufficient rights to edit price ||
+|| `200040300030` | Access Denied | Insufficient rights to edit product ||
 || `100` | Could not find value for parameter {fields} | Parameter `fields` is not specified or is empty ||
 || `0` | Required fields:  | Required fields are not provided ||
 || `0` | Validate price error. Catalog price group is wrong | Incorrect price type ||
+|| `0` | Validate price error. Catalog product is allowed to have only a single price without ranges in the price group | Duplicate price type. Two or more records with the same `catalogGroupId` were provided in the `prices` array || 
 || `0` | | Other errors || 
 |#
 

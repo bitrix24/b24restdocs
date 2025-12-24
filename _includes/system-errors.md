@@ -35,4 +35,6 @@ The request requires higher privileges than provided by the webhook token | The 
 The access token provided has expired | The provided [access token](/settings/oauth/index.html) has expired ||
 || `403` | `user_access_error`
 The user does not have access to the application | The user does not have access to the application. This means that the application is installed, but the account administrator has allowed access to this application only for specific users ||
+|| `500` | `PORTAL_DELETED`
+Portal was deleted | The public part of the site is closed. To open the public part of the site on an on-premise installation, disable the option "Temporary closure of the public part of the site". Path to the setting: *Desktop > Settings > Product Settings > Module Settings > Main Module > Temporary closure of the public part of the site* ||
 |#

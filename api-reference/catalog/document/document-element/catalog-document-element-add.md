@@ -3,8 +3,8 @@
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: 
-> - a user with "Create and edit" access permission for the document type in the request,
-> - and "View and select warehouse" for the stock receipt or write-off warehouse.
+> - a user with "Create and Edit" permission on the document type in the request,
+> - and "View and Select Warehouse" permission on the incoming or outgoing warehouse.
 
 The method `catalog.document.element.add` adds a product item to the inventory document.
 
@@ -27,17 +27,17 @@ The method `catalog.document.element.add` adds a product item to the inventory d
 || **Name**
 `type` | **Description** ||
 || **docId***
-[`integer`](../../../data-types.md) | Identifier of the inventory document, can be obtained using the [catalog.document.list](../catalog-document-list.md) method. The document must have a status of `N` — not processed ||
+[`catalog_document.id`](../../data-types.md#catalog_document) | Identifier of the inventory document, can be obtained using the [catalog.document.list](../catalog-document-list.md) method. The document must have a status of `N` — not processed ||
 || **elementId***
-[`integer`](../../../data-types.md) | Identifier of the catalog product. The value can be obtained using the [catalog.product.*](../../product/index.md) methods ||
+[`catalog_product.id`](../../data-types.md#catalog_product) | Identifier of the catalog product. The value can be obtained using the [catalog.product.*](../../product/index.md) methods ||
 || **storeFrom**
-[`integer`](../../../data-types.md) | Identifier of the source warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Used for write-off documents ||
+[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the source warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Used for outgoing documents ||
 || **storeTo**
-[`integer`](../../../data-types.md) | Identifier of the receiving warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Used for receipt and transfer documents ||
+[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the receiving warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Used for incoming and transfer documents ||
 || **amount**
 [`double`](../../../data-types.md) | Quantity of the product. The value is specified in the units of the document ||
 || **purchasingPrice**
-[`double`](../../../data-types.md) | Purchase price in the document currency ||
+[`double`](../../../data-types.md) | Purchase price in the document's currency ||
 |#
 
 ## Code Examples
@@ -199,8 +199,8 @@ HTTP Code: **200**
         "finish": 1759482001.215487,
         "duration": 0.11315321922302246,
         "processing": 0.018451929092407227,
-        "date_start": "2025-11-02T12:20:01+02:00",
-        "date_finish": "2025-11-02T12:20:01+02:00",
+        "date_start": "2025-11-02T12:20:01+01:00",
+        "date_finish": "2025-11-02T12:20:01+01:00",
         "operating": 0
     }
 }
@@ -214,7 +214,7 @@ HTTP Code: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **documentElement**
-[`object`](../../data-types.md#catalog_document_element) | Object with information about the added product ||
+[`catalog_document_element`](../../data-types.md#catalog_document_element) | Object with information about the added product ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -236,12 +236,12 @@ HTTP Code: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights for the document or one of the specified warehouses ||
+|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights on the document or one of the specified warehouses ||
 || `ERROR_DOCUMENT_STATUS` | Document not found / Conducted document | Document not found, unavailable, or already processed ||
 || `0` | Error of adding new document element | Internal error while saving the item ||
 |#
 
-{% include [System errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

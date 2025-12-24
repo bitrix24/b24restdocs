@@ -1,10 +1,10 @@
-# Get the list of product fields for the inventory management document catalog.document.element.getFields
+# Get the list of product fields for the inventory document catalog.document.element.getFields
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
 > Who can execute the method: users with the "View product catalog" access permission
 
-The method `catalog.document.element.getFields` returns the description of product fields from the inventory management document.
+The method `catalog.document.element.getFields` returns the description of product fields from the inventory document.
 
 ## Method Parameters
 
@@ -12,7 +12,7 @@ No parameters.
 
 ## Code Examples
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Examples Note](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -23,7 +23,7 @@ No parameters.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webbhook_here**/catalog.document.element.getFields
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.element.getFields
     ```
 
 - cURL (OAuth)
@@ -117,7 +117,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -187,14 +187,15 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **documentElement**
-[`object`](../../data-types.md#catalog_document_element) | Object with information about the product fields of the document ||
+[`object`](../../data-types.md#catalog_document_element) | Object describing the fields of the document's product. 
+Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` — identifier of the object [`catalog_document_element`](../../data-types.md#catalog_document_element), and `value` — object of type [`rest_field_description`](../../data-types.md). || ||
 || **time**
-[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -209,11 +210,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights to read inventory management documents ||
+|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights to read inventory documents ||
 || `0` |  | Other processing errors ||
 |#
 
-{% include [System errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

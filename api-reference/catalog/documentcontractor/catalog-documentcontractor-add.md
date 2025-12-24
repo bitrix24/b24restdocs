@@ -1,140 +1,245 @@
-# Add CRM entity (Contact/Company) binding to document catalog.documentcontractor.add
-
-{% note warning "We are still updating this page" %}
-
-Some data may be missing — we will complete it shortly.
-
-{% endnote %}
-
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- required parameters are not specified
-- no response in case of error
-- no examples in other languages
-- create a link from [List](.) to Constants CRM
-- create a link [crm.category.list](.)
-- create a link [crm.item.list](.)
-  
-{% endnote %}
-
-{% endif %}
+# Add Vendor to Inventory Document catalog.documentcontractor.add
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: user with permissions:
+> — "View" and "Create and edit" on document type "Incoming",
+> — "View Inventory" section
+> — "View Product Catalog"  
 
-## Description
+The method `catalog.documentcontractor.add` creates a binding of a vendor, contact, or company to an inventory document.
 
-```http
-catalog.documentcontractor.add(fields)
-```
+## Method Parameters  
 
-This method adds a binding of a CRM entity (Contact/Company) to a document. The response includes a list of binding fields, similar to the method [`getFields`](catalog-documentcontractor-get-fields.md). The list returns the `id` of the binding for further work with the binding.
-
-### Cases when errors may occur while adding a binding to the document:
-
-- if there is no access to inventory management, no access to view stock receipt documents, or no access to edit the stock receipt document (adding/removing a binding is considered editing the document);
-- if the document is not found;
-- if the document type is incorrect (binding to vendors is only relevant for documents of type **Stock Receipt**);
-- if the document has already been processed (the document cannot be edited after it has been processed);
-- if the entity type is incorrect (only values 3 or 4 are accepted in the **entityTypeId** field);
-- when trying to bind a vendor Company to a stock receipt document when a vendor Company is already bound to that document (multiple Contacts can be bound, but only one Company is allowed).
-
-## Parameters
+{% include [Note on required parameters](../../../_includes/required.md) %}  
 
 #|
-|| **Parameter** |  **Description** ||
-|| **fields** 
-[`object`](../../data-types.md) | Fields **documentId**, **entityTypeId**, and **entityId**, corresponding to the available list of fields [`fields`](catalog-documentcontractor-get-fields.md). ||
-|#
+|| **Name**
+`type` | **Description** ||
+|| **fields***
+[`object`](#fields) | Binding fields ([detailed description](#fields)) ||
+|# 
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+## Parameter fields {#fields}  
 
-## Examples
+{% include [Note on required parameters](../../../_includes/required.md) %}  
+
+#|
+|| **Name**
+`type` | **Description** || 
+|| **documentId*** 
+[`catalog_document.id`](../data-types.md#catalog_document) | Identifier of the inventory document of type "Incoming" `A`.  
+Can be obtained using the method [catalog.document.list](../document/catalog-document-list.md) ||  
+|| **entityTypeId***  
+[`integer`](../../crm/data-types.md#object_type) | Type of CRM object:  
+`3` — contact 
+`4` — company ||  
+|| **entityId***  
+[`integer`](../../data-types.md) | Identifier of the CRM entity, contact, or company from the "Vendor" category.
+ 
+To obtain vendor identifiers:  
+1. Get the category identifier with the code `CATALOG_CONTRACTOR_CONTACT` for contacts or `CATALOG_CONTRACTOR_COMPANY` for companies using the method [crm.category.list](../../crm/universal/category/crm-category-list.md).  
+2. Use the obtained `categoryId` in the filter of the request [crm.item.list](../../crm/universal/crm-item-list.md) ||  
+|#  
+
+## Code Examples  
+
+{% include [Note on examples](../../../_includes/examples.md) %}  
 
 {% list tabs %}
 
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"documentId":42,"entityTypeId":3,"entityId":101}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.documentcontractor.add
+    ```
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"fields":{"documentId":42,"entityTypeId":3,"entityId":101},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/catalog.documentcontractor.add
+    ```
+
 - JS
 
+    ```js  
+    try
+    {
+        const response = await $b24.callMethod(
+            'catalog.documentcontractor.add',
+            {
+                fields: {
+                    documentId: 42,
+                    entityTypeId: 3,
+                    entityId: 101
+                }
+            }
+        );
+
+        const result = response.getData().result;
+        console.log('Created binding:', result);
+    }
+    catch (error)
+    {
+        console.error('Error:', error);
+    }
+    ```
+
+- PHP
+
+    ```php  
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.documentcontractor.add',
+                [
+                    'fields' => [
+                        'documentId' => 42,
+                        'entityTypeId' => 3,
+                        'entityId' => 101
+                    ]
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result) {
+            echo 'Success: ' . print_r($result, true);
+        }
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding contractor binding: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
     ```js
-    BX.callMethod(
+    BX24.callMethod(
         'catalog.documentcontractor.add',
         {
             fields: {
-                documentId: 11,
+                documentId: 42,
                 entityTypeId: 3,
-                entityId: 21,
-            },
+                entityId: 101
+            }
         },
-        function(result) {
+        function(result)
+        {
             if (result.error())
-                console.error(result.error().ex);
+                console.error(result.error());
             else
                 console.log(result.data());
         }
     );
+    ```	
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'catalog.documentcontractor.add',
+        [
+            'fields' => [
+                'documentId' => 42,
+                'entityTypeId' => 3,
+                'entityId' => 101
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 {% endlist %}
 
-The document identifier **documentId** is known. Let's take a closer look at where to get **entityTypeId** and **entityId**:
+## Response Handling
 
-- **entityTypeId** – id of the CRM entity type. [List](.) of these entity types is fixed (for Contact it is `3`, for Company `4`).
-- **entityId** – id of the CRM entity (Vendor Contacts or Vendor Companies). To get the list of the required CRM entity ids, two steps are needed:
-    
-    - To obtain the list of entities, use the method [crm.category.list](.), passing **entityTypeId** (3 or 4) and filtering by [category code](*category_code_key) (for Contact `CATALOG_CONTRACTOR_CONTACT`, for Company `CATALOG_CONTRACTOR_COMPANY`):
-  
-    ```js
-    BX.callMethod(
-        'crm.category.list',
-        {
-            entityTypeId: 3,
-            filter: {
-                code: 'CATALOG_CONTRACTOR_CONTACT',
-            }
-        },
-        console.log(result.data())
-    );
-    ```
+HTTP code: **200**
 
-    The response will return data about the category. For the second step, **categoryId** is needed – the id of the category (it may coincide with **entityTypeId**).
+```json
+{
+    "result": {
+        "documentContractor": {
+            "documentId": 73,
+            "entityId": 2185,
+            "entityTypeId": 3,
+            "id": 15
+        }
+    },
+    "time": {
+        "start": 1766469835,
+        "finish": 1766469835.824666,
+        "duration": 0.8246660232543945,
+        "processing": 0,
+        "date_start": "2025-12-23T09:03:55+01:00",
+        "date_finish": "2025-12-23T09:03:55+01:00",
+        "operating_reset_at": 1766470435,
+        "operating": 0
+    }
+}
+```
 
-   - Next, obtain the list of CRM entities using the method [crm.item.list](.), passing the entity id **entityTypeId** and filtering by the previously obtained category id **categoryId**:
+### Returned Data
 
-    ```js
-    BX.callMethod(
-        'crm.item.list',
-        {
-            entityTypeId: 3, // id of the CRM entity type Contact
-            select: ['ID', 'NAME', 'LAST_NAME', 'CATEGORY_ID'], // fields to display, optional parameter
-            filter: {
-                categoryId: 3, // id of the CRM entity Contact vendor category, obtained from crm.category.list
-            },
-        },
-        console.log(result.data())
-    );
-    ```
-    
-    A list of Vendor Contacts will be returned, which can be used in bindings (the ids of Contacts are needed for **entityId**).
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response ||
+|| **documentContractor**
+[`catalog_documentContractor`](../data-types.md#catalog_documentContractor) | Object with data of the created vendor binding to the inventory document ||  
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
 
-    Similarly, to obtain the list of Vendor Companies:
+## Error Handling 
 
-    ```js
-    BX.callMethod(
-        'crm.item.list',
-        {
-            entityTypeId: 4, // id of the CRM entity type Company
-            select: ['ID', 'TITLE', 'CATEGORY_ID'], // fields to display, optional parameter
-            filter: {
-                categoryId: 4, // id of the CRM entity Vendor Company category, obtained from crm.category.list
-            },
-        },
-        console.log(result.data())
-    );
-    ```
+{% include notitle [error handling](../../../_includes/error-info.md) %}  
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+HTTP code: **400**
 
-[*category_code_key]: Filtering by category in the method **crm.category.list** is available since version **crm 23.0.0**
+```json
+{
+    "error": "0",
+    "error_description": "Store document was not found"
+}
+```
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `0` | Store document was not found | The specified document identifier does not exist or is inaccessible ||  
+|| `0` | Type of store document is wrong | The document is not of type "Incoming" `A` ||  
+|| `0` | Unable to edit conducted document | The document has already been processed and cannot be changed ||  
+|| `0` | Wrong entity type id | An invalid `entityTypeId` was provided, must be 3 or 4 ||  
+|| `0` | Wrong entity id | An invalid or non-existent `entityId` was specified ||  
+|| `0` | This contractor has been already bound to this document | Such a binding already exists ||  
+|| `0` | This document already has a Company contractor | A company is already bound to the document. Re-binding companies is prohibited ||  
+|| `0` | Access denied | Insufficient permissions to modify the document ||  
+|| `0` | Contractors should be provided by CRM | The CRM module is not active as a vendor for contractors ||  
+|#
+
+{% include [System Errors](../../../_includes/system-errors.md) %}  
+
+## Continue Learning
+
+- [{#T}](./catalog-documentcontractor-list.md)  
+- [{#T}](./catalog-documentcontractor-delete.md)  
+- [{#T}](./catalog-documentcontractor-get-fields.md)  

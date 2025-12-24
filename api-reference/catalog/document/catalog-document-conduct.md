@@ -1,16 +1,16 @@
-# Conduct inventory document catalog.document.conduct
+# Conduct Warehouse Accounting Document catalog.document.conduct
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - a user with the "Conduct document" access permission for the document type in the request,
-> - and "View and select warehouse" for the stock receipt or write-off warehouse.
+> - a user with the "Conduct Document" access permission for the document type in the request,
+> - and "View and Select Warehouse" access permission for the incoming or outgoing warehouse.
 
-The method `catalog.document.conduct` conducts the inventory document:
+The method `catalog.document.conduct` conducts a warehouse accounting document:
 - the document status changes to `Y` — conducted,
-- the inventory balances of products are updated according to the document's positions.
+- the warehouse stock of goods is updated according to the document's items.
 
-## Method parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -18,10 +18,10 @@ The method `catalog.document.conduct` conducts the inventory document:
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Document identifier, can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id`](../data-types.md#catalog_document) | Document identifier, can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
 |#
 
-## Code examples
+## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -127,9 +127,9 @@ The method `catalog.document.conduct` conducts the inventory document:
 
 {% endlist %}
 
-## Response handling
+## Response Handling
 
-HTTP code: **200**
+HTTP Code: **200**
 
 ```json
 {
@@ -139,15 +139,15 @@ HTTP code: **200**
         "finish": 1762409136.304248,
         "duration": 1.3042480945587158,
         "processing": 1,
-        "date_start": "2025-11-06T09:05:35+02:00",
-        "date_finish": "2025-11-06T09:05:36+02:00",
+        "date_start": "2025-11-06T09:05:35+01:00",
+        "date_finish": "2025-11-06T09:05:36+01:00",
         "operating_reset_at": 1762409735,
         "operating": 0.3091859817504883
     }
 }
 ```
 
-### Returned data
+### Returned Data
 
 #|
 || **Name**
@@ -158,11 +158,11 @@ HTTP code: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-## Error handling
+## Error Handling
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-HTTP code: **400**
+HTTP Code: **400**
 
 ```json
 {
@@ -171,19 +171,21 @@ HTTP code: **400**
 }
 ```
 
-### Possible error codes
+### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Failed to complete the action due to insufficient rights to view and select warehouses | No rights to work with the product warehouse from the document ||
-|| `0` | Insufficient rights to save the document | No rights to the product catalog, inventory management, or no rights to conduct the document ||
+|| `0` | Failed to complete the action as you do not have sufficient rights to view and select warehouses | No rights to work with the warehouse of the goods from the document ||
+|| `0` | Insufficient rights to save the document | No rights to the product catalog, warehouse accounting, or no rights to conduct the document ||
 || `0` | Document not found | A non-existent document identifier was specified ||
 || `0` | Document conducting error: "error text" | The document contains incorrect data, for example, "Supplier not specified" ||
+|| `0` | Warehouse accounting is not available on your plan | Warehouse accounting is not available on your plan ||
+|| `0` | Warehouse accounting must be enabled to conduct the document | Warehouse accounting must be enabled to conduct the document ||
 |#
 
-{% include [System errors](../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
-## Continue exploring
+## Continue Learning
 
 - [{#T}](./catalog-document-conduct-list.md)
 - [{#T}](./catalog-document-cancel.md)

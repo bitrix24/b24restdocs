@@ -186,7 +186,6 @@ HTTP Status: **200**
         "S:ECrm": "Binding to CRM elements",
         "S:Money": "Money",
         "S:DiskFile": "File (Disk)",
-        "S:map_yandex": "Binding to Yandex.Map",
         "S:employee": "Binding to employee"
     },
     "time": {
