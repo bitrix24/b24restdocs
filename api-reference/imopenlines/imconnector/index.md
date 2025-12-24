@@ -68,7 +68,6 @@ The `imconnector.*` methods in the current version do not support operation thro
     || **Method** | **Description** ||
     || [imconnector.register](imconnector-register.md) | Register a connector ||
     || [imconnector.activate](imconnector-activate.md) | Activate a connector ||
-    || [imconnector.deactivate](imconnector-deactivate.md) | Deactivate a connector  ||
     || [imconnector.status](imconnector-status.md) | Get the connector status ||
     || [imconnector.connector.data.set](imconnector-connector-data-set.md) | Change connector settings ||
     || [imconnector.list](imconnector-list.md) | Get a list of connectors ||

@@ -9,8 +9,6 @@ items:
     href: imconnector-register.md  
   - name: Activate Connector  
     href: imconnector-activate.md  
-  - name: Deactivate Connector  
-    href: imconnector-deactivate.md  
   - name: Get Connector Status  
     href: imconnector-status.md  
   - name: Change Connector Settings  

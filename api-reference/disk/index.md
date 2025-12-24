@@ -45,7 +45,7 @@ You can find out the version of a file using the method [disk.version.get](./ver
 
 {% endnote %}
 
-## Drive Connection with Other Objects
+## Drive Connection with Other Objects {#diskconnection}
 
 **CRM.** Files can be attached to activities and estimates. The group of methods [crm.activity.*](../crm/timeline/activities/index.md) is responsible for working with activities, while [crm.quote.*](../crm/quote/crm-quote-add.md) handles estimates.
 

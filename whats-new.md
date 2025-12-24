@@ -7,6 +7,7 @@
 - Updated the main page of the [Events](./api-reference/events/index.md) section
 - Added the article [Tasks in REST 3.0: Overview of Methods](./api-reference/rest-v3/tasks/index.md)
 - Updated the documentation for the methods [catalog.documentcontractor.add](./api-reference/catalog/documentcontractor/catalog-documentcontractor-add.md), [catalog.documentcontractor.delete](./api-reference/catalog/documentcontractor/catalog-documentcontractor-delete.md), [catalog.documentcontractor.getFields](./api-reference/catalog/documentcontractor/catalog-documentcontractor-get-fields.md), [catalog.documentcontractor.list](./api-reference/catalog/documentcontractor/catalog-documentcontractor-list.md)
+- Updated the documentation for the methods [disk.attachedObject.get](./api-reference/disk/attached-object/disk-attached-object-get.md), [disk.rights.getTasks](./api-reference/disk/rights/disk-rights-get-tasks.md), [disk.version.get](./api-reference/disk/version/disk-version-get.md)
 
 ### December 17, 2025
 

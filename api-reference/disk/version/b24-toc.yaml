@@ -3,5 +3,5 @@ href: index.md
 items:
   - name: Overview of methods
     href: index.md
-  - name: Get version by identifier
+  - name: Get file version
     href: disk-version-get.md
